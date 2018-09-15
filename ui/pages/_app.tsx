@@ -10,8 +10,8 @@ injectGlobal`
     color: ${colors.iron};
     background-color: ${colors.cinder};
     font-family: "inter", Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.2em;
+    font-size: 24px;
+    line-height: 1.6em;
   }
 `;
 

@@ -25,6 +25,7 @@
     "ts-node": "^7.0.1"
   },
   "devDependencies": {
+    "@types/draft-js": "^0.10.25",
     "@types/next": "^6.1.5",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",

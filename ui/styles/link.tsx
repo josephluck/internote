@@ -8,7 +8,7 @@ interface Props {
   scroll?: boolean;
 }
 
-export function Link({ href, scroll = false, children }: Props) {
+export function TextLink({ href, scroll = false, children }: Props) {
   return (
     <NextLink href={href} scroll={scroll} prefetch>
       <TextAnchor>{children}</TextAnchor>
