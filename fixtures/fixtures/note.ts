@@ -3,6 +3,7 @@ import * as faker from "faker";
 
 export function note(): Types.Note {
   return {
+    id: faker.random.uuid(),
     title: faker.lorem.sentence(),
     createdOn: faker.date.past().toLocaleDateString(),
     updatedOn: faker.date.past().toLocaleDateString(),
