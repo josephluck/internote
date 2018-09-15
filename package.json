@@ -1,0 +1,13 @@
+{
+  "name": "internote",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "api",
+    "fixtures",
+    "ui"
+  ]
+}
