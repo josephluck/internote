@@ -1,6 +1,6 @@
 import NextLink from "next/link";
 import styled from "styled-components";
-import { colors } from "@internote/ui/styles/theme";
+import { color } from "@internote/ui/styles/theme";
 
 interface Props {
   href: string;
@@ -16,8 +16,21 @@ export function TextLink({ href, scroll = false, children }: Props) {
   );
 }
 
+export function BlockLink({ href, scroll = false, children }: Props) {
+  return (
+    <NextLink href={href} scroll={scroll} prefetch>
+      <BlockAnchor>{children}</BlockAnchor>
+    </NextLink>
+  );
+}
+
 const TextAnchor = styled.a`
-  color: ${colors.iron};
-  border-bottom: solid 2px ${colors.iron};
+  color: ${color.iron};
+  border-bottom: solid 2px ${color.iron};
+  cursor: pointer;
+`;
+
+const BlockAnchor = styled.a`
+  color: inherit;
   cursor: pointer;
 `;

@@ -3,6 +3,6 @@ const withTranspile = require("next-plugin-transpile-modules");
 
 module.exports = withTypescript(
   withTranspile({
-    transpileModules: ["@internote"]
+    transpileModules: ["@internote", "styled-icons"]
   })
 );

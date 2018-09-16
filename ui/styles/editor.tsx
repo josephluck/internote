@@ -1,5 +1,10 @@
 import React from "react";
-import { Editor as DraftEditor, EditorState, ContentState } from "draft-js";
+import { EditorState, ContentState } from "draft-js";
+import dynamic from "next/dynamic";
+
+const DraftEditor = dynamic(import("draft-js").then(module => module.Editor), {
+  ssr: false
+});
 
 interface Props {
   initialValue?: string;
@@ -19,7 +24,9 @@ export class Editor extends React.Component<Props, State> {
     };
   }
 
-  onChange = (editorState: EditorState) => this.setState({ editorState });
+  onChange = (editorState: EditorState) => {
+    this.setState({ editorState });
+  };
 
   render() {
     return (
