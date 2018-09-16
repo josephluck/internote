@@ -11,11 +11,12 @@ import { NextTwineSFC } from "../store/with-twine";
 import { State, Actions } from "../store";
 
 const Page: NextTwineSFC<State, Actions, {}, { id: string }> = props => {
+  console.log(props.store.state.note);
   return (
     <>
       <Heading />
       <Box p={spacing._2}>
-        <Editor initialValue={props.state.note.content} />
+        <Editor initialValue={props.store.state.note.content} />
       </Box>
       <Toolbar />
     </>

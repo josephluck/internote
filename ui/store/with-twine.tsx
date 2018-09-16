@@ -11,21 +11,34 @@ export function withTwine<S, A>(
   Child: any
 ) {
   return class WithTwine extends React.Component<{}, State> {
-    store = makeStore();
-    unsubscribe = () => null;
+    store;
 
     constructor(props, context) {
       super(props, context);
 
       const { initialState, store } = props;
-      const hasStore = store && "state" in store && "actions" in store;
+      const hasStore =
+        store &&
+        "state" in store &&
+        "actions" in store &&
+        "subscribe" in store &&
+        "getState" in store;
 
       if (hasStore) {
         this.store = store;
+        this.store.state = initialState;
+        console.log(
+          "constructor state with existing store",
+          this.store.state.notes.length
+        );
       } else {
         const newStore = makeStore();
         newStore.state = initialState;
         this.store = newStore;
+        console.log(
+          "constructor state with new store",
+          this.store.state.notes.length
+        );
       }
 
       this.state = {
@@ -41,21 +54,26 @@ export function withTwine<S, A>(
         : {};
       const initialState = appCtx.ctx.store.getState();
 
+      console.log("getInitialProps initialState", initialState.notes.length);
+
+      //
+      // When navigating client side, the store state does not end up
+      // in the page's props.
+      //
+
       return {
         initialState,
-        initialProps
+        initialProps,
+        store: appCtx.ctx.store
       };
     }
 
     componentDidMount() {
-      this.unsubscribe = this.store.subscribe(this.setStoreState);
-    }
-
-    componentWillUnmount() {
-      this.unsubscribe();
+      this.store.subscribe(this.setStoreState);
     }
 
     setStoreState = storeState => {
+      console.log("subscribed update", storeState.notes.length);
       this.setState({
         storeState
       });
@@ -67,8 +85,10 @@ export function withTwine<S, A>(
         <Child
           {...props}
           {...initialProps}
-          state={this.state.storeState}
-          actions={this.store.actions}
+          store={{
+            ...this.store,
+            state: this.state.storeState
+          }}
         />
       );
     }
@@ -83,8 +103,7 @@ export interface NextTwineSFC<
 >
   extends React.StatelessComponent<
       ExtraProps & {
-        actions: Twine.Return<State, Actions>["actions"];
-        state: Twine.Return<State, Actions>["state"];
+        store: Twine.Return<State, Actions>;
       }
     > {
   getInitialProps?: (

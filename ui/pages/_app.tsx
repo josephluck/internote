@@ -24,10 +24,10 @@ injectGlobal`
 
 export class Application extends App {
   render() {
-    const { Component, pageProps, state, actions } = this.props as any;
+    const { Component, pageProps, store } = this.props as any;
     return (
       <Container>
-        <Component {...pageProps} state={state} actions={actions} />
+        <Component {...pageProps} store={store} />
       </Container>
     );
   }

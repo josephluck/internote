@@ -10,9 +10,9 @@ const Page: NextTwineSFC<State, Actions> = props => {
   return (
     <>
       <Heading />
-      <button onClick={props.actions.fetchNotes}>Update</button>
+      <button onClick={props.store.actions.fetchNotes}>Update</button>
       <Box p={spacing._2}>
-        {props.state.notes.map(note => (
+        {props.store.state.notes.map(note => (
           <Box key={note.id} mb={spacing._1}>
             <TextLink href={`/note?id=${note.id}`}>{note.title}</TextLink>
           </Box>
