@@ -23,13 +23,6 @@ injectGlobal`
 `;
 
 export class Application extends App {
-  static async getInitialProps({ Component, ctx }) {
-    return {
-      pageProps: Component.getInitialProps
-        ? await Component.getInitialProps(ctx)
-        : {}
-    };
-  }
   render() {
     const { Component, pageProps, state, actions } = this.props as any;
     return (

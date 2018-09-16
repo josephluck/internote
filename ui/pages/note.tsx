@@ -7,24 +7,24 @@ import { spacing } from "../styles/theme";
 import { Box } from "grid-styled";
 import { Heading } from "../styles/heading";
 import { Toolbar } from "../styles/toolbar";
+import { NextTwineSFC } from "../store/with-twine";
+import { State, Actions } from "../store";
 
-const Page: NextSFC<{ note: Types.Note }> = props => {
+const Page: NextTwineSFC<State, Actions, {}, { id: string }> = props => {
   return (
     <>
       <Heading />
       <Box p={spacing._2}>
-        <Editor initialValue={props.note.content} />
+        <Editor initialValue={props.state.note.content} />
       </Box>
       <Toolbar />
     </>
   );
 };
 
-Page.getInitialProps = (ctx: any) => {
-  console.log(ctx.store);
-  return Promise.resolve({
-    note: fixtures.note()
-  });
+Page.getInitialProps = async ctx => {
+  await ctx.store.actions.fetchNote(ctx.query.id);
+  return {};
 };
 
 export default Page;
