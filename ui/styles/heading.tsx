@@ -1,22 +1,26 @@
-import { Flex } from "grid-styled";
-import { spacing } from "@internote/ui/styles/theme";
-import { Logo } from "@internote/ui/styles/logo";
-import { BlockLink } from "@internote/ui/styles/link";
+import { spacing, color } from "../styles/theme";
+import { Logo } from "../styles/logo";
+import { BlockLink } from "../styles/link";
+import styled from "styled-components";
+
+const HeadingWrapper = styled.div`
+  padding: ${spacing._0_5} ${spacing._2};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: ${color.cinder};
+  border-bottom: solid 1px black;
+`;
 
 export function Heading({ right }: { right?: React.ReactNode }) {
   return (
-    <Flex
-      pl={spacing._2}
-      pr={spacing._2}
-      pb={spacing._1}
-      pt={spacing._1}
-      alignItems="center"
-      justifyContent="space-between"
-    >
+    <HeadingWrapper>
       <BlockLink href="/">
         <Logo />
       </BlockLink>
       {right ? right : null}
-    </Flex>
+    </HeadingWrapper>
   );
 }

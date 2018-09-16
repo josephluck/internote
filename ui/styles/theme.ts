@@ -9,10 +9,19 @@ export const color = {
   shipGray: "#211F28",
   scarpaFlow: "#504D5D",
   black: "#000000",
-  jungleGreen: "#2CCB62"
+  jungleGreen: "#2CCB62",
+  jumbo: "#737278"
 };
 
 export const font = {
+  _12: {
+    size: "12px",
+    lineHeight: "1.2em"
+  },
+  _18: {
+    size: "18px",
+    lineHeight: "1.4em"
+  },
   _24: {
     size: "24px",
     lineHeight: "1.6em"

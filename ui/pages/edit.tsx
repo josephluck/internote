@@ -6,14 +6,15 @@ import { Editor } from "../styles/editor";
 import { spacing } from "../styles/theme";
 import { Box } from "grid-styled";
 import { Heading } from "../styles/heading";
-import { Saving } from "../styles/saving";
+import { Toolbar } from "../styles/toolbar";
 
 const Page: NextSFC<{ note: Types.Note }> = ({ note }) => (
   <>
-    <Heading right={<Saving saving={true} />} />
+    <Heading />
     <Box p={spacing._2}>
       <Editor initialValue={note.content} />
     </Box>
+    <Toolbar />
   </>
 );
 

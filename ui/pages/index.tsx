@@ -1,11 +1,11 @@
 import * as React from "react";
 import { NextSFC } from "next";
-import { TextLink } from "@internote/ui/styles/link";
 import * as fixtures from "@internote/fixtures";
 import * as Types from "@internote/api/types";
 import { Box } from "grid-styled";
-import { spacing } from "@internote/ui/styles/theme";
-import { Heading } from "@internote/ui/styles/heading";
+import { TextLink } from "../styles/link";
+import { spacing } from "../styles/theme";
+import { Heading } from "../styles/heading";
 
 const Page: NextSFC<{ notes: Types.Note[] }> = ({ notes }) => (
   <>

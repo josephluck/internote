@@ -1,7 +1,7 @@
 import { Circle } from "styled-icons/fa-regular/Circle";
 import { Check } from "styled-icons/fa-solid/Check";
 import styled, { keyframes } from "styled-components";
-import { color, font } from "@internote/ui/styles/theme";
+import { color, font } from "./theme";
 
 const bounce = keyframes`
   0% {
@@ -21,6 +21,7 @@ const bounce = keyframes`
 `;
 
 const AnimationScaleBounce = styled.span`
+  display: flex;
   animation: ${bounce} 1.5s ease infinite;
 `;
 
@@ -29,8 +30,8 @@ export function Saving({ saving }: { saving: boolean }) {
     <AnimationScaleBounce>
       <Circle
         style={{
-          width: font._24.size,
-          height: font._24.size
+          width: font._18.size,
+          height: font._18.size
         }}
         color={color.jungleGreen}
       />
@@ -38,8 +39,8 @@ export function Saving({ saving }: { saving: boolean }) {
   ) : (
     <Check
       style={{
-        width: font._24.size,
-        height: font._24.size
+        width: font._18.size,
+        height: font._18.size
       }}
       color={color.jungleGreen}
     />
