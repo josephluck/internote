@@ -2,8 +2,27 @@ import * as React from "react";
 import { Twine } from "twine-js";
 import { NextContext, QueryStringMapObject } from "next";
 
+const STORE_KEY = "__TWINE_STORE__";
+
+function isServer() {
+  return typeof window === "undefined";
+}
+
 interface State {
   storeState: any;
+}
+
+function initStore<S, A>(
+  makeStore: () => Twine.Return<S, A>
+): Twine.Return<S, A> {
+  if (isServer()) {
+    return makeStore();
+  } else if (window[STORE_KEY]) {
+    return window[STORE_KEY];
+  } else {
+    window[STORE_KEY] = makeStore();
+    return window[STORE_KEY];
+  }
 }
 
 export function withTwine<S, A>(
@@ -27,39 +46,23 @@ export function withTwine<S, A>(
       if (hasStore) {
         this.store = store;
         this.store.state = initialState;
-        console.log(
-          "constructor state with existing store",
-          this.store.state.notes.length
-        );
       } else {
-        const newStore = makeStore();
+        const newStore = initStore<S, A>(makeStore);
         newStore.state = initialState;
         this.store = newStore;
-        console.log(
-          "constructor state with new store",
-          this.store.state.notes.length
-        );
       }
-
       this.state = {
         storeState: this.store.state
       };
     }
 
     static async getInitialProps(appCtx) {
-      appCtx.ctx.store = makeStore();
+      appCtx.ctx.store = initStore<S, A>(makeStore);
 
       const initialProps = Child.getInitialProps
         ? await Child.getInitialProps.call(Child, appCtx)
         : {};
       const initialState = appCtx.ctx.store.getState();
-
-      console.log("getInitialProps initialState", initialState.notes.length);
-
-      //
-      // When navigating client side, the store state does not end up
-      // in the page's props.
-      //
 
       return {
         initialState,
@@ -73,7 +76,6 @@ export function withTwine<S, A>(
     }
 
     setStoreState = storeState => {
-      console.log("subscribed update", storeState.notes.length);
       this.setState({
         storeState
       });

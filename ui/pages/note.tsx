@@ -11,7 +11,6 @@ import { NextTwineSFC } from "../store/with-twine";
 import { State, Actions } from "../store";
 
 const Page: NextTwineSFC<State, Actions, {}, { id: string }> = props => {
-  console.log(props.store.state.note);
   return (
     <>
       <Heading />
