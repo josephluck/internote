@@ -1,16 +1,18 @@
 import * as React from "react";
-import { NextSFC } from "next";
 import { Box } from "grid-styled";
 import { TextLink } from "../styles/link";
 import { spacing } from "../styles/theme";
 import { Heading } from "../styles/heading";
+import { NextTwineSFC } from "../store/with-twine";
+import { State, Actions } from "../store";
 
-const Page: NextSFC = props => {
+const Page: NextTwineSFC<State, Actions> = props => {
   return (
     <>
       <Heading />
+      <button onClick={props.actions.fetchNotes}>Update</button>
       <Box p={spacing._2}>
-        {[].map(note => (
+        {props.state.notes.map(note => (
           <Box key={note.id} mb={spacing._1}>
             <TextLink href={`/note?id=${note.id}`}>{note.title}</TextLink>
           </Box>
@@ -20,12 +22,8 @@ const Page: NextSFC = props => {
   );
 };
 
-Page.getInitialProps = async (ctx: any) => {
-  const newState = await ctx.store.actions.fetchNotes();
-  console.log(
-    "Index.tsx getInitialProps state after fetching notes: ",
-    newState.notes.length
-  );
+Page.getInitialProps = async ({ store }) => {
+  await store.actions.fetchNotes();
   return {};
 };
 

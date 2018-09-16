@@ -31,10 +31,10 @@ export class Application extends App {
     };
   }
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, state, actions } = this.props as any;
     return (
       <Container>
-        <Component {...pageProps} />
+        <Component {...pageProps} state={state} actions={actions} />
       </Container>
     );
   }
