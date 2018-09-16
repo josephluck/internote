@@ -30,8 +30,8 @@ export function Saving({ saving }: { saving: boolean }) {
     <AnimationScaleBounce>
       <Circle
         style={{
-          width: font._18.size,
-          height: font._18.size
+          width: font._12.size,
+          height: font._12.size
         }}
         color={color.jungleGreen}
       />
@@ -39,8 +39,8 @@ export function Saving({ saving }: { saving: boolean }) {
   ) : (
     <Check
       style={{
-        width: font._18.size,
-        height: font._18.size
+        width: font._12.size,
+        height: font._12.size
       }}
       color={color.jungleGreen}
     />

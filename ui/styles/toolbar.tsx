@@ -17,17 +17,18 @@ const ToolbarWrapper = styled.div`
   line-height: ${font._18.lineHeight};
 `;
 
-export function Toolbar() {
+export function Toolbar({ words, saving }: { words: number; saving: boolean }) {
+  const minutes = wordsToReadingMinutes(words);
   return (
     <ToolbarWrapper>
       <>
         <Flex>
-          <ToolbarBlock>Words: 3202</ToolbarBlock>
+          <ToolbarBlock>Words: {words}</ToolbarBlock>
           <ToolbarBlock>
-            Reading time: {wordsToReadingMinutes(3202)} minutes
+            Reading time: {minutes} {minutes > 1 ? "minutes" : "minute"}
           </ToolbarBlock>
         </Flex>
-        <Saving saving={true} />
+        <Saving saving={saving} />
       </>
     </ToolbarWrapper>
   );

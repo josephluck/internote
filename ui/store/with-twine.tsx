@@ -30,7 +30,7 @@ export function withTwine<S, A>(
   Child: any
 ) {
   return class WithTwine extends React.Component<{}, State> {
-    store;
+    store: Twine.Return<S, A>;
 
     constructor(props, context) {
       super(props, context);
@@ -45,14 +45,14 @@ export function withTwine<S, A>(
 
       if (hasStore) {
         this.store = store;
-        this.store.state = initialState;
+        this.store.replaceState(initialState);
       } else {
         const newStore = initStore<S, A>(makeStore);
-        newStore.state = initialState;
+        newStore.replaceState(initialState);
         this.store = newStore;
       }
       this.state = {
-        storeState: this.store.state
+        storeState: this.store.getState()
       };
     }
 
@@ -75,9 +75,9 @@ export function withTwine<S, A>(
       this.store.subscribe(this.setStoreState);
     }
 
-    setStoreState = storeState => {
+    setStoreState = state => {
       this.setState({
-        storeState
+        storeState: state
       });
     };
 
@@ -87,10 +87,7 @@ export function withTwine<S, A>(
         <Child
           {...props}
           {...initialProps}
-          store={{
-            ...this.store,
-            state: this.state.storeState
-          }}
+          store={{ ...this.store, state: this.state.storeState }}
         />
       );
     }

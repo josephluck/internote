@@ -17,7 +17,12 @@ interface Reducers {
 interface Effects {
   fetchNotes: Twine.Effect0<State, Actions, Promise<State>>;
   fetchNote: Twine.Effect<State, Actions, string, Promise<State>>;
-  saveNote: Twine.Effect<State, Actions, Types.Note, Promise<State>>;
+  saveNote: Twine.Effect<
+    State,
+    Actions,
+    { id: string; content: string },
+    Promise<State>
+  >;
 }
 
 export type Actions = Twine.Actions<Reducers, Effects>;
@@ -73,15 +78,11 @@ const model: Twine.Model<State, Reducers, Effects> = {
         }, 1000);
       });
     },
-    saveNote(state, actions, note) {
+    saveNote(state, actions, { content }) {
       return new Promise(resolve => {
         actions.setLoading(true);
         setTimeout(() => {
-          actions.setNotes(
-            state.notes.map(n => {
-              return n.id === note.id ? note : n;
-            })
-          );
+          actions.setNote({ ...state.note, content });
           const newState = actions.setLoading(false);
           resolve(newState);
         }, 1000);

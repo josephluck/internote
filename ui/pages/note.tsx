@@ -15,9 +15,20 @@ const Page: NextTwineSFC<State, Actions, {}, { id: string }> = props => {
     <>
       <Heading />
       <Box p={spacing._2}>
-        <Editor initialValue={props.store.state.note.content} />
+        <Editor
+          initialValue={props.store.state.note.content}
+          onChange={content => {
+            props.store.actions.saveNote({
+              id: props.store.state.note.id,
+              content
+            });
+          }}
+        />
       </Box>
-      <Toolbar />
+      <Toolbar
+        words={props.store.state.note.content.split(" ").length}
+        saving={props.store.state.loading}
+      />
     </>
   );
 };
