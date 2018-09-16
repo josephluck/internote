@@ -1,7 +1,11 @@
 {
   "cSpell.words": [
+    "Repo",
+    "bodyparser",
     "internote",
+    "mandle",
     "prefetch",
+    "typeorm",
     "workspaces"
   ]
 }

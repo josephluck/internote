@@ -4,7 +4,34 @@
   "description": "",
   "author": "",
   "license": "ISC",
-  "scripts": {},
-  "dependencies": {},
+  "scripts": {
+    "start": "NODE_ENV=development npm run start-db && ts-node-dev ./index.ts",
+    "start-db": "sudo /etc/init.d/postgresql restart"
+  },
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.1",
+    "@types/dotenv": "^4.0.3",
+    "@types/jsonwebtoken": "^7.2.8",
+    "@types/koa-bodyparser": "^5.0.1",
+    "@types/koa-router": "^7.0.31",
+    "@types/ramda": "^0.25.38",
+    "axios": "^0.18.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^6.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "koa": "^2.5.3",
+    "koa-bodyparser": "^4.2.1",
+    "koa-jwt": "^3.5.1",
+    "koa-router": "^7.4.0",
+    "koa2-cors": "^2.0.6",
+    "mandle": "^2.2.0",
+    "pg": "^7.4.3",
+    "ramda": "^0.25.0",
+    "reflect-metadata": "^0.1.12",
+    "space-lift": "^0.8.0",
+    "ts-node-dev": "^1.0.0-pre.30",
+    "type-zoo": "^3.1.1",
+    "typeorm": "^0.2.7"
+  },
   "devDependencies": {}
 }

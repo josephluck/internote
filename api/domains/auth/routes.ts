@@ -1,0 +1,91 @@
+import * as Router from "koa-router";
+import { Dependencies } from "../../.";
+import { UserEntity, createUser } from "../user/entity";
+import { Option } from "space-lift";
+// TODO: replace the below with something that doesn't
+// require node-gyp
+import * as crypt from "bcryptjs";
+import { route } from "../../router";
+
+function makeController(deps: Dependencies) {
+  const userRepo = deps.db.getRepository(UserEntity);
+
+  return {
+    async login(ctx: Router.IRouterContext) {
+      return Option(
+        await userRepo.findOne({
+          email: ctx.request.body["email"]
+        })
+      ).fold(
+        () => {
+          deps.messages.throw(
+            ctx,
+            deps.messages.badRequest("Incorrect username or password")
+          );
+        },
+        async user => {
+          const passwordOkay = await crypt.compare(
+            ctx.request.body["password"],
+            user.password
+          );
+          if (passwordOkay) {
+            ctx.body = {
+              user,
+              token: deps.jwt.sign(user.id.toString(), process.env.JWT_SECRET!)
+            };
+          } else {
+            deps.messages.throw(
+              ctx,
+              deps.messages.badRequest("Incorrect username or password")
+            );
+          }
+        }
+      );
+    },
+    async register(ctx: Router.IRouterContext) {
+      const opt = await createUser(ctx.request.body as any);
+      return opt.fold(
+        () => {
+          return deps.messages.throw(
+            ctx,
+            deps.messages.badRequest("Bad request")
+          );
+        },
+        async u => {
+          const user = await u;
+          await userRepo.save(user);
+          ctx.body = {
+            user,
+            token: deps.jwt.sign(user.id.toString(), process.env.JWT_SECRET!)
+          };
+          return ctx.body;
+        }
+      );
+    },
+    async getSession(ctx: Router.IRouterContext, user: Option<UserEntity>) {
+      return user.fold(
+        () => {
+          deps.messages.throw(ctx, deps.messages.notFound("user"));
+        },
+        u => {
+          ctx.body = u;
+          return u;
+        }
+      );
+    }
+  };
+}
+
+export function routes(deps: Dependencies) {
+  return function(router: Router) {
+    const controller = makeController(deps);
+
+    router.post("/login", route(deps, controller.login));
+    router.get("/session", deps.auth, route(deps, controller.getSession));
+    router.post("/register", deps.auth, route(deps, controller.register));
+
+    return router;
+  };
+}
+
+export default routes;
