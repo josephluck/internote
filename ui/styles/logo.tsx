@@ -7,6 +7,13 @@ const Box = styled.div`
   line-height: ${font._18.lineHeight};
   color: ${color.jumbo};
   letter-spacing: 3px;
+  background: linear-gradient(
+    to right,
+    ${color.cornFlower} 0%,
+    ${color.blueRibbon} 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;
 
 export function Logo() {

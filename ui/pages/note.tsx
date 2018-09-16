@@ -1,7 +1,4 @@
 import * as React from "react";
-import { NextSFC } from "next";
-import * as fixtures from "@internote/fixtures";
-import * as Types from "@internote/api/types";
 import { Editor } from "../styles/editor";
 import { spacing } from "../styles/theme";
 import { Box } from "grid-styled";
@@ -16,6 +13,7 @@ const Page: NextTwineSFC<State, Actions, {}, { id: string }> = props => {
       <Heading />
       <Box p={spacing._2}>
         <Editor
+          id={props.store.state.note.id}
           initialValue={props.store.state.note.content}
           onChange={content => {
             props.store.actions.saveNote({

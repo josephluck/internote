@@ -81,8 +81,8 @@ const model: Twine.Model<State, Reducers, Effects> = {
     saveNote(state, actions, { content }) {
       return new Promise(resolve => {
         actions.setLoading(true);
+        actions.setNote({ ...state.note, content });
         setTimeout(() => {
-          actions.setNote({ ...state.note, content });
           const newState = actions.setLoading(false);
           resolve(newState);
         }, 1000);

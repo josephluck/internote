@@ -8,7 +8,8 @@ const DraftEditor = dynamic(import("draft-js").then(module => module.Editor), {
 });
 
 interface Props {
-  initialValue?: string;
+  id: string;
+  initialValue: string;
   debounceValue?: number;
   onChange: (value: string) => void;
 }
@@ -20,6 +21,7 @@ interface State {
 
 export class Editor extends React.Component<Props, State> {
   convertToHTML = null;
+  convertFromHTML = null;
   debounceValue = 1000;
 
   constructor(props: Props) {
@@ -32,16 +34,28 @@ export class Editor extends React.Component<Props, State> {
   }
 
   async componentDidMount() {
-    const convertFromHTML = await import("draft-convert").then(m => {
-      this.convertToHTML = m.convertToHTML;
-      return m.convertFromHTML;
-    });
+    if (!this.convertToHTML || !this.convertFromHTML) {
+      await import("draft-convert").then(m => {
+        this.convertToHTML = m.convertToHTML;
+        this.convertFromHTML = m.convertFromHTML;
+      });
+    }
     this.setState({
       editorState: EditorState.createWithContent(
-        convertFromHTML(this.props.initialValue || "")
+        this.convertFromHTML(this.props.initialValue || "")
       ),
       ready: true
     });
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.id !== this.props.id) {
+      this.setState({
+        editorState: EditorState.createWithContent(
+          this.convertFromHTML(this.props.initialValue || "")
+        )
+      });
+    }
   }
 
   onChange = (editorState: EditorState) => {
@@ -49,9 +63,13 @@ export class Editor extends React.Component<Props, State> {
     this.emitChange(editorState);
   };
 
-  emitChange = debounce((editorState: EditorState) => {
-    this.props.onChange(this.convertToHTML(editorState.getCurrentContent()));
-  }, this.debounceValue);
+  emitChange = debounce(
+    (editorState: EditorState) => {
+      this.props.onChange(this.convertToHTML(editorState.getCurrentContent()));
+    },
+    this.debounceValue,
+    { leading: true }
+  );
 
   render() {
     return this.state.ready ? (

@@ -10,7 +10,9 @@ export const color = {
   scarpaFlow: "#504D5D",
   black: "#000000",
   jungleGreen: "#2CCB62",
-  jumbo: "#737278"
+  jumbo: "#737278",
+  cornFlower: "#9fc7ec",
+  blueRibbon: "#095efd"
 };
 
 export const font = {
@@ -32,6 +34,7 @@ export const font = {
 };
 
 export const spacing = {
+  _0: "0rem",
   _0_25: "0.25rem",
   _0_5: "0.5rem",
   _1: "1rem",
