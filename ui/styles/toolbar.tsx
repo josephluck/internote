@@ -23,9 +23,16 @@ export function Toolbar() {
       <>
         <Flex>
           <ToolbarBlock>Words: 3202</ToolbarBlock>
+          <ToolbarBlock>
+            Reading time: {wordsToReadingMinutes(3202)} minutes
+          </ToolbarBlock>
         </Flex>
         <Saving saving={true} />
       </>
     </ToolbarWrapper>
   );
+}
+
+function wordsToReadingMinutes(words: number): number {
+  return Math.round(words / 200);
 }

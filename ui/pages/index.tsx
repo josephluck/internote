@@ -1,29 +1,32 @@
 import * as React from "react";
 import { NextSFC } from "next";
-import * as fixtures from "@internote/fixtures";
-import * as Types from "@internote/api/types";
 import { Box } from "grid-styled";
 import { TextLink } from "../styles/link";
 import { spacing } from "../styles/theme";
 import { Heading } from "../styles/heading";
 
-const Page: NextSFC<{ notes: Types.Note[] }> = ({ notes }) => (
-  <>
-    <Heading />
-    <Box p={spacing._2}>
-      {notes.map(note => (
-        <div key={note.id}>
-          <TextLink href={`/edit?id=${note.id}`}>{note.title}</TextLink>
-        </div>
-      ))}
-    </Box>
-  </>
-);
+const Page: NextSFC = props => {
+  return (
+    <>
+      <Heading />
+      <Box p={spacing._2}>
+        {[].map(note => (
+          <Box key={note.id} mb={spacing._1}>
+            <TextLink href={`/note?id=${note.id}`}>{note.title}</TextLink>
+          </Box>
+        ))}
+      </Box>
+    </>
+  );
+};
 
-Page.getInitialProps = () => {
-  return Promise.resolve({
-    notes: [fixtures.note(), fixtures.note(), fixtures.note()]
-  });
+Page.getInitialProps = async (ctx: any) => {
+  const newState = await ctx.store.actions.fetchNotes();
+  console.log(
+    "Index.tsx getInitialProps state after fetching notes: ",
+    newState.notes.length
+  );
+  return {};
 };
 
 export default Page;

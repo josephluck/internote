@@ -8,17 +8,20 @@ import { Box } from "grid-styled";
 import { Heading } from "../styles/heading";
 import { Toolbar } from "../styles/toolbar";
 
-const Page: NextSFC<{ note: Types.Note }> = ({ note }) => (
-  <>
-    <Heading />
-    <Box p={spacing._2}>
-      <Editor initialValue={note.content} />
-    </Box>
-    <Toolbar />
-  </>
-);
+const Page: NextSFC<{ note: Types.Note }> = props => {
+  return (
+    <>
+      <Heading />
+      <Box p={spacing._2}>
+        <Editor initialValue={props.note.content} />
+      </Box>
+      <Toolbar />
+    </>
+  );
+};
 
-Page.getInitialProps = _ctx => {
+Page.getInitialProps = (ctx: any) => {
+  console.log(ctx.store);
   return Promise.resolve({
     note: fixtures.note()
   });

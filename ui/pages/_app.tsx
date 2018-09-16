@@ -1,7 +1,9 @@
 import * as React from "react";
 import App, { Container } from "next/app";
 import { injectGlobal } from "styled-components";
-import { color, font } from "@internote/ui/styles/theme";
+import { color, font } from "../styles/theme";
+import { makeStore, State, Actions } from "../store";
+import { withTwine } from "../store/with-twine";
 
 injectGlobal`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -21,6 +23,13 @@ injectGlobal`
 `;
 
 export class Application extends App {
+  static async getInitialProps({ Component, ctx }) {
+    return {
+      pageProps: Component.getInitialProps
+        ? await Component.getInitialProps(ctx)
+        : {}
+    };
+  }
   render() {
     const { Component, pageProps } = this.props;
     return (
@@ -31,4 +40,4 @@ export class Application extends App {
   }
 }
 
-export default Application;
+export default withTwine<State, Actions>(makeStore, Application);
