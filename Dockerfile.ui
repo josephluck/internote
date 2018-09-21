@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:10
 EXPOSE 80
 
 WORKDIR /src
