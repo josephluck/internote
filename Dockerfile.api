@@ -1,0 +1,15 @@
+FROM node:10-alpine
+EXPOSE 2020
+
+WORKDIR /src
+
+COPY ./package.json .
+COPY ./yarn.lock .
+COPY ./.babelrc .
+COPY ./.env .
+COPY ./tsconfig.json .
+COPY ./api/ ./api/
+
+RUN yarn install
+
+WORKDIR ./api

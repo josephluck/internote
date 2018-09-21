@@ -1,6 +1,5 @@
 import twine, { Twine } from "twine-js";
 import * as Types from "@internote/api/types";
-import * as fixtures from "@internote/fixtures";
 
 export interface State {
   loading: boolean;
@@ -58,7 +57,7 @@ const model: Twine.Model<State, Reducers, Effects> = {
       return new Promise(resolve => {
         actions.setLoading(true);
         setTimeout(() => {
-          actions.setNotes([fixtures.note(), fixtures.note(), fixtures.note()]);
+          actions.setNotes([]);
           const newState = actions.setLoading(false);
           resolve(newState);
         }, 1000);
@@ -72,7 +71,6 @@ const model: Twine.Model<State, Reducers, Effects> = {
           actions.setNote(existingNote);
         }
         setTimeout(() => {
-          actions.setNote(fixtures.note());
           actions.setLoading(false);
           resolve();
         }, 1000);

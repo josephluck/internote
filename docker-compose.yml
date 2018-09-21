@@ -1,0 +1,33 @@
+version: "3"
+services:
+  postgres:
+    image: "postgres:9.4"
+    ports:
+      - '5436:5432'
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    ports:
+      - 80:80
+    working_dir: /ui
+    volumes:
+      - ./:/ui
+    command: bash -c 'yarn start:docker'
+    depends_on:
+      - api
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - 2020:2020
+    working_dir: /api
+    volumes:
+      - ./:/api
+    command: bash -c './wait-for-it.sh postgres:5432 && yarn start:docker'
+    depends_on:
+      - postgres

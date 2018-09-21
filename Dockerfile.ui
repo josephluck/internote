@@ -1,0 +1,18 @@
+FROM node:10-alpine
+EXPOSE 80
+
+WORKDIR /src
+
+COPY ./package.json .
+COPY ./yarn.lock .
+COPY ./.babelrc .
+COPY ./.env .
+COPY ./tsconfig.json .
+COPY ./api/package.json ./api/
+COPY ./ui/ ./ui/
+
+RUN yarn install
+
+WORKDIR ./ui
+
+RUN yarn build:docker

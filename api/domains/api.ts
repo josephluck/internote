@@ -2,6 +2,7 @@ import axios from "axios";
 import user from "./user/api";
 import auth from "./auth/api";
 
+// TODO: Use environment variable here or argument for basePath
 export function api(token?: string) {
   console.log(process.env.API_BASE_URL);
   const authToken = token ? { Authorization: `Bearer ${token}` } : {};

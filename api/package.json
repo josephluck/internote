@@ -5,8 +5,8 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "NODE_ENV=development npm run start-db && ts-node-dev ./index.ts",
-    "start-db": "sudo /etc/init.d/postgresql restart"
+    "start": "echo 'Development environment is managed through docker-compose. Please run `docker-compose up` from the root of this repository to get started!'",
+    "start:docker": "ts-node ./index.ts"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.1",
