@@ -11,9 +11,14 @@
     "prod:rebuild": "docker-compose up --build ui-prod api-prod"
   },
   "license": "ISC",
-  "workspaces": [
-    "api",
-    "fixtures",
-    "ui"
-  ]
+  "workspaces": {
+    "packages": [
+      "api",
+      "ui"
+    ],
+    "nohoist": [
+      "ts-node-dev",
+      "ts-node"
+    ]
+  }
 }

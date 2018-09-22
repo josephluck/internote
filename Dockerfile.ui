@@ -9,6 +9,7 @@ COPY ./.babelrc .
 COPY ./.env .
 COPY ./tsconfig.json .
 COPY ./api/package.json ./api/
+COPY ./api/ ./api/
 COPY ./ui/ ./ui/
 
 RUN yarn install

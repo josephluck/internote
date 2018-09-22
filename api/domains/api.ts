@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import user from "./user/api";
 import auth from "./auth/api";
-// import notes from "./notes/api";
+import note from "./note/api";
 
 export function api(baseURL: string) {
   const client = axios.create({
@@ -11,8 +11,8 @@ export function api(baseURL: string) {
 
   return {
     user: user(client),
-    auth: auth(client)
-    // notes: notes(client),
+    auth: auth(client),
+    note: note(client)
   };
 }
 

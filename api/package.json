@@ -4,6 +4,10 @@
   "description": "",
   "author": "",
   "license": "ISC",
+  "files": [
+    ".",
+    "domains"
+  ],
   "scripts": {
     "dev:docker": "ts-node-dev ./index.ts",
     "start:docker": "NODE_ENV=production ts-node ./index.ts"

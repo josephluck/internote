@@ -25,13 +25,13 @@ interface Reducers {
 }
 
 interface Effects {
-  fetchNotes: Twine.Effect0<State, Actions, Promise<State>>;
-  fetchNote: Twine.Effect<State, Actions, string, Promise<State>>;
+  fetchNotes: Twine.Effect0<State, Actions, Promise<void>>;
+  fetchNote: Twine.Effect<State, Actions, string, Promise<void>>;
   saveNote: Twine.Effect<
     State,
     Actions,
     { id: string; content: string },
-    Promise<State>
+    Promise<void>
   >;
   register: Twine.Effect<
     State,
@@ -90,36 +90,31 @@ const model: Twine.Model<State, Reducers, Effects> = {
     }
   },
   effects: {
-    fetchNotes(_state, actions) {
-      return new Promise(resolve => {
-        actions.setLoading(true);
-        setTimeout(() => {
-          actions.setNotes([]);
-          const newState = actions.setLoading(false);
-          resolve(newState);
-        }, 1000);
-      });
+    async fetchNotes(state, actions) {
+      actions.setLoading(true);
+      const notes = await api.note.findAll(state.session.token);
+      actions.setNotes(notes);
+      actions.setLoading(false);
     },
-    fetchNote(state, actions, id) {
-      return new Promise(resolve => {
+    async fetchNote(state, actions, id) {
+      const existingNote = state.notes.find(n => n.id === id);
+      if (existingNote) {
+        actions.setNote(existingNote);
+      } else {
         actions.setLoading(true);
-        const existingNote = state.notes.find(n => n.id === id);
-        if (existingNote) {
-          actions.setNote(existingNote);
-        }
-        setTimeout(() => {
-          actions.setLoading(false);
-          resolve();
-        }, 1000);
-      });
+        const result = await api.note.findById(state.session.token, id);
+        result.map(note => {
+          actions.setNote(note);
+        });
+        actions.setLoading(false);
+      }
     },
     saveNote(state, actions, { content }) {
-      return new Promise(resolve => {
+      return new Promise(() => {
         actions.setLoading(true);
         actions.setNote({ ...state.note, content });
         setTimeout(() => {
-          const newState = actions.setLoading(false);
-          resolve(newState);
+          actions.setLoading(false);
         }, 1000);
       });
     },
