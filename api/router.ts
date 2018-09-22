@@ -3,6 +3,7 @@ import { Dependencies } from "./";
 import { compose } from "ramda";
 import user from "./domains/user/routes";
 import auth from "./domains/auth/routes";
+import note from "./domains/note/routes";
 import { Option } from "space-lift";
 import { UserEntity } from "./domains/user/entity";
 
@@ -27,7 +28,8 @@ export function route(deps: Dependencies, cb: ControllerFn) {
 export default function routes(deps: Dependencies) {
   const rts = compose(
     user(deps),
-    auth(deps)
+    auth(deps),
+    note(deps)
   );
   return rts(new Router());
 }

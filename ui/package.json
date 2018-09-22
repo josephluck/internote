@@ -5,8 +5,8 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev:docker": "ts-node -P ./tsconfig.json ./server.ts",
-    "start:docker": "ts-node -P ./tsconfig.json ./server.ts",
+    "dev:docker": "./node_modules/.bin/ts-node -P ./tsconfig.json ./server.ts",
+    "start:docker": "./node_modules/.bin/ts-node -P ./tsconfig.json ./server.ts",
     "build:docker": "NODE_ENV=production next build"
   },
   "dependencies": {

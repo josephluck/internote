@@ -9,8 +9,8 @@
     "domains"
   ],
   "scripts": {
-    "dev:docker": "ts-node-dev ./index.ts",
-    "start:docker": "NODE_ENV=production ts-node ./index.ts"
+    "dev:docker": "./node_modules/.bin/ts-node-dev ./index.ts",
+    "start:docker": "NODE_ENV=production ./node_modules/.bin/ts-node ./index.ts"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.1",
