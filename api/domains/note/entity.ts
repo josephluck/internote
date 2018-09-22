@@ -22,6 +22,7 @@ export type CreateNote = Omit<
   Note,
   "user" | "id" | "dateCreated" | "dateUpdated"
 >;
+export type UpdateNote = CreateNote;
 
 export function createNote(fields: any, user: UserEntity) {
   return validate<CreateNote>(fields, {

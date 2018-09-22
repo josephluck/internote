@@ -5,16 +5,25 @@ import { route } from "../../router";
 import { Option } from "space-lift";
 import { UserEntity } from "../user/entity";
 
-type Controller = Record<
-  string,
-  (ctx: Router.IRouterContext, user: Option<UserEntity>) => Promise<any>
->;
+type ControllerFn = (
+  ctx: Router.IRouterContext,
+  user: Option<UserEntity>
+) => Promise<any>;
 
-function makeController(deps: Dependencies): Controller {
+interface RestController {
+  findAll: ControllerFn;
+  findById: ControllerFn;
+  create: ControllerFn;
+  updateById: ControllerFn;
+  deleteById: ControllerFn;
+  [key: string]: ControllerFn;
+}
+
+function makeController(deps: Dependencies): RestController {
   const repo = deps.db.getRepository(NoteEntity);
 
   return {
-    async getAll(ctx, user) {
+    async findAll(ctx, user) {
       return user.fold(
         () => {
           return deps.messages.throw(ctx, deps.messages.notFound("notes"));
@@ -27,9 +36,18 @@ function makeController(deps: Dependencies): Controller {
         }
       );
     },
-    async getById(ctx) {
-      ctx.body = await repo.findOne(ctx.params.noteId);
-      return ctx.body;
+    async findById(ctx, user) {
+      return user.fold(
+        () => {
+          return deps.messages.throw(ctx, deps.messages.notFound("notes"));
+        },
+        async () => {
+          // TODO: ensure that the findOne only fetches
+          // note that belongs to current logged in user
+          ctx.body = await repo.findOne(ctx.params.noteId);
+          return ctx.body;
+        }
+      );
     },
     async create(ctx, user) {
       return user.fold(
@@ -54,6 +72,29 @@ function makeController(deps: Dependencies): Controller {
         }
       );
     },
+    async updateById(ctx, user) {
+      return user.fold(
+        () => {
+          return deps.messages.throw(ctx, deps.messages.badRequest("No user"));
+        },
+        async u => {
+          return createNote(ctx.request.body, u).fold(
+            () => {
+              ctx.body = deps.messages.throw(
+                ctx,
+                deps.messages.badRequest("Notes")
+              );
+              return ctx;
+            },
+            async note => {
+              const existingNote = await repo.findOne(ctx.params.noteId);
+              ctx.body = await repo.save({ ...existingNote, ...note });
+              return ctx.body;
+            }
+          );
+        }
+      );
+    },
     async deleteById(ctx) {
       await repo.delete(ctx.params.noteId);
       ctx.body = {};
@@ -65,9 +106,10 @@ function makeController(deps: Dependencies): Controller {
 export function routes(deps: Dependencies) {
   return function(router: Router) {
     const controller = makeController(deps);
-
-    router.get("/notes", deps.auth, route(deps, controller.getAll));
-    router.get("/notes/:noteId", deps.auth, route(deps, controller.getById));
+    router.get("/notes", deps.auth, route(deps, controller.findAll));
+    router.get("/notes/:noteId", deps.auth, route(deps, controller.findById));
+    router.post("/notes", deps.auth, route(deps, controller.create));
+    router.put("/notes/:noteId", deps.auth, route(deps, controller.updateById));
     router.delete(
       "/notes/:noteId",
       deps.auth,
