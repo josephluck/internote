@@ -1,23 +1,33 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import user from "./user/api";
 import auth from "./auth/api";
+// import notes from "./notes/api";
 
-// TODO: refactor the below to accept a token for each endpoint
-export function api(token?: string) {
-  const authToken = token ? { Authorization: `Bearer ${token}` } : {};
+export function api(baseURL: string) {
   const client = axios.create({
-    headers: { "Content-Type": "application/json", ...authToken },
-    baseURL: process.env.API_BASE_URL
+    headers: { "Content-Type": "application/json" },
+    baseURL
   });
 
   return {
     user: user(client),
-    auth: auth(client),
-    setToken(token: string) {
-      client.defaults.headers = {
-        ...client.defaults.headers,
-        Authorization: `Bearer ${token}`
-      };
+    auth: auth(client)
+    // notes: notes(client),
+  };
+}
+
+export function makeAuthHeader(token: string) {
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+export function makeRequestConfig({
+  token
+}: {
+  token: string;
+}): AxiosRequestConfig {
+  return {
+    headers: {
+      ...makeAuthHeader(token)
     }
   };
 }

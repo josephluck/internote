@@ -1,17 +1,21 @@
-import { LoginResponse, LoginRequest, SignupRequest } from "./entity";
+import { Session, LoginRequest, SignupRequest } from "./entity";
 import { User } from "../user/entity";
 import { AxiosInstance } from "axios";
+import { makeRequestConfig } from "../api";
 
 export function api(client: AxiosInstance) {
   return {
-    login(data: LoginRequest): Promise<LoginResponse> {
+    login(data: LoginRequest): Promise<Session> {
       return client.post("/login", data).then(r => r.data);
     },
-    register(data: SignupRequest): Promise<LoginResponse> {
+    register(data: SignupRequest): Promise<Session> {
       return client.post("/register", data).then(r => r.data);
     },
-    session(): Promise<User> {
-      return client.get("/session").then(r => r.data);
+    session(token: string): Promise<User> {
+      // TODO: should this not return a Promise<Session> ??
+      return client
+        .get("/session", makeRequestConfig({ token }))
+        .then(r => r.data);
     }
   };
 }

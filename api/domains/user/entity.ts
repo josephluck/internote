@@ -26,7 +26,7 @@ export type CreateUser = Omit<
 >;
 
 export async function createUser(fields: CreateUser) {
-  return validate(fields, {
+  return validate<CreateUser>(fields, {
     email: [rules.required],
     password: [rules.required]
   }).map(async fields => {

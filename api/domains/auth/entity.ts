@@ -10,7 +10,7 @@ export interface SignupRequest {
   password: string;
 }
 
-export interface LoginResponse {
+export interface Session {
   user: User;
   token: string;
 }

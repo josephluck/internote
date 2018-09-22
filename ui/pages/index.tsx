@@ -2,14 +2,13 @@ import * as React from "react";
 import { Box } from "grid-styled";
 import { TextLink } from "../styles/link";
 import { spacing } from "../styles/theme";
-import { Heading } from "../styles/heading";
 import { NextTwineSFC } from "../store/with-twine";
 import { State, Actions } from "../store";
+import { withAuth } from "../hoc/with-auth";
 
 const Page: NextTwineSFC<State, Actions> = props => {
   return (
     <>
-      <Heading />
       <button onClick={props.store.actions.fetchNotes}>Update</button>
       <Box p={spacing._2}>
         {props.store.state.notes.map(note => (
@@ -27,4 +26,4 @@ Page.getInitialProps = async ({ store }) => {
   return {};
 };
 
-export default Page;
+export default withAuth(Page);

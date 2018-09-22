@@ -23,10 +23,10 @@ export type CreateNote = Omit<
   "user" | "id" | "dateCreated" | "dateUpdated"
 >;
 
-export async function createNote(fields: CreateNote, user: UserEntity) {
-  return validate(fields, {
+export function createNote(fields: any, user: UserEntity) {
+  return validate<CreateNote>(fields, {
     content: [rules.required]
-  }).map(async fields => {
+  }).map(fields => {
     return {
       ...new NoteEntity(),
       ...fields,

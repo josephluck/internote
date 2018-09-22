@@ -2,15 +2,14 @@ import * as React from "react";
 import { Editor } from "../styles/editor";
 import { spacing } from "../styles/theme";
 import { Box } from "grid-styled";
-import { Heading } from "../styles/heading";
 import { Toolbar } from "../styles/toolbar";
 import { NextTwineSFC } from "../store/with-twine";
 import { State, Actions } from "../store";
+import { withAuth } from "../hoc/with-auth";
 
 const Page: NextTwineSFC<State, Actions, {}, { id: string }> = props => {
   return (
     <>
-      <Heading />
       <Box p={spacing._2}>
         <Editor
           id={props.store.state.note.id}
@@ -36,4 +35,4 @@ Page.getInitialProps = async ctx => {
   return {};
 };
 
-export default Page;
+export default withAuth(Page);

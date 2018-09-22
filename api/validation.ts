@@ -8,7 +8,7 @@ function isValid<F>(errors: Partial<Record<keyof F, string>>): boolean {
 }
 
 export function validate<F extends Record<string, any>>(
-  fields: F,
+  fields: any,
   constraints: Constraints<F>
 ): Result<Partial<Record<keyof F, string>>, F> {
   const validator = makeValidator(constraints);
