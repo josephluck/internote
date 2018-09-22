@@ -7,13 +7,14 @@ import { State, Actions } from "../store";
 import { withAuth } from "../hoc/with-auth";
 
 const Page: NextTwineSFC<State, Actions> = props => {
+  console.log(props.store.state);
   return (
     <>
       <button onClick={props.store.actions.fetchNotes}>Update</button>
       <Box p={spacing._2}>
         {props.store.state.notes.map(note => (
           <Box key={note.id} mb={spacing._1}>
-            <TextLink href={`/note?id=${note.id}`}>{note.title}</TextLink>
+            <TextLink href={`/note?id=${note.id}`}>{note.id}</TextLink>
           </Box>
         ))}
       </Box>

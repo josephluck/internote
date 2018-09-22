@@ -29,6 +29,7 @@ function makeController(deps: Dependencies) {
             user.password
           );
           if (passwordOkay) {
+            // TODO: this includes the users password in the response
             ctx.body = {
               user,
               token: deps.jwt.sign(user.id.toString(), process.env.JWT_SECRET!)
@@ -54,6 +55,7 @@ function makeController(deps: Dependencies) {
         async u => {
           const user = await u;
           await userRepo.save(user);
+          // TODO: this includes the users password in the response
           ctx.body = {
             user,
             token: deps.jwt.sign(user.id.toString(), process.env.JWT_SECRET!)
@@ -67,9 +69,13 @@ function makeController(deps: Dependencies) {
         () => {
           deps.messages.throw(ctx, deps.messages.notFound("user"));
         },
-        u => {
-          ctx.body = u;
-          return u;
+        user => {
+          // TODO: this includes the users password in the response
+          ctx.body = {
+            user,
+            token: deps.jwt.sign(user.id.toString(), process.env.JWT_SECRET!)
+          };
+          return ctx.body;
         }
       );
     }
@@ -82,7 +88,7 @@ export function routes(deps: Dependencies) {
 
     router.post("/login", route(deps, controller.login));
     router.get("/session", deps.auth, route(deps, controller.getSession));
-    router.post("/register", deps.auth, route(deps, controller.register));
+    router.post("/register", route(deps, controller.register));
 
     return router;
   };

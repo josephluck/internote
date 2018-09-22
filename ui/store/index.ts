@@ -1,6 +1,11 @@
 import twine, { Twine } from "twine-js";
 import * as Types from "@internote/api/domains/types";
 import makeApi from "@internote/api/domains/api";
+import {
+  setAuthenticationCookie,
+  removeAuthenticationCookie
+} from "../utilities/cookie";
+import Router from "next/router";
 
 // TODO: environment variable
 const api = makeApi("http://100.115.92.200:2020");
@@ -28,18 +33,18 @@ interface Effects {
     { id: string; content: string },
     Promise<State>
   >;
-
   register: Twine.Effect<
     State,
     Actions,
     { email: string; password: string },
-    Promise<State>
+    Promise<void>
   >;
+  session: Twine.Effect<State, Actions, string, Promise<void>>;
   authenticate: Twine.Effect<
     State,
     Actions,
     { email: string; password: string },
-    Promise<State>
+    Promise<void>
   >;
   logout: Twine.Effect0<State, Actions, void>;
 }
@@ -55,6 +60,11 @@ const model: Twine.Model<State, Reducers, Effects> = {
   },
   reducers: {
     setSession(state, session) {
+      if (session) {
+        setAuthenticationCookie(session.token);
+      } else {
+        removeAuthenticationCookie();
+      }
       return {
         ...state,
         session
@@ -115,20 +125,22 @@ const model: Twine.Model<State, Reducers, Effects> = {
     },
     async register(_state, actions, { email, password }) {
       const session = await api.auth.register({ email, password });
+      actions.setSession(session);
+      Router.push("/");
+    },
+    async session(_state, actions, token) {
+      const session = await api.auth.session(token);
       console.log(session);
-      return actions.setSession(session);
+      actions.setSession(session);
     },
     async authenticate(_state, actions, { email, password }) {
       const session = await api.auth.login({ email, password });
-      console.log(session);
-      // TODO: store token in cookies
-      // Add effect to re-authenticate via cookie when app starts
-      // Use above effect inside with-auth HOC and handle failure case
-      return actions.setSession(session);
+      actions.setSession(session);
+      Router.push("/");
     },
     async logout(_state, actions) {
-      // TODO: redirect user to login page
       actions.setSession(null);
+      Router.push("/login");
     }
   }
 };

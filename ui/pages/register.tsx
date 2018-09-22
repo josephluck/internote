@@ -6,16 +6,15 @@ import { State, Actions } from "../store";
 import { TextLink } from "../styles/link";
 
 const Page: NextTwineSFC<State, Actions, {}> = props => {
-  console.log(props.store.state.session);
   return (
     <>
       <Box p={spacing._2}>
-        <h1>Login</h1>
-        <TextLink href={`/register`}>I don't have an account</TextLink>
+        <h1>Register</h1>
+        <TextLink href={`/login`}>I already have an account</TextLink>
         <form
           onSubmit={e => {
             e.preventDefault();
-            props.store.actions.authenticate({
+            props.store.actions.register({
               email: (document.getElementById("email") as any).value,
               password: (document.getElementById("password") as any).value
             });
