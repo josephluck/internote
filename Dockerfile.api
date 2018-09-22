@@ -8,6 +8,7 @@ COPY ./yarn.lock .
 COPY ./.babelrc .
 COPY ./.env .
 COPY ./tsconfig.json .
+COPY ./wait-for-it.sh .
 COPY ./api/ ./api/
 
 RUN yarn install

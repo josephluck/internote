@@ -5,9 +5,9 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev": "echo 'Development environment is managed through docker-compose. Please run `docker-compose up` from the root of this repository to get started!'",
+    "dev:docker": "ts-node -P ./tsconfig.json ./server.ts",
     "start:docker": "ts-node -P ./tsconfig.json ./server.ts",
-    "build:docker": "next build"
+    "build:docker": "NODE_ENV=production next build"
   },
   "dependencies": {
     "@internote/api": "*",

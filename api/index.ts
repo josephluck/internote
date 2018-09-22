@@ -17,6 +17,7 @@ export interface Dependencies {
   jwt: typeof jwt;
   messages: typeof messages;
 }
+
 const startServer = async (db: Connection) => {
   const server = new Koa();
 

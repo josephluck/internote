@@ -2,13 +2,12 @@ import axios from "axios";
 import user from "./user/api";
 import auth from "./auth/api";
 
-// TODO: Use environment variable here or argument for basePath
+// TODO: refactor the below to accept a token for each endpoint
 export function api(token?: string) {
-  console.log(process.env.API_BASE_URL);
   const authToken = token ? { Authorization: `Bearer ${token}` } : {};
   const client = axios.create({
     headers: { "Content-Type": "application/json", ...authToken },
-    baseURL: "http://localhost:2020"
+    baseURL: process.env.API_BASE_URL
   });
 
   return {

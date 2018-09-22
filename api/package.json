@@ -5,8 +5,8 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "echo 'Development environment is managed through docker-compose. Please run `docker-compose up` from the root of this repository to get started!'",
-    "start:docker": "ts-node ./index.ts"
+    "dev:docker": "ts-node-dev ./index.ts",
+    "start:docker": "NODE_ENV=production ts-node ./index.ts"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.1",
