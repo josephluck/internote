@@ -4,6 +4,12 @@
   "version": "1.0.0",
   "description": "",
   "author": "",
+  "scripts": {
+    "dev": "docker-compose up ui-dev api-dev",
+    "prod": "docker-compose up ui-prod api-prod",
+    "dev:rebuild": "docker-compose up --build ui-dev api-dev",
+    "prod:rebuild": "docker-compose up --build ui-prod api-prod"
+  },
   "license": "ISC",
   "workspaces": [
     "api",

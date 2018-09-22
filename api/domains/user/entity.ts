@@ -1,8 +1,9 @@
-import { Entity, Column } from "typeorm";
+import { Entity, Column, OneToMany } from "typeorm";
 import { Omit } from "type-zoo";
 import Base from "../base-entity";
 import { validate, rules } from "../../validation";
 import * as crypt from "bcryptjs";
+import { NoteEntity } from "../note/entity";
 
 @Entity()
 export class UserEntity extends Base {
@@ -11,12 +12,18 @@ export class UserEntity extends Base {
 
   @Column()
   password: string;
+
+  @OneToMany(() => NoteEntity, note => note.user)
+  notes: NoteEntity[];
 }
 
 const temporary = new UserEntity();
 
 export type User = typeof temporary;
-export type CreateUser = Omit<User, "id" | "dateCreated" | "dateUpdated">;
+export type CreateUser = Omit<
+  User,
+  "notes" | "id" | "dateCreated" | "dateUpdated"
+>;
 
 export async function createUser(fields: CreateUser) {
   return validate(fields, {

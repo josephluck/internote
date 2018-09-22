@@ -6,6 +6,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "include": ["src"],
+  "include": ["**/*"],
   "exclude": []
 }
