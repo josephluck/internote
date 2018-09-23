@@ -17,6 +17,8 @@ export interface State {
   notes: Types.Note[];
   sidebarOpen: boolean;
   deleteNoteModalOpen: boolean;
+  signOutModalOpen: boolean;
+  deleteAccountModalOpen: boolean;
 }
 
 interface Reducers {
@@ -26,6 +28,8 @@ interface Reducers {
   setLoading: Twine.Reducer<State, boolean>;
   setSidebarOpen: Twine.Reducer<State, boolean>;
   setDeleteNoteModalOpen: Twine.Reducer<State, boolean>;
+  setSignOutModalOpen: Twine.Reducer<State, boolean>;
+  setDeleteAccountModalOpen: Twine.Reducer<State, boolean>;
 }
 
 interface Effects {
@@ -47,7 +51,8 @@ interface Effects {
     { email: string; password: string },
     Promise<void>
   >;
-  logout: Twine.Effect0<State, Actions, void>;
+  signOut: Twine.Effect0<State, Actions, void>;
+  deleteAccount: Twine.Effect0<State, Actions, Promise<void>>;
 }
 
 export type Actions = Twine.Actions<Reducers, Effects>;
@@ -59,7 +64,9 @@ const model: Twine.Model<State, Reducers, Effects> = {
     note: null,
     loading: false,
     sidebarOpen: false,
-    deleteNoteModalOpen: false
+    deleteNoteModalOpen: false,
+    signOutModalOpen: false,
+    deleteAccountModalOpen: false
   },
   reducers: {
     setSession(state, session) {
@@ -101,6 +108,18 @@ const model: Twine.Model<State, Reducers, Effects> = {
       return {
         ...state,
         deleteNoteModalOpen
+      };
+    },
+    setSignOutModalOpen(state, signOutModalOpen) {
+      return {
+        ...state,
+        signOutModalOpen
+      };
+    },
+    setDeleteAccountModalOpen(state, deleteAccountModalOpen) {
+      return {
+        ...state,
+        deleteAccountModalOpen
       };
     }
   },
@@ -170,9 +189,20 @@ const model: Twine.Model<State, Reducers, Effects> = {
       actions.setSession(session);
       Router.push("/");
     },
-    async logout(_state, actions) {
+    async signOut(_state, actions) {
       actions.setSession(null);
+      actions.setNotes([]);
+      actions.setNote(null);
+      actions.setSignOutModalOpen(false);
       Router.push("/login");
+    },
+    async deleteAccount(state, actions) {
+      actions.setSession(null);
+      actions.setNotes([]);
+      actions.setNote(null);
+      actions.setDeleteAccountModalOpen(false);
+      await api.user.deleteById(state.session.token, state.session.user.id);
+      Router.push("/register");
     }
   }
 };

@@ -42,15 +42,58 @@ export function Global({ store }: { store: Store }) {
         open={store.state.sidebarOpen}
         onClose={() => store.actions.setSidebarOpen(false)}
       >
-        <>
-          {store.state.notes.map(note => (
-            <SidebarItem onClick={() => store.actions.setSidebarOpen(false)}>
-              <EllipsisText>
-                <TextLink href={`/?id=${note.id}`}>{note.content}</TextLink>
-              </EllipsisText>
-            </SidebarItem>
-          ))}
-        </>
+        <Flex flex="1" flexDirection="column" style={{ overflow: "auto" }}>
+          <Box flex="1" style={{ overflow: "auto" }}>
+            {store.state.notes.map(note => (
+              <SidebarItem
+                key={note.id}
+                onClick={() => store.actions.setSidebarOpen(false)}
+              >
+                <EllipsisText>
+                  <TextLink href={`/?id=${note.id}`}>{note.content}</TextLink>
+                </EllipsisText>
+              </SidebarItem>
+            ))}
+          </Box>
+          <Box p={spacing._1} flex={0}>
+            <Flex mb={spacing._0_25}>
+              <Button
+                small
+                fullWidth
+                onClick={() => {
+                  store.actions.setSidebarOpen(false);
+                  store.actions.newNote();
+                }}
+              >
+                New note
+              </Button>
+            </Flex>
+            <Flex mb={spacing._0_25}>
+              <Button
+                small
+                fullWidth
+                onClick={() => {
+                  store.actions.setSidebarOpen(false);
+                  store.actions.setSignOutModalOpen(true);
+                }}
+              >
+                Sign out
+              </Button>
+            </Flex>
+            <Flex>
+              <Button
+                small
+                fullWidth
+                onClick={() => {
+                  store.actions.setSidebarOpen(false);
+                  store.actions.setDeleteAccountModalOpen(true);
+                }}
+              >
+                Delete account
+              </Button>
+            </Flex>
+          </Box>
+        </Flex>
       </Sidebar>
       <Modal
         open={store.state.deleteNoteModalOpen}
@@ -77,8 +120,65 @@ export function Global({ store }: { store: Store }) {
           </Flex>
         </>
       </Modal>
+      <Modal
+        open={store.state.signOutModalOpen}
+        onClose={() => store.actions.setSignOutModalOpen(false)}
+        showCloseIcon={false}
+      >
+        <>
+          <Box mb={spacing._1}>Are you sure you wish to sign out?</Box>
+          <Flex>
+            <Box flex={1} mr={spacing._0_25}>
+              <Button
+                onClick={() => store.actions.setSignOutModalOpen(false)}
+                secondary
+                fullWidth
+              >
+                No
+              </Button>
+            </Box>
+            <Box flex={1} ml={spacing._0_25}>
+              <Button onClick={store.actions.signOut} secondary fullWidth>
+                Yes
+              </Button>
+            </Box>
+          </Flex>
+        </>
+      </Modal>
+      <Modal
+        open={store.state.deleteAccountModalOpen}
+        onClose={() => store.actions.setDeleteAccountModalOpen(false)}
+        showCloseIcon={false}
+      >
+        <>
+          <Box mb={spacing._1}>
+            Are you sure you wish to delete your account?
+          </Box>
+          <Flex>
+            <Box flex={1} mr={spacing._0_25}>
+              <Button
+                onClick={() => store.actions.setDeleteAccountModalOpen(false)}
+                secondary
+                fullWidth
+              >
+                No
+              </Button>
+            </Box>
+            <Box flex={1} ml={spacing._0_25}>
+              <Button onClick={store.actions.deleteAccount} secondary fullWidth>
+                Yes
+              </Button>
+            </Box>
+          </Flex>
+        </>
+      </Modal>
       <DarkOverlay
-        showing={store.state.sidebarOpen || store.state.deleteNoteModalOpen}
+        showing={
+          store.state.sidebarOpen ||
+          store.state.deleteNoteModalOpen ||
+          store.state.signOutModalOpen ||
+          store.state.deleteAccountModalOpen
+        }
       />
     </>
   );

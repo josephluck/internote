@@ -3,6 +3,7 @@ import { spacing, color } from "./theme";
 import styled from "styled-components";
 import styledTs from "styled-components-ts";
 import { Clear } from "styled-icons/material";
+import { Flex } from "grid-styled";
 
 const SidebarWrapper = styledTs<{ open: boolean }>(styled.div)`
   position: fixed;
@@ -17,6 +18,8 @@ const SidebarWrapper = styledTs<{ open: boolean }>(styled.div)`
   transition: all 333ms ease;
   transform: translateX(${props => (props.open ? "0%" : "100%")});
   opacity: ${props => (props.open ? "1" : "0")};
+  display: flex;
+  flex-direction: column;
 `;
 
 export const SidebarItem = styled.div`
@@ -26,6 +29,7 @@ export const SidebarItem = styled.div`
 `;
 
 const SidebarCloseItem = SidebarItem.extend`
+  flex: 0 0 auto;
   justify-content: flex-end;
   padding-right: ${spacing._2};
 `;
@@ -42,9 +46,17 @@ export function Sidebar({
   return (
     <SidebarWrapper open={open}>
       <SidebarCloseItem>
-        <Clear height="25" width="25" fill={color.jumbo} onClick={onClose} />
+        <Clear
+          height="25"
+          width="25"
+          fill={color.jumbo}
+          onClick={onClose}
+          style={{ cursor: "pointer" }}
+        />
       </SidebarCloseItem>
-      {children}
+      <Flex flex="1" flexDirection="column" style={{ overflow: "auto" }}>
+        {children}
+      </Flex>
     </SidebarWrapper>
   );
 }

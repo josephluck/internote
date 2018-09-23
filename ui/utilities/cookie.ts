@@ -11,12 +11,14 @@ export function getAuthenticationTokenFromContext(
   const cookie =
     isServer() && ctx.req && ctx.req.headers.cookie
       ? (ctx.req.headers.cookie as string)
-      : document.cookie;
+      : typeof document !== "undefined" && document.cookie
+        ? document.cookie
+        : "";
   return Option(cookieParser.parse(cookie)[authTokenCookieKey]);
 }
 
 export function setAuthenticationCookie(token: string): void {
-  if (!isServer()) {
+  if (!isServer() && typeof document !== "undefined") {
     document.cookie = cookieParser.serialize(authTokenCookieKey, token, {
       expires: new Date(new Date().setFullYear(9999)),
       path: "/"
@@ -25,7 +27,7 @@ export function setAuthenticationCookie(token: string): void {
 }
 
 export function removeAuthenticationCookie(): void {
-  if (!isServer()) {
+  if (!isServer() && typeof document !== "undefined") {
     document.cookie = cookieParser.serialize(authTokenCookieKey, "", {
       expires: new Date(new Date().setFullYear(1970)),
       path: "/"

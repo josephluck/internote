@@ -20,7 +20,7 @@ const ModalOuter = styledTs<{ open: boolean }>(styled.div)`
 
 const ModalWrapper = styledTs<{ open: boolean }>(styled.div)`
   padding: ${spacing._1};
-  max-width: 300px;
+  max-width: 400px;
   min-width: 100px;
   width: 80%;
   background: black;

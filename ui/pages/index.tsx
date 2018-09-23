@@ -10,11 +10,7 @@ const Page: NextTwineSFC<State, Actions, {}, { id: string }> = props => {
   return (
     <>
       <Heading store={props.store} />
-      {props.store.state.note ? (
-        <Note store={props.store} />
-      ) : (
-        <div>Please choose a note</div>
-      )}
+      {props.store.state.note ? <Note store={props.store} /> : null}
       <Global store={props.store} />
     </>
   );

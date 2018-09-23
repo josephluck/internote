@@ -10,7 +10,8 @@ export class NoteEntity extends Base {
   content: string;
 
   @ManyToOne(() => UserEntity, user => user.notes, {
-    eager: true
+    eager: true,
+    onDelete: "CASCADE"
   })
   user: UserEntity;
 }

@@ -47,6 +47,7 @@ export function Toolbar({
               height="16"
               fill={color.jumbo}
               onClick={onDelete}
+              style={{ cursor: "pointer" }}
             />
           </Flex>
           <Flex>
