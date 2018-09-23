@@ -1,23 +1,7 @@
 import * as Router from "koa-router";
 import { Dependencies } from "../../";
 import { NoteEntity, createNote } from "./entity";
-import { route } from "../../router";
-import { Option } from "space-lift";
-import { UserEntity } from "../user/entity";
-
-type ControllerFn = (
-  ctx: Router.IRouterContext,
-  user: Option<UserEntity>
-) => Promise<any>;
-
-interface RestController {
-  findAll: ControllerFn;
-  findById: ControllerFn;
-  create: ControllerFn;
-  updateById: ControllerFn;
-  deleteById: ControllerFn;
-  [key: string]: ControllerFn;
-}
+import { route, RestController } from "../../router";
 
 function makeController(deps: Dependencies): RestController {
   const repo = deps.db.getRepository(NoteEntity);

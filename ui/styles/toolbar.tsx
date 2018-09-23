@@ -9,8 +9,10 @@ const ToolbarWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
   background: ${color.cinder};
   border-top: solid 1px black;
   font-size: ${font._18.size};

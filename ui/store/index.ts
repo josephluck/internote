@@ -27,6 +27,7 @@ interface Reducers {
 interface Effects {
   fetchNotes: Twine.Effect0<State, Actions, Promise<void>>;
   fetchNote: Twine.Effect<State, Actions, string, Promise<void>>;
+  newNote: Twine.Effect0<State, Actions, Promise<void>>;
   saveNote: Twine.Effect<
     State,
     Actions,
@@ -97,26 +98,29 @@ const model: Twine.Model<State, Reducers, Effects> = {
       actions.setLoading(false);
     },
     async fetchNote(state, actions, id) {
-      const existingNote = state.notes.find(n => n.id === id);
-      if (existingNote) {
-        actions.setNote(existingNote);
-      } else {
-        actions.setLoading(true);
-        const result = await api.note.findById(state.session.token, id);
-        result.map(note => {
-          actions.setNote(note);
-        });
-        actions.setLoading(false);
-      }
-    },
-    saveNote(state, actions, { content }) {
-      return new Promise(() => {
-        actions.setLoading(true);
-        actions.setNote({ ...state.note, content });
-        setTimeout(() => {
-          actions.setLoading(false);
-        }, 1000);
+      actions.setLoading(true);
+      const result = await api.note.findById(state.session.token, id);
+      result.map(note => {
+        actions.setNote(note);
       });
+      actions.setLoading(false);
+    },
+    async newNote(state, actions) {
+      actions.setLoading(true);
+      const note = await api.note.create(state.session.token, {
+        content: "New note"
+      });
+      Router.push(`/note?id=${note.id}`);
+      actions.setLoading(false);
+    },
+    async saveNote(state, actions, { content, id }) {
+      actions.setNote({
+        ...state.note,
+        content
+      });
+      actions.setLoading(true);
+      await api.note.updateById(state.session.token, id, { content });
+      actions.setLoading(false);
     },
     async register(_state, actions, { email, password }) {
       const session = await api.auth.register({ email, password });

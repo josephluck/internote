@@ -12,6 +12,15 @@ type ControllerFn = (
   user: Option<UserEntity>
 ) => Promise<any>;
 
+export interface RestController {
+  findAll: ControllerFn;
+  findById: ControllerFn;
+  create: ControllerFn;
+  updateById: ControllerFn;
+  deleteById: ControllerFn;
+  [key: string]: ControllerFn;
+}
+
 export type Controller = Record<string, ControllerFn>;
 
 export function route(deps: Dependencies, cb: ControllerFn) {

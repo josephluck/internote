@@ -1,17 +1,13 @@
 import React from "react";
-import { EditorState } from "draft-js";
-import dynamic from "next/dynamic";
+import { EditorState, Editor } from "draft-js";
 import { debounce } from "lodash";
-
-const DraftEditor = dynamic(import("draft-js").then(module => module.Editor), {
-  ssr: false
-});
 
 interface Props {
   id: string;
   initialValue: string;
   debounceValue?: number;
   onChange: (value: string) => void;
+  exposeEditor?: (editor: Editor) => void;
 }
 
 interface State {
@@ -19,10 +15,11 @@ interface State {
   ready: boolean;
 }
 
-export class Editor extends React.Component<Props, State> {
+export class InternoteEditor extends React.Component<Props, State> {
   convertToHTML = null;
   convertFromHTML = null;
   debounceValue = 1000;
+  editorInstance: null | Editor = null;
 
   constructor(props: Props) {
     super(props);
@@ -47,6 +44,18 @@ export class Editor extends React.Component<Props, State> {
       ready: true
     });
   }
+
+  onEditorRefObtained = (editor: Editor) => {
+    this.editorInstance = editor;
+    if (this.editorInstance) {
+      this.editorInstance.focus();
+      this.exposeEditorRef();
+    }
+  };
+
+  exposeEditorRef = () => {
+    this.props.exposeEditor(this.editorInstance);
+  };
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.id !== this.props.id) {
@@ -73,9 +82,10 @@ export class Editor extends React.Component<Props, State> {
 
   render() {
     return this.state.ready ? (
-      <DraftEditor
+      <Editor
         editorState={this.state.editorState}
         onChange={this.onChange}
+        ref={this.onEditorRefObtained}
       />
     ) : null;
   }
