@@ -72,13 +72,9 @@ export class InternoteEditor extends React.Component<Props, State> {
     this.emitChange(editorState);
   };
 
-  emitChange = debounce(
-    (editorState: EditorState) => {
-      this.props.onChange(this.convertToHTML(editorState.getCurrentContent()));
-    },
-    this.debounceValue,
-    { leading: true }
-  );
+  emitChange = debounce((editorState: EditorState) => {
+    this.props.onChange(this.convertToHTML(editorState.getCurrentContent()));
+  }, this.debounceValue);
 
   render() {
     return this.state.ready ? (

@@ -15,6 +15,8 @@ export interface State {
   loading: boolean;
   note: Types.Note | null;
   notes: Types.Note[];
+  sidebarOpen: boolean;
+  deleteNoteModalOpen: boolean;
 }
 
 interface Reducers {
@@ -22,18 +24,16 @@ interface Reducers {
   setNotes: Twine.Reducer<State, Types.Note[]>;
   setNote: Twine.Reducer<State, Types.Note | null>;
   setLoading: Twine.Reducer<State, boolean>;
+  setSidebarOpen: Twine.Reducer<State, boolean>;
+  setDeleteNoteModalOpen: Twine.Reducer<State, boolean>;
 }
 
 interface Effects {
   fetchNotes: Twine.Effect0<State, Actions, Promise<void>>;
   fetchNote: Twine.Effect<State, Actions, string, Promise<void>>;
   newNote: Twine.Effect0<State, Actions, Promise<void>>;
-  saveNote: Twine.Effect<
-    State,
-    Actions,
-    { id: string; content: string },
-    Promise<void>
-  >;
+  saveNote: Twine.Effect<State, Actions, { content: string }, Promise<void>>;
+  deleteNote: Twine.Effect0<State, Actions, Promise<void>>;
   register: Twine.Effect<
     State,
     Actions,
@@ -57,7 +57,9 @@ const model: Twine.Model<State, Reducers, Effects> = {
     session: null,
     notes: [],
     note: null,
-    loading: false
+    loading: false,
+    sidebarOpen: false,
+    deleteNoteModalOpen: false
   },
   reducers: {
     setSession(state, session) {
@@ -87,6 +89,18 @@ const model: Twine.Model<State, Reducers, Effects> = {
       return {
         ...state,
         note
+      };
+    },
+    setSidebarOpen(state, sidebarOpen) {
+      return {
+        ...state,
+        sidebarOpen
+      };
+    },
+    setDeleteNoteModalOpen(state, deleteNoteModalOpen) {
+      return {
+        ...state,
+        deleteNoteModalOpen
       };
     }
   },
@@ -119,7 +133,7 @@ const model: Twine.Model<State, Reducers, Effects> = {
       Router.push(`/note?id=${note.id}`);
       actions.setLoading(false);
     },
-    async saveNote(state, actions, { content, id }) {
+    async saveNote(state, actions, { content }) {
       const newNote = {
         ...state.note,
         content
@@ -129,8 +143,17 @@ const model: Twine.Model<State, Reducers, Effects> = {
         state.notes.map(note => (note.id === newNote.id ? newNote : note))
       );
       actions.setLoading(true);
-      await api.note.updateById(state.session.token, id, { content });
+      await api.note.updateById(state.session.token, state.note.id, {
+        content
+      });
       actions.setLoading(false);
+    },
+    async deleteNote(state, actions) {
+      actions.setLoading(true);
+      await api.note.deleteById(state.session.token, state.note.id);
+      actions.setNotes(await api.note.findAll(state.session.token));
+      actions.setNote(null);
+      Router.push("/");
     },
     async register(_state, actions, { email, password }) {
       const session = await api.auth.register({ email, password });

@@ -3,7 +3,8 @@ import { spacing, color, font } from "./theme";
 import styled from "styled-components";
 import { Saving } from "./saving";
 import { ToolbarBlock } from "./toolbar-block";
-import { Flex } from "grid-styled";
+import { Flex, Box } from "grid-styled";
+import { DeleteForever } from "styled-icons/material";
 
 const ToolbarWrapper = styled.div`
   padding: ${spacing._0_5} ${spacing._2};
@@ -20,18 +21,38 @@ const ToolbarWrapper = styled.div`
   line-height: ${font._18.lineHeight};
 `;
 
-export function Toolbar({ words, saving }: { words: number; saving: boolean }) {
+export function Toolbar({
+  words,
+  saving,
+  onDelete
+}: {
+  words: number;
+  saving: boolean;
+  onDelete: () => void;
+}) {
   const minutes = wordsToReadingMinutes(words);
   return (
     <ToolbarWrapper>
       <>
-        <Flex>
+        <Flex flex="1">
           <ToolbarBlock>Words: {words}</ToolbarBlock>
           <ToolbarBlock>
             Reading time: {minutes} {minutes > 1 ? "minutes" : "minute"}
           </ToolbarBlock>
         </Flex>
-        <Saving saving={saving} />
+        <Flex alignItems="center">
+          <Flex mr={spacing._0_5}>
+            <DeleteForever
+              width="16"
+              height="16"
+              fill={color.jumbo}
+              onClick={onDelete}
+            />
+          </Flex>
+          <Flex>
+            <Saving saving={saving} />
+          </Flex>
+        </Flex>
       </>
     </ToolbarWrapper>
   );

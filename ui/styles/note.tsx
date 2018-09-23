@@ -25,6 +25,7 @@ const FullHeightWrap = styled.div`
   bottom: 39px;
   left: 0;
   right: 0;
+  overflow: auto;
 `;
 
 export function Note({ store }: { store: Store }) {
@@ -43,7 +44,6 @@ export function Note({ store }: { store: Store }) {
             initialValue={store.state.note.content}
             onChange={content => {
               store.actions.saveNote({
-                id: store.state.note.id,
                 content
               });
             }}
@@ -54,6 +54,7 @@ export function Note({ store }: { store: Store }) {
       <Toolbar
         words={store.state.note.content.split(" ").length}
         saving={store.state.loading}
+        onDelete={() => store.actions.setDeleteNoteModalOpen(true)}
       />
     </>
   );
