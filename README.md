@@ -50,6 +50,60 @@ After this, you can open the `terminal` application and run the project using th
 More reading: https://bugs.chromium.org/p/chromium/issues/detail?id=860565
 And: https://www.reddit.com/r/Crostini/comments/99jdeh/70035242_rolling_out_to_dev/e4revli/
 
-## Deployment
+## Deployment set up
 
-TBD - probably Zeit's now (since it can run Dockerfiles)
+- Install `now` from [Zeit](https://zeit.co/now)
+- Run `now` and authenticate
+- You should be ready to deploy the app using the instructions below
+
+## API Deployment
+
+Copy Dockerfile.api to a temporary Dockerfile in the root:
+
+```
+cp ./Dockerfile.api ./Dockerfile
+```
+
+Deploy via `now`
+
+```
+now --docker --public
+```
+
+Copy the resultant URL to your clipboard and alias to the `api.internote.app` domain name
+
+```
+now alias [domain] api.internote.app
+```
+
+Remove the temporary Dockerfile for the API
+
+```
+rm Dockerfile
+```
+
+## UI Deployment
+
+Copy Dockerfile.ui to a temporary Dockerfile in the root:
+
+```
+cp ./Dockerfile.ui ./Dockerfile
+```
+
+Deploy via `now`
+
+```
+now --docker --public
+```
+
+Copy the resultant URL to your clipboard and alias to the `internote.app` domain name
+
+```
+now alias [domain] internote.app
+```
+
+Remove the temporary Dockerfile for the UI
+
+```
+rm Dockerfile
+```

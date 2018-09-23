@@ -6,7 +6,8 @@ WORKDIR /src
 COPY ./package.json .
 COPY ./yarn.lock .
 COPY ./.babelrc .
-COPY ./.env .
+COPY ./.env.production .
+COPY ./.env.development .
 COPY ./tsconfig.json .
 COPY ./wait-for-it.sh .
 COPY ./api/ ./api/

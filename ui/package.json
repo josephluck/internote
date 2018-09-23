@@ -5,9 +5,9 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev:docker": "./node_modules/.bin/ts-node -P ./tsconfig.json ./server.ts",
-    "start:docker": "./node_modules/.bin/ts-node -P ./tsconfig.json ./server.ts",
-    "build:docker": "NODE_ENV=production next build"
+    "development": "./node_modules/.bin/ts-node -P ./tsconfig.json ./server.ts",
+    "start:production": "NODE_ENV=production ./node_modules/.bin/ts-node -P ./tsconfig.json ./server.ts",
+    "build": "NODE_ENV=production next build"
   },
   "dependencies": {
     "@internote/api": "*",

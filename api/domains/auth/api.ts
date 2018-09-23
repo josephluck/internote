@@ -11,7 +11,6 @@ export function api(client: AxiosInstance) {
       return client.post("/register", data).then(r => r.data);
     },
     session(token: string): Promise<Session> {
-      // TODO: should this not return a Promise<Session> ??
       return client
         .get("/session", makeRequestConfig({ token }))
         .then(r => r.data);

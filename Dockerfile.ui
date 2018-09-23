@@ -6,7 +6,8 @@ WORKDIR /src
 COPY ./package.json .
 COPY ./yarn.lock .
 COPY ./.babelrc .
-COPY ./.env .
+COPY ./.env.development .
+COPY ./.env.production .
 COPY ./tsconfig.json .
 COPY ./api/package.json ./api/
 COPY ./api/ ./api/
@@ -16,4 +17,4 @@ RUN yarn install
 
 WORKDIR ./ui
 
-RUN yarn build:docker
+RUN yarn build

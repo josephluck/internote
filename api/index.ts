@@ -32,15 +32,15 @@ const startServer = async (db: Connection) => {
 
   const router = makeRouter(dependencies);
 
-  server.use(bodyParser());
-  server.use(router.routes());
-  server.use(router.allowedMethods());
-  server.use(exceptions());
   server.use(
     cors({
       origin: "*"
     })
   );
+  server.use(bodyParser());
+  server.use(router.routes());
+  server.use(router.allowedMethods());
+  server.use(exceptions());
 
   await server.listen(process.env.API_PORT);
   return server;
@@ -48,7 +48,7 @@ const startServer = async (db: Connection) => {
 
 makeDatabase()
   .then(startServer)
-  .then(_server => console.log(`Api started`))
+  .then(_server => console.log(`Api started on port ${process.env.API_PORT}`))
   .catch(err => {
     console.error(err);
     process.exit(1);

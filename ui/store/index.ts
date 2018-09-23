@@ -7,8 +7,7 @@ import {
 } from "../utilities/cookie";
 import Router from "next/router";
 
-// TODO: environment variable
-const api = makeApi("http://100.115.92.200:2020");
+const api = makeApi(process.env.API_BASE_URL);
 
 export interface State {
   session: Types.Session | null;

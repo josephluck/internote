@@ -2,8 +2,6 @@ import * as Router from "koa-router";
 import { Dependencies } from "../../.";
 import { UserEntity, createUser } from "../user/entity";
 import { Option } from "space-lift";
-// TODO: replace the below with something that doesn't
-// require node-gyp
 import * as crypt from "bcryptjs";
 import { route } from "../../router";
 

@@ -2,3 +2,6 @@ node_modules
 *.log
 .next
 .env
+.env.production
+.env.development
+Dockerfile

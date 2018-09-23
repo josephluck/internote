@@ -11,18 +11,18 @@ services:
       - ./:/ui
     depends_on:
       - api-prod
-    command: bash -c 'yarn --cwd ui run start:docker'
+    command: bash -c 'yarn --cwd ui run start:production'
 
   api-prod:
     build:
       context: .
       dockerfile: Dockerfile.api
     ports:
-      - 2020:2020
+      - 80:80
     working_dir: /api
     volumes:
       - ./:/api
-    command: bash -c 'yarn --cwd api run start:docker'
+    command: bash -c 'yarn --cwd api run start:production'
 
   ui-dev:
     build:
@@ -35,7 +35,7 @@ services:
       - ./:/ui
     depends_on:
       - api-dev
-    command: bash -c 'yarn --cwd ui run dev:docker'
+    command: bash -c 'yarn --cwd ui run development'
 
   api-dev:
     build:
@@ -46,4 +46,4 @@ services:
     working_dir: /api
     volumes:
       - ./:/api
-    command: bash -c 'yarn --cwd api run dev:docker'
+    command: bash -c 'yarn --cwd api run development'
