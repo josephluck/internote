@@ -1,5 +1,6 @@
 FROM node:10
 EXPOSE 80
+CMD ["yarn", "start:production"]
 
 WORKDIR /src
 

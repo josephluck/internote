@@ -1,5 +1,7 @@
 FROM node:10
 EXPOSE 2020
+EXPOSE 80
+CMD ["yarn", "start:production"]
 
 WORKDIR /src
 
@@ -9,7 +11,6 @@ COPY ./.babelrc .
 COPY ./.env.production .
 COPY ./.env.development .
 COPY ./tsconfig.json .
-COPY ./wait-for-it.sh .
 COPY ./api/ ./api/
 
 RUN yarn install
