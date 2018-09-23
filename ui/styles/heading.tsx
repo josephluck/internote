@@ -5,11 +5,10 @@ import { BlockLink, TextLink } from "../styles/link";
 import styled from "styled-components";
 import styledTs from "styled-components-ts";
 import { Store } from "../store";
-import { Menu } from "styled-icons/feather";
-import { X } from "styled-icons/feather";
+import { Menu, Clear } from "styled-icons/material";
 
 const HeadingWrapper = styled.div`
-  padding: ${spacing._0_5} ${spacing._1};
+  padding: ${spacing._0_5} ${spacing._2};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,7 +20,8 @@ const HeadingWrapper = styled.div`
 
 const Sidebar = styledTs<{ open: boolean }>(styled.div)`
   position: fixed;
-  left: 0;
+  z-index: 10;
+  right: 0;
   top: 0;
   height: 100%;
   max-width: 300px;
@@ -29,14 +29,32 @@ const Sidebar = styledTs<{ open: boolean }>(styled.div)`
   width: 80%;
   background: black;
   transition: all 333ms ease;
-  transform: translateX(${props => (props.open ? "0%" : "-100%")});
+  transform: translateX(${props => (props.open ? "0%" : "100%")});
   opacity: ${props => (props.open ? "1" : "0")};
 `;
 
+const DarkOverlay = styledTs<{ showing: boolean }>(styled.div)`
+  position: fixed;
+  z-index: 9;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: ${color.cinder};
+  transition: all 333ms ease;
+  opacity: ${props => (props.showing ? "0.9" : "0")};
+  pointer-events: none;
+`;
+
 const SidebarItem = styled.div`
-  margin: ${spacing._0_5} ${spacing._1};
+  padding: ${spacing._0_5} ${spacing._1};
   overflow: hidden;
   display: flex;
+`;
+
+const SidebarCloseItem = SidebarItem.extend`
+  justify-content: flex-end;
+  padding-right: ${spacing._2};
 `;
 
 const EllipsisText = styled.span`
@@ -78,24 +96,34 @@ export default class Heading extends React.Component<Props, State> {
     return (
       <>
         <HeadingWrapper>
-          <Menu height="25" width="25" onClick={this.setSidebarOpen(true)} />
           <BlockLink href="/">
             <Logo />
           </BlockLink>
-          <div />
+          <Menu
+            height="25"
+            width="25"
+            fill={color.jumbo}
+            onClick={this.setSidebarOpen(true)}
+          />
         </HeadingWrapper>
         <Sidebar open={this.state.sidebarOpen}>
-          <SidebarItem>
-            <X height="25" width="25" onClick={this.setSidebarOpen(false)} />
-          </SidebarItem>
+          <SidebarCloseItem>
+            <Clear
+              height="25"
+              width="25"
+              fill={color.jumbo}
+              onClick={this.setSidebarOpen(false)}
+            />
+          </SidebarCloseItem>
           {this.props.store.state.notes.map(note => (
             <SidebarItem onClick={this.setSidebarOpen(false)}>
               <EllipsisText>
-                <TextLink href={`/?id=${note.id}`}>{note.id}</TextLink>
+                <TextLink href={`/?id=${note.id}`}>{note.content}</TextLink>
               </EllipsisText>
             </SidebarItem>
           ))}
         </Sidebar>
+        <DarkOverlay showing={this.state.sidebarOpen} />
       </>
     );
   }

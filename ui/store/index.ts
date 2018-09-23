@@ -98,12 +98,18 @@ const model: Twine.Model<State, Reducers, Effects> = {
       actions.setLoading(false);
     },
     async fetchNote(state, actions, id) {
-      actions.setLoading(true);
-      const result = await api.note.findById(state.session.token, id);
-      result.map(note => {
-        actions.setNote(note);
-      });
-      actions.setLoading(false);
+      const existingNote = state.notes.find(note => note.id === id);
+
+      if (existingNote) {
+        actions.setNote(existingNote);
+      } else {
+        actions.setLoading(true);
+        const result = await api.note.findById(state.session.token, id);
+        result.map(note => {
+          actions.setNote(note);
+        });
+        actions.setLoading(false);
+      }
     },
     async newNote(state, actions) {
       actions.setLoading(true);
@@ -114,10 +120,14 @@ const model: Twine.Model<State, Reducers, Effects> = {
       actions.setLoading(false);
     },
     async saveNote(state, actions, { content, id }) {
-      actions.setNote({
+      const newNote = {
         ...state.note,
         content
-      });
+      };
+      actions.setNote(newNote);
+      actions.setNotes(
+        state.notes.map(note => (note.id === newNote.id ? newNote : note))
+      );
       actions.setLoading(true);
       await api.note.updateById(state.session.token, id, { content });
       actions.setLoading(false);
@@ -129,7 +139,6 @@ const model: Twine.Model<State, Reducers, Effects> = {
     },
     async session(_state, actions, token) {
       const session = await api.auth.session(token);
-      console.log(session);
       actions.setSession(session);
     },
     async authenticate(_state, actions, { email, password }) {

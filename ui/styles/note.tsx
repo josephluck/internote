@@ -1,13 +1,10 @@
 import * as React from "react";
 import { spacing } from "../styles/theme";
-import { Box } from "grid-styled";
 import { Toolbar } from "../styles/toolbar";
-import { NextTwineSFC } from "../store/with-twine";
-import { State, Actions } from "../store";
-import { withAuth } from "../hoc/with-auth";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 import { Editor } from "draft-js";
+import { Store } from "../store";
 
 const InternoteEditor = dynamic(
   import("../styles/editor").then(module => module.InternoteEditor),
@@ -15,6 +12,10 @@ const InternoteEditor = dynamic(
     ssr: false
   }
 );
+
+const EditorWrap = styled.div`
+  padding: ${spacing._1} ${spacing._2};
+`;
 
 let editorInstance: null | Editor = null;
 
@@ -26,7 +27,7 @@ const FullHeightWrap = styled.div`
   right: 0;
 `;
 
-const Page: NextTwineSFC<State, Actions, {}, { id: string }> = props => {
+export function Note({ store }: { store: Store }) {
   return (
     <>
       <FullHeightWrap
@@ -36,31 +37,24 @@ const Page: NextTwineSFC<State, Actions, {}, { id: string }> = props => {
           }
         }}
       >
-        <Box p={spacing._2}>
+        <EditorWrap>
           <InternoteEditor
-            id={props.store.state.note.id}
-            initialValue={props.store.state.note.content}
+            id={store.state.note.id}
+            initialValue={store.state.note.content}
             onChange={content => {
-              props.store.actions.saveNote({
-                id: props.store.state.note.id,
+              store.actions.saveNote({
+                id: store.state.note.id,
                 content
               });
             }}
             exposeEditor={instance => (editorInstance = instance)}
           />
-        </Box>
+        </EditorWrap>
       </FullHeightWrap>
       <Toolbar
-        words={props.store.state.note.content.split(" ").length}
-        saving={props.store.state.loading}
+        words={store.state.note.content.split(" ").length}
+        saving={store.state.loading}
       />
     </>
   );
-};
-
-Page.getInitialProps = async ctx => {
-  await ctx.store.actions.fetchNote(ctx.query.id);
-  return {};
-};
-
-export default withAuth(Page);
+}

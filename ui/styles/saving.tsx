@@ -1,48 +1,36 @@
-import { Circle } from "styled-icons/fa-regular/Circle";
-import { Check } from "styled-icons/fa-solid/Check";
+import * as React from "react";
 import styled, { keyframes } from "styled-components";
-import { color, font } from "./theme";
+import { color } from "./theme";
+import styledTs from "styled-components-ts";
 
 const bounce = keyframes`
   0% {
     transform: scale(0.8, 0.8);
-    opacity: 0.5;
+    opacity: 0.7;
   }
 
   50% {
-    transform: scale(1, 1);
+    transform: scale(1.2, 1.2);
     opacity: 1;
   }
 
   100% {
     transform: scale(0.8, 0.8);
-    opacity: 0.5;
+    opacity: 0.7;
   }
 `;
 
-const AnimationScaleBounce = styled.span`
-  display: flex;
-  animation: ${bounce} 1.5s ease infinite;
+const SavingIcon = styledTs<{ saving: boolean }>(styled.div)`
+  animation: ${props => (props.saving ? `${bounce} 1.5s ease infinite` : "")};
+  transition: all 300ms ease;
+  height: 10px;
+  width: 10px;
+  border-radius: 9999px;
+  background: ${props => (props.saving ? "transparent" : color.jungleGreen)};
+  border: solid 1px ${props =>
+    props.saving ? color.blueRibbon : color.jungleGreen};
 `;
 
 export function Saving({ saving }: { saving: boolean }) {
-  return saving ? (
-    <AnimationScaleBounce>
-      <Circle
-        style={{
-          width: font._12.size,
-          height: font._12.size
-        }}
-        color={color.jungleGreen}
-      />
-    </AnimationScaleBounce>
-  ) : (
-    <Check
-      style={{
-        width: font._12.size,
-        height: font._12.size
-      }}
-      color={color.jungleGreen}
-    />
-  );
+  return <SavingIcon saving={saving} />;
 }

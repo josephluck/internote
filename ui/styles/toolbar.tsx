@@ -1,3 +1,4 @@
+import * as React from "react";
 import { spacing, color, font } from "./theme";
 import styled from "styled-components";
 import { Saving } from "./saving";
