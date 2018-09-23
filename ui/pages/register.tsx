@@ -10,8 +10,10 @@ import { Button } from "../styles/button";
 import { Modal } from "../styles/modal";
 import { Input, InputLabel } from "../styles/input";
 
-const BareBar = styled.div`
-  padding: ${spacing._0_5} ${spacing._2};
+const CenteredLogo = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: ${spacing._1};
 `;
 
 const SubActionLink = styled.div`
@@ -23,10 +25,10 @@ const SubActionLink = styled.div`
 const Page: NextTwineSFC<State, Actions, {}> = props => {
   return (
     <>
-      <BareBar>
-        <Logo />
-      </BareBar>
       <Modal open showCloseIcon={false} onClose={() => null}>
+        <CenteredLogo>
+          <Logo />
+        </CenteredLogo>
         <form
           onSubmit={e => {
             e.preventDefault();
