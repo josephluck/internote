@@ -4986,6 +4986,10 @@ strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
+styled-components-ts@^0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/styled-components-ts/-/styled-components-ts-0.0.14.tgz#bbd7a2e2a570e011827e92e460a49d72cc1e1c80"
+
 "styled-components@2.x - 3.x", styled-components@^3.4.6:
   version "3.4.6"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-3.4.6.tgz#134f1ab89ed732686bf7de3ff8fca557283cbd60"

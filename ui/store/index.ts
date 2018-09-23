@@ -147,3 +147,5 @@ const model: Twine.Model<State, Reducers, Effects> = {
 export function makeStore() {
   return twine<State, Actions>(model);
 }
+
+export type Store = Twine.Return<State, Actions>;

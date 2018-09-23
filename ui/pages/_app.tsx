@@ -9,6 +9,9 @@ import { Heading } from "../styles/heading";
 injectGlobal`
   @import url("https://rsms.me/inter/inter-ui.css");
   @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+  * {
+    box-sizing: border-box;
+  }
   body, html, #__next {
     color: ${color.iron};
     background-color: ${color.cinder};
@@ -28,10 +31,7 @@ export class Application extends App {
     const { Component, pageProps, store } = this.props as any;
     return (
       <Container>
-        <>
-          <Heading />
-          <Component {...pageProps} store={store} />
-        </>
+        <Component {...pageProps} store={store} />
       </Container>
     );
   }

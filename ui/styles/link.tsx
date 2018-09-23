@@ -26,7 +26,6 @@ export function BlockLink({ href, scroll = false, children }: Props) {
 
 const TextAnchor = styled.a`
   color: ${color.iron};
-  border-bottom: solid 2px ${color.iron};
   cursor: pointer;
 `;
 
