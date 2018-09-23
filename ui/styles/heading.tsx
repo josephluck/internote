@@ -4,7 +4,8 @@ import { Logo } from "../styles/logo";
 import { BlockLink } from "../styles/link";
 import styled from "styled-components";
 import { Store } from "../store";
-import { Menu } from "styled-icons/material";
+import { Menu, Add } from "styled-icons/material";
+import { Flex } from "grid-styled";
 
 const HeadingWrapper = styled.div`
   padding: ${spacing._0_5} ${spacing._2};
@@ -23,13 +24,22 @@ export function Heading({ store }: { store: Store }) {
       <BlockLink href="/">
         <Logo />
       </BlockLink>
-      <Menu
-        height="25"
-        width="25"
-        fill={color.jumbo}
-        onClick={() => store.actions.setSidebarOpen(true)}
-        style={{ cursor: "pointer" }}
-      />
+      <Flex>
+        <Add
+          height="25"
+          width="25"
+          fill={color.jumbo}
+          onClick={store.actions.newNote}
+          style={{ cursor: "pointer", marginRight: spacing._0_25 }}
+        />
+        <Menu
+          height="25"
+          width="25"
+          fill={color.jumbo}
+          onClick={() => store.actions.setSidebarOpen(true)}
+          style={{ cursor: "pointer" }}
+        />
+      </Flex>
     </HeadingWrapper>
   );
 }

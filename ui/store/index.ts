@@ -130,7 +130,7 @@ const model: Twine.Model<State, Reducers, Effects> = {
       const note = await api.note.create(state.session.token, {
         content: "New note"
       });
-      Router.push(`/note?id=${note.id}`);
+      Router.push(`/?id=${note.id}`);
       actions.setLoading(false);
     },
     async saveNote(state, actions, { content }) {
@@ -153,6 +153,7 @@ const model: Twine.Model<State, Reducers, Effects> = {
       await api.note.deleteById(state.session.token, state.note.id);
       actions.setNotes(await api.note.findAll(state.session.token));
       actions.setNote(null);
+      actions.setDeleteNoteModalOpen(false);
       Router.push("/");
     },
     async register(_state, actions, { email, password }) {

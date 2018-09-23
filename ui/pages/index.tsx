@@ -24,6 +24,8 @@ Page.getInitialProps = async ({ store, query }) => {
   await store.actions.fetchNotes();
   if (query && query.id) {
     await store.actions.fetchNote(query.id);
+  } else {
+    store.actions.setNote(null);
   }
   return {};
 };
