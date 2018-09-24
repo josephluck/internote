@@ -1,6 +1,4 @@
 FROM node:10-alpine
-EXPOSE 2020
-CMD ["yarn", "start:production"]
 
 WORKDIR /src
 
@@ -14,4 +12,6 @@ COPY ./api/ ./api/
 
 RUN yarn install
 
-WORKDIR ./api
+EXPOSE 2020
+
+CMD ["yarn", "--cwd", "api", "start:production"]

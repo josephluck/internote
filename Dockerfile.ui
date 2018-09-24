@@ -1,6 +1,5 @@
 FROM node:10-alpine
 EXPOSE 80
-CMD ["yarn", "start:production"]
 
 WORKDIR /src
 
@@ -19,3 +18,7 @@ RUN yarn install
 WORKDIR ./ui
 
 RUN yarn build
+
+WORKDIR ../
+
+CMD ["yarn", "--cwd", "ui", "start:production"]

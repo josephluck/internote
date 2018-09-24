@@ -6,7 +6,6 @@ services:
       dockerfile: Dockerfile.ui
     ports:
       - 80:80
-    working_dir: /ui
     volumes:
       - ./:/ui
     depends_on:
@@ -18,7 +17,6 @@ services:
       dockerfile: Dockerfile.api
     ports:
       - 2020:2020
-    working_dir: /api
     volumes:
       - ./:/api
 
@@ -28,7 +26,6 @@ services:
       dockerfile: Dockerfile.ui
     ports:
       - 80:80
-    working_dir: /ui
     volumes:
       - ./:/ui
     depends_on:
@@ -41,7 +38,6 @@ services:
       dockerfile: Dockerfile.api
     ports:
       - 2020:2020
-    working_dir: /api
     volumes:
       - ./:/api
     command: bash -c 'yarn --cwd api run development'

@@ -4,6 +4,7 @@
     "target": "esnext",
     "module": "commonjs",
     "allowJs": true,
+    "jsx": "react",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,

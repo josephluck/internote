@@ -1,7 +1,7 @@
 import * as React from "react";
 import Document, { Head, Main, NextScript } from "next/document";
 import { ServerStyleSheet } from "styled-components";
-import { color } from "@internote/ui/styles/theme";
+import { color } from "../styles/theme";
 
 export default class MyDocument extends Document {
   static async getInitialProps({ renderPage }) {
