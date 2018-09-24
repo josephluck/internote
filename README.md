@@ -70,7 +70,9 @@ Deploy via `now`
 now --docker --public
 ```
 
-Copy the resultant URL to your clipboard and alias to the `api.internote.app` domain name
+Alias to the `api.internote.app` domain name
+
+> Now automatically copies the resultant URL to your clipboard
 
 ```
 now alias [domain] api.internote.app

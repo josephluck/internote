@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: Dockerfile.api
     ports:
-      - 80:80
+      - 2020:2020
     working_dir: /api
     volumes:
       - ./:/api
