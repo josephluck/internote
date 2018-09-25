@@ -7,7 +7,7 @@
   "scripts": {
     "development": "./node_modules/.bin/ts-node -P ./tsconfig.json ./server.ts",
     "start:production": "NODE_ENV=production ./node_modules/.bin/ts-node -P ./tsconfig.json -O '{\"module\": \"commonjs\"}' ./server.ts",
-    "build": "NODE_ENV=production next build"
+    "build": "rm -rf ./node_modules/.cache/hard-source && NODE_ENV=production next build"
   },
   "dependencies": {
     "@internote/api": "*",

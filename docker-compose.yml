@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: Dockerfile.api
     ports:
-      - 2020:2020
+      - 2020:80
     volumes:
       - ./:/api
 
@@ -37,7 +37,7 @@ services:
       context: .
       dockerfile: Dockerfile.api
     ports:
-      - 2020:2020
+      - 2020:80
     volumes:
       - ./:/api
     command: bash -c 'yarn --cwd api run development'

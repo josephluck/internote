@@ -9,7 +9,7 @@ nextApp.prepare().then(() => {
   expressApp
     .get("/_next/on-demand-entries-ping", handler as any)
     .get("*", handler as any)
-    .listen(3000, () => {
-      console.log(`Next application running on port ${3000}`);
+    .listen(80, () => {
+      console.log(`Next application running on port ${80}`);
     });
 });
