@@ -4,7 +4,7 @@ WORKDIR /src
 
 COPY ./package.json .
 COPY ./yarn.lock .
-COPY ./.babelrc .
+COPY ./babel.config.js .
 COPY ./.env.production .
 COPY ./.env.development .
 COPY ./tsconfig.json .
@@ -12,6 +12,6 @@ COPY ./api/ ./api/
 
 RUN yarn install
 
-EXPOSE 2020
+EXPOSE 80
 
 CMD ["yarn", "--cwd", "api", "start:production"]

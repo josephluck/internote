@@ -28,7 +28,7 @@ A simple note taking application.
 - Run `docker-compose up --build ui-dev api-dev`
 - Visit `http://localhost:80`
 
-> Please note that the UI application runs on http://localhost:80 and the API runs on port http://localhost:2020
+> Please note that the UI application runs on http://localhost:80 and the API runs on port http://localhost:80
 
 > If you're working on the production application locally, you'll need to create a `.env.production` file before deployment
 
@@ -56,6 +56,10 @@ And: https://www.reddit.com/r/Crostini/comments/99jdeh/70035242_rolling_out_to_d
 - Run `now` and authenticate
 - You should be ready to deploy the app using the instructions below
 
+## Deployment
+
+You can simply run `yarn deploy:prod` from the root of this repository to deploy to production. Read below for the manual steps:
+
 ## API Deployment
 
 Copy Dockerfile.api to a temporary Dockerfile in the root:
@@ -67,15 +71,7 @@ cp ./Dockerfile.api ./Dockerfile
 Deploy via `now`
 
 ```
-now --docker --public
-```
-
-Alias to the `api.internote.app` domain name
-
-> Now automatically copies the resultant URL to your clipboard
-
-```
-now alias [domain] api.internote.app
+now --local-config=./now.api.json --dotenv=.env.production
 ```
 
 Remove the temporary Dockerfile for the API
@@ -95,17 +91,22 @@ cp ./Dockerfile.ui ./Dockerfile
 Deploy via `now`
 
 ```
-now --docker --public
-```
-
-Copy the resultant URL to your clipboard and alias to the `internote.app` domain name
-
-```
-now alias [domain] internote.app
+now --local-config=./now.api.json --dotenv=.env.production
 ```
 
 Remove the temporary Dockerfile for the UI
 
 ```
 rm Dockerfile
+```
+
+
+## Running build docker files locally
+
+```
+docker build -t internote/api . -f Dockerfile.api
+```
+
+```
+docker run -p 1337:80 internote/api
 ```

@@ -1,0 +1,17 @@
+{
+  "name": "internote-api",
+  "type": "docker",
+  "features": {
+    "cloud": "v1"
+  },
+  "public": true,
+  "alias": [
+    "api.internote.app"
+  ],
+  "scale": {
+    "bru1": {
+      "min": 1,
+      "max": "auto"
+    }
+  }
+}

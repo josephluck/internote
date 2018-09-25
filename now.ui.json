@@ -1,0 +1,8 @@
+{
+  "name": "internote-ui",
+  "type": "docker",
+  "public": true,
+  "alias": [
+    "internote.app"
+  ]
+}

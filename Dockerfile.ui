@@ -5,7 +5,7 @@ WORKDIR /src
 
 COPY ./package.json .
 COPY ./yarn.lock .
-COPY ./.babelrc .
+COPY ./babel.config.js .
 COPY ./.env.development .
 COPY ./.env.production .
 COPY ./tsconfig.json .
