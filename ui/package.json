@@ -6,7 +6,7 @@
   "license": "ISC",
   "scripts": {
     "development": "./node_modules/.bin/ts-node -P ./tsconfig.json ./server.ts",
-    "start:production": "NODE_ENV=production ./node_modules/.bin/ts-node -P ./tsconfig.json ./server.ts",
+    "start:production": "NODE_ENV=production ./node_modules/.bin/ts-node -P ./tsconfig.json -O '{\"module\": \"commonjs\"}' ./server.ts",
     "build": "NODE_ENV=production next build"
   },
   "dependencies": {
@@ -19,14 +19,15 @@
     "express": "^4.16.3",
     "grid-styled": "^5.0.2",
     "lodash": "^4.17.11",
-    "next-plugin-transpile-modules": "^0.1.2",
     "next": "^7.0.0",
-    "react-dom": "^16.5.2",
+    "next-plugin-custom-babel-config": "^1.0.0",
+    "next-plugin-transpile-modules": "^0.1.2",
     "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "styled-components": "^3.4.9",
     "styled-components-ts": "^0.0.14",
-    "styled-components": "^3.4.6",
     "styled-icons": "^3.0.0",
-    "styled-system": "^3.1.3",
+    "styled-system": "^3.1.6",
     "ts-node": "^7.0.1",
     "twine-js": "^2.0.2",
     "typescript": "^3.0.3"
@@ -38,8 +39,8 @@
     "@types/grid-styled": "^4.2.1",
     "@types/lodash": "^4.14.116",
     "@types/next": "^6.1.8",
-    "@types/react-dom": "^16.0.7",
     "@types/react": "^16.4.14",
+    "@types/react-dom": "^16.0.7",
     "@types/styled-components": "^3.0.1",
     "@types/styled-system": "^3.0.4"
   }

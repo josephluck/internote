@@ -5,7 +5,6 @@ import { color } from "../styles/theme";
 
 export default class MyDocument extends Document {
   static async getInitialProps({ renderPage }) {
-    console.log("_document");
     const sheet = new ServerStyleSheet();
     const page = renderPage(App => props =>
       sheet.collectStyles(<App {...props} />)
