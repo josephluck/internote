@@ -24,15 +24,14 @@ A simple note taking application.
 - Install node & yarn
 - Create a cloud instance of postgres (ElephantSQL is pretty good)
 - Copy `.env.reference` to `.env.development` and fill it out (ensuring you copy the right things from the postgres cloud instance)
-- Install docker and docker-compose
-- Run `docker-compose up --build ui-dev api-dev`
-- Visit `http://localhost:80`
+- Run `yarn dev`
+- Visit `http://localhost:3000`
 
-> Please note that the UI application runs on http://localhost:80 and the API runs on port http://localhost:80
+> Please note that the UI application runs on http://localhost:3000 and the API runs on port http://localhost:2020
 
 > If you're working on the production application locally, you'll need to create a `.env.production` file before deployment
 
-> To run docker against production, run `docker-compose up --build ui-prod api-prod`
+> You can also run the development stack in docker by installing `docker-ce` and `docker-compose` and running `yarn dev:docker` from the root of this repository
 
 ## Pixelbook
 

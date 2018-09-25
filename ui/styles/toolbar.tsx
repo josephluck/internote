@@ -3,14 +3,13 @@ import { spacing, color, font } from "./theme";
 import styled from "styled-components";
 import { Saving } from "./saving";
 import { ToolbarBlock } from "./toolbar-block";
-import { Flex, Box } from "grid-styled";
+import { Flex } from "grid-styled";
 import { DeleteForever } from "styled-icons/material";
+import { Wrapper } from "./wrapper";
 
 const ToolbarWrapper = styled.div`
-  padding: ${spacing._0_5} ${spacing._2};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding-top: ${spacing._0_5};
+  padding-bottom: ${spacing._0_5};
   position: fixed;
   bottom: 0;
   left: 0;
@@ -20,6 +19,12 @@ const ToolbarWrapper = styled.div`
   font-size: ${font._18.size};
   line-height: ${font._18.lineHeight};
 `;
+
+const ToolbarInner = Wrapper.extend`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
 
 export function Toolbar({
   words,
@@ -33,11 +38,10 @@ export function Toolbar({
   const minutes = wordsToReadingMinutes(words);
   return (
     <ToolbarWrapper>
-      <>
+      <ToolbarInner>
         <Flex flex="1">
-          <ToolbarBlock>Words: {words}</ToolbarBlock>
           <ToolbarBlock>
-            Reading time: {minutes} {minutes > 1 ? "minutes" : "minute"}
+            {words} words ({minutes} {minutes === 1 ? "min" : "mins"})
           </ToolbarBlock>
         </Flex>
         <Flex alignItems="center">
@@ -54,7 +58,7 @@ export function Toolbar({
             <Saving saving={saving} />
           </Flex>
         </Flex>
-      </>
+      </ToolbarInner>
     </ToolbarWrapper>
   );
 }

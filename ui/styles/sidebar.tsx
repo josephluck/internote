@@ -1,9 +1,10 @@
 import * as React from "react";
-import { spacing, color } from "./theme";
+import { spacing, color, media } from "./theme";
 import styled from "styled-components";
 import styledTs from "styled-components-ts";
 import { Clear } from "styled-icons/material";
 import { Flex } from "grid-styled";
+import { Wrapper } from "./wrapper";
 
 const SidebarWrapper = styledTs<{ open: boolean }>(styled.div)`
   position: fixed;
@@ -22,16 +23,24 @@ const SidebarWrapper = styledTs<{ open: boolean }>(styled.div)`
   flex-direction: column;
 `;
 
-export const SidebarItem = styled.div`
-  padding: ${spacing._0_5} ${spacing._1};
+export const SidebarItem = Wrapper.extend`
+  padding-top: ${spacing._0_5};
+  padding-bottom: ${spacing._0_5};
   overflow: hidden;
   display: flex;
+  margin: 0;
+  @media (min-width: ${media.tablet}) {
+    padding-left: ${spacing._1};
+  }
 `;
 
 const SidebarCloseItem = SidebarItem.extend`
   flex: 0 0 auto;
   justify-content: flex-end;
-  padding-right: ${spacing._2};
+
+  @media (min-width: ${media.tablet}) {
+    padding-right: ${spacing._2};
+  }
 `;
 
 export function Sidebar({

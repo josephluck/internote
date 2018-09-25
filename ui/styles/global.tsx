@@ -60,6 +60,7 @@ export function Global({ store }: { store: Store }) {
               <Button
                 small
                 fullWidth
+                primary
                 onClick={() => {
                   store.actions.setSidebarOpen(false);
                   store.actions.newNote();

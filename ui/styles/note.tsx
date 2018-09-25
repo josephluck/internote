@@ -5,6 +5,7 @@ import styled from "styled-components";
 import dynamic from "next/dynamic";
 import { Editor } from "draft-js";
 import { Store } from "../store";
+import { Wrapper } from "./wrapper";
 
 const InternoteEditor = dynamic(
   import("../styles/editor").then(module => module.InternoteEditor),
@@ -13,8 +14,9 @@ const InternoteEditor = dynamic(
   }
 );
 
-const EditorWrap = styled.div`
-  padding: ${spacing._1} ${spacing._2};
+const EditorWrap = Wrapper.extend`
+  padding-top: ${spacing._1};
+  padding-bottom: ${spacing._1};
 `;
 
 let editorInstance: null | Editor = null;

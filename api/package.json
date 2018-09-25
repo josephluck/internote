@@ -9,7 +9,7 @@
     "domains"
   ],
   "scripts": {
-    "development": "./node_modules/.bin/ts-node-dev ./index.ts",
+    "development": "./node_modules/.bin/ts-node-dev -O \"{\\\"module\\\": \\\"commonjs\\\"}\" ./index.ts",
     "start:production": "NODE_ENV=production ./node_modules/.bin/ts-node ./index.ts"
   },
   "dependencies": {

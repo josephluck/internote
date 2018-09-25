@@ -5,10 +5,9 @@
   "description": "",
   "author": "",
   "scripts": {
-    "dev": "docker-compose up ui-dev api-dev",
-    "prod": "docker-compose up ui-prod api-prod",
-    "dev:rebuild": "docker-compose up --build ui-dev api-dev",
-    "prod:rebuild": "docker-compose up --build ui-prod api-prod",
+    "dev": "npx concurrently \"yarn --cwd ui development\" \"yarn --cwd api development\"",
+    "dev:docker": "docker-compose up ui-dev api-dev",
+    "dev:docker:rebuild": "docker-compose up --build ui-dev api-dev",
     "deploy:prod": "npm run deploy:prod:api && npm run deploy:prod:ui",
     "deploy:prod:api": "cp ./Dockerfile.api ./Dockerfile && now --local-config=./now.api.json --dotenv=.env.production && rm -rf ./Dockerfile && now --local-config=./now.api.json alias",
     "deploy:prod:ui": "cp ./Dockerfile.ui ./Dockerfile && now --local-config=./now.ui.json --dotenv=.env.production && rm -rf ./Dockerfile && now --local-config=./now.ui.json alias"

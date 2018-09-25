@@ -41,3 +41,7 @@ export const spacing = {
   _1_5: "1.5rem",
   _2: "2rem"
 };
+
+export const media = {
+  tablet: '48rem'
+}
