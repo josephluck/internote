@@ -1,5 +1,6 @@
 import React from "react";
-import { EditorState, Editor } from "draft-js";
+import { serializer } from "../utilities/serializer";
+import { Editor } from "slate-react";
 import { debounce } from "lodash";
 
 interface Props {
@@ -7,85 +8,49 @@ interface Props {
   initialValue: string;
   debounceValue?: number;
   onChange: (value: string) => void;
-  exposeEditor?: (editor: Editor) => void;
+  exposeEditor: (ref: any) => void;
 }
 
 interface State {
-  editorState: EditorState;
-  ready: boolean;
+  editorValue: any;
 }
 
 export class InternoteEditor extends React.Component<Props, State> {
-  convertToHTML = null;
-  convertFromHTML = null;
   debounceValue = 1000;
-  editorInstance: null | Editor = null;
 
   constructor(props: Props) {
     super(props);
     this.debounceValue = props.debounceValue || 1000;
     this.state = {
-      editorState: EditorState.createEmpty(),
-      ready: false
+      editorValue: serializer.deserialize(props.initialValue || "")
     };
   }
-
-  async componentDidMount() {
-    if (!this.convertToHTML || !this.convertFromHTML) {
-      await import("draft-convert").then(m => {
-        this.convertToHTML = m.convertToHTML;
-        this.convertFromHTML = m.convertFromHTML;
-      });
-    }
-    this.setState({
-      editorState: EditorState.createWithContent(
-        this.convertFromHTML(this.props.initialValue || "")
-      ),
-      ready: true
-    });
-  }
-
-  onEditorRefObtained = (editor: Editor) => {
-    this.editorInstance = editor;
-    if (this.editorInstance) {
-      this.editorInstance.focus();
-      this.exposeEditorRef();
-    }
-  };
-
-  exposeEditorRef = () => {
-    this.props.exposeEditor(this.editorInstance);
-  };
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.id !== this.props.id) {
       this.setState({
-        editorState: EditorState.createWithContent(
-          this.convertFromHTML(this.props.initialValue || "")
-        )
+        editorValue: serializer.deserialize(this.props.initialValue || "")
       });
     }
   }
 
-  onChange = (editorState: EditorState) => {
-    this.setState({ editorState });
-    this.emitChange(editorState);
+  onChange = ({ value }: any) => {
+    this.setState({ editorValue: value });
+    this.emitChange(value);
   };
 
-  emitChange = debounce((editorState: EditorState) => {
-    const html = this.convertToHTML(editorState.getCurrentContent());
-    if (html !== this.props.initialValue) {
-      this.props.onChange(html);
-    }
+  emitChange = debounce((editorValue: any) => {
+    this.props.onChange(serializer.serialize(editorValue));
   }, this.debounceValue);
 
   render() {
-    return this.state.ready ? (
+    return (
       <Editor
-        editorState={this.state.editorState}
+        placeholder=""
+        value={this.state.editorValue}
         onChange={this.onChange}
-        ref={this.onEditorRefObtained}
+        ref={this.props.exposeEditor}
       />
-    ) : null;
+    );
   }
 }

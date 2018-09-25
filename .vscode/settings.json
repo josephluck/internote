@@ -2,10 +2,12 @@
   "cSpell.words": [
     "Repo",
     "bodyparser",
+    "deserialize",
     "internote",
     "mandle",
     "prefetch",
     "typeorm",
     "workspaces"
-  ]
+  ],
+  "editor.formatOnSave": true
 }
