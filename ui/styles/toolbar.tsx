@@ -1,30 +1,30 @@
 import * as React from "react";
-import { spacing, color, font } from "./theme";
+import { spacing, color, font, borderRadius } from "./theme";
 import styled from "styled-components";
 import { Saving } from "./saving";
 import { ToolbarBlock } from "./toolbar-block";
 import { Flex } from "grid-styled";
-import { DeleteForever } from "styled-icons/material";
 import { Wrapper } from "./wrapper";
+import { Button } from "./button";
 
-const ToolbarWrapper = styled.div`
-  padding-top: ${spacing._0_5};
-  padding-bottom: ${spacing._0_5};
+const ToolbarWrapper = Wrapper.extend`
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: ${color.cinder};
-  border-top: solid 1px black;
+  bottom: ${spacing._1};
+  left: ${spacing._0};
+  right: ${spacing._0};
+  z-index: 5;
   font-size: ${font._18.size};
   line-height: ${font._18.lineHeight};
 `;
 
-const ToolbarInner = Wrapper.extend`
+const ToolbarInner = styled.div`
+  padding: ${spacing._0_5} ${spacing._1};
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+  border-radius: ${borderRadius._6};
+  background: ${color.black};
+`;
 
 export function Toolbar({
   words,
@@ -46,13 +46,16 @@ export function Toolbar({
         </Flex>
         <Flex alignItems="center">
           <Flex mr={spacing._0_5}>
-            <DeleteForever
+            <Button small secondary onClick={onDelete}>
+              Delete
+            </Button>
+            {/* <DeleteForever
               width="16"
               height="16"
               fill={color.jumbo}
               onClick={onDelete}
               style={{ cursor: "pointer" }}
-            />
+            /> */}
           </Flex>
           <Flex>
             <Saving saving={saving} />

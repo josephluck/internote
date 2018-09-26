@@ -20,7 +20,7 @@ export function getAuthenticationTokenFromContext(
 export function setAuthenticationCookie(token: string): void {
   if (!isServer() && typeof document !== "undefined") {
     document.cookie = cookieParser.serialize(authTokenCookieKey, token, {
-      expires: new Date(new Date().setFullYear(9999)),
+      expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
       path: "/"
     });
   }

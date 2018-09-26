@@ -9,8 +9,6 @@ import Link from "next/link";
 import styled from "styled-components";
 import { color, spacing, borderRadius } from "../styles/theme";
 import { Wrapper } from "../styles/wrapper";
-import { Flex } from "grid-styled";
-import { Button } from "../styles/button";
 
 const NoteList = Wrapper.extend`
   padding-top: ${spacing._1};
@@ -22,7 +20,7 @@ const NoteListItem = styled.a`
   background: ${color.black};
   padding: ${spacing._0_5} ${spacing._1};
   border-radius: ${borderRadius._6};
-  margin-bottom: ${spacing._0_5};
+  margin-bottom: 3px;
   overflow: hidden;
   color: ${color.iron};
   text-decoration: none;
@@ -35,20 +33,20 @@ const EllipsisText = styled.span`
   white-space: nowrap;
 `;
 
-const Page: NextTwineSFC<State, Actions, {}, { id: string }> = props => {
+const Page: NextTwineSFC<
+  State,
+  Actions,
+  { id: string },
+  { id: string }
+> = props => {
   return (
     <>
       <Heading store={props.store} />
       <NoteList>
-        {props.store.state.note ? (
+        {props.store.state.note && props.id ? (
           <Note store={props.store} />
         ) : (
           <>
-            <Flex justifyContent="flex-end" mb={spacing._1}>
-              <Button primary onClick={props.store.actions.newNote}>
-                New Note
-              </Button>
-            </Flex>
             {props.store.state.notes.map(note => (
               <Link href={`?id=${note.id}`} passHref key={note.id}>
                 <NoteListItem>
@@ -71,7 +69,9 @@ Page.getInitialProps = async ({ store, query }) => {
   } else {
     store.actions.setNote(null);
   }
-  return {};
+  return {
+    id: query.id
+  };
 };
 
 export default withAuth(Page);

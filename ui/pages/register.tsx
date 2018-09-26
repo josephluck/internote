@@ -27,7 +27,7 @@ const Page: NextTwineSFC<State, Actions, {}> = props => {
     <>
       <Modal open showCloseIcon={false} onClose={() => null}>
         <CenteredLogo>
-          <Logo />
+          <Logo large>Internote</Logo>
         </CenteredLogo>
         <form
           onSubmit={e => {
