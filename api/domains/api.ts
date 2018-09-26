@@ -12,7 +12,8 @@ export function api(baseURL: string) {
   return {
     user: user(client),
     auth: auth(client),
-    note: note(client)
+    note: note(client),
+    interceptors: client.interceptors
   };
 }
 

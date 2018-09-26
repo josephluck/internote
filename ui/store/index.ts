@@ -6,7 +6,7 @@ import {
   removeAuthenticationCookie
 } from "../utilities/cookie";
 import Router from "next/router";
-import { makeSubscriber } from "@internote/ui/store/make-subscriber";
+import { makeSubscriber } from "./make-subscriber";
 import { AxiosError } from "axios";
 
 export interface State {
@@ -72,9 +72,9 @@ function defaultState(): State {
   };
 }
 
-function makeModel(): Twine.Model<State, Reducers, Effects> {
-  const api = makeApi(process.env.API_BASE_URL);
+type Api = ReturnType<typeof makeApi>;
 
+function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
   return {
     state: defaultState(),
     reducers: {
@@ -170,7 +170,7 @@ function makeModel(): Twine.Model<State, Reducers, Effects> {
           state.notes.map(note => (note.id === newNote.id ? newNote : note))
         );
         actions.setLoading(true);
-        await api.note.updateById(state.session.token, state.note.id, {
+        await api.note.updateById(state.session.token, newNote.id, {
           content
         });
         actions.setLoading(false);
@@ -190,13 +190,9 @@ function makeModel(): Twine.Model<State, Reducers, Effects> {
         // TODO: Show a toast message here
         Router.push("/");
       },
-      session(_state, actions, token) {
-        return api.auth
-          .session(token)
-          .then(session => {
-            actions.setSession(session);
-          })
-          .catch(actions.handleApiError);
+      async session(_state, actions, token) {
+        const session = await api.auth.session(token);
+        actions.setSession(session);
       },
       async authenticate(_state, actions, { email, password }) {
         const session = await api.auth.login({ email, password });
@@ -224,7 +220,18 @@ function makeModel(): Twine.Model<State, Reducers, Effects> {
 }
 
 export function makeStore() {
-  return twine<State, Actions>(makeModel());
+  const api = makeApi(process.env.API_BASE_URL);
+  const store = twine<State, Actions>(makeModel(api));
+  api.interceptors.response.use(
+    res => res,
+    err => {
+      console.log(err);
+      if (err && err.response) {
+        store.actions.handleApiError(err);
+      }
+    }
+  );
+  return store;
 }
 
 export type Store = Twine.Return<State, Actions>;
