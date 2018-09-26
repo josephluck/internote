@@ -6,8 +6,8 @@ import {
   removeAuthenticationCookie
 } from "../utilities/cookie";
 import Router from "next/router";
-
-const api = makeApi(process.env.API_BASE_URL);
+import { makeSubscriber } from "@internote/ui/store/make-subscriber";
+import { AxiosError } from "axios";
 
 export interface State {
   session: Types.Session | null;
@@ -21,6 +21,7 @@ export interface State {
 }
 
 interface Reducers {
+  resetState: Twine.Reducer0<State>;
   setSession: Twine.Reducer<State, Types.Session>;
   setNotes: Twine.Reducer<State, Types.Note[]>;
   setNote: Twine.Reducer<State, Types.Note | null>;
@@ -52,12 +53,14 @@ interface Effects {
   >;
   signOut: Twine.Effect0<State, Actions, void>;
   deleteAccount: Twine.Effect0<State, Actions, Promise<void>>;
+  handleApiError: Twine.Effect<State, Actions, AxiosError>;
 }
 
 export type Actions = Twine.Actions<Reducers, Effects>;
 
-const model: Twine.Model<State, Reducers, Effects> = {
-  state: {
+function defaultState(): State {
+  removeAuthenticationCookie();
+  return {
     session: null,
     notes: [],
     note: null,
@@ -66,148 +69,164 @@ const model: Twine.Model<State, Reducers, Effects> = {
     deleteNoteModalOpen: false,
     signOutModalOpen: false,
     deleteAccountModalOpen: false
-  },
-  reducers: {
-    setSession(state, session) {
-      if (session) {
-        setAuthenticationCookie(session.token);
-      } else {
-        removeAuthenticationCookie();
-      }
-      return {
-        ...state,
-        session
-      };
-    },
-    setLoading(state, loading) {
-      return {
-        ...state,
-        loading
-      };
-    },
-    setNotes(state, notes) {
-      return {
-        ...state,
-        notes
-      };
-    },
-    setNote(state, note) {
-      return {
-        ...state,
-        note
-      };
-    },
-    setSidebarOpen(state, sidebarOpen) {
-      return {
-        ...state,
-        sidebarOpen
-      };
-    },
-    setDeleteNoteModalOpen(state, deleteNoteModalOpen) {
-      return {
-        ...state,
-        deleteNoteModalOpen
-      };
-    },
-    setSignOutModalOpen(state, signOutModalOpen) {
-      return {
-        ...state,
-        signOutModalOpen
-      };
-    },
-    setDeleteAccountModalOpen(state, deleteAccountModalOpen) {
-      return {
-        ...state,
-        deleteAccountModalOpen
-      };
-    }
-  },
-  effects: {
-    async fetchNotes(state, actions) {
-      actions.setLoading(true);
-      const notes = await api.note.findAll(state.session.token);
-      actions.setNotes(notes);
-      actions.setLoading(false);
-    },
-    async fetchNote(state, actions, id) {
-      const existingNote = state.notes.find(note => note.id === id);
+  };
+}
 
-      if (existingNote) {
-        actions.setNote(existingNote);
-      } else {
+function makeModel(): Twine.Model<State, Reducers, Effects> {
+  const api = makeApi(process.env.API_BASE_URL);
+
+  return {
+    state: defaultState(),
+    reducers: {
+      resetState: defaultState,
+      setSession(state, session) {
+        if (session) {
+          setAuthenticationCookie(session.token);
+        } else {
+          removeAuthenticationCookie();
+        }
+        return {
+          ...state,
+          session
+        };
+      },
+      setLoading(state, loading) {
+        return {
+          ...state,
+          loading
+        };
+      },
+      setNotes(state, notes) {
+        return {
+          ...state,
+          notes
+        };
+      },
+      setNote(state, note) {
+        return {
+          ...state,
+          note
+        };
+      },
+      setSidebarOpen(state, sidebarOpen) {
+        return {
+          ...state,
+          sidebarOpen
+        };
+      },
+      setDeleteNoteModalOpen(state, deleteNoteModalOpen) {
+        return {
+          ...state,
+          deleteNoteModalOpen
+        };
+      },
+      setSignOutModalOpen(state, signOutModalOpen) {
+        return {
+          ...state,
+          signOutModalOpen
+        };
+      },
+      setDeleteAccountModalOpen(state, deleteAccountModalOpen) {
+        return {
+          ...state,
+          deleteAccountModalOpen
+        };
+      }
+    },
+    effects: {
+      async fetchNotes(state, actions) {
         actions.setLoading(true);
-        const result = await api.note.findById(state.session.token, id);
-        result.map(note => {
-          actions.setNote(note);
+        const notes = await api.note.findAll(state.session.token);
+        actions.setNotes(notes);
+        actions.setLoading(false);
+      },
+      async fetchNote(state, actions, id) {
+        const existingNote = state.notes.find(note => note.id === id);
+
+        if (existingNote) {
+          actions.setNote(existingNote);
+        } else {
+          actions.setLoading(true);
+          const result = await api.note.findById(state.session.token, id);
+          result.map(actions.setNote);
+          actions.setLoading(false);
+        }
+      },
+      async newNote(state, actions) {
+        actions.setLoading(true);
+        const note = await api.note.create(state.session.token, {
+          content: "TODO dummy content"
+        });
+        Router.push(`/?id=${note.id}`);
+        actions.setLoading(false);
+      },
+      async saveNote(state, actions, { content }) {
+        const newNote = {
+          ...state.note,
+          content
+        };
+        actions.setNote(newNote);
+        actions.setNotes(
+          state.notes.map(note => (note.id === newNote.id ? newNote : note))
+        );
+        actions.setLoading(true);
+        await api.note.updateById(state.session.token, state.note.id, {
+          content
         });
         actions.setLoading(false);
+      },
+      async deleteNote(state, actions) {
+        actions.setLoading(true);
+        await api.note.deleteById(state.session.token, state.note.id);
+        actions.setNotes(await api.note.findAll(state.session.token));
+        actions.setNote(null);
+        actions.setDeleteNoteModalOpen(false);
+        // TODO: Show a toast message here
+        Router.push("/");
+      },
+      async register(_state, actions, { email, password }) {
+        const session = await api.auth.register({ email, password });
+        actions.setSession(session);
+        // TODO: Show a toast message here
+        Router.push("/");
+      },
+      session(_state, actions, token) {
+        return api.auth
+          .session(token)
+          .then(session => {
+            actions.setSession(session);
+          })
+          .catch(actions.handleApiError);
+      },
+      async authenticate(_state, actions, { email, password }) {
+        const session = await api.auth.login({ email, password });
+        actions.setSession(session);
+        // TODO: Show a toast message here
+        Router.push("/");
+      },
+      async signOut(_state, actions) {
+        actions.resetState();
+        Router.push("/login");
+      },
+      async deleteAccount(state, actions) {
+        actions.resetState();
+        await api.user.deleteById(state.session.token, state.session.user.id);
+        Router.push("/register");
+      },
+      handleApiError(_state, actions, error) {
+        if (error.response.status === 401) {
+          // TODO: Show a toast message here
+          actions.signOut();
+        }
       }
-    },
-    async newNote(state, actions) {
-      actions.setLoading(true);
-      const note = await api.note.create(state.session.token, {
-        content: "New note"
-      });
-      Router.push(`/?id=${note.id}`);
-      actions.setLoading(false);
-    },
-    async saveNote(state, actions, { content }) {
-      const newNote = {
-        ...state.note,
-        content
-      };
-      actions.setNote(newNote);
-      actions.setNotes(
-        state.notes.map(note => (note.id === newNote.id ? newNote : note))
-      );
-      actions.setLoading(true);
-      await api.note.updateById(state.session.token, state.note.id, {
-        content
-      });
-      actions.setLoading(false);
-    },
-    async deleteNote(state, actions) {
-      actions.setLoading(true);
-      await api.note.deleteById(state.session.token, state.note.id);
-      actions.setNotes(await api.note.findAll(state.session.token));
-      actions.setNote(null);
-      actions.setDeleteNoteModalOpen(false);
-      Router.push("/");
-    },
-    async register(_state, actions, { email, password }) {
-      const session = await api.auth.register({ email, password });
-      actions.setSession(session);
-      Router.push("/");
-    },
-    async session(_state, actions, token) {
-      const session = await api.auth.session(token);
-      actions.setSession(session);
-    },
-    async authenticate(_state, actions, { email, password }) {
-      const session = await api.auth.login({ email, password });
-      actions.setSession(session);
-      Router.push("/");
-    },
-    async signOut(_state, actions) {
-      actions.setSession(null);
-      actions.setNotes([]);
-      actions.setNote(null);
-      actions.setSignOutModalOpen(false);
-      Router.push("/login");
-    },
-    async deleteAccount(state, actions) {
-      actions.setSession(null);
-      actions.setNotes([]);
-      actions.setNote(null);
-      actions.setDeleteAccountModalOpen(false);
-      await api.user.deleteById(state.session.token, state.session.user.id);
-      Router.push("/register");
     }
-  }
-};
+  };
+}
 
 export function makeStore() {
-  return twine<State, Actions>(model);
+  return twine<State, Actions>(makeModel());
 }
 
 export type Store = Twine.Return<State, Actions>;
+
+export const Subscribe = makeSubscriber(makeStore());

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Twine } from "twine-js";
-import { NextContext, QueryStringMapObject } from "next";
+import { NextContext } from "next";
+import { DefaultQuery } from "next/router";
 
 const STORE_KEY = "__TWINE_STORE__";
 
@@ -98,7 +99,7 @@ export interface NextTwineSFC<
   State,
   Actions,
   ExtraProps = {},
-  Query = QueryStringMapObject
+  Query extends DefaultQuery = DefaultQuery
 >
   extends React.StatelessComponent<
       ExtraProps & {

@@ -5,9 +5,7 @@
     "cloud": "v1"
   },
   "public": true,
-  "alias": [
-    "api.internote.app"
-  ],
+  "alias": ["api.internote.app"],
   "scale": {
     "bru1": {
       "min": 1,

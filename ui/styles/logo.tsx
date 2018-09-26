@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { font, color } from "../styles/theme";
+import { Subscribe } from "../store";
 
 const Box = styled.div`
   font-weight: bold;
@@ -18,5 +19,9 @@ const Box = styled.div`
 `;
 
 export function Logo() {
-  return <Box>INTERNOTE</Box>;
+  return (
+    <Subscribe>
+      {store => <Box>INTERNOTE {store.state.loading.toString()}</Box>}
+    </Subscribe>
+  );
 }
