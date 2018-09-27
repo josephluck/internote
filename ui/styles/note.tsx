@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Toolbar } from "../styles/toolbar";
 import dynamic from "next/dynamic";
 import { Editor } from "draft-js";
 import { Store } from "../store";
@@ -28,13 +27,10 @@ export function Note({ store }: { store: Store }) {
             });
           }}
           exposeEditor={instance => (editorInstance = instance)}
+          onDelete={store.actions.deleteNote}
+          saving={store.state.loading}
         />
       </Box>
-      <Toolbar
-        words={store.state.note.content.split(" ").length}
-        saving={store.state.loading}
-        onDelete={() => store.actions.setDeleteNoteModalOpen(true)}
-      />
     </>
   );
 }
