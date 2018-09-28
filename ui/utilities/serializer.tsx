@@ -1,19 +1,26 @@
 import Html from "slate-html-serializer";
 
-const BLOCK_TAGS = {
+type BlockName = "quote" | "paragraph" | "code";
+type FullBlockMap = Record<keyof HTMLElementTagNameMap, BlockName>;
+
+type MarkName = "italic" | "bold" | "underlined";
+type FullMarkMap = Record<keyof HTMLElementTagNameMap, MarkName>;
+
+const BLOCK_TAGS: Partial<FullBlockMap> = {
   blockquote: "quote",
   p: "paragraph",
   pre: "code"
 };
 
-const MARK_TAGS = {
+const MARK_TAGS: Partial<FullMarkMap> = {
   em: "italic",
   strong: "bold",
-  u: "underline"
+  u: "underlined"
 };
 
 export const serializer = new Html({
   rules: [
+    // Blocks
     {
       deserialize(el, next) {
         const type = BLOCK_TAGS[el.tagName.toLowerCase()];
@@ -37,14 +44,16 @@ export const serializer = new Html({
                   <code>{children}</code>
                 </pre>
               );
-            case "paragraph":
-              return <p className={obj.data.get("className")}>{children}</p>;
             case "quote":
               return <blockquote>{children}</blockquote>;
+            default:
+              console.log("Could not find serializer for block", obj);
+              return <p>{children}</p>;
           }
         }
       }
     },
+    // Marks
     {
       deserialize(el, next) {
         const type = MARK_TAGS[el.tagName.toLowerCase()];
@@ -63,8 +72,11 @@ export const serializer = new Html({
               return <strong>{children}</strong>;
             case "italic":
               return <em>{children}</em>;
-            case "underline":
+            case "underlined":
               return <u>{children}</u>;
+            default:
+              console.log("Could not find serializer for mark", obj);
+              return <p>{children}</p>;
           }
         }
       }

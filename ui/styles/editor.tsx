@@ -38,6 +38,19 @@ const ToolbarInner = styled.div`
   background: ${color.black};
 `;
 
+const EditorStyles = styled.div`
+  strong {
+    font-weight: bold;
+  }
+  i,
+  em {
+    font-style: italic;
+  }
+  u {
+    text-decoration: underline;
+  }
+`;
+
 interface Props {
   id: string;
   initialValue: string;
@@ -228,7 +241,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     const words = 0; // TODO
     const minutes = 1; // TODO
     return (
-      <>
+      <EditorStyles>
         <Editor
           placeholder=""
           value={this.state.value}
@@ -266,7 +279,7 @@ export class InternoteEditor extends React.Component<Props, State> {
             </Flex>
           </ToolbarInner>
         </ToolbarWrapper>
-      </>
+      </EditorStyles>
     );
   }
 }
