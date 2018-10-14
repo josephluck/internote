@@ -7,6 +7,11 @@ export function withAuth(Child: any) {
     static async getInitialProps(ctx) {
       return getAuthenticationTokenFromContext(ctx).fold(
         () => {
+          if (typeof window !== "undefined") {
+            console.log(ctx);
+            console.log(document.cookie);
+            debugger;
+          }
           redirect(ctx, "/login");
           return {};
         },

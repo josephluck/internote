@@ -39,8 +39,8 @@ export const FormatButton = styledTs<{ isActive: boolean }>(styled.button)`
   font-weight: ${props => (props.isActive ? "bold" : "normal")};
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
-  width: ${spacing._1_25};
-  height: ${spacing._1_25};
+  width: ${spacing._1_125};
+  height: ${spacing._1_125};
   overflow: hidden;
   transition: all 300ms ease;
   font-weight: bold;

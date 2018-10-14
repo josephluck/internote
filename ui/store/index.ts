@@ -155,7 +155,7 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
       async newNote(state, actions) {
         actions.setLoading(true);
         const note = await api.note.create(state.session.token, {
-          content: "TODO dummy content"
+          content: ""
         });
         Router.push(`/?id=${note.id}`);
         actions.setLoading(false);
@@ -211,6 +211,11 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
       },
       handleApiError(_state, actions, error) {
         if (error.response.status === 401) {
+          if (typeof window !== "undefined") {
+            console.log(error);
+            console.log(document.cookie);
+            debugger;
+          }
           // TODO: Show a toast message here
           actions.signOut();
         }

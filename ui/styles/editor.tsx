@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { Saving } from "./saving";
 import { Flex } from "grid-styled";
 import { Wrapper } from "./wrapper";
-import { Button, FormatButton } from "./button";
+import { FormatButton } from "./button";
 import { Change, Value } from "slate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,7 +19,8 @@ import {
   faHeading,
   faQuoteLeft,
   faListUl,
-  faListOl
+  faListOl,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 
 const DEFAULT_NODE = "paragraph";
@@ -331,9 +332,9 @@ export class InternoteEditor extends React.Component<Props, State> {
             </Flex>
             <Flex alignItems="center">
               <Flex mr={spacing._0_5}>
-                <Button small secondary onClick={this.props.onDelete}>
-                  Delete
-                </Button>
+                <FormatButton isActive={false} onClick={this.props.onDelete}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </FormatButton>
               </Flex>
               <Flex mr={spacing._0_25}>
                 <Saving saving={this.props.saving} />
