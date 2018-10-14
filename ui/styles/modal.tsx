@@ -1,8 +1,9 @@
 import * as React from "react";
-import { spacing, color, borderRadius } from "./theme";
+import { spacing, color, borderRadius, font } from "./theme";
 import styled from "styled-components";
 import styledTs from "styled-components-ts";
-import { Clear } from "styled-icons/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const ModalOuter = styledTs<{ open: boolean }>(styled.div)`
   position: fixed;
@@ -27,13 +28,18 @@ const ModalWrapper = styledTs<{ open: boolean }>(styled.div)`
   transition: all 333ms ease-in-out;
   transform: scale(${props => (props.open ? "1, 1" : "0.95, 0.95")});
   border-radius: ${borderRadius._6};
+  font-size: ${font._28.size};
 `;
 
 const ModalCloseWrapper = styled.div`
-  margin-bottom: ${spacing._1};
   overflow: hidden;
   display: flex;
   justify-content: flex-end;
+  position: absolute;
+  bottom: 100%;
+  left: 100%;
+  margin-bottom: ${spacing._0_5};
+  margin-left: ${spacing._0_5};
 `;
 
 export function Modal({
@@ -51,13 +57,8 @@ export function Modal({
     <ModalOuter open={open}>
       <ModalWrapper open={open}>
         {showCloseIcon ? (
-          <ModalCloseWrapper>
-            <Clear
-              height="25"
-              width="25"
-              fill={color.jumbo}
-              onClick={onClose}
-            />
+          <ModalCloseWrapper onClick={onClose}>
+            <FontAwesomeIcon icon={faTimes} color={color.jumbo} />
           </ModalCloseWrapper>
         ) : null}
         {children}

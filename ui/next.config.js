@@ -8,8 +8,8 @@ module.exports = withCustomBabelConfig(
   withDotenv(
     withTypescript(
       withTranspile({
-        transpileModules: ["@internote", "styled-icons"],
-        babelConfigFile: path.resolve('../babel.config.js'),
+        transpileModules: ["@internote"],
+        babelConfigFile: path.resolve("../babel.config.js")
       })
     )
   )

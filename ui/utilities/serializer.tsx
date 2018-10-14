@@ -6,6 +6,14 @@ type FullBlockMap = Record<keyof HTMLElementTagNameMap, BlockName>;
 type MarkName = "italic" | "bold" | "underlined";
 type FullMarkMap = Record<keyof HTMLElementTagNameMap, MarkName>;
 
+export type MarkType = "bold" | "italic" | "underlined" | "code";
+export type BlockType =
+  | "heading-one"
+  | "heading-two"
+  | "block-quote"
+  | "numbered-list"
+  | "bulleted-list";
+
 const BLOCK_TAGS: Partial<FullBlockMap> = {
   blockquote: "quote",
   p: "paragraph",
@@ -47,7 +55,6 @@ export const serializer = new Html({
             case "quote":
               return <blockquote>{children}</blockquote>;
             default:
-              console.log("Could not find serializer for block", obj);
               return <p>{children}</p>;
           }
         }
@@ -75,7 +82,6 @@ export const serializer = new Html({
             case "underlined":
               return <u>{children}</u>;
             default:
-              console.log("Could not find serializer for mark", obj);
               return <p>{children}</p>;
           }
         }

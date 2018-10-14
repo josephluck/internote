@@ -25,3 +25,22 @@ export const Button = styledTs<{
   line-height: ${props =>
     props.small ? font._12.lineHeight : font._18.lineHeight};
 `;
+
+export const FormatButton = styledTs<{ isActive: boolean }>(styled.button)`
+  background: ${props => (props.isActive ? color.blueRibbon : color.balticSea)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${borderRadius.circle};
+  outline: none;
+  border: 0;
+  padding: 0;
+  color: ${props => (props.isActive ? "white" : color.scarpaFlow)};
+  font-weight: ${props => (props.isActive ? "bold" : "normal")};
+  font-size: ${font._12.size};
+  line-height: ${font._12.lineHeight};
+  width: ${spacing._1_25};
+  height: ${spacing._1_25};
+  overflow: hidden;
+  transition: all 300ms ease;
+`;

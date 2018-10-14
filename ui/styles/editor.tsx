@@ -1,16 +1,26 @@
 import React from "react";
-import { serializer } from "../utilities/serializer";
+import { serializer, MarkType, BlockType } from "../utilities/serializer";
 import { Editor, Plugin } from "slate-react";
 import { debounce } from "lodash";
 import isKeyHotkey from "is-hotkey";
 import { spacing, color, font, borderRadius } from "./theme";
 import styled from "styled-components";
 import { Saving } from "./saving";
-import { ToolbarBlock } from "./toolbar-block";
 import { Flex } from "grid-styled";
 import { Wrapper } from "./wrapper";
-import { Button } from "./button";
+import { Button, FormatButton } from "./button";
 import { Change, Value } from "slate";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBold,
+  faItalic,
+  faUnderline,
+  faCode,
+  faHeading,
+  faQuoteLeft,
+  faListUl,
+  faListOl
+} from "@fortawesome/free-solid-svg-icons";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -30,15 +40,22 @@ const ToolbarWrapper = Wrapper.extend`
 `;
 
 const ToolbarInner = styled.div`
-  padding: ${spacing._0_5} ${spacing._1};
+  padding: ${spacing._0_5};
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-radius: ${borderRadius._6};
+  border-radius: ${borderRadius.pill};
   background: ${color.black};
 `;
 
+const ToolbarButton = FormatButton.extend`
+  margin-right: ${spacing._0_25};
+`;
+
 const EditorStyles = styled.div`
+  > div:first-of-type {
+    min-height: 100vh;
+  }
   strong {
     font-weight: bold;
   }
@@ -48,6 +65,37 @@ const EditorStyles = styled.div`
   }
   u {
     text-decoration: underline;
+  }
+  code {
+    font-family: monospace;
+    background: ${color.shipGray};
+    padding: ${spacing._0_125};
+    padding-bottom: 0;
+    display: inline-block;
+  }
+  h1 {
+    font-size: ${font._36.size};
+    line-height: ${font._36.lineHeight};
+    font-weight: bold;
+  }
+  h2 {
+    font-size: ${font._28.size};
+    line-height: ${font._28.lineHeight};
+    font-weight: bold;
+  }
+  ul li,
+  ol li {
+    list-style-position: inside;
+  }
+  ul {
+    li {
+      list-style-type: disc;
+    }
+  }
+  ol {
+    li {
+      list-style-type: decimal;
+    }
   }
 `;
 
@@ -103,69 +151,6 @@ export class InternoteEditor extends React.Component<Props, State> {
     return value.blocks.some(node => node.type == type);
   };
 
-  renderMarkButton = (type: string, icon: string) => {
-    const isActive = this.hasMark(type);
-    console.log({ isActive });
-
-    return (
-      <button onMouseDown={event => this.onClickMark(event, type)}>
-        {icon}
-      </button>
-    );
-  };
-
-  renderBlockButton = (type: string, icon: string) => {
-    let isActive = this.hasBlock(type);
-
-    if (["numbered-list", "bulleted-list"].includes(type)) {
-      const { value } = this.state;
-      const parent = value.document.getParent(value.blocks.first().key);
-      isActive = this.hasBlock("list-item") && parent && parent.type === type;
-    }
-
-    console.log({ isActive });
-
-    return (
-      <button onMouseDown={event => this.onClickBlock(event, type)}>
-        {icon}
-      </button>
-    );
-  };
-
-  renderNode: Plugin["renderNode"] = props => {
-    const { attributes, children, node } = props;
-
-    switch (node.type) {
-      case "block-quote":
-        return <blockquote {...attributes}>{children}</blockquote>;
-      case "bulleted-list":
-        return <ul {...attributes}>{children}</ul>;
-      case "heading-one":
-        return <h1 {...attributes}>{children}</h1>;
-      case "heading-two":
-        return <h2 {...attributes}>{children}</h2>;
-      case "list-item":
-        return <li {...attributes}>{children}</li>;
-      case "numbered-list":
-        return <ol {...attributes}>{children}</ol>;
-    }
-  };
-
-  renderMark: Plugin["renderMark"] = props => {
-    const { children, mark, attributes } = props;
-
-    switch (mark.type) {
-      case "bold":
-        return <strong {...attributes}>{children}</strong>;
-      case "code":
-        return <code {...attributes}>{children}</code>;
-      case "italic":
-        return <em {...attributes}>{children}</em>;
-      case "underlined":
-        return <u {...attributes}>{children}</u>;
-    }
-  };
-
   onKeyDown: Plugin["onKeyDown"] = (event, change) => {
     let mark;
 
@@ -185,21 +170,21 @@ export class InternoteEditor extends React.Component<Props, State> {
     change.toggleMark(mark);
   };
 
-  onClickMark = (event: React.MouseEvent<HTMLButtonElement>, type: string) => {
+  onClickMark = (event: React.MouseEvent<HTMLElement>, type: MarkType) => {
     event.preventDefault();
     const { value } = this.state;
     const change = value.change().toggleMark(type);
     this.onChange(change);
   };
 
-  onClickBlock = (event: React.MouseEvent<HTMLButtonElement>, type: string) => {
+  onClickBlock = (event: React.MouseEvent<HTMLElement>, type: BlockType) => {
     event.preventDefault();
     const { value } = this.state;
     const change = value.change();
     const { document } = value;
 
     // Handle everything but list buttons.
-    if (type != "bulleted-list" && type != "numbered-list") {
+    if (type !== "bulleted-list" && type !== "numbered-list") {
       const isActive = this.hasBlock(type);
       const isList = this.hasBlock("list-item");
 
@@ -237,9 +222,89 @@ export class InternoteEditor extends React.Component<Props, State> {
     this.onChange(change);
   };
 
+  renderMarkButton = (type: MarkType) => {
+    const isActive = this.hasMark(type);
+
+    return (
+      <ToolbarButton
+        onMouseDown={event => this.onClickMark(event, type)}
+        isActive={isActive}
+      >
+        {type === "bold" ? (
+          <FontAwesomeIcon icon={faBold} />
+        ) : type === "italic" ? (
+          <FontAwesomeIcon icon={faItalic} />
+        ) : type === "underlined" ? (
+          <FontAwesomeIcon icon={faUnderline} />
+        ) : (
+          <FontAwesomeIcon icon={faCode} />
+        )}
+      </ToolbarButton>
+    );
+  };
+
+  renderBlockButton = (type: BlockType) => {
+    let isActive = this.hasBlock(type);
+
+    if (["numbered-list", "bulleted-list"].includes(type)) {
+      const { value } = this.state;
+      const parent = value.document.getParent(value.blocks.first().key);
+      isActive = this.hasBlock("list-item") && parent && parent.type === type;
+    }
+
+    return (
+      <ToolbarButton
+        onMouseDown={event => this.onClickBlock(event, type)}
+        isActive={isActive}
+      >
+        {type === "heading-one" ? (
+          <FontAwesomeIcon icon={faHeading} />
+        ) : type === "heading-two" ? (
+          <FontAwesomeIcon icon={faHeading} />
+        ) : type === "block-quote" ? (
+          <FontAwesomeIcon icon={faQuoteLeft} />
+        ) : type === "bulleted-list" ? (
+          <FontAwesomeIcon icon={faListUl} />
+        ) : (
+          <FontAwesomeIcon icon={faListOl} />
+        )}
+      </ToolbarButton>
+    );
+  };
+
+  renderNode: Plugin["renderNode"] = ({ attributes, children, node }) => {
+    switch (node.type) {
+      case "block-quote":
+        return <blockquote {...attributes}>{children}</blockquote>;
+      case "bulleted-list":
+        return <ul {...attributes}>{children}</ul>;
+      case "heading-one":
+        return <h1 {...attributes}>{children}</h1>;
+      case "heading-two":
+        return <h2 {...attributes}>{children}</h2>;
+      case "list-item":
+        return <li {...attributes}>{children}</li>;
+      case "numbered-list":
+        return <ol {...attributes}>{children}</ol>;
+    }
+  };
+
+  renderMark: Plugin["renderMark"] = props => {
+    const { children, mark, attributes } = props;
+
+    switch (mark.type as MarkType) {
+      case "bold":
+        return <strong {...attributes}>{children}</strong>;
+      case "code":
+        return <code {...attributes}>{children}</code>;
+      case "italic":
+        return <em {...attributes}>{children}</em>;
+      case "underlined":
+        return <u {...attributes}>{children}</u>;
+    }
+  };
+
   render() {
-    const words = 0; // TODO
-    const minutes = 1; // TODO
     return (
       <EditorStyles>
         <Editor
@@ -253,19 +318,16 @@ export class InternoteEditor extends React.Component<Props, State> {
         />
         <ToolbarWrapper>
           <ToolbarInner>
-            <Flex flex="1">
-              {this.renderMarkButton("bold", "format_bold")}
-              {this.renderMarkButton("italic", "format_italic")}
-              {this.renderMarkButton("underlined", "format_underlined")}
-              {this.renderMarkButton("code", "code")}
-              {this.renderBlockButton("heading-one", "looks_one")}
-              {this.renderBlockButton("heading-two", "looks_two")}
-              {this.renderBlockButton("block-quote", "format_quote")}
-              {this.renderBlockButton("numbered-list", "format_list_numbered")}
-              {this.renderBlockButton("bulleted-list", "format_list_bulleted")}
-              <ToolbarBlock>
-                {words} words ({minutes} {minutes === 1 ? "min" : "mins"})
-              </ToolbarBlock>
+            <Flex flex="1" alignItems="center">
+              {this.renderMarkButton("bold")}
+              {this.renderMarkButton("italic")}
+              {this.renderMarkButton("underlined")}
+              {this.renderMarkButton("code")}
+              {this.renderBlockButton("heading-one")}
+              {this.renderBlockButton("heading-two")}
+              {this.renderBlockButton("block-quote")}
+              {this.renderBlockButton("numbered-list")}
+              {this.renderBlockButton("bulleted-list")}
             </Flex>
             <Flex alignItems="center">
               <Flex mr={spacing._0_5}>
@@ -273,7 +335,7 @@ export class InternoteEditor extends React.Component<Props, State> {
                   Delete
                 </Button>
               </Flex>
-              <Flex>
+              <Flex mr={spacing._0_25}>
                 <Saving saving={this.props.saving} />
               </Flex>
             </Flex>

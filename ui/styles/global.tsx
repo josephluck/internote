@@ -56,7 +56,6 @@ export function Global({ store }: { store: Store }) {
       <Modal
         open={store.state.deleteNoteModalOpen}
         onClose={() => store.actions.setDeleteNoteModalOpen(false)}
-        showCloseIcon={false}
       >
         <>
           <Box mb={spacing._1}>Are you sure you wish to delete this note?</Box>
@@ -81,7 +80,6 @@ export function Global({ store }: { store: Store }) {
       <Modal
         open={store.state.signOutModalOpen}
         onClose={() => store.actions.setSignOutModalOpen(false)}
-        showCloseIcon={false}
       >
         <>
           <Box mb={spacing._1}>Are you sure you wish to sign out?</Box>
@@ -106,7 +104,6 @@ export function Global({ store }: { store: Store }) {
       <Modal
         open={store.state.deleteAccountModalOpen}
         onClose={() => store.actions.setDeleteAccountModalOpen(false)}
-        showCloseIcon={false}
       >
         <>
           <Box mb={spacing._1}>

@@ -1,5 +1,7 @@
 export const borderRadius = {
-  _6: "6px"
+  _6: "6px",
+  pill: "9999px",
+  circle: "100%"
 };
 
 export const color = {
@@ -28,6 +30,14 @@ export const font = {
     size: "24px",
     lineHeight: "1.6em"
   },
+  _28: {
+    size: "28px",
+    lineHeight: "1.8em"
+  },
+  _36: {
+    size: "36px",
+    lineHeight: "2.2em"
+  },
   family: {
     inter: "'Inter UI', Helvetica, Arial, sans-serif"
   }
@@ -35,9 +45,11 @@ export const font = {
 
 export const spacing = {
   _0: "0rem",
+  _0_125: "0.125rem",
   _0_25: "0.25rem",
   _0_5: "0.5rem",
   _1: "1rem",
+  _1_25: "1.25rem",
   _1_5: "1.5rem",
   _2: "2rem",
   _3: "3rem"

@@ -2,9 +2,10 @@ import * as React from "react";
 import { spacing, color, media } from "./theme";
 import styled from "styled-components";
 import styledTs from "styled-components-ts";
-import { Clear } from "styled-icons/material";
 import { Flex } from "grid-styled";
 import { Wrapper } from "./wrapper";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const SidebarWrapper = styledTs<{ open: boolean }>(styled.div)`
   position: fixed;
@@ -54,14 +55,8 @@ export function Sidebar({
 }) {
   return (
     <SidebarWrapper open={open}>
-      <SidebarCloseItem>
-        <Clear
-          height="25"
-          width="25"
-          fill={color.jumbo}
-          onClick={onClose}
-          style={{ cursor: "pointer" }}
-        />
+      <SidebarCloseItem onClick={onClose}>
+        <FontAwesomeIcon icon={faTimes} color={color.jumbo} />
       </SidebarCloseItem>
       <Flex flex="1" flexDirection="column" style={{ overflow: "auto" }}>
         {children}

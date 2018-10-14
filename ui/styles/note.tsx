@@ -27,7 +27,7 @@ export function Note({ store }: { store: Store }) {
             });
           }}
           exposeEditor={instance => (editorInstance = instance)}
-          onDelete={store.actions.deleteNote}
+          onDelete={() => store.actions.setDeleteNoteModalOpen(true)}
           saving={store.state.loading}
         />
       </Box>

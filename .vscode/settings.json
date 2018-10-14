@@ -3,6 +3,8 @@
     "Repo",
     "bodyparser",
     "deserialize",
+    "fontawesome",
+    "fortawesome",
     "internote",
     "mandle",
     "prefetch",
