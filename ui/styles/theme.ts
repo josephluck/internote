@@ -32,11 +32,11 @@ export const font = {
   },
   _28: {
     size: "28px",
-    lineHeight: "1.8em"
+    lineHeight: "1.7em"
   },
   _36: {
     size: "36px",
-    lineHeight: "2.2em"
+    lineHeight: "1.8em"
   },
   family: {
     inter: "'Inter UI', Helvetica, Arial, sans-serif"

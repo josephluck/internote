@@ -104,6 +104,10 @@ const EditorStyles = styled.div`
       list-style-type: decimal;
     }
   }
+  blockquote {
+    border-left: solid 4px ${color.scarpaFlow};
+    padding-left: ${spacing._0_5};
+  }
 `;
 
 interface Props {
@@ -159,28 +163,33 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onKeyDown: Plugin["onKeyDown"] = (event, _change) => {
-    event.preventDefault();
-
     if (isBoldHotkey(event)) {
+      event.preventDefault();
       this.onClickMark(event as any, "bold");
     } else if (isItalicHotkey(event)) {
+      event.preventDefault();
       this.onClickMark(event as any, "italic");
     } else if (isUnderlinedHotkey(event)) {
+      event.preventDefault();
       this.onClickMark(event as any, "underlined");
     } else if (isCodeHotkey(event)) {
+      event.preventDefault();
       this.onClickMark(event as any, "code");
     } else if (isH1Hotkey(event)) {
+      event.preventDefault();
       this.onClickBlock(event as any, "heading-one");
     } else if (isH2Hotkey(event)) {
+      event.preventDefault();
       this.onClickBlock(event as any, "heading-two");
     } else if (isQuoteHotkey(event)) {
+      event.preventDefault();
       this.onClickBlock(event as any, "block-quote");
     } else if (isOlHotkey(event)) {
+      event.preventDefault();
       this.onClickBlock(event as any, "numbered-list");
     } else if (isUlHotkey(event)) {
-      this.onClickBlock(event as any, "bulleted-list");
-    } else {
       event.preventDefault();
+      this.onClickBlock(event as any, "bulleted-list");
     }
   };
 

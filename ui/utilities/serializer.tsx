@@ -1,6 +1,14 @@
 import Html from "slate-html-serializer";
 
-type BlockName = "quote" | "paragraph" | "code";
+type BlockName =
+  | "block-quote"
+  | "paragraph"
+  | "code"
+  | "heading-one"
+  | "heading-two"
+  | "list-item"
+  | "bulleted-list"
+  | "numbered-list";
 type FullBlockMap = Record<keyof HTMLElementTagNameMap, BlockName>;
 
 type MarkName = "italic" | "bold" | "underlined";
@@ -15,9 +23,14 @@ export type BlockType =
   | "bulleted-list";
 
 const BLOCK_TAGS: Partial<FullBlockMap> = {
-  blockquote: "quote",
+  blockquote: "block-quote",
   p: "paragraph",
-  pre: "code"
+  pre: "code",
+  h1: "heading-one",
+  h2: "heading-two",
+  ul: "bulleted-list",
+  ol: "numbered-list",
+  li: "list-item"
 };
 
 const MARK_TAGS: Partial<FullMarkMap> = {
@@ -45,6 +58,7 @@ export const serializer = new Html({
       },
       serialize(obj, children) {
         if (obj.object == "block") {
+          console.log(obj.type);
           switch (obj.type) {
             case "code":
               return (
@@ -52,8 +66,18 @@ export const serializer = new Html({
                   <code>{children}</code>
                 </pre>
               );
-            case "quote":
+            case "block-quote":
               return <blockquote>{children}</blockquote>;
+            case "heading-one":
+              return <h1>{children}</h1>;
+            case "heading-two":
+              return <h2>{children}</h2>;
+            case "numbered-list":
+              return <ol>{children}</ol>;
+            case "bulleted-list":
+              return <ul>{children}</ul>;
+            case "list-item":
+              return <li>{children}</li>;
             default:
               return <p>{children}</p>;
           }
