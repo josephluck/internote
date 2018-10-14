@@ -27,7 +27,7 @@ const SavingIcon = styledTs<{ saving: boolean }>(styled.div)`
   width: 10px;
   border-radius: 9999px;
   background: ${props => (props.saving ? "transparent" : color.jungleGreen)};
-  border: solid 1px ${props =>
+  border: solid 2px ${props =>
     props.saving ? color.blueRibbon : color.jungleGreen};
 `;
 
