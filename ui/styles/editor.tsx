@@ -76,7 +76,8 @@ const EditorStyles = styled.div`
   code {
     font-family: monospace;
     background: ${color.shipGray};
-    padding: ${spacing._0_125};
+    padding: ${spacing._0_125} ${spacing._0_25};
+    border-radius: ${borderRadius._6};
     padding-bottom: 0;
     display: inline-block;
   }
