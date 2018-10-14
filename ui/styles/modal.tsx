@@ -25,8 +25,9 @@ const ModalWrapper = styledTs<{ open: boolean }>(styled.div)`
   min-width: 100px;
   width: 80%;
   background: black;
-  transition: all 333ms ease-in-out;
-  transform: scale(${props => (props.open ? "1, 1" : "0.95, 0.95")});
+  transition: all 300ms ease;
+  transform: translateY(${props => (props.open ? "0px" : "-10px")});
+  opacity: ${props => (props.open ? "1" : "0")};
   border-radius: ${borderRadius._6};
   font-size: ${font._28.size};
 `;

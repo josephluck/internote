@@ -43,4 +43,5 @@ export const FormatButton = styledTs<{ isActive: boolean }>(styled.button)`
   height: ${spacing._1_25};
   overflow: hidden;
   transition: all 300ms ease;
+  font-weight: bold;
 `;

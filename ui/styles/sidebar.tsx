@@ -17,11 +17,12 @@ const SidebarWrapper = styledTs<{ open: boolean }>(styled.div)`
   min-width: 100px;
   width: 80%;
   background: black;
-  transition: all 333ms ease;
-  transform: translateX(${props => (props.open ? "0%" : "100%")});
+  transition: all 300ms ease;
+  transform: translateX(${props => (props.open ? "0px" : "10px")});
   opacity: ${props => (props.open ? "1" : "0")};
   display: flex;
   flex-direction: column;
+  pointer-events: ${props => (props.open ? "normal" : "none")};
 `;
 
 export const SidebarItem = Wrapper.extend`

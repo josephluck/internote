@@ -260,7 +260,7 @@ export class InternoteEditor extends React.Component<Props, State> {
         {type === "heading-one" ? (
           <FontAwesomeIcon icon={faHeading} />
         ) : type === "heading-two" ? (
-          <FontAwesomeIcon icon={faHeading} />
+          "H2"
         ) : type === "block-quote" ? (
           <FontAwesomeIcon icon={faQuoteLeft} />
         ) : type === "bulleted-list" ? (
@@ -322,9 +322,9 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("bold")}
               {this.renderMarkButton("italic")}
               {this.renderMarkButton("underlined")}
-              {this.renderMarkButton("code")}
               {this.renderBlockButton("heading-one")}
               {this.renderBlockButton("heading-two")}
+              {this.renderMarkButton("code")}
               {this.renderBlockButton("block-quote")}
               {this.renderBlockButton("numbered-list")}
               {this.renderBlockButton("bulleted-list")}

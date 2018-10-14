@@ -16,7 +16,7 @@ const DarkOverlay = styledTs<{ showing: boolean }>(styled.div)`
   height: 100%;
   width: 100%;
   background: ${color.cinder};
-  transition: all 333ms ease;
+  transition: all 300ms ease;
   opacity: ${props => (props.showing ? "0.9" : "0")};
   pointer-events: none;
 `;
