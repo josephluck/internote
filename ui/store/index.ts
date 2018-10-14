@@ -154,9 +154,7 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
       },
       async newNote(state, actions) {
         actions.setLoading(true);
-        const note = await api.note.create(state.session.token, {
-          content: ""
-        });
+        const note = await api.note.create(state.session.token);
         Router.push(`/?id=${note.id}`);
         actions.setLoading(false);
       },

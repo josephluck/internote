@@ -15,7 +15,7 @@ export function api(client: AxiosInstance) {
         .get(`/notes/${noteId}`, makeRequestConfig({ token }))
         .then(r => Ok(r.data));
     },
-    create(token: string, payload: CreateNote): Promise<Note> {
+    create(token: string, payload: CreateNote = {}): Promise<Note> {
       return client
         .post("/notes", payload, makeRequestConfig({ token }))
         .then(r => r.data);
