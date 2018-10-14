@@ -25,10 +25,16 @@ import {
 
 const DEFAULT_NODE = "paragraph";
 
-const isBoldHotkey = isKeyHotkey("mod+b");
-const isItalicHotkey = isKeyHotkey("mod+i");
-const isUnderlinedHotkey = isKeyHotkey("mod+u");
-const isCodeHotkey = isKeyHotkey("mod+`");
+// Keyboard shortcuts
+const isBoldHotkey = isKeyHotkey("mod+1") || isKeyHotkey("mod+b");
+const isItalicHotkey = isKeyHotkey("mod+2") || isKeyHotkey("mod+i");
+const isUnderlinedHotkey = isKeyHotkey("mod+3") || isKeyHotkey("mod+u");
+const isH1Hotkey = isKeyHotkey("mod+4");
+const isH2Hotkey = isKeyHotkey("mod+5");
+const isCodeHotkey = isKeyHotkey("mod+6") || isKeyHotkey("mod+`");
+const isQuoteHotkey = isKeyHotkey("mod+7");
+const isOlHotkey = isKeyHotkey("mod+8");
+const isUlHotkey = isKeyHotkey("mod+9");
 
 const ToolbarWrapper = Wrapper.extend`
   position: fixed;
@@ -152,23 +158,30 @@ export class InternoteEditor extends React.Component<Props, State> {
     return value.blocks.some(node => node.type == type);
   };
 
-  onKeyDown: Plugin["onKeyDown"] = (event, change) => {
-    let mark;
+  onKeyDown: Plugin["onKeyDown"] = (event, _change) => {
+    event.preventDefault();
 
     if (isBoldHotkey(event)) {
-      mark = "bold";
+      this.onClickMark(event as any, "bold");
     } else if (isItalicHotkey(event)) {
-      mark = "italic";
+      this.onClickMark(event as any, "italic");
     } else if (isUnderlinedHotkey(event)) {
-      mark = "underlined";
+      this.onClickMark(event as any, "underlined");
     } else if (isCodeHotkey(event)) {
-      mark = "code";
+      this.onClickMark(event as any, "code");
+    } else if (isH1Hotkey(event)) {
+      this.onClickBlock(event as any, "heading-one");
+    } else if (isH2Hotkey(event)) {
+      this.onClickBlock(event as any, "heading-two");
+    } else if (isQuoteHotkey(event)) {
+      this.onClickBlock(event as any, "block-quote");
+    } else if (isOlHotkey(event)) {
+      this.onClickBlock(event as any, "numbered-list");
+    } else if (isUlHotkey(event)) {
+      this.onClickBlock(event as any, "bulleted-list");
     } else {
-      return;
+      event.preventDefault();
     }
-
-    event.preventDefault();
-    change.toggleMark(mark);
   };
 
   onClickMark = (event: React.MouseEvent<HTMLElement>, type: MarkType) => {
