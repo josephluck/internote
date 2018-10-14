@@ -58,7 +58,6 @@ export const serializer = new Html({
       },
       serialize(obj, children) {
         if (obj.object == "block") {
-          console.log(obj.type);
           switch (obj.type) {
             case "code":
               return (
