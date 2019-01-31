@@ -7,6 +7,7 @@ import { Wrapper } from "./wrapper";
 import styled from "styled-components";
 import { NoteMenu } from "./note-menu";
 import { Flex } from "grid-styled";
+import { SettingsMenu } from "./settings-menu";
 
 const HeadingWrapper = styled.div`
   padding-top: ${spacing._0_5};
@@ -32,6 +33,7 @@ export function Heading({ store }: { store: Store }) {
         <Flex flex="1" alignItems="center" justifyContent="center">
           <NoteMenu store={store} />
         </Flex>
+        <SettingsMenu store={store} />
       </HeadingInner>
     </HeadingWrapper>
   );

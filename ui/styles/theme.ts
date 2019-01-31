@@ -18,9 +18,17 @@ export const color = {
 };
 
 export const font = {
+  _8: {
+    size: "8px",
+    lineHeight: "1em"
+  },
   _12: {
     size: "12px",
     lineHeight: "1.2em"
+  },
+  _16: {
+    size: "16px",
+    lineHeight: "1.3em"
   },
   _18: {
     size: "18px",

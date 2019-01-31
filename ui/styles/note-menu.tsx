@@ -12,7 +12,7 @@ export function NoteMenu({ store }: { store: Store }) {
   return (
     <MenuControl
       menu={menu => (
-        <DropdownMenu showing={menu.menuShowing}>
+        <DropdownMenu showing={menu.menuShowing} position="center">
           <DropdownMenuItem
             icon={faPlus}
             onClick={() => {

@@ -8,9 +8,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const DropdownMenu = styled.div<{ showing: boolean }>`
+export const DropdownMenu = styled.div<{
+  showing: boolean;
+  position?: "center" | "right";
+}>`
   position: absolute;
-  left: 50%;
+  left: ${props => (props.position === "center" ? "50%" : "auto")};
+  right: ${props => (props.position === "right" ? "0" : "auto")};
   top: 100%;
   z-index: 10;
   margin-top: ${spacing._0_5};
@@ -20,7 +24,7 @@ export const DropdownMenu = styled.div<{ showing: boolean }>`
   transition: all 300ms ease;
   pointer-events: ${props => (props.showing ? "unset" : "none")};
   transform: translateY(${props => (props.showing ? `0` : "-10px")})
-    translateX(-50%);
+    translateX(${props => (props.position === "center" ? "-50%" : "0")});
   padding: ${spacing._0_5} 0;
   a {
     text-decoration: none;
@@ -72,6 +76,10 @@ const DropdownChevronWrap = styled.div`
   cursor: ${props => (props.onClick ? "pointer" : "inherit")};
 `;
 
+const ChevronIcon = styled.div`
+  font-size: ${font._8.size};
+`;
+
 export function DropdownChevron({
   children,
   onClick
@@ -81,8 +89,10 @@ export function DropdownChevron({
 }) {
   return (
     <DropdownChevronWrap onClick={onClick}>
-      <Box mr={spacing._0_5}>{children}</Box>
-      <FontAwesomeIcon icon={faChevronDown} />
+      <Box mr={spacing._0_25}>{children}</Box>
+      <ChevronIcon>
+        <FontAwesomeIcon icon={faChevronDown} />
+      </ChevronIcon>
     </DropdownChevronWrap>
   );
 }
