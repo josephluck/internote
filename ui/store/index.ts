@@ -36,7 +36,12 @@ interface Effects {
   fetchNotes: Twine.Effect0<State, Actions, Promise<Types.Note[]>>;
   fetchNote: Twine.Effect<State, Actions, string, Promise<void>>;
   newNote: Twine.Effect0<State, Actions, Promise<Types.Note>>;
-  saveNote: Twine.Effect<State, Actions, { content: string }, Promise<void>>;
+  saveNote: Twine.Effect<
+    State,
+    Actions,
+    { content: string; title: string | undefined },
+    Promise<void>
+  >;
   deleteNote: Twine.Effect0<State, Actions, Promise<void>>;
   navigateToFirstNote: Twine.Effect0<State, Actions, Promise<void>>;
   register: Twine.Effect<
@@ -152,24 +157,23 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
       },
       async newNote(state, actions) {
         const note = await api.note.create(state.session.token, {
-          title: new Date().toLocaleString()
+          title: new Date().toDateString()
         });
         actions.setNote(note);
         Router.push(`/?id=${note.id}`);
         return note;
       },
-      async saveNote(state, actions, { content }) {
+      async saveNote(state, actions, { content, title }) {
+        const updates = { content, title: title ? title : state.note.title };
         const newNote = {
           ...state.note,
-          content
+          ...updates
         };
         actions.setNote(newNote);
         actions.setNotes(
           state.notes.map(note => (note.id === newNote.id ? newNote : note))
         );
-        await api.note.updateById(state.session.token, newNote.id, {
-          content
-        });
+        await api.note.updateById(state.session.token, newNote.id, updates);
       },
       async deleteNote(state, actions) {
         // NB: This cannot setNote(null) since we have `OnMount` which performs navigateToFirstNote() which will get triggered if we do

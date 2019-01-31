@@ -5,7 +5,7 @@ export const borderRadius = {
 };
 
 export const color = {
-  cinder: "#0D0A15",
+  cinder: "#0f0d16",
   iron: "#D0D2D4",
   balticSea: "#19181B",
   shipGray: "#211F28",

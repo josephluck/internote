@@ -13,7 +13,7 @@ export const DropdownMenu = styled.div<{ showing: boolean }>`
   left: 50%;
   top: 100%;
   z-index: 10;
-  margin-top: ${spacing._0_25};
+  margin-top: ${spacing._0_5};
   background: ${color.black};
   border-radius: ${borderRadius._6};
   opacity: ${props => (props.showing ? 1 : 0)};
@@ -33,6 +33,7 @@ const DropdownMenuItemWrap = styled.div`
   padding: ${spacing._0_5} ${spacing._1};
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
+  font-weight: 600;
   white-space: nowrap;
   cursor: ${props => (props.onClick ? "pointer" : "inherit")};
   color: ${color.iron};
@@ -40,7 +41,7 @@ const DropdownMenuItemWrap = styled.div`
 
 const DropdownMenuItemIcon = styled.div`
   margin-right: ${spacing._0_5};
-  width: ${spacing._0_75};
+  width: ${spacing._0_5};
 `;
 
 export function DropdownMenuItem({
@@ -66,6 +67,8 @@ const DropdownChevronWrap = styled.div`
   display: flex;
   align-items: center;
   font-size: ${font._12.size};
+  line-height: ${font._12.lineHeight};
+  font-weight: 600;
 `;
 
 export function DropdownChevron({

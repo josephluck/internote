@@ -21,11 +21,7 @@ export function Note({ store }: { store: Store }) {
         <InternoteEditor
           id={store.state.note.id}
           initialValue={store.state.note.content}
-          onChange={content => {
-            store.actions.saveNote({
-              content
-            });
-          }}
+          onChange={store.actions.saveNote}
           exposeEditor={instance => (editorInstance = instance)}
           onDelete={() => store.actions.setDeleteNoteModalOpen(true)}
           saving={store.state.loading}

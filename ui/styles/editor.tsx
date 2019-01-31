@@ -115,7 +115,7 @@ interface Props {
   id: string;
   initialValue: string;
   debounceValue?: number;
-  onChange: (value: string) => void;
+  onChange: (value: { content: string; title: string }) => void;
   exposeEditor: (ref: any) => void;
   onDelete: () => void;
   saving: boolean;
@@ -123,6 +123,17 @@ interface Props {
 
 interface State {
   value: Value;
+}
+
+function getTitleFromEditorValue(editorValue: any): string | undefined {
+  return editorValue.document &&
+    editorValue.document.nodes &&
+    editorValue.document.nodes._tail &&
+    editorValue.document.nodes._tail.array &&
+    editorValue.document.nodes._tail.array[0] &&
+    editorValue.document.nodes._tail.array[0].text
+    ? editorValue.document.nodes._tail.array[0].text
+    : undefined;
 }
 
 export class InternoteEditor extends React.Component<Props, State> {
@@ -145,12 +156,15 @@ export class InternoteEditor extends React.Component<Props, State> {
   }
 
   onChange = ({ value }: Change) => {
-    this.setState({ value: value });
+    this.setState({ value });
     this.emitChange(value);
   };
 
   emitChange = debounce((editorValue: any) => {
-    this.props.onChange(serializer.serialize(editorValue));
+    this.props.onChange({
+      content: serializer.serialize(editorValue),
+      title: getTitleFromEditorValue(editorValue)
+    });
   }, this.debounceValue);
 
   hasMark = (type: string): boolean => {
@@ -261,8 +275,8 @@ export class InternoteEditor extends React.Component<Props, State> {
         ) : type === "underlined" ? (
           <FontAwesomeIcon icon={faUnderline} />
         ) : (
-                <FontAwesomeIcon icon={faCode} />
-              )}
+          <FontAwesomeIcon icon={faCode} />
+        )}
       </ToolbarButton>
     );
   };
@@ -290,8 +304,8 @@ export class InternoteEditor extends React.Component<Props, State> {
         ) : type === "bulleted-list" ? (
           <FontAwesomeIcon icon={faListUl} />
         ) : (
-                  <FontAwesomeIcon icon={faListOl} />
-                )}
+          <FontAwesomeIcon icon={faListOl} />
+        )}
       </ToolbarButton>
     );
   };

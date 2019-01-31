@@ -30,7 +30,7 @@ export type CreateNote = Omit<
 export type UpdateNote = CreateNote;
 
 function defaultNoteContent() {
-  return "<h1>Internote</h1><p></p><p>Internote is a rich text editor designed for distraction-free content creation.</p><p></p><p>Internote supports a myriad of different formatting options including <strong>bold, </strong><em>italic </em>and <u>underline</u> as well as lists, <code>code snippets</code>, headings and quotes.</p><p></p><p>Internote automatically saves your notes in the cloud and is completely free.</p>";
+  return "<h2>Internote</h2><p></p><p>Internote is a rich text editor designed for distraction-free content creation.</p><p></p><p>Internote supports a myriad of different formatting options including <strong>bold, </strong><em>italic </em>and <u>underline</u> as well as lists, <code>code snippets</code>, headings and quotes.</p><p></p><p>Internote automatically saves your notes in the cloud and is completely free.</p>";
 }
 
 export function createNote(fields: any, user: UserEntity) {
@@ -40,7 +40,10 @@ export function createNote(fields: any, user: UserEntity) {
     return {
       ...new NoteEntity(),
       ...fields,
-      content: fields.content ? fields.content : defaultNoteContent(),
+      content: fields.content
+        ? fields.content
+        : `<h1>${fields.title ||
+            "New note"}</h1><p></p>${defaultNoteContent()}`,
       user
     };
   });
