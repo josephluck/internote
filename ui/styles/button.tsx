@@ -24,6 +24,7 @@ export const Button = styledTs<{
   font-size: ${props => (props.small ? font._12.size : font._18.size)};
   line-height: ${props =>
     props.small ? font._12.lineHeight : font._18.lineHeight};
+  cursor: ${props => props.onClick || props.type === 'submit' ? 'pointer' : 'inherit'};
 `;
 
 export const FormatButton = styledTs<{ isActive: boolean }>(styled.button)`

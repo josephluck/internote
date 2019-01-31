@@ -47,7 +47,7 @@ const ToolbarWrapper = Wrapper.extend`
 `;
 
 const ToolbarInner = styled.div`
-  padding: ${spacing._0_5};
+  padding: ${spacing._0_25};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -56,7 +56,7 @@ const ToolbarInner = styled.div`
 `;
 
 const ToolbarButton = FormatButton.extend`
-  margin-right: ${spacing._0_25};
+  margin-right: ${spacing._0_125};
 `;
 
 const EditorStyles = styled.div`
@@ -261,8 +261,8 @@ export class InternoteEditor extends React.Component<Props, State> {
         ) : type === "underlined" ? (
           <FontAwesomeIcon icon={faUnderline} />
         ) : (
-          <FontAwesomeIcon icon={faCode} />
-        )}
+                <FontAwesomeIcon icon={faCode} />
+              )}
       </ToolbarButton>
     );
   };
@@ -290,12 +290,11 @@ export class InternoteEditor extends React.Component<Props, State> {
         ) : type === "bulleted-list" ? (
           <FontAwesomeIcon icon={faListUl} />
         ) : (
-          <FontAwesomeIcon icon={faListOl} />
-        )}
+                  <FontAwesomeIcon icon={faListOl} />
+                )}
       </ToolbarButton>
     );
   };
-
   renderNode: Plugin["renderNode"] = ({ attributes, children, node }) => {
     switch (node.type) {
       case "block-quote":
@@ -354,7 +353,7 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderBlockButton("bulleted-list")}
             </Flex>
             <Flex alignItems="center">
-              <Flex mr={spacing._0_5}>
+              <Flex mr={spacing._0_4}>
                 <FormatButton isActive={false} onClick={this.props.onDelete}>
                   <FontAwesomeIcon icon={faTrash} />
                 </FormatButton>

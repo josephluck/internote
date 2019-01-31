@@ -3,12 +3,10 @@ import { spacing, color } from "../styles/theme";
 import { Logo } from "../styles/logo";
 import { BlockLink } from "../styles/link";
 import { Store } from "../store";
-import { Flex } from "grid-styled";
 import { Wrapper } from "./wrapper";
 import styled from "styled-components";
-import { Button } from "./button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { NoteMenu } from "./note-menu";
+import { Flex } from "grid-styled";
 
 const HeadingWrapper = styled.div`
   padding-top: ${spacing._0_5};
@@ -22,7 +20,6 @@ const HeadingWrapper = styled.div`
 const HeadingInner = Wrapper.extend`
   display: flex;
   align-items: center;
-  justify-content: space-between;
 `;
 
 export function Heading({ store }: { store: Store }) {
@@ -32,15 +29,8 @@ export function Heading({ store }: { store: Store }) {
         <BlockLink href="/">
           <Logo>Internote</Logo>
         </BlockLink>
-        <Flex alignItems="center">
-          <Flex justifyContent="flex-end" mr={spacing._0_5}>
-            <Button small onClick={store.actions.newNote}>
-              New Note
-            </Button>
-          </Flex>
-          <Flex onClick={() => store.actions.setSidebarOpen(true)}>
-            <FontAwesomeIcon icon={faBars} color={color.jumbo} />
-          </Flex>
+        <Flex flex="1" alignItems="center" justifyContent="center">
+          <NoteMenu store={store} />
         </Flex>
       </HeadingInner>
     </HeadingWrapper>

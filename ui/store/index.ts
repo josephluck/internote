@@ -1,4 +1,5 @@
 import twine, { Twine } from "twine-js";
+import logger from "twine-js/lib/log";
 import * as Types from "@internote/api/domains/types";
 import makeApi from "@internote/api/domains/api";
 import {
@@ -33,11 +34,12 @@ interface Reducers {
 }
 
 interface Effects {
-  fetchNotes: Twine.Effect0<State, Actions, Promise<void>>;
+  fetchNotes: Twine.Effect0<State, Actions, Promise<Types.Note[]>>;
   fetchNote: Twine.Effect<State, Actions, string, Promise<void>>;
-  newNote: Twine.Effect0<State, Actions, Promise<void>>;
+  newNote: Twine.Effect0<State, Actions, Promise<Types.Note>>;
   saveNote: Twine.Effect<State, Actions, { content: string }, Promise<void>>;
   deleteNote: Twine.Effect0<State, Actions, Promise<void>>;
+  navigateToFirstNote: Twine.Effect0<State, Actions, Promise<void>>;
   register: Twine.Effect<
     State,
     Actions,
@@ -135,28 +137,23 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
     },
     effects: {
       async fetchNotes(state, actions) {
-        actions.setLoading(true);
         const notes = await api.note.findAll(state.session.token);
         actions.setNotes(notes);
-        actions.setLoading(false);
+        return notes;
       },
       async fetchNote(state, actions, id) {
         const existingNote = state.notes.find(note => note.id === id);
-
         if (existingNote) {
           actions.setNote(existingNote);
         } else {
-          actions.setLoading(true);
           const result = await api.note.findById(state.session.token, id);
           result.map(actions.setNote);
-          actions.setLoading(false);
         }
       },
-      async newNote(state, actions) {
-        actions.setLoading(true);
+      async newNote(state, _actions) {
         const note = await api.note.create(state.session.token);
         Router.push(`/?id=${note.id}`);
-        actions.setLoading(false);
+        return note;
       },
       async saveNote(state, actions, { content }) {
         const newNote = {
@@ -167,26 +164,29 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
         actions.setNotes(
           state.notes.map(note => (note.id === newNote.id ? newNote : note))
         );
-        actions.setLoading(true);
         await api.note.updateById(state.session.token, newNote.id, {
           content
         });
-        actions.setLoading(false);
       },
       async deleteNote(state, actions) {
-        actions.setLoading(true);
         await api.note.deleteById(state.session.token, state.note.id);
-        actions.setNotes(await api.note.findAll(state.session.token));
+        actions.setNotes(state.notes.filter(note => note.id !== state.note.id));
         actions.setNote(null);
         actions.setDeleteNoteModalOpen(false);
-        // TODO: Show a toast message here
-        Router.push("/");
+        await actions.navigateToFirstNote();
+      },
+      async navigateToFirstNote(_state, actions) {
+        const notes = await actions.fetchNotes();
+        if (notes.length === 0) {
+          await actions.newNote();
+        } else {
+          Router.push(`/?id=${notes[0].id}`);
+        }
       },
       async register(_state, actions, { email, password }) {
         const session = await api.auth.register({ email, password });
         actions.setSession(session);
-        // TODO: Show a toast message here
-        Router.push("/");
+        await actions.navigateToFirstNote();
       },
       async session(_state, actions, token) {
         const session = await api.auth.session(token);
@@ -195,8 +195,7 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
       async authenticate(_state, actions, { email, password }) {
         const session = await api.auth.login({ email, password });
         actions.setSession(session);
-        // TODO: Show a toast message here
-        Router.push("/");
+        await actions.navigateToFirstNote();
       },
       async signOut(_state, actions) {
         actions.resetState();
@@ -210,8 +209,8 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
       handleApiError(_state, actions, error) {
         if (error.response.status === 401) {
           if (typeof window !== "undefined") {
-            console.log(error);
-            console.log(document.cookie);
+            console.log({ error });
+            console.log({ cookie: document.cookie });
             debugger;
           }
           // TODO: Show a toast message here
@@ -224,7 +223,7 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
 
 export function makeStore() {
   const api = makeApi(process.env.API_BASE_URL);
-  const store = twine<State, Actions>(makeModel(api));
+  const store = twine<State, Actions>(makeModel(api), logger);
   api.interceptors.response.use(
     res => res,
     err => {

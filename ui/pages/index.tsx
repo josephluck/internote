@@ -9,6 +9,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import { color, spacing, borderRadius } from "../styles/theme";
 import { Wrapper } from "../styles/wrapper";
+import { OnMount } from "../styles/on-mount";
 
 const NoteList = Wrapper.extend`
   padding-top: ${spacing._1};
@@ -46,15 +47,7 @@ const Page: NextTwineSFC<
         {props.store.state.note && props.id ? (
           <Note store={props.store} />
         ) : (
-          <>
-            {props.store.state.notes.map(note => (
-              <Link href={`?id=${note.id}`} passHref key={note.id}>
-                <NoteListItem>
-                  <EllipsisText>{note.content}</EllipsisText>
-                </NoteListItem>
-              </Link>
-            ))}
-          </>
+          <OnMount action={props.store.actions.navigateToFirstNote} />
         )}
       </NoteList>
       <Global store={props.store} />
@@ -66,8 +59,6 @@ Page.getInitialProps = async ({ store, query }) => {
   await store.actions.fetchNotes();
   if (query && query.id) {
     await store.actions.fetchNote(query.id);
-  } else {
-    store.actions.setNote(null);
   }
   return {
     id: query.id

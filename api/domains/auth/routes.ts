@@ -18,10 +18,11 @@ function makeController(deps: Dependencies) {
         () => {
           deps.messages.throw(
             ctx,
-            deps.messages.badRequest("Incorrect username or password")
+            deps.messages.badRequest("Incorrect username")
           );
         },
         async user => {
+          console.log(user);
           const passwordOkay = await crypt.compare(
             ctx.request.body["password"],
             user.password
@@ -35,7 +36,7 @@ function makeController(deps: Dependencies) {
           } else {
             deps.messages.throw(
               ctx,
-              deps.messages.badRequest("Incorrect username or password")
+              deps.messages.badRequest("Incorrect password")
             );
           }
         }
