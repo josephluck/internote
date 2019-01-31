@@ -69,6 +69,7 @@ const DropdownChevronWrap = styled.div`
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
   font-weight: 600;
+  cursor: ${props => (props.onClick ? "pointer" : "inherit")};
 `;
 
 export function DropdownChevron({
