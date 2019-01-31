@@ -801,6 +801,11 @@
   version "10.9.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.9.4.tgz#0f4cb2dc7c1de6096055357f70179043c33e9897"
 
+"@types/object-assign@^4.0.30":
+  version "4.0.30"
+  resolved "https://registry.yarnpkg.com/@types/object-assign/-/object-assign-4.0.30.tgz#8949371d5a99f4381ee0f1df0a9b7a187e07e652"
+  integrity sha1-iUk3HVqZ9Dge4PHfCpt6GH4H5lI=
+
 "@types/prop-types@*":
   version "15.5.5"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.5.tgz#17038dd322c2325f5da650a94d5f9974943625e3"
@@ -5641,6 +5646,16 @@ unique-slug@^2.0.0:
   resolved "https://registry.yarnpkg.com/unique-slug/-/unique-slug-2.0.0.tgz#db6676e7c7cc0629878ff196097c78855ae9f4ab"
   dependencies:
     imurmurhash "^0.1.4"
+
+universal-cookie@^3.0.7:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/universal-cookie/-/universal-cookie-3.0.7.tgz#722e8bc455bb33ed3c74988344fad9d9bb88278e"
+  integrity sha512-wfZRbaEzFTDbP64fzTfGDfokB3pWkDNjtsuRAZQWaiuj/Up+3/0AEvN4IhFHPK24iGNtGJ6PNIxv1GQzMSiyMw==
+  dependencies:
+    "@types/cookie" "^0.3.1"
+    "@types/object-assign" "^4.0.30"
+    cookie "^0.3.1"
+    object-assign "^4.1.0"
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"

@@ -33,7 +33,7 @@ export function NoteMenu({ store }: { store: Store }) {
                   }
                   onClick={() => menu.toggleMenuShowing(false)}
                 >
-                  {note.id}
+                  {note.title}
                 </DropdownMenuItem>
               </a>
             </Link>
@@ -43,7 +43,7 @@ export function NoteMenu({ store }: { store: Store }) {
     >
       {menu => (
         <DropdownChevron onClick={() => menu.toggleMenuShowing(true)}>
-          {store.state.note ? store.state.note.id : null}
+          {store.state.note ? store.state.note.title : null}
         </DropdownChevron>
       )}
     </MenuControl>

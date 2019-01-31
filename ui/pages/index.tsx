@@ -5,33 +5,13 @@ import { withAuth } from "../hoc/with-auth";
 import { Heading } from "../styles/heading";
 import { Global } from "../styles/global";
 import { Note } from "../styles/note";
-import Link from "next/link";
-import styled from "styled-components";
-import { color, spacing, borderRadius } from "../styles/theme";
+import { spacing } from "../styles/theme";
 import { Wrapper } from "../styles/wrapper";
 import { OnMount } from "../styles/on-mount";
 
-const NoteList = Wrapper.extend`
+const PageWrapper = Wrapper.extend`
   padding-top: ${spacing._1};
   padding-bottom: ${spacing._1};
-`;
-
-const NoteListItem = styled.a`
-  display: block;
-  background: ${color.black};
-  padding: ${spacing._0_5} ${spacing._1};
-  border-radius: ${borderRadius._6};
-  margin-bottom: 3px;
-  overflow: hidden;
-  color: ${color.iron};
-  text-decoration: none;
-`;
-
-const EllipsisText = styled.span`
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 const Page: NextTwineSFC<
@@ -43,13 +23,13 @@ const Page: NextTwineSFC<
   return (
     <>
       <Heading store={props.store} />
-      <NoteList>
+      <PageWrapper>
         {props.store.state.note && props.id ? (
           <Note store={props.store} />
         ) : (
           <OnMount action={props.store.actions.navigateToFirstNote} />
         )}
-      </NoteList>
+      </PageWrapper>
       <Global store={props.store} />
     </>
   );

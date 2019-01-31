@@ -2,13 +2,12 @@ import twine, { Twine } from "twine-js";
 import logger from "twine-js/lib/log";
 import * as Types from "@internote/api/domains/types";
 import makeApi from "@internote/api/domains/api";
-import {
-  setAuthenticationCookie,
-  removeAuthenticationCookie
-} from "../utilities/cookie";
 import Router from "next/router";
 import { makeSubscriber } from "./make-subscriber";
 import { AxiosError } from "axios";
+import cookie from "../utilities/cookie";
+
+const cookies = cookie();
 
 export interface State {
   session: Types.Session | null;
@@ -61,7 +60,6 @@ interface Effects {
 export type Actions = Twine.Actions<Reducers, Effects>;
 
 function defaultState(): State {
-  removeAuthenticationCookie();
   return {
     session: null,
     notes: [],
@@ -83,9 +81,11 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
       resetState: defaultState,
       setSession(state, session) {
         if (session) {
-          setAuthenticationCookie(session.token);
-        } else {
-          removeAuthenticationCookie();
+          cookies.persistAuthToken(session.token);
+        } else if (process.env.NODE_ENV === "production") {
+          // NB: this solves logging out from hot-module reloading this file
+          // since state isn't persisted between hot-module reloads
+          cookies.removeAuthToken();
         }
         return {
           ...state,
@@ -150,8 +150,11 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
           result.map(actions.setNote);
         }
       },
-      async newNote(state, _actions) {
-        const note = await api.note.create(state.session.token);
+      async newNote(state, actions) {
+        const note = await api.note.create(state.session.token, {
+          title: new Date().toLocaleString()
+        });
+        actions.setNote(note);
         Router.push(`/?id=${note.id}`);
         return note;
       },
@@ -169,9 +172,9 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
         });
       },
       async deleteNote(state, actions) {
+        // NB: This cannot setNote(null) since we have `OnMount` which performs navigateToFirstNote() which will get triggered if we do
         await api.note.deleteById(state.session.token, state.note.id);
         actions.setNotes(state.notes.filter(note => note.id !== state.note.id));
-        actions.setNote(null);
         actions.setDeleteNoteModalOpen(false);
         await actions.navigateToFirstNote();
       },

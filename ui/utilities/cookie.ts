@@ -1,36 +1,48 @@
-import { NextContext } from "next";
-import { Option } from "space-lift";
-import * as cookieParser from "cookie";
+import CookieFactory from "universal-cookie";
 import { isServer } from "./window";
 
-export const authTokenCookieKey = "AUTH_TOKEN";
+const AUTH_COOKIE = "INTERNOTE_AUTH";
 
-export function getAuthenticationTokenFromContext(
-  ctx: NextContext
-): Option<string> {
-  const cookie =
-    isServer() && ctx.req && ctx.req.headers.cookie
-      ? (ctx.req.headers.cookie as string)
-      : typeof document !== "undefined" && document.cookie
-        ? document.cookie
-        : "";
-  return Option(cookieParser.parse(cookie)[authTokenCookieKey]);
+export function authTokenCookieOptions() {
+  return {
+    encode: String,
+    path: "/",
+    expires: new Date(Date.now() + +2.592e9)
+  };
 }
 
-export function setAuthenticationCookie(token: string): void {
-  if (!isServer() && typeof document !== "undefined") {
-    document.cookie = cookieParser.serialize(authTokenCookieKey, token, {
-      expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-      path: "/"
-    });
-  }
+export function expireCookie() {
+  return {
+    encode: String,
+    path: "/",
+    expires: new Date(Date.now() - +2.592e9) // Brute force expiry
+  };
 }
 
-export function removeAuthenticationCookie(): void {
-  if (!isServer() && typeof document !== "undefined") {
-    document.cookie = cookieParser.serialize(authTokenCookieKey, "", {
-      expires: new Date(new Date().setFullYear(1970)),
-      path: "/"
-    });
+export default function(cookie?: string) {
+  const cookies = isServer() ? new CookieFactory(cookie) : new CookieFactory();
+
+  function persistAuthToken(token: string) {
+    cookies.set(AUTH_COOKIE, token, authTokenCookieOptions());
   }
+
+  function removeAuthToken() {
+    // NB: failing removal, brute force expiry
+    const token = getAuthToken();
+    if (token) {
+      cookies.set(AUTH_COOKIE, token, expireCookie());
+    }
+    cookies.remove(AUTH_COOKIE);
+  }
+
+  function getAuthToken(): string | undefined {
+    const token = cookies.get(AUTH_COOKIE);
+    return token ? token : undefined;
+  }
+
+  return {
+    persistAuthToken,
+    removeAuthToken,
+    getAuthToken
+  };
 }

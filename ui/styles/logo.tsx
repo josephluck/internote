@@ -3,7 +3,7 @@ import styledTs from "styled-components-ts";
 import { font, color } from "../styles/theme";
 
 export const Logo = styledTs<{ large?: boolean }>(styled.div)`
-  font-weight: bold;
+  font-weight: 700;
   font-size: ${props => (props.large ? font._24.size : font._18.size)};
   line-height: ${props =>
     props.large ? font._24.lineHeight : font._18.lineHeight};
