@@ -13,7 +13,7 @@ import { spacing, font } from "./theme";
 import { Box } from "grid-styled";
 
 const DeleteIcon = styled.div`
-  margin-left: ${spacing._0_5};
+  margin-left: ${spacing._0_75};
   font-size: ${font._12.size};
   cursor: pointer;
 `;

@@ -32,6 +32,13 @@ export const DropdownMenu = styled.div<{
   }
 `;
 
+const DropdownMenuItemIcon = styled.div`
+  margin-right: ${spacing._0_5};
+  width: ${spacing._0_5};
+  opacity: 0.5;
+  transition: opacity 150ms ease;
+`;
+
 const DropdownMenuItemWrap = styled.div`
   display: flex;
   align-items: center;
@@ -42,12 +49,11 @@ const DropdownMenuItemWrap = styled.div`
   white-space: nowrap;
   color: ${color.iron};
   cursor: pointer;
-`;
-
-const DropdownMenuItemIcon = styled.div`
-  margin-right: ${spacing._0_5};
-  width: ${spacing._0_5};
-  opacity: 0.5;
+  &:hover {
+    ${DropdownMenuItemIcon} {
+      opacity: 1;
+    }
+  }
 `;
 
 export function DropdownMenuItem({
