@@ -17,8 +17,7 @@
       "ui"
     ],
     "nohoist": [
-      "ts-node-dev",
-      "ts-node"
+      "**"
     ]
   }
 }

@@ -4,9 +4,9 @@
   "description": "",
   "author": "",
   "license": "ISC",
+  "main": "lambda.ts",
   "files": [
-    ".",
-    "domains"
+    "*"
   ],
   "scripts": {
     "dev": "NODE_ENV=development ./node_modules/.bin/ts-node-dev ./server.ts",
