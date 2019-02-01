@@ -3,7 +3,11 @@ import { connectToDatabase } from "./dependencies/db";
 import { startApp } from "./app";
 
 export async function handler(event, context) {
-  const app = startApp(await connectToDatabase());
+  const db = await connectToDatabase();
+  const app = startApp(db);
   const lambda = serverless(app);
-  return await lambda(event, context);
+  return lambda(event, context).then(response => {
+    db.close();
+    return response;
+  });
 }
