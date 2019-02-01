@@ -1,4 +1,4 @@
-import serverless from "serverless-http";
+import * as serverless from "serverless-http";
 import { connectToDatabase } from "./dependencies/db";
 import { startApp } from "./app";
 

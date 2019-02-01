@@ -17,7 +17,7 @@ export interface Dependencies {
   messages: typeof messages;
 }
 
-export const startApp = async (db: Connection) => {
+export function startApp(db: Connection) {
   const app = new Koa();
 
   const router = makeRouter({
@@ -44,4 +44,4 @@ export const startApp = async (db: Connection) => {
   app.use(exceptions());
 
   return app;
-};
+}
