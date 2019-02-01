@@ -1,7 +1,7 @@
 import * as Router from "koa-router";
-import { Dependencies } from "../../";
+import { Dependencies } from "../../app";
 import { NoteEntity, createNote } from "./entity";
-import { route, RestController } from "../../router";
+import { route, RestController } from "../router";
 
 function makeController(deps: Dependencies): RestController {
   const repo = deps.db.getRepository(NoteEntity);

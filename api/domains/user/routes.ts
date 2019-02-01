@@ -1,7 +1,7 @@
 import * as Router from "koa-router";
-import { Dependencies } from "../../";
+import { Dependencies } from "../../app";
 import { UserEntity } from "./entity";
-import { route } from "../../router";
+import { route } from "../router";
 import { Option } from "space-lift";
 
 function makeController(deps: Dependencies) {

@@ -1,9 +1,9 @@
 import * as Router from "koa-router";
-import { Dependencies } from "../../.";
+import { Dependencies } from "../../app";
 import { UserEntity, createUser } from "../user/entity";
 import { Option } from "space-lift";
 import * as crypt from "bcryptjs";
-import { route } from "../../router";
+import { route } from "../router";
 
 function makeController(deps: Dependencies) {
   const userRepo = deps.db.getRepository(UserEntity);

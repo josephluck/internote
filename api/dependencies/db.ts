@@ -1,7 +1,7 @@
 import { createConnection } from "typeorm";
-import entities from "./domains/entities";
+import entities from "../domains/entities";
 
-async function connect() {
+export async function connectToDatabase() {
   return createConnection({
     type: "postgres",
     host: process.env.DB_HOST,
@@ -13,8 +13,4 @@ async function connect() {
     synchronize: true,
     logging: true
   });
-}
-
-export default async function createDatabase() {
-  return await connect();
 }

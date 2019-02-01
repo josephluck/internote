@@ -1,7 +1,7 @@
 import { Entity, Column, ManyToOne } from "typeorm";
 import { Omit } from "type-zoo";
 import Base from "../base-entity";
-import { validate, rules } from "../../validation";
+import { validate, rules } from "../../dependencies/validation";
 import { UserEntity } from "../user/entity";
 
 @Entity()

@@ -1,7 +1,7 @@
 import { Entity, Column, OneToMany } from "typeorm";
 import { Omit } from "type-zoo";
 import Base from "../base-entity";
-import { validate, rules } from "../../validation";
+import { validate, rules } from "../../dependencies/validation";
 import * as crypt from "bcryptjs";
 import { NoteEntity } from "../note/entity";
 

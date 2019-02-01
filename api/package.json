@@ -9,8 +9,7 @@
     "domains"
   ],
   "scripts": {
-    "dev": "NODE_ENV=development ./node_modules/.bin/ts-node-dev ./index.ts",
-    "start": "NODE_ENV=production ./node_modules/.bin/ts-node ./index.ts"
+    "dev": "NODE_ENV=development ./node_modules/.bin/ts-node-dev ./server.ts"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -32,6 +31,7 @@
     "pg": "^7.4.3",
     "ramda": "^0.25.0",
     "reflect-metadata": "^0.1.12",
+    "serverless-http": "^1.9.0",
     "space-lift": "^0.8.0",
     "ts-node": "^7.0.1",
     "ts-node-dev": "^1.0.0-pre.30",

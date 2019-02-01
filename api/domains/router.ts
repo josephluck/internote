@@ -1,11 +1,11 @@
 import * as Router from "koa-router";
-import { Dependencies } from "./";
 import { compose } from "ramda";
-import user from "./domains/user/routes";
-import auth from "./domains/auth/routes";
-import note from "./domains/note/routes";
 import { Option } from "space-lift";
-import { UserEntity } from "./domains/user/entity";
+import { Dependencies } from "../app";
+import user from "./user/routes";
+import auth from "./auth/routes";
+import note from "./note/routes";
+import { UserEntity } from "./user/entity";
 
 type ControllerFn = (
   ctx: Router.IRouterContext,
