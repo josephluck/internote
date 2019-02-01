@@ -6,8 +6,8 @@
   "author": "",
   "scripts": {
     "dev": "npx concurrently \"yarn --cwd ui dev\" \"yarn --cwd api dev\"",
-    "dev:docker": "docker-compose up ui-dev api-dev",
-    "dev:docker:rebuild": "docker-compose up --build ui-dev api-dev"
+    "serverless:deploy": "echo \"Not implemented\"",
+    "serverless:local": "echo \"Not implemented\""
   },
   "license": "ISC",
   "workspaces": {

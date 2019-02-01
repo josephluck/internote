@@ -2,24 +2,25 @@
 
 A simple note taking application.
 
-## Features
-
-- Make notes using a simple web interface
-- Preview and edit notes
-- Link to other notes easily
-- Anonymous authentication
-
 ## Stack
 
-- Typescript
+- TypeScript
 - React
 - Next
 - Twine
+- Styled components
 - Koa
 - Postgresql
 - Typeorm
 
-## Development environment
+## Deployment
+
+- Serverless
+- AWS Lambda
+
+## Local development environment
+
+To run long-running servers locally:
 
 - Install node & yarn
 - Create a cloud instance of postgres (ElephantSQL is pretty good)
@@ -27,85 +28,23 @@ A simple note taking application.
 - Run `yarn dev`
 - Visit `http://localhost:3000`
 
-> Please note that the UI application runs on http://localhost:3000 and the API runs on port http://localhost:2020
+> The UI application runs on http://localhost:3000 and the API runs on port http://localhost:2020
 
 > If you're working on the production application locally, you'll need to create a `.env.production` file before deployment
 
-> You can also run the development stack in docker by installing `docker-ce` and `docker-compose` and running `yarn dev:docker` from the root of this repository
+## Serverless development environment
 
-## Pixelbook
+It's possible to emulate the serverless stack locally by doing the following:
 
-To get docker running on the pixelbook, unfortunately, you have to run the following after every log in (and before starting any linux applications):
-
-```bash
-ctrl + alt + t
-vmc start termina
-lxc profile apply penguin default
-lxc profile unset default security.syscalls.blacklist
-```
-
-After this, you can open the `terminal` application and run the project using the steps above.
-
-More reading: https://bugs.chromium.org/p/chromium/issues/detail?id=860565
-And: https://www.reddit.com/r/Crostini/comments/99jdeh/70035242_rolling_out_to_dev/e4revli/
+- Set up the deployment set up instructions below
+- TODO
 
 ## Deployment set up
 
-- Install `now` from [Zeit](https://zeit.co/now)
-- Run `now` and authenticate
-- You should be ready to deploy the app using the instructions below
+- Create an AWS account
+- Follow [these](https://serverless.com/framework/docs/providers/aws/guide/installation/) and then [these](https://serverless.com/framework/docs/providers/aws/guide/credentials/) instructions
+- Use the `serverless config credentials --provider aws --key EXAMPLE --secret EXAMPLEKEY` method of authenticating serverless with AWS
 
 ## Deployment
 
-You can simply run `yarn deploy:prod` from the root of this repository to deploy to production. Read below for the manual steps:
-
-## API Deployment
-
-Copy Dockerfile.api to a temporary Dockerfile in the root:
-
-```
-cp ./Dockerfile.api ./Dockerfile
-```
-
-Deploy via `now`
-
-```
-now --local-config=./now.api.json --dotenv=.env.production
-```
-
-Remove the temporary Dockerfile for the API
-
-```
-rm Dockerfile
-```
-
-## UI Deployment
-
-Copy Dockerfile.ui to a temporary Dockerfile in the root:
-
-```
-cp ./Dockerfile.ui ./Dockerfile
-```
-
-Deploy via `now`
-
-```
-now --local-config=./now.api.json --dotenv=.env.production
-```
-
-Remove the temporary Dockerfile for the UI
-
-```
-rm Dockerfile
-```
-
-
-## Running build docker files locally
-
-```
-docker build -t internote/api . -f Dockerfile.api
-```
-
-```
-docker run -p 1337:80 internote/api
-```
+Simply run `yarn serverless:deploy` from the root of this repository to deploy to production
