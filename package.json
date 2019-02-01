@@ -6,8 +6,9 @@
   "author": "",
   "scripts": {
     "dev": "npx concurrently \"yarn --cwd ui dev\" \"yarn --cwd api dev\"",
-    "serverless:deploy": "echo \"Not implemented\"",
-    "serverless:local": "echo \"Not implemented\""
+    "serverless:deploy": "yarn serverless:deploy:api",
+    "serverless:deploy:api": "yarn --cwd api serverless:deploy",
+    "serverless:local": "npx concurrently \"yarn --cwd api serverless:local\""
   },
   "license": "ISC",
   "workspaces": {

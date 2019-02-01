@@ -11,8 +11,8 @@
   "scripts": {
     "dev": "NODE_ENV=development ./node_modules/.bin/ts-node-dev ./server.ts",
     "test:tsc": "tsc --noEmit",
-    "serverless:deploy": "echo \"Not implemented\"",
-    "serverless:local": "SLS_DEBUG=* sls offline start"
+    "serverless:deploy": "NODE_ENV=production sls deploy",
+    "serverless:local": "SLS_DEBUG=* sls offline start --port 2020"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -23,7 +23,6 @@
     "@types/ramda": "^0.25.38",
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
-    "dotenv": "^6.0.0",
     "jsonwebtoken": "^8.3.0",
     "koa": "^2.5.3",
     "koa-bodyparser": "^4.2.1",
@@ -35,6 +34,7 @@
     "ramda": "^0.25.0",
     "reflect-metadata": "^0.1.12",
     "serverless": "^1.36.3",
+    "serverless-dotenv-plugin": "^2.0.1",
     "serverless-http": "^1.9.0",
     "serverless-offline": "^4.2.1",
     "serverless-plugin-typescript": "^1.1.5",

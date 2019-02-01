@@ -2,6 +2,7 @@ node_modules
 *.log
 .next
 .env
-.env.production
+.env
 .env.development
+api/.serverless
 api/.build

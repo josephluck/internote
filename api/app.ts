@@ -1,4 +1,3 @@
-import "./dependencies/env";
 import "reflect-metadata";
 import * as Koa from "koa";
 import * as bodyParser from "koa-bodyparser";

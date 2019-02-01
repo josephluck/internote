@@ -24,13 +24,14 @@ To run long-running servers locally:
 
 - Install node & yarn
 - Create a cloud instance of postgres (ElephantSQL is pretty good)
-- Copy `.env.reference` to `.env.development` and fill it out (ensuring you copy the right things from the postgres cloud instance)
+- Copy `/api/.env.reference` to `/api/.env.development` and fill it out (ensuring you copy the right things from the postgres cloud instance)
+- Do the same for `/ui/.env.reference`
 - Run `yarn dev`
 - Visit `http://localhost:3000`
 
 > The UI application runs on http://localhost:3000 and the API runs on port http://localhost:2020
 
-> If you're working on the production application locally, you'll need to create a `.env.production` file before deployment
+> If you're deploying the production application, you'll need to create `.env` files before deployment
 
 ## Serverless development environment
 
