@@ -13,6 +13,7 @@ export interface State {
   session: Types.Session | null;
   loading: boolean;
   note: Types.Note | null;
+  noteToDelete: Types.Note | null;
   notes: Types.Note[];
   sidebarOpen: boolean;
   deleteNoteModalOpen: boolean;
@@ -25,6 +26,7 @@ interface Reducers {
   setSession: Twine.Reducer<State, Types.Session>;
   setNotes: Twine.Reducer<State, Types.Note[]>;
   setNote: Twine.Reducer<State, Types.Note | null>;
+  setNoteToDelete: Twine.Reducer<State, Types.Note | null>;
   setLoading: Twine.Reducer<State, boolean>;
   setSidebarOpen: Twine.Reducer<State, boolean>;
   setDeleteNoteModalOpen: Twine.Reducer<State, boolean>;
@@ -42,7 +44,13 @@ interface Effects {
     { content: string; title: string | undefined },
     Promise<void>
   >;
-  deleteNote: Twine.Effect0<State, Actions, Promise<void>>;
+  deleteNoteFlow: Twine.Effect<
+    State,
+    Actions,
+    { noteId: string },
+    Promise<void>
+  >;
+  deleteNote: Twine.Effect<State, Actions, { noteId: string }, Promise<void>>;
   navigateToFirstNote: Twine.Effect0<State, Actions, Promise<void>>;
   register: Twine.Effect<
     State,
@@ -69,6 +77,7 @@ function defaultState(): State {
     session: null,
     notes: [],
     note: null,
+    noteToDelete: null,
     loading: false,
     sidebarOpen: false,
     deleteNoteModalOpen: false,
@@ -88,8 +97,9 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
         if (session) {
           cookies.persistAuthToken(session.token);
         } else if (process.env.NODE_ENV === "production") {
-          // NB: this solves logging out from hot-module reloading this file
-          // since state isn't persisted between hot-module reloads
+          // NB: checking for production solves logging out from
+          // hot-module reloading this file since state isn't
+          // persisted between hot-module reloads
           cookies.removeAuthToken();
         }
         return {
@@ -97,48 +107,38 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
           session
         };
       },
-      setLoading(state, loading) {
-        return {
-          ...state,
-          loading
-        };
-      },
-      setNotes(state, notes) {
-        return {
-          ...state,
-          notes
-        };
-      },
-      setNote(state, note) {
-        return {
-          ...state,
-          note
-        };
-      },
-      setSidebarOpen(state, sidebarOpen) {
-        return {
-          ...state,
-          sidebarOpen
-        };
-      },
-      setDeleteNoteModalOpen(state, deleteNoteModalOpen) {
-        return {
-          ...state,
-          deleteNoteModalOpen
-        };
-      },
-      setSignOutModalOpen(state, signOutModalOpen) {
-        return {
-          ...state,
-          signOutModalOpen
-        };
-      },
-      setDeleteAccountModalOpen(state, deleteAccountModalOpen) {
-        return {
-          ...state,
-          deleteAccountModalOpen
-        };
-      }
+      setLoading: (state, loading) => ({
+        ...state,
+        loading
+      }),
+      setNotes: (state, notes) => ({
+        ...state,
+        notes: notes.sort((a, b) => (a.dateUpdated > b.dateUpdated ? -1 : 1))
+      }),
+      setNote: (state, note) => ({
+        ...state,
+        note
+      }),
+      setNoteToDelete: (state, noteToDelete) => ({
+        ...state,
+        noteToDelete
+      }),
+      setSidebarOpen: (state, sidebarOpen) => ({
+        ...state,
+        sidebarOpen
+      }),
+      setDeleteNoteModalOpen: (state, deleteNoteModalOpen) => ({
+        ...state,
+        deleteNoteModalOpen
+      }),
+      setSignOutModalOpen: (state, signOutModalOpen) => ({
+        ...state,
+        signOutModalOpen
+      }),
+      setDeleteAccountModalOpen: (state, deleteAccountModalOpen) => ({
+        ...state,
+        deleteAccountModalOpen
+      })
     },
     effects: {
       async fetchNotes(state, actions) {
@@ -157,7 +157,7 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
       },
       async newNote(state, actions) {
         const note = await api.note.create(state.session.token, {
-          title: new Date().toDateString()
+          title: `New note - ${new Date().toDateString()}`
         });
         actions.setNote(note);
         Router.push(`/?id=${note.id}`);
@@ -170,16 +170,25 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
           ...updates
         };
         actions.setNote(newNote);
-        actions.setNotes(
-          state.notes.map(note => (note.id === newNote.id ? newNote : note))
+        const savedNote = await api.note.updateById(
+          state.session.token,
+          newNote.id,
+          updates
         );
-        await api.note.updateById(state.session.token, newNote.id, updates);
+        actions.setNotes(
+          state.notes.map(note => (note.id === newNote.id ? savedNote : note))
+        );
       },
-      async deleteNote(state, actions) {
+      async deleteNoteFlow(state, actions, { noteId }) {
+        actions.setNoteToDelete(state.notes.find(note => note.id === noteId));
+        actions.setDeleteNoteModalOpen(true);
+      },
+      async deleteNote(state, actions, { noteId }) {
         // NB: This cannot setNote(null) since we have `OnMount` which performs navigateToFirstNote() which will get triggered if we do
-        await api.note.deleteById(state.session.token, state.note.id);
-        actions.setNotes(state.notes.filter(note => note.id !== state.note.id));
+        await api.note.deleteById(state.session.token, noteId);
+        actions.setNotes(state.notes.filter(note => note.id !== noteId));
         actions.setDeleteNoteModalOpen(false);
+        actions.setNoteToDelete(null);
         await actions.navigateToFirstNote();
       },
       async navigateToFirstNote(_state, actions) {

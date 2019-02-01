@@ -4,7 +4,6 @@
     "target": "esnext",
     "module": "commonjs",
     "allowJs": true,
-    "jsx": "react",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
@@ -14,6 +13,7 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "noEmit": true
   }
 }

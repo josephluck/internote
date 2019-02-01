@@ -28,6 +28,7 @@ export const DropdownMenu = styled.div<{
   padding: ${spacing._0_5} 0;
   a {
     text-decoration: none;
+    color: inherit;
   }
 `;
 
@@ -39,13 +40,14 @@ const DropdownMenuItemWrap = styled.div`
   line-height: ${font._12.lineHeight};
   font-weight: 600;
   white-space: nowrap;
-  cursor: ${props => (props.onClick ? "pointer" : "inherit")};
   color: ${color.iron};
+  cursor: pointer;
 `;
 
 const DropdownMenuItemIcon = styled.div`
   margin-right: ${spacing._0_5};
   width: ${spacing._0_5};
+  opacity: 0.5;
 `;
 
 export function DropdownMenuItem({

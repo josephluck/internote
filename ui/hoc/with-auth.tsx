@@ -16,8 +16,10 @@ export function withAuth<C extends typeof React.Component>(Child: C) {
       context: NextContext<{}> & { store: Twine.Return<State, Actions> }
     ) {
       function redirectToLogin() {
-        if (context.req) {
-          (context.res as any).redirect("/login");
+        if (context.res) {
+          context.res.writeHead(302, {
+            Location: "/login"
+          });
         } else {
           Router.push("/login");
         }

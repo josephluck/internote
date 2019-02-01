@@ -1,6 +1,5 @@
 import * as React from "react";
 import dynamic from "next/dynamic";
-import { Editor } from "draft-js";
 import { Store } from "../store";
 import { Box } from "grid-styled";
 import { spacing } from "./theme";
@@ -12,8 +11,6 @@ const InternoteEditor = dynamic(
   }
 );
 
-let editorInstance: null | Editor = null;
-
 export function Note({ store }: { store: Store }) {
   return (
     <>
@@ -22,8 +19,9 @@ export function Note({ store }: { store: Store }) {
           id={store.state.note.id}
           initialValue={store.state.note.content}
           onChange={store.actions.saveNote}
-          exposeEditor={instance => (editorInstance = instance)}
-          onDelete={() => store.actions.setDeleteNoteModalOpen(true)}
+          onDelete={() =>
+            store.actions.deleteNoteFlow({ noteId: store.state.note.id })
+          }
           saving={store.state.loading}
         />
       </Box>

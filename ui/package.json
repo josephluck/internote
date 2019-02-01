@@ -5,13 +5,13 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "development": "./node_modules/.bin/ts-node -P ./tsconfig.json ./server.ts",
-    "start:production": "NODE_ENV=production ./node_modules/.bin/ts-node -P ./tsconfig.json -O '{\"module\": \"commonjs\"}' ./server.ts",
-    "build": "rm -rf ./node_modules/.cache/hard-source && NODE_ENV=production next build"
+    "dev": "next",
+    "start": "NODE_ENV=production next start",
+    "build": "NODE_ENV=production next build"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.6",
-    "@fortawesome/free-solid-svg-icons": "^5.4.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.13",
+    "@fortawesome/free-solid-svg-icons": "^5.7.0",
     "@fortawesome/react-fontawesome": "^0.1.3",
     "@internote/api": "*",
     "babel-plugin-styled-components": "^1.7.1",

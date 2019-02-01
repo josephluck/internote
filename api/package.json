@@ -9,8 +9,8 @@
     "domains"
   ],
   "scripts": {
-    "development": "./node_modules/.bin/ts-node-dev -O \"{\\\"module\\\": \\\"commonjs\\\"}\" ./index.ts",
-    "start:production": "NODE_ENV=production ./node_modules/.bin/ts-node ./index.ts"
+    "dev": "NODE_ENV=development ./node_modules/.bin/ts-node-dev ./index.ts",
+    "start": "NODE_ENV=production ./node_modules/.bin/ts-node ./index.ts"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",

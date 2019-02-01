@@ -54,15 +54,22 @@ export function Global({ store }: { store: Store }) {
         </Box>
       </Sidebar>
       <Modal
-        open={store.state.deleteNoteModalOpen}
+        open={store.state.deleteNoteModalOpen && !!store.state.noteToDelete}
         onClose={() => store.actions.setDeleteNoteModalOpen(false)}
       >
         <>
-          <Box mb={spacing._1}>Are you sure you wish to delete this note?</Box>
+          {!!store.state.noteToDelete ? (
+            <Box mb={spacing._1}>
+              Are you sure you wish to delete {store.state.noteToDelete.title}?
+            </Box>
+          ) : null}
           <Flex>
             <Box flex={1} mr={spacing._0_25}>
               <Button
-                onClick={() => store.actions.setDeleteNoteModalOpen(false)}
+                onClick={() => {
+                  store.actions.setDeleteNoteModalOpen(false);
+                  store.actions.setNoteToDelete(null);
+                }}
                 secondary
                 fullWidth
               >
@@ -70,7 +77,15 @@ export function Global({ store }: { store: Store }) {
               </Button>
             </Box>
             <Box flex={1} ml={spacing._0_25}>
-              <Button onClick={store.actions.deleteNote} secondary fullWidth>
+              <Button
+                onClick={() =>
+                  store.actions.deleteNote({
+                    noteId: store.state.noteToDelete.id
+                  })
+                }
+                secondary
+                fullWidth
+              >
                 Yes
               </Button>
             </Box>

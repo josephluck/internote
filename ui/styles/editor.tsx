@@ -116,7 +116,6 @@ interface Props {
   initialValue: string;
   debounceValue?: number;
   onChange: (value: { content: string; title: string }) => void;
-  exposeEditor: (ref: any) => void;
   onDelete: () => void;
   saving: boolean;
 }
@@ -351,7 +350,6 @@ export class InternoteEditor extends React.Component<Props, State> {
           onKeyDown={this.onKeyDown}
           renderNode={this.renderNode}
           renderMark={this.renderMark}
-          ref={this.props.exposeEditor}
         />
         <ToolbarWrapper>
           <ToolbarInner>
