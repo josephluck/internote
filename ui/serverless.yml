@@ -27,12 +27,16 @@ functions:
       - http:
           method: GET
           path: /
+          cors: true
       - http:
           method: GET
           path: /static/{any+}
+          cors: true
       - http:
           method: GET
           path: /_next/{proxy+} # Catch Next specific routes
+          cors: true
       - http:
           method: ANY
           path: /{any+} # Catch all unknown routes and redirect to main handler
+          cors: true
