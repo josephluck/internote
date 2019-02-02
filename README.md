@@ -2,50 +2,51 @@
 
 A simple note taking application.
 
-## Stack
+## Application stack
+
+#### Front-end
 
 - TypeScript
 - React
 - Next
 - Twine
 - Styled components
+
+#### Back-end
+
 - Koa
-- Postgresql
+- PostgreSQL
 - Typeorm
 
-## Deployment
+#### Dev-ops
 
 - Serverless
 - AWS Lambda
+- AWS API Gateway
+- AWS S3
 
 ## Local development environment
 
-To run long-running servers locally:
+Internote runs on a serverless stack, and is set up with serverless-offline for localhost development.
 
 - Install node & yarn
+- Run `yarn` to install dependencies
 - Create a cloud instance of postgres (ElephantSQL is pretty good)
-- Copy `/api/.env.reference` to `/api/.env.development` and fill it out (ensuring you copy the right things from the postgres cloud instance)
+- Copy `/api/.env.reference` to `/api/.env.development` and fill it out (ensuring you copy the right things from the PostgreSQL instance)
 - Do the same for `/ui/.env.reference`
-- Run `yarn dev`
+- Run `yarn dev` from the root of the project
 - Visit `http://localhost:3000`
 
 > The UI application runs on http://localhost:3000 and the API runs on port http://localhost:2020
 
-> If you're deploying the production application, you'll need to create `.env` files before deployment
-
-## Serverless development environment
-
-It's possible to emulate the serverless stack locally by doing the following:
-
-- Set up the deployment set up instructions below
-- TODO
-
-## Deployment set up
-
-- Create an AWS account
-- Follow [these](https://serverless.com/framework/docs/providers/aws/guide/installation/) and then [these](https://serverless.com/framework/docs/providers/aws/guide/credentials/) instructions
-- Use the `serverless config credentials --provider aws --key EXAMPLE --secret EXAMPLEKEY` method of authenticating serverless with AWS
-
 ## Deployment
 
-Simply run `yarn serverless:deploy` from the root of this repository to deploy to production
+- Create an AWS account
+- Follow [these](https://serverless.com/framework/docs/providers/aws/guide/installation/) and [these](https://serverless.com/framework/docs/providers/aws/guide/credentials/) instructions
+- Use the `serverless config credentials --provider aws --key EXAMPLE --secret EXAMPLEKEY` method of authenticating serverless with AWS
+- Create `.env` files in both `ui` and `api` and fill them out with production configuration
+- Run `yarn deploy` from the root of this project
+
+## More documentation
+
+TBC
