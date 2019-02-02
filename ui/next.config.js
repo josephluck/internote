@@ -9,7 +9,7 @@ module.exports = withCustomBabelConfig(
     withTypescript(
       withTranspile({
         transpileModules: ["@internote"],
-        babelConfigFile: path.resolve("../babel.config.js")
+        babelConfigFile: path.resolve("./babel.config.js")
       })
     )
   )

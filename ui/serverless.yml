@@ -2,8 +2,16 @@ service: internote-ui
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-webpack
   - serverless-offline
   - serverless-dotenv-plugin
+
+custom:
+  serverless-offline:
+    port: 3000
+  webpack:
+    webpackConfig: "../webpack.config.js"
+    includeModules: true
 
 provider:
   name: aws
@@ -13,14 +21,18 @@ provider:
   memorySize: 128
 
 functions:
-  app:
+  server:
     handler: lambda.handler
     events:
       - http:
+          method: GET
           path: /
-          method: ANY
-          cors: true
       - http:
-          path: /{proxy+}
+          method: GET
+          path: /static/{any+}
+      - http:
+          method: GET
+          path: /_next/{proxy+} # Catch Next specific routes
+      - http:
           method: ANY
-          cors: true
+          path: /{any+} # Catch all unknown routes and redirect to main handler

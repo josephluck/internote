@@ -5,19 +5,21 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev": "next-serverless",
-    "start": "NODE_ENV=production next-serverless start",
-    "build": "NODE_ENV=production next-serverless build",
-    "serverless:deploy": "NODE_ENV=production sls deploy",
-    "serverless:local": "SLS_DEBUG=* sls offline start --port 3000"
+    "dev": "concurrently \"next -p 3001\" \"sls offline start\"",
+    "next": "next -p 3001",
+    "build": "NODE_ENV=production next build",
+    "deploy": "NODE_ENV=production sls deploy"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.13",
     "@fortawesome/free-solid-svg-icons": "^5.7.0",
     "@fortawesome/react-fontawesome": "^0.1.3",
     "@internote/api": "*",
+    "aws-sdk": "^2.395.0",
+    "aws-serverless-express": "^3.3.5",
     "cookie": "^0.3.1",
     "express": "^4.16.3",
+    "express-http-proxy": "^1.5.1",
     "grid-styled": "^5.0.2",
     "is-hotkey": "^0.1.3",
     "lodash": "^4.17.11",
@@ -47,7 +49,15 @@
     "@types/styled-components": "^3.0.1",
     "@types/styled-system": "^3.0.4",
     "@zeit/next-typescript": "^1.1.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-module-resolver": "^3.1.3",
+    "babel-plugin-source-map-support": "^2.0.1",
     "babel-plugin-styled-components": "^1.7.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "concurrently": "^4.1.0",
+    "copy-webpack-plugin": "^4.6.0",
     "next-plugin-custom-babel-config": "^1.0.0",
     "next-plugin-transpile-modules": "^0.1.2",
     "serverless": "^1.36.3",
@@ -55,7 +65,10 @@
     "serverless-http": "^1.9.0",
     "serverless-offline": "^4.2.1",
     "serverless-plugin-typescript": "^1.1.5",
+    "serverless-webpack": "^5.2.0",
     "ts-node": "^7.0.1",
-    "typescript": "^3.0.3"
+    "typescript": "^3.0.3",
+    "webpack": "^4.29.0",
+    "webpack-node-externals": "^1.7.2"
   }
 }

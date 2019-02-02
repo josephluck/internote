@@ -4,11 +4,11 @@ const dotenv = require("dotenv");
 const { parsed: localEnv } = dotenv.config({
   path:
     process.env.NODE_ENV === "production"
-      ? "../.env.production"
-      : "../.env.development"
+      ? "./.env.production"
+      : "./.env.development"
 });
 
-module.exports = function (nextConfig) {
+module.exports = function(nextConfig) {
   return Object.assign({}, nextConfig, {
     webpack(config, options) {
       config.plugins.push(new webpack.EnvironmentPlugin(localEnv));

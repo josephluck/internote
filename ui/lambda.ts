@@ -1,13 +1,33 @@
-import * as next from "next";
-import * as serverless from "serverless-http";
-import * as express from "express";
+import * as serverlessExpress from "aws-serverless-express";
+import server from "./server";
 
-const nextApp = next({ dev: process.env.NODE_ENV !== "production" });
-const handle = nextApp.getRequestHandler();
+const binaryMimeTypes = [
+  "application/javascript",
+  "application/json",
+  "application/octet-stream",
+  "application/xml",
+  "font/eot",
+  "font/opentype",
+  "font/otf",
+  "image/jpeg",
+  "image/png",
+  "image/svg+xml",
+  "text/event-stream",
+  "text/comma-separated-values",
+  "text/css",
+  "text/html",
+  "text/javascript",
+  "text/plain",
+  "text/text",
+  "text/xml"
+];
+
+const app = serverlessExpress.createServer(server, null, binaryMimeTypes);
 
 export async function handler(event, context) {
-  await nextApp.prepare();
-  const app = express().get("*", (req, res) => handle(req, res));
-  const lambda = serverless(app);
-  return lambda(event, context);
+  try {
+    return serverlessExpress.proxy(app, event, context);
+  } catch (e) {
+    throw new Error(e);
+  }
 }
