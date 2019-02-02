@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownChevron
 } from "./dropdown-menu";
-import Link from "next/link";
+import Link from "next-serverless/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { spacing, font } from "./theme";
