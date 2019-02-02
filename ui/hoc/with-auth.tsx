@@ -20,6 +20,7 @@ export function withAuth<C extends typeof React.Component>(Child: C) {
           context.res.writeHead(302, {
             Location: "/login"
           });
+          context.res.end();
         } else {
           Router.push("/login");
         }

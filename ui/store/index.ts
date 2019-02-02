@@ -6,6 +6,7 @@ import Router from "next/router";
 import { makeSubscriber } from "./make-subscriber";
 import { AxiosError } from "axios";
 import cookie from "../utilities/cookie";
+import { isServer } from "../utilities/window";
 
 const cookies = cookie();
 
@@ -239,7 +240,10 @@ function makeModel(api: Api): Twine.Model<State, Reducers, Effects> {
 
 export function makeStore() {
   const api = makeApi(process.env.API_BASE_URL);
-  const store = twine<State, Actions>(makeModel(api), logger);
+  const store = twine<State, Actions>(
+    makeModel(api),
+    !isServer() ? logger : undefined
+  );
   api.interceptors.response.use(
     res => res,
     err => {
