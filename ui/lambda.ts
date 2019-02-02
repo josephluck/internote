@@ -24,10 +24,6 @@ const binaryMimeTypes = [
 
 const app = serverlessExpress.createServer(server, null, binaryMimeTypes);
 
-export async function handler(event, context) {
-  try {
-    return serverlessExpress.proxy(app, event, context);
-  } catch (e) {
-    throw new Error(e);
-  }
+export function handler(event, context) {
+  return serverlessExpress.proxy(app, event, context);
 }

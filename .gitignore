@@ -4,5 +4,5 @@ node_modules
 .env
 .env
 .env.development
-api/.serverless
-api/.build
+.serverless
+.build
