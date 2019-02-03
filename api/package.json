@@ -9,7 +9,7 @@
     "*"
   ],
   "scripts": {
-    "dev": "SLS_DEBUG=* sls offline start --port 2020",
+    "dev": "SLS_DEBUG=* sls offline start",
     "deploy": "SLS_DEBUG=* NODE_ENV=production sls deploy"
   },
   "dependencies": {

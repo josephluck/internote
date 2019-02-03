@@ -5,6 +5,10 @@ plugins:
   - serverless-offline
   - serverless-dotenv-plugin
 
+custom:
+  serverless-offline:
+    port: 3000
+
 provider:
   name: aws
   runtime: nodejs8.10
