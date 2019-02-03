@@ -2,7 +2,7 @@ service: internote-ui
 
 functions:
   login:
-    handler: .lambdas/login.handler
+    handler: lambdas/login.handler
     events:
       - http:
           method: GET
@@ -36,6 +36,7 @@ functions:
   #         cors: true
 
 plugins:
+  - serverless-plugin-typescript
   - serverless-offline
   - serverless-s3-sync
 
@@ -53,9 +54,10 @@ provider:
   stage: dev
   region: eu-west-1
   memorySize: 128
-# resources:
-#   Resources:
-#     NextStaticBucket:
-#       Type: AWS::S3::Bucket
-#       Properties:
-#         BucketName: internote-ui-static
+
+resources:
+  Resources:
+    NextStaticBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: internote-ui-static
