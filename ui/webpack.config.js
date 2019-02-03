@@ -30,7 +30,11 @@ module.exports = {
     ])
   ],
   devtool: "source-map",
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals({
+      whiteList: ["styled-components"]
+    })
+  ],
   module: {
     rules: [
       {

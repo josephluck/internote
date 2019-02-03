@@ -19,16 +19,14 @@ app.get("/static/:filename", (req, res) => {
 
 if (!IS_AWS) {
   // Proxy HMR requests to :3001 to avoid running HMR stuff in the lambda
-  app.use(
-    "/_next/webpack-hmr",
-    proxy("http://localhost:3001/_next/webpack-hmr", {
-      preserveHostHdr: true,
-      userResHeaderDecorator(headers) {
-        headers["Content-Type"] = "text/event-stream";
-        return headers;
-      }
-    })
-  );
+  const hmrProxy = proxy("http://localhost:3001/_next/webpack-hmr", {
+    preserveHostHdr: true,
+    userResHeaderDecorator(headers) {
+      headers["Content-Type"] = "text/event-stream";
+      return headers;
+    }
+  });
+  app.use("/_next/webpack-hmr", hmrProxy);
 
   app.use("/", proxy("http://localhost:3001/"));
 } else {

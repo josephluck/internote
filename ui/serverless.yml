@@ -10,7 +10,30 @@ custom:
     port: 3000
   webpack:
     webpackConfig: "./webpack.config.js"
-    includeModules: true
+    includeModules:
+      forceInclude:
+        - "@fortawesome/fontawesome-svg-core"
+        - "@fortawesome/free-solid-svg-icons"
+        - "@fortawesome/react-fontawesome"
+        - "@internote/api"
+        - "@rebass/grid"
+        - "aws-sdk"
+        - "aws-serverless-express"
+        - "cookie"
+        - "express"
+        - "express-http-proxy"
+        - "is-hotkey"
+        - "lodash"
+        - "next"
+        - "react"
+        - "react-dom"
+        - "slate"
+        - "slate-html-serializer"
+        - "slate-react"
+        - "styled-components"
+        - "twine-js"
+        - "universal-cookie"
+    packager: "yarn"
 
 provider:
   name: aws
