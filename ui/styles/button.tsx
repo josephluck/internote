@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import styledTs from "styled-components-ts";
 import { color, borderRadius, spacing, font } from "./theme";
 
-export const Button = styledTs<{
+export const Button = styled.button<{
   primary?: boolean;
   secondary?: boolean;
   fullWidth?: boolean;
   small?: boolean;
-}>(styled.button)`
+}>`
   background: ${props => (props.primary ? color.blueRibbon : color.balticSea)};
   display: inline-block;
   width: ${props => (props.fullWidth ? "100%" : "auto")};
@@ -24,10 +23,11 @@ export const Button = styledTs<{
   font-size: ${props => (props.small ? font._12.size : font._18.size)};
   line-height: ${props =>
     props.small ? font._12.lineHeight : font._18.lineHeight};
-  cursor: ${props => props.onClick || props.type === 'submit' ? 'pointer' : 'inherit'};
+  cursor: ${props =>
+    props.onClick || props.type === "submit" ? "pointer" : "inherit"};
 `;
 
-export const FormatButton = styledTs<{ isActive: boolean }>(styled.button)`
+export const FormatButton = styled.button<{ isActive: boolean }>`
   background: ${props => (props.isActive ? color.blueRibbon : color.balticSea)};
   display: flex;
   align-items: center;
@@ -40,8 +40,8 @@ export const FormatButton = styledTs<{ isActive: boolean }>(styled.button)`
   font-weight: ${props => (props.isActive ? "bold" : "normal")};
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
-  width: ${spacing._1_125};
-  height: ${spacing._1_125};
+  width: ${spacing._2};
+  height: ${spacing._2};
   overflow: hidden;
   transition: all 300ms ease;
   font-weight: bold;

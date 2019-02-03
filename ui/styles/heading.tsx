@@ -6,19 +6,18 @@ import { Store } from "../store";
 import { Wrapper } from "./wrapper";
 import styled from "styled-components";
 import { NoteMenu } from "./note-menu";
-import { Flex } from "grid-styled";
+import { Flex } from "@rebass/grid";
 import { SettingsMenu } from "./settings-menu";
 
 const HeadingWrapper = styled.div`
-  padding-top: ${spacing._0_5};
-  padding-bottom: ${spacing._0_5};
+  padding: ${spacing._1} 0;
   position: sticky;
   top: 0;
   z-index: 5;
   background: ${color.cinder};
 `;
 
-const HeadingInner = Wrapper.extend`
+const HeadingInner = styled(Wrapper)`
   display: flex;
   align-items: center;
 `;

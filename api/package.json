@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "dev": "SLS_DEBUG=* sls offline start --port 2020",
-    "deploy": "NODE_ENV=production sls deploy"
+    "deploy": "SLS_DEBUG=* NODE_ENV=production sls deploy"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",

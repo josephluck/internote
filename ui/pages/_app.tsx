@@ -1,11 +1,11 @@
 import * as React from "react";
 import App, { Container } from "next/app";
-import { injectGlobal } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import { color, font } from "../styles/theme";
 import { makeStore, State, Actions } from "../store";
 import { withTwine } from "../store/with-twine";
 
-injectGlobal`
+const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
   @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
   * {
@@ -41,6 +41,7 @@ export class Application extends App {
     const { Component, pageProps, store } = this.props as any;
     return (
       <Container>
+        <GlobalStyles />
         <Component {...pageProps} store={store} />
       </Container>
     );

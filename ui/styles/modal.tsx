@@ -1,11 +1,10 @@
 import * as React from "react";
 import { spacing, color, borderRadius, font } from "./theme";
 import styled from "styled-components";
-import styledTs from "styled-components-ts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const ModalOuter = styledTs<{ open: boolean }>(styled.div)`
+const ModalOuter = styled.div<{ open: boolean }>`
   position: fixed;
   z-index: 10;
   top: 0;
@@ -15,11 +14,11 @@ const ModalOuter = styledTs<{ open: boolean }>(styled.div)`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  pointer-events: ${props => (props.open ? "normal" : "none")}
+  pointer-events: ${props => (props.open ? "normal" : "none")};
   opacity: ${props => (props.open ? "1" : "0")};
 `;
 
-const ModalWrapper = styledTs<{ open: boolean }>(styled.div)`
+const ModalWrapper = styled.div<{ open: boolean }>`
   padding: ${spacing._1};
   max-width: 400px;
   min-width: 100px;

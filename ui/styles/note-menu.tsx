@@ -10,10 +10,10 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { spacing, font } from "./theme";
-import { Box } from "grid-styled";
+import { Box } from "@rebass/grid";
 
 const DeleteIcon = styled.div`
-  margin-left: ${spacing._0_75};
+  margin-left: ${spacing._1_5};
   font-size: ${font._12.size};
   cursor: pointer;
 `;

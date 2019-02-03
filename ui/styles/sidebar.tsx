@@ -1,13 +1,12 @@
 import * as React from "react";
 import { spacing, color, media } from "./theme";
 import styled from "styled-components";
-import styledTs from "styled-components-ts";
-import { Flex } from "grid-styled";
+import { Flex } from "@rebass/grid";
 import { Wrapper } from "./wrapper";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const SidebarWrapper = styledTs<{ open: boolean }>(styled.div)`
+const SidebarWrapper = styled.div<{ open: boolean }>`
   position: fixed;
   z-index: 10;
   right: 0;
@@ -25,7 +24,7 @@ const SidebarWrapper = styledTs<{ open: boolean }>(styled.div)`
   pointer-events: ${props => (props.open ? "normal" : "none")};
 `;
 
-export const SidebarItem = Wrapper.extend`
+export const SidebarItem = styled(Wrapper)`
   padding-top: ${spacing._0_5};
   padding-bottom: ${spacing._0_5};
   overflow: hidden;
@@ -36,7 +35,7 @@ export const SidebarItem = Wrapper.extend`
   }
 `;
 
-const SidebarCloseItem = SidebarItem.extend`
+const SidebarCloseItem = styled(SidebarItem)`
   flex: 0 0 auto;
   justify-content: flex-end;
 

@@ -6,7 +6,7 @@ import isKeyHotkey from "is-hotkey";
 import { spacing, color, font, borderRadius } from "./theme";
 import styled from "styled-components";
 import { Saving } from "./saving";
-import { Flex } from "grid-styled";
+import { Flex } from "@rebass/grid";
 import { Wrapper } from "./wrapper";
 import { FormatButton } from "./button";
 import { Change, Value } from "slate";
@@ -36,7 +36,7 @@ const isQuoteHotkey = isKeyHotkey("mod+7");
 const isOlHotkey = isKeyHotkey("mod+8");
 const isUlHotkey = isKeyHotkey("mod+9");
 
-const ToolbarWrapper = Wrapper.extend`
+const ToolbarWrapper = styled(Wrapper)`
   position: fixed;
   bottom: ${spacing._1};
   left: ${spacing._0};
@@ -47,7 +47,7 @@ const ToolbarWrapper = Wrapper.extend`
 `;
 
 const ToolbarInner = styled.div`
-  padding: ${spacing._0_25};
+  padding: ${spacing._0_5};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -55,8 +55,8 @@ const ToolbarInner = styled.div`
   background: ${color.black};
 `;
 
-const ToolbarButton = FormatButton.extend`
-  margin-right: ${spacing._0_125};
+const ToolbarButton = styled(FormatButton)`
+  margin-right: ${spacing._0_25};
 `;
 
 const EditorStyles = styled.div`
@@ -237,7 +237,10 @@ export class InternoteEditor extends React.Component<Props, State> {
       // Handle the extra wrapping required for list buttons.
       const isList = this.hasBlock("list-item");
       const isType = value.blocks.some(block => {
-        return !!document.getClosest(block.key, parent => parent.type == type);
+        return !!document.getClosest(
+          block.key,
+          (parent: any) => parent.type == type
+        );
       });
 
       if (isList && isType) {
@@ -285,7 +288,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
     if (["numbered-list", "bulleted-list"].includes(type)) {
       const { value } = this.state;
-      const parent = value.document.getParent(value.blocks.first().key);
+      const parent: any = value.document.getParent(value.blocks.first().key);
       isActive = this.hasBlock("list-item") && parent && parent.type === type;
     }
 
@@ -308,8 +311,9 @@ export class InternoteEditor extends React.Component<Props, State> {
       </ToolbarButton>
     );
   };
+
   renderNode: Plugin["renderNode"] = ({ attributes, children, node }) => {
-    switch (node.type) {
+    switch ((node as any).type) {
       case "block-quote":
         return <blockquote {...attributes}>{children}</blockquote>;
       case "bulleted-list":
@@ -366,9 +370,9 @@ export class InternoteEditor extends React.Component<Props, State> {
             </Flex>
             <Flex alignItems="center">
               <Flex mr={spacing._0_4}>
-                <FormatButton isActive={false} onClick={this.props.onDelete}>
+                <ToolbarButton isActive={false} onClick={this.props.onDelete}>
                   <FontAwesomeIcon icon={faTrash} />
-                </FormatButton>
+                </ToolbarButton>
               </Flex>
               <Flex mr={spacing._0_25}>
                 <Saving saving={this.props.saving} />

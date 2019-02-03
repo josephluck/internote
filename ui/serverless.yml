@@ -1,7 +1,6 @@
 service: internote-ui
 
 plugins:
-  - serverless-plugin-typescript
   - serverless-webpack
   - serverless-offline
   - serverless-dotenv-plugin
@@ -10,7 +9,7 @@ custom:
   serverless-offline:
     port: 3000
   webpack:
-    webpackConfig: "../webpack.config.js"
+    webpackConfig: "./webpack.config.js"
     includeModules: true
 
 provider:

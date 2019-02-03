@@ -8,8 +8,9 @@ import { Note } from "../styles/note";
 import { spacing } from "../styles/theme";
 import { Wrapper } from "../styles/wrapper";
 import { OnMount } from "../styles/on-mount";
+import styled from "styled-components";
 
-const PageWrapper = Wrapper.extend`
+const PageWrapper = styled(Wrapper)`
   padding-top: ${spacing._1};
   padding-bottom: ${spacing._1};
 `;
@@ -45,4 +46,4 @@ Page.getInitialProps = async ({ store, query }) => {
   };
 };
 
-export default withAuth(Page);
+export default withAuth(Page as any);

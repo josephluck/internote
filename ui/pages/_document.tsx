@@ -4,13 +4,23 @@ import { ServerStyleSheet } from "styled-components";
 import { color } from "../styles/theme";
 
 export default class MyDocument extends Document {
-  static async getInitialProps({ renderPage }) {
+  static async getInitialProps(ctx: any) {
+    // NB: collect server-side style sheets as per
+    //     https://github.com/zeit/next.js/pull/5631/files
     const sheet = new ServerStyleSheet();
-    const page = renderPage(App => props =>
-      sheet.collectStyles(<App {...props} />)
-    );
-    const styleTags = sheet.getStyleElement();
-    return { ...page, styleTags };
+
+    const originalRenderPage = ctx.renderPage;
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App: any) => (props: any) =>
+          sheet.collectStyles(<App {...props} />)
+      });
+
+    const initialProps = await Document.getInitialProps(ctx);
+    return {
+      ...(initialProps || {}),
+      styles: [...initialProps.styles, ...sheet.getStyleElement()]
+    };
   }
   render() {
     return (
@@ -21,7 +31,7 @@ export default class MyDocument extends Document {
             name="viewport"
             content="width=device-width, initial-scale=1, user-scalable=0"
           />
-          {this.props.styleTags}
+          {this.props.styles}
         </Head>
         <body>
           <Main />

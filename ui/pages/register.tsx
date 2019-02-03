@@ -1,6 +1,6 @@
 import * as React from "react";
 import { spacing, font } from "../styles/theme";
-import { Box, Flex } from "grid-styled";
+import { Box, Flex } from "@rebass/grid";
 import { NextTwineSFC } from "../store/with-twine";
 import { State, Actions } from "../store";
 import { TextLink } from "../styles/link";

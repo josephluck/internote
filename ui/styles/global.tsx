@@ -1,14 +1,13 @@
 import * as React from "react";
 import { color, spacing } from "../styles/theme";
 import styled from "styled-components";
-import styledTs from "styled-components-ts";
 import { Store } from "../store";
 import { Sidebar } from "./sidebar";
 import { Modal } from "./modal";
 import { Button } from "./button";
-import { Flex, Box } from "grid-styled";
+import { Flex, Box } from "@rebass/grid";
 
-const DarkOverlay = styledTs<{ showing: boolean }>(styled.div)`
+const DarkOverlay = styled.div<{ showing: boolean }>`
   position: fixed;
   z-index: 9;
   left: 0;

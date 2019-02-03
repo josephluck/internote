@@ -1,9 +1,18 @@
+const path = require("path");
 const slsw = require("serverless-webpack");
 const nodeExternals = require("webpack-node-externals");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: slsw.lib.entries,
+  resolve: {
+    extensions: [".js", ".json", ".ts", ".tsx"]
+  },
+  output: {
+    libraryTarget: "commonjs",
+    path: path.join(__dirname, ".webpack"),
+    filename: "[name].js"
+  },
   target: "node",
   // NB: https://github.com/webpack/webpack/issues/1599
   node: {
@@ -25,10 +34,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        loader: "babel-loader",
-        include: __dirname,
-        exclude: /node_modules/
+        test: /\.ts(x?)$/,
+        use: [
+          {
+            loader: "ts-loader"
+          }
+        ]
       }
     ]
   }

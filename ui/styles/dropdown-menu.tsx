@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { spacing, color, borderRadius, font } from "./theme";
-import { Box } from "grid-styled";
+import { Box } from "@rebass/grid";
 import {
   IconDefinition,
   faChevronDown
@@ -18,7 +18,7 @@ export const DropdownMenu = styled.div<{
   top: 100%;
   z-index: 10;
   margin-top: ${spacing._0_5};
-  background: ${color.black};
+  background-color: ${color.black};
   border-radius: ${borderRadius._6};
   opacity: ${props => (props.showing ? 1 : 0)};
   transition: all 300ms ease;
@@ -33,7 +33,7 @@ export const DropdownMenu = styled.div<{
 `;
 
 const DropdownMenuItemIcon = styled.div`
-  margin-right: ${spacing._0_5};
+  margin-right: ${spacing._1};
   width: ${spacing._0_5};
   opacity: 0.5;
   transition: opacity 150ms ease;
@@ -97,7 +97,7 @@ export function DropdownChevron({
 }) {
   return (
     <DropdownChevronWrap onClick={onClick}>
-      <Box mr={spacing._0_25}>{children}</Box>
+      <Box mr={spacing._0_5}>{children}</Box>
       <ChevronIcon>
         <FontAwesomeIcon icon={faChevronDown} />
       </ChevronIcon>

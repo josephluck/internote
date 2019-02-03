@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import styledTs from "styled-components-ts";
 import { color, borderRadius, spacing, font } from "./theme";
 
-export const Input = styledTs<{}>(styled.input)`
+export const Input = styled.input`
   background: ${color.balticSea};
   width: 100%;
   border-radius: ${borderRadius._6};
@@ -14,7 +13,7 @@ export const Input = styledTs<{}>(styled.input)`
   line-height: ${font._18.lineHeight};
 `;
 
-export const InputLabel = styledTs<{}>(styled.label)`
+export const InputLabel = styled.label`
   display: inline-block;
   text-transform: uppercase;
   font-weight: bold;

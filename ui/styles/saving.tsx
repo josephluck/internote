@@ -1,7 +1,5 @@
-import * as React from "react";
 import styled, { keyframes } from "styled-components";
 import { color } from "./theme";
-import styledTs from "styled-components-ts";
 
 const bounce = keyframes`
   0% {
@@ -20,17 +18,13 @@ const bounce = keyframes`
   }
 `;
 
-const SavingIcon = styledTs<{ saving: boolean }>(styled.div)`
+export const Saving = styled.div<{ saving: boolean }>`
   animation: ${props => (props.saving ? `${bounce} 1.5s ease infinite` : "")};
   transition: all 300ms ease;
   height: 10px;
   width: 10px;
   border-radius: 9999px;
   background: ${props => (props.saving ? "transparent" : color.jungleGreen)};
-  border: solid 2px ${props =>
-    props.saving ? color.blueRibbon : color.jungleGreen};
+  border: solid 2px
+    ${props => (props.saving ? color.blueRibbon : color.jungleGreen)};
 `;
-
-export function Saving({ saving }: { saving: boolean }) {
-  return <SavingIcon saving={saving} />;
-}
