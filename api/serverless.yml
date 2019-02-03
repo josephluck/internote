@@ -7,7 +7,7 @@ plugins:
 
 custom:
   serverless-offline:
-    port: 3000
+    port: 2020
 
 provider:
   name: aws

@@ -1,40 +1,51 @@
 service: internote-ui
 
+functions:
+  login:
+    handler: .lambdas/login.handler
+    events:
+      - http:
+          method: GET
+          path: /login/
+          cors: true
+      - http:
+          method: ANY
+          path: /login/{any+}
+          cors: true
+  # register:
+  #   handler: .lambdas/register.handler
+  #   events:
+  #     - http:
+  #         method: GET
+  #         path: /register/
+  #         cors: true
+  #     - http:
+  #         method: ANY
+  #         path: /register/{any+}
+  #         cors: true
+  # index:
+  #   handler: .lambdas/index.handler
+  #   events:
+  #     - http:
+  #         method: GET
+  #         path: /
+  #         cors: true
+  #     - http:
+  #         method: ANY
+  #         path: /{any+}
+  #         cors: true
+
 plugins:
-  - serverless-webpack
   - serverless-offline
-  - serverless-dotenv-plugin
+  - serverless-s3-sync
 
 custom:
   serverless-offline:
     port: 3000
-  webpack:
-    webpackConfig: "./webpack.config.js"
-    includeModules:
-      forceInclude:
-        - "@fortawesome/fontawesome-svg-core"
-        - "@fortawesome/free-solid-svg-icons"
-        - "@fortawesome/react-fontawesome"
-        - "@internote/api"
-        - "@rebass/grid"
-        - "aws-sdk"
-        - "aws-serverless-express"
-        - "cookie"
-        - "express"
-        - "express-http-proxy"
-        - "is-hotkey"
-        - "lodash"
-        - "next"
-        - "react"
-        - "react-dom"
-        - "serverless-http"
-        - "slate"
-        - "slate-html-serializer"
-        - "slate-react"
-        - "styled-components"
-        - "twine-js"
-        - "universal-cookie"
-    packager: "yarn"
+  s3Sync:
+    - bucketName: internote-ui-static
+    - localDir: .next/static
+    - acl: public-read
 
 provider:
   name: aws
@@ -42,24 +53,9 @@ provider:
   stage: dev
   region: eu-west-1
   memorySize: 128
-
-functions:
-  server:
-    handler: lambda.handler
-    events:
-      - http:
-          method: GET
-          path: /
-          cors: true
-      - http:
-          method: GET
-          path: /static/{any+}
-          cors: true
-      - http:
-          method: GET
-          path: /_next/{proxy+} # Catch Next specific routes
-          cors: true
-      - http:
-          method: ANY
-          path: /{any+} # Catch all unknown routes and redirect to main handler
-          cors: true
+# resources:
+#   Resources:
+#     NextStaticBucket:
+#       Type: AWS::S3::Bucket
+#       Properties:
+#         BucketName: internote-ui-static

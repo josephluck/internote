@@ -13,32 +13,30 @@
 
 ## Development
 
-During development, two servers run. This is not "strictly" serverless since all we do is proxy the serverless requests to the next server inside `lambda.ts`.
+The development environment is a long-running next server in `dev` mode.
 
 ### Next
 
-The next development server listens on `http://localhost:3001`. This is a standard next server and can be used as-such.
+`yarn dev` will spin up a next server running on `http://localhost:3000`
 
-### Serverless
+### Serverless Offline
 
-The `serverless-offline` server listens on `http://localhost:3000` and acts as a local lambda.
-
-We shim the serverless lambda to proxy requests to the next server running on `http://localhost:3001`. This is because next's development server compiles files on the fly, and lambdas do not have access to write to the file system.
+Unfortunately it is not possible (without significant effort) to get serverless-offline to work with Next in development mode. This is because next compiles pages on the fly and lambdas do not have access to write to the file system.
 
 ## Deployment
 
 Internote UI is deployed to AWS Lambda via serverless.
 
-### Server
+### Dependencies
 
-`server.ts` is an express server that proxies the next server.
+It's imperative that any dependencies added to the project (unless the dependency is used in the lambda files) are added as development dependencies.
 
-### Lambda
+### Next
 
-The lambda is written in TypeScript which in-turn imports the server. Using `serverless-webpack` and `ts-loader` ensures that the lambda and server are transpiled in to JavaScript for the lambda to run.
+Next is placed in "serverless" mode which means that a single lambda function is created for each page. These lambdas
 
-### Packaging
+### AWS Lambda
 
-When a deploy is started, `next build` is run to create a production version of the next app transpiled and ready to serve. Then, `serverless-webpack` and `copy-webpack-plugin` are used by `serverless` to copy the generated `.next` directory in to the lambda as these will not be there by default.
+In order to get Next's lambdas working with AWS, wrapping lambdas are created for each page in the `lambdas` directory.
 
-`serverless-webpack` also scans the lambda and copies `node_module` dependencies it finds, however it does not scan the `.next` directory. For this reason, we have to explicitly list the dependencies our app uses in `serverless.yml`. This forces `serverless-webpack` to include them.
+In the future it would be good to automatically generate these.
