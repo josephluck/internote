@@ -27,6 +27,7 @@ custom:
         - "next"
         - "react"
         - "react-dom"
+        - "serverless-http"
         - "slate"
         - "slate-html-serializer"
         - "slate-react"

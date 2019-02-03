@@ -1,16 +1,15 @@
 import * as path from "path";
 import * as express from "express";
 import * as next from "next";
-import * as awsServerlessExpressMiddleware from "aws-serverless-express/middleware";
 import * as proxy from "express-http-proxy";
 
 const IS_AWS = !!(
   process.env.LAMBDA_TASK_ROOT || process.env.AWS_EXECUTION_ENV
 );
 
-const app = express();
+console.log({ IS_AWS });
 
-app.use(awsServerlessExpressMiddleware.eventContext());
+const app = express();
 
 app.get("/static/:filename", (req, res) => {
   const file = path.resolve(`${__dirname}/static/${req.params.filename}`);
@@ -34,7 +33,13 @@ if (!IS_AWS) {
     dev: false
   });
   const nextProxy = nextApp.getRequestHandler();
-  app.get("*", (req, res) => nextProxy(req, res));
+  app.get("*", async (req, res) => {
+    await nextApp.prepare();
+    console.log({ req, res });
+    const result = nextProxy(req, res);
+    console.log({ res });
+    return result;
+  });
 }
 
 export default app;

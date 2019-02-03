@@ -1,29 +1,10 @@
-import * as serverlessExpress from "aws-serverless-express";
-import server from "./server";
+import * as serverless from "serverless-http";
+import app from "./server";
 
-const binaryMimeTypes = [
-  "application/javascript",
-  "application/json",
-  "application/octet-stream",
-  "application/xml",
-  "font/eot",
-  "font/opentype",
-  "font/otf",
-  "image/jpeg",
-  "image/png",
-  "image/svg+xml",
-  "text/event-stream",
-  "text/comma-separated-values",
-  "text/css",
-  "text/html",
-  "text/javascript",
-  "text/plain",
-  "text/text",
-  "text/xml"
-];
-
-const app = serverlessExpress.createServer(server, null, binaryMimeTypes);
-
-export function handler(event, context) {
-  return serverlessExpress.proxy(app, event, context);
+export async function handler(event, context) {
+  const lambda = serverless(app);
+  return lambda(event, context).then(response => {
+    console.log({ response });
+    return response;
+  });
 }
