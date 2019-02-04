@@ -6,6 +6,7 @@
   "license": "ISC",
   "scripts": {
     "dev": "next -p 3000",
+    "test:tsc": "tsc --noEmit",
     "build": "NODE_ENV=production next build",
     "copy-static": "yarn remove-static && mkdir .static && mkdir .static/_next && cp -r .next/static .static/_next",
     "remove-static": "rm -rf .static",

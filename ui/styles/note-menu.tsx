@@ -26,7 +26,7 @@ export function NoteMenu({ store }: { store: Store }) {
           <DropdownMenuItem
             icon={faPlus}
             onClick={() => {
-              store.actions.newNote();
+              store.actions.createNote();
               menu.toggleMenuShowing(false);
             }}
           >
@@ -49,7 +49,7 @@ export function NoteMenu({ store }: { store: Store }) {
               </Box>
               <DeleteIcon
                 onClick={() =>
-                  store.actions.deleteNoteFlow({ noteId: note.id })
+                  store.actions.startDeleteNoteFlow({ noteId: note.id })
                 }
               >
                 <FontAwesomeIcon icon={faTrash} />

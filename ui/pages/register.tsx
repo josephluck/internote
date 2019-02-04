@@ -32,7 +32,7 @@ const Page: NextTwineSFC<State, Actions, {}> = props => {
         <form
           onSubmit={e => {
             e.preventDefault();
-            props.store.actions.register({
+            props.store.actions.signUp({
               email: (document.getElementById("email") as any).value,
               password: (document.getElementById("password") as any).value
             });

@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import { color } from "./theme";
 
 const bounce = keyframes`
@@ -19,7 +19,12 @@ const bounce = keyframes`
 `;
 
 export const Saving = styled.div<{ saving: boolean }>`
-  animation: ${props => (props.saving ? `${bounce} 1.5s ease infinite` : "")};
+  animation: ${props =>
+    props.saving
+      ? css`
+          ${bounce} 1.5s ease infinite
+        `
+      : ""};
   transition: all 300ms ease;
   height: 10px;
   width: 10px;

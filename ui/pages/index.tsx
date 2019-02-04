@@ -39,7 +39,7 @@ const Page: NextTwineSFC<
 Page.getInitialProps = async ({ store, query }) => {
   await store.actions.fetchNotes();
   if (query && query.id) {
-    await store.actions.fetchNote(query.id);
+    await store.actions.fetchNote({ noteId: query.id });
   }
   return {
     id: query.id

@@ -39,7 +39,7 @@ Internote UI is deployed to AWS Lambda via serverless.
 
 ### Dependencies
 
-It's imperative that any dependencies added to the project (unless the dependency is used in the lambda files) are added as development dependencies.
+It's imperative that any dependencies added to the project (unless the dependency is used in the lambda files) are added as development dependencies. This is because the lambdas we create for each page are (nearly) 0 dependency and thus, most node_modules do not need to be bundled up with the lambda.
 
 ### Next
 
@@ -55,6 +55,6 @@ In the future it would be good to automatically generate these.
 
 Serving static files through AWS lambda isn't cost effective. As such, we copy next's output assets to S3 via a serverless plugin, and use next's `assetPrefix` option to point to the S3 bucket.
 
-> Next requests static files at the base path `http://my.app/_next` but does not output static assets in a `_next` directory. For this reason, we copy `.next/static` to a temporary directory `.static/_next` and sync the `.static` directory with S3 to ensure the correct paths in S3. This is to avoid having to write a proxy to redirect file requests to `_next` in the S3 bucket.
+In order to give serverless access to create public S3 buckets, the serverless policy needs to have the `"s3:PutBucketAcl"` permission (which it does not have by default).
 
-In order to get this to work, the default serverless policy needs to have the `"s3:PutBucketAcl"` permission (which it does not have by default)
+> Next requests static files at the base path `http://my.app/_next` but does not output static assets in a `_next` directory. For this reason, we copy `.next/static` to a temporary directory `.static/_next` and sync the `.static` directory with S3 to ensure the correct paths in S3. This is to avoid having to write a proxy to redirect file requests to `_next` in the S3 bucket.

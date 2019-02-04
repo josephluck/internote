@@ -32,11 +32,11 @@ export function withAuth<C extends typeof React.Component>(Child: C) {
             ? (context.req.headers.cookie as string) || ""
             : "";
         const cookies = cookie(cookieString);
-        const authToken = cookies.getAuthToken();
-        if (!authToken) {
+        const token = cookies.getAuthToken();
+        if (!token) {
           context.store.actions.signOut();
         } else {
-          await context.store.actions.session(authToken);
+          await context.store.actions.session({ token });
         }
       }
 

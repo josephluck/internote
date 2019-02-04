@@ -18,11 +18,11 @@ export function Note({ store }: { store: Store }) {
         <InternoteEditor
           id={store.state.note.id}
           initialValue={store.state.note.content}
-          onChange={store.actions.saveNote}
+          onChange={store.actions.updateNote}
           onDelete={() =>
-            store.actions.deleteNoteFlow({ noteId: store.state.note.id })
+            store.actions.startDeleteNoteFlow({ noteId: store.state.note.id })
           }
-          saving={store.state.loading}
+          saving={store.state.loading.updateNote}
         />
       </Box>
     </>
