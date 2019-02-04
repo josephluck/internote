@@ -44,6 +44,7 @@ Internote runs on a serverless stack, and is set up with serverless-offline for 
 - Create an AWS account
 - Follow [these](https://serverless.com/framework/docs/providers/aws/guide/installation/) and [these](https://serverless.com/framework/docs/providers/aws/guide/credentials/) instructions
 - Use the `serverless config credentials --provider aws --key EXAMPLE --secret EXAMPLEKEY` method of authenticating serverless with AWS
+- Update the serverless policy you created to include the `"s3:PutBucketAcl"` permission
 - Create `.env` files in both `ui` and `api` and fill them out with production configuration
 - Run `yarn deploy` from the root of this project
 

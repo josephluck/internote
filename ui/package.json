@@ -6,9 +6,11 @@
   "license": "ISC",
   "scripts": {
     "dev": "next -p 3000",
-    "build": "NODE_ENV=production next build && yarn generate-lambdas",
+    "build": "NODE_ENV=production next build",
+    "copy-static": "yarn remove-static && mkdir .static && mkdir .static/_next && cp -r .next/static .static/_next",
+    "remove-static": "rm -rf .static",
     "generate-lambdas": "ts-node generate-lambdas.ts",
-    "deploy": "yarn build && SLS_DEBUG=* NODE_ENV=production sls deploy"
+    "deploy": "rm -rf .next && yarn build && yarn copy-static && SLS_DEBUG=* NODE_ENV=production serverless deploy && yarn remove-static"
   },
   "dependencies": {
     "aws-serverless-express": "^3.3.5"
@@ -42,8 +44,9 @@
     "rimraf": "^2.6.3",
     "serverless": "^1.36.3",
     "serverless-offline": "^4.2.1",
+    "serverless-plugin-include-dependencies": "^3.2.1",
     "serverless-plugin-typescript": "^1.1.5",
-    "serverless-s3-sync": "^1.7.2",
+    "serverless-s3bucket-sync": "^0.1.5",
     "slate": "^0.44.10",
     "slate-html-serializer": "^0.7.34",
     "slate-react": "^0.21.16",

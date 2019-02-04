@@ -12,41 +12,41 @@ functions:
           method: ANY
           path: /login/{any+}
           cors: true
-  # register:
-  #   handler: .lambdas/register.handler
-  #   events:
-  #     - http:
-  #         method: GET
-  #         path: /register/
-  #         cors: true
-  #     - http:
-  #         method: ANY
-  #         path: /register/{any+}
-  #         cors: true
-  # index:
-  #   handler: .lambdas/index.handler
-  #   events:
-  #     - http:
-  #         method: GET
-  #         path: /
-  #         cors: true
-  #     - http:
-  #         method: ANY
-  #         path: /{any+}
-  #         cors: true
+  register:
+    handler: lambdas/register.handler
+    events:
+      - http:
+          method: GET
+          path: /register/
+          cors: true
+      - http:
+          method: ANY
+          path: /register/{any+}
+          cors: true
+  index:
+    handler: lambdas/index.handler
+    events:
+      - http:
+          method: GET
+          path: /
+          cors: true
+      - http:
+          method: ANY
+          path: /{any+}
+          cors: true
 
 plugins:
   - serverless-plugin-typescript
+  - serverless-plugin-include-dependencies
   - serverless-offline
-  - serverless-s3-sync
+  - serverless-s3bucket-sync
 
 custom:
   serverless-offline:
     port: 3000
-  s3Sync:
-    - bucketName: internote-ui-static
-    - localDir: .next/static
-    - acl: public-read
+  s3-sync:
+    - folder: .static
+      bucket: internote-ui-static
 
 provider:
   name: aws
@@ -57,7 +57,21 @@ provider:
 
 resources:
   Resources:
-    NextStaticBucket:
+    InternoteUiStaticBucket:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: internote-ui-static
+        AccessControl: PublicRead
+    InternoteUiStaticBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: InternoteUiStaticBucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - s3:GetObject
+              Resource: arn:aws:s3:::internote-ui-static/*

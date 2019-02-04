@@ -13,7 +13,7 @@ module.exports = withCustomBabelConfig(
         transpileModules: ["@internote"],
         babelConfigFile: path.resolve("./babel.config.js"),
         target: "serverless",
-        assetPrefix: isProd ? "s3" : ""
+        assetPrefix: process.env.ASSET_PREFIX || ""
       })
     )
   )
