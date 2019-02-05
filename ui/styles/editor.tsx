@@ -29,7 +29,7 @@ const DEFAULT_NODE = "paragraph";
 
 const isH1Hotkey = isKeyHotkey("mod+1");
 const isH2Hotkey = isKeyHotkey("mod+2");
-const isOlHotkey = isKeyHotkey("mod+3");
+const isOlHotkey = isKeyHotkey("mod+3") || isKeyHotkey("mod+L");
 const isUlHotkey = isKeyHotkey("mod+4") || isKeyHotkey("mod+l");
 const isCodeHotkey = isKeyHotkey("mod+5") || isKeyHotkey("mod+`");
 const isQuoteHotkey = isKeyHotkey("mod+6") || isKeyHotkey("mod+'");
@@ -385,7 +385,7 @@ export class InternoteEditor extends React.Component<Props, State> {
                   <FontAwesomeIcon icon={faTrash} />
                 </ToolbarButton>
               </Flex>
-              <Flex mr={spacing._0_25}>
+              <Flex mr={spacing._0_4}>
                 <Saving saving={this.props.saving} />
               </Flex>
             </Flex>
