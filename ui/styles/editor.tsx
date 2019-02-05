@@ -37,7 +37,7 @@ const isBoldHotkey = isKeyHotkey("mod+7") || isKeyHotkey("mod+b");
 const isItalicHotkey = isKeyHotkey("mod+8") || isKeyHotkey("mod+i");
 const isUnderlinedHotkey = isKeyHotkey("mod+9") || isKeyHotkey("mod+u");
 
-const ToolbarWrapper = styled(Wrapper)`
+const ToolbarWrapper = Wrapper.extend`
   position: fixed;
   bottom: ${spacing._1};
   left: ${spacing._0};
@@ -56,7 +56,7 @@ const ToolbarInner = styled.div`
   background: ${color.black};
 `;
 
-const ToolbarButton = styled(FormatButton)`
+const ToolbarButton = FormatButton.extend`
   margin-right: ${spacing._0_25};
 `;
 
