@@ -43,7 +43,7 @@ export function Global({ store }: { store: Store }) {
               >
                 {store.state.confirmation
                   ? store.state.confirmation.noText
-                  : "No"}
+                  : "Cancel"}
               </Button>
             </Box>
             <Box flex={1} ml={spacing._0_25}>
