@@ -135,6 +135,14 @@ function getTitleFromEditorValue(editorValue: any): string | undefined {
     : undefined;
 }
 
+const fallbackNoteContent = "<h1> </h1>";
+
+function getInitialValue(props: Props): string {
+  return props.initialValue && props.initialValue.length > 1
+    ? props.initialValue
+    : fallbackNoteContent;
+}
+
 export class InternoteEditor extends React.Component<Props, State> {
   debounceValue = 1000;
 
@@ -142,14 +150,14 @@ export class InternoteEditor extends React.Component<Props, State> {
     super(props);
     this.debounceValue = props.debounceValue || 1000;
     this.state = {
-      value: serializer.deserialize(props.initialValue || "")
+      value: serializer.deserialize(getInitialValue(props))
     };
   }
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.id !== this.props.id) {
       this.setState({
-        value: serializer.deserialize(this.props.initialValue || "")
+        value: serializer.deserialize(getInitialValue(this.props))
       });
     }
   }
@@ -285,11 +293,13 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   renderBlockButton = (type: BlockType) => {
     let isActive = this.hasBlock(type);
-
     if (["numbered-list", "bulleted-list"].includes(type)) {
       const { value } = this.state;
-      const parent: any = value.document.getParent(value.blocks.first().key);
-      isActive = this.hasBlock("list-item") && parent && parent.type === type;
+      const first = value.blocks.first();
+      if (first) {
+        const parent: any = value.document.getParent(first.key);
+        isActive = this.hasBlock("list-item") && parent && parent.type === type;
+      }
     }
 
     return (

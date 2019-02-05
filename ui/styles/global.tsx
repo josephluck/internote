@@ -48,7 +48,11 @@ export function Global({ store }: { store: Store }) {
             </Box>
             <Box flex={1} ml={spacing._0_25}>
               <Button
-                onClick={store.state.confirmation.onConfirm}
+                onClick={
+                  store.state.confirmation
+                    ? store.state.confirmation.onConfirm
+                    : undefined
+                }
                 secondary
                 fullWidth
                 loading={
