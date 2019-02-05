@@ -47,7 +47,12 @@ const Page: NextTwineSFC<State, Actions, {}> = props => {
             <Input type="password" id="password" />
           </Flex>
           <Box mb={spacing._1}>
-            <Button type="submit" primary fullWidth>
+            <Button
+              type="submit"
+              primary
+              fullWidth
+              loading={props.store.state.loading.authenticate}
+            >
               Login
             </Button>
           </Box>

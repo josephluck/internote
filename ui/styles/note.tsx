@@ -20,7 +20,9 @@ export function Note({ store }: { store: Store }) {
           initialValue={store.state.note.content}
           onChange={store.actions.updateNote}
           onDelete={() =>
-            store.actions.startDeleteNoteFlow({ noteId: store.state.note.id })
+            store.actions.deleteNoteConfirmation({
+              noteId: store.state.note.id
+            })
           }
           saving={store.state.loading.updateNote}
         />

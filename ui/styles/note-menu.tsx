@@ -49,7 +49,7 @@ export function NoteMenu({ store }: { store: Store }) {
               </Box>
               <DeleteIcon
                 onClick={() =>
-                  store.actions.startDeleteNoteFlow({ noteId: note.id })
+                  store.actions.deleteNoteConfirmation({ noteId: note.id })
                 }
               >
                 <FontAwesomeIcon icon={faTrash} />

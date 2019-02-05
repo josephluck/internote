@@ -28,7 +28,7 @@ export function SettingsMenu({ store }: { store: Store }) {
           <DropdownMenuItem
             icon={faSignOutAlt}
             onClick={() => {
-              store.actions.setSignOutModalOpen(true);
+              store.actions.signOutConfirmation();
               menu.toggleMenuShowing(false);
             }}
           >
@@ -37,7 +37,7 @@ export function SettingsMenu({ store }: { store: Store }) {
           <DropdownMenuItem
             icon={faTrash}
             onClick={() => {
-              store.actions.setDeleteAccountModalOpen(true);
+              store.actions.deleteAccountConfirmation();
               menu.toggleMenuShowing(false);
             }}
           >

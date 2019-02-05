@@ -68,6 +68,7 @@ export function DropdownMenuItem({
   return (
     <DropdownMenuItemWrap onClick={onClick}>
       <DropdownMenuItemIcon>
+        {/* TODO: add loading icon support here */}
         {icon ? <FontAwesomeIcon icon={icon} /> : null}
       </DropdownMenuItemIcon>
       {children}

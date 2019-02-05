@@ -11,15 +11,19 @@ import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 
 const cookies = cookie();
 
+interface Confirmation {
+  copy?: string;
+  yesText?: string;
+  noText?: string;
+  onConfirm: () => any;
+  loading?: boolean;
+}
+
 interface OwnState {
   session: Types.Session | null;
   note: Types.Note | null;
-  noteToDelete: Types.Note | null;
   notes: Types.Note[];
-  sidebarOpen: boolean;
-  deleteNoteModalOpen: boolean;
-  signOutModalOpen: boolean;
-  deleteAccountModalOpen: boolean;
+  confirmation: Confirmation | null;
 }
 
 interface OwnReducers {
@@ -27,11 +31,8 @@ interface OwnReducers {
   setSession: Twine.Reducer<OwnState, Types.Session>;
   setNotes: Twine.Reducer<OwnState, Types.Note[]>;
   setNote: Twine.Reducer<OwnState, Types.Note | null>;
-  setNoteToDelete: Twine.Reducer<OwnState, Types.Note | null>;
-  setSidebarOpen: Twine.Reducer<OwnState, boolean>;
-  setDeleteNoteModalOpen: Twine.Reducer<OwnState, boolean>;
-  setSignOutModalOpen: Twine.Reducer<OwnState, boolean>;
-  setDeleteAccountModalOpen: Twine.Reducer<OwnState, boolean>;
+  setConfirmation: Twine.Reducer<OwnState, Confirmation | null>;
+  setConfirmationLoading: Twine.Reducer<OwnState, boolean>;
 }
 
 interface OwnEffects {
@@ -44,18 +45,8 @@ interface OwnEffects {
     { content: string; title: string | undefined },
     Promise<void>
   >;
-  startDeleteNoteFlow: Twine.Effect<
-    OwnState,
-    Actions,
-    { noteId: string },
-    Promise<void>
-  >;
-  deleteNote: Twine.Effect<
-    OwnState,
-    Actions,
-    { noteId: string },
-    Promise<void>
-  >;
+  deleteNoteConfirmation: Twine.Effect<OwnState, Actions, { noteId: string }>;
+  deleteNote: Twine.Effect<OwnState, Actions, { noteId: string }>;
   navigateToFirstNote: Twine.Effect0<OwnState, Actions, Promise<void>>;
   signUp: Twine.Effect<OwnState, Actions, Types.SignupRequest, Promise<void>>;
   session: Twine.Effect<OwnState, Actions, { token: string }, Promise<void>>;
@@ -65,7 +56,9 @@ interface OwnEffects {
     Types.LoginRequest,
     Promise<void>
   >;
-  signOut: Twine.Effect0<OwnState, Actions, void>;
+  signOutConfirmation: Twine.Effect0<OwnState, Actions>;
+  signOut: Twine.Effect0<OwnState, Actions>;
+  deleteAccountConfirmation: Twine.Effect0<OwnState, Actions>;
   deleteAccount: Twine.Effect0<OwnState, Actions, Promise<void>>;
   handleApiError: Twine.Effect<OwnState, Actions, AxiosError>;
 }
@@ -75,11 +68,7 @@ function defaultState(): OwnState {
     session: null,
     notes: [],
     note: null,
-    noteToDelete: null,
-    sidebarOpen: false,
-    deleteNoteModalOpen: false,
-    signOutModalOpen: false,
-    deleteAccountModalOpen: false
+    confirmation: null
   };
 }
 
@@ -120,25 +109,16 @@ function makeModel(api: Api): Model {
         ...state,
         note
       }),
-      setNoteToDelete: (state, noteToDelete) => ({
+      setConfirmation: (state, confirmation) => ({
         ...state,
-        noteToDelete
+        confirmation
       }),
-      setSidebarOpen: (state, sidebarOpen) => ({
+      setConfirmationLoading: (state, loading) => ({
         ...state,
-        sidebarOpen
-      }),
-      setDeleteNoteModalOpen: (state, deleteNoteModalOpen) => ({
-        ...state,
-        deleteNoteModalOpen
-      }),
-      setSignOutModalOpen: (state, signOutModalOpen) => ({
-        ...state,
-        signOutModalOpen
-      }),
-      setDeleteAccountModalOpen: (state, deleteAccountModalOpen) => ({
-        ...state,
-        deleteAccountModalOpen
+        confirmation: {
+          ...state.confirmation,
+          loading
+        }
       })
     },
     effects: {
@@ -180,16 +160,20 @@ function makeModel(api: Api): Model {
           state.notes.map(note => (note.id === newNote.id ? savedNote : note))
         );
       },
-      async startDeleteNoteFlow(state, actions, { noteId }) {
-        actions.setNoteToDelete(state.notes.find(note => note.id === noteId));
-        actions.setDeleteNoteModalOpen(true);
+      deleteNoteConfirmation(state, actions, { noteId }) {
+        const noteToDelete = state.notes.find(note => note.id === noteId);
+        actions.setConfirmation({
+          copy: `Are you sure you wish to delete ${noteToDelete.title}?`,
+          async onConfirm() {
+            await actions.deleteNote({ noteId });
+            actions.setConfirmation(null);
+          }
+        });
       },
       async deleteNote(state, actions, { noteId }) {
-        // NB: This cannot setNote(null) since we have an `OnMount` component which performs navigateToFirstNote() which will get triggered if we do
+        actions.setConfirmationLoading(true);
         await api.note.deleteById(state.session.token, noteId);
         actions.setNotes(state.notes.filter(note => note.id !== noteId));
-        actions.setDeleteNoteModalOpen(false);
-        actions.setNoteToDelete(null);
         await actions.navigateToFirstNote();
       },
       async navigateToFirstNote(_state, actions) {
@@ -214,9 +198,28 @@ function makeModel(api: Api): Model {
         actions.setSession(session);
         await actions.navigateToFirstNote();
       },
+      signOutConfirmation(_state, actions) {
+        actions.setConfirmation({
+          copy: `Are you sure you wish to sign out?`,
+          onConfirm() {
+            actions.signOut();
+            actions.setConfirmation(null);
+          }
+        });
+      },
       async signOut(_state, actions) {
         actions.resetState();
         Router.push("/login");
+      },
+      deleteAccountConfirmation(_state, actions) {
+        actions.setConfirmation({
+          copy: `Are you sure you wish to delete your account? All of your notes will be removed!`,
+          async onConfirm() {
+            actions.setConfirmationLoading(true);
+            await actions.deleteAccount();
+            actions.setConfirmation(null);
+          }
+        });
       },
       async deleteAccount(state, actions) {
         actions.resetState();

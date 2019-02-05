@@ -2,6 +2,8 @@ import { Twine } from "twine-js";
 
 type AnyModel = Twine.Model<any, any, any>;
 
+// TODO: pluck out actions that return a promise here
+// since these are the only ones that have loading properties
 interface WithAsyncLoadingState<M extends AnyModel> {
   loading: Record<keyof M["effects"], boolean>;
 }

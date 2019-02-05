@@ -2,7 +2,6 @@ import * as React from "react";
 import { color, spacing } from "../styles/theme";
 import styled from "styled-components";
 import { Store } from "../store";
-import { Sidebar } from "./sidebar";
 import { Modal } from "./modal";
 import { Button } from "./button";
 import { Flex, Box } from "@rebass/grid";
@@ -23,132 +22,48 @@ const DarkOverlay = styled.div<{ showing: boolean }>`
 export function Global({ store }: { store: Store }) {
   return (
     <>
-      <Sidebar
-        open={store.state.sidebarOpen}
-        onClose={() => store.actions.setSidebarOpen(false)}
-      >
-        <Box p={spacing._1} flex={0}>
-          <Flex mb={spacing._0_5}>
-            <Button
-              fullWidth
-              onClick={() => {
-                store.actions.setSidebarOpen(false);
-                store.actions.setSignOutModalOpen(true);
-              }}
-            >
-              Sign out
-            </Button>
-          </Flex>
-          <Flex>
-            <Button
-              fullWidth
-              onClick={() => {
-                store.actions.setSidebarOpen(false);
-                store.actions.setDeleteAccountModalOpen(true);
-              }}
-            >
-              Delete account
-            </Button>
-          </Flex>
-        </Box>
-      </Sidebar>
       <Modal
-        open={store.state.deleteNoteModalOpen && !!store.state.noteToDelete}
-        onClose={() => store.actions.setDeleteNoteModalOpen(false)}
-      >
-        <>
-          {!!store.state.noteToDelete ? (
-            <Box mb={spacing._1}>
-              Are you sure you wish to delete {store.state.noteToDelete.title}?
-            </Box>
-          ) : null}
-          <Flex>
-            <Box flex={1} mr={spacing._0_25}>
-              <Button
-                onClick={() => {
-                  store.actions.setDeleteNoteModalOpen(false);
-                  store.actions.setNoteToDelete(null);
-                }}
-                secondary
-                fullWidth
-              >
-                No
-              </Button>
-            </Box>
-            <Box flex={1} ml={spacing._0_25}>
-              <Button
-                onClick={() =>
-                  store.actions.deleteNote({
-                    noteId: store.state.noteToDelete.id
-                  })
-                }
-                secondary
-                fullWidth
-              >
-                Yes
-              </Button>
-            </Box>
-          </Flex>
-        </>
-      </Modal>
-      <Modal
-        open={store.state.signOutModalOpen}
-        onClose={() => store.actions.setSignOutModalOpen(false)}
-      >
-        <>
-          <Box mb={spacing._1}>Are you sure you wish to sign out?</Box>
-          <Flex>
-            <Box flex={1} mr={spacing._0_25}>
-              <Button
-                onClick={() => store.actions.setSignOutModalOpen(false)}
-                secondary
-                fullWidth
-              >
-                No
-              </Button>
-            </Box>
-            <Box flex={1} ml={spacing._0_25}>
-              <Button onClick={store.actions.signOut} secondary fullWidth>
-                Yes
-              </Button>
-            </Box>
-          </Flex>
-        </>
-      </Modal>
-      <Modal
-        open={store.state.deleteAccountModalOpen}
-        onClose={() => store.actions.setDeleteAccountModalOpen(false)}
+        open={!!store.state.confirmation}
+        onClose={() => store.actions.setConfirmation(null)}
       >
         <>
           <Box mb={spacing._1}>
-            Are you sure you wish to delete your account?
+            {store.state.confirmation
+              ? store.state.confirmation.copy
+              : "Are you sure?"}
           </Box>
           <Flex>
             <Box flex={1} mr={spacing._0_25}>
               <Button
-                onClick={() => store.actions.setDeleteAccountModalOpen(false)}
+                onClick={() => {
+                  store.actions.setConfirmation(null);
+                }}
                 secondary
                 fullWidth
               >
-                No
+                {store.state.confirmation
+                  ? store.state.confirmation.noText
+                  : "No"}
               </Button>
             </Box>
             <Box flex={1} ml={spacing._0_25}>
-              <Button onClick={store.actions.deleteAccount} secondary fullWidth>
-                Yes
+              <Button
+                onClick={store.state.confirmation.onConfirm}
+                secondary
+                fullWidth
+                loading={
+                  store.state.confirmation && store.state.confirmation.loading
+                }
+              >
+                {store.state.confirmation
+                  ? store.state.confirmation.yesText
+                  : "Yes"}
               </Button>
             </Box>
           </Flex>
         </>
       </Modal>
-      <DarkOverlay
-        showing={
-          store.state.sidebarOpen ||
-          store.state.deleteNoteModalOpen ||
-          store.state.signOutModalOpen ||
-          store.state.deleteAccountModalOpen
-        }
-      />
+      <DarkOverlay showing={!!store.state.confirmation} />
     </>
   );
 }
