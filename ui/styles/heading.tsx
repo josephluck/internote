@@ -10,7 +10,7 @@ import { Flex } from "@rebass/grid";
 import { SettingsMenu } from "./settings-menu";
 
 const HeadingWrapper = styled.div`
-  padding: ${spacing._1} 0;
+  padding: ${spacing._0_5} 0;
   position: sticky;
   top: 0;
   z-index: 5;

@@ -37,7 +37,7 @@ const isBoldHotkey = isKeyHotkey("mod+7") || isKeyHotkey("mod+b");
 const isItalicHotkey = isKeyHotkey("mod+8") || isKeyHotkey("mod+i");
 const isUnderlinedHotkey = isKeyHotkey("mod+9") || isKeyHotkey("mod+u");
 
-const ToolbarWrapper = Wrapper.extend`
+const ToolbarWrapper = styled(Wrapper)`
   position: fixed;
   bottom: ${spacing._1};
   left: ${spacing._0};
@@ -48,7 +48,7 @@ const ToolbarWrapper = Wrapper.extend`
 `;
 
 const ToolbarInner = styled.div`
-  padding: ${spacing._0_5};
+  padding: ${spacing._0_25};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -56,8 +56,8 @@ const ToolbarInner = styled.div`
   background: ${color.black};
 `;
 
-const ToolbarButton = FormatButton.extend`
-  margin-right: ${spacing._0_25};
+const ToolbarButton = styled(FormatButton)`
+  margin-right: ${spacing._0_125};
 `;
 
 const EditorStyles = styled.div`
@@ -380,12 +380,12 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("underlined")}
             </Flex>
             <Flex alignItems="center">
-              <Flex mr={spacing._0_4}>
+              <Flex mr={spacing._0_25}>
                 <ToolbarButton isActive={false} onClick={this.props.onDelete}>
                   <FontAwesomeIcon icon={faTrash} />
                 </ToolbarButton>
               </Flex>
-              <Flex mr={spacing._0_4}>
+              <Flex mr={spacing._0_25}>
                 <Saving saving={this.props.saving} />
               </Flex>
             </Flex>

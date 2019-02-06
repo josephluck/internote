@@ -21,6 +21,8 @@ const GlobalStyles = createGlobalStyle`
     min-height: 100%;
     min-width: 100%;
     overflow: auto;
+    padding: 0;
+    margin: 0;
   }
   input:-webkit-autofill,
   input:-webkit-autofill:hover, 

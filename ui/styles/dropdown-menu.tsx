@@ -25,7 +25,7 @@ export const DropdownMenu = styled.div<{
   pointer-events: ${props => (props.showing ? "unset" : "none")};
   transform: translateY(${props => (props.showing ? `0` : "-10px")})
     translateX(${props => (props.position === "center" ? "-50%" : "0")});
-  padding: ${spacing._1} 0;
+  padding: ${spacing._0_5} 0;
   a {
     text-decoration: none;
     color: inherit;
@@ -33,8 +33,8 @@ export const DropdownMenu = styled.div<{
 `;
 
 const DropdownMenuItemIcon = styled.div`
-  margin-right: ${spacing._1_5};
-  width: ${spacing._1};
+  margin-right: ${spacing._0_5};
+  width: ${spacing._0_5};
   opacity: 0.5;
   transition: opacity 150ms ease;
 `;
@@ -42,7 +42,7 @@ const DropdownMenuItemIcon = styled.div`
 const DropdownMenuItemWrap = styled.div`
   display: flex;
   align-items: center;
-  padding: ${spacing._1} ${spacing._1_5};
+  padding: ${spacing._0_5} ${spacing._1};
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
   font-weight: 600;
@@ -98,7 +98,7 @@ export function DropdownChevron({
 }) {
   return (
     <DropdownChevronWrap onClick={onClick}>
-      <Box mr={spacing._0_5}>{children}</Box>
+      <Box mr={spacing._0_25}>{children}</Box>
       <ChevronIcon>
         <FontAwesomeIcon icon={faChevronDown} />
       </ChevronIcon>
