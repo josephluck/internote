@@ -4,10 +4,16 @@ plugins:
   - serverless-plugin-typescript
   - serverless-offline
   - serverless-dotenv-plugin
+  - serverless-domain-manager
 
 custom:
   serverless-offline:
     port: 2020
+  customDomain:
+    domainName: api.internote.app
+    certificateName: "internote.app"
+    createRoute53Record: true
+    endpointType: "regional"
 
 provider:
   name: aws

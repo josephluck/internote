@@ -49,7 +49,7 @@ custom:
     - folder: .static
       bucket: internote-ui-static
   customDomain:
-    domainName: api.internote.app
+    domainName: internote.app
     certificateName: "internote.app"
     createRoute53Record: true
     endpointType: "regional"
