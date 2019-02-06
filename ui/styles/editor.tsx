@@ -149,11 +149,11 @@ function getInitialValue(props: Props): string {
 }
 
 export class InternoteEditor extends React.Component<Props, State> {
-  debounceValue = 1000;
+  debounceValue = 3000;
 
   constructor(props: Props) {
     super(props);
-    this.debounceValue = props.debounceValue || 1000;
+    this.debounceValue = props.debounceValue || 3000;
     this.state = {
       value: serializer.deserialize(getInitialValue(props))
     };
