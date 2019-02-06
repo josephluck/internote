@@ -48,6 +48,12 @@ Internote runs on a serverless stack, and is set up with serverless-offline for 
 - Create `.env` files in both `ui` and `api` and fill them out with production configuration
 - Run `yarn deploy` from the root of this project
 
+## Logs
+
+Logging is available in CloudWatch.
+
+> Follow [these instructions](https://serverless-stack.com/chapters/api-gateway-and-lambda-logs.html#enable-api-gateway-cloudwatch-logs) to enable API Gateway logs in CloudWatch.
+
 ## More documentation
 
 TBC
