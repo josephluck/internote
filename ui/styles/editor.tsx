@@ -29,8 +29,8 @@ const DEFAULT_NODE = "paragraph";
 
 const isH1Hotkey = isKeyHotkey("mod+1");
 const isH2Hotkey = isKeyHotkey("mod+2");
-const isOlHotkey = isKeyHotkey("mod+3") || isKeyHotkey("mod+L");
-const isUlHotkey = isKeyHotkey("mod+4") || isKeyHotkey("mod+l");
+const isOlHotkey = isKeyHotkey("mod+3");
+const isUlHotkey = isKeyHotkey("mod+4");
 const isCodeHotkey = isKeyHotkey("mod+5") || isKeyHotkey("mod+`");
 const isQuoteHotkey = isKeyHotkey("mod+6") || isKeyHotkey("mod+'");
 const isBoldHotkey = isKeyHotkey("mod+7") || isKeyHotkey("mod+b");
