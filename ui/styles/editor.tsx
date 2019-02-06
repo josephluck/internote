@@ -26,17 +26,18 @@ import {
 const DEFAULT_NODE = "paragraph";
 
 // Keyboard shortcuts
-const isBoldHotkey = isKeyHotkey("mod+1") || isKeyHotkey("mod+b");
-const isItalicHotkey = isKeyHotkey("mod+2") || isKeyHotkey("mod+i");
-const isUnderlinedHotkey = isKeyHotkey("mod+3") || isKeyHotkey("mod+u");
-const isH1Hotkey = isKeyHotkey("mod+4");
-const isH2Hotkey = isKeyHotkey("mod+5");
-const isCodeHotkey = isKeyHotkey("mod+6") || isKeyHotkey("mod+`");
-const isQuoteHotkey = isKeyHotkey("mod+7");
-const isOlHotkey = isKeyHotkey("mod+8");
-const isUlHotkey = isKeyHotkey("mod+9");
 
-const ToolbarWrapper = styled(Wrapper)`
+const isH1Hotkey = isKeyHotkey("mod+1");
+const isH2Hotkey = isKeyHotkey("mod+2");
+const isOlHotkey = isKeyHotkey("mod+3") || isKeyHotkey("mod+L");
+const isUlHotkey = isKeyHotkey("mod+4") || isKeyHotkey("mod+l");
+const isCodeHotkey = isKeyHotkey("mod+5") || isKeyHotkey("mod+`");
+const isQuoteHotkey = isKeyHotkey("mod+6") || isKeyHotkey("mod+'");
+const isBoldHotkey = isKeyHotkey("mod+7") || isKeyHotkey("mod+b");
+const isItalicHotkey = isKeyHotkey("mod+8") || isKeyHotkey("mod+i");
+const isUnderlinedHotkey = isKeyHotkey("mod+9") || isKeyHotkey("mod+u");
+
+const ToolbarWrapper = Wrapper.extend`
   position: fixed;
   bottom: ${spacing._1};
   left: ${spacing._0};
@@ -55,7 +56,7 @@ const ToolbarInner = styled.div`
   background: ${color.black};
 `;
 
-const ToolbarButton = styled(FormatButton)`
+const ToolbarButton = FormatButton.extend`
   margin-right: ${spacing._0_25};
 `;
 
@@ -368,15 +369,15 @@ export class InternoteEditor extends React.Component<Props, State> {
         <ToolbarWrapper>
           <ToolbarInner>
             <Flex flex="1" alignItems="center">
+              {this.renderBlockButton("heading-one")}
+              {this.renderBlockButton("heading-two")}
+              {this.renderBlockButton("numbered-list")}
+              {this.renderBlockButton("bulleted-list")}
+              {this.renderMarkButton("code")}
+              {this.renderBlockButton("block-quote")}
               {this.renderMarkButton("bold")}
               {this.renderMarkButton("italic")}
               {this.renderMarkButton("underlined")}
-              {this.renderBlockButton("heading-one")}
-              {this.renderBlockButton("heading-two")}
-              {this.renderMarkButton("code")}
-              {this.renderBlockButton("block-quote")}
-              {this.renderBlockButton("numbered-list")}
-              {this.renderBlockButton("bulleted-list")}
             </Flex>
             <Flex alignItems="center">
               <Flex mr={spacing._0_4}>
@@ -384,7 +385,7 @@ export class InternoteEditor extends React.Component<Props, State> {
                   <FontAwesomeIcon icon={faTrash} />
                 </ToolbarButton>
               </Flex>
-              <Flex mr={spacing._0_25}>
+              <Flex mr={spacing._0_4}>
                 <Saving saving={this.props.saving} />
               </Flex>
             </Flex>

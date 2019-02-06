@@ -50,10 +50,15 @@ export function withAsyncLoading<M extends AnyModel>(
             const rtn = originalEffect(state, actions, ...args);
             if (rtn && rtn.then) {
               actions.setLoading({ key: effectKey, loading: true });
-              return rtn.then((response: any) => {
-                actions.setLoading({ key: effectKey, loading: false });
-                return response;
-              });
+              return rtn
+                .then((response: any) => {
+                  actions.setLoading({ key: effectKey, loading: false });
+                  return response;
+                })
+                .catch(err => {
+                  actions.setLoading({ key: effectKey, loading: false });
+                  throw err;
+                });
             } else {
               return rtn;
             }

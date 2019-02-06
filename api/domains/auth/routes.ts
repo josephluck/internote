@@ -22,7 +22,6 @@ function makeController(deps: Dependencies) {
           );
         },
         async user => {
-          console.log(user);
           const passwordOkay = await crypt.compare(
             ctx.request.body["password"],
             user.password

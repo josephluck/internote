@@ -141,7 +141,9 @@ function makeModel(api: Api): Model {
           title: `New note - ${new Date().toDateString()}`
         });
         actions.setNote(note);
-        Router.push(`/?id=${note.id}`);
+        if (!isServer()) {
+          Router.push(`/?id=${note.id}`);
+        }
         return note;
       },
       async updateNote(state, actions, { content, title }) {
@@ -164,14 +166,15 @@ function makeModel(api: Api): Model {
         const noteToDelete = state.notes.find(note => note.id === noteId);
         actions.setConfirmation({
           copy: `Are you sure you wish to delete ${noteToDelete.title}?`,
+          yesText: "Delete",
           async onConfirm() {
+            actions.setConfirmationLoading(true);
             await actions.deleteNote({ noteId });
             actions.setConfirmation(null);
           }
         });
       },
       async deleteNote(state, actions, { noteId }) {
-        actions.setConfirmationLoading(true);
         await api.note.deleteById(state.session.token, noteId);
         actions.setNotes(state.notes.filter(note => note.id !== noteId));
         await actions.navigateToFirstNote();
@@ -180,7 +183,7 @@ function makeModel(api: Api): Model {
         const notes = await actions.fetchNotes();
         if (notes.length === 0) {
           await actions.createNote();
-        } else {
+        } else if (!isServer()) {
           Router.push(`/?id=${notes[0].id}`);
         }
       },
@@ -201,6 +204,7 @@ function makeModel(api: Api): Model {
       signOutConfirmation(_state, actions) {
         actions.setConfirmation({
           copy: `Are you sure you wish to sign out?`,
+          yesText: "Sign out",
           onConfirm() {
             actions.signOut();
             actions.setConfirmation(null);
@@ -209,11 +213,14 @@ function makeModel(api: Api): Model {
       },
       async signOut(_state, actions) {
         actions.resetState();
-        Router.push("/login");
+        if (!isServer()) {
+          Router.push("/login");
+        }
       },
       deleteAccountConfirmation(_state, actions) {
         actions.setConfirmation({
           copy: `Are you sure you wish to delete your account? All of your notes will be removed!`,
+          yesText: "Delete account",
           async onConfirm() {
             actions.setConfirmationLoading(true);
             await actions.deleteAccount();
@@ -224,7 +231,9 @@ function makeModel(api: Api): Model {
       async deleteAccount(state, actions) {
         actions.resetState();
         await api.user.deleteById(state.session.token, state.session.user.id);
-        Router.push("/register");
+        if (!isServer()) {
+          Router.push("/register");
+        }
       },
       handleApiError(_state, actions, error) {
         if (error.response.status === 401) {

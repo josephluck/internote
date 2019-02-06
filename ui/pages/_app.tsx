@@ -7,7 +7,6 @@ import { withTwine } from "../store/with-twine";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
-  @import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
   * {
     box-sizing: border-box;
   }
