@@ -125,15 +125,19 @@ interface State {
   value: Value;
 }
 
-function getTitleFromEditorValue(editorValue: any): string | undefined {
-  return editorValue.document &&
-    editorValue.document.nodes &&
-    editorValue.document.nodes._tail &&
-    editorValue.document.nodes._tail.array &&
-    editorValue.document.nodes._tail.array[0] &&
-    editorValue.document.nodes._tail.array[0].text
-    ? editorValue.document.nodes._tail.array[0].text
-    : undefined;
+function getTitleFromEditorValue(editorValue: Value): string | undefined {
+  if (
+    editorValue.document &&
+    editorValue.document.getBlocks &&
+    editorValue.document.getBlocks()
+  ) {
+    const block = editorValue.document
+      .getBlocks()
+      .find(block => block.text != "");
+    return block ? block.text : undefined;
+  } else {
+    return undefined;
+  }
 }
 
 const fallbackNoteContent = "<h1> </h1>";
