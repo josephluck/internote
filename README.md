@@ -54,6 +54,19 @@ Logging is available in CloudWatch.
 
 > Follow [these instructions](https://serverless-stack.com/chapters/api-gateway-and-lambda-logs.html#enable-api-gateway-cloudwatch-logs) to enable API Gateway logs in CloudWatch.
 
-## More documentation
+## Additional serverless AWS permissions
 
-TBC
+The serverless policy needs the following additional permissions to deploy the app:
+
+- "s3:PutBucketAcl",
+- "acm:ListCertificates",
+- "apigateway:GET",
+- "apigateway:DELETE",
+- "apigateway:POST",
+- "apigateway:POST",
+- "cloudfront:UpdateDistribution",
+- "route53:ListHostedZones",
+- "route53:ChangeResourceRecordSets",
+- "route53:GetHostedZone",
+- "route53:ListResourceRecordSets",
+- "iam:CreateServiceLinkedRole"

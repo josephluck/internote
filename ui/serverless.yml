@@ -40,6 +40,7 @@ plugins:
   - serverless-plugin-include-dependencies
   - serverless-offline
   - serverless-s3bucket-sync
+  - serverless-domain-manager
 
 custom:
   serverless-offline:
@@ -47,6 +48,11 @@ custom:
   s3-sync:
     - folder: .static
       bucket: internote-ui-static
+  customDomain:
+    domainName: api.internote.app
+    certificateName: "internote.app"
+    createRoute53Record: true
+    endpointType: "regional"
 
 provider:
   name: aws

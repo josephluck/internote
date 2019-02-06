@@ -11,7 +11,8 @@
     "copy-static": "yarn remove-static && mkdir .static && mkdir .static/_next && cp -r .next/static .static/_next",
     "remove-static": "rm -rf .static",
     "generate-lambdas": "ts-node generate-lambdas.ts",
-    "deploy": "rm -rf .next && yarn build && yarn copy-static && SLS_DEBUG=* NODE_ENV=production serverless deploy && yarn remove-static"
+    "deploy:domain": "serverless create_domain",
+    "deploy": "rm -rf .next && yarn build && yarn copy-static && yarn deploy:domain && SLS_DEBUG=* NODE_ENV=production serverless deploy && yarn remove-static"
   },
   "dependencies": {
     "aws-serverless-express": "^3.3.5"
@@ -44,6 +45,7 @@
     "react-dom": "^16.7.0",
     "rimraf": "^2.6.3",
     "serverless": "^1.36.3",
+    "serverless-domain-manager": "^2.6.13",
     "serverless-offline": "^4.2.1",
     "serverless-plugin-include-dependencies": "^3.2.1",
     "serverless-plugin-typescript": "^1.1.5",
