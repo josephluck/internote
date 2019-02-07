@@ -27,7 +27,6 @@ const ButtonWrap = styled.button<ButtonProps>`
       : `${spacing._0_5} ${spacing._1}`};
   color: ${props => (props.primary ? "white" : color.iron)};
   font-weight: bold;
-  text-transform: uppercase;
   font-size: ${props => (props.small ? font._12.size : font._18.size)};
   line-height: ${props =>
     props.small ? font._12.lineHeight : font._18.lineHeight};

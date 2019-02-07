@@ -45,11 +45,14 @@ const ToolbarWrapper = styled(Wrapper)`
   z-index: 5;
   font-size: ${font._18.size};
   line-height: ${font._18.lineHeight};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const ToolbarInner = styled.div`
   padding: ${spacing._0_25};
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: space-between;
   border-radius: ${borderRadius.pill};
@@ -383,6 +386,8 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("italic")}
               {this.renderMarkButton("underlined")}
             </Flex>
+          </ToolbarInner>
+          <ToolbarInner>
             <Flex alignItems="center">
               <Flex mr={spacing._0_25}>
                 <ToolbarButton isActive={false} onClick={this.props.onDelete}>
