@@ -6,7 +6,7 @@
   "author": "",
   "scripts": {
     "dev": "npx concurrently \"yarn --cwd ui dev\" \"yarn --cwd api dev\"",
-    "deploy": "yarn deploy:api && yarn deploy:ui",
+    "deploy": "npx concurrently \"yarn deploy:api\"  \"yarn deploy:ui\"",
     "deploy:api": "yarn --cwd api deploy",
     "deploy:ui": "yarn --cwd ui deploy"
   },
