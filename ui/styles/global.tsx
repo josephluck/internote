@@ -41,7 +41,7 @@ export function Global({ store }: { store: Store }) {
                 secondary
                 fullWidth
               >
-                {store.state.confirmation
+                {store.state.confirmation && store.state.confirmation.noText
                   ? store.state.confirmation.noText
                   : "Cancel"}
               </Button>
@@ -59,7 +59,7 @@ export function Global({ store }: { store: Store }) {
                   store.state.confirmation && store.state.confirmation.loading
                 }
               >
-                {store.state.confirmation
+                {store.state.confirmation && store.state.confirmation.yesText
                   ? store.state.confirmation.yesText
                   : "Yes"}
               </Button>

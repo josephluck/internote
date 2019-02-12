@@ -13,8 +13,10 @@ export interface Theme {
   savingInactive: string;
   textLinkText: string;
   codeBlockBackground: string;
+  formatButtonActiveBackground: string;
   formatButtonActiveText: string;
   formatButtonInactiveText: string;
+  formatButtonInactiveBackground: string;
   blockQuoteBorder: string;
   toolbarBackground: string;
   dropdownMenuBackground: string;
@@ -37,7 +39,9 @@ export const ocean: Theme = {
   savingInactive: "#2CCB62",
   textLinkText: "#D0D2D4",
   codeBlockBackground: "#211F28",
+  formatButtonActiveBackground: "#095efd",
   formatButtonActiveText: "#FFFFFF",
+  formatButtonInactiveBackground: "#19181B",
   formatButtonInactiveText: "#504D5D",
   blockQuoteBorder: "#504D5D",
   toolbarBackground: "#000000",

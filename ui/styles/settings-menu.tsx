@@ -7,14 +7,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { font } from "../theming/symbols";
 import { styled } from "../theming/styled";
-
-const SettingsIcon = styled.div`
-  display: inline-flex;
-  cursor: pointer;
-  font-size: ${font._16.size};
-`;
+import { RoundButton } from "./button";
 
 const Menu = styled(MenuControl)`
   display: flex;
@@ -47,9 +41,12 @@ export function SettingsMenu({ store }: { store: Store }) {
       )}
     >
       {menu => (
-        <SettingsIcon onClick={() => menu.toggleMenuShowing(true)}>
+        <RoundButton
+          isActive={false}
+          onClick={() => menu.toggleMenuShowing(!menu.showing)}
+        >
           <FontAwesomeIcon icon={faCog} />
-        </SettingsIcon>
+        </RoundButton>
       )}
     </Menu>
   );

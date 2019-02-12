@@ -8,7 +8,7 @@ import { styled } from "../theming/styled";
 import { Saving } from "./saving";
 import { Flex } from "@rebass/grid";
 import { Wrapper } from "./wrapper";
-import { FormatButton } from "./button";
+import { RoundButton } from "./button";
 import { Change, Value } from "slate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -37,33 +37,39 @@ const isBoldHotkey = isKeyHotkey("mod+7") || isKeyHotkey("mod+b");
 const isItalicHotkey = isKeyHotkey("mod+8") || isKeyHotkey("mod+i");
 const isUnderlinedHotkey = isKeyHotkey("mod+9") || isKeyHotkey("mod+u");
 
-const ToolbarWrapper = styled(Wrapper)`
-  position: fixed;
+const ToolbarWrapper = styled.div`
+  position: sticky;
+  margin-left: auto;
   bottom: ${spacing._1};
-  left: ${spacing._0};
   right: ${spacing._0};
+  margin-right: -${spacing._2};
   z-index: 5;
   font-size: ${font._18.size};
   line-height: ${font._18.lineHeight};
-  display: flex;
+  float: right;
+  display: inline-flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
 `;
 
 const ToolbarInner = styled.div`
-  padding: ${spacing._0_25};
+  padding: ${spacing._0_25} ${spacing._0_25} ${spacing._0_125};
+  margin-top: ${spacing._0_25};
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   border-radius: ${borderRadius.pill};
   background: ${props => props.theme.toolbarBackground};
 `;
 
-const ToolbarButton = styled(FormatButton)`
-  margin-right: ${spacing._0_125};
+const ToolbarButton = styled(RoundButton)`
+  margin-bottom: ${spacing._0_125};
 `;
 
 const EditorStyles = styled.div`
+  padding-right: ${spacing._2};
   > div:first-of-type {
     min-height: 100vh;
   }
@@ -97,7 +103,7 @@ const EditorStyles = styled.div`
   }
   ul li,
   ol li {
-    list-style-position: inside;
+    list-style-position: outside;
   }
   ul {
     li {
@@ -364,18 +370,19 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   render() {
     return (
-      <EditorStyles>
-        <Editor
-          placeholder=""
-          value={this.state.value}
-          onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
-          renderNode={this.renderNode}
-          renderMark={this.renderMark}
-        />
-        <ToolbarWrapper>
-          <ToolbarInner>
-            <Flex flex="1" alignItems="center">
+      <>
+        <EditorStyles>
+          <Editor
+            placeholder=""
+            value={this.state.value}
+            onChange={this.onChange}
+            onKeyDown={this.onKeyDown}
+            renderNode={this.renderNode}
+            renderMark={this.renderMark}
+          />
+
+          <ToolbarWrapper>
+            <ToolbarInner>
               {this.renderBlockButton("heading-one")}
               {this.renderBlockButton("heading-two")}
               {this.renderBlockButton("numbered-list")}
@@ -385,22 +392,20 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("bold")}
               {this.renderMarkButton("italic")}
               {this.renderMarkButton("underlined")}
-            </Flex>
-          </ToolbarInner>
-          <ToolbarInner>
-            <Flex alignItems="center">
-              <Flex mr={spacing._0_25}>
+            </ToolbarInner>
+            <ToolbarInner>
+              <Flex mb={spacing._0_25}>
                 <ToolbarButton isActive={false} onClick={this.props.onDelete}>
                   <FontAwesomeIcon icon={faTrash} />
                 </ToolbarButton>
               </Flex>
-              <Flex mr={spacing._0_25}>
+              <Flex mb={spacing._0_25}>
                 <Saving saving={this.props.saving} />
               </Flex>
-            </Flex>
-          </ToolbarInner>
-        </ToolbarWrapper>
-      </EditorStyles>
+            </ToolbarInner>
+          </ToolbarWrapper>
+        </EditorStyles>
+      </>
     );
   }
 }

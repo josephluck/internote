@@ -66,15 +66,15 @@ export function Button(
   );
 }
 
-export const FormatButton = styled.button<{ isActive: boolean }>`
+export const RoundButton = styled.button<{ isActive: boolean }>`
   background: ${props =>
     props.isActive
-      ? props.theme.primaryButtonBackground
-      : props.theme.secondaryButtonBackground};
+      ? props.theme.formatButtonActiveBackground
+      : props.theme.formatButtonInactiveBackground};
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: ${borderRadius.circle};
+  border-radius: ${borderRadius.pill};
   outline: none;
   border: 0;
   padding: 0;
@@ -90,4 +90,8 @@ export const FormatButton = styled.button<{ isActive: boolean }>`
   overflow: hidden;
   transition: all 300ms ease;
   font-weight: bold;
+  cursor: pointer;
+  &:hover {
+    color: ${props => props.formatButtonActiveText};
+  }
 `;
