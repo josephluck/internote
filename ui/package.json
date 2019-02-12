@@ -31,7 +31,6 @@
     "@types/slate": "^0.40.0",
     "@types/slate-html-serializer": "^0.6.2",
     "@types/slate-react": "^0.18.0",
-    "@types/styled-components": "^4.1.6",
     "@zeit/next-typescript": "^1.1.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-styled-components": "^1.7.1",

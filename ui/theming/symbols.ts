@@ -6,12 +6,9 @@ export const borderRadius = {
 
 export const color = {
   cinder: "#0f0d16",
-  iron: "#D0D2D4",
-  balticSea: "#19181B",
   shipGray: "#211F28",
   scarpaFlow: "#504D5D",
   black: "#000000",
-  jungleGreen: "#2CCB62",
   jumbo: "#737278",
   cornFlower: "#9fc7ec",
   blueRibbon: "#095efd"

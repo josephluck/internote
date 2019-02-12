@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { font, color, spacing } from "./theme";
+import { styled } from "../theming/styled";
+import { font, color, spacing } from "../theming/symbols";
 
 export const ToolbarBlock = styled.div`
   display: inline-block;

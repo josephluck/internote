@@ -1,10 +1,10 @@
 import * as React from "react";
-import { spacing, color } from "../styles/theme";
+import { spacing } from "../theming/symbols";
 import { Logo } from "../styles/logo";
 import { BlockLink } from "../styles/link";
 import { Store } from "../store";
 import { Wrapper } from "./wrapper";
-import styled from "styled-components";
+import { styled } from "../theming/styled";
 import { NoteMenu } from "./note-menu";
 import { Flex } from "@rebass/grid";
 import { SettingsMenu } from "./settings-menu";
@@ -14,7 +14,7 @@ const HeadingWrapper = styled.div`
   position: sticky;
   top: 0;
   z-index: 5;
-  background: ${color.cinder};
+  background: ${props => props.theme.headingBackground};
 `;
 
 const HeadingInner = styled(Wrapper)`

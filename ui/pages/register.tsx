@@ -1,11 +1,11 @@
 import * as React from "react";
-import { spacing, font } from "../styles/theme";
+import { spacing, font } from "../theming/symbols";
 import { Box, Flex } from "@rebass/grid";
 import { NextTwineSFC } from "../store/with-twine";
 import { State, Actions } from "../store";
 import { TextLink } from "../styles/link";
 import { Logo } from "../styles/logo";
-import styled from "styled-components";
+import { styled } from "../theming/styled";
 import { Button } from "../styles/button";
 import { Modal } from "../styles/modal";
 import { Input, InputLabel } from "../styles/input";

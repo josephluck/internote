@@ -7,8 +7,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { font } from "./theme";
-import styled from "styled-components";
+import { font } from "../theming/symbols";
+import { styled } from "../theming/styled";
 
 const SettingsIcon = styled.div`
   display: inline-flex;
