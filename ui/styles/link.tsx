@@ -1,7 +1,6 @@
 import * as React from "react";
 import NextLink from "next/link";
 import { styled } from "../theming/styled";
-import { color } from "../theming/symbols";
 
 interface Props {
   href: string;
@@ -26,7 +25,7 @@ export function BlockLink({ href, scroll = false, children }: Props) {
 }
 
 const TextAnchor = styled.a`
-  color: ${color.iron};
+  color: ${props => props.theme.textLinkText};
   cursor: pointer;
 `;
 

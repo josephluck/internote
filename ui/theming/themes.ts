@@ -11,6 +11,7 @@ export interface Theme {
   primaryButtonBackground: string;
   savingActive: string;
   savingInactive: string;
+  textLinkText: string;
 }
 
 export const ocean: Theme = {
@@ -25,5 +26,6 @@ export const ocean: Theme = {
   secondaryButtonBackground: "#19181B",
   primaryButtonBackground: "#095efd",
   savingActive: "#095efd",
-  savingInactive: "#2CCB62"
+  savingInactive: "#2CCB62",
+  textLinkText: "#D0D2D4"
 };
