@@ -1,5 +1,5 @@
 import { styled } from "../theming/styled";
-import { color, borderRadius, spacing, font } from "../theming/symbols";
+import { borderRadius, spacing, font } from "../theming/symbols";
 
 export const Input = styled.input`
   background: ${props => props.theme.inputBackground};
@@ -17,7 +17,7 @@ export const InputLabel = styled.label`
   display: inline-block;
   text-transform: uppercase;
   font-weight: bold;
-  color: ${color.jumbo};
+  color: ${props => props.theme.inputLabelText};
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
   margin-bottom: ${spacing._0_25};

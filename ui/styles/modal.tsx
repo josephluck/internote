@@ -1,5 +1,5 @@
 import * as React from "react";
-import { spacing, color, borderRadius, font } from "../theming/symbols";
+import { spacing, borderRadius, font } from "../theming/symbols";
 import { styled } from "../theming/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -40,6 +40,7 @@ const ModalCloseWrapper = styled.div`
   left: 100%;
   margin-bottom: ${spacing._0_5};
   margin-left: ${spacing._0_5};
+  color: ${props => props.theme.modalCloseIconColor};
 `;
 
 export function Modal({
@@ -58,7 +59,7 @@ export function Modal({
       <ModalWrapper open={open}>
         {showCloseIcon ? (
           <ModalCloseWrapper onClick={onClose}>
-            <FontAwesomeIcon icon={faTimes} color={color.jumbo} />
+            <FontAwesomeIcon icon={faTimes} />
           </ModalCloseWrapper>
         ) : null}
         {children}

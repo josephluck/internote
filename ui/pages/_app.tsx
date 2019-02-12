@@ -1,6 +1,6 @@
 import * as React from "react";
 import App, { Container } from "next/app";
-import { color, font } from "../theming/symbols";
+import { font } from "../theming/symbols";
 import { makeStore, State, Actions } from "../store";
 import { withTwine } from "../store/with-twine";
 import { createGlobalStyle, ThemeProvider } from "../theming/styled";
@@ -43,9 +43,11 @@ export class Application extends App {
     const { Component, pageProps, store } = this.props as any;
     return (
       <Container>
-        <GlobalStyles />
         <ThemeProvider theme={ocean}>
-          <Component {...pageProps} store={store} />
+          <>
+            <GlobalStyles />
+            <Component {...pageProps} store={store} />
+          </>
         </ThemeProvider>
       </Container>
     );

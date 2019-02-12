@@ -1,6 +1,6 @@
 import * as React from "react";
 import { styled } from "../theming/styled";
-import { spacing, color, borderRadius, font } from "../theming/symbols";
+import { spacing, borderRadius, font } from "../theming/symbols";
 import { Box } from "@rebass/grid";
 import {
   IconDefinition,
@@ -18,7 +18,7 @@ export const DropdownMenu = styled.div<{
   top: 100%;
   z-index: 10;
   margin-top: ${spacing._1};
-  background-color: ${color.black};
+  background-color: ${props => props.theme.dropdownMenuBackground};
   border-radius: ${borderRadius._6};
   opacity: ${props => (props.showing ? 1 : 0)};
   transition: all 300ms ease;

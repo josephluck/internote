@@ -1,5 +1,5 @@
 import { styled } from "../theming/styled";
-import { color, borderRadius, spacing, font } from "../theming/symbols";
+import { borderRadius, spacing, font } from "../theming/symbols";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
@@ -78,7 +78,10 @@ export const FormatButton = styled.button<{ isActive: boolean }>`
   outline: none;
   border: 0;
   padding: 0;
-  color: ${props => (props.isActive ? "white" : color.scarpaFlow)};
+  color: ${props =>
+    props.isActive
+      ? props.theme.formatButtonActiveText
+      : props.theme.formatButtonInactiveText};
   font-weight: ${props => (props.isActive ? "bold" : "normal")};
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};

@@ -3,7 +3,7 @@ import { serializer, MarkType, BlockType } from "../utilities/serializer";
 import { Editor, Plugin } from "slate-react";
 import { debounce } from "lodash";
 import isKeyHotkey from "is-hotkey";
-import { spacing, color, font, borderRadius } from "../theming/symbols";
+import { spacing, font, borderRadius } from "../theming/symbols";
 import { styled } from "../theming/styled";
 import { Saving } from "./saving";
 import { Flex } from "@rebass/grid";
@@ -56,7 +56,7 @@ const ToolbarInner = styled.div`
   align-items: center;
   justify-content: space-between;
   border-radius: ${borderRadius.pill};
-  background: ${color.black};
+  background: ${props => props.theme.toolbarBackground};
 `;
 
 const ToolbarButton = styled(FormatButton)`
@@ -79,7 +79,7 @@ const EditorStyles = styled.div`
   }
   code {
     font-family: monospace;
-    background: ${color.shipGray};
+    background: ${props => props.theme.codeBlockBackground};
     padding: ${spacing._0_125} ${spacing._0_25};
     border-radius: ${borderRadius._6};
     padding-bottom: 0;
@@ -110,7 +110,7 @@ const EditorStyles = styled.div`
     }
   }
   blockquote {
-    border-left: solid 4px ${color.scarpaFlow};
+    border-left: solid 4px ${props => props.theme.blockQuoteBorder};
     padding-left: ${spacing._0_5};
   }
 `;
