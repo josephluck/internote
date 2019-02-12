@@ -3,7 +3,8 @@ import App, { Container } from "next/app";
 import { color, font } from "../theming/symbols";
 import { makeStore, State, Actions } from "../store";
 import { withTwine } from "../store/with-twine";
-import { createGlobalStyle } from "../theming/styled";
+import { createGlobalStyle, ThemeProvider } from "../theming/styled";
+import { ocean } from "../theming/themes";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -43,7 +44,9 @@ export class Application extends App {
     return (
       <Container>
         <GlobalStyles />
-        <Component {...pageProps} store={store} />
+        <ThemeProvider theme={ocean}>
+          <Component {...pageProps} store={store} />
+        </ThemeProvider>
       </Container>
     );
   }
