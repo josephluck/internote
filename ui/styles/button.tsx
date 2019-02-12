@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { color, borderRadius, spacing, font } from "./theme";
+import { styled } from "../theming/styled";
+import { color, borderRadius, spacing, font } from "../theming/symbols";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,7 +13,10 @@ interface ButtonProps {
 }
 
 const ButtonWrap = styled.button<ButtonProps>`
-  background: ${props => (props.primary ? color.blueRibbon : color.balticSea)};
+  background: ${props =>
+    props.primary
+      ? props.theme.primaryButtonBackground
+      : props.theme.secondaryButtonBackground};
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -25,7 +28,10 @@ const ButtonWrap = styled.button<ButtonProps>`
     props.small
       ? `${spacing._0_25} ${spacing._0_5}`
       : `${spacing._0_5} ${spacing._1}`};
-  color: ${props => (props.primary ? "white" : color.iron)};
+  color: ${props =>
+    props.primary
+      ? props.theme.primaryButtonText
+      : props.theme.secondaryButtonText};
   font-weight: bold;
   font-size: ${props => (props.small ? font._12.size : font._18.size)};
   line-height: ${props =>
@@ -34,10 +40,13 @@ const ButtonWrap = styled.button<ButtonProps>`
     props.onClick || props.type === "submit" ? "pointer" : "inherit"};
 `;
 
-const SpinnerIcon = styled.div<{ primary?: boolean }>`
+const SpinnerIcon = styled.div<{ primary?: boolean; small?: boolean }>`
   display: inline-block;
   margin-right: ${spacing._0_5};
-  color: ${props => (props.primary ? "white" : color.iron)};
+  color: ${props =>
+    props.primary
+      ? props.theme.primaryButtonText
+      : props.theme.secondaryButtonText};
   opacity: 0.7;
   font-size: ${props => (props.small ? font._12.size : font._16.size)};
 `;
@@ -58,7 +67,10 @@ export function Button(
 }
 
 export const FormatButton = styled.button<{ isActive: boolean }>`
-  background: ${props => (props.isActive ? color.blueRibbon : color.balticSea)};
+  background: ${props =>
+    props.isActive
+      ? props.theme.primaryButtonBackground
+      : props.theme.secondaryButtonBackground};
   display: flex;
   align-items: center;
   justify-content: center;

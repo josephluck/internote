@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import { color, borderRadius, spacing, font } from "./theme";
+import { styled } from "../theming/styled";
+import { color, borderRadius, spacing, font } from "../theming/symbols";
 
 export const Input = styled.input`
-  background: ${color.balticSea};
+  background: ${props => props.theme.inputBackground};
   width: 100%;
   border-radius: ${borderRadius._6};
   outline: none;

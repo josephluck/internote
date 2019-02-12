@@ -8,8 +8,8 @@ import {
 } from "./dropdown-menu";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled from "styled-components";
-import { spacing, font } from "./theme";
+import { styled } from "../theming/styled";
+import { spacing, font } from "../theming/symbols";
 import { Box } from "@rebass/grid";
 
 const DeleteIcon = styled.div`

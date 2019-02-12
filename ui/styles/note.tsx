@@ -2,7 +2,7 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 import { Store } from "../store";
 import { Box } from "@rebass/grid";
-import { spacing } from "./theme";
+import { spacing } from "../theming/symbols";
 
 const InternoteEditor = dynamic(
   import("../styles/editor").then(module => module.InternoteEditor),

@@ -1,9 +1,9 @@
 import * as React from "react";
 import App, { Container } from "next/app";
-import { createGlobalStyle } from "styled-components";
-import { color, font } from "../styles/theme";
+import { color, font } from "../theming/symbols";
 import { makeStore, State, Actions } from "../store";
 import { withTwine } from "../store/with-twine";
+import { createGlobalStyle } from "../theming/styled";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -11,8 +11,8 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
   body, html, #__next {
-    color: ${color.iron};
-    background-color: ${color.cinder};
+    color: ${props => props.theme.appText};
+    background-color: ${props => props.theme.appBackground};
     font-family: ${font.family.inter};
     font-size: ${font._24.size};
     line-height: ${font._24.lineHeight};

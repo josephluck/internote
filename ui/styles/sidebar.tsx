@@ -1,6 +1,6 @@
 import * as React from "react";
-import { spacing, color, media } from "./theme";
-import styled from "styled-components";
+import { spacing, color, media } from "../theming/symbols";
+import { styled } from "../theming/styled";
 import { Flex } from "@rebass/grid";
 import { Wrapper } from "./wrapper";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

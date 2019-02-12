@@ -1,6 +1,6 @@
 import * as React from "react";
-import { color, spacing } from "../styles/theme";
-import styled from "styled-components";
+import { spacing } from "../theming/symbols";
+import { styled } from "../theming/styled";
 import { Store } from "../store";
 import { Modal } from "./modal";
 import { Button } from "./button";
@@ -13,7 +13,7 @@ const DarkOverlay = styled.div<{ showing: boolean }>`
   top: 0;
   height: 100%;
   width: 100%;
-  background: ${color.cinder};
+  background: ${props => props.theme.modalBackdropBackground};
   transition: all 300ms ease;
   opacity: ${props => (props.showing ? "0.9" : "0")};
   pointer-events: none;

@@ -1,5 +1,5 @@
 import styled, { keyframes, css } from "styled-components";
-import { color } from "./theme";
+import { color } from "../theming/symbols";
 
 const bounce = keyframes`
   0% {
@@ -29,7 +29,9 @@ export const Saving = styled.div<{ saving: boolean }>`
   height: 10px;
   width: 10px;
   border-radius: 9999px;
-  background: ${props => (props.saving ? "transparent" : color.jungleGreen)};
+  background: ${props =>
+    props.saving ? "transparent" : props.theme.savingInactive};
   border: solid 2px
-    ${props => (props.saving ? color.blueRibbon : color.jungleGreen)};
+    ${props =>
+      props.saving ? props.theme.savingActive : props.theme.savingInactive};
 `;

@@ -1,6 +1,6 @@
 import * as React from "react";
-import styled from "styled-components";
-import { spacing, color, borderRadius, font } from "./theme";
+import { styled } from "../theming/styled";
+import { spacing, color, borderRadius, font } from "../theming/symbols";
 import { Box } from "@rebass/grid";
 import {
   IconDefinition,
@@ -47,7 +47,7 @@ const DropdownMenuItemWrap = styled.div`
   line-height: ${font._12.lineHeight};
   font-weight: 600;
   white-space: nowrap;
-  color: ${color.iron};
+  color: ${props => props.theme.dropdownMenuItemText};
   cursor: pointer;
   &:hover {
     ${DropdownMenuItemIcon} {
