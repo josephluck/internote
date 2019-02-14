@@ -1,4 +1,5 @@
 export const borderRadius = {
+  _4: "4px",
   _6: "6px",
   pill: "9999px",
   circle: "100%"
@@ -56,6 +57,7 @@ export const spacing = {
   _1_125: "1.125rem",
   _1_25: "1.25rem",
   _1_5: "1.5rem",
+  _1_75: "1.75rem",
   _2: "2rem",
   _3: "3rem"
 };

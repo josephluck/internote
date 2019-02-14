@@ -22,6 +22,9 @@ export interface Theme {
   dropdownMenuBackground: string;
   inputLabelText: string;
   modalCloseIconColor: string;
+  searchInputBackground: string;
+  searchInputFocusedBackground: string;
+  searchInputText: string;
 }
 
 export const ocean: Theme = {
@@ -47,5 +50,8 @@ export const ocean: Theme = {
   toolbarBackground: "#000000",
   dropdownMenuBackground: "#000000",
   inputLabelText: "#737278",
-  modalCloseIconColor: "#737278"
+  modalCloseIconColor: "#737278",
+  searchInputBackground: "#000000",
+  searchInputFocusedBackground: "#19181B",
+  searchInputText: "#FFFFFF"
 };
