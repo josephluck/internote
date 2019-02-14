@@ -22,6 +22,7 @@ import { Box } from "@rebass/grid";
 import { Note } from "@internote/api/domains/types";
 import ReactHighlight from "react-highlight-words";
 import { OnNavigate } from "./on-navigate";
+import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 
 const DeleteIcon = styled.div`
   margin-left: ${spacing._1_5};
@@ -124,6 +125,8 @@ interface State {
 }
 
 export class NoteMenu extends React.Component<Props, State> {
+  inputRef: React.RefObject<HTMLInputElement>;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -132,6 +135,7 @@ export class NoteMenu extends React.Component<Props, State> {
       searchFocused: false,
       noteLoading: null
     };
+    this.inputRef = React.createRef();
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -166,6 +170,12 @@ export class NoteMenu extends React.Component<Props, State> {
     );
   };
 
+  focusInput = () => {
+    if (this.inputRef.current) {
+      this.inputRef.current.focus();
+    }
+  };
+
   onSearchFocus = () => {
     this.setState({ searchFocused: true });
   };
@@ -198,12 +208,20 @@ export class NoteMenu extends React.Component<Props, State> {
                 menu.toggleMenuShowing(false);
               }}
             />
+            <OnKeyboardShortcut
+              keyCombo="mod+o"
+              cb={() => menu.toggleMenuShowing(true)}
+            />
+            {menu.menuShowing ? (
+              <OnKeyboardShortcut keyCombo="s" cb={this.focusInput} />
+            ) : null}
             <SearchBoxWrapper hasSearch={searchText.length > 0}>
               <SearchIcon>
                 <FontAwesomeIcon icon={faSearch} />
               </SearchIcon>
               <SearchInput
                 placeholder="Search for notes"
+                ref={this.inputRef}
                 value={searchText}
                 onFocus={this.onSearchFocus}
                 onBlur={this.onSearchBlur}
