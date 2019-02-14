@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { styled } from "../theming/styled";
 import { RoundButton } from "./button";
+import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 
 const Menu = styled(MenuControl)`
   display: flex;
@@ -19,6 +20,10 @@ export function SettingsMenu({ store }: { store: Store }) {
     <Menu
       menu={menu => (
         <DropdownMenu showing={menu.menuShowing} position="right">
+          <OnKeyboardShortcut
+            keyCombo="mod+s"
+            cb={() => menu.toggleMenuShowing(true)}
+          />
           <DropdownMenuItem
             icon={<FontAwesomeIcon icon={faSignOutAlt} />}
             onClick={() => {

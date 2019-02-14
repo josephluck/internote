@@ -4,8 +4,9 @@ import { spacing, borderRadius, font } from "../theming/symbols";
 import { Box } from "@rebass/grid";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Collapse } from "react-collapse";
 
-export const DropdownMenu = styled.div<{
+export const DropdownMenuContainer = styled.div<{
   showing: boolean;
   position?: "center" | "right";
 }>`
@@ -28,6 +29,29 @@ export const DropdownMenu = styled.div<{
     color: inherit;
   }
 `;
+
+export function DropdownMenu({
+  className = "",
+  children,
+  showing,
+  position
+}: {
+  className?: string;
+  children: React.ReactNode;
+
+  showing: boolean;
+  position?: "center" | "right";
+}) {
+  return (
+    <DropdownMenuContainer
+      showing={showing}
+      position={position}
+      className={className}
+    >
+      <Collapse isOpened={true}>{children}</Collapse>
+    </DropdownMenuContainer>
+  );
+}
 
 const DropdownMenuItemIcon = styled.div`
   margin-right: ${spacing._0_5};
