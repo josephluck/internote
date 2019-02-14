@@ -222,7 +222,7 @@ export class NoteMenu extends React.Component<Props, State> {
               keyCombo="mod+o"
               cb={() => menu.toggleMenuShowing(true)}
             />
-            {menu.menuShowing ? (
+            {menu.menuShowing && !searchFocused ? (
               <OnKeyboardShortcut keyCombo="s" cb={this.focusInput} />
             ) : null}
             <SearchBoxWrapper hasSearch={searchText.length > 0}>
