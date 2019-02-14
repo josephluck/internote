@@ -81,14 +81,16 @@ const DropdownMenuItemWrap = styled.div`
 export function DropdownMenuItem({
   children,
   icon,
-  onClick
+  onClick,
+  className = ""
 }: {
   children: React.ReactNode;
   icon: React.ReactNode;
   onClick?: () => any;
+  className?: string;
 }) {
   return (
-    <DropdownMenuItemWrap onClick={onClick}>
+    <DropdownMenuItemWrap onClick={onClick} className={className}>
       <DropdownMenuItemIcon>{icon ? icon : null}</DropdownMenuItemIcon>
       {children}
     </DropdownMenuItemWrap>

@@ -28,10 +28,20 @@ const DeleteIcon = styled.div`
   margin-left: ${spacing._1_5};
   font-size: ${font._12.size};
   cursor: pointer;
-  opacity: 0.7;
   transition: all 300ms ease;
+  transform: scale(0.8, 0.8);
+  opacity: 0;
+`;
+
+const NoteMenuItem = styled(DropdownMenuItem)`
   &:hover {
-    opacity: 1;
+    ${DeleteIcon} {
+      transform: scale(1, 1);
+      opacity: 0.2;
+      &:hover {
+        opacity: 1;
+      }
+    }
   }
 `;
 
@@ -246,7 +256,7 @@ export class NoteMenu extends React.Component<Props, State> {
               <a href="">Create a new note</a>
             </DropdownMenuItem>
             {notes.map(note => (
-              <DropdownMenuItem
+              <NoteMenuItem
                 key={note.id}
                 icon={
                   noteLoading === note.id ? (
@@ -284,7 +294,7 @@ export class NoteMenu extends React.Component<Props, State> {
                 >
                   <FontAwesomeIcon icon={faTrash} />
                 </DeleteIcon>
-              </DropdownMenuItem>
+              </NoteMenuItem>
             ))}
           </NotesMenu>
         )}
