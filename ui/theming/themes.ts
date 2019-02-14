@@ -25,6 +25,7 @@ export interface Theme {
   searchInputBackground: string;
   searchInputFocusedBackground: string;
   searchInputText: string;
+  notesMenuItemTextInactive: string;
 }
 
 export const ocean: Theme = {
@@ -53,5 +54,6 @@ export const ocean: Theme = {
   modalCloseIconColor: "#737278",
   searchInputBackground: "#000000",
   searchInputFocusedBackground: "#19181B",
-  searchInputText: "#FFFFFF"
+  searchInputText: "#FFFFFF",
+  notesMenuItemTextInactive: "#999999"
 };

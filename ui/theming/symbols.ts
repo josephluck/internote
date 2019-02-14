@@ -65,3 +65,8 @@ export const spacing = {
 export const media = {
   tablet: "48rem"
 };
+
+export const size = {
+  notesMenuDropdownWidth: "12rem",
+  notesMenuDropdownWidthExpanded: "16rem"
+};

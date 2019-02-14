@@ -2,10 +2,7 @@ import * as React from "react";
 import { styled } from "../theming/styled";
 import { spacing, borderRadius, font } from "../theming/symbols";
 import { Box } from "@rebass/grid";
-import {
-  IconDefinition,
-  faChevronDown
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const DropdownMenu = styled.div<{
@@ -17,7 +14,7 @@ export const DropdownMenu = styled.div<{
   right: ${props => (props.position === "right" ? "0" : "auto")};
   top: 100%;
   z-index: 10;
-  margin-top: ${spacing._1};
+  margin-top: ${spacing._0_5};
   background-color: ${props => props.theme.dropdownMenuBackground};
   border-radius: ${borderRadius._6};
   opacity: ${props => (props.showing ? 1 : 0)};
@@ -42,6 +39,7 @@ const DropdownMenuItemIcon = styled.div`
 const DropdownMenuItemWrap = styled.div`
   display: flex;
   align-items: center;
+  overflow: hidden;
   padding: ${spacing._0_5} ${spacing._1};
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
@@ -62,15 +60,12 @@ export function DropdownMenuItem({
   onClick
 }: {
   children: React.ReactNode;
-  icon: IconDefinition;
+  icon: React.ReactNode;
   onClick?: () => any;
 }) {
   return (
     <DropdownMenuItemWrap onClick={onClick}>
-      <DropdownMenuItemIcon>
-        {/* TODO: add loading icon support here */}
-        {icon ? <FontAwesomeIcon icon={icon} /> : null}
-      </DropdownMenuItemIcon>
+      <DropdownMenuItemIcon>{icon ? icon : null}</DropdownMenuItemIcon>
       {children}
     </DropdownMenuItemWrap>
   );

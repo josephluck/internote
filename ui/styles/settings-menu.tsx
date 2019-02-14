@@ -20,7 +20,7 @@ export function SettingsMenu({ store }: { store: Store }) {
       menu={menu => (
         <DropdownMenu showing={menu.menuShowing} position="right">
           <DropdownMenuItem
-            icon={faSignOutAlt}
+            icon={<FontAwesomeIcon icon={faSignOutAlt} />}
             onClick={() => {
               store.actions.signOutConfirmation();
               menu.toggleMenuShowing(false);
@@ -29,7 +29,7 @@ export function SettingsMenu({ store }: { store: Store }) {
             Sign out
           </DropdownMenuItem>
           <DropdownMenuItem
-            icon={faTrash}
+            icon={<FontAwesomeIcon icon={faTrash} />}
             onClick={() => {
               store.actions.deleteAccountConfirmation();
               menu.toggleMenuShowing(false);
