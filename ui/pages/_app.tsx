@@ -4,7 +4,7 @@ import { font } from "../theming/symbols";
 import { makeStore, State, Actions } from "../store";
 import { withTwine } from "../store/with-twine";
 import { createGlobalStyle, ThemeProvider } from "../theming/styled";
-import { ocean } from "../theming/themes";
+import { internote } from "../theming/themes";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -46,7 +46,7 @@ export class Application extends App {
     const { Component, pageProps, store } = this.props as any;
     return (
       <Container>
-        <ThemeProvider theme={ocean}>
+        <ThemeProvider theme={store.state.theme.theme}>
           <>
             <GlobalStyles />
             <Component {...pageProps} store={store} />

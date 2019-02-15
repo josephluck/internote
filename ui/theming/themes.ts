@@ -8,6 +8,7 @@ export interface Theme {
   primaryButtonText: string;
   secondaryButtonText: string;
   inputBackground: string;
+  inputText: string;
   secondaryButtonBackground: string;
   primaryButtonBackground: string;
   savingActive: string;
@@ -35,9 +36,10 @@ export interface Theme {
   searchInputFocusedBackground: string;
   searchInputText: string;
   notesMenuItemTextInactive: string;
+  modalBackground: string;
 }
 
-export const ocean: Theme = {
+export const internote: Theme = {
   appBackground: "#0f0d16",
   appText: "#D0D2D4",
   headingBackground: "#0f0d16",
@@ -47,6 +49,7 @@ export const ocean: Theme = {
   primaryButtonText: "#FFFFFF",
   secondaryButtonText: "#D0D2D4",
   inputBackground: "#19181B",
+  inputText: "#FFFFFF",
   secondaryButtonBackground: "#19181B",
   primaryButtonBackground: "#095efd",
   savingActive: "#095efd",
@@ -73,5 +76,47 @@ export const ocean: Theme = {
   searchInputBackground: "#000000",
   searchInputFocusedBackground: "#19181B",
   searchInputText: "#FFFFFF",
-  notesMenuItemTextInactive: "#999999"
+  notesMenuItemTextInactive: "#999999",
+  modalBackground: "#000000"
+};
+
+export const daydream: Theme = {
+  appBackground: "#DFDCE4",
+  appText: "#614B67",
+  headingBackground: "#DFDCE4",
+  modalBackdropBackground: "#221a24",
+  dropdownMenuItemText: "#614B67",
+  dropdownMenuSpacerBorder: "#DFDCE4",
+  primaryButtonText: "#FFFFFF",
+  secondaryButtonText: "#614B67",
+  inputBackground: "#dedbe3",
+  inputText: "#614B67",
+  secondaryButtonBackground: "#dedbe3",
+  primaryButtonBackground: "#8D6B99",
+  savingActive: "#8D6B99",
+  savingInactive: "#2CCB62",
+  textLinkText: "#614B67",
+  codeBlockBackground: "#211F28",
+  formatButtonActiveBackground: "#8D6B99",
+  formatButtonActiveText: "#000000",
+  formatButtonInactiveBackground: "#F9F9FC",
+  formatButtonInactiveText: "#A79FAC",
+  settingsButtonBackground: "#F9F9FC",
+  settingsButtonActiveText: "#999999",
+  settingsButtonInactiveText: "#A79FAC",
+  toolbarButtonActiveBackground: "#8D6B99",
+  toolbarButtonActiveText: "#FFFFFF",
+  toolbarButtonInactiveBackground: "transparent",
+  toolbarButtonHoverBackground: "#F9F9FC",
+  toolbarButtonInactiveText: "#A79FAC",
+  blockQuoteBorder: "#A79FAC",
+  toolbarBackground: "#FFFFFF",
+  dropdownMenuBackground: "#FFFFFF",
+  inputLabelText: "#737278",
+  modalCloseIconColor: "#737278",
+  searchInputBackground: "#FFFFFF",
+  searchInputFocusedBackground: "#dedbe3",
+  searchInputText: "#000000",
+  notesMenuItemTextInactive: "#999999",
+  modalBackground: "#F9F9FC"
 };

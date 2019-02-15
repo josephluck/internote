@@ -8,7 +8,7 @@ export const Input = styled.input`
   outline: none;
   border: 0;
   padding: ${spacing._0_25} ${spacing._0_5};
-  color: white;
+  color: ${props => props.theme.inputText};
   font-size: ${font._18.size};
   line-height: ${font._18.lineHeight};
 `;

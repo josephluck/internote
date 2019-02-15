@@ -85,13 +85,18 @@ export function SettingsMenu({ store }: { store: Store }) {
                 ),
                 subMenu: () => (
                   <>
-                    <DropdownMenuItem icon={null}>Solarized</DropdownMenuItem>
-                    <DropdownMenuItem icon={<FontAwesomeIcon icon={faCheck} />}>
-                      Ocean
-                    </DropdownMenuItem>
-                    <DropdownMenuItem icon={null}>
-                      High contrast
-                    </DropdownMenuItem>
+                    {store.state.themes.map(theme => (
+                      <DropdownMenuItem
+                        onClick={() => store.actions.setTheme(theme)}
+                        icon={
+                          theme.name === store.state.theme.name ? (
+                            <FontAwesomeIcon icon={faCheck} />
+                          ) : null
+                        }
+                      >
+                        {theme.name}
+                      </DropdownMenuItem>
+                    ))}
                   </>
                 )
               },

@@ -23,7 +23,7 @@ const ModalWrapper = styled.div<{ open: boolean }>`
   max-width: 400px;
   min-width: 100px;
   width: 80%;
-  background: black;
+  background: ${props => props.theme.modalBackground};
   transition: all 300ms ease;
   transform: translateY(${props => (props.open ? "0px" : "-10px")});
   opacity: ${props => (props.open ? "1" : "0")};

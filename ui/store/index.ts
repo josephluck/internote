@@ -8,6 +8,7 @@ import { AxiosError } from "axios";
 import cookie from "../utilities/cookie";
 import { isServer } from "../utilities/window";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
+import { Theme, internote, daydream } from "../theming/themes";
 
 const cookies = cookie();
 
@@ -19,11 +20,18 @@ interface Confirmation {
   loading?: boolean;
 }
 
+interface ThemeWithName {
+  name: string;
+  theme: Theme;
+}
+
 interface OwnState {
   session: Types.Session | null;
   note: Types.Note | null;
   notes: Types.Note[];
   confirmation: Confirmation | null;
+  theme: ThemeWithName | null;
+  themes: ThemeWithName[];
 }
 
 interface OwnReducers {
@@ -33,6 +41,7 @@ interface OwnReducers {
   setNote: Twine.Reducer<OwnState, Types.Note | null>;
   setConfirmation: Twine.Reducer<OwnState, Confirmation | null>;
   setConfirmationLoading: Twine.Reducer<OwnState, boolean>;
+  setTheme: Twine.Reducer<OwnState, ThemeWithName>;
 }
 
 interface OwnEffects {
@@ -68,7 +77,21 @@ function defaultState(): OwnState {
     session: null,
     notes: [],
     note: null,
-    confirmation: null
+    confirmation: null,
+    theme: {
+      name: "Internote",
+      theme: internote
+    },
+    themes: [
+      {
+        name: "Internote",
+        theme: internote
+      },
+      {
+        name: "Daydream",
+        theme: daydream
+      }
+    ]
   };
 }
 
@@ -119,7 +142,8 @@ function makeModel(api: Api): Model {
           ...state.confirmation,
           loading
         }
-      })
+      }),
+      setTheme: (state, theme) => ({ ...state, theme })
     },
     effects: {
       async fetchNotes(state, actions) {
