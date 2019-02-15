@@ -4,6 +4,7 @@ export interface Theme {
   headingBackground: string;
   modalBackdropBackground: string;
   dropdownMenuItemText: string;
+  dropdownMenuSpacerBorder: string;
   primaryButtonText: string;
   secondaryButtonText: string;
   inputBackground: string;
@@ -17,6 +18,14 @@ export interface Theme {
   formatButtonActiveText: string;
   formatButtonInactiveText: string;
   formatButtonInactiveBackground: string;
+  settingsButtonBackground: string;
+  settingsButtonActiveText: string;
+  settingsButtonInactiveText: string;
+  toolbarButtonActiveBackground: string;
+  toolbarButtonActiveText: string;
+  toolbarButtonInactiveText: string;
+  toolbarButtonInactiveBackground: string;
+  toolbarButtonHoverBackground: string;
   blockQuoteBorder: string;
   toolbarBackground: string;
   dropdownMenuBackground: string;
@@ -34,6 +43,7 @@ export const ocean: Theme = {
   headingBackground: "#0f0d16",
   modalBackdropBackground: "#0f0d16",
   dropdownMenuItemText: "#D0D2D4",
+  dropdownMenuSpacerBorder: "#161617",
   primaryButtonText: "#FFFFFF",
   secondaryButtonText: "#D0D2D4",
   inputBackground: "#19181B",
@@ -47,6 +57,14 @@ export const ocean: Theme = {
   formatButtonActiveText: "#FFFFFF",
   formatButtonInactiveBackground: "#19181B",
   formatButtonInactiveText: "#504D5D",
+  settingsButtonBackground: "#19181B",
+  settingsButtonActiveText: "#999999",
+  settingsButtonInactiveText: "#504D5D",
+  toolbarButtonActiveBackground: "#095efd",
+  toolbarButtonActiveText: "#FFFFFF",
+  toolbarButtonInactiveBackground: "transparent",
+  toolbarButtonHoverBackground: "#19181B",
+  toolbarButtonInactiveText: "#504D5D",
   blockQuoteBorder: "#504D5D",
   toolbarBackground: "#000000",
   dropdownMenuBackground: "#000000",

@@ -97,6 +97,11 @@ export function DropdownMenuItem({
   );
 }
 
+export const DropdownMenuSpacer = styled.div`
+  border-bottom: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
+  margin: ${spacing._0_5} 0;
+`;
+
 const DropdownChevronWrap = styled.div`
   display: flex;
   align-items: center;

@@ -74,7 +74,7 @@ export const RoundButton = styled.button<{ isActive: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: ${borderRadius.pill};
+  border-radius: ${borderRadius._6};
   outline: none;
   border: 0;
   padding: 0;
@@ -85,8 +85,7 @@ export const RoundButton = styled.button<{ isActive: boolean }>`
   font-weight: ${props => (props.isActive ? "bold" : "normal")};
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
-  width: ${spacing._1};
-  height: ${spacing._1};
+  padding: ${spacing._0_25};
   overflow: hidden;
   transition: all 300ms ease;
   font-weight: bold;

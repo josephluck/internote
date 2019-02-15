@@ -68,5 +68,6 @@ export const media = {
 
 export const size = {
   notesMenuDropdownWidth: "12rem",
-  notesMenuDropdownWidthExpanded: "16rem"
+  notesMenuDropdownWidthExpanded: "16rem",
+  settingsMenuDropdownWidth: "8rem"
 };

@@ -116,15 +116,23 @@ const ToolbarInner = styled(Wrapper)`
 `;
 
 const ToolbarButton = styled(RoundButton)`
+  width: ${spacing._1};
+  height: ${spacing._1};
   margin-right: ${spacing._0_125};
   background: ${props =>
-    props.isActive ? props.theme.formatButtonActiveBackground : "transparent"};
+    props.isActive
+      ? props.theme.toolbarButtonActiveBackground
+      : props.theme.toolbarButtonInactiveBackground};
+  color: ${props =>
+    props.isActive
+      ? props.theme.toolbarButtonActiveText
+      : props.theme.toolbarButtonInactiveText};
   border-radius: ${borderRadius._6};
   &:hover {
     background: ${props =>
       props.isActive
-        ? props.theme.formatButtonActiveBackground
-        : props.theme.formatButtonInactiveBackground};
+        ? props.theme.toolbarButtonActiveBackground
+        : props.theme.toolbarButtonHoverBackground};
   }
 `;
 
