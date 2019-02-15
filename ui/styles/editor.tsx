@@ -21,6 +21,7 @@ import {
   faListOl,
   faTrash
 } from "@fortawesome/free-solid-svg-icons";
+import { Wrapper } from "./wrapper";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -36,39 +37,17 @@ const isBoldHotkey = isKeyHotkey("mod+7") || isKeyHotkey("mod+b");
 const isItalicHotkey = isKeyHotkey("mod+8") || isKeyHotkey("mod+i");
 const isUnderlinedHotkey = isKeyHotkey("mod+9") || isKeyHotkey("mod+u");
 
-const ToolbarWrapper = styled.div`
-  position: sticky;
-  margin-left: auto;
-  bottom: ${spacing._1};
-  right: ${spacing._0};
-  margin-right: -${spacing._2};
-  z-index: 5;
-  font-size: ${font._18.size};
-  line-height: ${font._18.lineHeight};
-  float: right;
-  display: inline-flex;
+const Wrap = styled.div`
+  display: flex;
+  flex: 1;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ToolbarInner = styled.div`
-  padding: ${spacing._0_25} ${spacing._0_25} ${spacing._0_125};
-  margin-top: ${spacing._0_25};
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: ${borderRadius.pill};
-  background: ${props => props.theme.toolbarBackground};
-`;
-
-const ToolbarButton = styled(RoundButton)`
-  margin-bottom: ${spacing._0_125};
+  overflow: hidden;
 `;
 
 const EditorStyles = styled.div`
-  padding-right: ${spacing._2};
+  display: flex;
+  flex: 1;
+  overflow: auto;
   > div:first-of-type {
     min-height: 100vh;
   }
@@ -117,6 +96,35 @@ const EditorStyles = styled.div`
   blockquote {
     border-left: solid 4px ${props => props.theme.blockQuoteBorder};
     padding-left: ${spacing._0_5};
+  }
+`;
+
+const ToolbarWrapper = styled.div`
+  flex: 0 0 auto;
+  font-size: ${font._18.size};
+  line-height: ${font._18.lineHeight};
+  background: ${props => props.theme.toolbarBackground};
+  display: flex;
+  align-items: center;
+  padding: ${spacing._0_25} 0;
+`;
+
+const ToolbarInner = styled(Wrapper)`
+  display: flex;
+  align-items: center;
+  flex: 1;
+`;
+
+const ToolbarButton = styled(RoundButton)`
+  margin-right: ${spacing._0_125};
+  background: ${props =>
+    props.isActive ? props.theme.formatButtonActiveBackground : "transparent"};
+  border-radius: ${borderRadius._6};
+  &:hover {
+    background: ${props =>
+      props.isActive
+        ? props.theme.formatButtonActiveBackground
+        : props.theme.formatButtonInactiveBackground};
   }
 `;
 
@@ -369,19 +377,24 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   render() {
     return (
-      <>
+      <Wrap>
         <EditorStyles>
-          <Editor
-            placeholder=""
-            value={this.state.value}
-            onChange={this.onChange}
-            onKeyDown={this.onKeyDown}
-            renderNode={this.renderNode}
-            renderMark={this.renderMark}
-          />
+          <Wrapper>
+            <Editor
+              placeholder=""
+              value={this.state.value}
+              onChange={this.onChange}
+              onKeyDown={this.onKeyDown}
+              renderNode={this.renderNode}
+              renderMark={this.renderMark}
+              autoFocus
+            />
+          </Wrapper>
+        </EditorStyles>
 
-          <ToolbarWrapper>
-            <ToolbarInner>
+        <ToolbarWrapper>
+          <ToolbarInner>
+            <Flex flex={1}>
               {this.renderBlockButton("heading-one")}
               {this.renderBlockButton("heading-two")}
               {this.renderBlockButton("numbered-list")}
@@ -391,20 +404,18 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("bold")}
               {this.renderMarkButton("italic")}
               {this.renderMarkButton("underlined")}
-            </ToolbarInner>
-            <ToolbarInner>
-              <Flex mb={spacing._0_25}>
+            </Flex>
+            <Flex alignItems="center">
+              <Flex mr={spacing._0_25}>
                 <ToolbarButton isActive={false} onClick={this.props.onDelete}>
                   <FontAwesomeIcon icon={faTrash} />
                 </ToolbarButton>
               </Flex>
-              <Flex mb={spacing._0_25}>
-                <Saving saving={this.props.saving} />
-              </Flex>
-            </ToolbarInner>
-          </ToolbarWrapper>
-        </EditorStyles>
-      </>
+              <Saving saving={this.props.saving} />
+            </Flex>
+          </ToolbarInner>
+        </ToolbarWrapper>
+      </Wrap>
     );
   }
 }

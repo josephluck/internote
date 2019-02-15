@@ -11,9 +11,7 @@ import { SettingsMenu } from "./settings-menu";
 
 const HeadingWrapper = styled.div`
   padding: ${spacing._0_5} 0;
-  position: sticky;
-  top: 0;
-  z-index: 5;
+  flex: 0 0 auto;
   background: ${props => props.theme.headingBackground};
 `;
 
