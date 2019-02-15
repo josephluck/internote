@@ -114,8 +114,8 @@ export const daydream: Theme = {
   dropdownMenuBackground: "#DFDCE4",
   inputLabelText: "#737278",
   modalCloseIconColor: "#737278",
-  searchInputBackground: "#FFFFFF",
-  searchInputFocusedBackground: "#dedbe3",
+  searchInputBackground: "#DFDCE4",
+  searchInputFocusedBackground: "#f0f0f0",
   searchInputText: "#000000",
   notesMenuItemTextInactive: "#999999",
   modalBackground: "#F9F9FC"
