@@ -82,6 +82,10 @@ const EditorStyles = styled.div`
   ul li,
   ol li {
     list-style-position: outside;
+    margin-bottom: ${spacing._0_5};
+    &:last-of-type {
+      margin-bottom: 0;
+    }
   }
   ul {
     li {
