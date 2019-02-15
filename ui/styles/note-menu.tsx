@@ -117,7 +117,7 @@ const Highlighter = styled(ReactHighlight)<{ hasSearch: boolean }>`
       ? props.theme.notesMenuItemTextInactive
       : props.theme.dropdownMenuItemText};
   mark {
-    font-weight: 800;
+    font-weight: 900;
     background: inherit;
     color: ${props => props.theme.dropdownMenuItemText};
   }

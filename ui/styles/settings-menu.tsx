@@ -57,7 +57,7 @@ const SettingsButton = styled.div<{ forceShow: boolean }>`
 
 const SettingsText = styled.div`
   padding-left: ${spacing._0_25};
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 export function SettingsMenu({ store }: { store: Store }) {
@@ -85,11 +85,11 @@ export function SettingsMenu({ store }: { store: Store }) {
                 ),
                 subMenu: () => (
                   <>
-                    {store.state.themes.map(theme => (
+                    {store.state.colorThemes.map(theme => (
                       <DropdownMenuItem
-                        onClick={() => store.actions.setTheme(theme)}
+                        onClick={() => store.actions.setColorTheme(theme)}
                         icon={
-                          theme.name === store.state.theme.name ? (
+                          theme.name === store.state.colorTheme.name ? (
                             <FontAwesomeIcon icon={faCheck} />
                           ) : null
                         }
@@ -114,11 +114,18 @@ export function SettingsMenu({ store }: { store: Store }) {
                 ),
                 subMenu: () => (
                   <>
-                    <DropdownMenuItem icon={null}>Serif</DropdownMenuItem>
-                    <DropdownMenuItem icon={<FontAwesomeIcon icon={faCheck} />}>
-                      Sans serif
-                    </DropdownMenuItem>
-                    <DropdownMenuItem icon={null}>Monospace</DropdownMenuItem>
+                    {store.state.fontThemes.map(theme => (
+                      <DropdownMenuItem
+                        onClick={() => store.actions.setFontTheme(theme)}
+                        icon={
+                          theme.name === store.state.fontTheme.name ? (
+                            <FontAwesomeIcon icon={faCheck} />
+                          ) : null
+                        }
+                      >
+                        {theme.name}
+                      </DropdownMenuItem>
+                    ))}
                   </>
                 ),
                 spacerAfter: true

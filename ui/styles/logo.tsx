@@ -2,7 +2,8 @@ import { styled } from "../theming/styled";
 import { font, color } from "../theming/symbols";
 
 export const Logo = styled.div<{ large?: boolean }>`
-  font-weight: 700;
+  font-weight: 900;
+  font-family: "Inter UI", Helvetica, Arial, sans-serif;
   font-size: ${props => (props.large ? font._24.size : font._18.size)};
   line-height: ${props =>
     props.large ? font._24.lineHeight : font._18.lineHeight};

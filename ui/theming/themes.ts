@@ -120,3 +120,31 @@ export const daydream: Theme = {
   notesMenuItemTextInactive: "#999999",
   modalBackground: "#F9F9FC"
 };
+
+export interface FontTheme {
+  fontFamily: string;
+}
+
+export const inter: FontTheme = {
+  fontFamily: "'Inter UI', Helvetica, Arial, sans-serif"
+};
+
+export const notoSansSc: FontTheme = {
+  fontFamily: "'Noto Sans SC', Helvetica, Arial, sans-serif"
+};
+
+export const spectral: FontTheme = {
+  fontFamily: "'Spectral', serif"
+};
+
+export const EBGaramond: FontTheme = {
+  fontFamily: "'EB Garamond', serif"
+};
+
+export const overpassMono: FontTheme = {
+  fontFamily: "'Overpass Mono', monospace"
+};
+
+export const sourceCodePro: FontTheme = {
+  fontFamily: "'Source Code Pro', monospace"
+};

@@ -4,17 +4,17 @@ import { font } from "../theming/symbols";
 import { makeStore, State, Actions } from "../store";
 import { withTwine } from "../store/with-twine";
 import { createGlobalStyle, ThemeProvider } from "../theming/styled";
-import { internote } from "../theming/themes";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
+  @import url('https://fonts.googleapis.com/css?family=EB+Garamond:400,500,700,800|Noto+Sans+SC:400,500,700,900|Overpass+Mono:400,600,700|Source+Code+Pro:400,500,700,900|Spectral:400,500,700,800');
   * {
     box-sizing: border-box;
   }
   body, html, #__next {
     color: ${props => props.theme.appText};
     background-color: ${props => props.theme.appBackground};
-    font-family: ${font.family.inter};
+    font-family: ${props => props.theme.fontFamily};
     font-size: ${font._24.size};
     line-height: ${font._24.lineHeight};
     height: 100%;
@@ -46,11 +46,13 @@ export class Application extends App {
     const { Component, pageProps, store } = this.props as any;
     return (
       <Container>
-        <ThemeProvider theme={store.state.theme.theme}>
-          <>
-            <GlobalStyles />
-            <Component {...pageProps} store={store} />
-          </>
+        <ThemeProvider theme={store.state.colorTheme.theme}>
+          <ThemeProvider theme={store.state.fontTheme.theme}>
+            <>
+              <GlobalStyles />
+              <Component {...pageProps} store={store} />
+            </>
+          </ThemeProvider>
         </ThemeProvider>
       </Container>
     );

@@ -8,7 +8,18 @@ import { AxiosError } from "axios";
 import cookie from "../utilities/cookie";
 import { isServer } from "../utilities/window";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { Theme, internote, daydream } from "../theming/themes";
+import {
+  Theme,
+  internote,
+  daydream,
+  FontTheme,
+  inter,
+  spectral,
+  notoSansSc,
+  EBGaramond,
+  overpassMono,
+  sourceCodePro
+} from "../theming/themes";
 
 const cookies = cookie();
 
@@ -20,9 +31,14 @@ interface Confirmation {
   loading?: boolean;
 }
 
-interface ThemeWithName {
+interface ColorThemeWithName {
   name: string;
   theme: Theme;
+}
+
+interface FontThemeWithName {
+  name: string;
+  theme: FontTheme;
 }
 
 interface OwnState {
@@ -30,8 +46,10 @@ interface OwnState {
   note: Types.Note | null;
   notes: Types.Note[];
   confirmation: Confirmation | null;
-  theme: ThemeWithName | null;
-  themes: ThemeWithName[];
+  colorTheme: ColorThemeWithName | null;
+  colorThemes: ColorThemeWithName[];
+  fontTheme: FontThemeWithName | null;
+  fontThemes: FontThemeWithName[];
 }
 
 interface OwnReducers {
@@ -41,7 +59,8 @@ interface OwnReducers {
   setNote: Twine.Reducer<OwnState, Types.Note | null>;
   setConfirmation: Twine.Reducer<OwnState, Confirmation | null>;
   setConfirmationLoading: Twine.Reducer<OwnState, boolean>;
-  setTheme: Twine.Reducer<OwnState, ThemeWithName>;
+  setColorTheme: Twine.Reducer<OwnState, ColorThemeWithName>;
+  setFontTheme: Twine.Reducer<OwnState, FontThemeWithName>;
 }
 
 interface OwnEffects {
@@ -78,11 +97,11 @@ function defaultState(): OwnState {
     notes: [],
     note: null,
     confirmation: null,
-    theme: {
+    colorTheme: {
       name: "Internote",
       theme: internote
     },
-    themes: [
+    colorThemes: [
       {
         name: "Internote",
         theme: internote
@@ -90,6 +109,36 @@ function defaultState(): OwnState {
       {
         name: "Daydream",
         theme: daydream
+      }
+    ],
+    fontTheme: {
+      name: "Inter",
+      theme: inter
+    },
+    fontThemes: [
+      {
+        name: "Inter",
+        theme: inter
+      },
+      {
+        name: "Noto Sans SC",
+        theme: notoSansSc
+      },
+      {
+        name: "Spectral",
+        theme: spectral
+      },
+      {
+        name: "EB Garamond",
+        theme: EBGaramond
+      },
+      {
+        name: "Overpass Mono",
+        theme: overpassMono
+      },
+      {
+        name: "Source Code Pro",
+        theme: sourceCodePro
       }
     ]
   };
@@ -143,7 +192,8 @@ function makeModel(api: Api): Model {
           loading
         }
       }),
-      setTheme: (state, theme) => ({ ...state, theme })
+      setColorTheme: (state, colorTheme) => ({ ...state, colorTheme }),
+      setFontTheme: (state, fontTheme) => ({ ...state, fontTheme })
     },
     effects: {
       async fetchNotes(state, actions) {
