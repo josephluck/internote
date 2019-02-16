@@ -1,4 +1,4 @@
-import { Result } from "space-lift";
+import { Result, Ok, Err } from "space-lift";
 import { User } from "./entity";
 import { AxiosInstance } from "axios";
 import { makeRequestConfig } from "../api";
@@ -13,12 +13,14 @@ export function api(client: AxiosInstance) {
     findById(token: string, userId: string): Promise<Result<Error, User>> {
       return client
         .get(`/users/${userId}`, makeRequestConfig({ token }))
-        .then(r => r.data);
+        .then(r => Ok(r.data))
+        .catch(err => Err(err));
     },
-    deleteById(token: string, userId: string): Promise<Result<Error, User>> {
+    deleteById(token: string, userId: string): Promise<Result<Error, void>> {
       return client
         .delete(`/users/${userId}`, makeRequestConfig({ token }))
-        .then(r => r.data);
+        .then(() => Ok(null))
+        .catch(err => Err(err));
     }
   };
 }

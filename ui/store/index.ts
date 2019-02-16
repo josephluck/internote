@@ -8,18 +8,7 @@ import { AxiosError } from "axios";
 import cookie from "../utilities/cookie";
 import { isServer } from "../utilities/window";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import {
-  Theme,
-  internote,
-  daydream,
-  FontTheme,
-  inter,
-  spectral,
-  notoSansSc,
-  EBGaramond,
-  overpassMono,
-  sourceCodePro
-} from "../theming/themes";
+import { Theme, FontTheme, colorThemes, fontThemes } from "../theming/themes";
 
 const cookies = cookie();
 
@@ -66,7 +55,7 @@ interface OwnReducers {
 interface OwnEffects {
   fetchNotes: Twine.Effect0<OwnState, Actions, Promise<Types.Note[]>>;
   fetchNote: Twine.Effect<OwnState, Actions, { noteId: string }, Promise<void>>;
-  createNote: Twine.Effect0<OwnState, Actions, Promise<Types.Note>>;
+  createNote: Twine.Effect0<OwnState, Actions>;
   updateNote: Twine.Effect<
     OwnState,
     Actions,
@@ -97,50 +86,10 @@ function defaultState(): OwnState {
     notes: [],
     note: null,
     confirmation: null,
-    colorTheme: {
-      name: "Internote",
-      theme: internote
-    },
-    colorThemes: [
-      {
-        name: "Internote",
-        theme: internote
-      },
-      {
-        name: "Daydream",
-        theme: daydream
-      }
-    ],
-    fontTheme: {
-      name: "Inter",
-      theme: inter
-    },
-    fontThemes: [
-      {
-        name: "Inter",
-        theme: inter
-      },
-      {
-        name: "Noto Sans SC",
-        theme: notoSansSc
-      },
-      {
-        name: "Spectral",
-        theme: spectral
-      },
-      {
-        name: "EB Garamond",
-        theme: EBGaramond
-      },
-      {
-        name: "Overpass Mono",
-        theme: overpassMono
-      },
-      {
-        name: "Source Code Pro",
-        theme: sourceCodePro
-      }
-    ]
+    colorTheme: colorThemes[0],
+    colorThemes,
+    fontTheme: fontThemes[0],
+    fontThemes
   };
 }
 
@@ -154,11 +103,28 @@ export type State = Model["state"];
 
 export type Actions = Twine.Actions<OwnReducers, OwnEffects>;
 
+function getColorThemeFromPreferences(
+  preferences: Types.Preferences | undefined
+) {
+  return preferences
+    ? colorThemes.find(theme => theme.name === preferences.colorTheme) ||
+        colorThemes[0]
+    : colorThemes[0];
+}
+function getFontThemeFromPreferences(
+  preferences: Types.Preferences | undefined
+) {
+  return preferences
+    ? fontThemes.find(theme => theme.name === preferences.fontTheme) ||
+        fontThemes[0]
+    : fontThemes[0];
+}
+
 function makeModel(api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
-      resetState: defaultState,
+      resetState: () => defaultState(),
       setSession(state, session) {
         if (session) {
           cookies.persistAuthToken(session.token);
@@ -170,7 +136,9 @@ function makeModel(api: Api): Model {
         }
         return {
           ...state,
-          session
+          session,
+          colorTheme: getColorThemeFromPreferences(session.user.preferences),
+          fontTheme: getFontThemeFromPreferences(session.user.preferences)
         };
       },
       setNotes: (state, notes) => ({
@@ -211,14 +179,15 @@ function makeModel(api: Api): Model {
         }
       },
       async createNote(state, actions) {
-        const note = await api.note.create(state.session.token, {
+        const result = await api.note.create(state.session.token, {
           title: `New note - ${new Date().toDateString()}`
         });
-        actions.setNote(note);
-        if (!isServer()) {
-          Router.push(`/?id=${note.id}`);
-        }
-        return note;
+        result.map(note => {
+          actions.setNote(note);
+          if (!isServer()) {
+            Router.push(`/?id=${note.id}`);
+          }
+        });
       },
       async updateNote(state, actions, { content, title }) {
         const updates = { content, title: title ? title : state.note.title };
@@ -232,9 +201,11 @@ function makeModel(api: Api): Model {
           newNote.id,
           updates
         );
-        actions.setNotes(
-          state.notes.map(note => (note.id === newNote.id ? savedNote : note))
-        );
+        savedNote.map(note => {
+          actions.setNotes(
+            state.notes.map(n => (n.id === newNote.id ? note : n))
+          );
+        });
       },
       deleteNoteConfirmation(state, actions, { noteId }) {
         const noteToDelete = state.notes.find(note => note.id === noteId);
@@ -322,10 +293,27 @@ function makeModel(api: Api): Model {
 
 export function makeStore() {
   const api = makeApi(process.env.API_BASE_URL);
-  const store = twine<State, Actions>(
-    makeModel(api),
-    !isServer() ? logger : undefined
-  );
+  const loggingMiddleware =
+    !isServer() && process.env.NODE_ENV !== "production" ? logger : undefined;
+  const store = twine<State, Actions>(makeModel(api), [
+    loggingMiddleware,
+    {
+      onStateChange: (state, prevState) => {
+        if (state.session && state.session.token) {
+          if (state.colorTheme !== prevState.colorTheme) {
+            api.preferences.updateById(state.session.token, {
+              colorTheme: state.colorTheme.name
+            });
+          }
+          if (state.fontTheme !== prevState.fontTheme) {
+            api.preferences.updateById(state.session.token, {
+              fontTheme: state.fontTheme.name
+            });
+          }
+        }
+      }
+    }
+  ]);
   api.interceptors.response.use(
     res => res,
     err => {

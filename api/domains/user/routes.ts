@@ -13,9 +13,9 @@ function makeController(deps: Dependencies) {
         () => {
           return deps.messages.throw(ctx, deps.messages.notFound("user"));
         },
-        async usr => {
+        async u => {
           ctx.body = await repo.find({
-            where: { id: usr.id }
+            where: { id: u.id }
           });
           return ctx.body;
         }
@@ -28,6 +28,26 @@ function makeController(deps: Dependencies) {
     async deleteById(ctx: Router.IRouterContext) {
       await repo.delete(ctx.params.userId);
       return (ctx.body = {});
+    },
+    async updatePreferences(
+      ctx: Router.IRouterContext,
+      user: Option<UserEntity>
+    ) {
+      return user.fold(
+        () => {
+          return deps.messages.throw(ctx, deps.messages.notFound("user"));
+        },
+        async u => {
+          console.log({ user: u }, { preferences: ctx.request.body });
+          await repo.update(u.id, {
+            preferences: ctx.request.body
+          });
+          ctx.body = await repo.find({
+            where: { id: u.id }
+          });
+          return ctx.body;
+        }
+      );
     }
   };
 }
@@ -42,6 +62,11 @@ export function routes(deps: Dependencies) {
       "/users/:userId",
       deps.auth,
       route(deps, controller.deleteById)
+    );
+    router.put(
+      "/users/:userId/preferences",
+      deps.auth,
+      route(deps, controller.updatePreferences)
     );
 
     return router;

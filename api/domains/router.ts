@@ -5,6 +5,7 @@ import { Dependencies } from "../app";
 import user from "./user/routes";
 import auth from "./auth/routes";
 import note from "./note/routes";
+import preferences from "./preferences/routes";
 import { UserEntity } from "./user/entity";
 
 type ControllerFn = (
@@ -24,7 +25,7 @@ export interface RestController {
 export type Controller = Record<string, ControllerFn>;
 
 export function route(deps: Dependencies, cb: ControllerFn) {
-  // Could add authentication checks here
+  // TODO: Could automatically throw 403 if user not present
   return async function(ctx: Router.IRouterContext, next: () => Promise<any>) {
     const user = ctx.state.user
       ? await deps.db.manager.findOne(UserEntity, ctx.state.user)
@@ -38,7 +39,8 @@ export default function routes(deps: Dependencies) {
   const rts = compose(
     user(deps),
     auth(deps),
-    note(deps)
+    note(deps),
+    preferences(deps)
   );
   return rts(new Router());
 }

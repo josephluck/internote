@@ -4,14 +4,19 @@ import { UserEntity, createUser } from "../user/entity";
 import { Option } from "space-lift";
 import * as crypt from "bcryptjs";
 import { route } from "../router";
+import {
+  PreferencesEntity,
+  makeDefaultPreferences
+} from "../preferences/entity";
 
 function makeController(deps: Dependencies) {
-  const userRepo = deps.db.getRepository(UserEntity);
+  const repo = deps.db.getRepository(UserEntity);
+  const preferencesRepo = deps.db.getRepository(PreferencesEntity);
 
   return {
     async login(ctx: Router.IRouterContext) {
       return Option(
-        await userRepo.findOne({
+        await repo.findOne({
           email: ctx.request.body["email"]
         })
       ).fold(
@@ -27,7 +32,7 @@ function makeController(deps: Dependencies) {
             user.password
           );
           if (passwordOkay) {
-            // TODO: this includes the users password in the response
+            // TODO: this includes the users hashed password in the response
             ctx.body = {
               user,
               token: deps.jwt.sign(user.id.toString(), process.env.JWT_SECRET!)
@@ -51,11 +56,12 @@ function makeController(deps: Dependencies) {
           );
         },
         async u => {
-          const user = await u;
-          await userRepo.save(user);
-          // TODO: this includes the users password in the response
+          const user = await repo.save(await u);
+          await preferencesRepo.save(makeDefaultPreferences(user));
+
+          // TODO: this includes the users hashed password in the response
           ctx.body = {
-            user,
+            user: await repo.find({ where: { id: user.id } }),
             token: deps.jwt.sign(user.id.toString(), process.env.JWT_SECRET!)
           };
           return ctx.body;
@@ -68,7 +74,7 @@ function makeController(deps: Dependencies) {
           deps.messages.throw(ctx, deps.messages.notFound("user"));
         },
         user => {
-          // TODO: this includes the users password in the response
+          // TODO: this includes the users hashed password in the response
           ctx.body = {
             user,
             token: deps.jwt.sign(user.id.toString(), process.env.JWT_SECRET!)

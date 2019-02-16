@@ -65,11 +65,11 @@ export class ListMenuControl extends React.PureComponent<Props, State> {
           </>
         ) : (
           <div>
-            {this.props.items.map(item => (
-              <>
+            {this.props.items.map((item, i) => (
+              <div key={item.title || i}>
                 {item.item(renderProps)}
                 {item.spacerAfter ? <DropdownMenuSpacer /> : null}
-              </>
+              </div>
             ))}
           </div>
         )}

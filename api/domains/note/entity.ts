@@ -9,12 +9,10 @@ export class NoteEntity extends Base {
   @Column()
   content: string;
 
-  // TODO: this can be non nullable if we clean up data
   @Column({ nullable: true })
-  title?: string;
+  title: string;
 
   @ManyToOne(() => UserEntity, user => user.notes, {
-    eager: true,
     onDelete: "CASCADE"
   })
   user: UserEntity;

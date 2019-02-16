@@ -121,6 +121,17 @@ export const daydream: Theme = {
   modalBackground: "#F9F9FC"
 };
 
+export const colorThemes = [
+  {
+    name: "Internote",
+    theme: internote
+  },
+  {
+    name: "Daydream",
+    theme: daydream
+  }
+];
+
 export interface FontTheme {
   fontFamily: string;
 }
@@ -148,3 +159,30 @@ export const overpassMono: FontTheme = {
 export const sourceCodePro: FontTheme = {
   fontFamily: "'Source Code Pro', monospace"
 };
+
+export const fontThemes = [
+  {
+    name: "Inter",
+    theme: inter
+  },
+  {
+    name: "Noto Sans SC",
+    theme: notoSansSc
+  },
+  {
+    name: "Spectral",
+    theme: spectral
+  },
+  {
+    name: "EB Garamond",
+    theme: EBGaramond
+  },
+  {
+    name: "Overpass Mono",
+    theme: overpassMono
+  },
+  {
+    name: "Source Code Pro",
+    theme: sourceCodePro
+  }
+];
