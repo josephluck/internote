@@ -126,7 +126,7 @@ const ToolbarWrapper = styled.div<{ distractionFree: boolean }>`
   left: 0;
   right: 0;
   bottom: 0;
-  transition: all 300ms ease;
+  transition: all 500ms ease;
   opacity: ${props => (props.distractionFree ? 0 : 1)};
   transform: ${props =>
     props.distractionFree ? "translateY(5px)" : "translateY(0px)"};
@@ -134,6 +134,7 @@ const ToolbarWrapper = styled.div<{ distractionFree: boolean }>`
   &:hover {
     opacity: 1;
     transform: translateY(0px);
+    transition: all 200ms ease;
   }
 `;
 

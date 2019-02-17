@@ -20,7 +20,7 @@ const HeadingWrapper = styled.div<{
   left: 0;
   right: 0;
   top: 0;
-  transition: all 300ms ease;
+  transition: all 500ms ease;
   opacity: ${props => (props.distractionFree && !props.forceShow ? 0 : 1)};
   transform: ${props =>
     props.distractionFree && !props.forceShow
@@ -30,6 +30,7 @@ const HeadingWrapper = styled.div<{
   &:hover {
     opacity: 1;
     transform: translateY(0px);
+    transition: all 200ms ease;
   }
 `;
 
