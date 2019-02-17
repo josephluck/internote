@@ -61,9 +61,10 @@ const SettingsText = styled.div`
   font-weight: 600;
 `;
 
-export function SettingsMenu({ store }: { store: Store }) {
+export function SettingsMenu({ store, onMenuToggled }: { store: Store, onMenuToggled: (menuShowing: boolean) => void }) {
   return (
     <Menu
+    onMenuToggled={onMenuToggled}
       menu={menu => (
         <SettingsMenuWrap showing={menu.menuShowing} position="right">
           <OnKeyboardShortcut

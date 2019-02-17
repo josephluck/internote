@@ -9,7 +9,10 @@ import { NoteMenu } from "./note-menu";
 import { Flex } from "@rebass/grid";
 import { SettingsMenu } from "./settings-menu";
 
-const HeadingWrapper = styled.div<{ distractionFree: boolean }>`
+const HeadingWrapper = styled.div<{
+  distractionFree: boolean;
+  forceShow: boolean;
+}>`
   padding: ${spacing._0_5} 0;
   flex: 0 0 auto;
   background: ${props => props.theme.headingBackground};
@@ -18,9 +21,11 @@ const HeadingWrapper = styled.div<{ distractionFree: boolean }>`
   right: 0;
   top: 0;
   transition: all 300ms ease;
-  opacity: ${props => (props.distractionFree ? 0 : 1)};
+  opacity: ${props => (props.distractionFree && !props.forceShow ? 0 : 1)};
   transform: ${props =>
-    props.distractionFree ? "translateY(-5px)" : "translateY(0px)"};
+    props.distractionFree && !props.forceShow
+      ? "translateY(-5px)"
+      : "translateY(0px)"};
   z-index: 5;
   &:hover {
     opacity: 1;
@@ -33,18 +38,50 @@ const HeadingInner = styled(Wrapper)`
   align-items: center;
 `;
 
-export function Heading({ store }: { store: Store }) {
-  return (
-    <HeadingWrapper distractionFree={store.state.distractionFree}>
-      <HeadingInner>
-        <BlockLink href="/">
-          <Logo>Internote</Logo>
-        </BlockLink>
-        <Flex flex="1" alignItems="center" justifyContent="center">
-          <NoteMenu store={store} />
-        </Flex>
-        <SettingsMenu store={store} />
-      </HeadingInner>
-    </HeadingWrapper>
-  );
+interface Props {
+  store: Store;
+}
+interface State {
+  noteMenuShowing: boolean;
+  settingsMenuShowing: boolean;
+}
+
+export class Heading extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { noteMenuShowing: false, settingsMenuShowing: false };
+  }
+
+  setNoteMenuShowing = (noteMenuShowing: boolean) => {
+    this.setState({ noteMenuShowing });
+  };
+
+  setSettingsMenuShowing = (settingsMenuShowing: boolean) => {
+    this.setState({ settingsMenuShowing });
+  };
+
+  render() {
+    return (
+      <HeadingWrapper
+        distractionFree={this.props.store.state.distractionFree}
+        forceShow={this.state.noteMenuShowing || this.state.settingsMenuShowing}
+      >
+        <HeadingInner>
+          <BlockLink href="/">
+            <Logo>Internote</Logo>
+          </BlockLink>
+          <Flex flex="1" alignItems="center" justifyContent="center">
+            <NoteMenu
+              store={this.props.store}
+              onMenuToggled={this.setNoteMenuShowing}
+            />
+          </Flex>
+          <SettingsMenu
+            store={this.props.store}
+            onMenuToggled={this.setSettingsMenuShowing}
+          />
+        </HeadingInner>
+      </HeadingWrapper>
+    );
+  }
 }

@@ -125,6 +125,7 @@ const Highlighter = styled(ReactHighlight)<{ hasSearch: boolean }>`
 
 interface Props {
   store: Store;
+  onMenuToggled: (menuShowing: boolean) => void;
 }
 
 interface State {
@@ -201,10 +202,11 @@ export class NoteMenu extends React.Component<Props, State> {
   };
 
   render() {
-    const { store } = this.props;
+    const { store, onMenuToggled } = this.props;
     const { notes, searchText, searchFocused, noteLoading } = this.state;
     return (
       <MenuControl
+        onMenuToggled={onMenuToggled}
         menu={menu => (
           <NotesMenu
             showing={menu.menuShowing}

@@ -16,6 +16,7 @@ interface Props {
   menu: (state: ChildProps) => React.ReactNode;
   className?: string;
   onClose?: () => any;
+  onMenuToggled?: (menuShowing: boolean) => void;
 }
 
 interface State {
@@ -31,6 +32,9 @@ export class MenuControl extends React.Component<Props, State> {
   }
 
   toggleMenuShowing = (menuShowing: boolean) => {
+    if (this.props.onMenuToggled && this.state.menuShowing !== menuShowing) {
+      this.props.onMenuToggled(menuShowing);
+    }
     this.setState({ menuShowing });
   };
 
