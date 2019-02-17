@@ -123,7 +123,9 @@ export function SettingsMenu({ store }: { store: Store }) {
                           ) : null
                         }
                       >
-                        {theme.name}
+                        <span style={{ fontFamily: theme.theme.fontFamily }}>
+                          {theme.name}
+                        </span>
                       </DropdownMenuItem>
                     ))}
                   </>
