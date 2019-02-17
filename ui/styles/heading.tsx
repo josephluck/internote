@@ -8,6 +8,9 @@ import { styled } from "../theming/styled";
 import { NoteMenu } from "./note-menu";
 import { Flex } from "@rebass/grid";
 import { SettingsMenu } from "./settings-menu";
+import { faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { ExpandingIconButton } from "./expanding-icon-button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const HeadingWrapper = styled.div<{
   distractionFree: boolean;
@@ -37,6 +40,10 @@ const HeadingWrapper = styled.div<{
 const HeadingInner = styled(Wrapper)`
   display: flex;
   align-items: center;
+`;
+
+const NewNoteButton = styled.div`
+  margin-right: ${spacing._0_25};
 `;
 
 interface Props {
@@ -77,6 +84,20 @@ export class Heading extends React.Component<Props, State> {
               onMenuToggled={this.setNoteMenuShowing}
             />
           </Flex>
+          <NewNoteButton>
+            <ExpandingIconButton
+              forceShow={this.props.store.state.loading.createNote}
+              text="Create note"
+              onClick={this.props.store.actions.createNote}
+              icon={
+                this.props.store.state.loading.createNote ? (
+                  <FontAwesomeIcon icon={faSpinner} spin />
+                ) : (
+                  <FontAwesomeIcon icon={faPlus} />
+                )
+              }
+            />
+          </NewNoteButton>
           <SettingsMenu
             store={this.props.store}
             onMenuToggled={this.setSettingsMenuShowing}

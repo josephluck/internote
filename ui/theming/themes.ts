@@ -19,9 +19,9 @@ export interface Theme {
   formatButtonActiveText: string;
   formatButtonInactiveText: string;
   formatButtonInactiveBackground: string;
-  settingsButtonBackground: string;
-  settingsButtonActiveText: string;
-  settingsButtonInactiveText: string;
+  expandingIconButtonBackground: string;
+  expandingIconButtonActiveText: string;
+  expandingIconButtonInactiveText: string;
   toolbarButtonActiveBackground: string;
   toolbarButtonActiveText: string;
   toolbarButtonInactiveText: string;
@@ -60,9 +60,9 @@ export const internote: Theme = {
   formatButtonActiveText: "#FFFFFF",
   formatButtonInactiveBackground: "#19181B",
   formatButtonInactiveText: "#504D5D",
-  settingsButtonBackground: "#19181B",
-  settingsButtonActiveText: "#999999",
-  settingsButtonInactiveText: "#504D5D",
+  expandingIconButtonBackground: "#19181B",
+  expandingIconButtonActiveText: "#999999",
+  expandingIconButtonInactiveText: "#504D5D",
   toolbarButtonActiveBackground: "#095efd",
   toolbarButtonActiveText: "#FFFFFF",
   toolbarButtonInactiveBackground: "transparent",
@@ -101,9 +101,9 @@ export const daydream: Theme = {
   formatButtonActiveText: "#000000",
   formatButtonInactiveBackground: "#F9F9FC",
   formatButtonInactiveText: "#A79FAC",
-  settingsButtonBackground: "#DFDCE4",
-  settingsButtonActiveText: "#999999",
-  settingsButtonInactiveText: "#A79FAC",
+  expandingIconButtonBackground: "#DFDCE4",
+  expandingIconButtonActiveText: "#999999",
+  expandingIconButtonInactiveText: "#A79FAC",
   toolbarButtonActiveBackground: "#8D6B99",
   toolbarButtonActiveText: "#FFFFFF",
   toolbarButtonInactiveBackground: "transparent",
