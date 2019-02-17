@@ -35,12 +35,18 @@ export function withAuth<C extends typeof React.Component>(Child: C) {
         const token = cookies.getAuthToken();
         if (!token) {
           context.store.actions.signOut();
-        } else {
+        } else if (
+          !context.store.state.session ||
+          cookies.isTokenNearExpiry()
+        ) {
           await context.store.actions.session({ token });
         }
       }
 
-      await initAuthRequest();
+      await initAuthRequest().catch(() => {
+        context.store.actions.signOut();
+        redirectToLogin();
+      });
 
       const getInitialProps: any = (Child as any).getInitialProps;
 

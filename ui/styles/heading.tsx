@@ -11,6 +11,7 @@ import { SettingsMenu } from "./settings-menu";
 import { faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { ExpandingIconButton } from "./expanding-icon-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as Types from "@internote/api/domains/types";
 
 const HeadingWrapper = styled.div<{
   distractionFree: boolean;
@@ -48,6 +49,7 @@ const NewNoteButton = styled.div`
 
 interface Props {
   store: Store;
+  note: Types.Note | null;
 }
 interface State {
   noteMenuShowing: boolean;
@@ -86,6 +88,7 @@ export class Heading extends React.Component<Props, State> {
             <NoteMenu
               store={this.props.store}
               onMenuToggled={this.setNoteMenuShowing}
+              note={this.props.note}
             />
           </Flex>
           <NewNoteButton>

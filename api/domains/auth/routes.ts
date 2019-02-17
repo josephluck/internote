@@ -9,6 +9,8 @@ import {
   makeDefaultPreferences
 } from "../preferences/entity";
 
+const jwtExpiry30DaysSeconds = 2.592e6;
+
 function makeController(deps: Dependencies) {
   const repo = deps.db.getRepository(UserEntity);
   const preferencesRepo = deps.db.getRepository(PreferencesEntity);
@@ -35,7 +37,11 @@ function makeController(deps: Dependencies) {
             // TODO: this includes the users hashed password in the response
             ctx.body = {
               user,
-              token: deps.jwt.sign(user.id.toString(), process.env.JWT_SECRET!)
+              token: deps.jwt.sign(
+                user.id.toString(),
+                process.env.JWT_SECRET!,
+                { expiresIn: jwtExpiry30DaysSeconds }
+              )
             };
           } else {
             deps.messages.throw(

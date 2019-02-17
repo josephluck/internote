@@ -2,6 +2,7 @@ import * as React from "react";
 import dynamic from "next/dynamic";
 import { Store } from "../store";
 import Head from "next/head";
+import * as Types from "@internote/api/domains/types";
 
 const InternoteEditor = dynamic(
   import("../styles/editor").then(module => module.InternoteEditor),
@@ -10,19 +11,21 @@ const InternoteEditor = dynamic(
   }
 );
 
-export function Note({ store }: { store: Store }) {
+export function Note({ store, note }: { store: Store; note: Types.Note }) {
   return (
     <>
       <Head>
-        <title>{store.state.note.title} - Internote</title>
+        <title>{note.title} - Internote</title>
       </Head>
       <InternoteEditor
-        id={store.state.note.id}
-        initialValue={store.state.note.content}
-        onChange={store.actions.updateNote}
+        id={note.id}
+        initialValue={note.content}
+        onChange={changes =>
+          store.actions.updateNote({ noteId: note.id, ...changes })
+        }
         onDelete={() =>
           store.actions.deleteNoteConfirmation({
-            noteId: store.state.note.id
+            noteId: note.id
           })
         }
         saving={store.state.loading.updateNote}

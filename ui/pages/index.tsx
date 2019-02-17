@@ -21,12 +21,15 @@ const Page: NextTwineSFC<
   { id: string },
   { id: string }
 > = props => {
+  const note = props.id
+    ? props.store.state.notes.find(n => n.id === props.id)
+    : null;
   return (
     <>
-      <Heading store={props.store} />
+      <Heading store={props.store} note={note} />
       <PageWrapper>
-        {props.store.state.note && props.id ? (
-          <Note store={props.store} />
+        {note ? (
+          <Note store={props.store} note={note} />
         ) : (
           <OnMount action={props.store.actions.navigateToFirstNote} />
         )}
@@ -37,9 +40,11 @@ const Page: NextTwineSFC<
 };
 
 Page.getInitialProps = async ({ store, query }) => {
-  await store.actions.fetchNotes();
-  if (query && query.id) {
-    await store.actions.fetchNote({ noteId: query.id });
+  if (store.state.notes.length === 0) {
+    await store.actions.fetchNotes();
+  } else {
+    // No need to wait if notes are already fetched - just update in background
+    store.actions.fetchNotes();
   }
   return {
     id: query.id

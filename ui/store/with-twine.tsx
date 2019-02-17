@@ -58,12 +58,15 @@ export function withTwine<S, A>(
     }
 
     static async getInitialProps(appCtx) {
-      appCtx.ctx.store = initStore<S, A>(makeStore);
+      const store = initStore<S, A>(makeStore);
+
+      appCtx.ctx.store = { ...store, state: store.getState() };
 
       const initialProps = Child.getInitialProps
         ? await Child.getInitialProps.call(Child, appCtx)
         : {};
-      const initialState = appCtx.ctx.store.getState();
+
+      const initialState = store.getState();
 
       return {
         initialState,
@@ -102,10 +105,10 @@ export interface NextTwineSFC<
   Query extends DefaultQuery = DefaultQuery
 >
   extends React.StatelessComponent<
-      ExtraProps & {
-        store: Twine.Return<State, Actions>;
-      }
-    > {
+    ExtraProps & {
+      store: Twine.Return<State, Actions>;
+    }
+  > {
   getInitialProps?: (
     ctx: NextContext<Query> & { store: Twine.Return<State, Actions> }
   ) => Promise<ExtraProps>;

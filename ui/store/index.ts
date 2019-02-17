@@ -32,7 +32,6 @@ interface FontThemeWithName {
 
 interface OwnState {
   session: Types.Session | null;
-  note: Types.Note | null;
   notes: Types.Note[];
   confirmation: Confirmation | null;
   colorTheme: ColorThemeWithName | null;
@@ -46,7 +45,6 @@ interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
   setSession: Twine.Reducer<OwnState, Types.Session>;
   setNotes: Twine.Reducer<OwnState, Types.Note[]>;
-  setNote: Twine.Reducer<OwnState, Types.Note | null>;
   setConfirmation: Twine.Reducer<OwnState, Confirmation | null>;
   setConfirmationLoading: Twine.Reducer<OwnState, boolean>;
   setColorTheme: Twine.Reducer<OwnState, ColorThemeWithName>;
@@ -56,12 +54,11 @@ interface OwnReducers {
 
 interface OwnEffects {
   fetchNotes: Twine.Effect0<OwnState, Actions, Promise<Types.Note[]>>;
-  fetchNote: Twine.Effect<OwnState, Actions, { noteId: string }, Promise<void>>;
   createNote: Twine.Effect0<OwnState, Actions>;
   updateNote: Twine.Effect<
     OwnState,
     Actions,
-    { content: string; title: string | undefined },
+    { noteId: string; content: string; title: string | undefined },
     Promise<void>
   >;
   deleteNoteConfirmation: Twine.Effect<OwnState, Actions, { noteId: string }>;
@@ -86,7 +83,6 @@ function defaultState(): OwnState {
   return {
     session: null,
     notes: [],
-    note: null,
     confirmation: null,
     colorTheme: colorThemes[0],
     colorThemes,
@@ -151,10 +147,6 @@ function makeModel(api: Api): Model {
         ...state,
         notes: notes.sort((a, b) => (a.dateUpdated > b.dateUpdated ? -1 : 1))
       }),
-      setNote: (state, note) => ({
-        ...state,
-        note
-      }),
       setConfirmation: (state, confirmation) => ({
         ...state,
         confirmation
@@ -179,42 +171,38 @@ function makeModel(api: Api): Model {
         actions.setNotes(notes);
         return notes;
       },
-      async fetchNote(state, actions, { noteId }) {
-        const existingNote = state.notes.find(note => note.id === noteId);
-        if (existingNote) {
-          actions.setNote(existingNote);
-        } else {
-          const result = await api.note.findById(state.session.token, noteId);
-          result.map(actions.setNote);
-        }
-      },
       async createNote(state, actions) {
         const result = await api.note.create(state.session.token, {
           title: `New note - ${new Date().toDateString()}`
         });
         result.map(note => {
-          actions.setNote(note);
+          actions.setNotes([note, ...state.notes]);
           if (!isServer()) {
             Router.push(`/?id=${note.id}`);
           }
         });
       },
-      async updateNote(state, actions, { content, title }) {
-        const updates = { content, title: title ? title : state.note.title };
+      async updateNote(state, actions, { noteId, content, title }) {
+        const existingNote =
+          state.notes.find(note => note.id === noteId) || ({} as any);
+        const updates = {
+          content,
+          title: title ? title : existingNote.title || "Internote"
+        };
         const newNote = {
-          ...state.note,
+          ...existingNote,
           ...updates
         };
-        actions.setNote(newNote);
+        actions.setNotes(
+          state.notes.map(n => (n.id === noteId ? { ...n, ...newNote } : n))
+        );
         const savedNote = await api.note.updateById(
           state.session.token,
-          newNote.id,
+          noteId,
           updates
         );
         savedNote.map(note => {
-          actions.setNotes(
-            state.notes.map(n => (n.id === newNote.id ? note : n))
-          );
+          actions.setNotes(state.notes.map(n => (n.id === noteId ? note : n)));
         });
       },
       deleteNoteConfirmation(state, actions, { noteId }) {

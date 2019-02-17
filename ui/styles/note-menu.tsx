@@ -23,6 +23,7 @@ import { Note } from "@internote/api/domains/types";
 import ReactHighlight from "react-highlight-words";
 import { OnNavigate } from "./on-navigate";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
+import * as Types from "@internote/api/domains/types";
 
 const DeleteIcon = styled.div`
   margin-left: ${spacing._1_5};
@@ -125,6 +126,7 @@ const Highlighter = styled(ReactHighlight)<{ hasSearch: boolean }>`
 
 interface Props {
   store: Store;
+  note: Types.Note | null;
   onMenuToggled: (menuShowing: boolean) => void;
 }
 
@@ -202,7 +204,7 @@ export class NoteMenu extends React.Component<Props, State> {
   };
 
   render() {
-    const { store, onMenuToggled } = this.props;
+    const { store, onMenuToggled, note } = this.props;
     const { notes, searchText, searchFocused, noteLoading } = this.state;
     return (
       <MenuControl
@@ -257,15 +259,13 @@ export class NoteMenu extends React.Component<Props, State> {
             >
               <a href="">Create a new note</a>
             </DropdownMenuItem>
-            {notes.map(note => (
+            {notes.map(n => (
               <NoteMenuItem
-                key={note.id}
+                key={n.id}
                 icon={
-                  noteLoading === note.id ? (
+                  noteLoading === n.id ? (
                     <FontAwesomeIcon icon={faSpinner} spin />
-                  ) : noteLoading === null &&
-                    store.state.note &&
-                    store.state.note.id === note.id ? (
+                  ) : noteLoading === null && note && n.id === note.id ? (
                     <FontAwesomeIcon icon={faCheck} />
                   ) : null
                 }
@@ -274,15 +274,15 @@ export class NoteMenu extends React.Component<Props, State> {
                   flex="1"
                   style={{ overflow: "hidden", textOverflow: "ellipsis" }}
                   onClick={() => {
-                    this.setNoteLoading(note.id);
+                    this.setNoteLoading(n.id);
                   }}
                 >
-                  <Link href={`?id=${note.id}`} passHref>
+                  <Link href={`?id=${n.id}`} passHref>
                     <a>
                       <Highlighter
                         searchWords={searchText.split("")}
                         autoEscape={true}
-                        textToHighlight={note.title}
+                        textToHighlight={n.title}
                         hasSearch={searchText.length > 0}
                       />
                     </a>
@@ -291,7 +291,7 @@ export class NoteMenu extends React.Component<Props, State> {
                 <DeleteIcon
                   onClick={() => {
                     menu.toggleMenuShowing(false);
-                    store.actions.deleteNoteConfirmation({ noteId: note.id });
+                    store.actions.deleteNoteConfirmation({ noteId: n.id });
                   }}
                 >
                   <FontAwesomeIcon icon={faTrash} />
@@ -305,7 +305,7 @@ export class NoteMenu extends React.Component<Props, State> {
           <DropdownChevron
             onClick={() => menu.toggleMenuShowing(!menu.menuShowing)}
           >
-            {store.state.note ? store.state.note.title : null}
+            {note ? note.title : null}
           </DropdownChevron>
         )}
       </MenuControl>
