@@ -103,11 +103,14 @@ const EditorStyles = styled.div<{ distractionFree: boolean }>`
   }
   .node-unfocused {
     opacity: ${props => (props.distractionFree ? 0.4 : 1)};
-    transition: all 500ms ease;
+    transition: all 300ms ease;
+    &:hover {
+      opacity: 1;
+    }
   }
   .node-focused {
     opacity: 1;
-    transition: all 200ms ease;
+    transition: all 100ms ease;
   }
 `;
 
