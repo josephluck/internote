@@ -6,11 +6,14 @@ import { UserEntity } from "../user/entity";
 
 @Entity()
 export class PreferencesEntity extends Base {
-  @Column({ default: "Internote" })
-  colorTheme: string;
+  @Column({ default: "Internote", nullable: true })
+  colorTheme?: string;
 
-  @Column({ default: "Inter" })
-  fontTheme: string;
+  @Column({ default: "Inter", nullable: true })
+  fontTheme?: string;
+
+  @Column({ default: false, nullable: true })
+  distractionFree?: boolean;
 
   @OneToOne(() => UserEntity, user => user.preferences, {
     onDelete: "CASCADE"

@@ -5,7 +5,7 @@ import { makeRequestConfig } from "../api";
 
 export function api(client: AxiosInstance) {
   return {
-    updateById(
+    update(
       token: string,
       preferences: Partial<UpdatePreferences>
     ): Promise<Result<Error, Preferences>> {

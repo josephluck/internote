@@ -39,6 +39,7 @@ interface OwnState {
   colorThemes: ColorThemeWithName[];
   fontTheme: FontThemeWithName | null;
   fontThemes: FontThemeWithName[];
+  distractionFree: boolean;
 }
 
 interface OwnReducers {
@@ -50,6 +51,7 @@ interface OwnReducers {
   setConfirmationLoading: Twine.Reducer<OwnState, boolean>;
   setColorTheme: Twine.Reducer<OwnState, ColorThemeWithName>;
   setFontTheme: Twine.Reducer<OwnState, FontThemeWithName>;
+  setDistractionFree: Twine.Reducer<OwnState, boolean>;
 }
 
 interface OwnEffects {
@@ -89,7 +91,8 @@ function defaultState(): OwnState {
     colorTheme: colorThemes[0],
     colorThemes,
     fontTheme: fontThemes[0],
-    fontThemes
+    fontThemes,
+    distractionFree: false
   };
 }
 
@@ -138,7 +141,10 @@ function makeModel(api: Api): Model {
           ...state,
           session,
           colorTheme: getColorThemeFromPreferences(session.user.preferences),
-          fontTheme: getFontThemeFromPreferences(session.user.preferences)
+          fontTheme: getFontThemeFromPreferences(session.user.preferences),
+          distractionFree:
+            !!session.user.preferences &&
+            session.user.preferences.distractionFree === true
         };
       },
       setNotes: (state, notes) => ({
@@ -161,7 +167,11 @@ function makeModel(api: Api): Model {
         }
       }),
       setColorTheme: (state, colorTheme) => ({ ...state, colorTheme }),
-      setFontTheme: (state, fontTheme) => ({ ...state, fontTheme })
+      setFontTheme: (state, fontTheme) => ({ ...state, fontTheme }),
+      setDistractionFree: (state, distractionFree) => ({
+        ...state,
+        distractionFree
+      })
     },
     effects: {
       async fetchNotes(state, actions) {
@@ -301,13 +311,18 @@ export function makeStore() {
       onStateChange: (state, prevState) => {
         if (state.session && state.session.token) {
           if (state.colorTheme !== prevState.colorTheme) {
-            api.preferences.updateById(state.session.token, {
+            api.preferences.update(state.session.token, {
               colorTheme: state.colorTheme.name
             });
           }
           if (state.fontTheme !== prevState.fontTheme) {
-            api.preferences.updateById(state.session.token, {
+            api.preferences.update(state.session.token, {
               fontTheme: state.fontTheme.name
+            });
+          }
+          if (state.distractionFree !== prevState.distractionFree) {
+            api.preferences.update(state.session.token, {
+              distractionFree: state.distractionFree
             });
           }
         }

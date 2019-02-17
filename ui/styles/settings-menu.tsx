@@ -6,7 +6,8 @@ import {
   faTrash,
   faPalette,
   faCheck,
-  faFont
+  faFont,
+  faEye
 } from "@fortawesome/free-solid-svg-icons";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -101,15 +102,15 @@ export function SettingsMenu({ store }: { store: Store }) {
                 )
               },
               {
-                title: "Fonts",
+                title: "Typography",
                 item: list => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faFont} />}
                     onClick={() => {
-                      list.toSubMenu("Fonts");
+                      list.toSubMenu("Typography");
                     }}
                   >
-                    Fonts
+                    Typography
                   </DropdownMenuItem>
                 ),
                 subMenu: () => (
@@ -128,6 +129,43 @@ export function SettingsMenu({ store }: { store: Store }) {
                         </span>
                       </DropdownMenuItem>
                     ))}
+                  </>
+                )
+              },
+              {
+                title: "Focus mode",
+                item: list => (
+                  <DropdownMenuItem
+                    icon={<FontAwesomeIcon icon={faEye} />}
+                    onClick={() => {
+                      list.toSubMenu("Focus mode");
+                    }}
+                  >
+                    Focus mode
+                  </DropdownMenuItem>
+                ),
+                subMenu: () => (
+                  <>
+                    <DropdownMenuItem
+                      onClick={() => store.actions.setDistractionFree(false)}
+                      icon={
+                        !store.state.distractionFree ? (
+                          <FontAwesomeIcon icon={faCheck} />
+                        ) : null
+                      }
+                    >
+                      Off
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => store.actions.setDistractionFree(true)}
+                      icon={
+                        store.state.distractionFree ? (
+                          <FontAwesomeIcon icon={faCheck} />
+                        ) : null
+                      }
+                    >
+                      On
+                    </DropdownMenuItem>
                   </>
                 ),
                 spacerAfter: true

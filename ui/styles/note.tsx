@@ -21,6 +21,7 @@ export function Note({ store }: { store: Store }) {
         })
       }
       saving={store.state.loading.updateNote}
+      distractionFree={store.state.distractionFree}
     />
   );
 }

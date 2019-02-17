@@ -44,7 +44,7 @@ const Wrap = styled.div`
   overflow: hidden;
 `;
 
-const EditorStyles = styled.div`
+const EditorStyles = styled.div<{ distractionFree: boolean }>`
   display: flex;
   flex: 1;
   overflow: auto;
@@ -101,6 +101,14 @@ const EditorStyles = styled.div`
     border-left: solid 4px ${props => props.theme.blockQuoteBorder};
     padding-left: ${spacing._0_5};
   }
+  .node-unfocused {
+    opacity: ${props => (props.distractionFree ? 0.4 : 1)};
+    transition: all 500ms ease;
+  }
+  .node-focused {
+    opacity: 1;
+    transition: all 200ms ease;
+  }
 `;
 
 const ToolbarWrapper = styled.div`
@@ -147,6 +155,7 @@ interface Props {
   onChange: (value: { content: string; title: string }) => void;
   onDelete: () => void;
   saving: boolean;
+  distractionFree: boolean;
 }
 
 interface State {
@@ -355,24 +364,49 @@ export class InternoteEditor extends React.Component<Props, State> {
     );
   };
 
-  renderNode: Plugin["renderNode"] = ({ attributes, children, node }) => {
+  renderNode: Plugin["renderNode"] = props => {
+    const { attributes, children, node, isSelected } = props;
+    const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
+
     switch ((node as any).type) {
+      case "paragraph":
+        return (
+          <p {...attributes} className={fadeClassName}>
+            {children}
+          </p>
+        );
       case "block-quote":
-        return <blockquote {...attributes}>{children}</blockquote>;
+        return (
+          <blockquote {...attributes} className={fadeClassName}>
+            {children}
+          </blockquote>
+        );
       case "bulleted-list":
         return <ul {...attributes}>{children}</ul>;
-      case "heading-one":
-        return <h1 {...attributes}>{children}</h1>;
-      case "heading-two":
-        return <h2 {...attributes}>{children}</h2>;
-      case "list-item":
-        return <li {...attributes}>{children}</li>;
       case "numbered-list":
         return <ol {...attributes}>{children}</ol>;
+      case "heading-one":
+        return (
+          <h1 {...attributes} className={fadeClassName}>
+            {children}
+          </h1>
+        );
+      case "heading-two":
+        return (
+          <h2 {...attributes} className={fadeClassName}>
+            {children}
+          </h2>
+        );
+      case "list-item":
+        return (
+          <li {...attributes} className={fadeClassName}>
+            {children}
+          </li>
+        );
     }
   };
 
-  renderMark: Plugin["renderMark"] = props => {
+  renderMark: Plugin["renderMark"] = (props, next) => {
     const { children, mark, attributes } = props;
 
     switch (mark.type as MarkType) {
@@ -384,13 +418,15 @@ export class InternoteEditor extends React.Component<Props, State> {
         return <em {...attributes}>{children}</em>;
       case "underlined":
         return <u {...attributes}>{children}</u>;
+      default:
+        return next();
     }
   };
 
   render() {
     return (
       <Wrap>
-        <EditorStyles>
+        <EditorStyles distractionFree={this.props.distractionFree}>
           <Wrapper>
             <Editor
               placeholder=""
