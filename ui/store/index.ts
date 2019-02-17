@@ -220,7 +220,6 @@ function makeModel(api: Api): Model {
       async deleteNote(state, actions, { noteId }) {
         await api.note.deleteById(state.session.token, noteId);
         actions.setNotes(state.notes.filter(note => note.id !== noteId));
-        await actions.navigateToFirstNote();
       },
       async navigateToFirstNote(_state, actions) {
         const notes = await actions.fetchNotes();

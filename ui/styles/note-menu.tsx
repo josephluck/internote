@@ -257,7 +257,7 @@ export class NoteMenu extends React.Component<Props, State> {
                 store.actions.createNote();
               }}
             >
-              <a href="">Create a new note</a>
+              <span>Create a new note</span>
             </DropdownMenuItem>
             {notes.map(n => (
               <NoteMenuItem
