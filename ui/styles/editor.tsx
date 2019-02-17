@@ -114,7 +114,7 @@ const EditorStyles = styled.div<{ distractionFree: boolean }>`
   }
 `;
 
-const ToolbarWrapper = styled.div`
+const ToolbarWrapper = styled.div<{ distractionFree: boolean }>`
   flex: 0 0 auto;
   font-size: ${font._18.size};
   line-height: ${font._18.lineHeight};
@@ -122,6 +122,19 @@ const ToolbarWrapper = styled.div`
   display: flex;
   align-items: center;
   padding: ${spacing._0_25} 0;
+  position: ${props => (props.distractionFree ? "fixed" : "static")};
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: all 300ms ease;
+  opacity: ${props => (props.distractionFree ? 0 : 1)};
+  transform: ${props =>
+    props.distractionFree ? "translateY(5px)" : "translateY(0px)"};
+  z-index: 5;
+  &:hover {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 `;
 
 const ToolbarInner = styled(Wrapper)`
@@ -443,7 +456,7 @@ export class InternoteEditor extends React.Component<Props, State> {
           </Wrapper>
         </EditorStyles>
 
-        <ToolbarWrapper>
+        <ToolbarWrapper distractionFree={this.props.distractionFree}>
           <ToolbarInner>
             <Flex flex={1}>
               {this.renderBlockButton("heading-one")}
