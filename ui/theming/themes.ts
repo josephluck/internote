@@ -96,7 +96,7 @@ export const daydream: Theme = {
   savingActive: "#8D6B99",
   savingInactive: "#2CCB62",
   textLinkText: "#614B67",
-  codeBlockBackground: "#211F28",
+  codeBlockBackground: "#DFDCE4",
   formatButtonActiveBackground: "#8D6B99",
   formatButtonActiveText: "#000000",
   formatButtonInactiveBackground: "#F9F9FC",

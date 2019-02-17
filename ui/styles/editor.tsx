@@ -114,7 +114,7 @@ const EditorStyles = styled.div<{ distractionFree: boolean }>`
   }
 `;
 
-const ToolbarWrapper = styled.div<{ distractionFree: boolean }>`
+const ToolbarWrapper = styled.div<{ distractionFree: boolean,forceShow : boolean }>`
   flex: 0 0 auto;
   font-size: ${font._18.size};
   line-height: ${font._18.lineHeight};
@@ -127,9 +127,9 @@ const ToolbarWrapper = styled.div<{ distractionFree: boolean }>`
   right: 0;
   bottom: 0;
   transition: all 500ms ease;
-  opacity: ${props => (props.distractionFree ? 0 : 1)};
+  opacity: ${props => (props.distractionFree && !props.forceShow ? 0 : 1)};
   transform: ${props =>
-    props.distractionFree ? "translateY(5px)" : "translateY(0px)"};
+    props.distractionFree && !props.forceShow ? "translateY(5px)" : "translateY(0px)"};
   z-index: 5;
   &:hover {
     opacity: 1;
@@ -441,6 +441,7 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   render() {
+    const hasSelection = this.state.value.fragment.text !== ""
     return (
       <Wrap>
         <EditorStyles distractionFree={this.props.distractionFree}>
@@ -457,7 +458,7 @@ export class InternoteEditor extends React.Component<Props, State> {
           </Wrapper>
         </EditorStyles>
 
-        <ToolbarWrapper distractionFree={this.props.distractionFree}>
+        <ToolbarWrapper distractionFree={this.props.distractionFree} forceShow={hasSelection}>
           <ToolbarInner>
             <Flex flex={1}>
               {this.renderBlockButton("heading-one")}
