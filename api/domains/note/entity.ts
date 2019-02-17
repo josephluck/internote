@@ -28,7 +28,7 @@ export type CreateNote = Omit<
 export type UpdateNote = CreateNote;
 
 function defaultNoteContent() {
-  return "<h2>Internote</h2><p></p><p>Internote is a rich text editor designed for distraction-free content creation.</p><p></p><p>Internote supports a myriad of different formatting options including <strong>bold, </strong><em>italic </em>and <u>underline</u> as well as lists, <code>code snippets</code>, headings and quotes.</p><p></p><p>Internote automatically saves your notes in the cloud and is completely free.</p>";
+  return "<h2>Internote</h2><p>Internote is a rich text editor designed for distraction-free content creation.</p><p>Internote supports a myriad of different formatting options including <strong>bold, </strong><em>italic </em>and <u>underline</u> as well as lists, <code>code snippets</code>, headings and quotes.</p><p>Internote automatically saves your notes in the cloud and is completely free.</p>";
 }
 
 export function createNote(fields: any, user: UserEntity) {
