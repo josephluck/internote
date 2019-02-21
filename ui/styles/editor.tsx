@@ -441,6 +441,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
     const preventForBlocks = ["list-item", "bulleted-list", "numbered-list"];
     if (
+      // TODO: check for selection
       !shiftIsPressed && // NB: prevent if selection is over multiple nodes
       preventForBlocks.indexOf((node as any).type) === -1 &&
       isSelected &&
