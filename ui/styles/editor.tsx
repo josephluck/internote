@@ -255,7 +255,7 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onKeyDown: Plugin["onKeyDown"] = (event: KeyboardEvent, change) => {
-    const inserted = this.handleInsertParagraphOnKeyDown(event, change);
+    const inserted = this.handleResetBlockOnEnterPressed(event, change);
 
     if (inserted) {
       return inserted;
@@ -297,14 +297,22 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
-  handleInsertParagraphOnKeyDown: Plugin["onKeyDown"] = (
+  handleResetBlockOnEnterPressed: Plugin["onKeyDown"] = (
     event: KeyboardEvent,
     change
   ) => {
     const isEnterKey = event.keyCode === 13 && !event.shiftKey;
-    const preventForBlocks = ["list-item"];
-    const previousBlockType = change.value.startBlock.type;
-    if (isEnterKey && preventForBlocks.indexOf(previousBlockType) === -1) {
+    const listBlockTypes = ["list-item"];
+    const previousBlockType = change.value.focusBlock.type;
+    const isListItem = listBlockTypes.indexOf(previousBlockType) !== -1;
+    const lastBlockEmpty = change.value.startText.text.length === 0;
+    const nextBlockIsListItem =
+      !!change.value.nextBlock && change.value.nextBlock.type === "list-item";
+    const shouldCloseList = lastBlockEmpty && !nextBlockIsListItem;
+    if (isEnterKey && (!isListItem || shouldCloseList)) {
+      if (shouldCloseList) {
+        change.unwrapBlock("bulleted-list").unwrapBlock("numbered-list");
+      }
       return change.splitBlock(0).insertBlock("paragraph");
     }
   };
@@ -431,7 +439,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     const { attributes, children, node, isSelected, key } = props;
     const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
 
-    const preventForBlocks = ["list-item", "bulleted-list"];
+    const preventForBlocks = ["list-item", "bulleted-list", "numbered-list"];
     if (
       !shiftIsPressed && // NB: prevent if selection is over multiple nodes
       preventForBlocks.indexOf((node as any).type) === -1 &&
