@@ -1,6 +1,8 @@
 import React from "react";
+import zenscroll from "zenscroll";
 import { serializer, MarkType, BlockType } from "../utilities/serializer";
 import { Editor, Plugin } from "slate-react";
+import { throttle } from "lodash";
 import { debounce } from "lodash";
 import isKeyHotkey from "is-hotkey";
 import { spacing, font, borderRadius } from "../theming/symbols";
@@ -48,6 +50,9 @@ const EditorStyles = styled.div<{ distractionFree: boolean }>`
   display: flex;
   flex: 1;
   overflow: auto;
+  .slate-editor {
+    padding-bottom: 50vh; // Ensure enough room to center last block
+  }
   > div:first-of-type {
     min-height: 100vh;
   }
@@ -81,7 +86,7 @@ const EditorStyles = styled.div<{ distractionFree: boolean }>`
   }
   ul li,
   ol li {
-    list-style-position: outside;
+    list-style-position: inside;
     margin-bottom: ${spacing._0_5};
     &:last-of-type {
       margin-bottom: 0;
@@ -104,9 +109,6 @@ const EditorStyles = styled.div<{ distractionFree: boolean }>`
   .node-unfocused {
     opacity: ${props => (props.distractionFree ? 0.4 : 1)};
     transition: all 300ms ease;
-    &:hover {
-      opacity: 1;
-    }
   }
   .node-focused {
     opacity: 1;
@@ -114,7 +116,10 @@ const EditorStyles = styled.div<{ distractionFree: boolean }>`
   }
 `;
 
-const ToolbarWrapper = styled.div<{ distractionFree: boolean,forceShow : boolean }>`
+const ToolbarWrapper = styled.div<{
+  distractionFree: boolean;
+  forceShow: boolean;
+}>`
   flex: 0 0 auto;
   font-size: ${font._18.size};
   line-height: ${font._18.lineHeight};
@@ -129,7 +134,9 @@ const ToolbarWrapper = styled.div<{ distractionFree: boolean,forceShow : boolean
   transition: all 500ms ease;
   opacity: ${props => (props.distractionFree && !props.forceShow ? 0 : 1)};
   transform: ${props =>
-    props.distractionFree && !props.forceShow ? "translateY(5px)" : "translateY(0px)"};
+    props.distractionFree && !props.forceShow
+      ? "translateY(5px)"
+      : "translateY(0px)"};
   z-index: 5;
   &:hover {
     opacity: 1;
@@ -177,6 +184,7 @@ interface Props {
 
 interface State {
   value: Value;
+  focusedNodeKey: string;
 }
 
 function getTitleFromEditorValue(editorValue: Value): string | undefined {
@@ -196,6 +204,8 @@ function getTitleFromEditorValue(editorValue: Value): string | undefined {
 
 const fallbackNoteContent = "<h1> </h1>";
 
+let shiftIsPressed = false;
+
 function getInitialValue(props: Props): string {
   return props.initialValue && props.initialValue.length > 1
     ? props.initialValue
@@ -209,7 +219,8 @@ export class InternoteEditor extends React.Component<Props, State> {
     super(props);
     this.debounceValue = props.debounceValue || 3000;
     this.state = {
-      value: serializer.deserialize(getInitialValue(props))
+      value: serializer.deserialize(getInitialValue(props)),
+      focusedNodeKey: ""
     };
   }
 
@@ -243,7 +254,13 @@ export class InternoteEditor extends React.Component<Props, State> {
     return value.blocks.some(node => node.type == type);
   };
 
-  onKeyDown: Plugin["onKeyDown"] = (event, _change) => {
+  onKeyDown: Plugin["onKeyDown"] = (event: KeyboardEvent, change) => {
+    const inserted = this.handleInsertParagraphOnKeyDown(event, change);
+
+    if (inserted) {
+      return inserted;
+    }
+
     if (isBoldHotkey(event)) {
       event.preventDefault();
       this.onClickMark(event as any, "bold");
@@ -272,7 +289,36 @@ export class InternoteEditor extends React.Component<Props, State> {
       event.preventDefault();
       this.onClickBlock(event as any, "bulleted-list");
     }
+
+    shiftIsPressed = event.shiftKey;
+
+    if (!shiftIsPressed) {
+      window.requestAnimationFrame(this.handleFocusModeScroll);
+    }
   };
+
+  handleInsertParagraphOnKeyDown: Plugin["onKeyDown"] = (
+    event: KeyboardEvent,
+    change
+  ) => {
+    const isEnterKey = event.keyCode === 13 && !event.shiftKey;
+    const preventForBlocks = ["list-item"];
+    const previousBlockType = change.value.startBlock.type;
+    if (isEnterKey && preventForBlocks.indexOf(previousBlockType) === -1) {
+      return change.splitBlock(0).insertBlock("paragraph");
+    }
+  };
+
+  handleFocusModeScroll = throttle(() => {
+    if (this.props.distractionFree) {
+      const focusedBlock = document.querySelector(".node-focused");
+      const editorScrollWrap = document.getElementById("editor-scroll-wrap");
+      if (focusedBlock) {
+        const scroller = zenscroll.createScroller(editorScrollWrap, 300);
+        scroller.center(focusedBlock as HTMLElement);
+      }
+    }
+  }, 200);
 
   onClickMark = (event: React.MouseEvent<HTMLElement>, type: MarkType) => {
     event.preventDefault();
@@ -382,8 +428,23 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   renderNode: Plugin["renderNode"] = props => {
-    const { attributes, children, node, isSelected } = props;
+    const { attributes, children, node, isSelected, key } = props;
     const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
+
+    const preventForBlocks = ["list-item", "bulleted-list"];
+    if (
+      !shiftIsPressed && // NB: prevent if selection is over multiple nodes
+      preventForBlocks.indexOf((node as any).type) === -1 &&
+      isSelected &&
+      key !== this.state.focusedNodeKey
+    ) {
+      this.setState(
+        {
+          focusedNodeKey: key
+        },
+        this.handleFocusModeScroll
+      );
+    }
 
     switch ((node as any).type) {
       case "paragraph":
@@ -441,10 +502,13 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   render() {
-    const hasSelection = this.state.value.fragment.text !== ""
+    const hasSelection = this.state.value.fragment.text !== "";
     return (
       <Wrap>
-        <EditorStyles distractionFree={this.props.distractionFree}>
+        <EditorStyles
+          distractionFree={this.props.distractionFree}
+          id="editor-scroll-wrap"
+        >
           <Wrapper>
             <Editor
               placeholder=""
@@ -454,11 +518,15 @@ export class InternoteEditor extends React.Component<Props, State> {
               renderNode={this.renderNode}
               renderMark={this.renderMark}
               autoFocus
+              className="slate-editor"
             />
           </Wrapper>
         </EditorStyles>
 
-        <ToolbarWrapper distractionFree={this.props.distractionFree} forceShow={hasSelection}>
+        <ToolbarWrapper
+          distractionFree={this.props.distractionFree}
+          forceShow={hasSelection}
+        >
           <ToolbarInner>
             <Flex flex={1}>
               {this.renderBlockButton("heading-one")}

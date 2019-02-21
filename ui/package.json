@@ -23,7 +23,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@internote/api": "*",
     "@rebass/grid": "^6.0.0-7",
-    "@types/lodash": "^4.14.120",
+    "@types/lodash": "^4.14.121",
     "@types/next": "^7.0.8",
     "@types/react": "^16.8.1",
     "@types/react-collapse": "^4.0.2",
@@ -33,6 +33,7 @@
     "@types/slate": "^0.40.0",
     "@types/slate-html-serializer": "^0.6.2",
     "@types/slate-react": "^0.18.0",
+    "@types/zenscroll": "^4.0.0",
     "@zeit/next-typescript": "^1.1.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-styled-components": "^1.7.1",
@@ -64,6 +65,7 @@
     "ts-node": "^8.0.2",
     "twine-js": "^2.0.2",
     "typescript": "^3.0.3",
-    "universal-cookie": "^3.0.7"
+    "universal-cookie": "^3.0.7",
+    "zenscroll": "^4.0.2"
   }
 }
