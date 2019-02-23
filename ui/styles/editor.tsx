@@ -204,8 +204,6 @@ function getTitleFromEditorValue(editorValue: Value): string | undefined {
 
 const fallbackNoteContent = "<h1> </h1>";
 
-let shiftIsPressed = false;
-
 function getInitialValue(props: Props): string {
   return props.initialValue && props.initialValue.length > 1
     ? props.initialValue
@@ -290,9 +288,7 @@ export class InternoteEditor extends React.Component<Props, State> {
       this.onClickBlock(event as any, "bulleted-list");
     }
 
-    shiftIsPressed = event.shiftKey;
-
-    if (!shiftIsPressed) {
+    if (!event.shiftKey) {
       window.requestAnimationFrame(this.handleFocusModeScroll);
     }
   };
@@ -440,9 +436,10 @@ export class InternoteEditor extends React.Component<Props, State> {
     const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
 
     const preventForBlocks = ["list-item", "bulleted-list", "numbered-list"];
+    const hasSelection = window.getSelection().toString().length > 0;
+
     if (
-      // TODO: check for selection
-      !shiftIsPressed && // NB: prevent if selection is over multiple nodes
+      !hasSelection &&
       preventForBlocks.indexOf((node as any).type) === -1 &&
       isSelected &&
       key !== this.state.focusedNodeKey
