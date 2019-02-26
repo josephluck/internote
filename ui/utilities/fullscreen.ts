@@ -23,7 +23,7 @@ export function requestFullScreen(elm: HTMLElement, cb?: () => any) {
 /**
  * Exits fullscreen mode.
  */
-export function exitFullscreen(cb: () => any) {
+export function exitFullscreen(cb?: () => any) {
   const fn =
     document.exitFullscreen ||
     (document as any).msExitFullscreen ||

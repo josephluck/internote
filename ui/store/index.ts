@@ -292,11 +292,12 @@ function makeModel(api: Api): Model {
           actions.signOut();
         }
       },
-      toggleFullscreen(_state, actions, isFullscreen) {
+      toggleFullscreen(_state, _actions, isFullscreen) {
+        // NB: no need to set state here since the window listener does that for us
         if (isFullscreen) {
-          requestFullScreen(document.body, () => actions.setFullscreen(true));
+          requestFullScreen(document.body);
         } else {
-          exitFullscreen(() => actions.setFullscreen(false));
+          exitFullscreen();
         }
       }
     }
@@ -342,6 +343,21 @@ export function makeStore() {
       }
     }
   );
+
+  if (!isServer()) {
+    document.addEventListener("fullscreenchange", () => {
+      const doc = document as any;
+
+      const fullscreenElm: HTMLElement | null =
+        doc.fullscreenElement ||
+        doc.mozFullScreenElement ||
+        doc.webkitFullscreenElement ||
+        doc.msFullscreenElement;
+
+      store.actions.setFullscreen(!!fullscreenElm);
+    });
+  }
+
   return store;
 }
 
