@@ -9,6 +9,7 @@ import cookie from "../utilities/cookie";
 import { isServer } from "../utilities/window";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { Theme, FontTheme, colorThemes, fontThemes } from "../theming/themes";
+import { requestFullScreen, exitFullscreen } from "../utilities/fullscreen";
 
 const cookies = cookie();
 
@@ -39,6 +40,7 @@ interface OwnState {
   fontTheme: FontThemeWithName | null;
   fontThemes: FontThemeWithName[];
   distractionFree: boolean;
+  isFullscreen: boolean;
 }
 
 interface OwnReducers {
@@ -50,6 +52,7 @@ interface OwnReducers {
   setColorTheme: Twine.Reducer<OwnState, ColorThemeWithName>;
   setFontTheme: Twine.Reducer<OwnState, FontThemeWithName>;
   setDistractionFree: Twine.Reducer<OwnState, boolean>;
+  setFullscreen: Twine.Reducer<OwnState, boolean>;
 }
 
 interface OwnEffects {
@@ -77,6 +80,7 @@ interface OwnEffects {
   deleteAccountConfirmation: Twine.Effect0<OwnState, Actions>;
   deleteAccount: Twine.Effect0<OwnState, Actions, Promise<void>>;
   handleApiError: Twine.Effect<OwnState, Actions, AxiosError>;
+  toggleFullscreen: Twine.Effect<OwnState, Actions, boolean>;
 }
 
 function defaultState(): OwnState {
@@ -88,7 +92,8 @@ function defaultState(): OwnState {
     colorThemes,
     fontTheme: fontThemes[0],
     fontThemes,
-    distractionFree: false
+    distractionFree: false,
+    isFullscreen: false
   };
 }
 
@@ -163,6 +168,10 @@ function makeModel(api: Api): Model {
       setDistractionFree: (state, distractionFree) => ({
         ...state,
         distractionFree
+      }),
+      setFullscreen: (state, isFullscreen) => ({
+        ...state,
+        isFullscreen
       })
     },
     effects: {
@@ -281,6 +290,13 @@ function makeModel(api: Api): Model {
         if (error.response.status === 401) {
           // TODO: Show a toast message here
           actions.signOut();
+        }
+      },
+      toggleFullscreen(_state, actions, isFullscreen) {
+        if (isFullscreen) {
+          requestFullScreen(document.body, () => actions.setFullscreen(true));
+        } else {
+          exitFullscreen(() => actions.setFullscreen(false));
         }
       }
     }
