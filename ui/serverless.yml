@@ -60,6 +60,7 @@ provider:
   stage: dev
   region: eu-west-1
   memorySize: 128
+  timeout: 30
 
 resources:
   Resources:
