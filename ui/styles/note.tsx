@@ -30,8 +30,6 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
         }
         saving={store.state.loading.updateNote}
         distractionFree={store.state.distractionFree}
-        isFullscreen={store.state.isFullscreen}
-        onToggleFullscreen={store.actions.toggleFullscreen}
       />
     </>
   );

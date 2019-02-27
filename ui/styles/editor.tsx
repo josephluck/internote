@@ -21,9 +21,7 @@ import {
   faQuoteLeft,
   faListUl,
   faListOl,
-  faTrash,
-  faCompress,
-  faExpand
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import { Wrapper } from "./wrapper";
 
@@ -180,8 +178,6 @@ interface Props {
   debounceValue?: number;
   onChange: (value: { content: string; title: string }) => void;
   onDelete: () => void;
-  isFullscreen: boolean;
-  onToggleFullscreen: (isFullscreen: boolean) => any;
   saving: boolean;
   distractionFree: boolean;
 }
@@ -550,16 +546,6 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("underlined")}
             </Flex>
             <Flex alignItems="center">
-              <ToolbarButton
-                isActive={false}
-                onClick={() =>
-                  this.props.onToggleFullscreen(!this.props.isFullscreen)
-                }
-              >
-                <FontAwesomeIcon
-                  icon={this.props.isFullscreen ? faCompress : faExpand}
-                />
-              </ToolbarButton>
               <Flex mr={spacing._0_25}>
                 <ToolbarButton isActive={false} onClick={this.props.onDelete}>
                   <FontAwesomeIcon icon={faTrash} />

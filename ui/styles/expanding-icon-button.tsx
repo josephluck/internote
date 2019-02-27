@@ -5,6 +5,9 @@ import { styled } from "../theming/styled";
 
 const ExpandingIcon = styled.div`
   transition: all 260ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ExpandingButton = styled.div<{ forceShow: boolean }>`
