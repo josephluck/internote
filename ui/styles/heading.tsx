@@ -101,7 +101,7 @@ export class Heading extends React.Component<Props, State> {
             <ExpandingIconButton
               forceShow={this.props.store.state.loading.speech}
               text="Talk to me"
-              onClick={() => this.props.store.actions.speech()}
+              onClick={() => this.props.store.actions.requestSpeech()}
               icon={
                 this.props.store.state.loading.speech ? (
                   <FontAwesomeIcon icon={faSpinner} spin />

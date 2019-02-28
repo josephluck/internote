@@ -4,6 +4,7 @@ import { route } from "../router";
 import { Option } from "space-lift";
 import { UserEntity } from "../entities";
 import * as AWS from "aws-sdk";
+import * as md5 from "md5";
 import { validate, rules } from "../../dependencies/validation";
 
 export interface GenerateRequest {
@@ -46,7 +47,8 @@ function makeController(deps: Dependencies) {
                 })
                 .promise();
 
-              const S3UploadPath = `${request.noteId}.mp3`;
+              const hash = md5(request.content);
+              const S3UploadPath = `${request.noteId}-${hash}.mp3`;
 
               await S3.upload({
                 Bucket: process.env.SPEECH_BUCKET,

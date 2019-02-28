@@ -41,6 +41,7 @@ interface OwnState {
   fontThemes: FontThemeWithName[];
   distractionFree: boolean;
   isFullscreen: boolean;
+  speechSrc: string | null;
 }
 
 interface OwnReducers {
@@ -53,6 +54,7 @@ interface OwnReducers {
   setFontTheme: Twine.Reducer<OwnState, FontThemeWithName>;
   setDistractionFree: Twine.Reducer<OwnState, boolean>;
   setFullscreen: Twine.Reducer<OwnState, boolean>;
+  setSpeechSrc: Twine.Reducer<OwnState, string | null>;
 }
 
 interface OwnEffects {
@@ -81,7 +83,11 @@ interface OwnEffects {
   deleteAccount: Twine.Effect0<OwnState, Actions, Promise<void>>;
   handleApiError: Twine.Effect<OwnState, Actions, AxiosError>;
   toggleFullscreen: Twine.Effect<OwnState, Actions, boolean>;
-  speech: Twine.Effect0<OwnState, Actions>;
+  requestSpeech: Twine.Effect<
+    OwnState,
+    Actions,
+    { content: string; noteId: string }
+  >;
 }
 
 function defaultState(): OwnState {
@@ -94,7 +100,8 @@ function defaultState(): OwnState {
     fontTheme: fontThemes[0],
     fontThemes,
     distractionFree: false,
-    isFullscreen: false
+    isFullscreen: false,
+    speechSrc: null
   };
 }
 
@@ -173,6 +180,10 @@ function makeModel(api: Api): Model {
       setFullscreen: (state, isFullscreen) => ({
         ...state,
         isFullscreen
+      }),
+      setSpeechSrc: (state, speechSrc) => ({
+        ...state,
+        speechSrc
       })
     },
     effects: {
@@ -301,12 +312,12 @@ function makeModel(api: Api): Model {
           exitFullscreen();
         }
       },
-      async speech(state, _actions) {
-        const response = await api.speech.generate(state.session.token, {
-          noteId: state.notes[0].id,
-          content: "The quick brown fox jumps over the lazy dog"
+      async requestSpeech(state, actions, { content, noteId }) {
+        const result = await api.speech.generate(state.session.token, {
+          noteId,
+          content
         });
-        console.log(response);
+        result.map(response => actions.setSpeechSrc(response.url));
       }
     }
   };

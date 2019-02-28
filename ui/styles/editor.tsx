@@ -24,6 +24,7 @@ import {
   faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import { Wrapper } from "./wrapper";
+import { Speech } from "./speech";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -176,6 +177,10 @@ const ToolbarButton = styled(RoundButton)`
   }
 `;
 
+const ButtonSpacer = styled.div`
+  margin-right: ${spacing._0_25};
+`;
+
 interface Props {
   id: string;
   initialValue: string;
@@ -184,6 +189,10 @@ interface Props {
   onDelete: () => void;
   saving: boolean;
   distractionFree: boolean;
+  speechSrc: string;
+  isSpeechLoading: boolean;
+  onRequestSpeech: (content: string) => any;
+  onDiscardSpeech: () => any;
 }
 
 interface State {
@@ -419,6 +428,13 @@ export class InternoteEditor extends React.Component<Props, State> {
     this.onChange(change);
   };
 
+  onRequestSpeech = () => {
+    const content = this.state.value.fragment.text;
+    // TODO: check for length of text first
+    // Otherwise choose the current focused block's text
+    this.props.onRequestSpeech(content);
+  };
+
   renderMarkButton = (type: MarkType) => {
     const isActive = this.hasMark(type);
 
@@ -476,7 +492,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
 
     const preventForBlocks = ["list-item", "bulleted-list", "numbered-list"];
-    const hasSelection = window.getSelection().toString().length > 0;
+    const hasSelection = this.state.value.fragment.text !== "";
 
     if (
       !hasSelection &&
@@ -583,11 +599,19 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("underlined")}
             </Flex>
             <Flex alignItems="center">
-              <Flex mr={spacing._0_25}>
+              <ButtonSpacer>
+                <Speech
+                  speechSrc={this.props.speechSrc}
+                  isSpeechLoading={this.props.isSpeechLoading}
+                  onRequestSpeech={this.onRequestSpeech}
+                  onDiscardSpeech={this.props.onDiscardSpeech}
+                />
+              </ButtonSpacer>
+              <ButtonSpacer>
                 <ToolbarButton isActive={false} onClick={this.props.onDelete}>
                   <FontAwesomeIcon icon={faTrash} />
                 </ToolbarButton>
-              </Flex>
+              </ButtonSpacer>
               <Saving saving={this.props.saving} />
             </Flex>
           </ToolbarInner>

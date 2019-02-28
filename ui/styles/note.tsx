@@ -30,6 +30,12 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
         }
         saving={store.state.loading.updateNote}
         distractionFree={store.state.distractionFree}
+        speechSrc={store.state.speechSrc}
+        isSpeechLoading={store.state.loading.requestSpeech}
+        onRequestSpeech={content =>
+          store.actions.requestSpeech({ content, noteId: note.id })
+        }
+        onDiscardSpeech={() => store.actions.setSpeechSrc(null)}
       />
     </>
   );

@@ -33,25 +33,34 @@ const ExpandingButton = styled.div<{ forceShow: boolean }>`
 
 const ExpandingText = styled.div`
   padding-left: ${spacing._0_25};
-  font-weight: 600;
+
   white-space: nowrap;
+  font-weight: 600;
 `;
 
 export function ExpandingIconButton({
   forceShow,
   onClick,
   icon,
-  text
+  text,
+  collapsedContent
 }: {
   forceShow: boolean;
-  onClick: () => any;
+  onClick?: () => any;
   icon: React.ReactNode;
-  text: string;
+  text?: string;
+  collapsedContent?: React.ReactNode;
 }) {
   return (
     <CollapseWidthOnHover
       forceShow={forceShow}
-      collapsedContent={<ExpandingText>{text}</ExpandingText>}
+      collapsedContent={
+        collapsedContent ? (
+          <ExpandingText>{collapsedContent}</ExpandingText>
+        ) : (
+          <ExpandingText>{text}</ExpandingText>
+        )
+      }
     >
       {collapse => (
         <ExpandingButton forceShow={forceShow} onClick={onClick}>
