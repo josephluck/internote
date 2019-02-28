@@ -22,6 +22,21 @@ provider:
   region: eu-west-1
   memorySize: 128
   timeout: 30
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+        - "s3:PutObjectAcl"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - Ref: SpeechBucket
+            - "/*"
+    - Effect: "Allow"
+      Action:
+        - "polly:*"
+      Resource: "*"
 
 functions:
   app:
@@ -35,3 +50,15 @@ functions:
           path: /{proxy+}
           method: ANY
           cors: true
+    environment:
+      SPEECH_BUCKET:
+        Ref: SpeechBucket
+      REGION: ${self:provider.region}
+
+resources:
+  Resources:
+    SpeechBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: internote-api-speech
+        AccessControl: PublicRead

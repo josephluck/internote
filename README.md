@@ -58,6 +58,8 @@ Logging is available in CloudWatch.
 
 The serverless policy needs the following additional permissions to deploy the app:
 
+> These should eventually be put in to serverless.yml, rather than manually managed
+
 - "s3:PutBucketAcl",
 - "acm:ListCertificates",
 - "apigateway:GET",

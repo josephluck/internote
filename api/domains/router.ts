@@ -6,6 +6,7 @@ import user from "./user/routes";
 import auth from "./auth/routes";
 import note from "./note/routes";
 import preferences from "./preferences/routes";
+import speech from "./speech/routes";
 import { UserEntity } from "./user/entity";
 
 type ControllerFn = (
@@ -40,7 +41,8 @@ export default function routes(deps: Dependencies) {
     user(deps),
     auth(deps),
     note(deps),
-    preferences(deps)
+    preferences(deps),
+    speech(deps)
   );
   return rts(new Router());
 }

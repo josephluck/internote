@@ -81,6 +81,7 @@ interface OwnEffects {
   deleteAccount: Twine.Effect0<OwnState, Actions, Promise<void>>;
   handleApiError: Twine.Effect<OwnState, Actions, AxiosError>;
   toggleFullscreen: Twine.Effect<OwnState, Actions, boolean>;
+  speech: Twine.Effect0<OwnState, Actions>;
 }
 
 function defaultState(): OwnState {
@@ -299,6 +300,13 @@ function makeModel(api: Api): Model {
         } else {
           exitFullscreen();
         }
+      },
+      async speech(state, _actions) {
+        const response = await api.speech.generate(state.session.token, {
+          noteId: state.notes[0].id,
+          content: "The quick brown fox jumps over the lazy dog"
+        });
+        console.log(response);
       }
     }
   };

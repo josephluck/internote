@@ -12,7 +12,8 @@ import {
   faPlus,
   faSpinner,
   faCompress,
-  faExpand
+  faExpand,
+  faMicrophone
 } from "@fortawesome/free-solid-svg-icons";
 import { ExpandingIconButton } from "./expanding-icon-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -96,6 +97,20 @@ export class Heading extends React.Component<Props, State> {
               note={this.props.note}
             />
           </Flex>
+          <ButtonSpacer>
+            <ExpandingIconButton
+              forceShow={this.props.store.state.loading.speech}
+              text="Talk to me"
+              onClick={() => this.props.store.actions.speech()}
+              icon={
+                this.props.store.state.loading.speech ? (
+                  <FontAwesomeIcon icon={faSpinner} spin />
+                ) : (
+                  <FontAwesomeIcon icon={faMicrophone} />
+                )
+              }
+            />
+          </ButtonSpacer>
           <ButtonSpacer>
             <ExpandingIconButton
               forceShow={this.props.store.state.isFullscreen}
