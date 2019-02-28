@@ -46,7 +46,10 @@ const Wrap = styled.div`
   overflow: hidden;
 `;
 
-const EditorStyles = styled.div<{ distractionFree: boolean }>`
+const EditorStyles = styled.div<{
+  distractionFree: boolean;
+  userScrolled: boolean;
+}>`
   display: flex;
   flex: 1;
   overflow: auto;
@@ -107,7 +110,8 @@ const EditorStyles = styled.div<{ distractionFree: boolean }>`
     padding-left: ${spacing._0_5};
   }
   .node-unfocused {
-    opacity: ${props => (props.distractionFree ? 0.4 : 1)};
+    opacity: ${props =>
+      props.distractionFree && !props.userScrolled ? 0.4 : 1};
     transition: all 300ms ease;
   }
   .node-focused {
@@ -184,7 +188,7 @@ interface Props {
 
 interface State {
   value: Value;
-  focusedNodeKey: string;
+  userScrolled: boolean;
 }
 
 function getTitleFromEditorValue(editorValue: Value): string | undefined {
@@ -212,13 +216,16 @@ function getInitialValue(props: Props): string {
 
 export class InternoteEditor extends React.Component<Props, State> {
   debounceValue = 3000;
+  preventScrollListener = false;
+  scroller: ReturnType<typeof zenscroll.createScroller> = null;
+  focusedNodeKey: string = "";
 
   constructor(props: Props) {
     super(props);
     this.debounceValue = props.debounceValue || 3000;
     this.state = {
       value: serializer.deserialize(getInitialValue(props)),
-      focusedNodeKey: ""
+      userScrolled: false
     };
   }
 
@@ -227,6 +234,15 @@ export class InternoteEditor extends React.Component<Props, State> {
       this.setState({
         value: serializer.deserialize(getInitialValue(this.props))
       });
+    }
+  }
+
+  componentDidMount() {
+    const editorScrollWrap = document.getElementById("editor-scroll-wrap");
+    if (editorScrollWrap) {
+      this.scroller = zenscroll.createScroller(editorScrollWrap, 200);
+      editorScrollWrap.addEventListener("scroll", this.handleEditorScroll);
+      editorScrollWrap.addEventListener("click", this.handleFocusModeScroll);
     }
   }
 
@@ -288,9 +304,9 @@ export class InternoteEditor extends React.Component<Props, State> {
       this.onClickBlock(event as any, "bulleted-list");
     }
 
-    if (!event.shiftKey) {
-      window.requestAnimationFrame(this.handleFocusModeScroll);
-    }
+    // if (!event.shiftKey) {
+    //   window.requestAnimationFrame(this.handleFocusModeScroll);
+    // }
   };
 
   handleResetBlockOnEnterPressed: Plugin["onKeyDown"] = (
@@ -313,16 +329,40 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
-  handleFocusModeScroll = throttle(() => {
-    if (this.props.distractionFree) {
-      const focusedBlock = document.querySelector(".node-focused");
+  handleEditorScroll = throttle(
+    () => {
       const editorScrollWrap = document.getElementById("editor-scroll-wrap");
-      if (focusedBlock) {
-        const scroller = zenscroll.createScroller(editorScrollWrap, 300);
-        scroller.center(focusedBlock as HTMLElement);
+      if (
+        editorScrollWrap &&
+        !this.state.userScrolled &&
+        !this.preventScrollListener
+      ) {
+        this.setState({ userScrolled: true });
       }
-    }
-  }, 200);
+    },
+    1000,
+    { leading: true, trailing: false }
+  );
+
+  handleFocusModeScroll = throttle(
+    () => {
+      if (this.props.distractionFree) {
+        const focusedBlock = document.querySelector(".node-focused");
+        const editorScrollWrap = document.getElementById("editor-scroll-wrap");
+        if (focusedBlock && editorScrollWrap && this.scroller) {
+          this.preventScrollListener = true;
+          this.setState({ userScrolled: false });
+          this.scroller.center(focusedBlock as HTMLElement, 200, 0, () => {
+            window.requestAnimationFrame(() => {
+              this.preventScrollListener = false;
+            });
+          });
+        }
+      }
+    },
+    500,
+    { leading: true }
+  );
 
   onClickMark = (event: React.MouseEvent<HTMLElement>, type: MarkType) => {
     event.preventDefault();
@@ -442,14 +482,10 @@ export class InternoteEditor extends React.Component<Props, State> {
       !hasSelection &&
       preventForBlocks.indexOf((node as any).type) === -1 &&
       isSelected &&
-      key !== this.state.focusedNodeKey
+      key !== this.focusedNodeKey
     ) {
-      this.setState(
-        {
-          focusedNodeKey: key
-        },
-        this.handleFocusModeScroll
-      );
+      this.focusedNodeKey = key;
+      window.requestAnimationFrame(this.handleFocusModeScroll);
     }
 
     switch ((node as any).type) {
@@ -513,6 +549,7 @@ export class InternoteEditor extends React.Component<Props, State> {
       <Wrap>
         <EditorStyles
           distractionFree={this.props.distractionFree}
+          userScrolled={this.state.userScrolled}
           id="editor-scroll-wrap"
         >
           <Wrapper>
