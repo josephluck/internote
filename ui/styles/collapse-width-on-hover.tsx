@@ -1,7 +1,9 @@
 import * as React from "react";
 import { styled } from "../theming/styled";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  cursor: ${props => (props.onClick ? "pointer" : "default")};
+`;
 
 const InnerWrap = styled.div`
   transition: all 300ms ease;
@@ -20,6 +22,7 @@ interface Props {
   collapsedContent: React.ReactNode;
   forceShow?: boolean;
   className?: string;
+  onClick?: () => void;
 }
 
 interface State {
@@ -40,6 +43,10 @@ export class CollapseWidthOnHover extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
+    window.requestAnimationFrame(this.handleWidth);
+  }
+
+  handleWidth = () => {
     const refsExist =
       this.innerWrapRef.current && this.collapsedContentRef.current;
     if (refsExist) {
@@ -53,7 +60,7 @@ export class CollapseWidthOnHover extends React.Component<Props, State> {
         this.innerWrapRef.current.style.opacity = "0";
       }
     }
-  }
+  };
 
   onHoverIn = () => {
     this.setState({ isHovering: true });
@@ -74,12 +81,13 @@ export class CollapseWidthOnHover extends React.Component<Props, State> {
   };
 
   render() {
-    const { className, children } = this.props;
+    const { className, children, onClick } = this.props;
     return (
       <Wrapper
         className={className}
         onMouseEnter={this.onHoverIn}
         onMouseLeave={this.onHoverOut}
+        onClick={onClick}
       >
         {children({ renderCollapsedContent: this.renderCollapsedContent })}
       </Wrapper>

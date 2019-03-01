@@ -5,28 +5,35 @@ interface RenderMethods {
   requestPause: () => void;
 }
 
+interface DerivedState {
+  percentagePlayed: number;
+}
+
+export type AudioRenderProps = AudioState & RenderMethods & DerivedState;
+
 interface Props {
   src?: string | null;
   autoPlay: boolean;
-  children: (renderProps: AudioState & RenderMethods) => React.ReactNode;
+  children: (renderProps: AudioRenderProps) => React.ReactNode;
 }
 
 type AudioStatus = "stopped" | "loading" | "playing" | "paused";
 
 export interface AudioState {
-  current: number;
+  currentTime: number;
   duration: number;
   status: AudioStatus;
 }
 
 export const defaultAudioState: AudioState = {
-  current: -1,
+  currentTime: -1,
   duration: -1,
   status: "stopped"
 };
 
 export class AudioPlayer extends React.Component<Props, AudioState> {
   audioRef: React.RefObject<HTMLAudioElement>;
+  timerInterval = -1;
 
   constructor(props: Props) {
     super(props);
@@ -34,12 +41,10 @@ export class AudioPlayer extends React.Component<Props, AudioState> {
     this.audioRef = React.createRef();
   }
 
-  componentDidMount() {
-    this.addListeners();
-  }
-
-  componentWillReceiveProps(prevProps: Props) {
-    if (!this.props.src && !!prevProps.src) {
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.src !== this.props.src) {
+      this.setState(defaultAudioState);
+      this.removeListeners();
       this.addListeners();
     } else if (!this.props.src) {
       this.removeListeners();
@@ -56,17 +61,19 @@ export class AudioPlayer extends React.Component<Props, AudioState> {
       audio.addEventListener("loadstart", this.setStatusLoading);
       audio.addEventListener("waiting", this.setStatusLoading);
       audio.addEventListener("stalled", this.setStatusLoading);
-      audio.addEventListener(
-        "canplay",
-        this.props.autoPlay ? this.setStatusPlaying : this.setStatusStopped
-      );
-      audio.addEventListener("ended", this.setStatusStopped);
+      if (this.props.autoPlay) {
+        audio.addEventListener("canplay", this.setStatusPaused);
+      }
       audio.addEventListener("play", this.setStatusPlaying);
       audio.addEventListener("playing", this.setStatusPlaying);
       audio.addEventListener("suspend", this.setStatusPaused);
       audio.addEventListener("pause", this.setStatusPaused);
       audio.addEventListener("durationchange", this.setDuration);
-      audio.addEventListener("timeupdate", this.setCurrent);
+      audio.addEventListener("seeked", this.setCurrentTime);
+      audio.addEventListener("ended", this.setStatusStopped);
+      if (this.props.autoPlay) {
+        this.requestPlay();
+      }
     }
   };
 
@@ -76,18 +83,27 @@ export class AudioPlayer extends React.Component<Props, AudioState> {
       audio.removeEventListener("loadstart", this.setStatusLoading);
       audio.removeEventListener("waiting", this.setStatusLoading);
       audio.removeEventListener("stalled", this.setStatusLoading);
-      audio.removeEventListener(
-        "canplay",
-        this.props.autoPlay ? this.setStatusPlaying : this.setStatusStopped
-      );
-      audio.removeEventListener("ended", this.setStatusStopped);
+      if (this.props.autoPlay) {
+        audio.removeEventListener("canplay", this.setStatusPaused);
+      }
       audio.removeEventListener("play", this.setStatusPlaying);
       audio.removeEventListener("playing", this.setStatusPlaying);
       audio.removeEventListener("suspend", this.setStatusPaused);
       audio.removeEventListener("pause", this.setStatusPaused);
       audio.removeEventListener("durationchange", this.setDuration);
-      audio.removeEventListener("timeupdate", this.setCurrent);
+      audio.removeEventListener("seeked", this.setCurrentTime);
+      audio.removeEventListener("ended", this.setStatusStopped);
+      this.clearInterval();
     }
+  };
+
+  setUpInterval = () => {
+    this.clearInterval();
+    this.timerInterval = window.setInterval(this.setCurrentTime, 333);
+  };
+
+  clearInterval = () => {
+    window.clearInterval(this.timerInterval);
   };
 
   setStatusStopped = () => {
@@ -113,25 +129,23 @@ export class AudioPlayer extends React.Component<Props, AudioState> {
     }
   };
 
-  setCurrent = () => {
+  setCurrentTime = () => {
     const audio = this.audioRef.current;
-    if (audio) {
-      this.setState({ current: audio.currentTime });
+    if (audio && audio.currentTime !== this.state.currentTime) {
+      this.setState({ currentTime: audio.currentTime });
     }
   };
 
   requestPlay = () => {
     const audio = this.audioRef.current;
-    if (audio) {
-      audio.play();
-    }
+    audio.play();
+    this.setUpInterval();
   };
 
   requestPause = () => {
     const audio = this.audioRef.current;
-    if (audio) {
-      audio.pause();
-    }
+    audio.pause();
+    this.clearInterval();
   };
 
   render() {
@@ -139,9 +153,9 @@ export class AudioPlayer extends React.Component<Props, AudioState> {
       <>
         {this.props.src ? (
           <audio
-            autoPlay={this.props.autoPlay}
-            key={this.props.src}
             ref={this.audioRef}
+            autoPlay={this.props.autoPlay}
+            onLoad={this.addListeners}
           >
             <source src={this.props.src} type="audio/mpeg" />
           </audio>
@@ -149,7 +163,11 @@ export class AudioPlayer extends React.Component<Props, AudioState> {
         {this.props.children({
           ...this.state,
           requestPlay: this.requestPlay,
-          requestPause: this.requestPause
+          requestPause: this.requestPause,
+          percentagePlayed:
+            this.state.currentTime > 0 && this.state.duration > 0
+              ? (this.state.currentTime / this.state.duration) * 100
+              : 0
         })}
       </>
     );

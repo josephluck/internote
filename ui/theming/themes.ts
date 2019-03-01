@@ -37,6 +37,8 @@ export interface Theme {
   searchInputText: string;
   notesMenuItemTextInactive: string;
   modalBackground: string;
+  audioTimelineInactive: string;
+  audioTimelineActive: string;
 }
 
 export const internote: Theme = {
@@ -77,7 +79,9 @@ export const internote: Theme = {
   searchInputFocusedBackground: "#19181B",
   searchInputText: "#FFFFFF",
   notesMenuItemTextInactive: "#999999",
-  modalBackground: "#000000"
+  modalBackground: "#000000",
+  audioTimelineActive: "#9fc7ec",
+  audioTimelineInactive: "#504D5D"
 };
 
 export const daydream: Theme = {
@@ -118,7 +122,9 @@ export const daydream: Theme = {
   searchInputFocusedBackground: "#f0f0f0",
   searchInputText: "#000000",
   notesMenuItemTextInactive: "#999999",
-  modalBackground: "#F9F9FC"
+  modalBackground: "#F9F9FC",
+  audioTimelineActive: "#9fc7ec",
+  audioTimelineInactive: "#504D5D"
 };
 
 export const colorThemes = [

@@ -584,7 +584,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
         <ToolbarWrapper
           distractionFree={this.props.distractionFree}
-          forceShow={hasSelection}
+          forceShow={hasSelection || !!this.props.speechSrc}
         >
           <ToolbarInner>
             <Flex flex={1}>
