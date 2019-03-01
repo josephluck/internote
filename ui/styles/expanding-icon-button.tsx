@@ -33,7 +33,6 @@ const ExpandingButton = styled.div<{ forceShow: boolean }>`
 
 const ExpandingText = styled.div`
   padding-left: ${spacing._0_25};
-
   white-space: nowrap;
   font-weight: 600;
 `;
