@@ -25,6 +25,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Wrapper } from "./wrapper";
 import { Speech } from "./speech";
+import { CollapseWidthOnHover } from "./collapse-width-on-hover";
+import {
+  ToolbarExpandingButton,
+  ToolbarExpandingButtonIconWrap
+} from "./toolbar-expanding-button";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -429,10 +434,14 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onRequestSpeech = () => {
-    const content = this.state.value.fragment.text;
-    // TODO: check for length of text first
-    // Otherwise choose the current focused block's text
-    this.props.onRequestSpeech(content);
+    const selectedText = this.state.value.fragment.text;
+    const content =
+      selectedText && selectedText.length
+        ? selectedText
+        : this.state.value.focusBlock.text;
+    if (content && content.length) {
+      this.props.onRequestSpeech(content);
+    }
   };
 
   renderMarkButton = (type: MarkType) => {
@@ -599,18 +608,26 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("underlined")}
             </Flex>
             <Flex alignItems="center">
+              <Speech
+                speechSrc={this.props.speechSrc}
+                isSpeechLoading={this.props.isSpeechLoading}
+                onRequestSpeech={this.onRequestSpeech}
+                onDiscardSpeech={this.props.onDiscardSpeech}
+              />
               <ButtonSpacer>
-                <Speech
-                  speechSrc={this.props.speechSrc}
-                  isSpeechLoading={this.props.isSpeechLoading}
-                  onRequestSpeech={this.onRequestSpeech}
-                  onDiscardSpeech={this.props.onDiscardSpeech}
-                />
-              </ButtonSpacer>
-              <ButtonSpacer>
-                <ToolbarButton isActive={false} onClick={this.props.onDelete}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </ToolbarButton>
+                <CollapseWidthOnHover
+                  onClick={this.props.onDelete}
+                  collapsedContent={<Flex pl={spacing._0_25}>Delete</Flex>}
+                >
+                  {collapse => (
+                    <ToolbarExpandingButton>
+                      <ToolbarExpandingButtonIconWrap>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </ToolbarExpandingButtonIconWrap>
+                      {collapse.renderCollapsedContent()}
+                    </ToolbarExpandingButton>
+                  )}
+                </CollapseWidthOnHover>
               </ButtonSpacer>
               <Saving saving={this.props.saving} />
             </Flex>

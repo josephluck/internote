@@ -10,37 +10,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 import { AudioRenderProps, AudioPlayer } from "./audio";
 import { styled } from "../theming/styled";
-import { font, spacing, borderRadius } from "../theming/symbols";
+import { spacing } from "../theming/symbols";
 import { Flex } from "@rebass/grid";
-
-const PlaybackWrapper = styled.div<{ forceShow: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  font-size: ${font._12.size};
-  line-height: ${font._12.lineHeight};
-  border-radius: ${borderRadius._6};
-  padding: ${spacing._0_25};
-  color: ${props =>
-    props.forceShow
-      ? props.theme.expandingIconButtonActiveText
-      : props.theme.expandingIconButtonInactiveText};
-  background: ${props =>
-    props.forceShow
-      ? props.theme.expandingIconButtonBackground
-      : "transparent"};
-  &:hover {
-    color: ${props => props.theme.expandingIconButtonActiveText};
-    background: ${props => props.theme.expandingIconButtonBackground};
-  }
-`;
-
-const IconWrap = styled.div`
-  font-size: ${font._12.size};
-  line-height: ${font._12.lineHeight};
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-`;
+import {
+  ToolbarExpandingButton,
+  ToolbarExpandingButtonIconWrap
+} from "./toolbar-expanding-button";
 
 const CollapsedWrapper = styled.div`
   display: flex;
@@ -130,25 +105,29 @@ export class Speech extends React.Component<Props, State> {
                         style={{ width: `${audio.percentagePlayed}%` }}
                       />
                     </TimelineWrap>
-                    <IconWrap onClick={this.props.onDiscardSpeech}>
+                    <ToolbarExpandingButtonIconWrap
+                      onClick={this.props.onDiscardSpeech}
+                    >
                       <FontAwesomeIcon icon={faTimes} />
-                    </IconWrap>
+                    </ToolbarExpandingButtonIconWrap>
                   </Flex>
                 ) : this.props.isSpeechLoading ? (
-                  "Hold up!"
+                  "Loading"
                 ) : (
-                  "Talk"
+                  "Speech"
                 )}
               </CollapsedWrapper>
             }
           >
             {collapse => (
-              <PlaybackWrapper forceShow={!!this.props.speechSrc}>
-                <IconWrap onClick={() => this.onIconClick(audio)}>
+              <ToolbarExpandingButton forceShow={!!this.props.speechSrc}>
+                <ToolbarExpandingButtonIconWrap
+                  onClick={() => this.onIconClick(audio)}
+                >
                   {this.renderIcon(audio)}
-                </IconWrap>
+                </ToolbarExpandingButtonIconWrap>
                 {collapse.renderCollapsedContent()}
-              </PlaybackWrapper>
+              </ToolbarExpandingButton>
             )}
           </CollapseWidthOnHover>
         )}
