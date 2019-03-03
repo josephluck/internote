@@ -1,7 +1,21 @@
 import { Result, Ok, Err } from "space-lift";
-import { UpdatePreferences, Preferences } from "./entity";
+import { UpdatePreferences, Preferences, AvailableVoice } from "./entity";
 import { AxiosInstance } from "axios";
 import { makeRequestConfig } from "../api";
+
+export const availableVoices: AvailableVoice[] = [
+  "Joey",
+  "Justin",
+  "Matthew",
+  "Ivy",
+  "Joanna",
+  "Kendra",
+  "Brian",
+  "Amy",
+  "Emma",
+  "Nicole",
+  "Russell"
+];
 
 export function api(client: AxiosInstance) {
   return {

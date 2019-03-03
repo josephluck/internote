@@ -10,6 +10,7 @@ import { isServer } from "../utilities/window";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { Theme, FontTheme, colorThemes, fontThemes } from "../theming/themes";
 import { requestFullScreen, exitFullscreen } from "../utilities/fullscreen";
+import { AvailableVoice } from "@internote/api/domains/preferences/entity";
 
 const cookies = cookie();
 
@@ -40,6 +41,7 @@ interface OwnState {
   fontTheme: FontThemeWithName | null;
   fontThemes: FontThemeWithName[];
   distractionFree: boolean;
+  voice: AvailableVoice;
   isFullscreen: boolean;
   speechSrc: string | null;
 }
@@ -53,6 +55,7 @@ interface OwnReducers {
   setColorTheme: Twine.Reducer<OwnState, ColorThemeWithName>;
   setFontTheme: Twine.Reducer<OwnState, FontThemeWithName>;
   setDistractionFree: Twine.Reducer<OwnState, boolean>;
+  setVoice: Twine.Reducer<OwnState, AvailableVoice>;
   setFullscreen: Twine.Reducer<OwnState, boolean>;
   setSpeechSrc: Twine.Reducer<OwnState, string | null>;
 }
@@ -101,7 +104,8 @@ function defaultState(): OwnState {
     fontThemes,
     distractionFree: false,
     isFullscreen: false,
-    speechSrc: null
+    speechSrc: null,
+    voice: "Joey"
   };
 }
 
@@ -176,6 +180,10 @@ function makeModel(api: Api): Model {
       setDistractionFree: (state, distractionFree) => ({
         ...state,
         distractionFree
+      }),
+      setVoice: (state, voice) => ({
+        ...state,
+        voice
       }),
       setFullscreen: (state, isFullscreen) => ({
         ...state,
@@ -315,7 +323,8 @@ function makeModel(api: Api): Model {
       async requestSpeech(state, actions, { content, noteId }) {
         const result = await api.speech.generate(state.session.token, {
           noteId,
-          content
+          content,
+          voice: state.voice || "Joey"
         });
         result.map(response => actions.setSpeechSrc(response.url));
       }
@@ -346,6 +355,11 @@ export function makeStore() {
           if (state.distractionFree !== prevState.distractionFree) {
             api.preferences.update(state.session.token, {
               distractionFree: state.distractionFree
+            });
+          }
+          if (state.voice !== prevState.voice) {
+            api.preferences.update(state.session.token, {
+              voice: state.voice
             });
           }
         }

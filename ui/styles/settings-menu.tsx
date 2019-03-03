@@ -7,7 +7,8 @@ import {
   faPalette,
   faCheck,
   faFont,
-  faEye
+  faEye,
+  faMicrophone
 } from "@fortawesome/free-solid-svg-icons";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +17,7 @@ import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { size } from "../theming/symbols";
 import { ListMenuControl } from "./list-menu-control";
 import { ExpandingIconButton } from "./expanding-icon-button";
+import { availableVoices } from "@internote/api/domains/preferences/api";
 
 const SettingsMenuWrap = styled(DropdownMenu)`
   width: ${size.settingsMenuDropdownWidth};
@@ -137,6 +139,36 @@ export function SettingsMenu({
                     >
                       On
                     </DropdownMenuItem>
+                  </>
+                )
+              },
+              {
+                title: "Voice",
+                item: list => (
+                  <DropdownMenuItem
+                    icon={<FontAwesomeIcon icon={faMicrophone} />}
+                    onClick={() => {
+                      list.toSubMenu("Voice");
+                    }}
+                  >
+                    Voice
+                  </DropdownMenuItem>
+                ),
+                subMenu: () => (
+                  <>
+                    {availableVoices.map(voice => (
+                      <DropdownMenuItem
+                        key={voice}
+                        onClick={() => store.actions.setVoice(voice)}
+                        icon={
+                          store.state.voice === voice ? (
+                            <FontAwesomeIcon icon={faCheck} />
+                          ) : null
+                        }
+                      >
+                        {voice}
+                      </DropdownMenuItem>
+                    ))}
                   </>
                 ),
                 spacerAfter: true

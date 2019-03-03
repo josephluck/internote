@@ -6,10 +6,12 @@ import { UserEntity } from "../entities";
 import * as AWS from "aws-sdk";
 import * as md5 from "md5";
 import { validate, rules } from "../../dependencies/validation";
+import { AvailableVoice } from "../preferences/entity";
 
 export interface GenerateRequest {
   noteId: string;
   content: string;
+  voice?: AvailableVoice;
 }
 export interface GenerateResponse {
   url: string;
@@ -43,7 +45,7 @@ function makeController(deps: Dependencies) {
                   OutputFormat: "mp3",
                   Text: request.content,
                   TextType: "text",
-                  VoiceId: "Emma"
+                  VoiceId: request.voice || "Joey"
                 })
                 .promise();
 
