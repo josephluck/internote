@@ -37,6 +37,7 @@ function makeController(deps: Dependencies) {
               );
             },
             async request => {
+              const VoiceId = request.voice || "Joey";
               const polly = new AWS.Polly();
               const S3 = new AWS.S3();
 
@@ -45,12 +46,12 @@ function makeController(deps: Dependencies) {
                   OutputFormat: "mp3",
                   Text: request.content,
                   TextType: "text",
-                  VoiceId: request.voice || "Joey"
+                  VoiceId
                 })
                 .promise();
 
               const hash = md5(request.content);
-              const S3UploadPath = `${request.noteId}-${hash}.mp3`;
+              const S3UploadPath = `${request.noteId}-${hash}-${VoiceId}.mp3`;
 
               await S3.upload({
                 Bucket: process.env.SPEECH_BUCKET,
