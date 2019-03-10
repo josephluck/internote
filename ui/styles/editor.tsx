@@ -44,6 +44,7 @@ const isQuoteHotkey = isKeyHotkey("mod+6") || isKeyHotkey("mod+'");
 const isBoldHotkey = isKeyHotkey("mod+7") || isKeyHotkey("mod+b");
 const isItalicHotkey = isKeyHotkey("mod+8") || isKeyHotkey("mod+i");
 const isUnderlinedHotkey = isKeyHotkey("mod+9") || isKeyHotkey("mod+u");
+const isCtrlHotKey = isKeyHotkey("ctrl") || isKeyHotkey("mod");
 
 const Wrap = styled.div`
   display: flex;
@@ -203,6 +204,7 @@ interface Props {
 interface State {
   value: Value;
   userScrolled: boolean;
+  isCtrlHeld: boolean;
 }
 
 function getTitleFromEditorValue(editorValue: Value): string | undefined {
@@ -239,7 +241,8 @@ export class InternoteEditor extends React.Component<Props, State> {
     this.debounceValue = props.debounceValue || 3000;
     this.state = {
       value: serializer.deserialize(getInitialValue(props)),
-      userScrolled: false
+      userScrolled: false,
+      isCtrlHeld: false
     };
   }
 
@@ -289,6 +292,10 @@ export class InternoteEditor extends React.Component<Props, State> {
       return inserted;
     }
 
+    if (isCtrlHotKey(event)) {
+      this.setState({ isCtrlHeld: true });
+    }
+
     if (isBoldHotkey(event)) {
       event.preventDefault();
       this.onClickMark(event as any, "bold");
@@ -317,10 +324,12 @@ export class InternoteEditor extends React.Component<Props, State> {
       event.preventDefault();
       this.onClickBlock(event as any, "bulleted-list");
     }
+  };
 
-    // if (!event.shiftKey) {
-    //   window.requestAnimationFrame(this.handleFocusModeScroll);
-    // }
+  onKeyUp: Plugin["onKeyUp"] = (event: KeyboardEvent) => {
+    if (event.keyCode === 17) {
+      this.setState({ isCtrlHeld: false });
+    }
   };
 
   handleResetBlockOnEnterPressed: Plugin["onKeyDown"] = (
@@ -583,6 +592,7 @@ export class InternoteEditor extends React.Component<Props, State> {
               value={this.state.value}
               onChange={this.onChange}
               onKeyDown={this.onKeyDown}
+              onKeyUp={this.onKeyUp}
               renderNode={this.renderNode}
               renderMark={this.renderMark}
               autoFocus
@@ -593,7 +603,9 @@ export class InternoteEditor extends React.Component<Props, State> {
 
         <ToolbarWrapper
           distractionFree={this.props.distractionFree}
-          forceShow={hasSelection || !!this.props.speechSrc}
+          forceShow={
+            hasSelection || !!this.props.speechSrc || this.state.isCtrlHeld
+          }
         >
           <ToolbarInner>
             <Flex flex={1}>
