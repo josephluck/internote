@@ -7,12 +7,15 @@
   "scripts": {
     "dev": "next -p 3000",
     "test:tsc": "tsc --noEmit",
-    "build": "NODE_ENV=production next build",
-    "copy-static": "yarn remove-static && mkdir .static && mkdir .static/_next && cp -r .next/static .static/_next",
-    "remove-static": "rm -rf .static",
-    "generate-lambdas": "ts-node generate-lambdas.ts",
+    "next:build": "NODE_ENV=production next build",
+    "next:lambdas": "ts-node generate-lambdas.ts",
+    "deploy": "yarn deploy:prepare && yarn deploy:domain && yarn deploy:clean-up",
+    "deploy:prepare": "rm -rf .next && yarn next:build && yarn static:copy",
     "deploy:domain": "serverless create_domain",
-    "deploy": "rm -rf .next && yarn build && yarn copy-static && yarn deploy:domain && SLS_DEBUG=* NODE_ENV=production serverless deploy && yarn remove-static"
+    "deploy:app": "SLS_DEBUG=* NODE_ENV=production serverless deploy",
+    "deploy:clean-up": "yarn remove-static",
+    "static:copy": "yarn static:remove && mkdir .static && mkdir .static/_next && cp -r .next/static .static/_next",
+    "static:remove": "rm -rf .static"
   },
   "dependencies": {
     "aws-serverless-express": "^3.3.5"
