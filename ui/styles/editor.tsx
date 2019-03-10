@@ -9,7 +9,6 @@ import { spacing, font, borderRadius } from "../theming/symbols";
 import { styled } from "../theming/styled";
 import { Saving } from "./saving";
 import { Flex } from "@rebass/grid";
-import { RoundButton } from "./button";
 import { Change, Value } from "slate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

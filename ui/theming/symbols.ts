@@ -17,6 +17,10 @@ export const font = {
     size: "8px",
     lineHeight: "1em"
   },
+  _10: {
+    size: "10px",
+    lineHeight: "1.1em"
+  },
   _12: {
     size: "12px",
     lineHeight: "1.2em"
@@ -69,6 +73,5 @@ export const media = {
 export const size = {
   notesMenuDropdownWidth: "12rem",
   notesMenuDropdownWidthExpanded: "16rem",
-  settingsMenuDropdownWidth: "8rem",
-  toolbarButtonShortcutNumber: "0.5rem"
+  settingsMenuDropdownWidth: "8rem"
 };

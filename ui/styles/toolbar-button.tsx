@@ -1,15 +1,19 @@
 import * as React from "react";
 import { styled } from "../theming/styled";
 import { RoundButton } from "./button";
-import { spacing, borderRadius, size, font } from "../theming/symbols";
+import { spacing, borderRadius, font } from "../theming/symbols";
 
 const Button = styled(RoundButton)<{ shortcutShowing }>`
   position: relative;
+  width: ${spacing._1};
   height: ${spacing._1};
-  padding-left: ${props =>
-    props.shortcutShowing ? spacing._0_5 : spacing._0_25};
   margin-right: ${spacing._0_125};
+  font-size: ${props =>
+    props.shortcutShowing ? font._10.size : font._12.size};
+  line-height: ${font._12.size};
   transition: all 333ms ease;
+  padding-top: ${props =>
+    props.shortcutShowing ? spacing._0_5 : spacing._0_25};
   background: ${props =>
     props.isActive
       ? props.theme.toolbarButtonActiveBackground
@@ -29,12 +33,14 @@ const Button = styled(RoundButton)<{ shortcutShowing }>`
 
 const ShortcutNumber = styled.div<{ isActive: boolean; showing: boolean }>`
   position: absolute;
-  top: 50%;
-  left: 0;
-  font-weight: bold;
-  transition: all 333ms ease;
-  transform: translateY(-50%)
-    translateX(${props => (props.showing ? spacing._0_125 : "-50%")});
+  top: 0;
+  left: 50%;
+  font-weight: 900;
+  transition: all 250ms ease-in-out;
+  transform: ${props =>
+    props.showing
+      ? `translateX(-50%) translateY(33%) scale(1, 1)`
+      : `translateX(-50%) translateY(0%) scale(0, 0)`};
   border-radius: ${borderRadius._4};
   color: ${props =>
     props.isActive
@@ -42,6 +48,9 @@ const ShortcutNumber = styled.div<{ isActive: boolean; showing: boolean }>`
       : props.theme.toolbarButtonInactiveText};
   font-size: ${font._8.size};
   line-height: ${font._8.size};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   opacity: ${props => (props.showing ? 1 : 0)};
 `;
 
