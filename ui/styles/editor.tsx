@@ -30,6 +30,7 @@ import {
   ToolbarExpandingButton,
   ToolbarExpandingButtonIconWrap
 } from "./toolbar-expanding-button";
+import { ToolbarButton } from "./toolbar-button";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -160,27 +161,6 @@ const ToolbarInner = styled(Wrapper)`
   display: flex;
   align-items: center;
   flex: 1;
-`;
-
-const ToolbarButton = styled(RoundButton)`
-  width: ${spacing._1};
-  height: ${spacing._1};
-  margin-right: ${spacing._0_125};
-  background: ${props =>
-    props.isActive
-      ? props.theme.toolbarButtonActiveBackground
-      : props.theme.toolbarButtonInactiveBackground};
-  color: ${props =>
-    props.isActive
-      ? props.theme.toolbarButtonActiveText
-      : props.theme.toolbarButtonInactiveText};
-  border-radius: ${borderRadius._6};
-  &:hover {
-    background: ${props =>
-      props.isActive
-        ? props.theme.toolbarButtonActiveBackground
-        : props.theme.toolbarButtonHoverBackground};
-  }
 `;
 
 const ButtonSpacer = styled.div`
@@ -453,13 +433,15 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
-  renderMarkButton = (type: MarkType) => {
+  renderMarkButton = (type: MarkType, shortcutNumber: number) => {
     const isActive = this.hasMark(type);
 
     return (
       <ToolbarButton
         onMouseDown={event => this.onClickMark(event, type)}
         isActive={isActive}
+        shortcutNumber={shortcutNumber}
+        shortcutShowing={this.state.isCtrlHeld}
       >
         {type === "bold" ? (
           <FontAwesomeIcon icon={faBold} />
@@ -474,7 +456,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     );
   };
 
-  renderBlockButton = (type: BlockType) => {
+  renderBlockButton = (type: BlockType, shortcutNumber: number) => {
     let isActive = this.hasBlock(type);
     if (["numbered-list", "bulleted-list"].includes(type)) {
       const { value } = this.state;
@@ -489,6 +471,8 @@ export class InternoteEditor extends React.Component<Props, State> {
       <ToolbarButton
         onMouseDown={event => this.onClickBlock(event, type)}
         isActive={isActive}
+        shortcutNumber={shortcutNumber}
+        shortcutShowing={this.state.isCtrlHeld}
       >
         {type === "heading-one" ? (
           <FontAwesomeIcon icon={faHeading} />
@@ -609,15 +593,15 @@ export class InternoteEditor extends React.Component<Props, State> {
         >
           <ToolbarInner>
             <Flex flex={1}>
-              {this.renderBlockButton("heading-one")}
-              {this.renderBlockButton("heading-two")}
-              {this.renderBlockButton("numbered-list")}
-              {this.renderBlockButton("bulleted-list")}
-              {this.renderMarkButton("code")}
-              {this.renderBlockButton("block-quote")}
-              {this.renderMarkButton("bold")}
-              {this.renderMarkButton("italic")}
-              {this.renderMarkButton("underlined")}
+              {this.renderBlockButton("heading-one", 1)}
+              {this.renderBlockButton("heading-two", 2)}
+              {this.renderBlockButton("numbered-list", 3)}
+              {this.renderBlockButton("bulleted-list", 4)}
+              {this.renderMarkButton("code", 5)}
+              {this.renderBlockButton("block-quote", 6)}
+              {this.renderMarkButton("bold", 7)}
+              {this.renderMarkButton("italic", 8)}
+              {this.renderMarkButton("underlined", 9)}
             </Flex>
             <Flex alignItems="center">
               <Speech
