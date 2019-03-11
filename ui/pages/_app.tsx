@@ -8,7 +8,7 @@ import Head from "next/head";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
-  @import url('https://fonts.googleapis.com/css?family=EB+Garamond:400,500,700,800|Noto+Sans+SC:400,500,700,900|Overpass+Mono:400,600,700|Source+Code+Pro:400,500,700,900|Spectral:400,500,700,800');
+  @import url('https://fonts.googleapis.com/css?family=EB+Garamond:400,500,700,800|Noto+Sans+SC:400,500,700,900|Overpass+Mono:400,600,700|Lora:400,700|Crimson+Text:400,600,700|Source+Code+Pro:400,500,700,900|Spectral:400,500,700,800');
   * {
     box-sizing: border-box;
   }

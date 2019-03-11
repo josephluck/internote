@@ -158,6 +158,14 @@ export const EBGaramond: FontTheme = {
   fontFamily: "'EB Garamond', serif"
 };
 
+export const crimsonText: FontTheme = {
+  fontFamily: "'Crimson Text', serif"
+};
+
+export const lora: FontTheme = {
+  fontFamily: "'Lora', serif"
+};
+
 export const overpassMono: FontTheme = {
   fontFamily: "'Overpass Mono', monospace"
 };
@@ -182,6 +190,14 @@ export const fontThemes = [
   {
     name: "EB Garamond",
     theme: EBGaramond
+  },
+  {
+    name: "Crimson Text",
+    theme: crimsonText
+  },
+  {
+    name: "Lora",
+    theme: lora
   },
   {
     name: "Overpass Mono",
