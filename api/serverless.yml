@@ -9,9 +9,15 @@ plugins:
 custom:
   serverless-offline:
     port: 2020
+  stage: ${opt:stage, self:provider.stage}
+  domains:
+    prod: api.internote.app
+    dev: dev-api.internote.app
   customDomain:
-    domainName: api.internote.app
+    basePath: ""
+    domainName: ${self:custom.domains.${self:custom.stage}}
     certificateName: "internote.app"
+    stage: "${self:custom.stage}"
     createRoute53Record: true
     endpointType: "regional"
 
@@ -60,5 +66,5 @@ resources:
     SpeechBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: internote-api-speech
+        BucketName: "internote-${self:custom.stage}-api-speech"
         AccessControl: PublicRead

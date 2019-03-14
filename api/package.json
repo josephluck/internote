@@ -10,9 +10,13 @@
   ],
   "scripts": {
     "dev": "SLS_DEBUG=* sls offline start",
-    "deploy": "yarn deploy:domain && yarn deploy:app",
-    "deploy:domain": "serverless create_domain",
-    "deploy:app": "SLS_DEBUG=* NODE_ENV=production sls deploy"
+    "deploy": "yarn deploy:dev",
+    "deploy:dev": "yarn deploy:dev:domain && yarn deploy:dev:app",
+    "deploy:dev:domain": "serverless create_domain --stage dev",
+    "deploy:dev:app": "SLS_DEBUG=* NODE_ENV=development sls deploy --stage dev",
+    "deploy:prod": "yarn deploy:prod:domain && yarn deploy:prod:app",
+    "deploy:prod:domain": "serverless create_domain --stage prod",
+    "deploy:prod:app": "SLS_DEBUG=* NODE_ENV=production sls deploy --stage prod"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
