@@ -61,6 +61,7 @@ const EditorStyles = styled.div<{
   flex: 1;
   overflow: auto;
   .slate-editor {
+    padding-top: 50vh; // Ensure enough room to center first block
     padding-bottom: 50vh; // Ensure enough room to center last block
   }
   > div:first-of-type {
@@ -118,7 +119,7 @@ const EditorStyles = styled.div<{
   }
   .node-unfocused {
     opacity: ${props =>
-      props.distractionFree && !props.userScrolled ? 0.4 : 1};
+      props.distractionFree && !props.userScrolled ? 0.2 : 1};
     transition: all 300ms ease;
   }
   .node-focused {
@@ -245,6 +246,8 @@ export class InternoteEditor extends React.Component<Props, State> {
   onChange = ({ value }: Change) => {
     this.setState({ value });
     this.emitChange(value);
+
+    window.requestAnimationFrame(this.handleFocusModeScroll);
   };
 
   emitChange = debounce((editorValue: any) => {
