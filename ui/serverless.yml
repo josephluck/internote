@@ -43,14 +43,20 @@ plugins:
   - serverless-domain-manager
 
 custom:
-  serverless-offline:
-    port: 3000
   s3-sync:
     - folder: .static
-      bucket: internote-ui-static
+      bucket: internote-${self:custom.stage}-ui-static
+  serverless-offline:
+    port: 3000
+  stage: ${opt:stage, self:provider.stage}
+  domains:
+    prod: internote.app
+    dev: dev.internote.app
   customDomain:
-    domainName: internote.app
+    basePath: ""
+    domainName: ${self:custom.domains.${self:custom.stage}}
     certificateName: "internote.app"
+    stage: "${self:custom.stage}"
     createRoute53Record: true
     endpointType: "regional"
 
@@ -67,7 +73,7 @@ resources:
     InternoteUiStaticBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: internote-ui-static
+        BucketName: "internote-${self:custom.stage}-ui-static"
         AccessControl: PublicRead
     InternoteUiStaticBucketPolicy:
       Type: AWS::S3::BucketPolicy
@@ -81,4 +87,4 @@ resources:
               Principal: "*"
               Action:
                 - s3:GetObject
-              Resource: arn:aws:s3:::internote-ui-static/*
+              Resource: arn:aws:s3:::internote-${self:custom.stage}-ui-static/*

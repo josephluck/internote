@@ -2,7 +2,7 @@ const webpack = require("webpack");
 const dotenv = require("dotenv");
 
 const { parsed: localEnv } = dotenv.config({
-  path: process.env.NODE_ENV === "production" ? "./.env" : "./.env.development"
+  path: process.env.STAGE === "prod" ? "./.env" : "./.env.development"
 });
 
 module.exports = function(nextConfig) {
