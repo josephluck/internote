@@ -2,8 +2,8 @@ node_modules
 *.log
 .next
 .env
-.env
 .env.development
+.env.local
 .serverless
 .build
 .static

@@ -6,9 +6,12 @@
   "author": "",
   "scripts": {
     "dev": "npx concurrently \"yarn --cwd ui dev\" \"yarn --cwd api dev\"",
-    "deploy": "npx concurrently \"yarn deploy:api\"  \"yarn deploy:ui\"",
-    "deploy:api": "yarn --cwd api deploy",
-    "deploy:ui": "yarn --cwd ui deploy"
+    "deploy:dev": "npx concurrently \"yarn deploy:dev:api\"  \"yarn deploy:dev:ui\"",
+    "deploy:dev:api": "yarn --cwd api deploy:dev",
+    "deploy:dev:ui": "yarn --cwd ui deploy:dev",
+    "deploy:prod": "npx concurrently \"yarn deploy:prod:api\"  \"yarn deploy:prod:ui\"",
+    "deploy:prod:api": "yarn --cwd api deploy:prod",
+    "deploy:prod:ui": "yarn --cwd ui deploy:prod"
   },
   "license": "ISC",
   "workspaces": {
