@@ -15,6 +15,7 @@ interface Props {
   src?: string | null;
   autoPlay: boolean;
   children: (renderProps: AudioRenderProps) => React.ReactNode;
+  onFinished: () => void;
 }
 
 type AudioStatus = "stopped" | "loading" | "playing" | "paused";
@@ -107,7 +108,7 @@ export class AudioPlayer extends React.Component<Props, AudioState> {
   };
 
   setStatusStopped = () => {
-    this.setState({ status: "stopped" });
+    this.setState({ status: "stopped" }, this.props.onFinished);
   };
 
   setStatusLoading = () => {

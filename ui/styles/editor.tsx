@@ -607,10 +607,11 @@ export class InternoteEditor extends React.Component<Props, State> {
             </Flex>
             <Flex alignItems="center">
               <Speech
-                speechSrc={this.props.speechSrc}
-                isSpeechLoading={this.props.isSpeechLoading}
-                onRequestSpeech={this.onRequestSpeech}
-                onDiscardSpeech={this.props.onDiscardSpeech}
+                src={this.props.speechSrc}
+                isLoading={this.props.isSpeechLoading}
+                onRequest={this.onRequestSpeech}
+                onDiscard={this.props.onDiscardSpeech}
+                onFinished={this.props.onDiscardSpeech}
               />
               <ButtonSpacer>
                 <CollapseWidthOnHover

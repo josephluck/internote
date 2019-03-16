@@ -326,7 +326,7 @@ function makeModel(api: Api): Model {
           content,
           voice: state.voice || "Joey"
         });
-        result.map(response => actions.setSpeechSrc(response.url));
+        result.map(response => actions.setSpeechSrc(response.src));
       }
     }
   };
