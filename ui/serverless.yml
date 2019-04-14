@@ -2,7 +2,7 @@ service: internote-ui
 
 functions:
   login:
-    handler: lambdas/login.handler
+    handler: generated-lambdas/login.handler
     events:
       - http:
           method: GET
@@ -13,7 +13,7 @@ functions:
           path: /login/{any+}
           cors: true
   register:
-    handler: lambdas/register.handler
+    handler: generated-lambdas/register.handler
     events:
       - http:
           method: GET
@@ -24,7 +24,7 @@ functions:
           path: /register/{any+}
           cors: true
   index:
-    handler: lambdas/index.handler
+    handler: generated-lambdas/index.handler
     events:
       - http:
           method: GET
