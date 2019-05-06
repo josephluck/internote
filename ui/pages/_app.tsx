@@ -5,6 +5,7 @@ import { makeStore, State, Actions } from "../store";
 import { withTwine } from "../store/with-twine";
 import { createGlobalStyle, ThemeProvider } from "../theming/styled";
 import Head from "next/head";
+import { inter } from "../theming/themes";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -15,7 +16,7 @@ const GlobalStyles = createGlobalStyle`
   body, html, #__next {
     color: ${props => props.theme.appText};
     background-color: ${props => props.theme.appBackground};
-    font-family: ${props => props.theme.fontFamily};
+    font-family: ${inter.fontFamily};
     font-size: ${font._24.size};
     line-height: ${font._24.lineHeight};
     height: 100%;

@@ -1,8 +1,19 @@
 const webpack = require("webpack");
 const dotenv = require("dotenv");
 
+function getEnvPath() {
+  switch (process.env.STAGE) {
+    case "prod":
+      return "./.env";
+    case "dev":
+      return "./.env.development";
+    default:
+      return "./.env.local";
+  }
+}
+
 const { parsed: localEnv } = dotenv.config({
-  path: process.env.STAGE === "prod" ? "./.env" : "./.env.development"
+  path: getEnvPath()
 });
 
 module.exports = function(nextConfig) {

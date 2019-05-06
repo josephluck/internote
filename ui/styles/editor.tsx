@@ -60,6 +60,7 @@ const EditorStyles = styled.div<{
   display: flex;
   flex: 1;
   overflow: auto;
+  font-family: ${props => props.theme.fontFamily};
   .slate-editor {
     padding-top: 50vh; // Ensure enough room to center first block
     padding-bottom: 50vh; // Ensure enough room to center last block

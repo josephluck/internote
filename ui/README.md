@@ -18,14 +18,14 @@
 
 ## Environment
 
-`dotenv` is used to inject environment variables in to the app at compile-time. `.env.development` is used for both localhost development and deployed dev environments and `.env` is used for deployed production environments.
+`dotenv` is used to inject environment variables in to the app at compile-time. `.env.development` is used for deployed dev environments, `.env.local` is used for localhost environments and `.env` is used for deployed production environments.
 
 - `API_BASE_URL` - points to the deployed Internote API base path.
-- `ASSET_PREFIX` - points to generated assets from `next build`. In deployed environments, this points to the S3 bucket that the `.next/static` asset is synced with. See below for more information.
+- `ASSET_PREFIX` - points to generated assets from `next build`. In deployed environments, this points to the S3 bucket that the `.next/static` asset is synced with. See below for more information. _Note that with the `.env.local` file, this needs to be an empty string_.
 
 ## Development
 
-The development environment is a long-running next server in `dev` mode.
+The development environment is a long-running next server in `dev` mode. This differs from a deployed application where next is placed in lambda / serverless mode.
 
 ### Next
 
