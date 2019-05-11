@@ -97,9 +97,9 @@ export function DropdownMenuItem({
   );
 }
 
-export const DropdownMenuSpacer = styled.div`
+export const DropdownMenuSpacer = styled.div<{ withoutMargin?: boolean }>`
   border-bottom: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
-  margin: ${spacing._0_5} 0;
+  margin: ${props => (props.withoutMargin ? "0" : spacing._0_5)} 0;
 `;
 
 const DropdownChevronWrap = styled.div`

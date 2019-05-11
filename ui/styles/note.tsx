@@ -36,6 +36,10 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
           store.actions.requestSpeech({ content, noteId: note.id })
         }
         onDiscardSpeech={() => store.actions.setSpeechSrc(null)}
+        dictionaryShowing={store.state.dictionaryShowing}
+        setDictionaryShowing={showing =>
+          store.actions.setDictionaryShowing(showing)
+        }
       />
     </>
   );

@@ -20,7 +20,8 @@ import {
   faQuoteLeft,
   faListUl,
   faListOl,
-  faTrash
+  faTrash,
+  faBook
 } from "@fortawesome/free-solid-svg-icons";
 import { Wrapper } from "./wrapper";
 import { Speech } from "./speech";
@@ -30,10 +31,11 @@ import {
   ToolbarExpandingButtonIconWrap
 } from "./toolbar-expanding-button";
 import { ToolbarButton } from "./toolbar-button";
+import { Collapse } from "react-collapse";
+import { HeadingTwo } from "./typography";
+import { Dictionary } from "./dictionary";
 
 const DEFAULT_NODE = "paragraph";
-
-// Keyboard shortcuts
 
 const isH1Hotkey = isKeyHotkey("mod+1");
 const isH2Hotkey = isKeyHotkey("mod+2");
@@ -138,6 +140,8 @@ const ToolbarWrapper = styled.div<{
   line-height: ${font._18.lineHeight};
   background: ${props => props.theme.toolbarBackground};
   display: flex;
+  flex-direction: column;
+  width: 100%;
   align-items: center;
   padding: ${spacing._0_25} 0;
   position: ${props => (props.distractionFree ? "fixed" : "static")};
@@ -162,10 +166,22 @@ const ToolbarInner = styled(Wrapper)`
   display: flex;
   align-items: center;
   flex: 1;
+  width: 100%;
 `;
 
 const ButtonSpacer = styled.div`
   margin-right: ${spacing._0_25};
+`;
+
+const ToolbarExpandedWrapper = styled.div`
+  padding-top: ${spacing._0_25};
+  overflow: hidden;
+  width: 100%;
+`;
+
+const ToolbarExpandedInner = styled.div`
+  border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
+  padding-top: ${spacing._0_25};
 `;
 
 interface Props {
@@ -178,8 +194,10 @@ interface Props {
   distractionFree: boolean;
   speechSrc: string;
   isSpeechLoading: boolean;
+  dictionaryShowing: boolean;
   onRequestSpeech: (content: string) => any;
   onDiscardSpeech: () => any;
+  setDictionaryShowing: (showing: boolean) => any;
 }
 
 interface State {
@@ -591,7 +609,10 @@ export class InternoteEditor extends React.Component<Props, State> {
         <ToolbarWrapper
           distractionFree={this.props.distractionFree}
           forceShow={
-            hasSelection || !!this.props.speechSrc || this.state.isCtrlHeld
+            hasSelection ||
+            !!this.props.speechSrc ||
+            this.state.isCtrlHeld ||
+            this.props.dictionaryShowing
           }
         >
           <ToolbarInner>
@@ -607,10 +628,28 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("underlined", 9)}
             </Flex>
             <Flex alignItems="center">
+              <CollapseWidthOnHover
+                onClick={() =>
+                  this.props.setDictionaryShowing(!this.props.dictionaryShowing)
+                }
+                forceShow={this.props.dictionaryShowing}
+                collapsedContent={<Flex pl={spacing._0_25}>Dictionary</Flex>}
+              >
+                {collapse => (
+                  <ToolbarExpandingButton
+                    forceShow={this.props.dictionaryShowing}
+                  >
+                    <ToolbarExpandingButtonIconWrap>
+                      <FontAwesomeIcon icon={faBook} />
+                    </ToolbarExpandingButtonIconWrap>
+                    {collapse.renderCollapsedContent()}
+                  </ToolbarExpandingButton>
+                )}
+              </CollapseWidthOnHover>
               <Speech
+                onRequest={this.onRequestSpeech}
                 src={this.props.speechSrc}
                 isLoading={this.props.isSpeechLoading}
-                onRequest={this.onRequestSpeech}
                 onDiscard={this.props.onDiscardSpeech}
                 onFinished={this.props.onDiscardSpeech}
               />
@@ -632,6 +671,18 @@ export class InternoteEditor extends React.Component<Props, State> {
               <Saving saving={this.props.saving} />
             </Flex>
           </ToolbarInner>
+          <Collapse
+            isOpened={this.props.dictionaryShowing}
+            style={{ width: "100%" }}
+          >
+            <ToolbarExpandedWrapper>
+              <ToolbarExpandedInner>
+                <ToolbarInner>
+                  <Dictionary isLoading />
+                </ToolbarInner>
+              </ToolbarExpandedInner>
+            </ToolbarExpandedWrapper>
+          </Collapse>
         </ToolbarWrapper>
       </Wrap>
     );

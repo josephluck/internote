@@ -43,6 +43,7 @@ interface OwnState {
   distractionFree: boolean;
   voice: AvailableVoice;
   isFullscreen: boolean;
+  dictionaryShowing: boolean;
   speechSrc: string | null;
 }
 
@@ -55,6 +56,7 @@ interface OwnReducers {
   setColorTheme: Twine.Reducer<OwnState, ColorThemeWithName>;
   setFontTheme: Twine.Reducer<OwnState, FontThemeWithName>;
   setDistractionFree: Twine.Reducer<OwnState, boolean>;
+  setDictionaryShowing: Twine.Reducer<OwnState, boolean>;
   setVoice: Twine.Reducer<OwnState, AvailableVoice>;
   setFullscreen: Twine.Reducer<OwnState, boolean>;
   setSpeechSrc: Twine.Reducer<OwnState, string | null>;
@@ -105,7 +107,8 @@ function defaultState(): OwnState {
     distractionFree: false,
     isFullscreen: false,
     speechSrc: null,
-    voice: "Joey"
+    voice: "Joey",
+    dictionaryShowing: false
   };
 }
 
@@ -192,6 +195,10 @@ function makeModel(api: Api): Model {
       setSpeechSrc: (state, speechSrc) => ({
         ...state,
         speechSrc
+      }),
+      setDictionaryShowing: (state, dictionaryShowing) => ({
+        ...state,
+        dictionaryShowing
       })
     },
     effects: {

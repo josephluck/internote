@@ -90,12 +90,14 @@ export class Speech extends React.Component<Props, State> {
 
   render() {
     return (
-      <AudioPlayer src={this.props.src} autoPlay onFinished={this.props.onFinished}>
+      <AudioPlayer
+        src={this.props.src}
+        autoPlay
+        onFinished={this.props.onFinished}
+      >
         {audio => (
           <CollapseWidthOnHover
-            onClick={
-              !this.props.src ? this.props.onRequest : undefined
-            }
+            onClick={!this.props.src ? this.props.onRequest : undefined}
             forceShow={!!this.props.src || this.props.isLoading}
             collapsedContent={
               <CollapsedWrapper>
