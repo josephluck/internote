@@ -85,9 +85,9 @@ function DictionaryEntry({ result }: { result: Types.DictionaryResult }) {
     <DictionaryEntryWrapper>
       <DictionaryHeadingWrapper>
         <DictionaryWordHeading>{result.word}</DictionaryWordHeading>
-        <DictionaryType>{result.type}</DictionaryType>
+        <DictionaryType>{result.lexicalCategory}</DictionaryType>
       </DictionaryHeadingWrapper>
-      <DictionaryDescription>{result.description}</DictionaryDescription>
+      <DictionaryDescription>{result.definition}</DictionaryDescription>
       <ThesaurasWrapper>
         {result.synonyms.map(synonym => (
           <ThesaurasWord>{synonym}</ThesaurasWord>

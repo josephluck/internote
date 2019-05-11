@@ -351,8 +351,9 @@ function makeModel(api: Api): Model {
             actions.setDictionaryResults([
               {
                 word,
-                type: "verb",
-                description:
+                lexicalCategory: "verb",
+                example: '',
+                definition:
                   "decide upon the look and functioning of (a building, garment, or other object), by making a detailed drawing of it.",
                 synonyms: [
                   "plan",
@@ -365,8 +366,9 @@ function makeModel(api: Api): Model {
               },
               {
                 word,
-                type: "verb",
-                description:
+                lexicalCategory: "verb",
+                example: '',
+                definition:
                   "decide upon the look and functioning of (a building, garment, or other object), by making a detailed drawing of it.",
                 synonyms: [
                   "plan",
