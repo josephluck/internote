@@ -678,7 +678,7 @@ export class InternoteEditor extends React.Component<Props, State> {
             <ToolbarExpandedWrapper>
               <ToolbarExpandedInner>
                 <ToolbarInner>
-                  <Dictionary isLoading />
+                  <Dictionary />
                 </ToolbarInner>
               </ToolbarExpandedInner>
             </ToolbarExpandedWrapper>

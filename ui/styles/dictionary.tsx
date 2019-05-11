@@ -2,9 +2,14 @@ import { styled } from "../theming/styled";
 import { HeadingTwo, GhostHeadingTwo, BaseGhostElement } from "./typography";
 import { spacing, font, borderRadius } from "../theming/symbols";
 
+const DictionaryHeadingWrapper = styled.div`
+  display: flex;
+  align-items: baseline;
+`;
+
 const DictionaryWordHeading = styled(HeadingTwo)`
   line-height: 1;
-  margin: ${spacing._0_75} 0;
+  margin: ${spacing._0_75} ${spacing._0_25} 0 0;
   font-style: italic;
 `;
 
@@ -12,6 +17,19 @@ const GhostWordHeading = styled(GhostHeadingTwo)`
   margin: ${spacing._0_75} 0;
   width: 160px;
 `;
+
+const DictionaryType = styled.p`
+  color: ${props => props.theme.dictionaryDescriptionText};
+  font-size: ${font._12.size};
+  line-height: ${font._12.size};
+  margin: 0;
+  font-style: italic;
+`;
+
+const DictionaryDescription = styled.p`
+  color: ${props => props.theme.dictionaryDescriptionText};
+`;
+
 const GhostDescriptionWrapper = styled.div`
   margin: ${spacing._1} 0;
 `;
@@ -23,10 +41,6 @@ const GhostDescription = styled(BaseGhostElement)`
   &:last-of-type {
     margin-bottom: 0;
   }
-`;
-
-const DictionaryDescription = styled.p`
-  color: ${props => props.theme.dictionaryDescriptionText};
 `;
 
 const ThesaurasWrapper = styled.div`
@@ -56,6 +70,37 @@ const GhostThesaurasWord = styled(BaseGhostElement)`
   margin-right: ${spacing._0_125};
 `;
 
+const DictionaryEntryWrapper = styled.div`
+  margin-bottom: ${spacing._1};
+  &:last-of-type {
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+`;
+
+function DictionaryEntry({  }: {}) {
+  return (
+    <DictionaryEntryWrapper>
+      <DictionaryHeadingWrapper>
+        <DictionaryWordHeading>Design</DictionaryWordHeading>
+        <DictionaryType>verb</DictionaryType>
+      </DictionaryHeadingWrapper>
+      <DictionaryDescription>
+        decide upon the look and functioning of (a building, garment, or other
+        object), by making a detailed drawing of it.
+      </DictionaryDescription>
+      <ThesaurasWrapper>
+        <ThesaurasWord>Plan</ThesaurasWord>
+        <ThesaurasWord>Draw</ThesaurasWord>
+        <ThesaurasWord>Sketch</ThesaurasWord>
+        <ThesaurasWord>Outline</ThesaurasWord>
+        <ThesaurasWord>Plot</ThesaurasWord>
+        <ThesaurasWord>Delineate</ThesaurasWord>
+      </ThesaurasWrapper>
+    </DictionaryEntryWrapper>
+  );
+}
+
 export function Dictionary({ isLoading = false }: { isLoading?: boolean }) {
   if (isLoading) {
     return (
@@ -80,19 +125,7 @@ export function Dictionary({ isLoading = false }: { isLoading?: boolean }) {
   }
   return (
     <div>
-      <DictionaryWordHeading>Design</DictionaryWordHeading>
-      <DictionaryDescription>
-        decide upon the look and functioning of (a building, garment, or other
-        object), by making a detailed drawing of it.
-      </DictionaryDescription>
-      <ThesaurasWrapper>
-        <ThesaurasWord>Plan</ThesaurasWord>
-        <ThesaurasWord>Draw</ThesaurasWord>
-        <ThesaurasWord>Sketch</ThesaurasWord>
-        <ThesaurasWord>Outline</ThesaurasWord>
-        <ThesaurasWord>Plot</ThesaurasWord>
-        <ThesaurasWord>Delineate</ThesaurasWord>
-      </ThesaurasWrapper>
+      <DictionaryEntry />
     </div>
   );
 }
