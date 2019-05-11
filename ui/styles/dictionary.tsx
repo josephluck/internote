@@ -1,6 +1,8 @@
+import * as Types from "@internote/api/domains/types";
 import { styled } from "../theming/styled";
 import { HeadingTwo, GhostHeadingTwo, BaseGhostElement } from "./typography";
 import { spacing, font, borderRadius } from "../theming/symbols";
+import { DropdownMenuSpacer } from "./dropdown-menu";
 
 const DictionaryHeadingWrapper = styled.div`
   display: flex;
@@ -78,30 +80,30 @@ const DictionaryEntryWrapper = styled.div`
   }
 `;
 
-function DictionaryEntry({  }: {}) {
+function DictionaryEntry({ result }: { result: Types.DictionaryResult }) {
   return (
     <DictionaryEntryWrapper>
       <DictionaryHeadingWrapper>
-        <DictionaryWordHeading>Design</DictionaryWordHeading>
-        <DictionaryType>verb</DictionaryType>
+        <DictionaryWordHeading>{result.word}</DictionaryWordHeading>
+        <DictionaryType>{result.type}</DictionaryType>
       </DictionaryHeadingWrapper>
-      <DictionaryDescription>
-        decide upon the look and functioning of (a building, garment, or other
-        object), by making a detailed drawing of it.
-      </DictionaryDescription>
+      <DictionaryDescription>{result.description}</DictionaryDescription>
       <ThesaurasWrapper>
-        <ThesaurasWord>Plan</ThesaurasWord>
-        <ThesaurasWord>Draw</ThesaurasWord>
-        <ThesaurasWord>Sketch</ThesaurasWord>
-        <ThesaurasWord>Outline</ThesaurasWord>
-        <ThesaurasWord>Plot</ThesaurasWord>
-        <ThesaurasWord>Delineate</ThesaurasWord>
+        {result.synonyms.map(synonym => (
+          <ThesaurasWord>{synonym}</ThesaurasWord>
+        ))}
       </ThesaurasWrapper>
     </DictionaryEntryWrapper>
   );
 }
 
-export function Dictionary({ isLoading = false }: { isLoading?: boolean }) {
+export function Dictionary({
+  isLoading = false,
+  results
+}: {
+  isLoading?: boolean;
+  results: Types.DictionaryResult[];
+}) {
   if (isLoading) {
     return (
       <div>
@@ -125,7 +127,14 @@ export function Dictionary({ isLoading = false }: { isLoading?: boolean }) {
   }
   return (
     <div>
-      <DictionaryEntry />
+      {results.map((result, i) => {
+        return (
+          <>
+            {i > 0 ? <DropdownMenuSpacer /> : null}
+            <DictionaryEntry result={result} key={result.word} />
+          </>
+        );
+      })}
     </div>
   );
 }

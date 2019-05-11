@@ -37,9 +37,10 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
         }
         onDiscardSpeech={() => store.actions.setSpeechSrc(null)}
         dictionaryShowing={store.state.dictionaryShowing}
-        setDictionaryShowing={showing =>
-          store.actions.setDictionaryShowing(showing)
-        }
+        isDictionaryLoading={store.state.loading.lookupWordInDictionary}
+        closeDictionary={() => store.actions.setDictionaryShowing(false)}
+        lookupWordInDictionary={store.actions.lookupWordInDictionary}
+        dictionaryResults={store.state.dictionaryResults}
       />
     </>
   );

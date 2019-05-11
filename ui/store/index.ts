@@ -45,6 +45,7 @@ interface OwnState {
   isFullscreen: boolean;
   dictionaryShowing: boolean;
   speechSrc: string | null;
+  dictionaryResults: Types.DictionaryResult[];
 }
 
 interface OwnReducers {
@@ -60,6 +61,7 @@ interface OwnReducers {
   setVoice: Twine.Reducer<OwnState, AvailableVoice>;
   setFullscreen: Twine.Reducer<OwnState, boolean>;
   setSpeechSrc: Twine.Reducer<OwnState, string | null>;
+  setDictionaryResults: Twine.Reducer<OwnState, Types.DictionaryResult[]>;
 }
 
 interface OwnEffects {
@@ -93,6 +95,7 @@ interface OwnEffects {
     Actions,
     { content: string; noteId: string }
   >;
+  lookupWordInDictionary: Twine.Effect<OwnState, Actions, string>;
 }
 
 function defaultState(): OwnState {
@@ -108,7 +111,8 @@ function defaultState(): OwnState {
     isFullscreen: false,
     speechSrc: null,
     voice: "Joey",
-    dictionaryShowing: false
+    dictionaryShowing: false,
+    dictionaryResults: []
   };
 }
 
@@ -198,7 +202,12 @@ function makeModel(api: Api): Model {
       }),
       setDictionaryShowing: (state, dictionaryShowing) => ({
         ...state,
-        dictionaryShowing
+        dictionaryShowing,
+        dictionaryResults: dictionaryShowing ? state.dictionaryResults : []
+      }),
+      setDictionaryResults: (state, dictionaryResults) => ({
+        ...state,
+        dictionaryResults
       })
     },
     effects: {
@@ -334,6 +343,44 @@ function makeModel(api: Api): Model {
           voice: state.voice || "Joey"
         });
         result.map(response => actions.setSpeechSrc(response.src));
+      },
+      async lookupWordInDictionary(_state, actions, word) {
+        actions.setDictionaryShowing(true);
+        return new Promise(resolve => {
+          setTimeout(() => {
+            actions.setDictionaryResults([
+              {
+                word,
+                type: "verb",
+                description:
+                  "decide upon the look and functioning of (a building, garment, or other object), by making a detailed drawing of it.",
+                synonyms: [
+                  "plan",
+                  "draw",
+                  "sketch",
+                  "outline",
+                  "plot",
+                  "delineate"
+                ]
+              },
+              {
+                word,
+                type: "verb",
+                description:
+                  "decide upon the look and functioning of (a building, garment, or other object), by making a detailed drawing of it.",
+                synonyms: [
+                  "plan",
+                  "draw",
+                  "sketch",
+                  "outline",
+                  "plot",
+                  "delineate"
+                ]
+              }
+            ]);
+            resolve();
+          }, 3000);
+        });
       }
     }
   };

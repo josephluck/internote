@@ -32,7 +32,7 @@ import {
 } from "./toolbar-expanding-button";
 import { ToolbarButton } from "./toolbar-button";
 import { Collapse } from "react-collapse";
-import { HeadingTwo } from "./typography";
+import * as Types from "@internote/api/domains/types";
 import { Dictionary } from "./dictionary";
 
 const DEFAULT_NODE = "paragraph";
@@ -194,10 +194,13 @@ interface Props {
   distractionFree: boolean;
   speechSrc: string;
   isSpeechLoading: boolean;
+  isDictionaryLoading: boolean;
   dictionaryShowing: boolean;
   onRequestSpeech: (content: string) => any;
   onDiscardSpeech: () => any;
-  setDictionaryShowing: (showing: boolean) => any;
+  closeDictionary: () => any;
+  lookupWordInDictionary: (word: string) => any;
+  dictionaryResults: Types.DictionaryResult[];
 }
 
 interface State {
@@ -444,14 +447,17 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onRequestSpeech = () => {
-    const selectedText = this.state.value.fragment.text;
-    const content =
-      selectedText && selectedText.length
-        ? selectedText
-        : this.state.value.focusBlock.text;
+    const content = this.getSelectedContent();
     if (content && content.length) {
       this.props.onRequestSpeech(content);
     }
+  };
+
+  getSelectedContent = () => {
+    const selectedText = this.state.value.fragment.text;
+    return selectedText && selectedText.length
+      ? selectedText
+      : this.state.value.focusBlock.text;
   };
 
   renderMarkButton = (type: MarkType, shortcutNumber: number) => {
@@ -582,6 +588,20 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
+  toggleDictionary = () => {
+    if (this.props.dictionaryShowing) {
+      this.props.closeDictionary();
+    } else {
+      const content = this.getSelectedContent();
+      if (content) {
+        const firstWord = content.split(" ")[0];
+        if (firstWord) {
+          this.props.lookupWordInDictionary(firstWord);
+        }
+      }
+    }
+  };
+
   render() {
     const hasSelection = this.state.value.fragment.text !== "";
     return (
@@ -629,9 +649,7 @@ export class InternoteEditor extends React.Component<Props, State> {
             </Flex>
             <Flex alignItems="center">
               <CollapseWidthOnHover
-                onClick={() =>
-                  this.props.setDictionaryShowing(!this.props.dictionaryShowing)
-                }
+                onClick={this.toggleDictionary}
                 forceShow={this.props.dictionaryShowing}
                 collapsedContent={<Flex pl={spacing._0_25}>Dictionary</Flex>}
               >
@@ -678,7 +696,10 @@ export class InternoteEditor extends React.Component<Props, State> {
             <ToolbarExpandedWrapper>
               <ToolbarExpandedInner>
                 <ToolbarInner>
-                  <Dictionary />
+                  <Dictionary
+                    isLoading={this.props.isDictionaryLoading}
+                    results={this.props.dictionaryResults}
+                  />
                 </ToolbarInner>
               </ToolbarExpandedInner>
             </ToolbarExpandedWrapper>
