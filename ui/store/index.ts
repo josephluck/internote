@@ -344,45 +344,12 @@ function makeModel(api: Api): Model {
         });
         result.map(response => actions.setSpeechSrc(response.src));
       },
-      async lookupWordInDictionary(_state, actions, word) {
+      async lookupWordInDictionary(state, actions, word) {
         actions.setDictionaryShowing(true);
-        return new Promise(resolve => {
-          setTimeout(() => {
-            actions.setDictionaryResults([
-              {
-                word,
-                lexicalCategory: "verb",
-                example: '',
-                definition:
-                  "decide upon the look and functioning of (a building, garment, or other object), by making a detailed drawing of it.",
-                synonyms: [
-                  "plan",
-                  "draw",
-                  "sketch",
-                  "outline",
-                  "plot",
-                  "delineate"
-                ]
-              },
-              {
-                word,
-                lexicalCategory: "verb",
-                example: '',
-                definition:
-                  "decide upon the look and functioning of (a building, garment, or other object), by making a detailed drawing of it.",
-                synonyms: [
-                  "plan",
-                  "draw",
-                  "sketch",
-                  "outline",
-                  "plot",
-                  "delineate"
-                ]
-              }
-            ]);
-            resolve();
-          }, 3000);
+        const response = await api.dictionary.lookup(state.session.token, {
+          word
         });
+        response.map(({ results }) => actions.setDictionaryResults(results));
       }
     }
   };

@@ -45,13 +45,18 @@ function makeController(deps: Dependencies) {
             async ({ word }) => {
               // TODO: may need to get the wordId using https://developer.oxforddictionaries.com/documentation#!/Lemmas
               const wordId = word;
-              const [entries, thesauras] = await Promise.all([
-                api.get(`/entries/en-gb/${wordId}?strictMatch=false`),
-                api.get(`/thesaurus/en/${wordId}?strictMatch=false`)
+              console.log("Making request to oxford API", {
+                apiKey: process.env.OXFORD_API_KEY,
+                apiId: process.env.OXFORD_API_ID,
+                word
+              });
+              const [entries] = await Promise.all([
+                api.get(`/entries/en-gb/${wordId}?strictMatch=false`)
+                // api.get(`/thesaurus/en/${wordId}?strictMatch=false`)
               ]);
 
               console.log("Entries response", { entries });
-              console.log("Thesauras response", { thesauras });
+              // console.log("Thesauras response", { thesauras });
               const results = convertOxfordEntriesResponse(entries.data);
               console.log("Transformed response", { results });
 

@@ -17,7 +17,6 @@ const DictionaryWordHeading = styled(HeadingTwo)`
 
 const GhostWordHeading = styled(GhostHeadingTwo)`
   margin: ${spacing._0_75} 0;
-  width: 160px;
 `;
 
 const DictionaryType = styled.p`
@@ -76,7 +75,6 @@ const DictionaryEntryWrapper = styled.div`
   margin-bottom: ${spacing._1};
   &:last-of-type {
     margin-bottom: 0;
-    border-bottom: 0;
   }
 `;
 
@@ -88,11 +86,13 @@ function DictionaryEntry({ result }: { result: Types.DictionaryResult }) {
         <DictionaryType>{result.lexicalCategory}</DictionaryType>
       </DictionaryHeadingWrapper>
       <DictionaryDescription>{result.definition}</DictionaryDescription>
-      <ThesaurasWrapper>
-        {result.synonyms.map(synonym => (
-          <ThesaurasWord>{synonym}</ThesaurasWord>
-        ))}
-      </ThesaurasWrapper>
+      {result.synonyms.length ? (
+        <ThesaurasWrapper>
+          {result.synonyms.map(synonym => (
+            <ThesaurasWord key={synonym}>{synonym}</ThesaurasWord>
+          ))}
+        </ThesaurasWrapper>
+      ) : null}
     </DictionaryEntryWrapper>
   );
 }

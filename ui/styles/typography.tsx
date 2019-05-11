@@ -22,6 +22,7 @@ export const HeadingOne = styled.h1`
 export const GhostHeadingOne = styled(BaseGhostElement)`
   height: ${font._36.lineHeight};
   padding: 0;
+  width: 200px;
 `;
 
 export const HeadingTwo = styled.h2`
@@ -33,4 +34,5 @@ export const HeadingTwo = styled.h2`
 export const GhostHeadingTwo = styled(BaseGhostElement)`
   height: ${font._28.lineHeight};
   padding: 0;
+  width: 160px;
 `;
