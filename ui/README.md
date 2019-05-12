@@ -13,8 +13,8 @@
 - Serverless
 - AWS Lambda
 - AWS Api Gateway
+- AWS Route 53
 - AWS S3
-- AWS Polly
 
 ## Environment
 
