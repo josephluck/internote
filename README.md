@@ -2,6 +2,8 @@
 
 Beautiful web-based editor with a focus on distraction-free content creation.
 
+**[Internote](https://internote.app)**
+
 ## Features
 
 **Rich editor**
