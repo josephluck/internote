@@ -2,7 +2,6 @@ import * as Types from "@internote/api/domains/types";
 import { styled } from "../theming/styled";
 import { HeadingTwo, GhostHeadingTwo, BaseGhostElement } from "./typography";
 import { spacing, font, borderRadius } from "../theming/symbols";
-import { DropdownMenuSpacer } from "./dropdown-menu";
 
 const DictionaryHeadingWrapper = styled.div`
   display: flex;
@@ -29,6 +28,7 @@ const DictionaryType = styled.p`
 
 const DictionaryDescription = styled.p`
   color: ${props => props.theme.dictionaryDescriptionText};
+  margin: ${spacing._0_5} 0;
 `;
 
 const GhostDescriptionWrapper = styled.div`
@@ -45,12 +45,16 @@ const GhostDescription = styled(BaseGhostElement)`
 `;
 
 const ThesaurasWrapper = styled.div`
-  display: flex;
-  margin-bottom: ${spacing._0_75};
+  margin-bottom: ${spacing._1_5};
+  &:last-of-type {
+    margin-bottom: ${spacing._0_5};
+  }
 `;
 
 const ThesaurasWord = styled.div`
+  display: inline-block;
   margin-right: ${spacing._0_125};
+  margin-bottom: ${spacing._0_125};
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
   border-radius: ${borderRadius._6};
@@ -59,12 +63,14 @@ const ThesaurasWord = styled.div`
   background: ${props => props.theme.thesaurasWordBackground};
   transition: all 300ms ease;
   cursor: pointer;
+  white-space: nowrap;
   &:hover {
     color: ${props => props.theme.thesaurasWordActiveText};
   }
 `;
 
 const GhostThesaurasWord = styled(BaseGhostElement)`
+  display: inline-block;
   height: ${font._12.size};
   padding: ${spacing._0_25};
   box-sizing: content-box;
@@ -83,7 +89,7 @@ function DictionaryEntry({ result }: { result: Types.DictionaryResult }) {
     <DictionaryEntryWrapper>
       <DictionaryHeadingWrapper>
         <DictionaryWordHeading>{result.word}</DictionaryWordHeading>
-        <DictionaryType>{result.lexicalCategory}</DictionaryType>
+        <DictionaryType>{result.lexicalCategory.toLowerCase()}</DictionaryType>
       </DictionaryHeadingWrapper>
       <DictionaryDescription>{result.definition}</DictionaryDescription>
       {result.synonyms.length ? (
@@ -106,7 +112,7 @@ export function Dictionary({
 }) {
   if (isLoading) {
     return (
-      <div>
+      <div style={{ width: "100%" }}>
         <GhostWordHeading />
         <GhostDescriptionWrapper>
           <GhostDescription style={{ width: "430px" }} />
@@ -126,14 +132,9 @@ export function Dictionary({
     );
   }
   return (
-    <div>
-      {results.map((result, i) => {
-        return (
-          <>
-            {i > 0 ? <DropdownMenuSpacer /> : null}
-            <DictionaryEntry result={result} key={result.word} />
-          </>
-        );
+    <div style={{ width: "100%" }}>
+      {results.map(result => {
+        return <DictionaryEntry result={result} key={result.word} />;
       })}
     </div>
   );

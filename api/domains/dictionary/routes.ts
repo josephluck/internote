@@ -43,22 +43,18 @@ function makeController(deps: Dependencies) {
               );
             },
             async ({ word }) => {
-              // TODO: may need to get the wordId using https://developer.oxforddictionaries.com/documentation#!/Lemmas
-              const wordId = word;
-              console.log("Making request to oxford API", {
-                apiKey: process.env.OXFORD_API_KEY,
-                apiId: process.env.OXFORD_API_ID,
-                word
-              });
-              const [entries] = await Promise.all([
-                api.get(`/entries/en-gb/${wordId}?strictMatch=false`)
-                // api.get(`/thesaurus/en/${wordId}?strictMatch=false`)
+              const lemmas = await api.get(`/lemmas/en/${word}`);
+              const wordId = getWordIdFromLemmasResponse(lemmas.data);
+              const [entries, thesauras] = await Promise.all([
+                api.get(`/entries/en-gb/${wordId}?strictMatch=false`),
+                api.get(`/thesaurus/en/${wordId}?strictMatch=false`)
               ]);
 
-              console.log("Entries response", { entries });
-              // console.log("Thesauras response", { thesauras });
-              const results = convertOxfordEntriesResponse(entries.data);
-              console.log("Transformed response", { results });
+              const mappedEntries = convertOxfordEntriesResponse(entries.data);
+              const results = mapEntriesToSynonyms(
+                mappedEntries,
+                thesauras.data
+              );
 
               ctx.body = { results };
 
@@ -81,23 +77,68 @@ export function routes(deps: Dependencies) {
   };
 }
 
-export function convertOxfordEntriesResponse(
+interface DictionaryResultWithThesaurasId extends DictionaryResult {
+  thesaurasId: string;
+}
+
+function convertOxfordEntriesResponse(
   response: Oxford.EntriesResponse
-): Partial<DictionaryResult>[] {
-  return response.results.map(result => {
-    const word = result.word;
-    const lexicalEntry = result.lexicalEntries[0];
-    const lexicalCategory = lexicalEntry.lexicalCategory.text;
-    const entry = lexicalEntry.entries[0];
-    const sense = entry.senses[0];
-    const definition = sense.definitions[0];
-    return {
-      word,
-      lexicalCategory,
-      definition,
-      synonyms: ["example"]
-    };
+): DictionaryResultWithThesaurasId[] {
+  const mappedResult = [] as DictionaryResultWithThesaurasId[];
+  response.results.forEach(({ word, lexicalEntries }) => {
+    lexicalEntries.forEach(({ entries, lexicalCategory }) => {
+      entries.forEach(({ senses }) => {
+        senses.forEach(({ definitions, examples, thesaurusLinks }) => {
+          const thesaurasId =
+            thesaurusLinks && thesaurusLinks.length
+              ? thesaurusLinks[0].sense_id
+              : "";
+          const example = examples && examples.length ? examples[0].text : "";
+          definitions.forEach(definition => {
+            mappedResult.push({
+              word,
+              lexicalCategory: lexicalCategory.text,
+              definition,
+              synonyms: [],
+              example,
+              thesaurasId
+            });
+          });
+        });
+      });
+    });
   });
+  return mappedResult;
+}
+
+function mapEntriesToSynonyms(
+  dictionaryResults: DictionaryResultWithThesaurasId[],
+  response: Oxford.ThesaurasResponse
+): DictionaryResult[] {
+  return dictionaryResults.map(({ thesaurasId, ...result }) => {
+    let synonyms: string[] = [];
+    response.results.forEach(({ lexicalEntries }) => {
+      lexicalEntries.forEach(({ entries }) => {
+        entries.forEach(({ senses }) => {
+          const sense = senses.find(({ id }) => id === thesaurasId);
+          if (sense && sense.synonyms) {
+            synonyms = [
+              ...synonyms,
+              ...sense.synonyms.map(synonym => synonym.text)
+            ];
+          }
+        });
+      });
+    });
+    return { ...result, synonyms };
+  });
+}
+
+function getWordIdFromLemmasResponse(response: Oxford.LemmasResponse): string {
+  const result = response.results[0];
+  const entry = result.lexicalEntries[0];
+  const inflection = entry.inflectionOf[0];
+  return inflection.id;
 }
 
 export default routes;

@@ -1,5 +1,19 @@
-import { styled } from "../theming/styled";
+import { styled, keyframes } from "../theming/styled";
 import { font, borderRadius, spacing } from "../theming/symbols";
+
+const ghostPulse = keyframes`
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
 
 export const BaseGhostElement = styled.div`
   border-radius: ${borderRadius._4};
@@ -7,6 +21,7 @@ export const BaseGhostElement = styled.div`
   color: ${props => props.theme.thesaurasWordText};
   background: ${props => props.theme.thesaurasWordBackground};
   height: ${font._16.size};
+  animation: ${ghostPulse} 2s ease-in-out infinite;
 `;
 
 export const Typography = styled.span`

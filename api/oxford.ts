@@ -15,10 +15,19 @@ export namespace Oxford {
   }
 
   export interface EntryLexicalEntry {
+    derivatives?: LexicalCategory[];
     entries: EntryLexicalEntriesEntry[];
     language: string;
     lexicalCategory: LexicalCategory;
+    pronunciations?: Pronunciation[];
     text: string;
+  }
+
+  export interface Pronunciation {
+    audioFile: string;
+    dialects: string[];
+    phoneticNotation: string;
+    phoneticSpelling: string;
   }
 
   export interface LexicalCategory {
@@ -27,14 +36,26 @@ export namespace Oxford {
   }
 
   export interface EntryLexicalEntriesEntry {
+    etymologies?: string[];
     senses: EntrySense[];
   }
 
   export interface EntrySense {
     id: string;
     definitions: string[];
+    shortDefinitions?: string[];
     examples?: EntrySenseExample[];
     subsenses?: EntrySense[];
+    thesaurusLinks?: EntryThesaurasLink[];
+  }
+
+  export interface EntryThesaurasLink {
+    entry_id: string;
+    /**
+     * Links to the sense_id inside the
+     * thesauras response sense id
+     */
+    sense_id: string;
   }
 
   export interface EntrySenseExample {
@@ -58,23 +79,29 @@ export namespace Oxford {
     language: string;
     lexicalCategory: LexicalCategory;
     text: string;
-    variantForms: ThesaurasVariantForm[];
+    variantForms?: ThesaurasVariantForm[];
   }
 
   export interface ThesaurasLexicalEntriesEntry {
-    homographNumber: string;
+    homographNumber?: string;
     senses: ThesaurasSense[];
-    variantForms: ThesaurasVariantForm[];
+    variantForms?: ThesaurasVariantForm[];
   }
 
   export interface ThesaurasSense {
-    antonyms: ThesaurasAntonym[];
-    domains: ThesaurasDomain[];
+    antonyms?: ThesaurasAntonym[];
+    domains?: ThesaurasDomain[];
     examples: ThesaurasSenseExample[];
+    /**
+     * Unique ID that is referenced inside
+     * entry response's EntryThesaurasLink
+     * sense_id property
+     */
     id: string;
-    regions: LexicalCategory[];
-    registers: LexicalCategory[];
-    synonym: ThesaurasSynonym;
+    regions?: LexicalCategory[];
+    registers?: LexicalCategory[];
+    synonyms: ThesaurasSynonym[];
+    subsenses?: ThesaurasSense[];
   }
 
   export interface ThesaurasAntonym {
@@ -104,4 +131,26 @@ export namespace Oxford {
   }
 
   export interface ThesaurasVariantForm {}
+
+  export interface LemmasResponse {
+    results: Lemma[];
+  }
+
+  export interface Lemma {
+    id: string;
+    language: string;
+    lexicalEntries: LemmaLexicalEntry[];
+  }
+
+  export interface LemmaLexicalEntry {
+    inflectionOf: LemmaInflection[];
+    language: string;
+    lexicalCategory: LexicalCategory;
+    text: string;
+  }
+
+  export interface LemmaInflection {
+    id: string;
+    text: string;
+  }
 }

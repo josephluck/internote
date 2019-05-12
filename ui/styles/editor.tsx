@@ -21,7 +21,8 @@ import {
   faListUl,
   faListOl,
   faTrash,
-  faBook
+  faBook,
+  faSpinner
 } from "@fortawesome/free-solid-svg-icons";
 import { Wrapper } from "./wrapper";
 import { Speech } from "./speech";
@@ -53,6 +54,7 @@ const Wrap = styled.div`
   flex: 1;
   flex-direction: column;
   overflow: hidden;
+  width: 100%;
 `;
 
 const EditorStyles = styled.div<{
@@ -169,8 +171,8 @@ const ToolbarInner = styled(Wrapper)`
   width: 100%;
 `;
 
-const ButtonSpacer = styled.div`
-  margin-right: ${spacing._0_25};
+const ButtonSpacer = styled.div<{ small?: boolean }>`
+  margin-right: ${props => (props.small ? spacing._0_125 : spacing._0_4)};
 `;
 
 const ToolbarExpandedWrapper = styled.div`
@@ -182,6 +184,8 @@ const ToolbarExpandedWrapper = styled.div`
 const ToolbarExpandedInner = styled.div`
   border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
   padding-top: ${spacing._0_25};
+  overflow: auto;
+  max-height: 40vh;
 `;
 
 interface Props {
@@ -611,7 +615,7 @@ export class InternoteEditor extends React.Component<Props, State> {
           userScrolled={this.state.userScrolled}
           id="editor-scroll-wrap"
         >
-          <Wrapper>
+          <Wrapper style={{ width: "100%" }}>
             <Editor
               placeholder=""
               value={this.state.value}
@@ -648,29 +652,37 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("underlined", 9)}
             </Flex>
             <Flex alignItems="center">
-              <CollapseWidthOnHover
-                onClick={this.toggleDictionary}
-                forceShow={this.props.dictionaryShowing}
-                collapsedContent={<Flex pl={spacing._0_25}>Dictionary</Flex>}
-              >
-                {collapse => (
-                  <ToolbarExpandingButton
-                    forceShow={this.props.dictionaryShowing}
-                  >
-                    <ToolbarExpandingButtonIconWrap>
-                      <FontAwesomeIcon icon={faBook} />
-                    </ToolbarExpandingButtonIconWrap>
-                    {collapse.renderCollapsedContent()}
-                  </ToolbarExpandingButton>
-                )}
-              </CollapseWidthOnHover>
-              <Speech
-                onRequest={this.onRequestSpeech}
-                src={this.props.speechSrc}
-                isLoading={this.props.isSpeechLoading}
-                onDiscard={this.props.onDiscardSpeech}
-                onFinished={this.props.onDiscardSpeech}
-              />
+              <ButtonSpacer small>
+                <CollapseWidthOnHover
+                  onClick={this.toggleDictionary}
+                  forceShow={this.props.dictionaryShowing}
+                  collapsedContent={<Flex pl={spacing._0_25}>Dictionary</Flex>}
+                >
+                  {collapse => (
+                    <ToolbarExpandingButton
+                      forceShow={this.props.dictionaryShowing}
+                    >
+                      <ToolbarExpandingButtonIconWrap>
+                        {this.props.isDictionaryLoading ? (
+                          <FontAwesomeIcon icon={faSpinner} spin />
+                        ) : (
+                          <FontAwesomeIcon icon={faBook} />
+                        )}
+                      </ToolbarExpandingButtonIconWrap>
+                      {collapse.renderCollapsedContent()}
+                    </ToolbarExpandingButton>
+                  )}
+                </CollapseWidthOnHover>
+              </ButtonSpacer>
+              <ButtonSpacer small>
+                <Speech
+                  onRequest={this.onRequestSpeech}
+                  src={this.props.speechSrc}
+                  isLoading={this.props.isSpeechLoading}
+                  onDiscard={this.props.onDiscardSpeech}
+                  onFinished={this.props.onDiscardSpeech}
+                />
+              </ButtonSpacer>
               <ButtonSpacer>
                 <CollapseWidthOnHover
                   onClick={this.props.onDelete}
