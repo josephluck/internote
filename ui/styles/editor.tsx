@@ -35,6 +35,7 @@ import { ToolbarButton } from "./toolbar-button";
 import { Collapse } from "react-collapse";
 import * as Types from "@internote/api/domains/types";
 import { Dictionary } from "./dictionary";
+import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -712,6 +713,12 @@ export class InternoteEditor extends React.Component<Props, State> {
                     isLoading={this.props.isDictionaryLoading}
                     results={this.props.dictionaryResults}
                   />
+                  {this.props.dictionaryShowing ? (
+                    <OnKeyboardShortcut
+                      keyCombo="esc"
+                      cb={this.toggleDictionary}
+                    />
+                  ) : null}
                 </ToolbarInner>
               </ToolbarExpandedInner>
             </ToolbarExpandedWrapper>
