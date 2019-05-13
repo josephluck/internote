@@ -19,23 +19,17 @@ import {
   faHeading,
   faQuoteLeft,
   faListUl,
-  faListOl,
-  faTrash,
-  faBook,
-  faSpinner
+  faListOl
 } from "@fortawesome/free-solid-svg-icons";
 import { Wrapper } from "./wrapper";
 import { Speech } from "./speech";
-import { CollapseWidthOnHover } from "./collapse-width-on-hover";
-import {
-  ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap
-} from "./toolbar-expanding-button";
 import { ToolbarButton } from "./toolbar-button";
 import { Collapse } from "react-collapse";
 import * as Types from "@internote/api/domains/types";
 import { Dictionary } from "./dictionary";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
+import { DictionaryButton } from "./dictionary-button";
+import { DeleteNoteButton } from "./delete-note-button";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -200,11 +194,11 @@ interface Props {
   speechSrc: string;
   isSpeechLoading: boolean;
   isDictionaryLoading: boolean;
-  dictionaryShowing: boolean;
+  isDictionaryShowing: boolean;
   onRequestSpeech: (content: string) => any;
   onDiscardSpeech: () => any;
   closeDictionary: () => any;
-  lookupWordInDictionary: (word: string) => any;
+  onRequestDictionary: (word: string) => any;
   dictionaryResults: Types.DictionaryResult[];
 }
 
@@ -294,7 +288,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     return value.blocks.some(node => node.type == type);
   };
 
-  onKeyDown: Plugin["onKeyDown"] = (event: KeyboardEvent, change) => {
+  onKeyDown: Plugin["onKeyDown"] = (event, change) => {
     const inserted = this.handleResetBlockOnEnterPressed(event, change);
 
     if (inserted) {
@@ -305,33 +299,32 @@ export class InternoteEditor extends React.Component<Props, State> {
       this.setState({ isCtrlHeld: true });
     }
 
+    let shouldPreventDefault = true;
+
     if (isBoldHotkey(event)) {
-      event.preventDefault();
-      this.onClickMark(event as any, "bold");
+      this.onClickMark(event, "bold");
     } else if (isItalicHotkey(event)) {
-      event.preventDefault();
-      this.onClickMark(event as any, "italic");
+      this.onClickMark(event, "italic");
     } else if (isUnderlinedHotkey(event)) {
-      event.preventDefault();
-      this.onClickMark(event as any, "underlined");
+      this.onClickMark(event, "underlined");
     } else if (isCodeHotkey(event)) {
-      event.preventDefault();
-      this.onClickMark(event as any, "code");
+      this.onClickMark(event, "code");
     } else if (isH1Hotkey(event)) {
-      event.preventDefault();
-      this.onClickBlock(event as any, "heading-one");
+      this.onClickBlock(event, "heading-one");
     } else if (isH2Hotkey(event)) {
-      event.preventDefault();
-      this.onClickBlock(event as any, "heading-two");
+      this.onClickBlock(event, "heading-two");
     } else if (isQuoteHotkey(event)) {
-      event.preventDefault();
-      this.onClickBlock(event as any, "block-quote");
+      this.onClickBlock(event, "block-quote");
     } else if (isOlHotkey(event)) {
-      event.preventDefault();
-      this.onClickBlock(event as any, "numbered-list");
+      this.onClickBlock(event, "numbered-list");
     } else if (isUlHotkey(event)) {
+      this.onClickBlock(event, "bulleted-list");
+    } else {
+      shouldPreventDefault = false;
+    }
+
+    if (shouldPreventDefault) {
       event.preventDefault();
-      this.onClickBlock(event as any, "bulleted-list");
     }
   };
 
@@ -383,10 +376,11 @@ export class InternoteEditor extends React.Component<Props, State> {
         const editorScrollWrap = document.getElementById("editor-scroll-wrap");
         if (focusedBlock && editorScrollWrap && this.scroller) {
           this.preventScrollListener = true;
-          this.setState({ userScrolled: false });
-          this.scroller.center(focusedBlock as HTMLElement, 200, 0, () => {
-            window.requestAnimationFrame(() => {
-              this.preventScrollListener = false;
+          this.setState({ userScrolled: false }, () => {
+            this.scroller.center(focusedBlock as HTMLElement, 200, 0, () => {
+              window.requestAnimationFrame(() => {
+                this.preventScrollListener = false;
+              });
             });
           });
         }
@@ -396,14 +390,14 @@ export class InternoteEditor extends React.Component<Props, State> {
     { leading: true }
   );
 
-  onClickMark = (event: React.MouseEvent<HTMLElement>, type: MarkType) => {
+  onClickMark = (event: Event, type: MarkType) => {
     event.preventDefault();
     const { value } = this.state;
     const change = value.change().toggleMark(type);
     this.onChange(change);
   };
 
-  onClickBlock = (event: React.MouseEvent<HTMLElement>, type: BlockType) => {
+  onClickBlock = (event: Event, type: BlockType) => {
     event.preventDefault();
     const { value } = this.state;
     const change = value.change();
@@ -458,6 +452,20 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
+  onToggleDictionary = () => {
+    if (this.props.isDictionaryShowing) {
+      this.props.closeDictionary();
+    } else {
+      const content = this.getSelectedContent();
+      if (content && content.length) {
+        const firstWord = content.split(" ")[0];
+        if (firstWord) {
+          this.props.onRequestDictionary(firstWord);
+        }
+      }
+    }
+  };
+
   getSelectedContent = () => {
     const selectedText = this.state.value.fragment.text;
     return selectedText && selectedText.length
@@ -466,12 +474,10 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   renderMarkButton = (type: MarkType, shortcutNumber: number) => {
-    const isActive = this.hasMark(type);
-
     return (
       <ToolbarButton
-        onMouseDown={event => this.onClickMark(event, type)}
-        isActive={isActive}
+        onMouseDown={(event: any) => this.onClickMark(event, type)}
+        isActive={this.hasMark(type)}
         shortcutNumber={shortcutNumber}
         shortcutShowing={this.state.isCtrlHeld}
       >
@@ -501,7 +507,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
     return (
       <ToolbarButton
-        onMouseDown={event => this.onClickBlock(event, type)}
+        onMouseDown={(event: any) => this.onClickBlock(event, type)}
         isActive={isActive}
         shortcutNumber={shortcutNumber}
         shortcutShowing={this.state.isCtrlHeld}
@@ -509,7 +515,7 @@ export class InternoteEditor extends React.Component<Props, State> {
         {type === "heading-one" ? (
           <FontAwesomeIcon icon={faHeading} />
         ) : type === "heading-two" ? (
-          "H2"
+          "H2" // TODO: find an icon for representing heading-two
         ) : type === "block-quote" ? (
           <FontAwesomeIcon icon={faQuoteLeft} />
         ) : type === "bulleted-list" ? (
@@ -521,19 +527,23 @@ export class InternoteEditor extends React.Component<Props, State> {
     );
   };
 
-  renderNode: Plugin["renderNode"] = props => {
-    const { attributes, children, node, isSelected, key } = props;
+  renderNode: Plugin["renderNode"] = ({
+    attributes,
+    children,
+    node,
+    isSelected,
+    key
+  }) => {
     const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
-
     const preventForBlocks = ["list-item", "bulleted-list", "numbered-list"];
     const hasSelection = this.state.value.fragment.text !== "";
-
-    if (
+    const shouldFocusNode =
       !hasSelection &&
       preventForBlocks.indexOf((node as any).type) === -1 &&
       isSelected &&
-      key !== this.focusedNodeKey
-    ) {
+      key !== this.focusedNodeKey;
+
+    if (shouldFocusNode) {
       this.focusedNodeKey = key;
       window.requestAnimationFrame(this.handleFocusModeScroll);
     }
@@ -593,22 +603,14 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
-  toggleDictionary = () => {
-    if (this.props.dictionaryShowing) {
-      this.props.closeDictionary();
-    } else {
-      const content = this.getSelectedContent();
-      if (content) {
-        const firstWord = content.split(" ")[0];
-        if (firstWord) {
-          this.props.lookupWordInDictionary(firstWord);
-        }
-      }
-    }
-  };
-
   render() {
     const hasSelection = this.state.value.fragment.text !== "";
+    const isToolbarShowing =
+      hasSelection ||
+      !!this.props.speechSrc ||
+      this.state.isCtrlHeld ||
+      this.props.isDictionaryShowing;
+
     return (
       <Wrap>
         <EditorStyles
@@ -633,12 +635,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
         <ToolbarWrapper
           distractionFree={this.props.distractionFree}
-          forceShow={
-            hasSelection ||
-            !!this.props.speechSrc ||
-            this.state.isCtrlHeld ||
-            this.props.dictionaryShowing
-          }
+          forceShow={isToolbarShowing}
         >
           <ToolbarInner>
             <Flex flex={1}>
@@ -654,26 +651,11 @@ export class InternoteEditor extends React.Component<Props, State> {
             </Flex>
             <Flex alignItems="center">
               <ButtonSpacer small>
-                <CollapseWidthOnHover
-                  onClick={this.toggleDictionary}
-                  forceShow={this.props.dictionaryShowing}
-                  collapsedContent={<Flex pl={spacing._0_25}>Dictionary</Flex>}
-                >
-                  {collapse => (
-                    <ToolbarExpandingButton
-                      forceShow={this.props.dictionaryShowing}
-                    >
-                      <ToolbarExpandingButtonIconWrap>
-                        {this.props.isDictionaryLoading ? (
-                          <FontAwesomeIcon icon={faSpinner} spin />
-                        ) : (
-                          <FontAwesomeIcon icon={faBook} />
-                        )}
-                      </ToolbarExpandingButtonIconWrap>
-                      {collapse.renderCollapsedContent()}
-                    </ToolbarExpandingButton>
-                  )}
-                </CollapseWidthOnHover>
+                <DictionaryButton
+                  isLoading={this.props.isDictionaryLoading}
+                  isShowing={this.props.isDictionaryShowing}
+                  onClick={this.onToggleDictionary}
+                />
               </ButtonSpacer>
               <ButtonSpacer small>
                 <Speech
@@ -685,25 +667,13 @@ export class InternoteEditor extends React.Component<Props, State> {
                 />
               </ButtonSpacer>
               <ButtonSpacer>
-                <CollapseWidthOnHover
-                  onClick={this.props.onDelete}
-                  collapsedContent={<Flex pl={spacing._0_25}>Delete</Flex>}
-                >
-                  {collapse => (
-                    <ToolbarExpandingButton>
-                      <ToolbarExpandingButtonIconWrap>
-                        <FontAwesomeIcon icon={faTrash} />
-                      </ToolbarExpandingButtonIconWrap>
-                      {collapse.renderCollapsedContent()}
-                    </ToolbarExpandingButton>
-                  )}
-                </CollapseWidthOnHover>
+                <DeleteNoteButton onClick={this.props.onDelete} />
               </ButtonSpacer>
               <Saving saving={this.props.saving} />
             </Flex>
           </ToolbarInner>
           <Collapse
-            isOpened={this.props.dictionaryShowing}
+            isOpened={this.props.isDictionaryShowing}
             style={{ width: "100%" }}
           >
             <ToolbarExpandedWrapper>
@@ -713,10 +683,10 @@ export class InternoteEditor extends React.Component<Props, State> {
                     isLoading={this.props.isDictionaryLoading}
                     results={this.props.dictionaryResults}
                   />
-                  {this.props.dictionaryShowing ? (
+                  {this.props.isDictionaryShowing ? (
                     <OnKeyboardShortcut
                       keyCombo="esc"
-                      cb={this.toggleDictionary}
+                      cb={this.onToggleDictionary}
                     />
                   ) : null}
                 </ToolbarInner>

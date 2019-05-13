@@ -95,7 +95,7 @@ interface OwnEffects {
     Actions,
     { content: string; noteId: string }
   >;
-  lookupWordInDictionary: Twine.Effect<OwnState, Actions, string>;
+  requestDictionary: Twine.Effect<OwnState, Actions, string>;
 }
 
 function defaultState(): OwnState {
@@ -344,7 +344,7 @@ function makeModel(api: Api): Model {
         });
         result.map(response => actions.setSpeechSrc(response.src));
       },
-      async lookupWordInDictionary(state, actions, word) {
+      async requestDictionary(state, actions, word) {
         actions.setDictionaryShowing(true);
         const response = await api.dictionary.lookup(state.session.token, {
           word

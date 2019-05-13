@@ -36,10 +36,10 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
           store.actions.requestSpeech({ content, noteId: note.id })
         }
         onDiscardSpeech={() => store.actions.setSpeechSrc(null)}
-        dictionaryShowing={store.state.dictionaryShowing}
-        isDictionaryLoading={store.state.loading.lookupWordInDictionary}
+        isDictionaryShowing={store.state.dictionaryShowing}
+        isDictionaryLoading={store.state.loading.requestDictionary}
         closeDictionary={() => store.actions.setDictionaryShowing(false)}
-        lookupWordInDictionary={store.actions.lookupWordInDictionary}
+        onRequestDictionary={store.actions.requestDictionary}
         dictionaryResults={store.state.dictionaryResults}
       />
     </>
