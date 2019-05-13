@@ -5,17 +5,18 @@ import { makeStore, State, Actions } from "../store";
 import { withTwine } from "../store/with-twine";
 import { createGlobalStyle, ThemeProvider } from "../theming/styled";
 import Head from "next/head";
+import { inter } from "../theming/themes";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
-  @import url('https://fonts.googleapis.com/css?family=EB+Garamond:400,500,700,800|Noto+Sans+SC:400,500,700,900|Overpass+Mono:400,600,700|Source+Code+Pro:400,500,700,900|Spectral:400,500,700,800');
+  @import url('https://fonts.googleapis.com/css?family=EB+Garamond:400,500,700,800|Noto+Sans+SC:400,500,700,900|Overpass+Mono:400,600,700|Lora:400,700|Crimson+Text:400,600,700|Source+Code+Pro:400,500,700,900|Spectral:400,500,700,800');
   * {
     box-sizing: border-box;
   }
   body, html, #__next {
     color: ${props => props.theme.appText};
     background-color: ${props => props.theme.appBackground};
-    font-family: ${props => props.theme.fontFamily};
+    font-family: ${inter.fontFamily};
     font-size: ${font._24.size};
     line-height: ${font._24.lineHeight};
     height: 100%;

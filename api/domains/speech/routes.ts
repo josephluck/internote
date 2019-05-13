@@ -14,7 +14,7 @@ export interface GenerateRequest {
   voice?: AvailableVoice;
 }
 export interface GenerateResponse {
-  url: string;
+  src: string;
 }
 
 function makeController(deps: Dependencies) {
@@ -37,21 +37,19 @@ function makeController(deps: Dependencies) {
               );
             },
             async request => {
-              const VoiceId = request.voice || "Joey";
-              const polly = new AWS.Polly();
+              const voiceId = request.voice || "Joey";
+              const Polly = new AWS.Polly();
               const S3 = new AWS.S3();
 
-              const speech = await polly
-                .synthesizeSpeech({
-                  OutputFormat: "mp3",
-                  Text: request.content,
-                  TextType: "text",
-                  VoiceId
-                })
-                .promise();
+              const speech = await Polly.synthesizeSpeech({
+                OutputFormat: "mp3",
+                Text: request.content,
+                TextType: "text",
+                VoiceId: voiceId
+              }).promise();
 
               const hash = md5(request.content);
-              const S3UploadPath = `${request.noteId}-${hash}-${VoiceId}.mp3`;
+              const S3UploadPath = `${request.noteId}-${hash}-${voiceId}.mp3`;
 
               await S3.upload({
                 Bucket: process.env.SPEECH_BUCKET,
@@ -60,11 +58,11 @@ function makeController(deps: Dependencies) {
                 ACL: "public-read"
               }).promise();
 
-              const url = `https://s3-${process.env.REGION}.amazonaws.com/${
+              const src = `https://s3-${process.env.REGION}.amazonaws.com/${
                 process.env.SPEECH_BUCKET
               }/${S3UploadPath}`;
 
-              ctx.body = { url };
+              ctx.body = { src };
               return ctx.body;
             }
           );

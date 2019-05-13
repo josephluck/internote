@@ -43,7 +43,9 @@ interface OwnState {
   distractionFree: boolean;
   voice: AvailableVoice;
   isFullscreen: boolean;
+  dictionaryShowing: boolean;
   speechSrc: string | null;
+  dictionaryResults: Types.DictionaryResult[];
 }
 
 interface OwnReducers {
@@ -55,9 +57,11 @@ interface OwnReducers {
   setColorTheme: Twine.Reducer<OwnState, ColorThemeWithName>;
   setFontTheme: Twine.Reducer<OwnState, FontThemeWithName>;
   setDistractionFree: Twine.Reducer<OwnState, boolean>;
+  setDictionaryShowing: Twine.Reducer<OwnState, boolean>;
   setVoice: Twine.Reducer<OwnState, AvailableVoice>;
   setFullscreen: Twine.Reducer<OwnState, boolean>;
   setSpeechSrc: Twine.Reducer<OwnState, string | null>;
+  setDictionaryResults: Twine.Reducer<OwnState, Types.DictionaryResult[]>;
 }
 
 interface OwnEffects {
@@ -91,6 +95,7 @@ interface OwnEffects {
     Actions,
     { content: string; noteId: string }
   >;
+  lookupWordInDictionary: Twine.Effect<OwnState, Actions, string>;
 }
 
 function defaultState(): OwnState {
@@ -105,7 +110,9 @@ function defaultState(): OwnState {
     distractionFree: false,
     isFullscreen: false,
     speechSrc: null,
-    voice: "Joey"
+    voice: "Joey",
+    dictionaryShowing: false,
+    dictionaryResults: []
   };
 }
 
@@ -192,6 +199,15 @@ function makeModel(api: Api): Model {
       setSpeechSrc: (state, speechSrc) => ({
         ...state,
         speechSrc
+      }),
+      setDictionaryShowing: (state, dictionaryShowing) => ({
+        ...state,
+        dictionaryShowing,
+        dictionaryResults: dictionaryShowing ? state.dictionaryResults : []
+      }),
+      setDictionaryResults: (state, dictionaryResults) => ({
+        ...state,
+        dictionaryResults
       })
     },
     effects: {
@@ -326,7 +342,14 @@ function makeModel(api: Api): Model {
           content,
           voice: state.voice || "Joey"
         });
-        result.map(response => actions.setSpeechSrc(response.url));
+        result.map(response => actions.setSpeechSrc(response.src));
+      },
+      async lookupWordInDictionary(state, actions, word) {
+        actions.setDictionaryShowing(true);
+        const response = await api.dictionary.lookup(state.session.token, {
+          word
+        });
+        response.map(({ results }) => actions.setDictionaryResults(results));
       }
     }
   };

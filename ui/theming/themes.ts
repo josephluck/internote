@@ -39,6 +39,10 @@ export interface Theme {
   modalBackground: string;
   audioTimelineInactive: string;
   audioTimelineActive: string;
+  dictionaryDescriptionText: string;
+  thesaurasWordText: string;
+  thesaurasWordBackground: string;
+  thesaurasWordActiveText: string;
 }
 
 export const internote: Theme = {
@@ -81,7 +85,11 @@ export const internote: Theme = {
   notesMenuItemTextInactive: "#999999",
   modalBackground: "#000000",
   audioTimelineActive: "#9fc7ec",
-  audioTimelineInactive: "#504D5D"
+  audioTimelineInactive: "#504D5D",
+  dictionaryDescriptionText: "#999999",
+  thesaurasWordText: "#999999",
+  thesaurasWordBackground: "#19181B",
+  thesaurasWordActiveText: "#FFFFFF"
 };
 
 export const daydream: Theme = {
@@ -124,7 +132,11 @@ export const daydream: Theme = {
   notesMenuItemTextInactive: "#999999",
   modalBackground: "#F9F9FC",
   audioTimelineActive: "#9fc7ec",
-  audioTimelineInactive: "#504D5D"
+  audioTimelineInactive: "#504D5D",
+  dictionaryDescriptionText: "#999999",
+  thesaurasWordText: "#A79FAC",
+  thesaurasWordBackground: "#DFDCE4",
+  thesaurasWordActiveText: "#000000"
 };
 
 export const colorThemes = [
@@ -158,6 +170,14 @@ export const EBGaramond: FontTheme = {
   fontFamily: "'EB Garamond', serif"
 };
 
+export const crimsonText: FontTheme = {
+  fontFamily: "'Crimson Text', serif"
+};
+
+export const lora: FontTheme = {
+  fontFamily: "'Lora', serif"
+};
+
 export const overpassMono: FontTheme = {
   fontFamily: "'Overpass Mono', monospace"
 };
@@ -182,6 +202,14 @@ export const fontThemes = [
   {
     name: "EB Garamond",
     theme: EBGaramond
+  },
+  {
+    name: "Crimson Text",
+    theme: crimsonText
+  },
+  {
+    name: "Lora",
+    theme: lora
   },
   {
     name: "Overpass Mono",

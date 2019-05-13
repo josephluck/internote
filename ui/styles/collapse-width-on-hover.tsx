@@ -55,9 +55,11 @@ export class CollapseWidthOnHover extends React.Component<Props, State> {
         const width = childElm.scrollWidth;
         this.innerWrapRef.current.style.width = `${width}px`;
         this.innerWrapRef.current.style.opacity = "1";
+        this.innerWrapRef.current.style.pointerEvents = "auto";
       } else {
         this.innerWrapRef.current.style.width = "0px";
         this.innerWrapRef.current.style.opacity = "0";
+        this.innerWrapRef.current.style.pointerEvents = "none";
       }
     }
   };

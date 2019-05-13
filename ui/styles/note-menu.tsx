@@ -12,7 +12,8 @@ import {
 import {
   DropdownMenu,
   DropdownMenuItem,
-  DropdownChevron
+  DropdownChevron,
+  DropdownMenuSpacer
 } from "./dropdown-menu";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -259,6 +260,7 @@ export class NoteMenu extends React.Component<Props, State> {
             >
               <span>Create a new note</span>
             </DropdownMenuItem>
+            <DropdownMenuSpacer />
             {notes.map(n => (
               <NoteMenuItem
                 key={n.id}

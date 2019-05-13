@@ -41,10 +41,11 @@ const TimelineInner = styled.div`
 `;
 
 interface Props {
-  speechSrc: string;
-  isSpeechLoading: boolean;
-  onRequestSpeech: () => any;
-  onDiscardSpeech: () => any;
+  src: string;
+  isLoading: boolean;
+  onRequest: () => any;
+  onDiscard: () => any;
+  onFinished: () => any;
 }
 
 interface State {}
@@ -56,9 +57,9 @@ export class Speech extends React.Component<Props, State> {
   }
 
   onIconClick = (audioState: AudioRenderProps) => {
-    if (this.props.isSpeechLoading || audioState.status === "loading") {
+    if (this.props.isLoading || audioState.status === "loading") {
       return;
-    } else if (!this.props.speechSrc) {
+    } else if (!this.props.src) {
       return;
     } else if (audioState.status === "playing") {
       audioState.requestPause();
@@ -71,9 +72,9 @@ export class Speech extends React.Component<Props, State> {
   };
 
   renderIcon = (audioState: AudioRenderProps) => {
-    if (this.props.isSpeechLoading || audioState.status === "loading") {
+    if (this.props.isLoading || audioState.status === "loading") {
       return <FontAwesomeIcon icon={faSpinner} spin />;
-    } else if (!this.props.speechSrc) {
+    } else if (!this.props.src) {
       return <FontAwesomeIcon icon={faMicrophone} />;
     } else if (audioState.status === "playing") {
       return <FontAwesomeIcon icon={faPause} />;
@@ -89,16 +90,18 @@ export class Speech extends React.Component<Props, State> {
 
   render() {
     return (
-      <AudioPlayer src={this.props.speechSrc} autoPlay>
+      <AudioPlayer
+        src={this.props.src}
+        autoPlay
+        onFinished={this.props.onFinished}
+      >
         {audio => (
           <CollapseWidthOnHover
-            onClick={
-              !this.props.speechSrc ? this.props.onRequestSpeech : undefined
-            }
-            forceShow={!!this.props.speechSrc || this.props.isSpeechLoading}
+            onClick={!this.props.src ? this.props.onRequest : undefined}
+            forceShow={!!this.props.src || this.props.isLoading}
             collapsedContent={
               <CollapsedWrapper>
-                {this.props.speechSrc ? (
+                {this.props.src ? (
                   <Flex alignItems="center">
                     <TimelineWrap>
                       <TimelineInner
@@ -106,12 +109,12 @@ export class Speech extends React.Component<Props, State> {
                       />
                     </TimelineWrap>
                     <ToolbarExpandingButtonIconWrap
-                      onClick={this.props.onDiscardSpeech}
+                      onClick={this.props.onDiscard}
                     >
                       <FontAwesomeIcon icon={faTimes} />
                     </ToolbarExpandingButtonIconWrap>
                   </Flex>
-                ) : this.props.isSpeechLoading ? (
+                ) : this.props.isLoading ? (
                   "Loading"
                 ) : (
                   "Speech"
@@ -120,7 +123,7 @@ export class Speech extends React.Component<Props, State> {
             }
           >
             {collapse => (
-              <ToolbarExpandingButton forceShow={!!this.props.speechSrc}>
+              <ToolbarExpandingButton forceShow={!!this.props.src}>
                 <ToolbarExpandingButtonIconWrap
                   onClick={() => this.onIconClick(audio)}
                 >

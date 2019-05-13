@@ -2,12 +2,13 @@ import * as React from "react";
 import { Twine } from "twine-js";
 
 export function makeSubscriber<S extends Twine.Return<any, any>>(store: S) {
-  type ConnectedComponent = (
-    store: { actions: S["actions"]; state: S["state"] }
-  ) => React.ReactNode;
+  type RenderFunc = (store: {
+    actions: S["actions"];
+    state: S["state"];
+  }) => React.ReactNode;
 
   interface Props {
-    children: ConnectedComponent | React.ReactNode;
+    children: RenderFunc;
   }
 
   interface ComponentState {
@@ -42,9 +43,7 @@ export function makeSubscriber<S extends Twine.Return<any, any>>(store: S) {
     };
 
     render() {
-      return typeof this.props.children === "function"
-        ? this.props.children(this.state)
-        : this.props.children;
+      return this.props.children(this.state);
     }
   };
 }
