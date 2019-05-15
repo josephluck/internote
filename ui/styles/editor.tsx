@@ -24,7 +24,9 @@ import {
   faHeading,
   faQuoteLeft,
   faListUl,
-  faListOl
+  faListOl,
+  faUndo,
+  faRedo
 } from "@fortawesome/free-solid-svg-icons";
 import { Wrapper } from "./wrapper";
 import { Speech } from "./speech";
@@ -35,6 +37,7 @@ import { Dictionary } from "./dictionary";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { DictionaryButton } from "./dictionary-button";
 import { DeleteNoteButton } from "./delete-note-button";
+import { UndoRedoButton } from "./undo-redo-button";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -630,6 +633,14 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
+  undo = () => {
+    this.editor.undo();
+  };
+
+  redo = () => {
+    this.editor.redo();
+  };
+
   render() {
     const isToolbarShowing =
       this.hasSelection() ||
@@ -677,6 +688,20 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("underlined", 9)}
             </Flex>
             <Flex alignItems="center">
+              <ButtonSpacer small>
+                <UndoRedoButton
+                  onClick={this.undo}
+                  icon={faUndo}
+                  tooltip="Undo"
+                />
+              </ButtonSpacer>
+              <ButtonSpacer small>
+                <UndoRedoButton
+                  onClick={this.redo}
+                  icon={faRedo}
+                  tooltip="Redo"
+                />
+              </ButtonSpacer>
               <ButtonSpacer small>
                 <DictionaryButton
                   isLoading={this.props.isDictionaryLoading}
