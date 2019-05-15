@@ -36,6 +36,7 @@ functions:
           cors: true
 
 plugins:
+  - serverless-plugin-monorepo
   - serverless-plugin-typescript
   - serverless-plugin-include-dependencies
   - serverless-offline

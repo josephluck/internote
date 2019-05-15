@@ -1,11 +1,6 @@
 import React from "react";
 import zenscroll from "zenscroll";
-import {
-  serializer,
-  MarkType,
-  BlockType,
-  BlockName
-} from "../utilities/serializer";
+import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import { Editor, Plugin } from "slate-react";
 import { throttle } from "lodash";
 import { debounce } from "lodash";
@@ -35,6 +30,7 @@ import { Dictionary } from "./dictionary";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { DictionaryButton } from "./dictionary-button";
 import { DeleteNoteButton } from "./delete-note-button";
+import { defaultNote } from "@internote/api/domains/note/default-note";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -190,9 +186,9 @@ const ToolbarExpandedInner = styled.div`
 
 interface Props {
   id: string;
-  initialValue: string;
+  initialValue: {};
   debounceValue?: number;
-  onChange: (value: { content: string; title: string }) => void;
+  onChange: (value: { content: Object; title: string }) => void;
   onDelete: () => void;
   saving: boolean;
   distractionFree: boolean;
@@ -228,12 +224,14 @@ function getTitleFromEditorValue(editorValue: Value): string | undefined {
   }
 }
 
-const fallbackNoteContent = "<h1> </h1>";
+function isValidSlateValue(value: Object): Boolean {
+  return value && typeof value === "object" && value.hasOwnProperty("document");
+}
 
-function getInitialValue(props: Props): string {
-  return props.initialValue && props.initialValue.length > 1
-    ? props.initialValue
-    : fallbackNoteContent;
+function getValueOrDefault(value: Object): Value {
+  return isValidSlateValue(value)
+    ? Value.fromJSON(value)
+    : Value.fromJSON(defaultNote as any); // TODO: type correctly
 }
 
 export class InternoteEditor extends React.Component<Props, State> {
@@ -247,7 +245,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     super(props);
     this.debounceValue = props.debounceValue || 3000;
     this.state = {
-      value: serializer.deserialize(getInitialValue(props)) as any,
+      value: getValueOrDefault(props.initialValue),
       userScrolled: false,
       isCtrlHeld: false
     };
@@ -256,7 +254,7 @@ export class InternoteEditor extends React.Component<Props, State> {
   componentDidUpdate(prevProps: Props) {
     if (prevProps.id !== this.props.id) {
       this.setState({
-        value: serializer.deserialize(getInitialValue(this.props)) as any
+        value: getValueOrDefault(this.props.initialValue)
       });
     }
   }
@@ -291,7 +289,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   emitChange = debounce((editorValue: Value) => {
     this.props.onChange({
-      content: serializer.serialize(editorValue as any),
+      content: editorValue.toJSON(),
       title: getTitleFromEditorValue(editorValue)
     });
   }, this.debounceValue);
