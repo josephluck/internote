@@ -1,6 +1,6 @@
 import Html from "slate-html-serializer";
 
-type BlockName =
+export type BlockName =
   | "block-quote"
   | "paragraph"
   | "code"

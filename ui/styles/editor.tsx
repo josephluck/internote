@@ -1,6 +1,11 @@
 import React from "react";
 import zenscroll from "zenscroll";
-import { serializer, MarkType, BlockType } from "../utilities/serializer";
+import {
+  serializer,
+  MarkType,
+  BlockType,
+  BlockName
+} from "../utilities/serializer";
 import { Editor, Plugin } from "slate-react";
 import { throttle } from "lodash";
 import { debounce } from "lodash";
@@ -486,11 +491,15 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   getSelectedContent = () => {
-    const selectedText = this.state.value.fragment.text;
-    return selectedText && selectedText.length
-      ? selectedText
+    return this.hasSelection()
+      ? this.state.value.fragment.text
       : this.state.value.focusBlock.text;
   };
+
+  hasSelection = () =>
+    this.state.value.fragment &&
+    this.state.value.fragment.text &&
+    this.state.value.fragment.text.length > 0;
 
   renderMarkButton = (type: MarkType, shortcutNumber: number) => {
     return (
@@ -546,13 +555,18 @@ export class InternoteEditor extends React.Component<Props, State> {
     );
   };
 
+  // TODO: update this when types support
   renderBlock: any = ({ attributes, children, node, isSelected, key }) => {
     const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
-    const preventForBlocks = ["list-item", "bulleted-list", "numbered-list"];
-    const hasSelection = this.state.value.fragment.text !== "";
+    const preventForBlocks: (BlockType | BlockName)[] = [
+      "list-item",
+      "bulleted-list",
+      "numbered-list"
+    ];
+    const hasSelection = this.hasSelection();
     const shouldFocusNode =
       !hasSelection &&
-      preventForBlocks.indexOf((node as any).type) === -1 &&
+      preventForBlocks.indexOf(node.type) === -1 &&
       isSelected &&
       key !== this.focusedNodeKey;
 
@@ -617,10 +631,8 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   render() {
-    const hasSelection =
-      this.state.value.fragment && this.state.value.fragment.text !== "";
     const isToolbarShowing =
-      hasSelection ||
+      this.hasSelection() ||
       !!this.props.speechSrc ||
       this.state.isCtrlHeld ||
       this.props.isDictionaryShowing;
