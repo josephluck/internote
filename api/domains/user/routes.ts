@@ -38,7 +38,6 @@ function makeController(deps: Dependencies) {
           return deps.messages.throw(ctx, deps.messages.notFound("user"));
         },
         async u => {
-          console.log({ user: u }, { preferences: ctx.request.body });
           await repo.update(u.id, {
             preferences: ctx.request.body
           });
