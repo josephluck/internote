@@ -236,6 +236,7 @@ export class InternoteEditor extends React.Component<Props, State> {
   preventScrollListener = false;
   scroller: ReturnType<typeof zenscroll.createScroller> = null;
   focusedNodeKey: string = "";
+  editor: Editor | null = null;
 
   constructor(props: Props) {
     super(props);
@@ -263,6 +264,16 @@ export class InternoteEditor extends React.Component<Props, State> {
       editorScrollWrap.addEventListener("click", this.handleFocusModeScroll);
     }
   }
+
+  /**
+   * Store a reference to the `editor`.
+   *
+   * @param {Editor} editor
+   */
+
+  ref = (editor: Editor) => {
+    this.editor = editor;
+  };
 
   onChange = ({ value }: Change) => {
     this.setState({ value });
@@ -338,20 +349,21 @@ export class InternoteEditor extends React.Component<Props, State> {
     event: KeyboardEvent,
     change
   ) => {
-    const isEnterKey = event.keyCode === 13 && !event.shiftKey;
-    const listBlockTypes = ["list-item"];
-    const previousBlockType = change.value.focusBlock.type;
-    const isListItem = listBlockTypes.indexOf(previousBlockType) !== -1;
-    const lastBlockEmpty = change.value.startText.text.length === 0;
-    const nextBlockIsListItem =
-      !!change.value.nextBlock && change.value.nextBlock.type === "list-item";
-    const shouldCloseList = lastBlockEmpty && !nextBlockIsListItem;
-    if (isEnterKey && (!isListItem || shouldCloseList)) {
-      if (shouldCloseList) {
-        change.unwrapBlock("bulleted-list").unwrapBlock("numbered-list");
-      }
-      return change.splitBlock(0).insertBlock("paragraph");
-    }
+    console.log({ event, change });
+    // const isEnterKey = event.keyCode === 13 && !event.shiftKey;
+    // const listBlockTypes = ["list-item"];
+    // const previousBlockType = change.value.focusBlock.type;
+    // const isListItem = listBlockTypes.indexOf(previousBlockType) !== -1;
+    // const lastBlockEmpty = change.value.startText.text.length === 0;
+    // const nextBlockIsListItem =
+    //   !!change.value.nextBlock && change.value.nextBlock.type === "list-item";
+    // const shouldCloseList = lastBlockEmpty && !nextBlockIsListItem;
+    // if (isEnterKey && (!isListItem || shouldCloseList)) {
+    //   if (shouldCloseList) {
+    //     change.unwrapBlock("bulleted-list").unwrapBlock("numbered-list");
+    //   }
+    //   return change.splitBlock(0).insertBlock("paragraph");
+    // }
   };
 
   handleEditorScroll = throttle(
@@ -399,8 +411,9 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   onClickBlock = (event: Event, type: BlockType) => {
     event.preventDefault();
-    const { value } = this.state;
-    const change = value.change();
+
+    const { editor } = this;
+    const { value } = editor;
     const { document } = value;
 
     // Handle everything but list buttons.
@@ -409,36 +422,33 @@ export class InternoteEditor extends React.Component<Props, State> {
       const isList = this.hasBlock("list-item");
 
       if (isList) {
-        change
+        editor
           .setBlocks(isActive ? DEFAULT_NODE : type)
           .unwrapBlock("bulleted-list")
           .unwrapBlock("numbered-list");
       } else {
-        change.setBlocks(isActive ? DEFAULT_NODE : type);
+        editor.setBlocks(isActive ? DEFAULT_NODE : type);
       }
     } else {
       // Handle the extra wrapping required for list buttons.
       const isList = this.hasBlock("list-item");
       const isType = value.blocks.some(block => {
-        return !!document.getClosest(
-          block.key,
-          (parent: any) => parent.type == type
-        );
+        return !!document.getClosest(block.key, parent => parent.type === type);
       });
 
       if (isList && isType) {
-        change
+        editor
           .setBlocks(DEFAULT_NODE)
           .unwrapBlock("bulleted-list")
           .unwrapBlock("numbered-list");
       } else if (isList) {
-        change
+        editor
           .unwrapBlock(
-            type == "bulleted-list" ? "numbered-list" : "bulleted-list"
+            type === "bulleted-list" ? "numbered-list" : "bulleted-list"
           )
           .wrapBlock(type);
       } else {
-        change.setBlocks("list-item").wrapBlock(type);
+        editor.setBlocks("list-item").wrapBlock(type);
       }
     }
 
@@ -621,6 +631,7 @@ export class InternoteEditor extends React.Component<Props, State> {
           <Wrapper style={{ width: "100%" }}>
             <Editor
               placeholder=""
+              ref={this.ref}
               value={this.state.value}
               onChange={this.onChange}
               onKeyDown={this.onKeyDown}
