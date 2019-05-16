@@ -1,6 +1,6 @@
 import React from "react";
 import zenscroll from "zenscroll";
-import { serializer, MarkType, BlockType } from "../utilities/serializer";
+import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import { Editor, Plugin } from "slate-react";
 import { throttle } from "lodash";
 import { debounce } from "lodash";
@@ -9,7 +9,7 @@ import { spacing, font, borderRadius } from "../theming/symbols";
 import { styled } from "../theming/styled";
 import { Saving } from "./saving";
 import { Flex } from "@rebass/grid";
-import { Change, Value } from "slate";
+import { Value } from "slate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
@@ -19,7 +19,9 @@ import {
   faHeading,
   faQuoteLeft,
   faListUl,
-  faListOl
+  faListOl,
+  faUndo,
+  faRedo
 } from "@fortawesome/free-solid-svg-icons";
 import { Wrapper } from "./wrapper";
 import { Speech } from "./speech";
@@ -30,6 +32,8 @@ import { Dictionary } from "./dictionary";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { DictionaryButton } from "./dictionary-button";
 import { DeleteNoteButton } from "./delete-note-button";
+import { defaultNote } from "@internote/api/domains/note/default-note";
+import { UndoRedoButton } from "./undo-redo-button";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -185,9 +189,9 @@ const ToolbarExpandedInner = styled.div`
 
 interface Props {
   id: string;
-  initialValue: string;
+  initialValue: {};
   debounceValue?: number;
-  onChange: (value: { content: string; title: string }) => void;
+  onChange: (value: { content: Object; title: string }) => void;
   onDelete: () => void;
   saving: boolean;
   distractionFree: boolean;
@@ -223,12 +227,14 @@ function getTitleFromEditorValue(editorValue: Value): string | undefined {
   }
 }
 
-const fallbackNoteContent = "<h1> </h1>";
+function isValidSlateValue(value: Object): Boolean {
+  return value && typeof value === "object" && value.hasOwnProperty("document");
+}
 
-function getInitialValue(props: Props): string {
-  return props.initialValue && props.initialValue.length > 1
-    ? props.initialValue
-    : fallbackNoteContent;
+function getValueOrDefault(value: Object): Value {
+  return isValidSlateValue(value)
+    ? Value.fromJSON(value)
+    : Value.fromJSON(defaultNote as any); // TODO: type correctly
 }
 
 export class InternoteEditor extends React.Component<Props, State> {
@@ -236,12 +242,13 @@ export class InternoteEditor extends React.Component<Props, State> {
   preventScrollListener = false;
   scroller: ReturnType<typeof zenscroll.createScroller> = null;
   focusedNodeKey: string = "";
+  editor: Editor | null = null;
 
   constructor(props: Props) {
     super(props);
     this.debounceValue = props.debounceValue || 3000;
     this.state = {
-      value: serializer.deserialize(getInitialValue(props)),
+      value: getValueOrDefault(props.initialValue),
       userScrolled: false,
       isCtrlHeld: false
     };
@@ -250,7 +257,7 @@ export class InternoteEditor extends React.Component<Props, State> {
   componentDidUpdate(prevProps: Props) {
     if (prevProps.id !== this.props.id) {
       this.setState({
-        value: serializer.deserialize(getInitialValue(this.props))
+        value: getValueOrDefault(this.props.initialValue)
       });
     }
   }
@@ -262,18 +269,30 @@ export class InternoteEditor extends React.Component<Props, State> {
       editorScrollWrap.addEventListener("scroll", this.handleEditorScroll);
       editorScrollWrap.addEventListener("click", this.handleFocusModeScroll);
     }
+
+    window.addEventListener("keyup", this.onKeyUp);
   }
 
-  onChange = ({ value }: Change) => {
+  /**
+   * Store a reference to the `editor`.
+   *
+   * @param {Editor} editor
+   */
+
+  ref = (editor: Editor) => {
+    this.editor = editor;
+  };
+
+  onChange = (value: Value) => {
     this.setState({ value });
     this.emitChange(value);
 
     window.requestAnimationFrame(this.handleFocusModeScroll);
   };
 
-  emitChange = debounce((editorValue: any) => {
+  emitChange = debounce((editorValue: Value) => {
     this.props.onChange({
-      content: serializer.serialize(editorValue),
+      content: editorValue.toJSON(),
       title: getTitleFromEditorValue(editorValue)
     });
   }, this.debounceValue);
@@ -288,8 +307,8 @@ export class InternoteEditor extends React.Component<Props, State> {
     return value.blocks.some(node => node.type == type);
   };
 
-  onKeyDown: Plugin["onKeyDown"] = (event, change) => {
-    const inserted = this.handleResetBlockOnEnterPressed(event, change);
+  onKeyDown: Plugin["onKeyDown"] = (event, change, next) => {
+    const inserted = this.handleResetBlockOnEnterPressed(event, change, next);
 
     if (inserted) {
       return inserted;
@@ -299,36 +318,37 @@ export class InternoteEditor extends React.Component<Props, State> {
       this.setState({ isCtrlHeld: true });
     }
 
-    let shouldPreventDefault = true;
-
     if (isBoldHotkey(event)) {
+      event.preventDefault();
       this.onClickMark(event, "bold");
     } else if (isItalicHotkey(event)) {
+      event.preventDefault();
       this.onClickMark(event, "italic");
     } else if (isUnderlinedHotkey(event)) {
+      event.preventDefault();
       this.onClickMark(event, "underlined");
     } else if (isCodeHotkey(event)) {
+      event.preventDefault();
       this.onClickMark(event, "code");
     } else if (isH1Hotkey(event)) {
+      event.preventDefault();
       this.onClickBlock(event, "heading-one");
     } else if (isH2Hotkey(event)) {
+      event.preventDefault();
       this.onClickBlock(event, "heading-two");
     } else if (isQuoteHotkey(event)) {
+      event.preventDefault();
       this.onClickBlock(event, "block-quote");
     } else if (isOlHotkey(event)) {
+      event.preventDefault();
       this.onClickBlock(event, "numbered-list");
     } else if (isUlHotkey(event)) {
-      this.onClickBlock(event, "bulleted-list");
-    } else {
-      shouldPreventDefault = false;
-    }
-
-    if (shouldPreventDefault) {
       event.preventDefault();
+      this.onClickBlock(event, "bulleted-list");
     }
   };
 
-  onKeyUp: Plugin["onKeyUp"] = (event: KeyboardEvent) => {
+  onKeyUp = (event: KeyboardEvent) => {
     if (event.keyCode === 17) {
       this.setState({ isCtrlHeld: false });
     }
@@ -336,7 +356,8 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   handleResetBlockOnEnterPressed: Plugin["onKeyDown"] = (
     event: KeyboardEvent,
-    change
+    change,
+    next
   ) => {
     const isEnterKey = event.keyCode === 13 && !event.shiftKey;
     const listBlockTypes = ["list-item"];
@@ -352,6 +373,8 @@ export class InternoteEditor extends React.Component<Props, State> {
       }
       return change.splitBlock(0).insertBlock("paragraph");
     }
+
+    next();
   };
 
   handleEditorScroll = throttle(
@@ -392,15 +415,17 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   onClickMark = (event: Event, type: MarkType) => {
     event.preventDefault();
-    const { value } = this.state;
-    const change = value.change().toggleMark(type);
-    this.onChange(change);
+
+    this.editor.toggleMark(type);
+
+    this.onChange(this.editor.value);
   };
 
   onClickBlock = (event: Event, type: BlockType) => {
     event.preventDefault();
-    const { value } = this.state;
-    const change = value.change();
+
+    const { editor } = this;
+    const { value } = editor;
     const { document } = value;
 
     // Handle everything but list buttons.
@@ -409,12 +434,12 @@ export class InternoteEditor extends React.Component<Props, State> {
       const isList = this.hasBlock("list-item");
 
       if (isList) {
-        change
+        editor
           .setBlocks(isActive ? DEFAULT_NODE : type)
           .unwrapBlock("bulleted-list")
           .unwrapBlock("numbered-list");
       } else {
-        change.setBlocks(isActive ? DEFAULT_NODE : type);
+        editor.setBlocks(isActive ? DEFAULT_NODE : type);
       }
     } else {
       // Handle the extra wrapping required for list buttons.
@@ -422,27 +447,27 @@ export class InternoteEditor extends React.Component<Props, State> {
       const isType = value.blocks.some(block => {
         return !!document.getClosest(
           block.key,
-          (parent: any) => parent.type == type
+          (parent: any) => parent.type === type
         );
       });
 
       if (isList && isType) {
-        change
+        editor
           .setBlocks(DEFAULT_NODE)
           .unwrapBlock("bulleted-list")
           .unwrapBlock("numbered-list");
       } else if (isList) {
-        change
+        editor
           .unwrapBlock(
-            type == "bulleted-list" ? "numbered-list" : "bulleted-list"
+            type === "bulleted-list" ? "numbered-list" : "bulleted-list"
           )
           .wrapBlock(type);
       } else {
-        change.setBlocks("list-item").wrapBlock(type);
+        editor.setBlocks("list-item").wrapBlock(type);
       }
     }
 
-    this.onChange(change);
+    this.onChange(editor.value);
   };
 
   onRequestSpeech = () => {
@@ -467,11 +492,15 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   getSelectedContent = () => {
-    const selectedText = this.state.value.fragment.text;
-    return selectedText && selectedText.length
-      ? selectedText
+    return this.hasSelection()
+      ? this.state.value.fragment.text
       : this.state.value.focusBlock.text;
   };
+
+  hasSelection = () =>
+    this.state.value.fragment &&
+    this.state.value.fragment.text &&
+    this.state.value.fragment.text.length > 0;
 
   renderMarkButton = (type: MarkType, shortcutNumber: number) => {
     return (
@@ -527,19 +556,18 @@ export class InternoteEditor extends React.Component<Props, State> {
     );
   };
 
-  renderNode: Plugin["renderNode"] = ({
-    attributes,
-    children,
-    node,
-    isSelected,
-    key
-  }) => {
+  // TODO: update this when types support
+  renderBlock: any = ({ attributes, children, node, isSelected, key }) => {
     const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
-    const preventForBlocks = ["list-item", "bulleted-list", "numbered-list"];
-    const hasSelection = this.state.value.fragment.text !== "";
+    const preventForBlocks: (BlockType | BlockName)[] = [
+      "list-item",
+      "bulleted-list",
+      "numbered-list"
+    ];
+    const hasSelection = this.hasSelection();
     const shouldFocusNode =
       !hasSelection &&
-      preventForBlocks.indexOf((node as any).type) === -1 &&
+      preventForBlocks.indexOf(node.type) === -1 &&
       isSelected &&
       key !== this.focusedNodeKey;
 
@@ -603,10 +631,17 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
+  undo = () => {
+    this.editor.undo();
+  };
+
+  redo = () => {
+    this.editor.redo();
+  };
+
   render() {
-    const hasSelection = this.state.value.fragment.text !== "";
     const isToolbarShowing =
-      hasSelection ||
+      this.hasSelection() ||
       !!this.props.speechSrc ||
       this.state.isCtrlHeld ||
       this.props.isDictionaryShowing;
@@ -621,11 +656,12 @@ export class InternoteEditor extends React.Component<Props, State> {
           <Wrapper style={{ width: "100%" }}>
             <Editor
               placeholder=""
+              ref={this.ref}
               value={this.state.value}
-              onChange={this.onChange}
+              onChange={change => this.onChange(change.value)}
               onKeyDown={this.onKeyDown}
               onKeyUp={this.onKeyUp}
-              renderNode={this.renderNode}
+              renderBlock={this.renderBlock}
               renderMark={this.renderMark}
               autoFocus
               className="slate-editor"
@@ -650,6 +686,20 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("underlined", 9)}
             </Flex>
             <Flex alignItems="center">
+              <ButtonSpacer small>
+                <UndoRedoButton
+                  onClick={this.undo}
+                  icon={faUndo}
+                  tooltip="Undo"
+                />
+              </ButtonSpacer>
+              <ButtonSpacer small>
+                <UndoRedoButton
+                  onClick={this.redo}
+                  icon={faRedo}
+                  tooltip="Redo"
+                />
+              </ButtonSpacer>
               <ButtonSpacer small>
                 <DictionaryButton
                   isLoading={this.props.isDictionaryLoading}

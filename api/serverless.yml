@@ -1,6 +1,7 @@
 service: internote-api
 
 plugins:
+  - serverless-plugin-monorepo
   - serverless-plugin-typescript
   - serverless-offline
   - serverless-dotenv-plugin

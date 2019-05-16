@@ -3,13 +3,14 @@ import { Omit } from "type-zoo";
 import Base from "../base-entity";
 import { validate, rules } from "../../dependencies/validation";
 import { UserEntity } from "../user/entity";
+import { defaultNote } from "./default-note";
 
 @Entity()
 export class NoteEntity extends Base {
-  @Column()
-  content: string;
+  @Column("json", { default: defaultNoteContent() })
+  content: {};
 
-  @Column({ nullable: true })
+  @Column()
   title: string;
 
   @ManyToOne(() => UserEntity, user => user.notes, {
@@ -27,8 +28,9 @@ export type CreateNote = Omit<
 >;
 export type UpdateNote = CreateNote;
 
-function defaultNoteContent() {
-  return "<h2>Internote</h2><p>Internote is a rich text editor designed for distraction-free content creation.</p><p>Internote supports a myriad of different formatting options including <strong>bold, </strong><em>italic </em>and <u>underline</u> as well as lists, <code>code snippets</code>, headings and quotes.</p><p>Internote automatically saves your notes in the cloud and is completely free.</p>";
+function defaultNoteContent(): NoteEntity["content"] {
+  // TODO: implement a nice default note
+  return defaultNote;
 }
 
 export function createNote(fields: any, user: UserEntity) {
@@ -38,10 +40,7 @@ export function createNote(fields: any, user: UserEntity) {
     return {
       ...new NoteEntity(),
       ...fields,
-      content: fields.content
-        ? fields.content
-        : `<h1>${fields.title ||
-            "New note"}</h1><p></p>${defaultNoteContent()}`,
+      content: fields.content ? fields.content : defaultNoteContent(),
       user
     };
   });

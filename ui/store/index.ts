@@ -70,7 +70,7 @@ interface OwnEffects {
   updateNote: Twine.Effect<
     OwnState,
     Actions,
-    { noteId: string; content: string; title: string | undefined },
+    { noteId: string; content: {}; title: string | undefined },
     Promise<void>
   >;
   deleteNoteConfirmation: Twine.Effect<OwnState, Actions, { noteId: string }>;
@@ -228,16 +228,17 @@ function makeModel(api: Api): Model {
         });
       },
       async updateNote(state, actions, { noteId, content, title }) {
-        const existingNote =
-          state.notes.find(note => note.id === noteId) || ({} as any);
+        const existingNote = state.notes.find(note => note.id === noteId);
         const updates = {
           content,
           title: title ? title : existingNote.title || "Internote"
         };
-        const newNote = {
-          ...existingNote,
-          ...updates
-        };
+        const newNote = existingNote
+          ? {
+              ...existingNote,
+              ...updates
+            }
+          : updates;
         actions.setNotes(
           state.notes.map(n => (n.id === noteId ? { ...n, ...newNote } : n))
         );
