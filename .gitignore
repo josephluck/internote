@@ -9,3 +9,4 @@ node_modules
 .static
 .lambdas
 .webpack
+generated-lambdas

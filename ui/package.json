@@ -11,7 +11,7 @@
     "deploy:dev:build": "NODE_ENV=production STAGE=dev next build",
     "deploy:dev:prepare": "rm -rf .next && yarn deploy:dev:build && yarn static:copy && yarn lambdas:generate",
     "deploy:dev:domain": "serverless create_domain --stage dev",
-    "deploy:dev:app": "SLS_DEBUG=* NODE_ENV=production serverless deploy --stage dev",
+    "deploy:dev:app": "SLS_DEBUG=1 NODE_ENV=production serverless deploy --stage dev",
     "deploy:prod": "yarn deploy:prod:prepare && yarn deploy:prod:domain && yarn deploy:prod:app && yarn deploy:clean-up",
     "deploy:prod:build": "NODE_ENV=production STAGE=prod next build",
     "deploy:prod:prepare": "rm -rf .next && yarn deploy:prod:build && yarn static:copy && yarn lambdas:generate",

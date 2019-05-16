@@ -47,7 +47,6 @@ custom:
   s3Sync:
     - bucketName: internote-${self:custom.stage}-ui-static
       localDir: .static
-      acl: public-read
   serverless-offline:
     port: 3000
   stage: ${opt:stage, self:provider.stage}

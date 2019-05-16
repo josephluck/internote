@@ -5,45 +5,18 @@ import * as path from "path";
 import * as rimraf from "rimraf";
 
 /**
- * Refers to the records.json that next.js exports
- * when a build is run. Necessary since it contains
- * the directory name and information surrounding the
- * most recent build of the application,
- */
-interface Records {
-  chunks: {
-    byName: Record<string, number>;
-  };
-}
-
-/**
  * Points to the next.js build output directory
  * for lambda files.
  */
 const nextServerlessBuildOutputDir = path.join(
   process.cwd(),
   ".next",
-  "serverless"
+  "serverless",
+  "pages"
 );
 
 function makeOutputFullPath({ outputDir }: Options) {
   return path.join(process.cwd(), outputDir);
-}
-
-function getRecords(): Records {
-  const recordsPath = path.join(nextServerlessBuildOutputDir, "records.json");
-
-  try {
-    fs.accessSync(recordsPath);
-  } catch (e) {
-    throw new Error(
-      `Could not find build output in "${recordsPath}", are you sure you ran "next build"?`
-    );
-  }
-
-  const recordsFile = fs.readFileSync(recordsPath, { encoding: "utf-8" });
-
-  return JSON.parse(recordsFile);
 }
 
 function writeAwsLambda(outputDir: string, fileName: string, lambda: string) {
@@ -79,6 +52,10 @@ module.exports.handler = function(event, context) {
   }
 }
 
+function getFileNameFromPath(fileName: string) {
+  return fileName.split(".js")[0];
+}
+
 interface Options {
   typescript?: boolean;
   outputDir?: string;
@@ -92,15 +69,8 @@ function run({
   rimraf(outputFullPath);
   fs.mkdirSync(outputFullPath);
 
-  const records = getRecords();
-  const files = records.chunks.byName;
-
-  Object.keys(files)
-    .filter(
-      name =>
-        !name.startsWith("pages/_app") && !name.startsWith("pages/_document")
-    )
-    .map(fileName => fileName.split("/")[1].split(".js")[0])
+  fs.readdirSync(nextServerlessBuildOutputDir)
+    .map(getFileNameFromPath)
     .forEach(pageName => {
       const fileName = typescript ? `${pageName}.ts` : `${pageName}.js`;
       const lambda = createAwsLambda({ typescript }, pageName);
