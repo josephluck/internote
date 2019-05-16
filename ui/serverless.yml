@@ -40,13 +40,14 @@ plugins:
   - serverless-plugin-typescript
   - serverless-plugin-include-dependencies
   - serverless-offline
-  - serverless-s3bucket-sync
+  - serverless-s3-sync
   - serverless-domain-manager
 
 custom:
-  s3-sync:
-    - folder: .static
-      bucket: internote-${self:custom.stage}-ui-static
+  s3Sync:
+    - bucketName: internote-${self:custom.stage}-ui-static
+      localDir: .static
+      acl: public-read
   serverless-offline:
     port: 3000
   stage: ${opt:stage, self:provider.stage}

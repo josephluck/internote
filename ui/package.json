@@ -66,7 +66,7 @@
     "serverless-plugin-include-dependencies": "^3.2.1",
     "serverless-plugin-monorepo": "^0.7.0",
     "serverless-plugin-typescript": "^1.1.7",
-    "serverless-s3bucket-sync": "^0.1.5",
+    "serverless-s3-sync": "^1.8.0",
     "slate": "^0.47.2",
     "slate-react": "^0.22.2",
     "styled-components": "^4.2.0",
