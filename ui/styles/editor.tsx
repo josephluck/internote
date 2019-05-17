@@ -284,16 +284,14 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onChange = (value: Value) => {
-    this.setState({ value });
-    this.emitChange(value);
-
+    this.setState({ value }, this.emitChange);
     window.requestAnimationFrame(this.handleFocusModeScroll);
   };
 
-  emitChange = debounce((editorValue: Value) => {
+  emitChange = debounce(() => {
     this.props.onChange({
-      content: editorValue.toJSON(),
-      title: getTitleFromEditorValue(editorValue)
+      content: this.state.value.toJSON(),
+      title: getTitleFromEditorValue(this.state.value)
     });
   }, this.debounceValue);
 
