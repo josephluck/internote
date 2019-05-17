@@ -138,6 +138,10 @@ interface State {
   noteLoading: string | null;
 }
 
+function getNoteTitle(note: Note): string {
+  return note.title;
+}
+
 export class NoteMenu extends React.Component<Props, State> {
   inputRef: React.RefObject<HTMLInputElement>;
 
@@ -153,9 +157,13 @@ export class NoteMenu extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (
-      prevProps.store.state.notes.length !== this.props.store.state.notes.length
-    ) {
+    const prevNotes = prevProps.store.state.notes;
+    const newNotes = this.props.store.state.notes;
+    const lengthChanged = prevNotes.length !== newNotes.length;
+    const prevTitles = prevNotes.filter(getNoteTitle);
+    const newTitles = newNotes.filter(getNoteTitle);
+    const titleChanged = !newTitles.every(t => prevTitles.includes(t));
+    if (lengthChanged || titleChanged) {
       this.searchNotes(this.state.searchText);
     }
   }
