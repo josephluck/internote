@@ -24,9 +24,24 @@ const api = Axios.create({
   }
 });
 
+api.interceptors.request.use(request => {
+  console.log("Dictionary: oxford API request", request);
+  return request;
+});
+
+api.interceptors.response.use(response => {
+  console.log("Dictionary: oxford API response", response);
+  return response;
+});
+
 function makeController(deps: Dependencies) {
   return {
     async lookup(ctx: Router.IRouterContext, user: Option<UserEntity>) {
+      const throwError = (message: string) => (err: Error) => {
+        console.log("Dictionary error", err);
+        deps.messages.throw(ctx, deps.messages.serverError(message));
+        throw err;
+      };
       return user.fold(
         () => {
           ctx.body = deps.messages.throw(ctx, deps.messages.notFound("user"));
@@ -43,22 +58,53 @@ function makeController(deps: Dependencies) {
               );
             },
             async ({ word }) => {
-              const lemmas = await api.get(`/lemmas/en/${word}`);
-              const wordId = getWordIdFromLemmasResponse(lemmas.data);
-              const [entries, thesauras] = await Promise.all([
-                api.get(`/entries/en-gb/${wordId}?strictMatch=false`),
-                api.get(`/thesaurus/en/${wordId}?strictMatch=false`)
-              ]);
+              try {
+                const lemmas = await api
+                  .get(`/lemmas/en/${word.toLowerCase()}`)
+                  .catch(throwError("Lemmas request failed"));
 
-              const mappedEntries = convertOxfordEntriesResponse(entries.data);
-              const results = mapEntriesToSynonyms(
-                mappedEntries,
-                thesauras.data
-              );
+                const wordId = getWordIdFromLemmasResponse(lemmas.data);
 
-              ctx.body = { results };
+                const entriesResponse = await api
+                  .get(`/entries/en-gb/${wordId}?strictMatch=false`)
+                  .catch(throwError("Entries request failed"));
 
-              return ctx.body;
+                const entries = convertOxfordEntriesResponse(
+                  entriesResponse.data
+                );
+
+                function returnOnlyDictionaryEntries() {
+                  ctx.body = {
+                    results: entries.map(({ thesaurasId, ...rest }) => rest)
+                  };
+                  return ctx.body;
+                }
+
+                try {
+                  const thesaurasResponse = await api
+                    .get(`/thesaurus/en/${wordId}?strictMatch=false`)
+                    .catch(throwError("Thesauras request failed"));
+
+                  if (thesaurasResponse.data) {
+                    const results = mapEntriesToSynonyms(
+                      entries,
+                      thesaurasResponse.data
+                    );
+                    ctx.body = {
+                      results
+                    };
+                    return ctx.body;
+                  } else {
+                    throw new Error("No thesauras entries");
+                  }
+                } catch (err) {
+                  console.log("Thesauras was empty", err);
+                  return returnOnlyDictionaryEntries();
+                }
+              } catch (err) {
+                console.log("Dictionary failed", err);
+                deps.messages.throw(ctx, deps.messages.notFound("Dictionary"));
+              }
             }
           );
         }

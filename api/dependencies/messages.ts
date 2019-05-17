@@ -10,25 +10,32 @@ export default {
   throw(ctx: Router.IRouterContext, message: ApiMessage) {
     ctx.throw(message.code, message);
   },
-  notFound(entity: string): ApiMessage {
+  notFound(message: string): ApiMessage {
     return {
       type: "error",
       code: 404,
-      message: `${entity} not found`
+      message: `Not found: ${message}`
     };
   },
   badRequest(message: string): ApiMessage {
     return {
       type: "error",
       code: 400,
-      message
+      message: `Bad request: ${message}`
     };
   },
-  successfullyDeleted(entity: string): ApiMessage {
+  serverError(message: string): ApiMessage {
+    return {
+      type: "error",
+      code: 404,
+      message: `Internal server error: ${message}`
+    };
+  },
+  successfullyDeleted(message: string): ApiMessage {
     return {
       type: "okay",
       code: 200,
-      message: `${entity} deleted`
+      message: `Deleted: ${message}`
     };
   }
 };
