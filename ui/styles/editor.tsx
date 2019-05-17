@@ -269,23 +269,18 @@ export class InternoteEditor extends React.Component<Props, State> {
       editorScrollWrap.addEventListener("scroll", this.handleEditorScroll);
       editorScrollWrap.addEventListener("click", this.handleFocusModeScroll);
     }
-
     window.addEventListener("keyup", this.onKeyUp);
   }
-
-  /**
-   * Store a reference to the `editor`.
-   *
-   * @param {Editor} editor
-   */
 
   ref = (editor: Editor) => {
     this.editor = editor;
   };
 
   onChange = (value: Value) => {
-    this.setState({ value }, this.emitChange);
-    window.requestAnimationFrame(this.handleFocusModeScroll);
+    if (this.state.value !== value) {
+      this.setState({ value }, this.emitChange);
+      window.requestAnimationFrame(this.handleFocusModeScroll);
+    }
   };
 
   emitChange = debounce(() => {
