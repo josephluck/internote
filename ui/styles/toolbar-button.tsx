@@ -54,22 +54,26 @@ const ShortcutNumber = styled.div<{ isActive: boolean; showing: boolean }>`
   opacity: ${props => (props.showing ? 1 : 0)};
 `;
 
+export const ButtonSpacer = styled.div<{ small?: boolean }>`
+  margin-right: ${props => (props.small ? spacing._0_125 : spacing._0_4)};
+`;
+
 export function ToolbarButton({
   children,
-  onMouseDown,
+  onClick,
   isActive,
   shortcutNumber,
   shortcutShowing
 }: {
   children: React.ReactNode;
-  onMouseDown?: React.MouseEventHandler<HTMLElement>;
+  onClick?: Event;
   isActive: boolean;
   shortcutNumber: number;
   shortcutShowing: boolean;
 }) {
   return (
     <Button
-      onMouseDown={onMouseDown}
+      onMouseDown={onClick}
       isActive={isActive}
       shortcutShowing={shortcutShowing}
     >

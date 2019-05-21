@@ -22,7 +22,6 @@ const CollapsedWrapper = styled.div`
   align-items: center;
   padding-left: ${spacing._0_25};
   white-space: nowrap;
-  font-weight: 600;
 `;
 
 const TimelineWrap = styled.div`

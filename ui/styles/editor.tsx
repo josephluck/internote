@@ -1,191 +1,52 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
-import { Editor, Plugin } from "slate-react";
+import { Plugin, Editor as SlateEditor, Editor } from "slate-react";
 import { throttle } from "lodash";
 import { debounce } from "lodash";
-import isKeyHotkey from "is-hotkey";
-import { spacing, font, borderRadius } from "../theming/symbols";
-import { styled } from "../theming/styled";
 import { Saving } from "./saving";
 import { Flex } from "@rebass/grid";
 import { Value } from "slate";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBold,
-  faItalic,
-  faUnderline,
-  faCode,
-  faHeading,
-  faQuoteLeft,
-  faListUl,
-  faListOl,
-  faUndo,
-  faRedo
-} from "@fortawesome/free-solid-svg-icons";
-import { Wrapper } from "./wrapper";
+import { faUndo, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { Speech } from "./speech";
-import { ToolbarButton } from "./toolbar-button";
+import { ToolbarButton, ButtonSpacer } from "./toolbar-button";
 import { Collapse } from "react-collapse";
 import * as Types from "@internote/api/domains/types";
 import { Dictionary } from "./dictionary";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { DictionaryButton } from "./dictionary-button";
 import { DeleteNoteButton } from "./delete-note-button";
-import { defaultNote } from "@internote/api/domains/note/default-note";
 import { UndoRedoButton } from "./undo-redo-button";
+import {
+  ToolbarWrapper,
+  ToolbarInner,
+  ToolbarExpandedWrapper,
+  ToolbarExpandedInner,
+  renderToolbarIcon
+} from "./toolbar";
+import {
+  getValueOrDefault,
+  getTitleFromEditorValue,
+  isBoldHotkey,
+  isItalicHotkey,
+  isUnderlinedHotkey,
+  isCodeHotkey,
+  isH1Hotkey,
+  isH2Hotkey,
+  isQuoteHotkey,
+  isOlHotkey,
+  isUlHotkey,
+  isCtrlHotKey,
+  isEnterHotKey,
+  hasSelection,
+  hasFocus
+} from "../utilities/editor";
+import { Wrap, EditorStyles, EditorWrapper } from "./editor-styles";
+import { Option, Some, None } from "space-lift";
+import { getFirstWordFromString } from "../utilities/string";
 
 const DEFAULT_NODE = "paragraph";
-
-const isH1Hotkey = isKeyHotkey("mod+1");
-const isH2Hotkey = isKeyHotkey("mod+2");
-const isOlHotkey = isKeyHotkey("mod+3");
-const isUlHotkey = isKeyHotkey("mod+4");
-const isCodeHotkey = isKeyHotkey("mod+5") || isKeyHotkey("mod+`");
-const isQuoteHotkey = isKeyHotkey("mod+6") || isKeyHotkey("mod+'");
-const isBoldHotkey = isKeyHotkey("mod+7") || isKeyHotkey("mod+b");
-const isItalicHotkey = isKeyHotkey("mod+8") || isKeyHotkey("mod+i");
-const isUnderlinedHotkey = isKeyHotkey("mod+9") || isKeyHotkey("mod+u");
-const isCtrlHotKey = isKeyHotkey("ctrl") || isKeyHotkey("mod");
-
-const Wrap = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  overflow: hidden;
-  width: 100%;
-`;
-
-const EditorStyles = styled.div<{
-  distractionFree: boolean;
-  userScrolled: boolean;
-}>`
-  display: flex;
-  flex: 1;
-  overflow: auto;
-  font-family: ${props => props.theme.fontFamily};
-  .slate-editor {
-    padding-top: 50vh; // Ensure enough room to center first block
-    padding-bottom: 50vh; // Ensure enough room to center last block
-  }
-  > div:first-of-type {
-    min-height: 100vh;
-  }
-  strong {
-    font-weight: bold;
-  }
-  i,
-  em {
-    font-style: italic;
-  }
-  u {
-    text-decoration: underline;
-  }
-  code {
-    font-family: monospace;
-    background: ${props => props.theme.codeBlockBackground};
-    padding: ${spacing._0_125} ${spacing._0_25};
-    border-radius: ${borderRadius._6};
-    padding-bottom: 0;
-    display: inline-block;
-  }
-  h1 {
-    font-size: ${font._36.size};
-    line-height: ${font._36.lineHeight};
-    font-weight: bold;
-  }
-  h2 {
-    font-size: ${font._28.size};
-    line-height: ${font._28.lineHeight};
-    font-weight: bold;
-  }
-  ul li,
-  ol li {
-    list-style-position: inside;
-    margin-bottom: ${spacing._0_5};
-    &:last-of-type {
-      margin-bottom: 0;
-    }
-  }
-  ul {
-    li {
-      list-style-type: disc;
-    }
-  }
-  ol {
-    li {
-      list-style-type: decimal;
-    }
-  }
-  blockquote {
-    border-left: solid 4px ${props => props.theme.blockQuoteBorder};
-    padding-left: ${spacing._0_5};
-  }
-  .node-unfocused {
-    opacity: ${props =>
-      props.distractionFree && !props.userScrolled ? 0.2 : 1};
-    transition: all 300ms ease;
-  }
-  .node-focused {
-    opacity: 1;
-    transition: all 100ms ease;
-  }
-`;
-
-const ToolbarWrapper = styled.div<{
-  distractionFree: boolean;
-  forceShow: boolean;
-}>`
-  flex: 0 0 auto;
-  font-size: ${font._18.size};
-  line-height: ${font._18.lineHeight};
-  background: ${props => props.theme.toolbarBackground};
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-  padding: ${spacing._0_25} 0;
-  position: ${props => (props.distractionFree ? "fixed" : "static")};
-  left: 0;
-  right: 0;
-  bottom: 0;
-  transition: all 500ms ease;
-  opacity: ${props => (props.distractionFree && !props.forceShow ? 0 : 1)};
-  transform: ${props =>
-    props.distractionFree && !props.forceShow
-      ? "translateY(5px)"
-      : "translateY(0px)"};
-  z-index: 5;
-  &:hover {
-    opacity: 1;
-    transform: translateY(0px);
-    transition: all 200ms ease;
-  }
-`;
-
-const ToolbarInner = styled(Wrapper)`
-  display: flex;
-  align-items: center;
-  flex: 1;
-  width: 100%;
-`;
-
-const ButtonSpacer = styled.div<{ small?: boolean }>`
-  margin-right: ${props => (props.small ? spacing._0_125 : spacing._0_4)};
-`;
-
-const ToolbarExpandedWrapper = styled.div`
-  padding-top: ${spacing._0_25};
-  overflow: hidden;
-  width: 100%;
-`;
-
-const ToolbarExpandedInner = styled.div`
-  border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
-  padding-top: ${spacing._0_25};
-  overflow: auto;
-  max-height: 40vh;
-`;
 
 interface Props {
   id: string;
@@ -212,37 +73,13 @@ interface State {
   isCtrlHeld: boolean;
 }
 
-function getTitleFromEditorValue(editorValue: Value): string | undefined {
-  if (
-    editorValue.document &&
-    editorValue.document.getBlocks &&
-    editorValue.document.getBlocks()
-  ) {
-    const block = editorValue.document
-      .getBlocks()
-      .find(block => block.text != "");
-    return block ? block.text : undefined;
-  } else {
-    return undefined;
-  }
-}
-
-function isValidSlateValue(value: Object): Boolean {
-  return value && typeof value === "object" && value.hasOwnProperty("document");
-}
-
-function getValueOrDefault(value: Object): Value {
-  return isValidSlateValue(value)
-    ? Value.fromJSON(value)
-    : Value.fromJSON(defaultNote as any); // TODO: type correctly
-}
-
 export class InternoteEditor extends React.Component<Props, State> {
   debounceValue = 3000;
   preventScrollListener = false;
-  scroller: ReturnType<typeof zenscroll.createScroller> = null;
+  scroller: ReturnType<typeof zenscroll.createScroller> | null = null;
   focusedNodeKey: string = "";
-  editor: Editor | null = null;
+  editor: SlateEditor | null = null;
+  scrollWrap: HTMLDivElement | null;
 
   constructor(props: Props) {
     super(props);
@@ -263,20 +100,22 @@ export class InternoteEditor extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const editorScrollWrap = document.getElementById("editor-scroll-wrap");
-    if (editorScrollWrap) {
-      this.scroller = zenscroll.createScroller(editorScrollWrap, 200);
-      editorScrollWrap.addEventListener("scroll", this.handleEditorScroll);
-      editorScrollWrap.addEventListener("click", this.handleFocusModeScroll);
-    }
     window.addEventListener("keyup", this.onKeyUp);
   }
 
-  ref = (editor: Editor) => {
+  storeEditorRef = (editor: SlateEditor) => {
     this.editor = editor;
   };
 
-  onChange = (value: Value) => {
+  storeScrollWrapRef = (scrollWrap: HTMLDivElement) => {
+    this.scrollWrap = scrollWrap;
+    this.scroller = zenscroll.createScroller(scrollWrap, 200);
+    scrollWrap.addEventListener("scroll", this.handleEditorScroll);
+    scrollWrap.addEventListener("click", this.handleFocusModeScroll);
+  };
+
+  // TODO: value type should be Value
+  onChange = (value: any) => {
     if (this.state.value !== value) {
       this.setState({ value }, this.emitChange);
       window.requestAnimationFrame(this.handleFocusModeScroll);
@@ -300,45 +139,47 @@ export class InternoteEditor extends React.Component<Props, State> {
     return value.blocks.some(node => node.type == type);
   };
 
+  getEventHandlerFromKeyEvent = (
+    event: Event
+  ): Option<(event: Event) => void> => {
+    if (isBoldHotkey(event)) {
+      return Some(this.onClickMark("bold"));
+    } else if (isItalicHotkey(event)) {
+      return Some(this.onClickMark("italic"));
+    } else if (isUnderlinedHotkey(event)) {
+      return Some(this.onClickMark("underlined"));
+    } else if (isCodeHotkey(event)) {
+      return Some(this.onClickMark("code"));
+    } else if (isH1Hotkey(event)) {
+      return Some(this.onClickBlock("heading-one"));
+    } else if (isH2Hotkey(event)) {
+      return Some(this.onClickBlock("heading-two"));
+    } else if (isQuoteHotkey(event)) {
+      return Some(this.onClickBlock("block-quote"));
+    } else if (isOlHotkey(event)) {
+      return Some(this.onClickBlock("numbered-list"));
+    } else if (isUlHotkey(event)) {
+      return Some(this.onClickBlock("bulleted-list"));
+    } else {
+      return None;
+    }
+  };
+
   onKeyDown: Plugin["onKeyDown"] = (event, change, next) => {
     const inserted = this.handleResetBlockOnEnterPressed(event, change, next);
 
     if (inserted) {
-      return inserted;
+      return;
     }
 
     if (isCtrlHotKey(event)) {
       this.setState({ isCtrlHeld: true });
     }
 
-    if (isBoldHotkey(event)) {
+    this.getEventHandlerFromKeyEvent(event).map(handler => {
       event.preventDefault();
-      this.onClickMark(event, "bold");
-    } else if (isItalicHotkey(event)) {
-      event.preventDefault();
-      this.onClickMark(event, "italic");
-    } else if (isUnderlinedHotkey(event)) {
-      event.preventDefault();
-      this.onClickMark(event, "underlined");
-    } else if (isCodeHotkey(event)) {
-      event.preventDefault();
-      this.onClickMark(event, "code");
-    } else if (isH1Hotkey(event)) {
-      event.preventDefault();
-      this.onClickBlock(event, "heading-one");
-    } else if (isH2Hotkey(event)) {
-      event.preventDefault();
-      this.onClickBlock(event, "heading-two");
-    } else if (isQuoteHotkey(event)) {
-      event.preventDefault();
-      this.onClickBlock(event, "block-quote");
-    } else if (isOlHotkey(event)) {
-      event.preventDefault();
-      this.onClickBlock(event, "numbered-list");
-    } else if (isUlHotkey(event)) {
-      event.preventDefault();
-      this.onClickBlock(event, "bulleted-list");
-    }
+      handler(event);
+    });
   };
 
   onKeyUp = (event: KeyboardEvent) => {
@@ -352,36 +193,52 @@ export class InternoteEditor extends React.Component<Props, State> {
     change,
     next
   ) => {
-    const isEnterKey = event.keyCode === 13 && !event.shiftKey;
-    const listBlockTypes = ["list-item"];
-    const previousBlockType = change.value.focusBlock.type;
-    const isListItem = listBlockTypes.indexOf(previousBlockType) !== -1;
-    const lastBlockEmpty = change.value.startText.text.length === 0;
-    const nextBlockIsListItem =
-      !!change.value.nextBlock && change.value.nextBlock.type === "list-item";
-    const shouldCloseList = lastBlockEmpty && !nextBlockIsListItem;
-    if (isEnterKey && (!isListItem || shouldCloseList)) {
-      if (shouldCloseList) {
-        change.unwrapBlock("bulleted-list").unwrapBlock("numbered-list");
+    const isEnterKey = isEnterHotKey(event) && !event.shiftKey;
+
+    if (isEnterKey) {
+      const previousBlockType = change.value.focusBlock.type;
+      const isListItem = previousBlockType === "list-item";
+      if (!isListItem) {
+        // NB: Allow enter key to progress to add new paragraph
+        // it's important that next() is called before
+        // this.resetBlocks() as otherwise the previous formatting
+        // will be removed
+        next();
+        this.resetBlocks();
+        return;
       }
-      return change.splitBlock(0).insertBlock("paragraph");
+
+      const lastBlockEmpty = change.value.startText.text.length === 0;
+      const nextBlockIsListItem =
+        !!change.value.nextBlock && change.value.nextBlock.type === "list-item";
+      const shouldCloseList = lastBlockEmpty && !nextBlockIsListItem;
+      if (shouldCloseList) {
+        this.resetBlocks();
+        return;
+      }
     }
 
     next();
   };
 
+  resetBlocks = () => {
+    this.editor
+      .setBlocks(DEFAULT_NODE)
+      .unwrapBlock("bulleted-list")
+      .unwrapBlock("numbered-list");
+  };
+
   handleEditorScroll = throttle(
     () => {
-      const editorScrollWrap = document.getElementById("editor-scroll-wrap");
       if (
-        editorScrollWrap &&
+        this.scrollWrap &&
         !this.state.userScrolled &&
         !this.preventScrollListener
       ) {
         this.setState({ userScrolled: true });
       }
     },
-    1000,
+    500,
     { leading: true, trailing: false }
   );
 
@@ -389,16 +246,12 @@ export class InternoteEditor extends React.Component<Props, State> {
     () => {
       if (this.props.distractionFree) {
         const focusedBlock = document.querySelector(".node-focused");
-        const editorScrollWrap = document.getElementById("editor-scroll-wrap");
+        const editorScrollWrap = this.scrollWrap;
         if (focusedBlock && editorScrollWrap && this.scroller) {
           this.preventScrollListener = true;
-          this.setState({ userScrolled: false }, () => {
-            this.scroller.center(focusedBlock as HTMLElement, 200, 0, () => {
-              window.requestAnimationFrame(() => {
-                this.preventScrollListener = false;
-              });
-            });
-          });
+          this.setState({ userScrolled: false }, () =>
+            this.scrollEditorToElement(focusedBlock as HTMLElement)
+          );
         }
       }
     },
@@ -406,7 +259,15 @@ export class InternoteEditor extends React.Component<Props, State> {
     { leading: true }
   );
 
-  onClickMark = (event: Event, type: MarkType) => {
+  scrollEditorToElement = (element: HTMLElement) => {
+    this.scroller.center(element, 200, 0, () => {
+      window.requestAnimationFrame(() => {
+        this.preventScrollListener = false;
+      });
+    });
+  };
+
+  onClickMark = (type: MarkType) => (event: Event) => {
     event.preventDefault();
 
     this.editor.toggleMark(type);
@@ -414,12 +275,10 @@ export class InternoteEditor extends React.Component<Props, State> {
     this.onChange(this.editor.value);
   };
 
-  onClickBlock = (event: Event, type: BlockType) => {
+  onClickBlock = (type: BlockType) => (event: Event) => {
     event.preventDefault();
 
     const { editor } = this;
-    const { value } = editor;
-    const { document } = value;
 
     // Handle everything but list buttons.
     if (type !== "bulleted-list" && type !== "numbered-list") {
@@ -437,18 +296,16 @@ export class InternoteEditor extends React.Component<Props, State> {
     } else {
       // Handle the extra wrapping required for list buttons.
       const isList = this.hasBlock("list-item");
-      const isType = value.blocks.some(block => {
-        return !!document.getClosest(
-          block.key,
-          (parent: any) => parent.type === type
-        );
-      });
+      const isType = editor.value.blocks.some(
+        block =>
+          !!editor.value.document.getClosest(
+            block.key,
+            (parent: any) => parent.type === type
+          )
+      );
 
       if (isList && isType) {
-        editor
-          .setBlocks(DEFAULT_NODE)
-          .unwrapBlock("bulleted-list")
-          .unwrapBlock("numbered-list");
+        this.resetBlocks();
       } else if (isList) {
         editor
           .unwrapBlock(
@@ -464,54 +321,41 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onRequestSpeech = () => {
-    const content = this.getSelectedContent();
-    if (content && content.length) {
-      this.props.onRequestSpeech(content);
-    }
+    this.getSelectedContent().map(this.props.onRequestSpeech);
+  };
+
+  onRequestDictionary = () => {
+    this.getSelectedContent()
+      .flatMap(getFirstWordFromString)
+      .map(this.props.onRequestDictionary);
   };
 
   onToggleDictionary = () => {
     if (this.props.isDictionaryShowing) {
       this.props.closeDictionary();
     } else {
-      const content = this.getSelectedContent();
-      if (content && content.length) {
-        const firstWord = content.split(" ")[0];
-        if (firstWord) {
-          this.props.onRequestDictionary(firstWord);
-        }
-      }
+      this.onRequestDictionary();
     }
   };
 
-  getSelectedContent = () => {
-    return this.hasSelection()
-      ? this.state.value.fragment.text
-      : this.state.value.focusBlock.text;
+  getSelectedContent = (): Option<string> => {
+    return hasSelection(this.state.value)
+      ? Some(this.state.value.fragment.text)
+      : hasFocus(this.state.value)
+      ? Some(this.state.value.focusBlock.text)
+      : None;
   };
 
-  hasSelection = () =>
-    this.state.value.fragment &&
-    this.state.value.fragment.text &&
-    this.state.value.fragment.text.length > 0;
-
   renderMarkButton = (type: MarkType, shortcutNumber: number) => {
+    // TODO: onClick type
     return (
       <ToolbarButton
-        onMouseDown={(event: any) => this.onClickMark(event, type)}
+        onClick={this.onClickMark(type) as any}
         isActive={this.hasMark(type)}
         shortcutNumber={shortcutNumber}
         shortcutShowing={this.state.isCtrlHeld}
       >
-        {type === "bold" ? (
-          <FontAwesomeIcon icon={faBold} />
-        ) : type === "italic" ? (
-          <FontAwesomeIcon icon={faItalic} />
-        ) : type === "underlined" ? (
-          <FontAwesomeIcon icon={faUnderline} />
-        ) : (
-          <FontAwesomeIcon icon={faCode} />
-        )}
+        {renderToolbarIcon(type)}
       </ToolbarButton>
     );
   };
@@ -527,24 +371,15 @@ export class InternoteEditor extends React.Component<Props, State> {
       }
     }
 
+    // TODO: onClick type
     return (
       <ToolbarButton
-        onMouseDown={(event: any) => this.onClickBlock(event, type)}
+        onClick={this.onClickBlock(type) as any}
         isActive={isActive}
         shortcutNumber={shortcutNumber}
         shortcutShowing={this.state.isCtrlHeld}
       >
-        {type === "heading-one" ? (
-          <FontAwesomeIcon icon={faHeading} />
-        ) : type === "heading-two" ? (
-          "H2" // TODO: find an icon for representing heading-two
-        ) : type === "block-quote" ? (
-          <FontAwesomeIcon icon={faQuoteLeft} />
-        ) : type === "bulleted-list" ? (
-          <FontAwesomeIcon icon={faListUl} />
-        ) : (
-          <FontAwesomeIcon icon={faListOl} />
-        )}
+        {renderToolbarIcon(type)}
       </ToolbarButton>
     );
   };
@@ -557,9 +392,8 @@ export class InternoteEditor extends React.Component<Props, State> {
       "bulleted-list",
       "numbered-list"
     ];
-    const hasSelection = this.hasSelection();
     const shouldFocusNode =
-      !hasSelection &&
+      !hasSelection(this.state.value) &&
       preventForBlocks.indexOf(node.type) === -1 &&
       isSelected &&
       key !== this.focusedNodeKey;
@@ -634,7 +468,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   render() {
     const isToolbarShowing =
-      this.hasSelection() ||
+      hasSelection(this.state.value) ||
       !!this.props.speechSrc ||
       this.state.isCtrlHeld ||
       this.props.isDictionaryShowing;
@@ -644,22 +478,27 @@ export class InternoteEditor extends React.Component<Props, State> {
         <EditorStyles
           distractionFree={this.props.distractionFree}
           userScrolled={this.state.userScrolled}
-          id="editor-scroll-wrap"
+          ref={elm => {
+            const node = ReactDOM.findDOMNode(elm);
+            if (node) {
+              this.storeScrollWrapRef(node as HTMLDivElement);
+            }
+          }}
         >
-          <Wrapper style={{ width: "100%" }}>
+          <EditorWrapper>
             <Editor
               placeholder=""
-              ref={this.ref}
-              value={this.state.value}
+              ref={this.storeEditorRef}
+              value={this.state.value as any}
               onChange={change => this.onChange(change.value)}
               onKeyDown={this.onKeyDown}
               onKeyUp={this.onKeyUp}
               renderBlock={this.renderBlock}
               renderMark={this.renderMark}
               autoFocus
-              className="slate-editor"
+              distractionFree={this.props.distractionFree}
             />
-          </Wrapper>
+          </EditorWrapper>
         </EditorStyles>
 
         <ToolbarWrapper
