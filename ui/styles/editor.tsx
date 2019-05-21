@@ -166,11 +166,7 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onKeyDown: Plugin["onKeyDown"] = (event, change, next) => {
-    const inserted = this.handleResetBlockOnEnterPressed(event, change, next);
-
-    if (inserted) {
-      return;
-    }
+    this.handleResetBlockOnEnterPressed(event, change, next);
 
     if (isCtrlHotKey(event)) {
       this.setState({ isCtrlHeld: true });
@@ -194,7 +190,6 @@ export class InternoteEditor extends React.Component<Props, State> {
     next
   ) => {
     const isEnterKey = isEnterHotKey(event) && !event.shiftKey;
-
     if (isEnterKey) {
       const previousBlockType = change.value.focusBlock.type;
       const isListItem = previousBlockType === "list-item";
@@ -207,7 +202,6 @@ export class InternoteEditor extends React.Component<Props, State> {
         this.resetBlocks();
         return;
       }
-
       const lastBlockEmpty = change.value.startText.text.length === 0;
       const nextBlockIsListItem =
         !!change.value.nextBlock && change.value.nextBlock.type === "list-item";
@@ -217,7 +211,6 @@ export class InternoteEditor extends React.Component<Props, State> {
         return;
       }
     }
-
     next();
   };
 
@@ -269,10 +262,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   onClickMark = (type: MarkType) => (event: Event) => {
     event.preventDefault();
-
     this.editor.toggleMark(type);
-
-    this.onChange(this.editor.value);
   };
 
   onClickBlock = (type: BlockType) => (event: Event) => {
@@ -316,8 +306,6 @@ export class InternoteEditor extends React.Component<Props, State> {
         editor.setBlocks("list-item").wrapBlock(type);
       }
     }
-
-    this.onChange(editor.value);
   };
 
   onRequestSpeech = () => {
