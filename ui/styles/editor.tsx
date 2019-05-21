@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
-import { Plugin, Editor as SlateEditor, Editor } from "slate-react";
+import { Plugin, Editor as SlateEditor } from "slate-react";
 import { throttle } from "lodash";
 import { debounce } from "lodash";
 import { Saving } from "./saving";
@@ -42,7 +42,7 @@ import {
   hasSelection,
   hasFocus
 } from "../utilities/editor";
-import { Wrap, EditorStyles, EditorWrapper } from "./editor-styles";
+import { Wrap, EditorStyles, EditorWrapper, Editor } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
 import { getFirstWordFromString } from "../utilities/string";
 
