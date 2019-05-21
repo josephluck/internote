@@ -492,7 +492,6 @@ export class InternoteEditor extends React.Component<Props, State> {
               value={this.state.value as any}
               onChange={change => this.onChange(change.value)}
               onKeyDown={this.onKeyDown}
-              onKeyUp={this.onKeyUp}
               renderBlock={this.renderBlock}
               renderMark={this.renderMark}
               autoFocus
