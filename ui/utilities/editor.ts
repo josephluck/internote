@@ -1,6 +1,8 @@
 import { Value } from "slate";
 import isKeyHotkey from "is-hotkey";
 import { defaultNote } from "@internote/api/domains/note/default-note";
+import { Option, Some, None } from "space-lift";
+import { BlockType } from "./serializer";
 
 export function getTitleFromEditorValue(
   editorValue: Value
@@ -41,6 +43,49 @@ export function hasFocus(value: Value) {
     value.focusBlock.text &&
     value.focusBlock.text.length > 0
   );
+}
+
+export function getSelectedContent(value: Value): Option<string> {
+  return hasSelection(value)
+    ? Some(value.fragment.text)
+    : hasFocus(value)
+    ? Some(value.focusBlock.text)
+    : None;
+}
+
+/**
+ * Used to determine whether to render a list
+ * item block as active depending on whether
+ * the current focus or selection position is
+ * inside a list item or not.
+ */
+
+export function currentFocusIsWithinList(
+  type: BlockType,
+  value: Value
+): boolean {
+  const isList = ["numbered-list", "bulleted-list"].includes(type);
+  if (isList) {
+    const firstListItem = value.blocks.first();
+    if (firstListItem) {
+      const outerListBlock: any = value.document.getParent(firstListItem.key);
+      return (
+        currentFocusHasBlock("list-item", value) &&
+        outerListBlock &&
+        outerListBlock.type === type
+      );
+    }
+
+    return false;
+  }
+}
+
+export function currentFocusHasMark(type: string, value: Value): boolean {
+  return value.activeMarks.some(mark => mark.type === type);
+}
+
+export function currentFocusHasBlock(type: string, value: Value): boolean {
+  return value.blocks.some(node => node.type === type);
 }
 
 export const isH1Hotkey = isKeyHotkey("mod+1");

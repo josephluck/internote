@@ -40,7 +40,10 @@ import {
   isCtrlHotKey,
   isEnterHotKey,
   hasSelection,
-  hasFocus
+  getSelectedContent,
+  currentFocusIsWithinList,
+  currentFocusHasBlock,
+  currentFocusHasMark
 } from "../utilities/editor";
 import { Wrap, EditorStyles, EditorWrapper, Editor } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
@@ -129,16 +132,6 @@ export class InternoteEditor extends React.Component<Props, State> {
     });
   }, this.debounceValue);
 
-  hasMark = (type: string): boolean => {
-    const { value } = this.state;
-    return value.activeMarks.some(mark => mark.type == type);
-  };
-
-  hasBlock = (type: string): boolean => {
-    const { value } = this.state;
-    return value.blocks.some(node => node.type == type);
-  };
-
   getEventHandlerFromKeyEvent = (
     event: Event
   ): Option<(event: Event) => void> => {
@@ -214,9 +207,9 @@ export class InternoteEditor extends React.Component<Props, State> {
     next();
   };
 
-  resetBlocks = () => {
+  resetBlocks = (node: string = DEFAULT_NODE) => {
     this.editor
-      .setBlocks(DEFAULT_NODE)
+      .setBlocks(node)
       .unwrapBlock("bulleted-list")
       .unwrapBlock("numbered-list");
   };
@@ -272,20 +265,17 @@ export class InternoteEditor extends React.Component<Props, State> {
 
     // Handle everything but list buttons.
     if (type !== "bulleted-list" && type !== "numbered-list") {
-      const isActive = this.hasBlock(type);
-      const isList = this.hasBlock("list-item");
+      const hasBeenMadeActive = currentFocusHasBlock(type, this.state.value);
+      const isList = currentFocusHasBlock("list-item", this.state.value);
 
       if (isList) {
-        editor
-          .setBlocks(isActive ? DEFAULT_NODE : type)
-          .unwrapBlock("bulleted-list")
-          .unwrapBlock("numbered-list");
+        this.resetBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
       } else {
-        editor.setBlocks(isActive ? DEFAULT_NODE : type);
+        editor.setBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
       }
     } else {
       // Handle the extra wrapping required for list buttons.
-      const isList = this.hasBlock("list-item");
+      const isList = currentFocusHasBlock("list-item", this.state.value);
       const isType = editor.value.blocks.some(
         block =>
           !!editor.value.document.getClosest(
@@ -309,11 +299,11 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onRequestSpeech = () => {
-    this.getSelectedContent().map(this.props.onRequestSpeech);
+    getSelectedContent(this.state.value).map(this.props.onRequestSpeech);
   };
 
   onRequestDictionary = () => {
-    this.getSelectedContent()
+    getSelectedContent(this.state.value)
       .flatMap(getFirstWordFromString)
       .map(this.props.onRequestDictionary);
   };
@@ -326,20 +316,12 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
-  getSelectedContent = (): Option<string> => {
-    return hasSelection(this.state.value)
-      ? Some(this.state.value.fragment.text)
-      : hasFocus(this.state.value)
-      ? Some(this.state.value.focusBlock.text)
-      : None;
-  };
-
   renderMarkButton = (type: MarkType, shortcutNumber: number) => {
     // TODO: onClick type
     return (
       <ToolbarButton
         onClick={this.onClickMark(type) as any}
-        isActive={this.hasMark(type)}
+        isActive={currentFocusHasMark(type, this.state.value)}
         shortcutNumber={shortcutNumber}
         shortcutShowing={this.state.isCtrlHeld}
       >
@@ -349,15 +331,9 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   renderBlockButton = (type: BlockType, shortcutNumber: number) => {
-    let isActive = this.hasBlock(type);
-    if (["numbered-list", "bulleted-list"].includes(type)) {
-      const { value } = this.state;
-      const first = value.blocks.first();
-      if (first) {
-        const parent: any = value.document.getParent(first.key);
-        isActive = this.hasBlock("list-item") && parent && parent.type === type;
-      }
-    }
+    const isActive =
+      currentFocusHasBlock(type, this.state.value) ||
+      currentFocusIsWithinList(type, this.state.value);
 
     // TODO: onClick type
     return (
@@ -382,7 +358,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     ];
     const shouldFocusNode =
       !hasSelection(this.state.value) &&
-      preventForBlocks.indexOf(node.type) === -1 &&
+      !preventForBlocks.includes(node.type) &&
       isSelected &&
       key !== this.focusedNodeKey;
 
