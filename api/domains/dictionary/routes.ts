@@ -30,7 +30,10 @@ api.interceptors.request.use(request => {
 });
 
 api.interceptors.response.use(response => {
-  console.log("Dictionary: oxford API response", response);
+  console.log(
+    `Dictionary: oxford API response for ${response.request}`,
+    JSON.stringify(response.data)
+  );
   return response;
 });
 
@@ -76,7 +79,9 @@ function makeController(deps: Dependencies) {
 
                     function returnOnlyDictionaryEntries() {
                       ctx.body = {
-                        results: entries.map(({ thesaurasId, ...rest }) => rest)
+                        results: entries.map(
+                          ({ thesaurasSenseId: thesaurasId, ...rest }) => rest
+                        )
                       };
                       return ctx.body;
                     }
@@ -126,34 +131,40 @@ export function routes(deps: Dependencies) {
   };
 }
 
-interface DictionaryResultWithThesaurasId extends DictionaryResult {
-  thesaurasId: string;
+interface DictionaryResultWithThesaurasSenseId extends DictionaryResult {
+  // TODO: make this an array of ids since subsenses contain thesauras links
+  // then, the mapping should return the first thesauras entry that matches
+  // the id via a find on thesaurasIds
+  thesaurasSenseId: Option<string>;
 }
 
 function convertOxfordEntriesResponse(
   response: Oxford.EntriesResponse
-): DictionaryResultWithThesaurasId[] {
-  const mappedResult = [] as DictionaryResultWithThesaurasId[];
+): DictionaryResultWithThesaurasSenseId[] {
+  const mappedResult = [] as DictionaryResultWithThesaurasSenseId[];
   (response.results || []).forEach(({ word, lexicalEntries }) => {
     (lexicalEntries || []).forEach(({ entries, lexicalCategory }) => {
       (entries || []).forEach(({ senses }) => {
-        (senses || []).forEach(({ definitions, examples, thesaurusLinks }) => {
-          const thesaurasId =
-            thesaurusLinks && thesaurusLinks.length
-              ? thesaurusLinks[0].sense_id
-              : "";
-          const example = examples && examples.length ? examples[0].text : "";
-          (definitions || []).forEach(definition => {
-            mappedResult.push({
-              word,
-              lexicalCategory: lexicalCategory.text,
-              definition,
-              synonyms: [],
-              example,
-              thesaurasId
+        (senses || []).forEach(
+          ({ definitions, examples, thesaurusLinks, subsenses }) => {
+            const thesaurasSenseId = getThesaurasSenseIdFromThesaurusLinks(
+              thesaurusLinks
+            ).orElse(() => getThesaurasIdFromSenses(subsenses || []));
+            const example = getFirstItemFromArray(examples)
+              .map(e => e.text)
+              .getOrElse("");
+            (definitions || []).forEach(definition => {
+              mappedResult.push({
+                word,
+                lexicalCategory: lexicalCategory.text,
+                definition,
+                synonyms: [],
+                example,
+                thesaurasSenseId
+              });
             });
-          });
-        });
+          }
+        );
       });
     });
   });
@@ -161,23 +172,46 @@ function convertOxfordEntriesResponse(
 }
 
 function mapEntriesToSynonyms(
-  dictionaryResults: DictionaryResultWithThesaurasId[],
+  dictionaryResults: DictionaryResultWithThesaurasSenseId[],
   response: Oxford.ThesaurasResponse
 ): DictionaryResult[] {
-  return dictionaryResults.map(({ thesaurasId, ...result }) => {
-    let synonyms: string[] = [];
-    (response.results || []).forEach(({ lexicalEntries }) => {
-      (lexicalEntries || []).forEach(({ entries }) => {
-        (entries || []).forEach(({ senses }) => {
-          const sense = senses.find(({ id }) => id === thesaurasId);
-          if (sense && sense.synonyms) {
-            synonyms.concat(sense.synonyms.map(s => s.text));
-          }
+  console.log("mapEntriesToSynonyms", { dictionaryResults, response });
+  return dictionaryResults.map(
+    ({ thesaurasSenseId: thesaurasId, ...definition }) => {
+      console.log("Mapping thesaurasId", { thesaurasId });
+      let synonyms: string[] = [];
+      if (thesaurasId.isDefined()) {
+        (response.results || []).forEach(({ lexicalEntries }) => {
+          (lexicalEntries || []).forEach(({ entries }) => {
+            (entries || []).forEach(({ senses }) => {
+              const sense = senses.find(({ id }) => id === thesaurasId.get());
+              if (sense && sense.synonyms) {
+                synonyms.concat(sense.synonyms.map(s => s.text));
+              }
+            });
+          });
         });
-      });
-    });
-    return { ...result, synonyms };
-  });
+      }
+      return { ...definition, synonyms };
+    }
+  );
+}
+
+function getThesaurasSenseIdFromThesaurusLinks(
+  thesaurusLinks: Oxford.EntryThesaurasLink[]
+): Option<string> {
+  return getFirstItemFromArray(thesaurusLinks).map(link => link.sense_id);
+}
+
+function getThesaurasIdFromSenses(senses: Oxford.EntrySense[]): Option<string> {
+  const sense = senses.find(({ thesaurusLinks }) =>
+    getThesaurasSenseIdFromThesaurusLinks(thesaurusLinks || []).isDefined()
+  );
+  if (sense) {
+    return getThesaurasSenseIdFromThesaurusLinks(sense.thesaurusLinks);
+  } else {
+    return None;
+  }
 }
 
 function getFirstItemFromArray<A>(arr: A[]): Option<A> {

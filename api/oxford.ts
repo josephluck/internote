@@ -105,11 +105,11 @@ export namespace Oxford {
   }
 
   export interface ThesaurasAntonym {
-    domains: LexicalCategory[];
+    domains?: LexicalCategory[];
     id: string;
     language: string;
-    regions: LexicalCategory[];
-    registers: LexicalCategory[];
+    regions?: LexicalCategory[];
+    registers?: LexicalCategory[];
     text: string;
   }
 
@@ -121,12 +121,12 @@ export namespace Oxford {
   }
 
   export interface ThesaurasSenseExample {
-    definition: string[];
-    domains: LexicalCategory[];
-    notes: LexicalCategory[];
-    regions: LexicalCategory[];
-    registers: LexicalCategory[];
-    senseIds: string[];
+    definition?: string[];
+    domains?: LexicalCategory[];
+    notes?: LexicalCategory[];
+    regions?: LexicalCategory[];
+    registers?: LexicalCategory[];
+    senseIds?: string[];
     text: string;
   }
 
