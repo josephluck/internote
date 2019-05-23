@@ -24,19 +24,6 @@ const api = Axios.create({
   }
 });
 
-api.interceptors.request.use(request => {
-  console.log("Dictionary: oxford API request", request);
-  return request;
-});
-
-api.interceptors.response.use(response => {
-  console.log(
-    `Dictionary: oxford API response for ${response.request}`,
-    JSON.stringify(response.data)
-  );
-  return response;
-});
-
 function makeController(deps: Dependencies) {
   return {
     async lookup(ctx: Router.IRouterContext, user: Option<UserEntity>) {
@@ -80,7 +67,7 @@ function makeController(deps: Dependencies) {
                     function returnOnlyDictionaryEntries() {
                       ctx.body = {
                         results: entries.map(
-                          ({ thesaurasSenseId: thesaurasId, ...rest }) => rest
+                          ({ thesaurasSenseIds, ...rest }) => rest
                         )
                       };
                       return ctx.body;
@@ -131,25 +118,25 @@ export function routes(deps: Dependencies) {
   };
 }
 
-interface DictionaryResultWithThesaurasSenseId extends DictionaryResult {
-  // TODO: make this an array of ids since subsenses contain thesauras links
-  // then, the mapping should return the first thesauras entry that matches
-  // the id via a find on thesaurasIds
-  thesaurasSenseId: Option<string>;
+interface DictionaryResultWithThesaurasSenseIds extends DictionaryResult {
+  thesaurasSenseIds: string[];
 }
 
+// TODO: refactor this to split out functions for mapping
+// data. Maybe use reduce & flatten combinations
 function convertOxfordEntriesResponse(
   response: Oxford.EntriesResponse
-): DictionaryResultWithThesaurasSenseId[] {
-  const mappedResult = [] as DictionaryResultWithThesaurasSenseId[];
+): DictionaryResultWithThesaurasSenseIds[] {
+  const mappedResult = [] as DictionaryResultWithThesaurasSenseIds[];
   (response.results || []).forEach(({ word, lexicalEntries }) => {
     (lexicalEntries || []).forEach(({ entries, lexicalCategory }) => {
       (entries || []).forEach(({ senses }) => {
         (senses || []).forEach(
           ({ definitions, examples, thesaurusLinks, subsenses }) => {
-            const thesaurasSenseId = getThesaurasSenseIdFromThesaurusLinks(
-              thesaurusLinks
-            ).orElse(() => getThesaurasIdFromSenses(subsenses || []));
+            const thesaurasSenseIds = mapThesaurasSenseIds(
+              thesaurusLinks,
+              subsenses
+            );
             const example = getFirstItemFromArray(examples)
               .map(e => e.text)
               .getOrElse("");
@@ -160,7 +147,7 @@ function convertOxfordEntriesResponse(
                 definition,
                 synonyms: [],
                 example,
-                thesaurasSenseId
+                thesaurasSenseIds
               });
             });
           }
@@ -171,51 +158,40 @@ function convertOxfordEntriesResponse(
   return mappedResult;
 }
 
+// TODO: consider refactoring this and breaking out
+// new functions for each individual responsibility
 function mapEntriesToSynonyms(
-  dictionaryResults: DictionaryResultWithThesaurasSenseId[],
+  dictionaryResults: DictionaryResultWithThesaurasSenseIds[],
   response: Oxford.ThesaurasResponse
 ): DictionaryResult[] {
-  console.log("mapEntriesToSynonyms", { dictionaryResults, response });
-  return dictionaryResults.map(
-    ({ thesaurasSenseId: thesaurasId, ...definition }) => {
-      console.log("Mapping thesaurasId", { thesaurasId });
-      let synonyms: string[] = [];
-      if (thesaurasId.isDefined()) {
-        (response.results || []).forEach(({ lexicalEntries }) => {
-          (lexicalEntries || []).forEach(({ entries }) => {
-            (entries || []).forEach(({ senses }) => {
-              const sense = senses.find(({ id }) => id === thesaurasId.get());
-              if (sense && sense.synonyms) {
-                synonyms.concat(sense.synonyms.map(s => s.text));
-              }
-            });
+  return dictionaryResults.map(({ thesaurasSenseIds, ...definition }) => {
+    let synonyms: string[] = [];
+    (response.results || []).forEach(({ lexicalEntries }) => {
+      (lexicalEntries || []).forEach(({ entries }) => {
+        (entries || []).forEach(({ senses }) => {
+          (thesaurasSenseIds || []).forEach(thesaurasId => {
+            const sense = senses.find(({ id }) => id === thesaurasId);
+            if (sense && sense.synonyms) {
+              synonyms = [...synonyms, ...sense.synonyms.map(s => s.text)];
+            }
           });
         });
-      }
-      return { ...definition, synonyms };
-    }
+      });
+    });
+    return { ...definition, synonyms };
+  });
+}
+
+function mapThesaurasSenseIds(
+  thesaurusLinks: Oxford.EntryThesaurasLink[] = [],
+  senses: Oxford.EntrySense[] = []
+): string[] {
+  return thesaurusLinks.map(getLinkId).concat(
+    senses
+      .filter(({ thesaurusLinks }) => !!thesaurusLinks)
+      .map(({ thesaurusLinks }) => thesaurusLinks.map(getLinkId))
+      .reduce(flatten, [])
   );
-}
-
-function getThesaurasSenseIdFromThesaurusLinks(
-  thesaurusLinks: Oxford.EntryThesaurasLink[]
-): Option<string> {
-  return getFirstItemFromArray(thesaurusLinks).map(link => link.sense_id);
-}
-
-function getThesaurasIdFromSenses(senses: Oxford.EntrySense[]): Option<string> {
-  const sense = senses.find(({ thesaurusLinks }) =>
-    getThesaurasSenseIdFromThesaurusLinks(thesaurusLinks || []).isDefined()
-  );
-  if (sense) {
-    return getThesaurasSenseIdFromThesaurusLinks(sense.thesaurusLinks);
-  } else {
-    return None;
-  }
-}
-
-function getFirstItemFromArray<A>(arr: A[]): Option<A> {
-  return arr && arr.length > 0 ? Some(arr[0]) : None;
 }
 
 function getWordIdFromLemmasResponse(
@@ -225,6 +201,18 @@ function getWordIdFromLemmasResponse(
     .flatMap(lemma => getFirstItemFromArray(lemma.lexicalEntries))
     .flatMap(entry => getFirstItemFromArray(entry.inflectionOf))
     .map(inflection => inflection.id);
+}
+
+function getLinkId(link: Oxford.EntryThesaurasLink) {
+  return link.sense_id;
+}
+
+function flatten<A>(prev: A[], curr: A[]): A[] {
+  return [...prev, ...curr];
+}
+
+function getFirstItemFromArray<A>(arr: A[]): Option<A> {
+  return arr && arr.length > 0 ? Some(arr[0]) : None;
 }
 
 export default routes;
