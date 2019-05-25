@@ -165,6 +165,9 @@ function makeModel(api: Api): Model {
           session,
           colorTheme: getColorThemeFromPreferences(session.user.preferences),
           fontTheme: getFontThemeFromPreferences(session.user.preferences),
+          outlineShowing:
+            !!session.user.preferences &&
+            session.user.preferences.outlineShowing === true,
           distractionFree:
             !!session.user.preferences &&
             session.user.preferences.distractionFree === true
