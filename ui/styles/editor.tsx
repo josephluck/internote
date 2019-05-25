@@ -45,9 +45,16 @@ import {
   currentFocusHasBlock,
   currentFocusHasMark
 } from "../utilities/editor";
-import { Wrap, EditorStyles, EditorWrapper, Editor } from "./editor-styles";
+import {
+  Wrap,
+  EditorStyles,
+  Editor,
+  EditorInnerWrap,
+  TextEditorWrap
+} from "./editor-styles";
 import { Option, Some, None } from "space-lift";
 import { getFirstWordFromString } from "../utilities/string";
+import { Outline } from "./outline";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -442,26 +449,32 @@ export class InternoteEditor extends React.Component<Props, State> {
         <EditorStyles
           distractionFree={this.props.distractionFree}
           userScrolled={this.state.userScrolled}
-          ref={elm => {
-            const node = ReactDOM.findDOMNode(elm);
-            if (node) {
-              this.storeScrollWrapRef(node as HTMLDivElement);
-            }
-          }}
         >
-          <EditorWrapper>
-            <Editor
-              placeholder=""
-              ref={this.storeEditorRef}
-              value={this.state.value as any}
-              onChange={change => this.onChange(change.value)}
-              onKeyDown={this.onKeyDown}
-              renderBlock={this.renderBlock}
-              renderMark={this.renderMark}
-              autoFocus
-              distractionFree={this.props.distractionFree}
+          <EditorInnerWrap
+            ref={elm => {
+              const node = ReactDOM.findDOMNode(elm);
+              if (node) {
+                this.storeScrollWrapRef(node as HTMLDivElement);
+              }
+            }}
+          >
+            <Outline
+              content={(this.props.initialValue as any).document.nodes}
             />
-          </EditorWrapper>
+            <TextEditorWrap>
+              <Editor
+                placeholder=""
+                ref={this.storeEditorRef}
+                value={this.state.value as any}
+                onChange={change => this.onChange(change.value)}
+                onKeyDown={this.onKeyDown}
+                renderBlock={this.renderBlock}
+                renderMark={this.renderMark}
+                autoFocus
+                distractionFree={this.props.distractionFree}
+              />
+            </TextEditorWrap>
+          </EditorInnerWrap>
         </EditorStyles>
 
         <ToolbarWrapper

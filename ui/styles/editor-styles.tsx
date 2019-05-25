@@ -1,7 +1,7 @@
 import { styled } from "../theming/styled";
 import { spacing, borderRadius, font } from "../theming/symbols";
-import { Wrapper } from "./wrapper";
 import { Editor as SlateEditor } from "slate-react";
+import { Wrapper } from "./wrapper";
 
 export const Wrap = styled.div`
   display: flex;
@@ -19,9 +19,6 @@ export const EditorStyles = styled.div<{
   flex: 1;
   overflow: auto;
   font-family: ${props => props.theme.fontFamily};
-  > div:first-of-type {
-    min-height: 100vh;
-  }
   strong {
     font-weight: bold;
   }
@@ -83,11 +80,17 @@ export const EditorStyles = styled.div<{
   }
 `;
 
-export const EditorWrapper = styled(Wrapper)`
-  width: 100%;
+export const EditorInnerWrap = styled(Wrapper)`
+  display: flex;
+  flex: 1;
+  overflow: auto;
+`;
+
+export const TextEditorWrap = styled.div`
+  flex: 1;
 `;
 
 export const Editor = styled(SlateEditor)<{ distractionFree: boolean }>`
   padding-top: ${props => (props.distractionFree ? "50vh" : 0)};
-  padding-bottom: ${props => (props.distractionFree ? "50vh" : 0)};
+  padding-bottom: ${props => (props.distractionFree ? "50vh" : spacing._1)};
 `;
