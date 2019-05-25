@@ -26,6 +26,10 @@ See the overview of your document and quickly navigate to headings and subheadin
 
 Multiple colour and typography themes. Serif's your jam? What about dark mode? No problems.
 
+**Emojis**
+
+Emoji support because Internote is down with the kids :tada:
+
 **Dictionary**
 
 Can't find the perfect word or want to check that your use of a word is correct? Just highlight a word and you're a single click away to the full power of Oxford's full dictionary and thesaurus.
