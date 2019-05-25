@@ -11,7 +11,10 @@ const InnerWrap = styled.div`
   opacity: 0;
 `;
 
-const CollapsedContent = styled.div``;
+// Inline block necessary to recompute width on content change
+const CollapsedContent = styled.div`
+  display: inline-block;
+`;
 
 interface RenderProps {
   renderCollapsedContent: () => React.ReactNode;

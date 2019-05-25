@@ -504,8 +504,6 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("bold", 7)}
               {this.renderMarkButton("italic", 8)}
               {this.renderMarkButton("underlined", 9)}
-            </Flex>
-            <Flex alignItems="center">
               <ButtonSpacer small>
                 <UndoRedoButton
                   onClick={this.undo}
@@ -520,6 +518,8 @@ export class InternoteEditor extends React.Component<Props, State> {
                   tooltip="Redo"
                 />
               </ButtonSpacer>
+            </Flex>
+            <Flex alignItems="center">
               <ButtonSpacer small>
                 <OutlineButton
                   isActive={this.props.outlineShowing}
