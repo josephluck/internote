@@ -18,6 +18,9 @@ export class PreferencesEntity extends Base {
   @Column({ default: "Joey", nullable: true })
   voice?: AvailableVoice;
 
+  @Column({ default: true, nullable: true })
+  outlineShowing?: boolean;
+
   @OneToOne(() => UserEntity, user => user.preferences, {
     onDelete: "CASCADE"
   })
@@ -38,6 +41,7 @@ export const defaultPreferences: CreatePreferences = {
   colorTheme: "Internote",
   fontTheme: "Inter",
   distractionFree: true,
+  outlineShowing: true,
   voice: "Joey"
 };
 

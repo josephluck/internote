@@ -43,6 +43,7 @@ interface OwnState {
   distractionFree: boolean;
   voice: AvailableVoice;
   isFullscreen: boolean;
+  outlineShowing: boolean;
   dictionaryShowing: boolean;
   speechSrc: string | null;
   dictionaryResults: Types.DictionaryResult[];
@@ -60,6 +61,7 @@ interface OwnReducers {
   setDictionaryShowing: Twine.Reducer<OwnState, boolean>;
   setVoice: Twine.Reducer<OwnState, AvailableVoice>;
   setFullscreen: Twine.Reducer<OwnState, boolean>;
+  setOutlineShowing: Twine.Reducer<OwnState, boolean>;
   setSpeechSrc: Twine.Reducer<OwnState, string | null>;
   setDictionaryResults: Twine.Reducer<OwnState, Types.DictionaryResult[]>;
 }
@@ -112,6 +114,7 @@ function defaultState(): OwnState {
     speechSrc: null,
     voice: "Joey",
     dictionaryShowing: false,
+    outlineShowing: false,
     dictionaryResults: []
   };
 }
@@ -195,6 +198,10 @@ function makeModel(api: Api): Model {
       setFullscreen: (state, isFullscreen) => ({
         ...state,
         isFullscreen
+      }),
+      setOutlineShowing: (state, outlineShowing) => ({
+        ...state,
+        outlineShowing
       }),
       setSpeechSrc: (state, speechSrc) => ({
         ...state,
@@ -384,6 +391,11 @@ export function makeStore() {
           if (state.voice !== prevState.voice) {
             api.preferences.update(state.session.token, {
               voice: state.voice
+            });
+          }
+          if (state.outlineShowing !== prevState.outlineShowing) {
+            api.preferences.update(state.session.token, {
+              outlineShowing: state.outlineShowing
             });
           }
         }
