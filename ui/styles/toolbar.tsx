@@ -11,7 +11,8 @@ import {
   faHeading,
   faQuoteLeft,
   faListUl,
-  faListOl
+  faListOl,
+  faEye
 } from "@fortawesome/free-solid-svg-icons";
 
 export const ToolbarWrapper = styled.div<{
@@ -65,7 +66,9 @@ export const ToolbarExpandedInner = styled.div`
   max-height: 40vh;
 `;
 
-export function renderToolbarIcon(type: MarkType | BlockType): React.ReactNode {
+export function renderToolbarIcon(
+  type: MarkType | BlockType | "outline"
+): React.ReactNode {
   if (type === "bold") {
     return <FontAwesomeIcon icon={faBold} />;
   } else if (type === "italic") {
@@ -84,6 +87,8 @@ export function renderToolbarIcon(type: MarkType | BlockType): React.ReactNode {
     return <FontAwesomeIcon icon={faListUl} />;
   } else if (type === "numbered-list") {
     return <FontAwesomeIcon icon={faListOl} />;
+  } else if (type === "outline") {
+    return <FontAwesomeIcon icon={faEye} />;
   }
   return <></>;
 }

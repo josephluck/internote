@@ -41,6 +41,8 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
         closeDictionary={() => store.actions.setDictionaryShowing(false)}
         onRequestDictionary={store.actions.requestDictionary}
         dictionaryResults={store.state.dictionaryResults}
+        outlineShowing={store.state.outlineShowing}
+        toggleOutlineShowing={store.actions.setOutlineShowing}
       />
     </>
   );

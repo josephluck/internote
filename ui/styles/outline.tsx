@@ -3,19 +3,21 @@ import { spacing, size, font, media } from "../theming/symbols";
 import { valueToOutline } from "../utilities/editor";
 import { Value, Node } from "slate";
 
-const Wrap = styled.div`
+const Wrap = styled.div<{ showing: boolean }>`
   position: sticky;
   left: 0;
   top: 0;
   height: 100%;
   overflow: auto;
   width: ${size.outlineWidth};
-  padding-right: ${spacing._2};
-  opacity: 0.2;
+  padding-left: ${spacing._1};
   transition: all 333ms ease;
+  text-align: right;
   padding-bottom: ${spacing._1};
+  opacity: ${props => (props.showing ? 0.2 : 0)};
+  margin-right: ${props => (props.showing ? 0 : `-${size.outlineWidth}`)};
   @media (min-width: ${media.tablet}) {
-    padding-right: ${spacing._3};
+    padding-left: ${spacing._2};
   }
   &:hover {
     opacity: 1;
@@ -52,14 +54,16 @@ const OutlineHeadingTwo = styled.p`
 
 export function Outline({
   value,
-  onItemClick
+  onItemClick,
+  showing
 }: {
   value: Value;
   onItemClick: (node: Node) => any;
+  showing: boolean;
 }) {
   const structure = valueToOutline(value);
   return (
-    <Wrap>
+    <Wrap showing={showing}>
       {structure.map(block => (
         <OutlineItemWrapper
           key={block.key}

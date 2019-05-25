@@ -55,6 +55,7 @@ import {
 import { Option, Some, None } from "space-lift";
 import { getFirstWordFromString } from "../utilities/string";
 import { Outline } from "./outline";
+import { OutlineButton } from "./outline-button";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -75,6 +76,8 @@ interface Props {
   closeDictionary: () => any;
   onRequestDictionary: (word: string) => any;
   dictionaryResults: Types.DictionaryResult[];
+  outlineShowing: boolean;
+  toggleOutlineShowing: (outlineShowing: boolean) => any;
 }
 
 interface State {
@@ -464,7 +467,6 @@ export class InternoteEditor extends React.Component<Props, State> {
               }
             }}
           >
-            <Outline value={this.state.value} onItemClick={this.focusNode} />
             <TextEditorWrap>
               <Editor
                 placeholder=""
@@ -478,6 +480,12 @@ export class InternoteEditor extends React.Component<Props, State> {
                 distractionFree={this.props.distractionFree}
               />
             </TextEditorWrap>
+
+            <Outline
+              value={this.state.value}
+              onItemClick={this.focusNode}
+              showing={this.props.outlineShowing}
+            />
           </EditorInnerWrap>
         </EditorStyles>
 
@@ -510,6 +518,14 @@ export class InternoteEditor extends React.Component<Props, State> {
                   onClick={this.redo}
                   icon={faRedo}
                   tooltip="Redo"
+                />
+              </ButtonSpacer>
+              <ButtonSpacer small>
+                <OutlineButton
+                  isActive={this.props.outlineShowing}
+                  onClick={() =>
+                    this.props.toggleOutlineShowing(!this.props.outlineShowing)
+                  }
                 />
               </ButtonSpacer>
               <ButtonSpacer small>
