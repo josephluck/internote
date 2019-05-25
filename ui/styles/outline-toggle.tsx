@@ -9,7 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
-export function OutlineButton({
+export function OutlineToggle({
   isActive,
   onClick
 }: {

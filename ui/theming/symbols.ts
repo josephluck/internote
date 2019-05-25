@@ -75,5 +75,7 @@ export const size = {
   notesMenuDropdownWidthExpanded: "16rem",
   settingsMenuDropdownWidth: "8rem",
   outlineWidth: "10rem",
-  wrapperMaxWidth: "42rem"
+  wrapperMaxWidth: "42rem",
+  toolbarExpandedMaxHeight: "40vh",
+  emojiMenuMaxHeight: "5rem"
 };

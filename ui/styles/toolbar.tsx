@@ -1,5 +1,5 @@
 import { styled } from "../theming/styled";
-import { font, spacing } from "../theming/symbols";
+import { font, spacing, size } from "../theming/symbols";
 import { Wrapper } from "./wrapper";
 import { MarkType, BlockType } from "../utilities/serializer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -63,7 +63,7 @@ export const ToolbarExpandedInner = styled.div`
   border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
   padding-top: ${spacing._0_25};
   overflow: auto;
-  max-height: 40vh;
+  max-height: ${size.toolbarExpandedMaxHeight};
 `;
 
 export function renderToolbarIcon(

@@ -7,7 +7,7 @@ import { throttle } from "lodash";
 import { debounce } from "lodash";
 import { Saving } from "./saving";
 import { Flex } from "@rebass/grid";
-import { Value } from "slate";
+import { Value, SchemaProperties } from "slate";
 import { faUndo, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { Speech } from "./speech";
 import { ToolbarButton, ButtonSpacer } from "./toolbar-button";
@@ -55,7 +55,10 @@ import {
 import { Option, Some, None } from "space-lift";
 import { getFirstWordFromString } from "../utilities/string";
 import { Outline } from "./outline";
-import { OutlineButton } from "./outline-button";
+import { OutlineToggle } from "./outline-toggle";
+import { EmojiToggle } from "./emoji-toggle";
+import { EmojiList } from "./emoji-list";
+import { Emoji } from "../utilities/emojis";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -84,6 +87,7 @@ interface State {
   value: Value;
   userScrolled: boolean;
   isCtrlHeld: boolean;
+  emojiMenuShowing: boolean;
 }
 
 export class InternoteEditor extends React.Component<Props, State> {
@@ -93,6 +97,13 @@ export class InternoteEditor extends React.Component<Props, State> {
   focusedNodeKey: string = "";
   editor: SlateEditor | null = null;
   scrollWrap: HTMLDivElement | null;
+  schema: SchemaProperties = {
+    inlines: {
+      emoji: {
+        isVoid: true
+      }
+    }
+  };
 
   constructor(props: Props) {
     super(props);
@@ -100,7 +111,8 @@ export class InternoteEditor extends React.Component<Props, State> {
     this.state = {
       value: getValueOrDefault(props.initialValue),
       userScrolled: false,
-      isCtrlHeld: false
+      isCtrlHeld: false,
+      emojiMenuShowing: false
     };
   }
 
@@ -326,6 +338,35 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
+  undo = () => {
+    this.editor.undo();
+  };
+
+  redo = () => {
+    this.editor.redo();
+  };
+
+  focusNode = (node: Node) => {
+    this.editor.moveToRangeOfNode(node);
+    this.editor.moveFocusToStartOfNode(node);
+    this.editor.focus();
+  };
+
+  setEmojiMenuShowing = (emojiMenuShowing: boolean) => {
+    this.setState({ emojiMenuShowing });
+  };
+
+  insertEmoji = (emoji: Emoji) => {
+    this.editor.focus();
+    this.editor.insertInline({ type: "emoji", data: { code: emoji.char } });
+    window.requestAnimationFrame(() => {
+      this.setState({ emojiMenuShowing: false }, () => {
+        this.editor.moveToStartOfNextText();
+        this.editor.focus();
+      });
+    });
+  };
+
   renderMarkButton = (type: MarkType, shortcutNumber: number) => {
     // TODO: onClick type
     return (
@@ -432,18 +473,24 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
-  undo = () => {
-    this.editor.undo();
-  };
+  // TODO: types
+  renderInline: any = (props, _editor, next) => {
+    const { attributes, node } = props;
 
-  redo = () => {
-    this.editor.redo();
-  };
-
-  focusNode = (node: Node) => {
-    this.editor.moveToRangeOfNode(node);
-    this.editor.moveFocusToStartOfNode(node);
-    this.editor.focus();
+    switch (node.type) {
+      case "emoji":
+        return (
+          <span
+            {...attributes}
+            contentEditable={false}
+            onDrop={e => e.preventDefault()}
+          >
+            {node.data.get("code")}
+          </span>
+        );
+      default:
+        return next();
+    }
   };
 
   render() {
@@ -476,7 +523,9 @@ export class InternoteEditor extends React.Component<Props, State> {
                 onKeyDown={this.onKeyDown}
                 renderBlock={this.renderBlock}
                 renderMark={this.renderMark}
+                renderInline={this.renderInline}
                 autoFocus
+                schema={this.schema}
                 distractionFree={this.props.distractionFree}
               />
             </TextEditorWrap>
@@ -505,6 +554,14 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("italic", 8)}
               {this.renderMarkButton("underlined", 9)}
               <ButtonSpacer small>
+                <EmojiToggle
+                  isActive={this.state.emojiMenuShowing}
+                  onClick={() =>
+                    this.setEmojiMenuShowing(!this.state.emojiMenuShowing)
+                  }
+                />
+              </ButtonSpacer>
+              <ButtonSpacer small>
                 <UndoRedoButton
                   onClick={this.undo}
                   icon={faUndo}
@@ -521,7 +578,7 @@ export class InternoteEditor extends React.Component<Props, State> {
             </Flex>
             <Flex alignItems="center">
               <ButtonSpacer small>
-                <OutlineButton
+                <OutlineToggle
                   isActive={this.props.outlineShowing}
                   onClick={() =>
                     this.props.toggleOutlineShowing(!this.props.outlineShowing)
@@ -550,6 +607,24 @@ export class InternoteEditor extends React.Component<Props, State> {
               <Saving saving={this.props.saving} />
             </Flex>
           </ToolbarInner>
+          <Collapse
+            isOpened={this.state.emojiMenuShowing}
+            style={{ width: "100%" }}
+          >
+            <ToolbarExpandedWrapper>
+              <ToolbarExpandedInner>
+                <ToolbarInner>
+                  <EmojiList onEmojiSelected={this.insertEmoji} />
+                  {this.state.emojiMenuShowing ? (
+                    <OnKeyboardShortcut
+                      keyCombo="esc"
+                      cb={() => this.setEmojiMenuShowing(false)}
+                    />
+                  ) : null}
+                </ToolbarInner>
+              </ToolbarExpandedInner>
+            </ToolbarExpandedWrapper>
+          </Collapse>
           <Collapse
             isOpened={this.props.isDictionaryShowing}
             style={{ width: "100%" }}

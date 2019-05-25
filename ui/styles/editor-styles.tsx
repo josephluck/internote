@@ -18,6 +18,16 @@ export const EditorStyles = styled.div<{
   display: flex;
   flex: 1;
   overflow: auto;
+`;
+
+export const EditorInnerWrap = styled(Wrapper)`
+  display: flex;
+  flex: 1;
+  overflow: auto;
+`;
+
+export const TextEditorWrap = styled.div`
+  flex: 1;
   font-family: ${props => props.theme.fontFamily};
   strong {
     font-weight: bold;
@@ -78,16 +88,6 @@ export const EditorStyles = styled.div<{
     opacity: 1;
     transition: all 100ms ease;
   }
-`;
-
-export const EditorInnerWrap = styled(Wrapper)`
-  display: flex;
-  flex: 1;
-  overflow: auto;
-`;
-
-export const TextEditorWrap = styled.div`
-  flex: 1;
 `;
 
 export const Editor = styled(SlateEditor)<{ distractionFree: boolean }>`
