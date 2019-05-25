@@ -1,7 +1,10 @@
 import { font, spacing, borderRadius } from "../theming/symbols";
 import { styled } from "../theming/styled";
 
-export const ToolbarExpandingButton = styled.div<{ forceShow: boolean }>`
+export const ToolbarExpandingButton = styled.div<{
+  forceShow: boolean;
+  isActive: boolean;
+}>`
   display: inline-flex;
   align-items: center;
   font-size: ${font._12.size};
@@ -9,16 +12,26 @@ export const ToolbarExpandingButton = styled.div<{ forceShow: boolean }>`
   border-radius: ${borderRadius._6};
   padding: ${spacing._0_25};
   color: ${props =>
-    props.forceShow
+    props.isActive
+      ? props.theme.toolbarButtonActiveText
+      : props.forceShow
       ? props.theme.expandingIconButtonActiveText
       : props.theme.expandingIconButtonInactiveText};
   background: ${props =>
-    props.forceShow
+    props.isActive
+      ? props.theme.toolbarButtonActiveBackground
+      : props.forceShow
       ? props.theme.expandingIconButtonBackground
       : "transparent"};
   &:hover {
-    color: ${props => props.theme.expandingIconButtonActiveText};
-    background: ${props => props.theme.expandingIconButtonBackground};
+    color: ${props =>
+      props.isActive
+        ? props.theme.toolbarButtonActiveText
+        : props.theme.expandingIconButtonActiveText};
+    background: ${props =>
+      props.isActive
+        ? props.theme.toolbarButtonActiveBackground
+        : props.theme.expandingIconButtonBackground};
   }
 `;
 
