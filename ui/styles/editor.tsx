@@ -437,6 +437,12 @@ export class InternoteEditor extends React.Component<Props, State> {
     this.editor.redo();
   };
 
+  focusNode = (node: Node) => {
+    this.editor.moveToRangeOfNode(node);
+    this.editor.moveFocusToStartOfNode(node);
+    this.editor.focus();
+  };
+
   render() {
     const isToolbarShowing =
       hasSelection(this.state.value) ||
@@ -458,9 +464,7 @@ export class InternoteEditor extends React.Component<Props, State> {
               }
             }}
           >
-            <Outline
-              content={(this.props.initialValue as any).document.nodes}
-            />
+            <Outline value={this.state.value} onItemClick={this.focusNode} />
             <TextEditorWrap>
               <Editor
                 placeholder=""

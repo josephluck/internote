@@ -1,4 +1,4 @@
-import { Value } from "slate";
+import { Value, Node } from "slate";
 import isKeyHotkey from "is-hotkey";
 import { defaultNote } from "@internote/api/domains/note/default-note";
 import { Option, Some, None } from "space-lift";
@@ -111,3 +111,35 @@ export const isCtrlHotKey = (e: Event) => {
   return isKeyHotkey("ctrl", e) || isKeyHotkey("mod", e);
 };
 export const isEnterHotKey = isKeyHotkey("enter");
+
+interface OutlineItem {
+  name: string;
+  key: string;
+  type: BlockType;
+  node: Node;
+}
+
+// TODO: single line bold
+const blocksInOutline: BlockType[] = ["heading-one", "heading-two"];
+
+export function valueToOutline(value: Value): OutlineItem[] {
+  return value.document
+    .getBlocks()
+    .filter(block => blocksInOutline.includes(block.type as any))
+    .filter(
+      block =>
+        !!block.nodes.first() && !!block.nodes.first().toJSON().text.length
+    )
+    .map(block => {
+      const first = block.nodes.first();
+      // console.log(node);
+      // const val = block.toJSON()
+      return {
+        key: block.key,
+        name: first.toJSON().text,
+        type: block.type as any,
+        node: block
+      };
+    })
+    .toArray();
+}

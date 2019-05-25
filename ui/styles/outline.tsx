@@ -1,6 +1,7 @@
 import { styled } from "../theming/styled";
 import { spacing, size, font, media } from "../theming/symbols";
-import { BlockType } from "../utilities/serializer";
+import { valueToOutline } from "../utilities/editor";
+import { Value, Node } from "slate";
 
 const Wrap = styled.div`
   position: sticky;
@@ -25,6 +26,7 @@ const OutlineItemWrapper = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
 `;
 
 const OutlineHeadingOne = styled.p`
@@ -48,35 +50,21 @@ const OutlineHeadingTwo = styled.p`
   text-overflow: ellipsis;
 `;
 
-interface Structure {
-  name: string;
-  type: BlockType;
-}
-
-// TODO: single line bold
-const outlineOrdering: BlockType[] = ["heading-one", "heading-two"];
-
-function contentToStructure(content: any[]): Structure[] {
-  return content
-    .filter(
-      node => node.object === "block" && outlineOrdering.includes(node.type)
-    )
-    .filter(
-      block =>
-        !!block.nodes && !!block.nodes.length && !!block.nodes[0].text.length
-    )
-    .map(block => ({
-      name: block.nodes[0].text,
-      type: block.type
-    }));
-}
-
-export function Outline({ content }: { content: any[] }) {
-  const structure = contentToStructure(content);
+export function Outline({
+  value,
+  onItemClick
+}: {
+  value: Value;
+  onItemClick: (node: Node) => any;
+}) {
+  const structure = valueToOutline(value);
   return (
     <Wrap>
       {structure.map(block => (
-        <OutlineItemWrapper key={block.name}>
+        <OutlineItemWrapper
+          key={block.key}
+          onClick={() => onItemClick(block.node)}
+        >
           {block.type === "heading-one" ? (
             <OutlineHeadingOne>{block.name}</OutlineHeadingOne>
           ) : (
