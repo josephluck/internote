@@ -1,6 +1,6 @@
 # Internote
 
-Beautiful web-based editor with a focus on distraction-free content creation.
+Beautiful web-based note editor with a focus on distraction-free content creation.
 
 **[Get started!](https://internote.app)**
 
@@ -10,9 +10,17 @@ Beautiful web-based editor with a focus on distraction-free content creation.
 
 All the standard formatting options you'd expect from a modern editor.
 
+**Beautiful design**
+
+Internote has been designed with simplicity and beauty in mind for effortless note taking.
+
 **Focus mode**
 
 Go full zen by entering focus mode. All distracting user interface disappears and the current section highlighted so you can focus on writing completely distraction-free.
+
+**Outline view**
+
+See the overview of your document and quickly navigate to headings and subheadings using a handy outline view.
 
 **Themes**
 
@@ -20,15 +28,15 @@ Multiple colour and typography themes. Serif's your jam? What about dark mode? N
 
 **Dictionary**
 
-Can't find the perfect word or want to check that your use of a word is correct? Just highlight a word and you're a single click away to the full power of Oxford's full dictionary and thesauras.
+Can't find the perfect word or want to check that your use of a word is correct? Just highlight a word and you're a single click away to the full power of Oxford's full dictionary and thesaurus.
 
 **Speech**
 
 Text to speech - just highlight a sentence or paragraph and press the speech button to hear it. Choose from multiple voices, male or female.
 
-**Fullscreen mode**
+**Full-screen mode**
 
-Go completely distraction free by entering fullscreen mode.
+Go completely distraction free by entering full-screen mode.
 
 **Keyboard shortcuts**
 
@@ -53,6 +61,7 @@ Feel free to request new features too, but please bear in mind that this is a pe
 - Next
 - Twine
 - Styled components
+- Slate
 
 #### Back-end
 
@@ -60,7 +69,7 @@ Feel free to request new features too, but please bear in mind that this is a pe
 - Koa
 - PostgreSQL
 - TypeORM
-- AWS Polly
+- A variety of amazon web services
 - Oxford dictionary API
 
 #### Dev-ops
@@ -93,7 +102,7 @@ Internote runs on a serverless stack, and is set up with serverless-offline for 
 - Use the `serverless config credentials --provider aws --key EXAMPLE --secret EXAMPLEKEY` method of authenticating serverless with AWS
 - Update the serverless policy you created to include the `"s3:PutBucketAcl"` permission
 - Create `.env` files in both `ui` and `api` and fill them out with production configuration
-- Run `yarn deploy` from the root of this project
+- Run `yarn deploy:prod` from the root of this project
 
 ## Logs
 
