@@ -115,12 +115,12 @@ export function getCurrentFocusedWord(value: Value): Option<string> {
   // Represents how many characters the focus is in from the left of the current text
   const { offset } = selection.focus;
   return Option(focusText)
-    .filter(f => !!f.text && f.text.length > 0)
-    .map(f => f.text)
-    .map(splitParagraphAtOffset(offset))
-    .map(splitParagraphIntoWords)
-    .filter(ensureArrayLength)
-    .map(getLastItemFromArray);
+    .filter(f => !!f.text && f.text.length > 0) // Ensure there is focus and chars
+    .map(f => f.text) // Grab text from focus
+    .map(splitParagraphAtOffset(offset)) // Get first portion of focus text according to cursor position
+    .map(splitParagraphIntoWords) // Split into individual words
+    .filter(ensureArrayLength) // Ensure there's at least one word
+    .map(getLastItemFromArray); // Grab the last word (which is where the cursor is)
 }
 
 export function isEmojiShortcut(word: string): boolean {
