@@ -124,7 +124,7 @@ export function getCurrentFocusedWord(value: Value): Option<string> {
 }
 
 export function isEmojiShortcut(word: string): boolean {
-  return word.startsWith(":") && word.length > 2;
+  return word.startsWith(":") && word.length > 1;
 }
 
 export const isH1Hotkey = isKeyHotkey("mod+1");

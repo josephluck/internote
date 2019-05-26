@@ -44,7 +44,9 @@ export class EmojiList extends React.PureComponent<Props, State> {
   }
 
   componentWillReceiveProps(prevProps: Props) {
-    if (prevProps.search !== this.props.search) {
+    if (this.props.search.length === 0) {
+      this.setState({ emojis });
+    } else if (prevProps.search !== this.props.search) {
       this.searchEmojis();
     }
   }
