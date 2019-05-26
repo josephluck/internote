@@ -322,20 +322,42 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   onRequestSpeech = () => {
     getSelectedContent(this.state.value).map(this.props.onRequestSpeech);
+    window.requestAnimationFrame(this.refocusEditor);
   };
 
   onRequestDictionary = () => {
     getSelectedContent(this.state.value)
       .flatMap(getFirstWordFromString)
       .map(this.props.onRequestDictionary);
+    window.requestAnimationFrame(this.refocusEditor);
   };
 
   onToggleDictionary = () => {
     if (this.props.isDictionaryShowing) {
       this.props.closeDictionary();
+      window.requestAnimationFrame(this.refocusEditor);
     } else {
       this.onRequestDictionary();
     }
+  };
+
+  setEmojiMenuShowing = (emojiMenuShowing: boolean) => {
+    this.setState({ emojiMenuShowing }, () => {
+      if (!this.state.emojiMenuShowing) {
+        this.editor.focus();
+      }
+    });
+  };
+
+  insertEmoji = (emoji: Emoji) => {
+    this.refocusEditor();
+    this.editor.insertInline({ type: "emoji", data: { code: emoji.char } });
+    window.requestAnimationFrame(() => {
+      this.setState({ emojiMenuShowing: false }, () => {
+        this.editor.moveToStartOfNextText();
+        this.refocusEditor();
+      });
+    });
   };
 
   undo = () => {
@@ -346,25 +368,14 @@ export class InternoteEditor extends React.Component<Props, State> {
     this.editor.redo();
   };
 
+  refocusEditor = () => {
+    this.editor.focus();
+  };
+
   focusNode = (node: Node) => {
     this.editor.moveToRangeOfNode(node);
     this.editor.moveFocusToStartOfNode(node);
     this.editor.focus();
-  };
-
-  setEmojiMenuShowing = (emojiMenuShowing: boolean) => {
-    this.setState({ emojiMenuShowing });
-  };
-
-  insertEmoji = (emoji: Emoji) => {
-    this.editor.focus();
-    this.editor.insertInline({ type: "emoji", data: { code: emoji.char } });
-    window.requestAnimationFrame(() => {
-      this.setState({ emojiMenuShowing: false }, () => {
-        this.editor.moveToStartOfNextText();
-        this.editor.focus();
-      });
-    });
   };
 
   renderMarkButton = (type: MarkType, shortcutNumber: number) => {
