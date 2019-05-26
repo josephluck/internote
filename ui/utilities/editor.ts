@@ -1,4 +1,4 @@
-import { Value, Node, Range, Text, Point } from "slate";
+import { Value, Node, Range, Point } from "slate";
 import isKeyHotkey from "is-hotkey";
 import { defaultNote } from "@internote/api/domains/note/default-note";
 import { Option, Some, None } from "space-lift";
@@ -169,6 +169,19 @@ export const isCtrlHotKey = (e: Event) => {
   return isKeyHotkey("ctrl", e) || isKeyHotkey("mod", e);
 };
 export const isEnterHotKey = isKeyHotkey("enter");
+export const isRightHotKey = isKeyHotkey("right");
+export const isLeftHotKey = isKeyHotkey("left");
+
+export function shouldPreventEmojiHotKey(
+  event: Event,
+  emojiSearch: string,
+  emojiMenuShowing: boolean
+): boolean {
+  const isEmojiHotKey =
+    isRightHotKey(event) || isLeftHotKey(event) || isEnterHotKey(event);
+
+  return emojiSearch.length && emojiMenuShowing && isEmojiHotKey;
+}
 
 interface OutlineItem {
   name: string;
@@ -190,8 +203,6 @@ export function valueToOutline(value: Value): OutlineItem[] {
     )
     .map(block => {
       const first = block.nodes.first();
-      // console.log(node);
-      // const val = block.toJSON()
       return {
         key: block.key,
         name: first.toJSON().text,

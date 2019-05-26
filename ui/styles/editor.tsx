@@ -45,7 +45,8 @@ import {
   currentFocusHasBlock,
   currentFocusHasMark,
   getCurrentFocusedWord,
-  isEmojiShortcut
+  isEmojiShortcut,
+  shouldPreventEmojiHotKey
 } from "../utilities/editor";
 import {
   Wrap,
@@ -188,6 +189,17 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onKeyDown: Plugin["onKeyDown"] = (event, editor, next) => {
+    if (
+      shouldPreventEmojiHotKey(
+        event,
+        this.state.emojiSearch,
+        this.state.emojiMenuShowing
+      )
+    ) {
+      event.preventDefault();
+      return;
+    }
+
     this.handleResetBlockOnEnterPressed(event, editor, next);
 
     if (isCtrlHotKey(event)) {
@@ -242,9 +254,10 @@ export class InternoteEditor extends React.Component<Props, State> {
       .map(word => word.substring(1))
       .fold(
         () => {
-          this.setState({ emojiSearch: "" }, () => {
-            this.setEmojiMenuShowing(false);
-          });
+          this.setEmojiMenuShowing(false);
+          window.setTimeout(() => {
+            this.setState({ emojiSearch: "" });
+          }, 800); // Wait for animation to finish
         },
         emojiSearch => {
           this.setState({ emojiSearch }, () => {
