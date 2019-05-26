@@ -88,6 +88,45 @@ export function currentFocusHasBlock(type: string, value: Value): boolean {
   return value.blocks.some(node => node.type === type);
 }
 
+function splitParagraphAtOffset(offset: number) {
+  return function(paragraph: string) {
+    return paragraph
+      .split("")
+      .slice(0, offset)
+      .join("");
+  };
+}
+
+function splitParagraphIntoWords(paragraph: string): string[] {
+  return paragraph.split(" ");
+}
+
+function ensureArrayLength<A>(arr: A[]): boolean {
+  return arr.length > 0;
+}
+
+function getLastItemFromArray<A>(arr: A[]): A {
+  return arr[arr.length - 1];
+}
+
+export function getCurrentFocusedWord(value: Value): Option<string> {
+  // Selection is the current block
+  const { selection, focusText } = value;
+  // Represents how many characters the focus is in from the left of the current text
+  const { offset } = selection.focus;
+  return Option(focusText)
+    .filter(f => !!f.text && f.text.length > 0)
+    .map(f => f.text)
+    .map(splitParagraphAtOffset(offset))
+    .map(splitParagraphIntoWords)
+    .filter(ensureArrayLength)
+    .map(getLastItemFromArray);
+}
+
+export function isEmojiShortcut(word: string): boolean {
+  return word.startsWith(":") && word.length > 2;
+}
+
 export const isH1Hotkey = isKeyHotkey("mod+1");
 export const isH2Hotkey = isKeyHotkey("mod+2");
 export const isOlHotkey = isKeyHotkey("mod+3");

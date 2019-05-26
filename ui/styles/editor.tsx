@@ -44,6 +44,8 @@ import {
   currentFocusIsWithinList,
   currentFocusHasBlock,
   currentFocusHasMark,
+  getCurrentFocusedWord,
+  isEmojiShortcut
 } from "../utilities/editor";
 import {
   Wrap,
@@ -88,6 +90,7 @@ interface State {
   userScrolled: boolean;
   isCtrlHeld: boolean;
   emojiMenuShowing: boolean;
+  emojiSearch: string;
 }
 
 export class InternoteEditor extends React.Component<Props, State> {
@@ -112,7 +115,8 @@ export class InternoteEditor extends React.Component<Props, State> {
       value: getValueOrDefault(props.initialValue),
       userScrolled: false,
       isCtrlHeld: false,
-      emojiMenuShowing: false
+      emojiMenuShowing: false,
+      emojiSearch: ""
     };
   }
 
@@ -231,27 +235,21 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   handleEmojiShortcut = () => {
-    // Selection is the current block
-    const { selection, focusText } = this.editor.value;
-    // Represents how many characters the focus is in from the left of the current text
-    const { offset } = selection.focus;
-    const previousText = Option(focusText)
-      .filter(f => f.text && !!f.text.length)
-      .map(f => f.text)
-      .getOrElse("")
-      .split("")
-      .slice(0, offset)
-      .join("");
-    const lastWord = Option(previousText)
-      .map(paragraph => paragraph.split(" "))
-      .filter(words => words.length > 0)
-      .map(words => words[words.length - 1])
-      .getOrElse("");
-    if (lastWord.startsWith(":")) {
-      this.setEmojiMenuShowing(true);
-    } else {
-      this.setEmojiMenuShowing(false);
-    }
+    getCurrentFocusedWord(this.editor.value)
+      .filter(isEmojiShortcut)
+      .map(word => word.substring(1))
+      .fold(
+        () => {
+          this.setState({ emojiSearch: "" }, () => {
+            this.setEmojiMenuShowing(false);
+          });
+        },
+        emojiSearch => {
+          this.setState({ emojiSearch }, () => {
+            this.setEmojiMenuShowing(true);
+          });
+        }
+      );
   };
 
   resetBlocks = (node: string = DEFAULT_NODE) => {
@@ -645,12 +643,17 @@ export class InternoteEditor extends React.Component<Props, State> {
           </ToolbarInner>
           <Collapse
             isOpened={this.state.emojiMenuShowing}
+            hasNestedCollapse
             style={{ width: "100%" }}
+            key="emoji-menu"
           >
             <ToolbarExpandedWrapper>
               <ToolbarExpandedInner>
                 <ToolbarInner>
-                  <EmojiList onEmojiSelected={this.insertEmoji} />
+                  <EmojiList
+                    onEmojiSelected={this.insertEmoji}
+                    search={this.state.emojiSearch}
+                  />
                   {this.state.emojiMenuShowing ? (
                     <OnKeyboardShortcut
                       keyCombo="esc"
@@ -663,7 +666,9 @@ export class InternoteEditor extends React.Component<Props, State> {
           </Collapse>
           <Collapse
             isOpened={this.props.isDictionaryShowing}
+            hasNestedCollapse
             style={{ width: "100%" }}
+            key="dictionary-menu"
           >
             <ToolbarExpandedWrapper>
               <ToolbarExpandedInner>
