@@ -388,6 +388,9 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   insertEmoji = (emoji: Emoji) => {
     this.refocusEditor();
+    if (this.state.emojiSearch.length > 0) {
+      this.editor.deleteBackward(this.state.emojiSearch.length + 1); // NB: +1 required to compensate for colon
+    }
     this.editor.insertInline({ type: "emoji", data: { code: emoji.char } });
     window.requestAnimationFrame(() => {
       this.setState({ emojiMenuShowing: false }, () => {

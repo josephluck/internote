@@ -1,4 +1,4 @@
-import { Value, Node } from "slate";
+import { Value, Node, Range, Text, Point } from "slate";
 import isKeyHotkey from "is-hotkey";
 import { defaultNote } from "@internote/api/domains/note/default-note";
 import { Option, Some, None } from "space-lift";
@@ -109,18 +109,37 @@ function getLastItemFromArray<A>(arr: A[]): A {
   return arr[arr.length - 1];
 }
 
-export function getCurrentFocusedWord(value: Value): Option<string> {
-  // Selection is the current block
-  const { selection, focusText } = value;
-  // Represents how many characters the focus is in from the left of the current text
-  const { offset } = selection.focus;
+function getCurrentFocusText(value: Value): Option<string> {
+  const { focusText } = value;
   return Option(focusText)
     .filter(f => !!f.text && f.text.length > 0) // Ensure there is focus and chars
-    .map(f => f.text) // Grab text from focus
+    .map(f => f.text); // Grab text from focus
+}
+
+export function getCurrentFocusedWord(value: Value): Option<string> {
+  // Selection is the current block
+  const { selection } = value;
+  // Represents how many characters the focus is in from the left of the current text
+  const { offset } = selection.focus;
+  return getCurrentFocusText(value)
     .map(splitParagraphAtOffset(offset)) // Get first portion of focus text according to cursor position
     .map(splitParagraphIntoWords) // Split into individual words
     .filter(ensureArrayLength) // Ensure there's at least one word
     .map(getLastItemFromArray); // Grab the last word (which is where the cursor is)
+}
+
+export function getRangeFromWordInCurrentFocus(
+  word: string,
+  value: Value
+): Option<Range> {
+  return getCurrentFocusText(value)
+    .map(text => text.indexOf(word))
+    .map(start =>
+      Range.create({
+        anchor: Point.create({ offset: start - 1 }), // NB: word does not include the colon
+        focus: Point.create({ offset: start + word.length })
+      })
+    );
 }
 
 export function isEmojiShortcut(word: string): boolean {
