@@ -43,7 +43,7 @@ import {
   getSelectedContent,
   currentFocusIsWithinList,
   currentFocusHasBlock,
-  currentFocusHasMark
+  currentFocusHasMark,
 } from "../utilities/editor";
 import {
   Wrap,
@@ -141,6 +141,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   // TODO: value type should be Value
   onChange = (value: any) => {
+    this.handleEmojiShortcut();
     if (this.state.value !== value) {
       this.setState({ value }, this.emitChange);
       window.requestAnimationFrame(this.handleFocusModeScroll);
@@ -180,8 +181,8 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
-  onKeyDown: Plugin["onKeyDown"] = (event, change, next) => {
-    this.handleResetBlockOnEnterPressed(event, change, next);
+  onKeyDown: Plugin["onKeyDown"] = (event, editor, next) => {
+    this.handleResetBlockOnEnterPressed(event, editor, next);
 
     if (isCtrlHotKey(event)) {
       this.setState({ isCtrlHeld: true });
@@ -201,12 +202,12 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   handleResetBlockOnEnterPressed: Plugin["onKeyDown"] = (
     event: KeyboardEvent,
-    change,
+    editor,
     next
   ) => {
     const isEnterKey = isEnterHotKey(event) && !event.shiftKey;
     if (isEnterKey) {
-      const previousBlockType = change.value.focusBlock.type;
+      const previousBlockType = editor.value.focusBlock.type;
       const isListItem = previousBlockType === "list-item";
       if (!isListItem) {
         // NB: Allow enter key to progress to add new paragraph
@@ -217,9 +218,9 @@ export class InternoteEditor extends React.Component<Props, State> {
         this.resetBlocks();
         return;
       }
-      const lastBlockEmpty = change.value.startText.text.length === 0;
+      const lastBlockEmpty = editor.value.startText.text.length === 0;
       const nextBlockIsListItem =
-        !!change.value.nextBlock && change.value.nextBlock.type === "list-item";
+        !!editor.value.nextBlock && editor.value.nextBlock.type === "list-item";
       const shouldCloseList = lastBlockEmpty && !nextBlockIsListItem;
       if (shouldCloseList) {
         this.resetBlocks();
@@ -227,6 +228,30 @@ export class InternoteEditor extends React.Component<Props, State> {
       }
     }
     next();
+  };
+
+  handleEmojiShortcut = () => {
+    // Selection is the current block
+    const { selection, focusText } = this.editor.value;
+    // Represents how many characters the focus is in from the left of the current text
+    const { offset } = selection.focus;
+    const previousText = Option(focusText)
+      .filter(f => f.text && !!f.text.length)
+      .map(f => f.text)
+      .getOrElse("")
+      .split("")
+      .slice(0, offset)
+      .join("");
+    const lastWord = Option(previousText)
+      .map(paragraph => paragraph.split(" "))
+      .filter(words => words.length > 0)
+      .map(words => words[words.length - 1])
+      .getOrElse("");
+    if (lastWord.startsWith(":")) {
+      this.setEmojiMenuShowing(true);
+    } else {
+      this.setEmojiMenuShowing(false);
+    }
   };
 
   resetBlocks = (node: string = DEFAULT_NODE) => {
