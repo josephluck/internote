@@ -11,6 +11,7 @@ export const ToolbarExpandingButton = styled.div<{
   line-height: ${font._12.lineHeight};
   border-radius: ${borderRadius._6};
   padding: ${spacing._0_25};
+  height: ${spacing._1};
   color: ${props =>
     props.isActive
       ? props.theme.toolbarButtonActiveText

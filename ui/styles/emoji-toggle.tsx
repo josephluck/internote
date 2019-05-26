@@ -1,13 +1,18 @@
 import React from "react";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 import { Flex } from "@rebass/grid";
-import { spacing } from "../theming/symbols";
+import { spacing, font } from "../theming/symbols";
 import {
   ToolbarExpandingButton,
   ToolbarExpandingButtonIconWrap
 } from "./toolbar-expanding-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSmileBeam } from "@fortawesome/free-solid-svg-icons";
+import { faGrinAlt } from "@fortawesome/free-solid-svg-icons";
+import { styled } from "../theming/styled";
+
+const IconWrap = styled(ToolbarExpandingButtonIconWrap)`
+  font-size: ${font._12.lineHeight};
+`;
 
 export function EmojiToggle({
   isActive,
@@ -24,9 +29,9 @@ export function EmojiToggle({
     >
       {collapse => (
         <ToolbarExpandingButton forceShow={isActive}>
-          <ToolbarExpandingButtonIconWrap>
-            <FontAwesomeIcon icon={faSmileBeam} />
-          </ToolbarExpandingButtonIconWrap>
+          <IconWrap>
+            <FontAwesomeIcon icon={faGrinAlt} />
+          </IconWrap>
           {collapse.renderCollapsedContent()}
         </ToolbarExpandingButton>
       )}
