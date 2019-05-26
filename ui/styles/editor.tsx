@@ -90,6 +90,7 @@ interface State {
   userScrolled: boolean;
   isCtrlHeld: boolean;
   emojiMenuShowing: boolean;
+  forceShowEmojiMenu: boolean;
   emojiSearch: string;
 }
 
@@ -116,6 +117,7 @@ export class InternoteEditor extends React.Component<Props, State> {
       userScrolled: false,
       isCtrlHeld: false,
       emojiMenuShowing: false,
+      forceShowEmojiMenu: false,
       emojiSearch: ""
     };
   }
@@ -364,12 +366,24 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
-  setEmojiMenuShowing = (emojiMenuShowing: boolean) => {
-    this.setState({ emojiMenuShowing }, () => {
-      if (!this.state.emojiMenuShowing) {
-        this.editor.focus();
+  setEmojiMenuShowing = (
+    emojiMenuShowing: boolean,
+    forceShowEmojiMenu?: boolean
+  ) => {
+    this.setState(
+      {
+        emojiMenuShowing,
+        forceShowEmojiMenu:
+          typeof forceShowEmojiMenu !== "undefined"
+            ? forceShowEmojiMenu
+            : this.state.forceShowEmojiMenu
+      },
+      () => {
+        if (!this.state.emojiMenuShowing) {
+          this.editor.focus();
+        }
       }
-    });
+    );
   };
 
   insertEmoji = (emoji: Emoji) => {
@@ -533,6 +547,8 @@ export class InternoteEditor extends React.Component<Props, State> {
       !!this.props.speechSrc ||
       this.state.isCtrlHeld ||
       this.props.isDictionaryShowing;
+    const emojiMenuShowing =
+      this.state.emojiMenuShowing || this.state.forceShowEmojiMenu;
 
     return (
       <Wrap>
@@ -589,9 +605,12 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("underlined", 9)}
               <ButtonSpacer small>
                 <EmojiToggle
-                  isActive={this.state.emojiMenuShowing}
+                  isActive={emojiMenuShowing}
                   onClick={() =>
-                    this.setEmojiMenuShowing(!this.state.emojiMenuShowing)
+                    this.setEmojiMenuShowing(
+                      !this.state.emojiMenuShowing,
+                      !this.state.emojiMenuShowing
+                    )
                   }
                 />
               </ButtonSpacer>
@@ -642,7 +661,7 @@ export class InternoteEditor extends React.Component<Props, State> {
             </Flex>
           </ToolbarInner>
           <Collapse
-            isOpened={this.state.emojiMenuShowing}
+            isOpened={emojiMenuShowing}
             hasNestedCollapse
             style={{ width: "100%" }}
             key="emoji-menu"
@@ -654,10 +673,11 @@ export class InternoteEditor extends React.Component<Props, State> {
                     onEmojiSelected={this.insertEmoji}
                     search={this.state.emojiSearch}
                   />
-                  {this.state.emojiMenuShowing ? (
+                  {this.state.emojiMenuShowing ||
+                  this.state.forceShowEmojiMenu ? (
                     <OnKeyboardShortcut
                       keyCombo="esc"
-                      cb={() => this.setEmojiMenuShowing(false)}
+                      cb={() => this.setEmojiMenuShowing(false, false)}
                     />
                   ) : null}
                 </ToolbarInner>
