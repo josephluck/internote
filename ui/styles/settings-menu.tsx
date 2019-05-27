@@ -8,7 +8,8 @@ import {
   faCheck,
   faFont,
   faEye,
-  faMicrophone
+  faMicrophone,
+  faSearch
 } from "@fortawesome/free-solid-svg-icons";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -133,6 +134,43 @@ export function SettingsMenu({
                       onClick={() => store.actions.setDistractionFree(true)}
                       icon={
                         store.state.distractionFree ? (
+                          <FontAwesomeIcon icon={faCheck} />
+                        ) : null
+                      }
+                    >
+                      On
+                    </DropdownMenuItem>
+                  </>
+                )
+              },
+              {
+                title: "Outline view",
+                item: list => (
+                  <DropdownMenuItem
+                    icon={<FontAwesomeIcon icon={faSearch} />}
+                    onClick={() => {
+                      list.toSubMenu("Outline view");
+                    }}
+                  >
+                    Outline view
+                  </DropdownMenuItem>
+                ),
+                subMenu: () => (
+                  <>
+                    <DropdownMenuItem
+                      onClick={() => store.actions.setOutlineShowing(false)}
+                      icon={
+                        !store.state.outlineShowing ? (
+                          <FontAwesomeIcon icon={faCheck} />
+                        ) : null
+                      }
+                    >
+                      Off
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => store.actions.setOutlineShowing(true)}
+                      icon={
+                        store.state.outlineShowing ? (
                           <FontAwesomeIcon icon={faCheck} />
                         ) : null
                       }

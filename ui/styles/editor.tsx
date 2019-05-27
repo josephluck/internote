@@ -664,14 +664,6 @@ export class InternoteEditor extends React.Component<Props, State> {
             </Flex>
             <Flex alignItems="center">
               <ButtonSpacer small>
-                <OutlineToggle
-                  isActive={this.props.outlineShowing}
-                  onClick={() =>
-                    this.props.toggleOutlineShowing(!this.props.outlineShowing)
-                  }
-                />
-              </ButtonSpacer>
-              <ButtonSpacer small>
                 <DictionaryButton
                   isLoading={this.props.isDictionaryLoading}
                   isShowing={this.props.isDictionaryShowing}
