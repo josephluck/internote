@@ -585,10 +585,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
     return (
       <Wrap>
-        <EditorStyles
-          distractionFree={this.props.distractionFree}
-          userScrolled={this.state.userScrolled}
-        >
+        <EditorStyles>
           <EditorInnerWrap
             ref={elm => {
               const node = ReactDOM.findDOMNode(elm);
@@ -597,7 +594,10 @@ export class InternoteEditor extends React.Component<Props, State> {
               }
             }}
           >
-            <TextEditorWrap>
+            <TextEditorWrap
+              distractionFree={this.props.distractionFree}
+              userScrolled={this.state.userScrolled}
+            >
               <Editor
                 placeholder=""
                 ref={this.storeEditorRef}
