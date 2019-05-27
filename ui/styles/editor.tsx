@@ -573,15 +573,15 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   render() {
-    const isToolbarShowing =
-      hasSelection(this.state.value) ||
-      !!this.props.speechSrc ||
-      this.state.isCtrlHeld ||
-      this.props.isDictionaryShowing;
     const isEmojiMenuShowing =
       this.state.isEmojiMenuShowing || this.state.forceShowEmojiMenu;
     const toolbarIsExpanded =
       isEmojiMenuShowing || this.props.isDictionaryShowing;
+    const isToolbarShowing =
+      hasSelection(this.state.value) ||
+      !!this.props.speechSrc ||
+      this.state.isCtrlHeld ||
+      toolbarIsExpanded;
 
     return (
       <Wrap>
