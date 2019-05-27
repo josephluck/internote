@@ -90,7 +90,7 @@ interface State {
   value: Value;
   userScrolled: boolean;
   isCtrlHeld: boolean;
-  emojiMenuShowing: boolean;
+  isEmojiMenuShowing: boolean;
   forceShowEmojiMenu: boolean;
   emojiSearch: string;
 }
@@ -117,7 +117,7 @@ export class InternoteEditor extends React.Component<Props, State> {
       value: getValueOrDefault(props.initialValue),
       userScrolled: false,
       isCtrlHeld: false,
-      emojiMenuShowing: false,
+      isEmojiMenuShowing: false,
       forceShowEmojiMenu: false,
       emojiSearch: ""
     };
@@ -193,7 +193,7 @@ export class InternoteEditor extends React.Component<Props, State> {
       shouldPreventEmojiHotKey(
         event,
         this.state.emojiSearch,
-        this.state.emojiMenuShowing
+        this.state.isEmojiMenuShowing
       )
     ) {
       event.preventDefault();
@@ -372,11 +372,15 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   onToggleDictionary = () => {
     if (this.props.isDictionaryShowing) {
-      this.props.closeDictionary();
-      window.requestAnimationFrame(this.refocusEditor);
+      this.closeDictionary();
     } else {
       this.onRequestDictionary();
     }
+  };
+
+  closeDictionary = () => {
+    this.props.closeDictionary();
+    window.requestAnimationFrame(this.refocusEditor);
   };
 
   setEmojiMenuShowing = (
@@ -385,18 +389,23 @@ export class InternoteEditor extends React.Component<Props, State> {
   ) => {
     this.setState(
       {
-        emojiMenuShowing,
+        isEmojiMenuShowing: emojiMenuShowing,
         forceShowEmojiMenu:
           typeof forceShowEmojiMenu !== "undefined"
             ? forceShowEmojiMenu
             : this.state.forceShowEmojiMenu
       },
       () => {
-        if (!this.state.emojiMenuShowing) {
+        if (!this.state.isEmojiMenuShowing) {
           this.editor.focus();
         }
       }
     );
+  };
+
+  closeExpandedToolbar = () => {
+    this.setEmojiMenuShowing(false, false);
+    this.closeDictionary();
   };
 
   insertEmoji = (emoji: Emoji) => {
@@ -406,7 +415,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
     this.editor.insertInline({ type: "emoji", data: { code: emoji.char } });
     window.requestAnimationFrame(() => {
-      this.setState({ emojiMenuShowing: false }, () => {
+      this.setState({ isEmojiMenuShowing: false }, () => {
         this.editor.moveToStartOfNextText();
         this.refocusEditor();
       });
@@ -563,8 +572,10 @@ export class InternoteEditor extends React.Component<Props, State> {
       !!this.props.speechSrc ||
       this.state.isCtrlHeld ||
       this.props.isDictionaryShowing;
-    const emojiMenuShowing =
-      this.state.emojiMenuShowing || this.state.forceShowEmojiMenu;
+    const isEmojiMenuShowing =
+      this.state.isEmojiMenuShowing || this.state.forceShowEmojiMenu;
+    const toolbarIsExpanded =
+      isEmojiMenuShowing || this.props.isDictionaryShowing;
 
     return (
       <Wrap>
@@ -621,11 +632,11 @@ export class InternoteEditor extends React.Component<Props, State> {
               {this.renderMarkButton("underlined", 9)}
               <ButtonSpacer small>
                 <EmojiToggle
-                  isActive={emojiMenuShowing}
+                  isActive={isEmojiMenuShowing}
                   onClick={() =>
                     this.setEmojiMenuShowing(
-                      !this.state.emojiMenuShowing,
-                      !this.state.emojiMenuShowing
+                      !this.state.isEmojiMenuShowing,
+                      !this.state.isEmojiMenuShowing
                     )
                   }
                 />
@@ -676,47 +687,26 @@ export class InternoteEditor extends React.Component<Props, State> {
               <Saving saving={this.props.saving} />
             </Flex>
           </ToolbarInner>
+          {toolbarIsExpanded ? (
+            <OnKeyboardShortcut keyCombo="esc" cb={this.closeExpandedToolbar} />
+          ) : null}
           <Collapse
-            isOpened={emojiMenuShowing}
+            isOpened={toolbarIsExpanded}
             hasNestedCollapse
             style={{ width: "100%" }}
-            key="emoji-menu"
           >
             <ToolbarExpandedWrapper>
               <ToolbarExpandedInner>
                 <ToolbarInner>
-                  <EmojiList
-                    onEmojiSelected={this.insertEmoji}
-                    search={this.state.emojiSearch}
-                  />
-                  {this.state.emojiMenuShowing ||
-                  this.state.forceShowEmojiMenu ? (
-                    <OnKeyboardShortcut
-                      keyCombo="esc"
-                      cb={() => this.setEmojiMenuShowing(false, false)}
+                  {isEmojiMenuShowing ? (
+                    <EmojiList
+                      onEmojiSelected={this.insertEmoji}
+                      search={this.state.emojiSearch}
                     />
-                  ) : null}
-                </ToolbarInner>
-              </ToolbarExpandedInner>
-            </ToolbarExpandedWrapper>
-          </Collapse>
-          <Collapse
-            isOpened={this.props.isDictionaryShowing}
-            hasNestedCollapse
-            style={{ width: "100%" }}
-            key="dictionary-menu"
-          >
-            <ToolbarExpandedWrapper>
-              <ToolbarExpandedInner>
-                <ToolbarInner>
-                  <Dictionary
-                    isLoading={this.props.isDictionaryLoading}
-                    results={this.props.dictionaryResults}
-                  />
-                  {this.props.isDictionaryShowing ? (
-                    <OnKeyboardShortcut
-                      keyCombo="esc"
-                      cb={this.onToggleDictionary}
+                  ) : this.props.isDictionaryShowing ? (
+                    <Dictionary
+                      isLoading={this.props.isDictionaryLoading}
+                      results={this.props.dictionaryResults}
                     />
                   ) : null}
                 </ToolbarInner>
