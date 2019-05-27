@@ -77,7 +77,11 @@ export const TextEditorWrap = styled.div`
   }
   blockquote {
     border-left: solid 4px ${props => props.theme.blockQuoteBorder};
+    color: ${props => props.theme.blockQuoteText};
     padding-left: ${spacing._0_5};
+    margin-left: 0;
+    font-size: ${font._18.size};
+    line-height: ${font._18.lineHeight};
   }
   .node-unfocused {
     opacity: ${props =>

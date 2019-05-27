@@ -28,6 +28,7 @@ export interface Theme {
   toolbarButtonInactiveBackground: string;
   toolbarButtonHoverBackground: string;
   blockQuoteBorder: string;
+  blockQuoteText: string;
   toolbarBackground: string;
   dropdownMenuBackground: string;
   inputLabelText: string;
@@ -76,6 +77,7 @@ export const internote: Theme = {
   toolbarButtonHoverBackground: "#19181B",
   toolbarButtonInactiveText: "#504D5D",
   blockQuoteBorder: "#504D5D",
+  blockQuoteText: "#999999",
   toolbarBackground: "#000000",
   dropdownMenuBackground: "#000000",
   inputLabelText: "#737278",
@@ -124,6 +126,7 @@ export const daydream: Theme = {
   toolbarButtonHoverBackground: "#F9F9FC",
   toolbarButtonInactiveText: "#A79FAC",
   blockQuoteBorder: "#A79FAC",
+  blockQuoteText: "#999999",
   toolbarBackground: "#DFDCE4",
   dropdownMenuBackground: "#DFDCE4",
   inputLabelText: "#737278",
