@@ -93,6 +93,7 @@ interface State {
   isEmojiMenuShowing: boolean;
   forceShowEmojiMenu: boolean;
   emojiSearch: string;
+  dictionaryRequestedWord: string;
 }
 
 export class InternoteEditor extends React.Component<Props, State> {
@@ -119,7 +120,8 @@ export class InternoteEditor extends React.Component<Props, State> {
       isCtrlHeld: false,
       isEmojiMenuShowing: false,
       forceShowEmojiMenu: false,
-      emojiSearch: ""
+      emojiSearch: "",
+      dictionaryRequestedWord: ""
     };
   }
 
@@ -366,7 +368,10 @@ export class InternoteEditor extends React.Component<Props, State> {
   onRequestDictionary = () => {
     getSelectedContent(this.state.value)
       .flatMap(getFirstWordFromString)
-      .map(this.props.onRequestDictionary);
+      .map(word => {
+        this.props.onRequestDictionary(word);
+        this.setState({ dictionaryRequestedWord: word });
+      });
     window.requestAnimationFrame(this.refocusEditor);
   };
 
@@ -380,6 +385,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   closeDictionary = () => {
     this.props.closeDictionary();
+    this.setState({ dictionaryRequestedWord: "" });
     window.requestAnimationFrame(this.refocusEditor);
   };
 
@@ -690,11 +696,7 @@ export class InternoteEditor extends React.Component<Props, State> {
           {toolbarIsExpanded ? (
             <OnKeyboardShortcut keyCombo="esc" cb={this.closeExpandedToolbar} />
           ) : null}
-          <Collapse
-            isOpened={toolbarIsExpanded}
-            hasNestedCollapse
-            style={{ width: "100%" }}
-          >
+          <Collapse isOpened={toolbarIsExpanded} style={{ width: "100%" }}>
             <ToolbarExpandedWrapper>
               <ToolbarExpandedInner>
                 <ToolbarInner>
@@ -707,6 +709,7 @@ export class InternoteEditor extends React.Component<Props, State> {
                     <Dictionary
                       isLoading={this.props.isDictionaryLoading}
                       results={this.props.dictionaryResults}
+                      requestedWord={this.state.dictionaryRequestedWord}
                     />
                   ) : null}
                 </ToolbarInner>

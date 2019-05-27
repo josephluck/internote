@@ -2,6 +2,7 @@ import * as Types from "@internote/api/domains/types";
 import { styled } from "../theming/styled";
 import { HeadingTwo, GhostHeadingTwo, BaseGhostElement } from "./typography";
 import { spacing, font, borderRadius } from "../theming/symbols";
+import { NoResults } from "./no-results";
 
 const DictionaryHeadingWrapper = styled.div`
   display: flex;
@@ -105,10 +106,12 @@ function DictionaryEntry({ result }: { result: Types.DictionaryResult }) {
 
 export function Dictionary({
   isLoading = false,
-  results
+  results,
+  requestedWord
 }: {
   isLoading?: boolean;
   results: Types.DictionaryResult[];
+  requestedWord: string;
 }) {
   if (isLoading) {
     return (
@@ -133,9 +136,16 @@ export function Dictionary({
   }
   return (
     <div style={{ width: "100%" }}>
-      {results.map(result => {
-        return <DictionaryEntry result={result} key={result.word} />;
-      })}
+      {results.length > 0 ? (
+        results.map(result => {
+          return <DictionaryEntry result={result} key={result.word} />;
+        })
+      ) : (
+        <NoResults
+          emojis="📖 🤔"
+          message={`We couldn't find "${requestedWord}" in the dictionary`}
+        />
+      )}
     </div>
   );
 }

@@ -8,10 +8,14 @@ import {
   isLeftHotKey,
   isEnterHotKey
 } from "../utilities/editor";
+import { NoResults } from "./no-results";
 
 const Wrap = styled.div`
   width: 100%;
   max-height: ${size.emojiMenuMaxHeight};
+`;
+
+const ListInner = styled.div`
   margin: -${spacing._0_125};
 `;
 
@@ -100,20 +104,30 @@ export class EmojiList extends React.PureComponent<Props, State> {
   render() {
     return (
       <Wrap>
-        {this.state.emojis.map((emoji, i) => (
-          <EmojiItem
-            key={emoji.codes}
-            isFocused={
-              this.props.search.length === 0 || this.state.focusedIndex === i
-            }
-            onClick={(e: Event) => {
-              e.preventDefault();
-              this.props.onEmojiSelected(emoji);
-            }}
-          >
-            {emoji.char}
-          </EmojiItem>
-        ))}
+        {this.state.emojis.length > 0 ? (
+          <ListInner>
+            {this.state.emojis.map((emoji, i) => (
+              <EmojiItem
+                key={emoji.codes}
+                isFocused={
+                  this.props.search.length === 0 ||
+                  this.state.focusedIndex === i
+                }
+                onClick={(e: Event) => {
+                  e.preventDefault();
+                  this.props.onEmojiSelected(emoji);
+                }}
+              >
+                {emoji.char}
+              </EmojiItem>
+            ))}
+          </ListInner>
+        ) : (
+          <NoResults
+            emojis="🔎 😒"
+            message={`No emojis found for "${this.props.search}"`}
+          />
+        )}
       </Wrap>
     );
   }

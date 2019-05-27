@@ -43,6 +43,7 @@ export interface Theme {
   thesaurasWordText: string;
   thesaurasWordBackground: string;
   thesaurasWordActiveText: string;
+  noResultsText: string;
 }
 
 export const internote: Theme = {
@@ -89,7 +90,8 @@ export const internote: Theme = {
   dictionaryDescriptionText: "#999999",
   thesaurasWordText: "#999999",
   thesaurasWordBackground: "#19181B",
-  thesaurasWordActiveText: "#FFFFFF"
+  thesaurasWordActiveText: "#FFFFFF",
+  noResultsText: "#999999"
 };
 
 export const daydream: Theme = {
@@ -136,7 +138,8 @@ export const daydream: Theme = {
   dictionaryDescriptionText: "#999999",
   thesaurasWordText: "#A79FAC",
   thesaurasWordBackground: "#DFDCE4",
-  thesaurasWordActiveText: "#000000"
+  thesaurasWordActiveText: "#000000",
+  noResultsText: "#999999"
 };
 
 export const colorThemes = [
