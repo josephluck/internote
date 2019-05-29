@@ -16,64 +16,38 @@ interface MenuItem {
   spacerAfter?: boolean;
 }
 
-interface Props {
-  items: MenuItem[];
-  menuOnRight?: boolean;
-  onClose?: () => any;
-}
-
-interface State {
-  subMenu: null | string; // todo, infer this from props
-}
-
-export class ListMenuControl extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      subMenu: null
-    };
-  }
-
-  show = (subMenu: null | string) => {
-    this.setState({ subMenu });
+export function ListMenuControl({ items }: { items: MenuItem[] }) {
+  const [subMenu, setSubMenu] = React.useState<null | string>(null);
+  const renderProps: RenderProps = {
+    toSubMenu: (s: string) => setSubMenu(s),
+    toMainMenu: () => setSubMenu(null)
   };
-
-  back = () => {
-    this.setState({ subMenu: null });
-  };
-
-  render() {
-    const renderProps: RenderProps = {
-      toSubMenu: this.show,
-      toMainMenu: this.back
-    };
-    const subMenu = this.state.subMenu
-      ? this.props.items.find(item => item.title === this.state.subMenu)
-      : null;
-    return (
-      <Collapse isOpened>
-        {subMenu && subMenu.subMenu ? (
-          <>
-            <DropdownMenuItem
-              onClick={this.back}
-              icon={<FontAwesomeIcon icon={faChevronLeft} />}
-            >
-              {subMenu.title}
-            </DropdownMenuItem>
-            <DropdownMenuSpacer />
-            {subMenu.subMenu(renderProps)}
-          </>
-        ) : (
-          <div>
-            {this.props.items.map((item, i) => (
-              <div key={item.title || i}>
-                {item.item(renderProps)}
-                {item.spacerAfter ? <DropdownMenuSpacer /> : null}
-              </div>
-            ))}
-          </div>
-        )}
-      </Collapse>
-    );
-  }
+  const subMenuItem = subMenu
+    ? items.find(item => item.title === subMenu)
+    : null;
+  return (
+    <Collapse isOpened>
+      {subMenuItem && subMenuItem.subMenu ? (
+        <>
+          <DropdownMenuItem
+            onClick={() => setSubMenu(null)}
+            icon={<FontAwesomeIcon icon={faChevronLeft} />}
+          >
+            {subMenuItem.title}
+          </DropdownMenuItem>
+          <DropdownMenuSpacer />
+          {subMenuItem.subMenu(renderProps)}
+        </>
+      ) : (
+        <div>
+          {items.map((item, i) => (
+            <div key={item.title || i}>
+              {item.item(renderProps)}
+              {item.spacerAfter ? <DropdownMenuSpacer /> : null}
+            </div>
+          ))}
+        </div>
+      )}
+    </Collapse>
+  );
 }
