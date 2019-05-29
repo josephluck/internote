@@ -1,29 +1,25 @@
 import * as React from "react";
 import isKeyHotkey from "is-hotkey";
 
-interface Props {
+export function OnKeyboardShortcut({
+  keyCombo,
+  cb
+}: {
   keyCombo: string;
   cb: () => void;
-}
-
-export class OnKeyboardShortcut extends React.Component<Props, {}> {
-  componentDidMount() {
-    document.addEventListener("keydown", this.onKeyDown);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener("keydown", this.onKeyDown);
-  }
-
-  onKeyDown = (event: Event) => {
-    const isHotkey = isKeyHotkey(this.props.keyCombo);
-    if (isHotkey(event)) {
-      event.preventDefault();
-      this.props.cb();
+}) {
+  React.useEffect(() => {
+    function onKeyDown(event: Event) {
+      const isHotkey = isKeyHotkey(keyCombo);
+      if (isHotkey(event)) {
+        event.preventDefault();
+        cb();
+      }
     }
-  };
-
-  render() {
-    return <></>;
-  }
+    document.addEventListener("keydown", onKeyDown);
+    return function() {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [keyCombo]);
+  return null;
 }

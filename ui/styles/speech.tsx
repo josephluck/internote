@@ -39,26 +39,21 @@ const TimelineInner = styled.div`
   transition: width 333ms linear;
 `;
 
-interface Props {
+export function Speech({
+  src,
+  isLoading,
+  onRequest,
+  onDiscard,
+  onFinished
+}: {
   src: string;
   isLoading: boolean;
   onRequest: () => any;
   onDiscard: () => any;
   onFinished: () => any;
-}
-
-interface State {}
-
-export class Speech extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
-
-  onIconClick = (audioState: AudioRenderProps) => {
-    if (this.props.isLoading || audioState.status === "loading") {
-      return;
-    } else if (!this.props.src) {
+}) {
+  function onIconClick(audioState: AudioRenderProps) {
+    if (isLoading || audioState.status === "loading" || !src) {
       return;
     } else if (audioState.status === "playing") {
       audioState.requestPause();
@@ -68,72 +63,67 @@ export class Speech extends React.Component<Props, State> {
     ) {
       audioState.requestPlay();
     }
-  };
+  }
+  return (
+    <AudioPlayer src={src} autoPlay onFinished={onFinished}>
+      {audio => (
+        <CollapseWidthOnHover
+          onClick={!src ? onRequest : undefined}
+          forceShow={!!src || isLoading}
+          collapsedContent={
+            <CollapsedWrapper>
+              {src ? (
+                <Flex alignItems="center">
+                  <TimelineWrap>
+                    <TimelineInner
+                      style={{ width: `${audio.percentagePlayed}%` }}
+                    />
+                  </TimelineWrap>
+                  <ToolbarExpandingButtonIconWrap onClick={onDiscard}>
+                    <FontAwesomeIcon icon={faTimes} />
+                  </ToolbarExpandingButtonIconWrap>
+                </Flex>
+              ) : isLoading ? (
+                "Loading"
+              ) : (
+                "Speech"
+              )}
+            </CollapsedWrapper>
+          }
+        >
+          {collapse => (
+            <ToolbarExpandingButton forceShow={!!src}>
+              <ToolbarExpandingButtonIconWrap
+                onClick={() => onIconClick(audio)}
+              >
+                {renderIcon(audio, isLoading, src)}
+              </ToolbarExpandingButtonIconWrap>
+              {collapse.renderCollapsedContent()}
+            </ToolbarExpandingButton>
+          )}
+        </CollapseWidthOnHover>
+      )}
+    </AudioPlayer>
+  );
+}
 
-  renderIcon = (audioState: AudioRenderProps) => {
-    if (this.props.isLoading || audioState.status === "loading") {
-      return <FontAwesomeIcon icon={faSpinner} spin />;
-    } else if (!this.props.src) {
-      return <FontAwesomeIcon icon={faMicrophone} />;
-    } else if (audioState.status === "playing") {
-      return <FontAwesomeIcon icon={faPause} />;
-    } else if (
-      audioState.status === "paused" ||
-      audioState.status === "stopped"
-    ) {
-      return <FontAwesomeIcon icon={faPlay} />;
-    } else {
-      return null;
-    }
-  };
-
-  render() {
-    return (
-      <AudioPlayer
-        src={this.props.src}
-        autoPlay
-        onFinished={this.props.onFinished}
-      >
-        {audio => (
-          <CollapseWidthOnHover
-            onClick={!this.props.src ? this.props.onRequest : undefined}
-            forceShow={!!this.props.src || this.props.isLoading}
-            collapsedContent={
-              <CollapsedWrapper>
-                {this.props.src ? (
-                  <Flex alignItems="center">
-                    <TimelineWrap>
-                      <TimelineInner
-                        style={{ width: `${audio.percentagePlayed}%` }}
-                      />
-                    </TimelineWrap>
-                    <ToolbarExpandingButtonIconWrap
-                      onClick={this.props.onDiscard}
-                    >
-                      <FontAwesomeIcon icon={faTimes} />
-                    </ToolbarExpandingButtonIconWrap>
-                  </Flex>
-                ) : this.props.isLoading ? (
-                  "Loading"
-                ) : (
-                  "Speech"
-                )}
-              </CollapsedWrapper>
-            }
-          >
-            {collapse => (
-              <ToolbarExpandingButton forceShow={!!this.props.src}>
-                <ToolbarExpandingButtonIconWrap
-                  onClick={() => this.onIconClick(audio)}
-                >
-                  {this.renderIcon(audio)}
-                </ToolbarExpandingButtonIconWrap>
-                {collapse.renderCollapsedContent()}
-              </ToolbarExpandingButton>
-            )}
-          </CollapseWidthOnHover>
-        )}
-      </AudioPlayer>
-    );
+function renderIcon(
+  audioState: AudioRenderProps,
+  isLoading: boolean,
+  src: string
+) {
+  if (isLoading || audioState.status === "loading") {
+    return <FontAwesomeIcon icon={faSpinner} spin />;
+  } else if (!src) {
+    return <FontAwesomeIcon icon={faMicrophone} />;
+  } else if (audioState.status === "playing") {
+    return <FontAwesomeIcon icon={faPause} />;
+  } else if (
+    audioState.status === "paused" ||
+    audioState.status === "stopped"
+  ) {
+    return <FontAwesomeIcon icon={faPlay} />;
+  } else {
+    return null;
   }
 }

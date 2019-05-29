@@ -12,8 +12,3 @@ export const Wrapper = styled.div`
     padding-right: ${spacing._2};
   }
 `;
-
-export const OutlineAdjacentWrapper = styled(Wrapper)`
-  flex: 1;
-  max-width: ${size.wrapperMaxWidthOutline};
-`;

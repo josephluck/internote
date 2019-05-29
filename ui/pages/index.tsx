@@ -31,7 +31,7 @@ const Page: NextTwineSFC<
         {note ? (
           <Note store={props.store} note={note} />
         ) : (
-          <OnMount action={props.store.actions.navigateToFirstNote} />
+          <OnMount cb={props.store.actions.navigateToFirstNote} />
         )}
       </PageWrapper>
       <Global store={props.store} />
