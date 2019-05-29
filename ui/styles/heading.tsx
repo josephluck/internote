@@ -91,9 +91,13 @@ export class Heading extends React.Component<Props, State> {
           </BlockLink>
           <Flex flex="1" alignItems="center" justifyContent="center">
             <NoteMenu
-              store={this.props.store}
+              allNotes={this.props.store.state.notes}
               onMenuToggled={this.setNoteMenuShowing}
-              note={this.props.note}
+              currentNote={this.props.note}
+              onCreateNote={this.props.store.actions.createNote}
+              onDeleteNote={noteId =>
+                this.props.store.actions.deleteNoteConfirmation({ noteId })
+              }
             />
           </Flex>
           <ButtonSpacer>

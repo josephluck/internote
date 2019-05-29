@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as Fuse from "fuse.js";
-import { Store } from "../store";
 import { MenuControl } from "./menu-control";
 import {
   faPlus,
@@ -24,7 +23,7 @@ import { Note } from "@internote/api/domains/types";
 import ReactHighlight from "react-highlight-words";
 import { OnNavigate } from "./on-navigate";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
-import * as Types from "@internote/api/domains/types";
+import { combineStrings } from "../utilities/string";
 
 const DeleteIcon = styled.div`
   margin-left: ${spacing._1_5};
@@ -125,200 +124,157 @@ const Highlighter = styled(ReactHighlight)<{ hasSearch: boolean }>`
   }
 `;
 
-interface Props {
-  store: Store;
-  note: Types.Note | null;
-  onMenuToggled: (menuShowing: boolean) => void;
-}
-
-interface State {
-  notes: Note[];
-  searchText: string;
-  searchFocused: boolean;
-  noteLoading: string | null;
-}
-
 function getNoteTitle(note: Note): string {
   return note.title;
 }
 
-export class NoteMenu extends React.Component<Props, State> {
-  inputRef: React.RefObject<HTMLInputElement>;
+export function NoteMenu({
+  allNotes,
+  currentNote,
+  onCreateNote,
+  onMenuToggled,
+  onDeleteNote
+}: {
+  allNotes: Note[];
+  currentNote: Note;
+  onCreateNote: () => any;
+  onMenuToggled: (showing: boolean) => any;
+  onDeleteNote: (noteId: string) => any;
+}) {
+  const [searchFocused, setSearchFocused] = React.useState(false);
+  const [searchText, setSearchText] = React.useState("");
+  const [noteLoading, setNoteLoading] = React.useState(null);
+  const [filteredNotes, setFilteredNotes] = React.useState<Note[]>([]);
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      notes: props.store.state.notes,
-      searchText: "",
-      searchFocused: false,
-      noteLoading: null
-    };
-    this.inputRef = React.createRef();
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const prevNotes = prevProps.store.state.notes;
-    const newNotes = this.props.store.state.notes;
-    const lengthChanged = prevNotes.length !== newNotes.length;
-    const prevTitles = prevNotes.filter(getNoteTitle);
-    const newTitles = newNotes.filter(getNoteTitle);
-    const titleChanged = !newTitles.every(t => prevTitles.includes(t));
-    if (lengthChanged || titleChanged) {
-      this.searchNotes(this.state.searchText);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  function focusInput() {
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
   }
 
-  searchNotes = (searchText: string) => {
-    this.setState(
-      {
-        searchText
-      },
-      () => {
-        const fuzzy = new Fuse(this.props.store.state.notes, {
-          shouldSort: true,
-          threshold: 0.6,
-          location: 0,
-          distance: 100,
-          maxPatternLength: 32,
-          minMatchCharLength: 1,
-          keys: ["title"]
-        });
-        this.setState({
-          notes: searchText.length
-            ? fuzzy.search(searchText)
-            : this.props.store.state.notes
-        });
-      }
-    );
-  };
+  React.useEffect(() => {
+    searchNotes(searchText);
+  }, [allNotes.length, searchText, combineStrings(allNotes.map(getNoteTitle))]);
 
-  focusInput = () => {
-    if (this.inputRef.current) {
-      this.inputRef.current.focus();
-    }
-  };
-
-  onSearchFocus = () => {
-    this.setState({ searchFocused: true });
-  };
-
-  onSearchBlur = () => {
-    this.setState({ searchFocused: false });
-  };
-
-  setNoteLoading = (noteLoading: string | null) => {
-    this.setState({
-      noteLoading
+  function searchNotes(value: string) {
+    const fuzzy = new Fuse(allNotes, {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 30,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: ["title"]
     });
-  };
-
-  render() {
-    const { store, onMenuToggled, note } = this.props;
-    const { notes, searchText, searchFocused, noteLoading } = this.state;
-    return (
-      <MenuControl
-        onMenuToggled={onMenuToggled}
-        menu={menu => (
-          <NotesMenu
-            showing={menu.menuShowing}
-            position="center"
-            isExpanded={searchFocused || searchText.length > 0}
-          >
-            <OnNavigate
-              onComplete={() => {
-                this.searchNotes("");
-                this.setNoteLoading(null);
-                menu.toggleMenuShowing(false);
-              }}
-            />
-            <OnKeyboardShortcut
-              keyCombo="mod+o"
-              cb={() => menu.toggleMenuShowing(true)}
-            />
-            {menu.menuShowing && !searchFocused ? (
-              <OnKeyboardShortcut keyCombo="s" cb={this.focusInput} />
-            ) : null}
-            <SearchBoxWrapper hasSearch={searchText.length > 0}>
-              <SearchIcon>
-                <FontAwesomeIcon icon={faSearch} />
-              </SearchIcon>
-              <SearchInput
-                placeholder="Search for notes"
-                ref={this.inputRef}
-                value={searchText}
-                onFocus={this.onSearchFocus}
-                onBlur={this.onSearchBlur}
-                onInput={e => {
-                  this.searchNotes(e.target.value);
-                }}
-              />
-            </SearchBoxWrapper>
-            <DropdownMenuItem
-              icon={
-                noteLoading === "new-note" ? (
-                  <FontAwesomeIcon icon={faSpinner} spin />
-                ) : (
-                  <FontAwesomeIcon icon={faPlus} />
-                )
-              }
-              onClick={() => {
-                this.setNoteLoading("new-note");
-                store.actions.createNote();
-              }}
-            >
-              <span>Create a new note</span>
-            </DropdownMenuItem>
-            <DropdownMenuSpacer />
-            {notes.map(n => (
-              <NoteMenuItem
-                key={n.id}
-                icon={
-                  noteLoading === n.id ? (
-                    <FontAwesomeIcon icon={faSpinner} spin />
-                  ) : noteLoading === null && note && n.id === note.id ? (
-                    <FontAwesomeIcon icon={faCheck} />
-                  ) : null
-                }
-              >
-                <Box
-                  flex="1"
-                  style={{ overflow: "hidden", textOverflow: "ellipsis" }}
-                  onClick={() => {
-                    this.setNoteLoading(n.id);
-                  }}
-                >
-                  <Link href={`?id=${n.id}`} passHref>
-                    <a>
-                      <Highlighter
-                        searchWords={searchText.split("")}
-                        autoEscape={true}
-                        textToHighlight={n.title}
-                        hasSearch={searchText.length > 0}
-                      />
-                    </a>
-                  </Link>
-                </Box>
-                <DeleteIcon
-                  onClick={() => {
-                    menu.toggleMenuShowing(false);
-                    store.actions.deleteNoteConfirmation({ noteId: n.id });
-                  }}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                </DeleteIcon>
-              </NoteMenuItem>
-            ))}
-          </NotesMenu>
-        )}
-      >
-        {menu => (
-          <DropdownChevron
-            onClick={() => menu.toggleMenuShowing(!menu.menuShowing)}
-          >
-            {note ? note.title : null}
-          </DropdownChevron>
-        )}
-      </MenuControl>
-    );
+    setFilteredNotes(value.length ? fuzzy.search(value) : allNotes);
   }
+
+  return (
+    <MenuControl
+      onMenuToggled={onMenuToggled}
+      menu={menu => (
+        <NotesMenu
+          showing={menu.menuShowing}
+          position="center"
+          isExpanded={searchFocused || searchText.length > 0}
+        >
+          <OnNavigate
+            onComplete={() => {
+              setNoteLoading(null);
+              setSearchText("");
+              menu.toggleMenuShowing(false);
+            }}
+          />
+          <OnKeyboardShortcut
+            keyCombo="mod+o"
+            cb={() => menu.toggleMenuShowing(true)}
+          />
+          {menu.menuShowing && !searchFocused ? (
+            <OnKeyboardShortcut keyCombo="s" cb={focusInput} />
+          ) : null}
+          <SearchBoxWrapper hasSearch={searchText.length > 0}>
+            <SearchIcon>
+              <FontAwesomeIcon icon={faSearch} />
+            </SearchIcon>
+            <SearchInput
+              placeholder="Search for notes"
+              ref={inputRef}
+              value={searchText}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
+              onInput={e => {
+                setSearchText(e.target.value);
+              }}
+            />
+          </SearchBoxWrapper>
+          <DropdownMenuItem
+            icon={
+              noteLoading === "new-note" ? (
+                <FontAwesomeIcon icon={faSpinner} spin />
+              ) : (
+                <FontAwesomeIcon icon={faPlus} />
+              )
+            }
+            onClick={() => {
+              setNoteLoading("new-note");
+              onCreateNote();
+            }}
+          >
+            <span>Create a new note</span>
+          </DropdownMenuItem>
+          <DropdownMenuSpacer />
+          {filteredNotes.map(n => (
+            <NoteMenuItem
+              key={n.id}
+              icon={
+                noteLoading === n.id ? (
+                  <FontAwesomeIcon icon={faSpinner} spin />
+                ) : noteLoading === null &&
+                  currentNote &&
+                  n.id === currentNote.id ? (
+                  <FontAwesomeIcon icon={faCheck} />
+                ) : null
+              }
+            >
+              <Box
+                flex="1"
+                style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+                onClick={() => {
+                  setNoteLoading(n.id);
+                }}
+              >
+                <Link href={`?id=${n.id}`} passHref>
+                  <a>
+                    <Highlighter
+                      searchWords={searchText.split("")}
+                      autoEscape={true}
+                      textToHighlight={n.title}
+                      hasSearch={searchText.length > 0}
+                    />
+                  </a>
+                </Link>
+              </Box>
+              <DeleteIcon
+                onClick={() => {
+                  menu.toggleMenuShowing(false);
+                  onDeleteNote(n.id);
+                }}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </DeleteIcon>
+            </NoteMenuItem>
+          ))}
+        </NotesMenu>
+      )}
+    >
+      {menu => (
+        <DropdownChevron
+          onClick={() => menu.toggleMenuShowing(!menu.menuShowing)}
+        >
+          {currentNote ? currentNote.title : null}
+        </DropdownChevron>
+      )}
+    </MenuControl>
+  );
 }
