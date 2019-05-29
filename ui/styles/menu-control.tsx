@@ -7,56 +7,52 @@ const MenuWrapper = styled(OnClickOutside)`
   position: relative;
 `;
 
-export type ChildProps = {
+export type RenderProps = {
   toggleMenuShowing: (menuShowing: boolean) => void;
 } & State;
-
-interface Props {
-  children: (state: ChildProps) => React.ReactNode;
-  menu: (state: ChildProps) => React.ReactNode;
-  className?: string;
-  onClose?: () => any;
-  onMenuToggled?: (menuShowing: boolean) => void;
-}
 
 interface State {
   menuShowing: boolean;
 }
 
-export class MenuControl extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      menuShowing: false
-    };
+export function MenuControl({
+  children,
+  menu,
+  className,
+  onClose,
+  onMenuToggled
+}: {
+  children: (state: RenderProps) => React.ReactNode;
+  menu: (state: RenderProps) => React.ReactNode;
+  className?: string;
+  onClose?: () => any;
+  onMenuToggled?: (menuShowing: boolean) => void;
+}) {
+  const [menuShowing, setMenuShowing] = React.useState(false);
+
+  function handleClose() {
+    setMenuShowing(false);
+    if (onClose) {
+      onClose();
+    }
   }
 
-  toggleMenuShowing = (menuShowing: boolean) => {
-    if (this.props.onMenuToggled && this.state.menuShowing !== menuShowing) {
-      this.props.onMenuToggled(menuShowing);
+  function toggleMenuShowing(showing: boolean) {
+    setMenuShowing(showing);
+    if (onMenuToggled && menuShowing !== showing) {
+      onMenuToggled(showing);
     }
-    this.setState({ menuShowing });
-  };
-
-  onClose = () => {
-    this.toggleMenuShowing(false);
-    if (this.props.onClose) {
-      this.props.onClose();
-    }
-  };
-
-  render() {
-    const { className = "", children, menu } = this.props;
-    const childProps = {
-      ...this.state,
-      toggleMenuShowing: this.toggleMenuShowing
-    };
-    return (
-      <MenuWrapper className={className} onClickOutside={this.onClose}>
-        <OnKeyboardShortcut keyCombo="esc" cb={this.onClose} />
-        {menu(childProps)}
-        {children(childProps)}
-      </MenuWrapper>
-    );
   }
+
+  const renderProps: RenderProps = {
+    menuShowing,
+    toggleMenuShowing
+  };
+  return (
+    <MenuWrapper className={className} onClickOutside={handleClose}>
+      <OnKeyboardShortcut keyCombo="esc" cb={handleClose} />
+      {menu(renderProps)}
+      {children(renderProps)}
+    </MenuWrapper>
+  );
 }
