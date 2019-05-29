@@ -24,6 +24,7 @@ import ReactHighlight from "react-highlight-words";
 import { OnNavigate } from "./on-navigate";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { combineStrings } from "../utilities/string";
+import { NoResults } from "./no-results";
 
 const DeleteIcon = styled.div`
   margin-left: ${spacing._1_5};
@@ -224,47 +225,51 @@ export function NoteMenu({
             <span>Create a new note</span>
           </DropdownMenuItem>
           <DropdownMenuSpacer />
-          {filteredNotes.map(n => (
-            <NoteMenuItem
-              key={n.id}
-              icon={
-                noteLoading === n.id ? (
-                  <FontAwesomeIcon icon={faSpinner} spin />
-                ) : noteLoading === null &&
-                  currentNote &&
-                  n.id === currentNote.id ? (
-                  <FontAwesomeIcon icon={faCheck} />
-                ) : null
-              }
-            >
-              <Box
-                flex="1"
-                style={{ overflow: "hidden", textOverflow: "ellipsis" }}
-                onClick={() => {
-                  setNoteLoading(n.id);
-                }}
+          {filteredNotes.length === 0 ? (
+            <NoResults emojis="🔎 🙄" message="No notes found" />
+          ) : (
+            filteredNotes.map(n => (
+              <NoteMenuItem
+                key={n.id}
+                icon={
+                  noteLoading === n.id ? (
+                    <FontAwesomeIcon icon={faSpinner} spin />
+                  ) : noteLoading === null &&
+                    currentNote &&
+                    n.id === currentNote.id ? (
+                    <FontAwesomeIcon icon={faCheck} />
+                  ) : null
+                }
               >
-                <Link href={`?id=${n.id}`} passHref>
-                  <a>
-                    <Highlighter
-                      searchWords={searchText.split("")}
-                      autoEscape={true}
-                      textToHighlight={n.title}
-                      hasSearch={searchText.length > 0}
-                    />
-                  </a>
-                </Link>
-              </Box>
-              <DeleteIcon
-                onClick={() => {
-                  menu.toggleMenuShowing(false);
-                  onDeleteNote(n.id);
-                }}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-              </DeleteIcon>
-            </NoteMenuItem>
-          ))}
+                <Box
+                  flex="1"
+                  style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+                  onClick={() => {
+                    setNoteLoading(n.id);
+                  }}
+                >
+                  <Link href={`?id=${n.id}`} passHref>
+                    <a>
+                      <Highlighter
+                        searchWords={searchText.split("")}
+                        autoEscape={true}
+                        textToHighlight={n.title}
+                        hasSearch={searchText.length > 0}
+                      />
+                    </a>
+                  </Link>
+                </Box>
+                <DeleteIcon
+                  onClick={() => {
+                    menu.toggleMenuShowing(false);
+                    onDeleteNote(n.id);
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </DeleteIcon>
+              </NoteMenuItem>
+            ))
+          )}
         </NotesMenu>
       )}
     >
