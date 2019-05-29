@@ -1,13 +1,17 @@
-import * as serverless from "serverless-http";
+const serverless = require("serverless-http");
 import { connectToDatabase } from "./dependencies/db";
 import { startApp } from "./app";
 
 export async function handler(event, context) {
   const db = await connectToDatabase();
-  const app = startApp(db);
-  const lambda = serverless(app);
-  return lambda(event, context).then(response => {
+  try {
+    const app = startApp(db);
+    const lambda = serverless(app);
+    const response = await lambda(event, context);
     db.close();
     return response;
-  });
+  } catch (err) {
+    db.close();
+    throw err;
+  }
 }
