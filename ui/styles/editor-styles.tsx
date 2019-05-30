@@ -11,7 +11,8 @@ export const Wrap = styled.div`
 export const EditorStyles = styled.div`
   min-height: 100%;
   height: 100%;
-  overflow: auto;
+  padding: ${spacing._2} 0 ${spacing._1};
+  overflow-x: hidden;
 `;
 
 export const EditorInnerWrap = styled(Wrapper)<{

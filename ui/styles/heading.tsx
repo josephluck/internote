@@ -25,7 +25,7 @@ const HeadingWrapper = styled.div<{
   padding: ${spacing._0_5} 0;
   flex: 0 0 auto;
   background: ${props => props.theme.headingBackground};
-  position: ${props => (props.distractionFree ? "fixed" : "sticky")};
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
