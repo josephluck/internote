@@ -69,7 +69,7 @@ export function EmojiList({
     return function() {
       window.removeEventListener("keydown", onKeyDown);
     };
-  });
+  }, [filteredEmojis, focusedIndex, onEmojiSelected]);
 
   return (
     <Wrap>
