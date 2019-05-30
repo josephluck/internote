@@ -16,6 +16,7 @@ const Wrap = styled.div<{ showing: boolean }>`
   padding-bottom: ${spacing._5};
   opacity: ${props => (props.showing ? 0.2 : 0)};
   margin-right: ${props => (props.showing ? 0 : `-${size.outlineWidth}`)};
+  pointer-events: ${props => (props.showing ? "normal" : "none")};
   @media (min-width: ${media.tablet}) {
     padding-left: ${spacing._2};
   }
