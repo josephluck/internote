@@ -26,9 +26,7 @@ const GlobalStyles = createGlobalStyle`
     overflow: auto;
     padding: 0;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    scroll-behavior: smooth;
   }
   input:-webkit-autofill,
   input:-webkit-autofill:hover, 

@@ -292,15 +292,13 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   handleFocusModeScroll = throttle(
     () => {
-      if (this.props.distractionFree) {
-        const focusedBlock = document.querySelector(".node-focused");
-        const editorScrollWrap = this.scrollWrap;
-        if (focusedBlock && editorScrollWrap && this.scroller) {
-          this.preventScrollListener = true;
-          this.setState({ userScrolled: false }, () =>
-            this.scrollEditorToElement(focusedBlock as HTMLElement)
-          );
-        }
+      const focusedBlock = document.querySelector(".node-focused");
+      const editorScrollWrap = this.scrollWrap;
+      if (focusedBlock && editorScrollWrap && this.scroller) {
+        this.preventScrollListener = true;
+        this.setState({ userScrolled: false }, () =>
+          this.scrollEditorToElement(focusedBlock as HTMLElement)
+        );
       }
     },
     500,
@@ -587,6 +585,8 @@ export class InternoteEditor extends React.Component<Props, State> {
       <Wrap>
         <EditorStyles>
           <EditorInnerWrap
+            distractionFree={this.props.distractionFree}
+            userScrolled={this.state.userScrolled}
             ref={elm => {
               const node = ReactDOM.findDOMNode(elm);
               if (node) {
@@ -594,10 +594,6 @@ export class InternoteEditor extends React.Component<Props, State> {
               }
             }}
           >
-            <TextEditorWrap
-              distractionFree={this.props.distractionFree}
-              userScrolled={this.state.userScrolled}
-            >
               <Editor
                 placeholder=""
                 ref={this.storeEditorRef}
@@ -611,7 +607,6 @@ export class InternoteEditor extends React.Component<Props, State> {
                 schema={this.schema}
                 distractionFree={this.props.distractionFree}
               />
-            </TextEditorWrap>
 
             <Outline
               value={this.state.value}

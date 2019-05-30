@@ -5,7 +5,7 @@ import { Value, Node } from "slate";
 
 const Wrap = styled.div<{ showing: boolean }>`
   position: sticky;
-  left: 0;
+  right: 0;
   top: 0;
   height: 100%;
   overflow: auto;
