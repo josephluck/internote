@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { emojis, Emoji } from "../utilities/emojis";
 import styled from "styled-components";
 import { spacing, size } from "../theming/symbols";
@@ -27,16 +27,6 @@ const EmojiItem = styled.div`
   transition: all 333ms ease;
 `;
 
-interface Props {
-  onEmojiSelected: (emoji: Emoji) => any;
-  search: string;
-}
-
-interface State {
-  emojis: Emoji[];
-  focusedIndex: number;
-}
-
 const fuzzy = new Fuse(emojis, {
   shouldSort: true,
   threshold: 0.2,
@@ -47,88 +37,60 @@ const fuzzy = new Fuse(emojis, {
   keys: ["name", "keywords"]
 });
 
-export class EmojiList extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      emojis,
-      focusedIndex: -1
+export function EmojiList({
+  search,
+  onEmojiSelected
+}: {
+  onEmojiSelected: (emoji: Emoji) => any;
+  search: string;
+}) {
+  const [filteredEmojis, setFilteredEmojis] = useState<Emoji[]>([]);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+
+  useEffect(() => {
+    setFilteredEmojis(search.length > 0 ? fuzzy.search(search) : emojis);
+  }, [search]);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (isRightHotKey(event)) {
+        setFocusedIndex(
+          focusedIndex === filteredEmojis.length - 1 ? 0 : focusedIndex + 1
+        );
+      } else if (isLeftHotKey(event)) {
+        setFocusedIndex(
+          focusedIndex === 0 ? filteredEmojis.length - 1 : focusedIndex - 1
+        );
+      } else if (isEnterHotKey(event) && focusedIndex >= 0) {
+        onEmojiSelected(filteredEmojis[focusedIndex]);
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return function() {
+      window.removeEventListener("keydown", onKeyDown);
     };
-  }
+  });
 
-  componentDidMount() {
-    window.addEventListener("keydown", this.onKeyDown);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("keydown", this.onKeyDown);
-  }
-
-  componentWillReceiveProps(prevProps: Props) {
-    if (this.props.search.length === 0) {
-      this.setState({ emojis });
-    } else if (prevProps.search !== this.props.search) {
-      this.searchEmojis();
-    }
-  }
-
-  searchEmojis = () => {
-    const searchedEmojis =
-      this.props.search.length > 0 ? fuzzy.search(this.props.search) : emojis;
-    this.setState({
-      emojis: searchedEmojis,
-      focusedIndex: 0
-    });
-  };
-
-  onKeyDown = (event: Event) => {
-    if (isRightHotKey(event)) {
-      this.setState({
-        focusedIndex:
-          this.state.focusedIndex === this.state.emojis.length - 1
-            ? 0
-            : this.state.focusedIndex + 1
-      });
-    } else if (isLeftHotKey(event)) {
-      this.setState({
-        focusedIndex:
-          this.state.focusedIndex === 0
-            ? this.state.emojis.length - 1
-            : this.state.focusedIndex - 1
-      });
-    } else if (isEnterHotKey(event) && this.state.focusedIndex >= 0) {
-      this.props.onEmojiSelected(this.state.emojis[this.state.focusedIndex]);
-    }
-  };
-
-  render() {
-    return (
-      <Wrap>
-        {this.state.emojis.length > 0 ? (
-          <ListInner>
-            {this.state.emojis.map((emoji, i) => (
-              <EmojiItem
-                key={emoji.codes}
-                isFocused={
-                  this.props.search.length === 0 ||
-                  this.state.focusedIndex === i
-                }
-                onClick={(e: Event) => {
-                  e.preventDefault();
-                  this.props.onEmojiSelected(emoji);
-                }}
-              >
-                {emoji.char}
-              </EmojiItem>
-            ))}
-          </ListInner>
-        ) : (
-          <NoResults
-            emojis="🔎 😒"
-            message={`No emojis found for "${this.props.search}"`}
-          />
-        )}
-      </Wrap>
-    );
-  }
+  return (
+    <Wrap>
+      {filteredEmojis.length > 0 ? (
+        <ListInner>
+          {filteredEmojis.map((emoji, i) => (
+            <EmojiItem
+              key={emoji.codes}
+              isFocused={search.length === 0 || focusedIndex === i}
+              onClick={(e: Event) => {
+                e.preventDefault();
+                onEmojiSelected(emoji);
+              }}
+            >
+              {emoji.char}
+            </EmojiItem>
+          ))}
+        </ListInner>
+      ) : (
+        <NoResults emojis="🔎 😒" message={`No emojis found for "${search}"`} />
+      )}
+    </Wrap>
+  );
 }
