@@ -63,7 +63,8 @@ export const spacing = {
   _1_5: "1.5rem",
   _1_75: "1.75rem",
   _2: "2rem",
-  _3: "3rem"
+  _3: "3rem",
+  _5: "5rem"
 };
 
 export const media = {

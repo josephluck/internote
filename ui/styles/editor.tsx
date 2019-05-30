@@ -48,17 +48,10 @@ import {
   isEmojiShortcut,
   shouldPreventEmojiHotKey
 } from "../utilities/editor";
-import {
-  Wrap,
-  EditorStyles,
-  Editor,
-  EditorInnerWrap,
-  TextEditorWrap
-} from "./editor-styles";
+import { Wrap, EditorStyles, Editor, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
 import { getFirstWordFromString } from "../utilities/string";
 import { Outline } from "./outline";
-import { OutlineToggle } from "./outline-toggle";
 import { EmojiToggle } from "./emoji-toggle";
 import { EmojiList } from "./emoji-list";
 import { Emoji } from "../utilities/emojis";
@@ -296,17 +289,16 @@ export class InternoteEditor extends React.Component<Props, State> {
       const editorScrollWrap = this.scrollWrap;
       if (focusedBlock && editorScrollWrap && this.scroller) {
         this.preventScrollListener = true;
-        this.setState({ userScrolled: false }, () =>
-          this.scrollEditorToElement(focusedBlock as HTMLElement)
-        );
+        this.scrollEditorToElement(focusedBlock as HTMLElement);
+        this.setState({ userScrolled: false });
       }
     },
-    500,
-    { leading: true }
+    100,
+    { leading: true, trailing: true }
   );
 
   scrollEditorToElement = (element: HTMLElement) => {
-    this.scroller.center(element, 200, 0, () => {
+    this.scroller.center(element, 100, 0, () => {
       window.requestAnimationFrame(() => {
         this.preventScrollListener = false;
       });
@@ -583,30 +575,31 @@ export class InternoteEditor extends React.Component<Props, State> {
 
     return (
       <Wrap>
-        <EditorStyles>
+        <EditorStyles
+          ref={elm => {
+            const node = ReactDOM.findDOMNode(elm);
+            if (node) {
+              this.storeScrollWrapRef(node as HTMLDivElement);
+            }
+          }}
+        >
           <EditorInnerWrap
             distractionFree={this.props.distractionFree}
             userScrolled={this.state.userScrolled}
-            ref={elm => {
-              const node = ReactDOM.findDOMNode(elm);
-              if (node) {
-                this.storeScrollWrapRef(node as HTMLDivElement);
-              }
-            }}
           >
-              <Editor
-                placeholder=""
-                ref={this.storeEditorRef}
-                value={this.state.value as any}
-                onChange={change => this.onChange(change.value)}
-                onKeyDown={this.onKeyDown}
-                renderBlock={this.renderBlock}
-                renderMark={this.renderMark}
-                renderInline={this.renderInline}
-                autoFocus
-                schema={this.schema}
-                distractionFree={this.props.distractionFree}
-              />
+            <Editor
+              placeholder=""
+              ref={this.storeEditorRef}
+              value={this.state.value as any}
+              onChange={change => this.onChange(change.value)}
+              onKeyDown={this.onKeyDown}
+              renderBlock={this.renderBlock}
+              renderMark={this.renderMark}
+              renderInline={this.renderInline}
+              autoFocus
+              schema={this.schema}
+              distractionFree={this.props.distractionFree}
+            />
 
             <Outline
               value={this.state.value}

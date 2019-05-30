@@ -7,13 +7,13 @@ const Wrap = styled.div<{ showing: boolean }>`
   position: sticky;
   right: 0;
   top: 0;
-  height: 100%;
+  height: 100vh;
   overflow: auto;
   width: ${size.outlineWidth};
   padding-left: ${spacing._1};
   transition: all 333ms ease;
   text-align: right;
-  padding-bottom: ${spacing._1};
+  padding-bottom: ${spacing._5};
   opacity: ${props => (props.showing ? 0.2 : 0)};
   margin-right: ${props => (props.showing ? 0 : `-${size.outlineWidth}`)};
   @media (min-width: ${media.tablet}) {

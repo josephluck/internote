@@ -8,7 +8,10 @@ import { Note } from "../styles/note";
 import { OnMount } from "../styles/on-mount";
 import { styled } from "../theming/styled";
 
-const PageWrapper = styled.div``;
+const PageWrapper = styled.div`
+  min-height: 100%;
+  height: 100%;
+`;
 
 const Page: NextTwineSFC<
   State,

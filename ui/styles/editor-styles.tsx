@@ -3,9 +3,16 @@ import { spacing, borderRadius, font } from "../theming/symbols";
 import { Editor as SlateEditor } from "slate-react";
 import { Wrapper } from "./wrapper";
 
-export const Wrap = styled.div``;
+export const Wrap = styled.div`
+  min-height: 100%;
+  height: 100%;
+`;
 
-export const EditorStyles = styled.div``;
+export const EditorStyles = styled.div`
+  min-height: 100%;
+  height: 100%;
+  overflow: auto;
+`;
 
 export const EditorInnerWrap = styled(Wrapper)<{
   distractionFree: boolean;
