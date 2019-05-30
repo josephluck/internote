@@ -688,6 +688,7 @@ export class InternoteEditor extends React.Component<Props, State> {
           {toolbarIsExpanded ? (
             <OnKeyboardShortcut keyCombo="esc" cb={this.closeExpandedToolbar} />
           ) : null}
+          <OnKeyboardShortcut keyCombo="mod+d" cb={this.onRequestDictionary} />
           <Collapse isOpened={toolbarIsExpanded} style={{ width: "100%" }}>
             <ToolbarExpandedWrapper>
               <ToolbarExpandedInner>
