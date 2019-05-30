@@ -8,12 +8,7 @@ import { Note } from "../styles/note";
 import { OnMount } from "../styles/on-mount";
 import { styled } from "../theming/styled";
 
-const PageWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-`;
+const PageWrapper = styled.div``;
 
 const Page: NextTwineSFC<
   State,

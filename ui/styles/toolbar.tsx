@@ -28,7 +28,7 @@ export const ToolbarWrapper = styled.div<{
   width: 100%;
   align-items: center;
   padding: ${spacing._0_25} 0;
-  position: ${props => (props.distractionFree ? "fixed" : "static")};
+  position: ${props => (props.distractionFree ? "fixed" : "sticky")};
   left: 0;
   right: 0;
   bottom: 0;

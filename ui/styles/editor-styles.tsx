@@ -3,31 +3,15 @@ import { spacing, borderRadius, font } from "../theming/symbols";
 import { Editor as SlateEditor } from "slate-react";
 import { Wrapper } from "./wrapper";
 
-export const Wrap = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  overflow: hidden;
-  width: 100%;
-`;
+export const Wrap = styled.div``;
 
-export const EditorStyles = styled.div<{
+export const EditorStyles = styled.div``;
+
+export const EditorInnerWrap = styled(Wrapper)<{
   distractionFree: boolean;
   userScrolled: boolean;
 }>`
   display: flex;
-  flex: 1;
-  overflow: auto;
-`;
-
-export const EditorInnerWrap = styled(Wrapper)`
-  display: flex;
-  flex: 1;
-  overflow: auto;
-`;
-
-export const TextEditorWrap = styled.div`
-  flex: 1;
   font-family: ${props => props.theme.fontFamily};
   strong {
     font-weight: bold;
@@ -97,4 +81,5 @@ export const TextEditorWrap = styled.div`
 export const Editor = styled(SlateEditor)<{ distractionFree: boolean }>`
   padding-top: ${props => (props.distractionFree ? "50vh" : 0)};
   padding-bottom: ${props => (props.distractionFree ? "50vh" : spacing._1)};
+  flex: 1;
 `;
