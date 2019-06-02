@@ -6,6 +6,7 @@ export const ToolbarExpandingButton = styled.div<{
   isActive: boolean;
 }>`
   display: inline-flex;
+  overflow: hidden;
   align-items: center;
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};

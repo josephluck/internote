@@ -1,15 +1,12 @@
 import * as React from "react";
+import { Motion, spring } from "react-motion";
 import { styled } from "../theming/styled";
 
 const Wrapper = styled.div`
   cursor: ${props => (props.onClick ? "pointer" : "default")};
 `;
 
-const InnerWrap = styled.div`
-  transition: all 300ms ease;
-  width: 0;
-  opacity: 0;
-`;
+const InnerWrap = styled.div``;
 
 // Inline block necessary to recompute width on content change
 const CollapsedContent = styled.div`
@@ -33,40 +30,49 @@ export function CollapseWidthOnHover({
   className?: string;
   onClick?: () => void;
 }) {
+  const [width, setWidth] = React.useState(0);
+  const [opacity, setOpacity] = React.useState(0);
   const [isHovering, setIsHovering] = React.useState(false);
-  const innerWrapRef = React.useRef<HTMLDivElement>();
   const collapsedContentRef = React.useRef<HTMLDivElement>();
 
   React.useEffect(() => {
     function handleWidth() {
-      const refsExist = innerWrapRef.current && collapsedContentRef.current;
+      const refsExist = collapsedContentRef.current;
       if (refsExist) {
         if (isHovering || forceShow) {
           const childElm = collapsedContentRef.current.firstChild as any;
           const width = childElm.scrollWidth;
-          innerWrapRef.current.style.width = `${width}px`;
-          innerWrapRef.current.style.opacity = "1";
-          innerWrapRef.current.style.pointerEvents = "auto";
+          setWidth(width);
+          setOpacity(1);
         } else {
-          innerWrapRef.current.style.width = "0px";
-          innerWrapRef.current.style.opacity = "0";
-          innerWrapRef.current.style.pointerEvents = "none";
+          setWidth(0);
+          setOpacity(0);
         }
       }
     }
 
     window.requestAnimationFrame(handleWidth);
-  }, [innerWrapRef, collapsedContentRef, isHovering, collapsedContent]);
+  }, [collapsedContentRef, isHovering, collapsedContent]);
 
   const onHoverIn = () => setIsHovering(true);
   const onHoverOut = () => setIsHovering(false);
 
   const renderCollapsedContent = () => (
-    <InnerWrap ref={innerWrapRef}>
-      <CollapsedContent ref={collapsedContentRef}>
-        {collapsedContent}
-      </CollapsedContent>
-    </InnerWrap>
+    <Motion style={{ width: spring(width), opacity: spring(opacity) }}>
+      {value => (
+        <InnerWrap
+          style={{
+            width: value.width,
+            opacity: value.opacity,
+            pointerEvents: width > 0 ? "auto" : "none"
+          }}
+        >
+          <CollapsedContent ref={collapsedContentRef}>
+            {collapsedContent}
+          </CollapsedContent>
+        </InnerWrap>
+      )}
+    </Motion>
   );
 
   return (
