@@ -23,6 +23,6 @@ export function OnNavigate({
         routerEvents.off("routeChangeStart", onStart);
       }
     };
-  });
+  }, []);
   return null;
 }

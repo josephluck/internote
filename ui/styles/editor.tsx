@@ -287,7 +287,12 @@ export class InternoteEditor extends React.Component<Props, State> {
     () => {
       const focusedBlock = document.querySelector(".node-focused");
       const editorScrollWrap = this.scrollWrap;
-      if (focusedBlock && editorScrollWrap && this.scroller) {
+      if (
+        !hasSelection(this.state.value) &&
+        focusedBlock &&
+        editorScrollWrap &&
+        this.scroller
+      ) {
         this.preventScrollListener = true;
         this.scrollEditorToElement(focusedBlock as HTMLElement);
         this.setState({ userScrolled: false });
