@@ -76,14 +76,15 @@ export class Heading extends React.Component<Props, State> {
   };
 
   render() {
+    const forceShow =
+      this.state.noteMenuShowing ||
+      this.state.settingsMenuShowing ||
+      this.props.store.state.loading.createNote;
+
     return (
       <HeadingWrapper
         distractionFree={this.props.store.state.distractionFree}
-        forceShow={
-          this.state.noteMenuShowing ||
-          this.state.settingsMenuShowing ||
-          this.props.store.state.loading.createNote
-        }
+        forceShow={forceShow}
       >
         <HeadingInner>
           <BlockLink href="/">

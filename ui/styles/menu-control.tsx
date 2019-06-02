@@ -35,11 +35,14 @@ export function MenuControl({
     if (onClose) {
       onClose();
     }
+    if (onMenuToggled) {
+      onMenuToggled(false);
+    }
   }
 
   function toggleMenuShowing(showing: boolean) {
     setMenuShowing(showing);
-    if (onMenuToggled && menuShowing !== showing) {
+    if (onMenuToggled) {
       onMenuToggled(showing);
     }
   }
