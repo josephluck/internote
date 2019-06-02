@@ -45,9 +45,10 @@ export function EmojiList({
   search: string;
 }) {
   const [filteredEmojis, setFilteredEmojis] = useState<Emoji[]>([]);
-  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const [focusedIndex, setFocusedIndex] = useState(0);
 
   useEffect(() => {
+    setFocusedIndex(0);
     setFilteredEmojis(search.length > 0 ? fuzzy.search(search) : emojis);
   }, [search]);
 
