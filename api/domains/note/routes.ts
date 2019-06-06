@@ -1,85 +1,73 @@
 import * as Router from "koa-router";
 import { Dependencies } from "../../app";
-import { NoteEntity, createNote } from "./entity";
+import { NoteEntity, createNote, updateNote } from "./entity";
 import { route, RestController } from "../router";
+import { dateIsEqualOrGreaterThan } from "../../utilities/date";
+import { Result } from "space-lift";
+import { validate, rules } from "../../dependencies/validation";
 
 function makeController(deps: Dependencies): RestController {
   const repo = deps.db.getRepository(NoteEntity);
 
   return {
-    async findAll(ctx, user) {
-      return user.fold(
-        () => {
-          return deps.messages.throw(ctx, deps.messages.notFound("notes"));
-        },
-        async u => {
-          ctx.body = await repo.find({
+    findAll: async (_ctx, user) =>
+      user.map(
+        async u =>
+          await repo.find({
             where: { user: u.id }
-          });
-          return ctx.body;
-        }
-      );
-    },
-    async findById(ctx, user) {
-      return user.fold(
-        () => {
-          return deps.messages.throw(ctx, deps.messages.notFound("notes"));
-        },
-        async () => {
-          // TODO: ensure that the findOne only fetches
-          // note that belongs to current logged in user
-          ctx.body = await repo.findOne(ctx.params.noteId);
-          return ctx.body;
-        }
-      );
-    },
-    async create(ctx, user) {
-      return user.fold(
-        () => {
-          return deps.messages.throw(ctx, deps.messages.badRequest("No user"));
-        },
-        async u => {
-          return createNote(ctx.request.body, u).fold(
-            () => {
-              ctx.body = deps.messages.throw(
+          })
+      ),
+    findById: async (ctx, user) =>
+      Result.all([
+        user.toResult(() => null),
+        validate<{ noteId: string }>(ctx.params, { noteId: [rules.required] })
+      ]).fold(
+        () =>
+          deps.messages.throw(
+            ctx,
+            deps.messages.badRequest("Missing required parameter noteId")
+          ),
+        async ([u, params]) =>
+          await repo.findOne({
+            where: {
+              user: u.id,
+              id: params.noteId
+            }
+          })
+      ),
+    create: async (ctx, user) =>
+      user.map(u =>
+        createNote(ctx.request.body, u).fold(
+          () => deps.messages.throw(ctx, deps.messages.badRequest("Notes")),
+          async note => await repo.save(note)
+        )
+      ),
+    updateById: async (ctx, user) =>
+      user.map(u =>
+        Result.all([
+          updateNote(ctx.request.body, u),
+          validate(ctx.params, { noteId: [rules.required] })
+        ]).fold(
+          () => deps.messages.throw(ctx, deps.messages.badRequest("Notes")),
+          async ([newNote, params]) => {
+            const existingNote = await repo.findOne(params.noteId);
+            const updateWillOverride = dateIsEqualOrGreaterThan(
+              existingNote.dateUpdated,
+              newNote.previousDateUpdated
+            );
+            if (updateWillOverride) {
+              deps.messages.throw(
                 ctx,
-                deps.messages.badRequest("Notes")
+                deps.messages.overwrite("Note will be overwritten")
               );
-              return ctx;
-            },
-            async note => {
-              const n = await repo.save(note);
-              ctx.body = await repo.findOne(n.id);
+            } else {
+              ctx.body = await repo.save({ ...existingNote, ...newNote });
               return ctx.body;
             }
-          );
-        }
-      );
-    },
-    async updateById(ctx, user) {
-      return user.fold(
-        () => {
-          return deps.messages.throw(ctx, deps.messages.badRequest("No user"));
-        },
-        async u => {
-          return createNote(ctx.request.body, u).fold(
-            () => {
-              ctx.body = deps.messages.throw(
-                ctx,
-                deps.messages.badRequest("Notes")
-              );
-              return ctx;
-            },
-            async note => {
-              const existingNote = await repo.findOne(ctx.params.noteId);
-              ctx.body = await repo.save({ ...existingNote, ...note });
-              return ctx.body;
-            }
-          );
-        }
-      );
-    },
-    async deleteById(ctx) {
+          }
+        )
+      ),
+    deleteById: async ctx => {
       await repo.delete(ctx.params.noteId);
       ctx.body = {};
       return ctx.body;
@@ -90,14 +78,30 @@ function makeController(deps: Dependencies): RestController {
 export function routes(deps: Dependencies) {
   return function(router: Router) {
     const controller = makeController(deps);
-    router.get("/notes", deps.auth, route(deps, controller.findAll));
-    router.get("/notes/:noteId", deps.auth, route(deps, controller.findById));
-    router.post("/notes", deps.auth, route(deps, controller.create));
-    router.put("/notes/:noteId", deps.auth, route(deps, controller.updateById));
+    router.get(
+      "/notes",
+      deps.auth,
+      route(deps, controller.findAll, { auth: true })
+    );
+    router.get(
+      "/notes/:noteId",
+      deps.auth,
+      route(deps, controller.findById, { auth: true })
+    );
+    router.post(
+      "/notes",
+      deps.auth,
+      route(deps, controller.create, { auth: true })
+    );
+    router.put(
+      "/notes/:noteId",
+      deps.auth,
+      route(deps, controller.updateById, { auth: true })
+    );
     router.delete(
       "/notes/:noteId",
       deps.auth,
-      route(deps, controller.deleteById)
+      route(deps, controller.deleteById, { auth: true })
     );
 
     return router;

@@ -241,7 +241,8 @@ function makeModel(api: Api): Model {
         const existingNote = state.notes.find(note => note.id === noteId);
         const updates = {
           content,
-          title: title ? title : existingNote.title || "Internote"
+          title: title ? title : existingNote.title || "Internote",
+          dateUpdated: existingNote.dateUpdated
         };
         const newNote = existingNote
           ? {
@@ -257,9 +258,16 @@ function makeModel(api: Api): Model {
           noteId,
           updates
         );
-        savedNote.map(note => {
-          actions.setNotes(state.notes.map(n => (n.id === noteId ? note : n)));
-        });
+        savedNote.fold(
+          err => {
+            console.log("Call site", err);
+          },
+          note => {
+            actions.setNotes(
+              state.notes.map(n => (n.id === noteId ? note : n))
+            );
+          }
+        );
       },
       deleteNoteConfirmation(state, actions, { noteId }) {
         const noteToDelete = state.notes.find(note => note.id === noteId);

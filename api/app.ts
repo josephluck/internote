@@ -4,6 +4,7 @@ import * as bodyParser from "koa-bodyparser";
 import * as cors from "koa2-cors";
 import * as auth from "koa-jwt";
 import * as jwt from "jsonwebtoken";
+import * as logger from "koa-pino-logger";
 import { Connection } from "typeorm/connection/Connection";
 import makeRouter from "./domains/router";
 import exceptions from "./dependencies/exceptions";
@@ -27,6 +28,8 @@ export function startApp(db: Connection) {
     jwt,
     messages
   });
+
+  app.use(logger());
 
   app.use(
     cors({

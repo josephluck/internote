@@ -26,7 +26,7 @@ export type CreateNote = Omit<
   Partial<Note>,
   "user" | "id" | "dateCreated" | "dateUpdated"
 >;
-export type UpdateNote = CreateNote;
+export type UpdateNote = CreateNote & Pick<Note, "dateUpdated">;
 
 function defaultNoteContent(): NoteEntity["content"] {
   // TODO: implement a nice default note
@@ -42,6 +42,21 @@ export function createNote(fields: any, user: UserEntity) {
       ...fields,
       content: fields.content ? fields.content : defaultNoteContent(),
       user
+    };
+  });
+}
+
+export function updateNote(fields: any, user: UserEntity) {
+  return validate<UpdateNote>(fields, {
+    content: [rules.required],
+    dateUpdated: [rules.required]
+  }).map(fields => {
+    return {
+      ...new NoteEntity(),
+      ...fields,
+      content: fields.content ? fields.content : defaultNoteContent(),
+      user,
+      previousDateUpdated: fields.dateUpdated
     };
   });
 }

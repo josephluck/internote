@@ -33,7 +33,10 @@ export function api(client: AxiosInstance) {
       return client
         .put(`/notes/${noteId}`, payload, makeRequestConfig({ token }))
         .then(r => Ok(r.data))
-        .catch(err => Err(err));
+        .catch(err => {
+          console.log(err);
+          return Err(err);
+        });
     },
     deleteById(token: string, noteId: string): Promise<Result<Error, void>> {
       return client
