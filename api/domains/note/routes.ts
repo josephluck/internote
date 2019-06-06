@@ -10,13 +10,13 @@ function makeController(deps: Dependencies): RestController {
   const repo = deps.db.getRepository(NoteEntity);
 
   return {
-    findAll: async (_ctx, user) =>
-      user.map(
-        async u =>
-          await repo.find({
-            where: { user: u.id }
-          })
-      ),
+    findAll: async (ctx, user) =>
+      user.map(async u => {
+        ctx.body = await repo.find({
+          where: { user: u.id }
+        });
+        return ctx;
+      }),
     findById: async (ctx, user) =>
       Result.all([
         user.toResult(() => null),
@@ -27,19 +27,24 @@ function makeController(deps: Dependencies): RestController {
             ctx,
             deps.messages.badRequest("Missing required parameter noteId")
           ),
-        async ([u, params]) =>
-          await repo.findOne({
+        async ([u, params]) => {
+          ctx.body = await repo.findOne({
             where: {
               user: u.id,
               id: params.noteId
             }
-          })
+          });
+          return ctx.body;
+        }
       ),
     create: async (ctx, user) =>
       user.map(u =>
         createNote(ctx.request.body, u).fold(
           () => deps.messages.throw(ctx, deps.messages.badRequest("Notes")),
-          async note => await repo.save(note)
+          async note => {
+            ctx.body = await repo.save(note);
+            return ctx.body;
+          }
         )
       ),
     updateById: async (ctx, user) =>
