@@ -26,33 +26,14 @@ export interface RestController {
 
 export type Controller = Record<string, ControllerFn>;
 
-export function route(
-  deps: Dependencies,
-  cb: ControllerFn,
-  options: { auth?: boolean } = {}
-) {
-  const { auth = false } = options;
+export function route(deps: Dependencies, cb: ControllerFn) {
+  // TODO: Could automatically throw 403 if user not present
   return async function(ctx: Router.IRouterContext, next: () => Promise<any>) {
-    const user = Option(
-      await deps.db.manager.findOne(UserEntity, ctx.state.user)
-    );
-
-    async function respond() {
-      await cb(ctx, user);
-      next();
-    }
-
-    user.fold(
-      () => {
-        if (auth) {
-          deps.messages.throw(ctx, deps.messages.notFound("User"));
-          next();
-        } else {
-          respond();
-        }
-      },
-      () => respond()
-    );
+    const user = ctx.state.user
+      ? await deps.db.manager.findOne(UserEntity, ctx.state.user)
+      : undefined;
+    await cb(ctx, Option(user));
+    next();
   };
 }
 
