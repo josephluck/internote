@@ -26,7 +26,8 @@ export type CreateNote = Omit<
   Partial<Note>,
   "user" | "id" | "dateCreated" | "dateUpdated"
 >;
-export type UpdateNote = CreateNote & Pick<Note, "dateUpdated">;
+export type UpdateNote = CreateNote &
+  Pick<Note, "dateUpdated"> & { overwrite: boolean };
 
 function defaultNoteContent(): NoteEntity["content"] {
   // TODO: implement a nice default note

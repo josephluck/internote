@@ -21,7 +21,11 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
         id={note.id}
         initialValue={note.content}
         onChange={changes =>
-          store.actions.updateNote({ noteId: note.id, ...changes })
+          store.actions.updateNote({
+            noteId: note.id,
+            overwrite: false,
+            ...changes
+          })
         }
         onDelete={() =>
           store.actions.deleteNoteConfirmation({

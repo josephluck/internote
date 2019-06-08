@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import * as Koa from "koa";
 import * as bodyParser from "koa-bodyparser";
-import * as cors from "koa2-cors";
+import * as cors from "@koa/cors";
 import * as auth from "koa-jwt";
 import * as jwt from "jsonwebtoken";
 import * as logger from "koa-pino-logger";

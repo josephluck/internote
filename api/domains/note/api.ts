@@ -34,7 +34,7 @@ export function api(client: AxiosInstance) {
         .put(`/notes/${noteId}`, payload, makeRequestConfig({ token }))
         .then(r => Ok(r.data))
         .catch(err => {
-          console.log(err);
+          console.log("Axios catch", err);
           return Err(err);
         });
     },

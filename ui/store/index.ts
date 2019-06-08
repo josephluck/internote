@@ -72,7 +72,12 @@ interface OwnEffects {
   updateNote: Twine.Effect<
     OwnState,
     Actions,
-    { noteId: string; content: {}; title: string | undefined },
+    {
+      noteId: string;
+      content: {};
+      title: string | undefined;
+      overwrite: boolean;
+    },
     Promise<void>
   >;
   deleteNoteConfirmation: Twine.Effect<OwnState, Actions, { noteId: string }>;
@@ -237,12 +242,13 @@ function makeModel(api: Api): Model {
           }
         });
       },
-      async updateNote(state, actions, { noteId, content, title }) {
+      async updateNote(state, actions, { noteId, content, title, overwrite }) {
         const existingNote = state.notes.find(note => note.id === noteId);
         const updates = {
           content,
           title: title ? title : existingNote.title || "Internote",
-          dateUpdated: existingNote.dateUpdated
+          dateUpdated: existingNote.dateUpdated,
+          overwrite
         };
         const newNote = existingNote
           ? {
@@ -260,7 +266,7 @@ function makeModel(api: Api): Model {
         );
         savedNote.fold(
           err => {
-            console.log("Call site", err);
+            console.log("Store fold", err);
           },
           note => {
             actions.setNotes(

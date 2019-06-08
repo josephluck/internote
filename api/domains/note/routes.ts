@@ -69,7 +69,7 @@ function makeController(deps: Dependencies): RestController {
                 existingNote.dateUpdated,
                 newNote.previousDateUpdated
               );
-              if (updateWillOverride) {
+              if (!newNote.overwrite && updateWillOverride) {
                 return deps.messages.throw(
                   ctx,
                   deps.messages.overwrite("Note will be overwritten")
