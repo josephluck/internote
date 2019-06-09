@@ -8,9 +8,7 @@ import {
   isEnterHotKey
 } from "../utilities/editor";
 import { NoResults } from "./no-results";
-import { Tag, NewTag, NewTagIconWrap } from "./tag";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Tag, NewTag } from "./tag";
 
 const Wrap = styled.div`
   width: 100%;
@@ -32,7 +30,7 @@ export function TagsList({
   onTagSelected: (tag: string) => any;
 }) {
   const [filteredTags, setFilteredTags] = useState<string[]>([]);
-  const [focusedIndex, setFocusedIndex] = useState(0);
+  const [focusedIndex, setFocusedIndex] = useState(1);
 
   useEffect(() => {
     const fuzzy = new Fuse(tags, {
@@ -45,7 +43,7 @@ export function TagsList({
     });
     // NB: for hashtags, need to include the #
     const searchCriteria = `#${search}`;
-    setFocusedIndex(0);
+    setFocusedIndex(1);
     setFilteredTags(
       search.length > 0 ? fuzzy.search(searchCriteria).map(i => tags[i]) : tags
     );

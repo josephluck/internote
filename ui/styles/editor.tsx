@@ -58,6 +58,7 @@ import { EmojiToggle } from "./emoji-toggle";
 import { EmojiList } from "./emoji-list";
 import { Emoji } from "../utilities/emojis";
 import { TagsList } from "./tags-list";
+import { Tag } from "./tag";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -104,6 +105,9 @@ export class InternoteEditor extends React.Component<Props, State> {
   schema: SchemaProperties = {
     inlines: {
       emoji: {
+        isVoid: true
+      },
+      tag: {
         isVoid: true
       }
     }
@@ -449,6 +453,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   closeExpandedToolbar = () => {
     this.setEmojiMenuShowing(false, false);
+    this.setTagsMenuShowing(false);
     this.closeDictionary();
   };
 
@@ -471,9 +476,10 @@ export class InternoteEditor extends React.Component<Props, State> {
     if (this.state.shortcutSearch.length > 0) {
       this.editor.deleteBackward(this.state.shortcutSearch.length + 1); // NB: +1 required to compensate for hash
     }
-    this.editor.insertText(tag);
+    this.editor.insertInline({ type: "tag", data: { tag } });
     window.requestAnimationFrame(() => {
       this.setState({ isTagsMenuShowing: false }, () => {
+        this.editor.moveToStartOfNextText();
         this.refocusEditor();
       });
     });
@@ -617,6 +623,18 @@ export class InternoteEditor extends React.Component<Props, State> {
           >
             {node.data.get("code")}
           </span>
+        );
+      case "tag":
+        return (
+          <Tag
+            {...attributes}
+            isFocused
+            large
+            contentEditable={false}
+            onDrop={e => e.preventDefault()}
+          >
+            {node.data.get("tag")}
+          </Tag>
         );
       default:
         return next();

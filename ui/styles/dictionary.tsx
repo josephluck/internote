@@ -79,7 +79,9 @@ function DictionaryEntry({ result }: { result: Types.DictionaryResult }) {
       {result.synonyms.length ? (
         <ThesaurusWrapper>
           {result.synonyms.map(synonym => (
-            <Tag key={synonym}>{synonym}</Tag>
+            <Tag key={synonym} isFocused>
+              {synonym}
+            </Tag>
           ))}
         </ThesaurusWrapper>
       ) : null}

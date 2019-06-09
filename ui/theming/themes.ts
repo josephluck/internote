@@ -93,7 +93,7 @@ export const internote: Theme = {
   dictionaryDescriptionText: "#999999",
   tagText: "#999999",
   tagBackground: "#19181B",
-  tagActiveText: "#FFFFFF",
+  tagActiveText: "#D0D2D4",
   tagNewBorder: "#737278",
   noResultsText: "#999999"
 };
@@ -142,9 +142,9 @@ export const daydream: Theme = {
   audioTimelineInactive: "#504D5D",
   dictionaryDescriptionText: "#999999",
   tagText: "#A79FAC",
-  tagBackground: "#DFDCE4",
-  tagActiveText: "#000000",
-  tagNewBorder: "#737278",
+  tagBackground: "#F9F9FC",
+  tagActiveText: "#614B67",
+  tagNewBorder: "#A79FAC",
   noResultsText: "#999999"
 };
 
