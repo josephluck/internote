@@ -47,8 +47,12 @@ export function TagsList({
       maxPatternLength: 32,
       minMatchCharLength: 1
     });
+    // NB: for hashtags, need to include the #
+    const searchCriteria = `#${search}`;
     setFocusedIndex(0);
-    setFilteredTags(search.length > 0 ? fuzzy.search(search) : tags);
+    setFilteredTags(
+      search.length > 0 ? fuzzy.search(searchCriteria).map(i => tags[i]) : tags
+    );
   }, [search, tags]);
 
   useEffect(() => {

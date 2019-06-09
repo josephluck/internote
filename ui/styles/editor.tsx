@@ -259,11 +259,6 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   handleShortcutSearch = () => {
     const extractWord = (word: string) => word.substring(1);
-    const resetSearch = () => {
-      window.setTimeout(() => {
-        this.setState({ shortcutSearch: "" });
-      }, 800); // Wait for animation to finish
-    };
     const shortcut = getCurrentFocusedWord(this.editor.value).filter(
       isShortcut
     );
@@ -273,10 +268,7 @@ export class InternoteEditor extends React.Component<Props, State> {
       .filter(isEmojiShortcut)
       .map(extractWord)
       .fold(
-        () => {
-          this.setEmojiMenuShowing(false);
-          resetSearch();
-        },
+        () => this.setEmojiMenuShowing(false),
         shortcutSearch => {
           this.setState({ shortcutSearch }, () => {
             this.setEmojiMenuShowing(true);
@@ -289,10 +281,7 @@ export class InternoteEditor extends React.Component<Props, State> {
       .filter(isTagShortcut)
       .map(extractWord)
       .fold(
-        () => {
-          this.setTagsMenuShowing(false);
-          resetSearch();
-        },
+        () => this.setTagsMenuShowing(false),
         shortcutSearch => {
           this.setState({ shortcutSearch }, () => {
             this.setTagsMenuShowing(true);

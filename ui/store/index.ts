@@ -273,15 +273,24 @@ function makeModel(api: Api): Model {
             overwrite
           }
         );
-        savedNote.mapError(err => {
-          if (err.type === "overwrite") {
-            actions.overwriteNoteConfirmation({
-              noteId,
-              content,
-              title
-            });
+        savedNote.fold(
+          err => {
+            if (err.type === "overwrite") {
+              actions.overwriteNoteConfirmation({
+                noteId,
+                content,
+                title
+              });
+            }
+          },
+          updatedNote => {
+            // NB: update dateUpdated so that overwrite confirmation
+            // works properly
+            actions.setNotes(
+              state.notes.map(n => (n.id === updatedNote.id ? updatedNote : n))
+            );
           }
-        });
+        );
       },
       overwriteNoteConfirmation(_state, actions, details) {
         actions.setConfirmation({
