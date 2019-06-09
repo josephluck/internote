@@ -146,6 +146,18 @@ export function isEmojiShortcut(word: string): boolean {
   return word.startsWith(":") && word.length > 1;
 }
 
+export function isTagShortcut(word: string): boolean {
+  return word.startsWith("#") && word.length > 1;
+}
+
+/**
+ * Determines whether the provided word is a shortcut
+ * like an emoji or tag shortcut (: or #)
+ */
+export function isShortcut(word: string): boolean {
+  return isEmojiShortcut(word) || isTagShortcut(word);
+}
+
 export const isH1Hotkey = isKeyHotkey("mod+1");
 export const isH2Hotkey = isKeyHotkey("mod+2");
 export const isOlHotkey = isKeyHotkey("mod+3");

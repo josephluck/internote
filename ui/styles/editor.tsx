@@ -46,7 +46,9 @@ import {
   currentFocusHasMark,
   getCurrentFocusedWord,
   isEmojiShortcut,
-  shouldPreventEmojiHotKey
+  shouldPreventEmojiHotKey,
+  isShortcut,
+  isTagShortcut
 } from "../utilities/editor";
 import { Wrap, EditorStyles, Editor, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
@@ -55,12 +57,13 @@ import { Outline } from "./outline";
 import { EmojiToggle } from "./emoji-toggle";
 import { EmojiList } from "./emoji-list";
 import { Emoji } from "../utilities/emojis";
+import { TagsList } from "./tags-list";
 
 const DEFAULT_NODE = "paragraph";
 
 interface Props {
   id: string;
-  dateUpdated: string;
+  overwriteCount: number;
   initialValue: {};
   debounceValue?: number;
   onChange: (value: { content: Object; title: string }) => void;
@@ -86,7 +89,8 @@ interface State {
   isCtrlHeld: boolean;
   isEmojiMenuShowing: boolean;
   forceShowEmojiMenu: boolean;
-  emojiSearch: string;
+  isTagsMenuShowing: boolean;
+  shortcutSearch: string;
   dictionaryRequestedWord: string;
 }
 
@@ -114,7 +118,8 @@ export class InternoteEditor extends React.Component<Props, State> {
       isCtrlHeld: false,
       isEmojiMenuShowing: false,
       forceShowEmojiMenu: false,
-      emojiSearch: "",
+      isTagsMenuShowing: false,
+      shortcutSearch: "",
       dictionaryRequestedWord: ""
     };
   }
@@ -122,7 +127,7 @@ export class InternoteEditor extends React.Component<Props, State> {
   componentDidUpdate(prevProps: Props) {
     if (
       prevProps.id !== this.props.id ||
-      prevProps.dateUpdated !== this.props.dateUpdated
+      prevProps.overwriteCount !== this.props.overwriteCount
     ) {
       this.setState(
         {
@@ -152,7 +157,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   // TODO: value type should be Value
   onChange = (value: any) => {
-    this.handleEmojiShortcut();
+    this.handleShortcutSearch();
     if (this.state.value !== value) {
       this.setState({ value }, this.emitChange);
       window.requestAnimationFrame(this.handleFocusModeScroll);
@@ -196,7 +201,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     if (
       shouldPreventEmojiHotKey(
         event,
-        this.state.emojiSearch,
+        this.state.shortcutSearch,
         this.state.isEmojiMenuShowing
       )
     ) {
@@ -252,20 +257,45 @@ export class InternoteEditor extends React.Component<Props, State> {
     next();
   };
 
-  handleEmojiShortcut = () => {
-    getCurrentFocusedWord(this.editor.value)
+  handleShortcutSearch = () => {
+    const extractWord = (word: string) => word.substring(1);
+    const resetSearch = () => {
+      window.setTimeout(() => {
+        this.setState({ shortcutSearch: "" });
+      }, 800); // Wait for animation to finish
+    };
+    const shortcut = getCurrentFocusedWord(this.editor.value).filter(
+      isShortcut
+    );
+
+    // Handle emojis
+    shortcut
       .filter(isEmojiShortcut)
-      .map(word => word.substring(1))
+      .map(extractWord)
       .fold(
         () => {
           this.setEmojiMenuShowing(false);
-          window.setTimeout(() => {
-            this.setState({ emojiSearch: "" });
-          }, 800); // Wait for animation to finish
+          resetSearch();
         },
-        emojiSearch => {
-          this.setState({ emojiSearch }, () => {
+        shortcutSearch => {
+          this.setState({ shortcutSearch }, () => {
             this.setEmojiMenuShowing(true);
+          });
+        }
+      );
+
+    // Handle tags
+    shortcut
+      .filter(isTagShortcut)
+      .map(extractWord)
+      .fold(
+        () => {
+          this.setTagsMenuShowing(false);
+          resetSearch();
+        },
+        shortcutSearch => {
+          this.setState({ shortcutSearch }, () => {
+            this.setTagsMenuShowing(true);
           });
         }
       );
@@ -413,6 +443,19 @@ export class InternoteEditor extends React.Component<Props, State> {
     );
   };
 
+  setTagsMenuShowing = (isTagsMenuShowing: boolean) => {
+    this.setState(
+      {
+        isTagsMenuShowing
+      },
+      () => {
+        if (!this.state.isTagsMenuShowing) {
+          this.editor.focus();
+        }
+      }
+    );
+  };
+
   closeExpandedToolbar = () => {
     this.setEmojiMenuShowing(false, false);
     this.closeDictionary();
@@ -420,12 +463,26 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   insertEmoji = (emoji: Emoji) => {
     this.refocusEditor();
-    if (this.state.emojiSearch.length > 0) {
-      this.editor.deleteBackward(this.state.emojiSearch.length + 1); // NB: +1 required to compensate for colon
+    if (this.state.shortcutSearch.length > 0) {
+      this.editor.deleteBackward(this.state.shortcutSearch.length + 1); // NB: +1 required to compensate for colon
     }
     this.editor.insertInline({ type: "emoji", data: { code: emoji.char } });
     window.requestAnimationFrame(() => {
       this.setState({ isEmojiMenuShowing: false }, () => {
+        this.editor.moveToStartOfNextText();
+        this.refocusEditor();
+      });
+    });
+  };
+
+  insertTag = (tag: string) => {
+    this.refocusEditor();
+    if (this.state.shortcutSearch.length > 0) {
+      this.editor.deleteBackward(this.state.shortcutSearch.length + 1); // NB: +1 required to compensate for hash
+    }
+    this.editor.insertText(tag);
+    window.requestAnimationFrame(() => {
+      this.setState({ isTagsMenuShowing: false }, () => {
         this.editor.moveToStartOfNextText();
         this.refocusEditor();
       });
@@ -580,7 +637,9 @@ export class InternoteEditor extends React.Component<Props, State> {
     const isEmojiMenuShowing =
       this.state.isEmojiMenuShowing || this.state.forceShowEmojiMenu;
     const toolbarIsExpanded =
-      isEmojiMenuShowing || this.props.isDictionaryShowing;
+      isEmojiMenuShowing ||
+      this.state.isTagsMenuShowing ||
+      this.props.isDictionaryShowing;
     const isToolbarShowing =
       hasSelection(this.state.value) ||
       !!this.props.speechSrc ||
@@ -695,10 +754,16 @@ export class InternoteEditor extends React.Component<Props, State> {
             <ToolbarExpandedWrapper>
               <ToolbarExpandedInner>
                 <ToolbarInner>
-                  {isEmojiMenuShowing ? (
+                  {this.state.isTagsMenuShowing ? (
+                    <TagsList
+                      onTagSelected={this.insertTag}
+                      tags={["#fantastec", "#personal", "#career", "#flat"]}
+                      search={this.state.shortcutSearch}
+                    />
+                  ) : isEmojiMenuShowing ? (
                     <EmojiList
                       onEmojiSelected={this.insertEmoji}
-                      search={this.state.emojiSearch}
+                      search={this.state.shortcutSearch}
                     />
                   ) : this.props.isDictionaryShowing ? (
                     <Dictionary

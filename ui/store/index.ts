@@ -35,6 +35,7 @@ interface FontThemeWithName {
 }
 
 interface OwnState {
+  overwriteCount: number;
   session: Types.Session | null;
   notes: Types.Note[];
   confirmation: Confirmation | null;
@@ -53,6 +54,7 @@ interface OwnState {
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
+  incrementOverwriteCount: Twine.Reducer0<OwnState>;
   setSession: Twine.Reducer<OwnState, Types.Session>;
   setNotes: Twine.Reducer<OwnState, Types.Note[]>;
   setConfirmation: Twine.Reducer<OwnState, Confirmation | null>;
@@ -73,7 +75,7 @@ interface UpdateNotePayload {
   noteId: string;
   content: {};
   title: string | undefined;
-  overwrite: boolean;
+  overwrite?: boolean;
 }
 
 interface OwnEffects {
@@ -109,6 +111,7 @@ interface OwnEffects {
 function defaultState(): OwnState {
   return {
     session: null,
+    overwriteCount: 0,
     notes: [],
     confirmation: null,
     colorTheme: colorThemes[0],
@@ -157,6 +160,10 @@ function makeModel(api: Api): Model {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
+      incrementOverwriteCount: state => ({
+        ...state,
+        overwriteCount: state.overwriteCount + 1
+      }),
       setSession(state, session) {
         if (session) {
           cookies.persistAuthToken(session.token);
@@ -250,35 +257,31 @@ function makeModel(api: Api): Model {
           }
         });
       },
-      async updateNote(state, actions, { noteId, content, title, overwrite }) {
-        if (!state.confirmation || overwrite) {
-          actions.setNotes(
-            state.notes.map(n =>
-              n.id === noteId ? { ...n, content, title } : n
-            )
-          );
-          const existingNote = state.notes.find(note => note.id === noteId);
-          const savedNote = await api.note.updateById(
-            state.session.token,
-            noteId,
-            {
+      async updateNote(
+        state,
+        actions,
+        { noteId, content, title, overwrite = false }
+      ) {
+        const existingNote = state.notes.find(note => note.id === noteId);
+        const savedNote = await api.note.updateById(
+          state.session.token,
+          noteId,
+          {
+            content,
+            title,
+            dateUpdated: existingNote.dateUpdated,
+            overwrite
+          }
+        );
+        savedNote.mapError(err => {
+          if (err.type === "overwrite") {
+            actions.overwriteNoteConfirmation({
+              noteId,
               content,
-              title: title ? title : existingNote.title || "Internote",
-              dateUpdated: existingNote.dateUpdated,
-              overwrite
-            }
-          );
-          savedNote.mapError(err => {
-            if (err.type === "overwrite") {
-              actions.overwriteNoteConfirmation({
-                noteId,
-                content,
-                title,
-                overwrite: true // TODO: fix type so this isn't needed
-              });
-            }
-          });
-        }
+              title
+            });
+          }
+        });
       },
       overwriteNoteConfirmation(_state, actions, details) {
         actions.setConfirmation({
@@ -290,12 +293,14 @@ function makeModel(api: Api): Model {
           async onConfirm() {
             actions.setConfirmationConfirmLoading(true);
             await actions.updateNote({ ...details, overwrite: true });
-            await actions.fetchNotes(); // NB: important to get the latest dateUpdates from the server to avoid prompt again
+            await actions.fetchNotes(); // NB: important to get the latest dateUpdated from the server to avoid prompt again
+            actions.incrementOverwriteCount(); // HACK: Force the editor to re-render
             actions.setConfirmation(null);
           },
           async onCancel() {
             actions.setConfirmationCancelLoading(true);
-            await actions.fetchNotes(); // NB: important to get the latest dateUpdates from the server to avoid prompt again
+            await actions.fetchNotes(); // NB: important to get the latest dateUpdated from the server to avoid prompt again
+            actions.incrementOverwriteCount(); // HACK: Force the editor to re-render
             actions.setConfirmation(null);
           }
         });
