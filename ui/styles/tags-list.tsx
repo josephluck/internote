@@ -7,7 +7,6 @@ import {
   isLeftHotKey,
   isEnterHotKey
 } from "../utilities/editor";
-import { NoResults } from "./no-results";
 import { Tag, NewTag } from "./tag";
 
 const Wrap = styled.div`
@@ -77,25 +76,21 @@ export function TagsList({
 
   return (
     <Wrap>
-      {filteredTags.length > 0 ? (
-        <ListInner>
-          <NewTag isFocused={focusedIndex === 0}>Create #{search}</NewTag>
-          {filteredTags.map((tag, i) => (
-            <Tag
-              key={tag}
-              isFocused={search.length === 0 || focusedIndex === i + 1}
-              onClick={(e: Event) => {
-                e.preventDefault();
-                onTagSelected(tag);
-              }}
-            >
-              {tag}
-            </Tag>
-          ))}
-        </ListInner>
-      ) : (
-        <NoResults emojis="🔎 😒" message={`No tags found for "${search}"`} />
-      )}
+      <ListInner>
+        <NewTag isFocused={focusedIndex === 0}>Create #{search}</NewTag>
+        {filteredTags.map((tag, i) => (
+          <Tag
+            key={tag}
+            isFocused={search.length === 0 || focusedIndex === i + 1}
+            onClick={(e: Event) => {
+              e.preventDefault();
+              onTagSelected(tag);
+            }}
+          >
+            {tag}
+          </Tag>
+        ))}
+      </ListInner>
     </Wrap>
   );
 }
