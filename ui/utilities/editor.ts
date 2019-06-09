@@ -184,15 +184,15 @@ export const isEnterHotKey = isKeyHotkey("enter");
 export const isRightHotKey = isKeyHotkey("right");
 export const isLeftHotKey = isKeyHotkey("left");
 
-export function shouldPreventEmojiHotKey(
+export function shouldPreventEventForMenuNavigationShortcut(
   event: Event,
-  emojiSearch: string,
-  emojiMenuShowing: boolean
+  search: string,
+  menuShowing: boolean
 ): boolean {
-  const isEmojiHotKey =
+  const isNavigationShortcut =
     isRightHotKey(event) || isLeftHotKey(event) || isEnterHotKey(event);
 
-  return emojiSearch.length && emojiMenuShowing && isEmojiHotKey;
+  return search.length && menuShowing && isNavigationShortcut;
 }
 
 interface OutlineItem {

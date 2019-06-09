@@ -46,7 +46,7 @@ import {
   currentFocusHasMark,
   getCurrentFocusedWord,
   isEmojiShortcut,
-  shouldPreventEmojiHotKey,
+  shouldPreventEventForMenuNavigationShortcut,
   isShortcut,
   isTagShortcut
 } from "../utilities/editor";
@@ -198,11 +198,13 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onKeyDown: Plugin["onKeyDown"] = (event, editor, next) => {
+    const menuShowing =
+      this.state.isEmojiMenuShowing || this.state.isTagsMenuShowing;
     if (
-      shouldPreventEmojiHotKey(
+      shouldPreventEventForMenuNavigationShortcut(
         event,
         this.state.shortcutSearch,
-        this.state.isEmojiMenuShowing
+        menuShowing
       )
     ) {
       event.preventDefault();
@@ -472,7 +474,6 @@ export class InternoteEditor extends React.Component<Props, State> {
     this.editor.insertText(tag);
     window.requestAnimationFrame(() => {
       this.setState({ isTagsMenuShowing: false }, () => {
-        this.editor.moveToStartOfNextText();
         this.refocusEditor();
       });
     });
