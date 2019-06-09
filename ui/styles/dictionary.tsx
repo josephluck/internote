@@ -1,8 +1,9 @@
 import * as Types from "@internote/api/domains/types";
 import { styled } from "../theming/styled";
 import { HeadingTwo, GhostHeadingTwo, BaseGhostElement } from "./typography";
-import { spacing, font, borderRadius } from "../theming/symbols";
+import { spacing, font } from "../theming/symbols";
 import { NoResults } from "./no-results";
+import { Tag } from "./tag";
 
 const DictionaryHeadingWrapper = styled.div`
   display: flex;
@@ -52,24 +53,6 @@ const ThesaurasWrapper = styled.div`
   }
 `;
 
-const ThesaurasWord = styled.div`
-  display: inline-block;
-  margin-right: ${spacing._0_125};
-  margin-bottom: ${spacing._0_125};
-  font-size: ${font._12.size};
-  line-height: ${font._12.lineHeight};
-  border-radius: ${borderRadius._6};
-  padding: ${spacing._0_25};
-  color: ${props => props.theme.thesaurasWordText};
-  background: ${props => props.theme.thesaurasWordBackground};
-  transition: all 300ms ease;
-  cursor: pointer;
-  white-space: nowrap;
-  &:hover {
-    color: ${props => props.theme.thesaurasWordActiveText};
-  }
-`;
-
 const GhostThesaurasWord = styled(BaseGhostElement)`
   display: inline-block;
   height: ${font._12.size};
@@ -96,7 +79,7 @@ function DictionaryEntry({ result }: { result: Types.DictionaryResult }) {
       {result.synonyms.length ? (
         <ThesaurasWrapper>
           {result.synonyms.map(synonym => (
-            <ThesaurasWord key={synonym}>{synonym}</ThesaurasWord>
+            <Tag key={synonym}>{synonym}</Tag>
           ))}
         </ThesaurasWrapper>
       ) : null}

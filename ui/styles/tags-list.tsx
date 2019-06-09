@@ -8,6 +8,9 @@ import {
   isEnterHotKey
 } from "../utilities/editor";
 import { NoResults } from "./no-results";
+import { Tag, NewTag, NewTagIconWrap } from "./tag";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const Wrap = styled.div`
   width: 100%;
@@ -16,14 +19,7 @@ const Wrap = styled.div`
 
 const ListInner = styled.div`
   margin: -${spacing._0_125};
-`;
-
-const EmojiItem = styled.div`
-  display: inline-block;
-  margin: ${spacing._0_125};
-  cursor: pointer;
-  opacity: ${props => (props.isFocused ? 1 : 0.4)};
-  transition: all 333ms ease;
+  padding: ${spacing._0_25} 0;
 `;
 
 export function TagsList({
@@ -57,16 +53,22 @@ export function TagsList({
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
+      // NB: start focused index for selected index is 1
       if (isRightHotKey(event)) {
         setFocusedIndex(
-          focusedIndex === filteredTags.length - 1 ? 0 : focusedIndex + 1
+          focusedIndex === filteredTags.length ? 0 : focusedIndex + 1
         );
       } else if (isLeftHotKey(event)) {
         setFocusedIndex(
-          focusedIndex === 0 ? filteredTags.length - 1 : focusedIndex - 1
+          focusedIndex === 0 ? filteredTags.length : focusedIndex - 1
         );
       } else if (isEnterHotKey(event) && focusedIndex >= 0) {
-        onTagSelected(filteredTags[focusedIndex]);
+        if (focusedIndex === 0) {
+          // TODO: add new tag
+        } else {
+          // NB: focused index is 1 indexed for existing tags
+          onTagSelected(filteredTags[focusedIndex - 1]);
+        }
       }
     }
     window.addEventListener("keydown", onKeyDown);
@@ -79,17 +81,18 @@ export function TagsList({
     <Wrap>
       {filteredTags.length > 0 ? (
         <ListInner>
+          <NewTag isFocused={focusedIndex === 0}>Create #{search}</NewTag>
           {filteredTags.map((tag, i) => (
-            <EmojiItem
+            <Tag
               key={tag}
-              isFocused={search.length === 0 || focusedIndex === i}
+              isFocused={search.length === 0 || focusedIndex === i + 1}
               onClick={(e: Event) => {
                 e.preventDefault();
                 onTagSelected(tag);
               }}
             >
               {tag}
-            </EmojiItem>
+            </Tag>
           ))}
         </ListInner>
       ) : (
