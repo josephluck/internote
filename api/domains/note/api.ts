@@ -2,6 +2,7 @@ import { Result, Ok, Err } from "space-lift";
 import { Note, CreateNote, UpdateNote } from "./entity";
 import { AxiosInstance } from "axios";
 import { makeRequestConfig } from "../api";
+import { ApiError } from "../../dependencies/messages";
 
 export function api(client: AxiosInstance) {
   return {
@@ -29,14 +30,11 @@ export function api(client: AxiosInstance) {
       token: string,
       noteId: string,
       payload: UpdateNote
-    ): Promise<Result<Error, Note>> {
+    ): Promise<Result<ApiError, Note>> {
       return client
         .put(`/notes/${noteId}`, payload, makeRequestConfig({ token }))
         .then(r => Ok(r.data))
-        .catch(err => {
-          console.log("Axios catch", err);
-          return Err(err);
-        });
+        .catch(err => Err(err.response.data));
     },
     deleteById(token: string, noteId: string): Promise<Result<Error, void>> {
       return client

@@ -29,20 +29,29 @@ export function Global({ store }: { store: Store }) {
         <>
           <Box mb={spacing._1}>
             {store.state.confirmation
-              ? store.state.confirmation.copy
+              ? store.state.confirmation.message
               : "Are you sure?"}
           </Box>
           <Flex>
             <Box flex={1} mr={spacing._0_25}>
               <Button
                 onClick={() => {
-                  store.actions.setConfirmation(null);
+                  if (store.state.confirmation.onCancel) {
+                    store.state.confirmation.onCancel();
+                  } else {
+                    store.actions.setConfirmation(null);
+                  }
                 }}
                 secondary
                 fullWidth
+                loading={
+                  store.state.confirmation &&
+                  store.state.confirmation.cancelLoading
+                }
               >
-                {store.state.confirmation && store.state.confirmation.noText
-                  ? store.state.confirmation.noText
+                {store.state.confirmation &&
+                store.state.confirmation.cancelButtonText
+                  ? store.state.confirmation.cancelButtonText
                   : "Cancel"}
               </Button>
             </Box>
@@ -56,11 +65,13 @@ export function Global({ store }: { store: Store }) {
                 secondary
                 fullWidth
                 loading={
-                  store.state.confirmation && store.state.confirmation.loading
+                  store.state.confirmation &&
+                  store.state.confirmation.confirmLoading
                 }
               >
-                {store.state.confirmation && store.state.confirmation.yesText
-                  ? store.state.confirmation.yesText
+                {store.state.confirmation &&
+                store.state.confirmation.confirmButtonText
+                  ? store.state.confirmation.confirmButtonText
                   : "Yes"}
               </Button>
             </Box>

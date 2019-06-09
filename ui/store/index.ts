@@ -15,11 +15,13 @@ import { AvailableVoice } from "@internote/api/domains/preferences/entity";
 const cookies = cookie();
 
 interface Confirmation {
-  copy?: string;
-  yesText?: string;
-  noText?: string;
+  message?: string;
+  confirmButtonText?: string;
+  cancelButtonText?: string;
   onConfirm: () => any;
-  loading?: boolean;
+  onCancel?: () => any;
+  confirmLoading?: boolean;
+  cancelLoading?: boolean;
 }
 
 interface ColorThemeWithName {
@@ -54,7 +56,8 @@ interface OwnReducers {
   setSession: Twine.Reducer<OwnState, Types.Session>;
   setNotes: Twine.Reducer<OwnState, Types.Note[]>;
   setConfirmation: Twine.Reducer<OwnState, Confirmation | null>;
-  setConfirmationLoading: Twine.Reducer<OwnState, boolean>;
+  setConfirmationConfirmLoading: Twine.Reducer<OwnState, boolean>;
+  setConfirmationCancelLoading: Twine.Reducer<OwnState, boolean>;
   setColorTheme: Twine.Reducer<OwnState, ColorThemeWithName>;
   setFontTheme: Twine.Reducer<OwnState, FontThemeWithName>;
   setDistractionFree: Twine.Reducer<OwnState, boolean>;
@@ -66,20 +69,18 @@ interface OwnReducers {
   setDictionaryResults: Twine.Reducer<OwnState, Types.DictionaryResult[]>;
 }
 
+interface UpdateNotePayload {
+  noteId: string;
+  content: {};
+  title: string | undefined;
+  overwrite: boolean;
+}
+
 interface OwnEffects {
   fetchNotes: Twine.Effect0<OwnState, Actions, Promise<Types.Note[]>>;
   createNote: Twine.Effect0<OwnState, Actions>;
-  updateNote: Twine.Effect<
-    OwnState,
-    Actions,
-    {
-      noteId: string;
-      content: {};
-      title: string | undefined;
-      overwrite: boolean;
-    },
-    Promise<void>
-  >;
+  updateNote: Twine.Effect<OwnState, Actions, UpdateNotePayload, Promise<void>>;
+  overwriteNoteConfirmation: Twine.Effect<OwnState, Actions, UpdateNotePayload>;
   deleteNoteConfirmation: Twine.Effect<OwnState, Actions, { noteId: string }>;
   deleteNote: Twine.Effect<OwnState, Actions, { noteId: string }>;
   navigateToFirstNote: Twine.Effect0<OwnState, Actions, Promise<void>>;
@@ -186,11 +187,18 @@ function makeModel(api: Api): Model {
         ...state,
         confirmation
       }),
-      setConfirmationLoading: (state, loading) => ({
+      setConfirmationConfirmLoading: (state, confirmLoading) => ({
         ...state,
         confirmation: {
           ...state.confirmation,
-          loading
+          confirmLoading
+        }
+      }),
+      setConfirmationCancelLoading: (state, cancelLoading) => ({
+        ...state,
+        confirmation: {
+          ...state.confirmation,
+          cancelLoading
         }
       }),
       setColorTheme: (state, colorTheme) => ({ ...state, colorTheme }),
@@ -243,45 +251,62 @@ function makeModel(api: Api): Model {
         });
       },
       async updateNote(state, actions, { noteId, content, title, overwrite }) {
-        const existingNote = state.notes.find(note => note.id === noteId);
-        const updates = {
-          content,
-          title: title ? title : existingNote.title || "Internote",
-          dateUpdated: existingNote.dateUpdated,
-          overwrite
-        };
-        const newNote = existingNote
-          ? {
-              ...existingNote,
-              ...updates
+        if (!state.confirmation || overwrite) {
+          actions.setNotes(
+            state.notes.map(n =>
+              n.id === noteId ? { ...n, content, title } : n
+            )
+          );
+          const existingNote = state.notes.find(note => note.id === noteId);
+          const savedNote = await api.note.updateById(
+            state.session.token,
+            noteId,
+            {
+              content,
+              title: title ? title : existingNote.title || "Internote",
+              dateUpdated: existingNote.dateUpdated,
+              overwrite
             }
-          : updates;
-        actions.setNotes(
-          state.notes.map(n => (n.id === noteId ? { ...n, ...newNote } : n))
-        );
-        const savedNote = await api.note.updateById(
-          state.session.token,
-          noteId,
-          updates
-        );
-        savedNote.fold(
-          err => {
-            console.log("Store fold", err);
+          );
+          savedNote.mapError(err => {
+            if (err.type === "overwrite") {
+              actions.overwriteNoteConfirmation({
+                noteId,
+                content,
+                title,
+                overwrite: true // TODO: fix type so this isn't needed
+              });
+            }
+          });
+        }
+      },
+      overwriteNoteConfirmation(_state, actions, details) {
+        actions.setConfirmation({
+          message: `There's a more recent version of ${
+            details.title
+          }. What do you want to do?`,
+          confirmButtonText: "Overwrite",
+          cancelButtonText: "Discard",
+          async onConfirm() {
+            actions.setConfirmationConfirmLoading(true);
+            await actions.updateNote({ ...details, overwrite: true });
+            await actions.fetchNotes(); // NB: important to get the latest dateUpdates from the server to avoid prompt again
+            actions.setConfirmation(null);
           },
-          note => {
-            actions.setNotes(
-              state.notes.map(n => (n.id === noteId ? note : n))
-            );
+          async onCancel() {
+            actions.setConfirmationCancelLoading(true);
+            await actions.fetchNotes(); // NB: important to get the latest dateUpdates from the server to avoid prompt again
+            actions.setConfirmation(null);
           }
-        );
+        });
       },
       deleteNoteConfirmation(state, actions, { noteId }) {
         const noteToDelete = state.notes.find(note => note.id === noteId);
         actions.setConfirmation({
-          copy: `Are you sure you wish to delete ${noteToDelete.title}?`,
-          yesText: "Delete",
+          message: `Are you sure you wish to delete ${noteToDelete.title}?`,
+          confirmButtonText: "Delete",
           async onConfirm() {
-            actions.setConfirmationLoading(true);
+            actions.setConfirmationConfirmLoading(true);
             await actions.deleteNote({ noteId });
             actions.setConfirmation(null);
           }
@@ -315,8 +340,8 @@ function makeModel(api: Api): Model {
       },
       signOutConfirmation(_state, actions) {
         actions.setConfirmation({
-          copy: `Are you sure you wish to sign out?`,
-          yesText: "Sign out",
+          message: `Are you sure you wish to sign out?`,
+          confirmButtonText: "Sign out",
           onConfirm() {
             actions.signOut();
             actions.setConfirmation(null);
@@ -331,10 +356,10 @@ function makeModel(api: Api): Model {
       },
       deleteAccountConfirmation(_state, actions) {
         actions.setConfirmation({
-          copy: `Are you sure you wish to delete your account? All of your notes will be removed!`,
-          yesText: "Delete account",
+          message: `Are you sure you wish to delete your account? All of your notes will be removed!`,
+          confirmButtonText: "Delete account",
           async onConfirm() {
-            actions.setConfirmationLoading(true);
+            actions.setConfirmationConfirmLoading(true);
             await actions.deleteAccount();
             actions.setConfirmation(null);
           }
@@ -419,14 +444,14 @@ export function makeStore() {
       }
     }
   ]);
-  api.interceptors.response.use(
+
+  api.client.interceptors.response.use(
     res => res,
     err => {
-      console.log(err);
       if (err && err.response) {
-        store.actions.handleApiError;
         store.actions.handleApiError(err);
       }
+      return Promise.reject(err);
     }
   );
 

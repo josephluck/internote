@@ -8,7 +8,9 @@ export interface ApiError {
 
 export default {
   throw(ctx: Router.IRouterContext, message: ApiError) {
-    ctx.throw(message.code, message);
+    ctx.status = message.code;
+    ctx.body = message;
+    return ctx;
   },
   notFound(message: string): ApiError {
     return {

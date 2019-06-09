@@ -19,6 +19,7 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
       </Head>
       <InternoteEditor
         id={note.id}
+        dateUpdated={note.dateUpdated}
         initialValue={note.content}
         onChange={changes =>
           store.actions.updateNote({

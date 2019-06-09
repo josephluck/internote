@@ -19,7 +19,7 @@ export function api(baseURL: string) {
     preferences: preferences(client),
     speech: speech(client),
     dictionary: dictionary(client),
-    interceptors: client.interceptors
+    client
   };
 }
 

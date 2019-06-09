@@ -60,6 +60,7 @@ const DEFAULT_NODE = "paragraph";
 
 interface Props {
   id: string;
+  dateUpdated: string;
   initialValue: {};
   debounceValue?: number;
   onChange: (value: { content: Object; title: string }) => void;
@@ -119,10 +120,18 @@ export class InternoteEditor extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.id !== this.props.id) {
-      this.setState({
-        value: getValueOrDefault(this.props.initialValue)
-      });
+    if (
+      prevProps.id !== this.props.id ||
+      prevProps.dateUpdated !== this.props.dateUpdated
+    ) {
+      this.setState(
+        {
+          value: getValueOrDefault(this.props.initialValue)
+        },
+        () => {
+          this.refocusEditor();
+        }
+      );
     }
   }
 
