@@ -46,14 +46,14 @@ const GhostDescription = styled(BaseGhostElement)`
   }
 `;
 
-const ThesaurasWrapper = styled.div`
+const ThesaurusWrapper = styled.div`
   margin-bottom: ${spacing._1_5};
   &:last-of-type {
     margin-bottom: ${spacing._0_5};
   }
 `;
 
-const GhostThesaurasWord = styled(BaseGhostElement)`
+const GhostThesaurusWord = styled(BaseGhostElement)`
   display: inline-block;
   height: ${font._12.size};
   padding: ${spacing._0_25};
@@ -77,11 +77,11 @@ function DictionaryEntry({ result }: { result: Types.DictionaryResult }) {
       </DictionaryHeadingWrapper>
       <DictionaryDescription>{result.definition}</DictionaryDescription>
       {result.synonyms.length ? (
-        <ThesaurasWrapper>
+        <ThesaurusWrapper>
           {result.synonyms.map(synonym => (
             <Tag key={synonym}>{synonym}</Tag>
           ))}
-        </ThesaurasWrapper>
+        </ThesaurusWrapper>
       ) : null}
     </DictionaryEntryWrapper>
   );
@@ -107,13 +107,13 @@ export function Dictionary({
           <GhostDescription style={{ width: "280px" }} />
         </GhostDescriptionWrapper>
 
-        <ThesaurasWrapper>
-          <GhostThesaurasWord style={{ width: "30px" }} />
-          <GhostThesaurasWord style={{ width: "40px" }} />
-          <GhostThesaurasWord style={{ width: "24px" }} />
-          <GhostThesaurasWord style={{ width: "34px" }} />
-          <GhostThesaurasWord style={{ width: "43px" }} />
-        </ThesaurasWrapper>
+        <ThesaurusWrapper>
+          <GhostThesaurusWord style={{ width: "30px" }} />
+          <GhostThesaurusWord style={{ width: "40px" }} />
+          <GhostThesaurusWord style={{ width: "24px" }} />
+          <GhostThesaurusWord style={{ width: "34px" }} />
+          <GhostThesaurusWord style={{ width: "43px" }} />
+        </ThesaurusWrapper>
       </div>
     );
   }

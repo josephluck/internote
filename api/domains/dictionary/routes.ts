@@ -67,31 +67,32 @@ function makeController(deps: Dependencies) {
                     function returnOnlyDictionaryEntries() {
                       ctx.body = {
                         results: entries.map(
-                          ({ thesaurasSenseIds, ...rest }) => rest
+                          ({ thesaurusSenseIds, ...rest }) => rest
                         )
                       };
                       return ctx.body;
                     }
 
                     try {
-                      const thesaurasResponse = await api
-                        .get(`/thesaurus/en/${wordId}?strictMatch=false`)
-                        .catch(throwError("Thesauras request failed"));
+                      // NB: we don't want to throw thesaurus
+                      const thesaurusResponse = await api.get(
+                        `/thesaurus/en/${wordId}?strictMatch=false`
+                      );
 
-                      if (thesaurasResponse.data) {
+                      if (thesaurusResponse.data) {
                         const results = mapEntriesToSynonyms(
                           entries,
-                          thesaurasResponse.data
+                          thesaurusResponse.data
                         );
                         ctx.body = {
                           results
                         };
                         return ctx.body;
                       } else {
-                        throw new Error("No thesauras entries");
+                        console.log("thesaurus was empty", { wordId });
                       }
                     } catch (err) {
-                      console.log("Thesauras was empty", err);
+                      console.log("thesaurus was empty", err);
                       return returnOnlyDictionaryEntries();
                     }
                   }
@@ -118,22 +119,22 @@ export function routes(deps: Dependencies) {
   };
 }
 
-interface DictionaryResultWithThesaurasSenseIds extends DictionaryResult {
-  thesaurasSenseIds: string[];
+interface DictionaryResultWiththesaurusSenseIds extends DictionaryResult {
+  thesaurusSenseIds: string[];
 }
 
 // TODO: refactor this to split out functions for mapping
 // data. Maybe use reduce & flatten combinations
 function convertOxfordEntriesResponse(
   response: Oxford.EntriesResponse
-): DictionaryResultWithThesaurasSenseIds[] {
-  const mappedResult = [] as DictionaryResultWithThesaurasSenseIds[];
+): DictionaryResultWiththesaurusSenseIds[] {
+  const mappedResult = [] as DictionaryResultWiththesaurusSenseIds[];
   (response.results || []).forEach(({ word, lexicalEntries }) => {
     (lexicalEntries || []).forEach(({ entries, lexicalCategory }) => {
       (entries || []).forEach(({ senses }) => {
         (senses || []).forEach(
           ({ definitions, examples, thesaurusLinks, subsenses }) => {
-            const thesaurasSenseIds = mapThesaurasSenseIds(
+            const thesaurusSenseIds = mapthesaurusSenseIds(
               thesaurusLinks,
               subsenses
             );
@@ -147,7 +148,7 @@ function convertOxfordEntriesResponse(
                 definition,
                 synonyms: [],
                 example,
-                thesaurasSenseIds
+                thesaurusSenseIds
               });
             });
           }
@@ -161,16 +162,16 @@ function convertOxfordEntriesResponse(
 // TODO: consider refactoring this and breaking out
 // new functions for each individual responsibility
 function mapEntriesToSynonyms(
-  dictionaryResults: DictionaryResultWithThesaurasSenseIds[],
-  response: Oxford.ThesaurasResponse
+  dictionaryResults: DictionaryResultWiththesaurusSenseIds[],
+  response: Oxford.thesaurusResponse
 ): DictionaryResult[] {
-  return dictionaryResults.map(({ thesaurasSenseIds, ...definition }) => {
+  return dictionaryResults.map(({ thesaurusSenseIds, ...definition }) => {
     let synonyms: string[] = [];
     (response.results || []).forEach(({ lexicalEntries }) => {
       (lexicalEntries || []).forEach(({ entries }) => {
         (entries || []).forEach(({ senses }) => {
-          (thesaurasSenseIds || []).forEach(thesaurasId => {
-            const sense = senses.find(({ id }) => id === thesaurasId);
+          (thesaurusSenseIds || []).forEach(thesaurusId => {
+            const sense = senses.find(({ id }) => id === thesaurusId);
             if (sense && sense.synonyms) {
               synonyms = [...synonyms, ...sense.synonyms.map(s => s.text)];
             }
@@ -182,8 +183,8 @@ function mapEntriesToSynonyms(
   });
 }
 
-function mapThesaurasSenseIds(
-  thesaurusLinks: Oxford.EntryThesaurasLink[] = [],
+function mapthesaurusSenseIds(
+  thesaurusLinks: Oxford.EntrythesaurusLink[] = [],
   senses: Oxford.EntrySense[] = []
 ): string[] {
   return thesaurusLinks.map(getLinkId).concat(
@@ -203,7 +204,7 @@ function getWordIdFromLemmasResponse(
     .map(inflection => inflection.id);
 }
 
-function getLinkId(link: Oxford.EntryThesaurasLink) {
+function getLinkId(link: Oxford.EntrythesaurusLink) {
   return link.sense_id;
 }
 

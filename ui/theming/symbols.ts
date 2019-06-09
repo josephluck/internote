@@ -52,7 +52,9 @@ export const font = {
 
 export const spacing = {
   _0: "0rem",
+  _0_05: "0.05rem",
   _0_125: "0.125rem",
+  _0_2: "0.2rem",
   _0_25: "0.25rem",
   _0_4: "0.4rem",
   _0_5: "0.5rem",

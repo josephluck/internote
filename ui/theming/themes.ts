@@ -41,9 +41,10 @@ export interface Theme {
   audioTimelineInactive: string;
   audioTimelineActive: string;
   dictionaryDescriptionText: string;
-  thesaurasWordText: string;
-  thesaurasWordBackground: string;
-  thesaurasWordActiveText: string;
+  tagText: string;
+  tagBackground: string;
+  tagActiveText: string;
+  tagNewBorder: string;
   noResultsText: string;
 }
 
@@ -90,9 +91,10 @@ export const internote: Theme = {
   audioTimelineActive: "#9fc7ec",
   audioTimelineInactive: "#504D5D",
   dictionaryDescriptionText: "#999999",
-  thesaurasWordText: "#999999",
-  thesaurasWordBackground: "#19181B",
-  thesaurasWordActiveText: "#FFFFFF",
+  tagText: "#999999",
+  tagBackground: "#19181B",
+  tagActiveText: "#FFFFFF",
+  tagNewBorder: "#737278",
   noResultsText: "#999999"
 };
 
@@ -139,9 +141,10 @@ export const daydream: Theme = {
   audioTimelineActive: "#9fc7ec",
   audioTimelineInactive: "#504D5D",
   dictionaryDescriptionText: "#999999",
-  thesaurasWordText: "#A79FAC",
-  thesaurasWordBackground: "#DFDCE4",
-  thesaurasWordActiveText: "#000000",
+  tagText: "#A79FAC",
+  tagBackground: "#DFDCE4",
+  tagActiveText: "#000000",
+  tagNewBorder: "#737278",
   noResultsText: "#999999"
 };
 

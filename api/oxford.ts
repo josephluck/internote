@@ -46,14 +46,14 @@ export namespace Oxford {
     shortDefinitions?: string[];
     examples?: EntrySenseExample[];
     subsenses?: EntrySense[];
-    thesaurusLinks?: EntryThesaurasLink[];
+    thesaurusLinks?: EntrythesaurusLink[];
   }
 
-  export interface EntryThesaurasLink {
+  export interface EntrythesaurusLink {
     entry_id: string;
     /**
      * Links to the sense_id inside the
-     * thesauras response sense id
+     * thesaurus response sense id
      */
     sense_id: string;
   }
@@ -62,49 +62,49 @@ export namespace Oxford {
     text: string;
   }
 
-  export interface ThesaurasResponse {
-    results: ThesaurasResult[];
+  export interface thesaurusResponse {
+    results: thesaurusResult[];
   }
 
-  export interface ThesaurasResult {
+  export interface thesaurusResult {
     id: string;
     language: string;
-    lexicalEntries: ThesaurasLexicalEntry[];
+    lexicalEntries: thesaurusLexicalEntry[];
     type: string;
     word: string;
   }
 
-  export interface ThesaurasLexicalEntry {
-    entries: ThesaurasLexicalEntriesEntry[];
+  export interface thesaurusLexicalEntry {
+    entries: thesaurusLexicalEntriesEntry[];
     language: string;
     lexicalCategory: LexicalCategory;
     text: string;
-    variantForms?: ThesaurasVariantForm[];
+    variantForms?: thesaurusVariantForm[];
   }
 
-  export interface ThesaurasLexicalEntriesEntry {
+  export interface thesaurusLexicalEntriesEntry {
     homographNumber?: string;
-    senses: ThesaurasSense[];
-    variantForms?: ThesaurasVariantForm[];
+    senses: thesaurusSense[];
+    variantForms?: thesaurusVariantForm[];
   }
 
-  export interface ThesaurasSense {
-    antonyms?: ThesaurasAntonym[];
-    domains?: ThesaurasDomain[];
-    examples: ThesaurasSenseExample[];
+  export interface thesaurusSense {
+    antonyms?: thesaurusAntonym[];
+    domains?: thesaurusDomain[];
+    examples: thesaurusSenseExample[];
     /**
      * Unique ID that is referenced inside
-     * entry response's EntryThesaurasLink
+     * entry response's EntrythesaurusLink
      * sense_id property
      */
     id: string;
     regions?: LexicalCategory[];
     registers?: LexicalCategory[];
-    synonyms: ThesaurasSynonym[];
-    subsenses?: ThesaurasSense[];
+    synonyms: thesaurusSynonym[];
+    subsenses?: thesaurusSense[];
   }
 
-  export interface ThesaurasAntonym {
+  export interface thesaurusAntonym {
     domains?: LexicalCategory[];
     id: string;
     language: string;
@@ -113,14 +113,14 @@ export namespace Oxford {
     text: string;
   }
 
-  export type ThesaurasSynonym = ThesaurasAntonym;
+  export type thesaurusSynonym = thesaurusAntonym;
 
-  export interface ThesaurasDomain {
+  export interface thesaurusDomain {
     id: string;
     text: string;
   }
 
-  export interface ThesaurasSenseExample {
+  export interface thesaurusSenseExample {
     definition?: string[];
     domains?: LexicalCategory[];
     notes?: LexicalCategory[];
@@ -130,7 +130,7 @@ export namespace Oxford {
     text: string;
   }
 
-  export interface ThesaurasVariantForm {}
+  export interface thesaurusVariantForm {}
 
   export interface LemmasResponse {
     results: Lemma[];

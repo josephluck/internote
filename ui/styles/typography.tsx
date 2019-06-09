@@ -18,8 +18,8 @@ const ghostPulse = keyframes`
 export const BaseGhostElement = styled.div`
   border-radius: ${borderRadius._4};
   padding: ${spacing._0_25};
-  color: ${props => props.theme.thesaurasWordText};
-  background: ${props => props.theme.thesaurasWordBackground};
+  color: ${props => props.theme.tagText};
+  background: ${props => props.theme.tagBackground};
   height: ${font._16.size};
   animation: ${ghostPulse} 2s ease-in-out infinite;
 `;
