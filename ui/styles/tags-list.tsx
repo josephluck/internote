@@ -60,11 +60,13 @@ export function TagsList({
           focusedIndex === 0 ? filteredTags.length : focusedIndex - 1
         );
       } else if (isEnterHotKey(event) && focusedIndex >= 0) {
-        if (focusedIndex === 0) {
-          // TODO: add new tag
+        // NB: focused index is 1 indexed for existing tags
+        const focusedTag = filteredTags[focusedIndex - 1];
+
+        if (focusedTag) {
+          onTagSelected(focusedTag);
         } else {
-          // NB: focused index is 1 indexed for existing tags
-          onTagSelected(filteredTags[focusedIndex - 1]);
+          // TODO: add new tag
         }
       }
     }
