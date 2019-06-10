@@ -19,36 +19,57 @@ function makeController(deps: Dependencies): RestController {
   const notesRepo = deps.db.getRepository(NoteEntity);
   const tagsRepo = deps.db.getRepository(TagEntity);
 
+  // Create any tags that are new
+  // Add note relationship to any existing tags
+  // Remove note relationship for any tags that have note relationship that are no longer present
   async function createOrUpdateTagsForNote(
     tagsStrs: string[],
     note: NoteEntity,
     user: UserEntity
   ): Promise<TagEntity[]> {
-    // TODO: remove delete when tag auto deletion working fully
+    // TODO: remove this
     await tagsRepo.remove(await tagsRepo.find({ where: { user: user.id } }));
 
     const existingTags = await tagsRepo.find({
       where: { user: user.id }
     });
-
     const existingTagsStrs = existingTags.map(t => t.tag);
+
+    // Create tags that are new and add relationship to note
     const tagsStrsToCreate = tagsStrs.filter(
       t => !existingTagsStrs.includes(t)
     );
-    const tagEntitiesToCreate = [...new Set(tagsStrsToCreate)]
+    const tagEntitiesToCreate = [...new Set(tagsStrsToCreate)] // NB: dedupe tags
       .map(tag => createTag({ tag }, user))
       .filter(t => t.isOk())
       .map(t => t.toOption().get())
-      .map(t => ({ ...t, notes: [note] })); // NB: create the relationship between new tags and note
+      .map(t => ({ ...t, notes: [note] }));
     await tagsRepo.save(tagEntitiesToCreate);
 
     // Update any existing tags with note relationship
-    const tagsStrsToUpdate = existingTags.filter(t => tagsStrs.includes(t.tag));
+    const tagEntitiesToUpdate = existingTags.filter(t =>
+      tagsStrs.includes(t.tag)
+    );
+    await tagsRepo.save(
+      tagEntitiesToUpdate.map(t => ({ notes: [...t.notes, note] }))
+    );
+
+    // Remove note relationship with any tags that are no longer present in note
+    const tagEntitiesToRemoveNoteRelationship = existingTags.filter(
+      t => !tagsStrs.includes(t.tag)
+    );
     await Promise.all(
-      tagsStrsToUpdate.map(
-        t => tagsRepo.update(t, { notes: [...t.notes, note] }) // NB: create the relationship between tag and note
+      tagEntitiesToRemoveNoteRelationship.map(t =>
+        tagsRepo.save({
+          ...t,
+          notes: t.notes.filter(n => n.id !== note.id)
+        })
       )
     );
+
+    // Remove any tags that no longer have any notes
+    const latestTags = await tagsRepo.find({ where: { user: user.id } });
+    await tagsRepo.remove(latestTags.filter(t => t.notes.length === 0));
 
     const finalNote = await notesRepo.findOne({
       relations: ["tags"],
