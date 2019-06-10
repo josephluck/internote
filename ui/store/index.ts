@@ -50,6 +50,7 @@ interface OwnState {
   dictionaryShowing: boolean;
   speechSrc: string | null;
   dictionaryResults: Types.DictionaryResult[];
+  tags: Types.Tag[];
 }
 
 interface OwnReducers {
@@ -69,6 +70,7 @@ interface OwnReducers {
   setOutlineShowing: Twine.Reducer<OwnState, boolean>;
   setSpeechSrc: Twine.Reducer<OwnState, string | null>;
   setDictionaryResults: Twine.Reducer<OwnState, Types.DictionaryResult[]>;
+  setTags: Twine.Reducer<OwnState, Types.Tag[]>;
 }
 
 interface UpdateNotePayload {
@@ -106,6 +108,8 @@ interface OwnEffects {
     { content: string; noteId: string }
   >;
   requestDictionary: Twine.Effect<OwnState, Actions, string>;
+  fetchTags: Twine.Effect0<OwnState, Actions>;
+  saveTag: Twine.Effect<OwnState, Actions, UpdateNotePayload, Promise<void>>;
 }
 
 function defaultState(): OwnState {
@@ -124,7 +128,8 @@ function defaultState(): OwnState {
     voice: "Joey",
     dictionaryShowing: false,
     outlineShowing: false,
-    dictionaryResults: []
+    dictionaryResults: [],
+    tags: []
   };
 }
 
@@ -238,6 +243,10 @@ function makeModel(api: Api): Model {
       setDictionaryResults: (state, dictionaryResults) => ({
         ...state,
         dictionaryResults
+      }),
+      setTags: (state, tags) => ({
+        ...state,
+        tags
       })
     },
     effects: {
@@ -416,6 +425,15 @@ function makeModel(api: Api): Model {
           word
         });
         response.map(({ results }) => actions.setDictionaryResults(results));
+      },
+      async fetchTags(state, actions) {
+        const response = await api.tag.getAll(state.session.token);
+        response.map(tags => actions.setTags(tags));
+      },
+      async saveTag(_state, actions, payload) {
+        // NB: own effect for the purpose of loading state
+        // internally all we need to do is save the note (tags are automatically updated)
+        await actions.updateNote(payload);
       }
     }
   };

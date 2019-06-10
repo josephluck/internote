@@ -8,6 +8,7 @@ import note from "./note/routes";
 import preferences from "./preferences/routes";
 import speech from "./speech/routes";
 import dictionary from "./dictionary/routes";
+import tag from "./tag/routes";
 import { UserEntity } from "./user/entity";
 
 type ControllerFn = (
@@ -44,7 +45,10 @@ export default function routes(deps: Dependencies) {
     note(deps),
     preferences(deps),
     speech(deps),
-    dictionary(deps)
+    compose(
+      dictionary(deps),
+      tag(deps)
+    )
   );
   return rts(new Router());
 }

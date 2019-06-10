@@ -5,6 +5,7 @@ import note from "./note/api";
 import preferences from "./preferences/api";
 import speech from "./speech/api";
 import dictionary from "./dictionary/api";
+import tag from "./tag/api";
 
 export function api(baseURL: string) {
   const client = axios.create({
@@ -19,6 +20,7 @@ export function api(baseURL: string) {
     preferences: preferences(client),
     speech: speech(client),
     dictionary: dictionary(client),
+    tag: tag(client),
     client
   };
 }
