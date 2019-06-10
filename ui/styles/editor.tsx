@@ -48,7 +48,8 @@ import {
   isEmojiShortcut,
   shouldPreventEventForMenuNavigationShortcut,
   isShortcut,
-  isTagShortcut
+  isTagShortcut,
+  getTagsFromEditorValue
 } from "../utilities/editor";
 import { Wrap, EditorStyles, Editor, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
@@ -181,7 +182,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     return {
       content: this.state.value.toJSON(),
       title: getTitleFromEditorValue(this.state.value),
-      tags: []
+      tags: getTagsFromEditorValue(this.state.value)
     };
   };
 

@@ -21,6 +21,23 @@ export function getTitleFromEditorValue(
   }
 }
 
+export function getTagsFromEditorValue(editorValue: Value): string[] {
+  if (
+    editorValue.document &&
+    editorValue.document.getBlocks &&
+    editorValue.document.getInlines()
+  ) {
+    const tags = editorValue.document
+      .getInlines()
+      .filter(inline => inline.type === "tag")
+      .map(inline => inline.data.get("tag"))
+      .toArray();
+    return tags;
+  } else {
+    return [];
+  }
+}
+
 export function isValidSlateValue(value: Object): boolean {
   return value && typeof value === "object" && value.hasOwnProperty("document");
 }
