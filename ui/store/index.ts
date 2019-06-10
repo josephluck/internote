@@ -434,6 +434,7 @@ function makeModel(api: Api): Model {
         // NB: own effect for the purpose of loading state
         // internally all we need to do is save the note (tags are automatically updated)
         await actions.updateNote(payload);
+        await actions.fetchTags();
       }
     }
   };

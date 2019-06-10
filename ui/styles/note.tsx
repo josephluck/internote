@@ -27,6 +27,12 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
             ...changes
           })
         }
+        onSaveTag={changes =>
+          store.actions.saveTag({
+            noteId: note.id,
+            ...changes
+          })
+        }
         onDelete={() =>
           store.actions.deleteNoteConfirmation({
             noteId: note.id
@@ -47,6 +53,8 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
         dictionaryResults={store.state.dictionaryResults}
         outlineShowing={store.state.outlineShowing}
         toggleOutlineShowing={store.actions.setOutlineShowing}
+        tags={store.state.tags}
+        newTagSaving={store.state.loading.saveTag}
       />
     </>
   );

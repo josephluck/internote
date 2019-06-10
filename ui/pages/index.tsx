@@ -40,9 +40,11 @@ const Page: NextTwineSFC<
 Page.getInitialProps = async ({ store, query }) => {
   if (store.state.notes.length === 0) {
     await store.actions.fetchNotes();
+    await store.actions.fetchTags();
   } else {
     // No need to wait if notes are already fetched - just update in background
     store.actions.fetchNotes();
+    store.actions.fetchTags();
   }
   return {
     id: query.id

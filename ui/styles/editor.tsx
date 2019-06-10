@@ -62,12 +62,19 @@ import { Tag } from "./tag";
 
 const DEFAULT_NODE = "paragraph";
 
+interface OnChange {
+  content: Object;
+  title: string;
+  tags: string[];
+}
+
 interface Props {
   id: string;
   overwriteCount: number;
   initialValue: {};
   debounceValue?: number;
-  onChange: (value: { content: Object; title: string }) => void;
+  onChange: (value: OnChange) => Promise<void>;
+  onSaveTag: (value: OnChange) => Promise<void>;
   onDelete: () => void;
   saving: boolean;
   distractionFree: boolean;
@@ -82,6 +89,8 @@ interface Props {
   dictionaryResults: Types.DictionaryResult[];
   outlineShowing: boolean;
   toggleOutlineShowing: (outlineShowing: boolean) => any;
+  tags: Types.Tag[];
+  newTagSaving: boolean;
 }
 
 interface State {
@@ -168,11 +177,16 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
-  emitChange = debounce(() => {
-    this.props.onChange({
+  getChanges = (): OnChange => {
+    return {
       content: this.state.value.toJSON(),
-      title: getTitleFromEditorValue(this.state.value)
-    });
+      title: getTitleFromEditorValue(this.state.value),
+      tags: []
+    };
+  };
+
+  emitChange = debounce(() => {
+    this.props.onChange(this.getChanges());
   }, this.debounceValue);
 
   getEventHandlerFromKeyEvent = (
@@ -471,18 +485,30 @@ export class InternoteEditor extends React.Component<Props, State> {
     });
   };
 
-  insertTag = (tag: string) => {
+  insertTag = (tag: string, shouldCloseTagsMenu: boolean = true) => {
     this.refocusEditor();
     if (this.state.shortcutSearch.length > 0) {
       this.editor.deleteBackward(this.state.shortcutSearch.length + 1); // NB: +1 required to compensate for hash
     }
     this.editor.insertInline({ type: "tag", data: { tag } });
+    if (shouldCloseTagsMenu) {
+      this.closeTagsMenu();
+    }
+  };
+
+  closeTagsMenu = () => {
     window.requestAnimationFrame(() => {
       this.setState({ isTagsMenuShowing: false }, () => {
         this.editor.moveToStartOfNextText();
         this.refocusEditor();
       });
     });
+  };
+
+  onSaveTag = async (tag: string) => {
+    this.insertTag(tag);
+    await this.props.onSaveTag(this.getChanges());
+    this.closeTagsMenu();
   };
 
   undo = () => {
@@ -765,8 +791,10 @@ export class InternoteEditor extends React.Component<Props, State> {
                   {this.state.isTagsMenuShowing ? (
                     <TagsList
                       onTagSelected={this.insertTag}
-                      tags={["#fantastec", "#personal", "#career", "#flat"]}
+                      onSaveTag={this.onSaveTag}
+                      tags={this.props.tags.map(t => t.tag)}
                       search={this.state.shortcutSearch}
+                      newTagSaving={this.props.newTagSaving}
                     />
                   ) : isEmojiMenuShowing ? (
                     <EmojiList

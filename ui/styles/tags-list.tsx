@@ -8,6 +8,8 @@ import {
   isEnterHotKey
 } from "../utilities/editor";
 import { Tag, NewTag } from "./tag";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const Wrap = styled.div`
   width: 100%;
@@ -22,11 +24,15 @@ const ListInner = styled.div`
 export function TagsList({
   search,
   tags,
-  onTagSelected
+  onTagSelected,
+  onSaveTag,
+  newTagSaving
 }: {
   search: string;
   tags: string[];
   onTagSelected: (tag: string) => any;
+  onSaveTag: (tag: string) => any;
+  newTagSaving: boolean;
 }) {
   const [filteredTags, setFilteredTags] = useState<string[]>([]);
   const [focusedIndex, setFocusedIndex] = useState(1);
@@ -66,7 +72,7 @@ export function TagsList({
         if (focusedTag) {
           onTagSelected(focusedTag);
         } else {
-          // TODO: add new tag
+          onSaveTag(`#${search}`);
         }
       }
     }
@@ -79,7 +85,10 @@ export function TagsList({
   return (
     <Wrap>
       <ListInner>
-        <NewTag isFocused={focusedIndex === 0}>Create #{search}</NewTag>
+        <NewTag isFocused={focusedIndex === 0}>
+          {newTagSaving ? <FontAwesomeIcon icon={faSpinner} spin /> : null}
+          Create #{search}
+        </NewTag>
         {filteredTags.map((tag, i) => (
           <Tag
             key={tag}
