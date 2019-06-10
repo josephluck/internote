@@ -248,7 +248,8 @@ function makeModel(api: Api): Model {
       },
       async createNote(state, actions) {
         const result = await api.note.create(state.session.token, {
-          title: `New note - ${new Date().toDateString()}`
+          title: `New note - ${new Date().toDateString()}`,
+          tags: []
         });
         result.map(note => {
           actions.setNotes([note, ...state.notes]);
@@ -270,6 +271,7 @@ function makeModel(api: Api): Model {
             content,
             title,
             dateUpdated: existingNote.dateUpdated,
+            tags: ["#internote", "#typescript"],
             overwrite
           }
         );

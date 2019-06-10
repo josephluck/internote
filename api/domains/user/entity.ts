@@ -5,6 +5,7 @@ import { validate, rules } from "../../dependencies/validation";
 import * as crypt from "bcryptjs";
 import { NoteEntity } from "../note/entity";
 import { PreferencesEntity } from "../preferences/entity";
+import { TagEntity } from "../tag/entity";
 
 @Entity()
 export class UserEntity extends Base {
@@ -16,6 +17,9 @@ export class UserEntity extends Base {
 
   @OneToMany(() => NoteEntity, note => note.user)
   notes: NoteEntity[];
+
+  @OneToMany(() => TagEntity, tag => tag.user)
+  tags: TagEntity[];
 
   @OneToOne(() => PreferencesEntity, preferences => preferences.user, {
     eager: true
