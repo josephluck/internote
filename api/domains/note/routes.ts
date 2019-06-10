@@ -35,7 +35,7 @@ function makeController(deps: Dependencies): RestController {
     const tagsStrsToCreate = tagsStrs.filter(
       t => !existingTagsStrs.includes(t)
     );
-    const tagEntitiesToCreate = tagsStrsToCreate
+    const tagEntitiesToCreate = [...new Set(tagsStrsToCreate)]
       .map(tag => createTag({ tag }, user))
       .filter(t => t.isOk())
       .map(t => t.toOption().get())

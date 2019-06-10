@@ -495,14 +495,13 @@ export class InternoteEditor extends React.Component<Props, State> {
     if (shouldCloseTagsMenu) {
       this.closeTagsMenu();
     }
+    this.editor.moveToStartOfNextText();
+    this.refocusEditor();
   };
 
   closeTagsMenu = () => {
     window.requestAnimationFrame(() => {
-      this.setState({ isTagsMenuShowing: false }, () => {
-        this.editor.moveToStartOfNextText();
-        this.refocusEditor();
-      });
+      this.setState({ isTagsMenuShowing: false });
     });
   };
 
