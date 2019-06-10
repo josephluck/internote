@@ -6,6 +6,7 @@ import { dateIsGreaterThan } from "../../utilities/date";
 import { Result, Option } from "space-lift";
 import { validate, rules } from "../../dependencies/validation";
 import { TagEntity, createTag } from "../tag/entity";
+import { UserEntity } from "../entities";
 
 function makeDefaultNoteTags(note: NoteEntity) {
   return {
@@ -17,6 +18,30 @@ function makeDefaultNoteTags(note: NoteEntity) {
 function makeController(deps: Dependencies): RestController {
   const notesRepo = deps.db.getRepository(NoteEntity);
   const tagsRepo = deps.db.getRepository(TagEntity);
+
+  async function createTagsIfNeeded(
+    tagsToCreate: string[],
+    note: NoteEntity,
+    user: UserEntity
+  ): Promise<TagEntity[]> {
+    // TODO: remove delete when tag auto deletion working fully
+    await tagsRepo.remove(await tagsRepo.find({ where: { user: user.id } }));
+    const existingTags = await tagsRepo.find({
+      where: { user: user.id }
+    });
+    const existingTagWords = existingTags.map(t => t.tag);
+    const newTags = tagsToCreate
+      .filter(t => !existingTagWords.includes(t))
+      .map(tag => ({ tag }));
+    const tagsToSave = newTags
+      .map(tag => createTag(tag, user))
+      .filter(t => t.isOk())
+      .map(t => t.get());
+    await tagsRepo.save(tagsToSave);
+    // TODO: make this more performant by also querying on note
+    const allTags = await tagsRepo.find({ where: { user: user.id } });
+    return allTags.filter(t => t.notes.map(n => n.id).includes(note.id));
+  }
 
   return {
     findAll: (ctx, user) =>
@@ -76,42 +101,28 @@ function makeController(deps: Dependencies): RestController {
           ]).fold(
             async () =>
               deps.messages.throw(ctx, deps.messages.badRequest("Notes")),
-            async ([updatedNote, params, u]) => {
+            async ([updates, params, u]) => {
               const existingNote = await notesRepo.findOne(params.noteId);
               const updateWillOverride = dateIsGreaterThan(
                 existingNote.dateUpdated,
-                updatedNote.previousDateUpdated
+                updates.previousDateUpdated
               );
-              if (!updatedNote.overwrite && updateWillOverride) {
+              if (!updates.overwrite && updateWillOverride) {
                 return deps.messages.throw(
                   ctx,
                   deps.messages.overwrite("Note will be overwritten")
                 );
               } else {
-                // TODO: remove this when working
-                await tagsRepo.remove(
-                  await tagsRepo.find({ where: { user: u.id } })
+                const tags = await createTagsIfNeeded(
+                  updates.tags,
+                  existingNote,
+                  u
                 );
-                const existingTags = await tagsRepo.find({
-                  where: { user: u.id }
-                });
-                const existingTagWords = existingTags.map(t => t.tag);
-                const newTags = updatedNote.tags
-                  .filter(t => !existingTagWords.includes(t))
-                  .map(tag => ({ tag }));
-                const tagsToSave = newTags
-                  .map(tag => createTag(tag, u))
-                  .filter(t => t.isOk())
-                  .map(t => t.get());
-                const savedTags = await tagsRepo.save(tagsToSave);
-                const allTags = await tagsRepo.find({ where: { user: u.id } });
-
-                console.log({ newTags, allTags, savedTags });
                 // TODO: remove old tags that are no longer used by any notes
                 ctx.body = await notesRepo.save({
                   ...existingNote,
-                  ...updatedNote,
-                  tags: savedTags
+                  ...updates,
+                  tags
                 });
                 return ctx.body;
               }
