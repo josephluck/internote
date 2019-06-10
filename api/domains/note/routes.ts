@@ -19,28 +19,43 @@ function makeController(deps: Dependencies): RestController {
   const notesRepo = deps.db.getRepository(NoteEntity);
   const tagsRepo = deps.db.getRepository(TagEntity);
 
-  async function createTagsIfNeeded(
-    tagsToCreate: string[],
+  async function createOrUpdateTagsForNote(
+    tagsStrs: string[],
     note: NoteEntity,
     user: UserEntity
   ): Promise<TagEntity[]> {
     // TODO: remove delete when tag auto deletion working fully
     await tagsRepo.remove(await tagsRepo.find({ where: { user: user.id } }));
+
     const existingTags = await tagsRepo.find({
       where: { user: user.id }
     });
-    const existingTagWords = existingTags.map(t => t.tag);
-    const newTags = tagsToCreate
-      .filter(t => !existingTagWords.includes(t))
-      .map(tag => ({ tag }));
-    const tagsToSave = newTags
-      .map(tag => createTag(tag, user))
+
+    const existingTagsStrs = existingTags.map(t => t.tag);
+    const tagsStrsToCreate = tagsStrs.filter(
+      t => !existingTagsStrs.includes(t)
+    );
+    const tagEntitiesToCreate = tagsStrsToCreate
+      .map(tag => createTag({ tag }, user))
       .filter(t => t.isOk())
-      .map(t => t.get());
-    await tagsRepo.save(tagsToSave);
-    // TODO: make this more performant by also querying on note
-    const allTags = await tagsRepo.find({ where: { user: user.id } });
-    return allTags.filter(t => t.notes.map(n => n.id).includes(note.id));
+      .map(t => t.toOption().get())
+      .map(t => ({ ...t, notes: [note] })); // NB: create the relationship between new tags and note
+    await tagsRepo.save(tagEntitiesToCreate);
+
+    // Update any existing tags with note relationship
+    const tagsStrsToUpdate = existingTags.filter(t => tagsStrs.includes(t.tag));
+    await Promise.all(
+      tagsStrsToUpdate.map(
+        t => tagsRepo.update(t, { notes: [...t.notes, note] }) // NB: create the relationship between tag and note
+      )
+    );
+
+    const finalNote = await notesRepo.findOne({
+      relations: ["tags"],
+      where: { id: note.id, user: user.id }
+    });
+
+    return finalNote.tags;
   }
 
   return {
@@ -113,7 +128,7 @@ function makeController(deps: Dependencies): RestController {
                   deps.messages.overwrite("Note will be overwritten")
                 );
               } else {
-                const tags = await createTagsIfNeeded(
+                const tags = await createOrUpdateTagsForNote(
                   updates.tags,
                   existingNote,
                   u
