@@ -109,7 +109,7 @@ interface OwnEffects {
   >;
   requestDictionary: Twine.Effect<OwnState, Actions, string>;
   fetchTags: Twine.Effect0<OwnState, Actions>;
-  saveTag: Twine.Effect<OwnState, Actions, UpdateNotePayload, Promise<void>>;
+  saveNewTag: Twine.Effect<OwnState, Actions, UpdateNotePayload, Promise<void>>;
 }
 
 function defaultState(): OwnState {
@@ -430,7 +430,7 @@ function makeModel(api: Api): Model {
         const response = await api.tag.getAll(state.session.token);
         response.map(tags => actions.setTags(tags));
       },
-      async saveTag(_state, actions, payload) {
+      async saveNewTag(_state, actions, payload) {
         // NB: own effect for the purpose of loading state
         // internally all we need to do is save the note (tags are automatically updated)
         await actions.updateNote(payload);
