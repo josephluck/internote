@@ -507,9 +507,11 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onSaveTag = async (tag: string) => {
-    this.insertTag(tag);
-    await this.props.onSaveTag(this.getChanges());
-    this.closeTagsMenu();
+    this.insertTag(tag, false);
+    window.requestAnimationFrame(async () => {
+      await this.props.onSaveTag(this.getChanges());
+      this.closeTagsMenu();
+    });
   };
 
   undo = () => {

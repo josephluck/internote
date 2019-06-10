@@ -48,10 +48,10 @@ export function TagsList({
     });
     // NB: for hashtags, need to include the #
     const searchCriteria = `#${search}`;
-    setFocusedIndex(1);
-    setFilteredTags(
-      search.length > 0 ? fuzzy.search(searchCriteria).map(i => tags[i]) : tags
-    );
+    const newFilteredTags =
+      search.length > 0 ? fuzzy.search(searchCriteria).map(i => tags[i]) : tags;
+    setFocusedIndex(newFilteredTags.length > 0 ? 1 : 0);
+    setFilteredTags(newFilteredTags);
   }, [search, tags]);
 
   useEffect(() => {

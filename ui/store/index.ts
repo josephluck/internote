@@ -76,6 +76,7 @@ interface OwnReducers {
 interface UpdateNotePayload {
   noteId: string;
   content: {};
+  tags: string[];
   title: string | undefined;
   overwrite?: boolean;
 }
@@ -270,7 +271,7 @@ function makeModel(api: Api): Model {
       async updateNote(
         state,
         actions,
-        { noteId, content, title, overwrite = false }
+        { noteId, content, title, tags, overwrite = false }
       ) {
         const existingNote = state.notes.find(note => note.id === noteId);
         const savedNote = await api.note.updateById(
@@ -280,7 +281,7 @@ function makeModel(api: Api): Model {
             content,
             title,
             dateUpdated: existingNote.dateUpdated,
-            tags: ["#internote", "#typescript"],
+            tags,
             overwrite
           }
         );
@@ -290,6 +291,7 @@ function makeModel(api: Api): Model {
               actions.overwriteNoteConfirmation({
                 noteId,
                 content,
+                tags,
                 title
               });
             }
