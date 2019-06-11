@@ -3,8 +3,6 @@ import * as Fuse from "fuse.js";
 import { MenuControl } from "./menu-control";
 import {
   faPlus,
-  faCheck,
-  faTrash,
   faSearch,
   faSpinner,
   faHashtag,
@@ -134,14 +132,18 @@ export function NoteMenu({
   const [noteLoading, setNoteLoading] = React.useState(null);
   const [filteredNotes, setFilteredNotes] = React.useState<Note[]>([]);
   const [tagView, setTagView] = React.useState(true);
+  const untaggedNotes = tagView
+    ? filteredNotes.filter(n => !n.tags || n.tags.length === 0)
+    : [];
   const notesByTag = tagView
     ? allTags
         .map(tag => ({
-          tag,
+          tag: tag.tag,
           notes: filteredNotes.filter(n =>
             n.tags.map(t => t.tag).includes(tag.tag)
           )
         }))
+        .concat([{ tag: "#untagged", notes: untaggedNotes }])
         .filter(t => t.notes.length > 0)
     : [];
 
@@ -214,13 +216,13 @@ export function NoteMenu({
             </SearchBoxWrapper>
             <ExpandingIconButton
               forceShow={false}
-              text={tagView ? "Tags view" : "List view"}
+              text={tagView ? "List view" : "Tags view"}
               onClick={() => setTagView(!tagView)}
               icon={
                 tagView ? (
-                  <FontAwesomeIcon icon={faHashtag} />
-                ) : (
                   <FontAwesomeIcon icon={faList} />
+                ) : (
+                  <FontAwesomeIcon icon={faHashtag} />
                 )
               }
             />
@@ -247,10 +249,10 @@ export function NoteMenu({
                 <NoResults emojis="🔎 🙄" message="No notes found" />
               ) : (
                 notesByTag.map((tag, i) => (
-                  <div key={tag.tag.id}>
+                  <div key={tag.tag}>
                     {i !== 0 ? <DropdownMenuSpacer /> : null}
                     <TagHeadingWrapper>
-                      <Tag isFocused>{tag.tag.tag}</Tag>
+                      <Tag isFocused>{tag.tag}</Tag>
                     </TagHeadingWrapper>
                     {tag.notes.map(n => (
                       <NoteMenuItem
