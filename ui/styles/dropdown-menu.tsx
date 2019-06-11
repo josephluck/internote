@@ -60,7 +60,7 @@ const DropdownMenuItemIcon = styled.div`
   transition: opacity 150ms ease;
 `;
 
-const DropdownMenuItemWrap = styled.div`
+export const DropdownMenuItemWrap = styled.div`
   display: flex;
   align-items: center;
   overflow: hidden;

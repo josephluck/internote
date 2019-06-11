@@ -285,7 +285,7 @@ function makeModel(api: Api): Model {
             overwrite
           }
         );
-        savedNote.fold(
+        await savedNote.fold(
           err => {
             if (err.type === "overwrite") {
               actions.overwriteNoteConfirmation({
@@ -296,12 +296,13 @@ function makeModel(api: Api): Model {
               });
             }
           },
-          updatedNote => {
+          async updatedNote => {
             // NB: update dateUpdated so that overwrite confirmation
             // works properly
             actions.setNotes(
               state.notes.map(n => (n.id === updatedNote.id ? updatedNote : n))
             );
+            await actions.fetchTags();
           }
         );
       },
@@ -436,7 +437,6 @@ function makeModel(api: Api): Model {
         // NB: own effect for the purpose of loading state
         // internally all we need to do is save the note (tags are automatically updated)
         await actions.updateNote(payload);
-        await actions.fetchTags();
       }
     }
   };

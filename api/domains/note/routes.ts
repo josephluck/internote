@@ -86,7 +86,8 @@ function makeController(deps: Dependencies): RestController {
       user
         .map(async u => {
           const notes = await notesRepo.find({
-            where: { user: u.id }
+            where: { user: u.id },
+            relations: ["tags"]
           });
           ctx.body = notes.map(makeDefaultNoteTags);
           return ctx.body;
