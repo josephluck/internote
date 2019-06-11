@@ -222,7 +222,7 @@ interface OutlineItem {
 // TODO: single line bold
 const blocksInOutline: BlockType[] = ["heading-one", "heading-two"];
 
-export function valueToOutline(value: Value): OutlineItem[] {
+export function getOutlineHeadingsFromEditorValue(value: Value): OutlineItem[] {
   return value.document
     .getBlocks()
     .filter(block => blocksInOutline.includes(block.type as any))
@@ -240,4 +240,13 @@ export function valueToOutline(value: Value): OutlineItem[] {
       };
     })
     .toArray();
+}
+
+export function getOutlineTagsFromEditorValue(value: Value): string[] {
+  const allTags = value.document
+    .getInlines()
+    .filter(inline => inline.type === "tag")
+    .map(inline => inline.data.get("tag"))
+    .toArray();
+  return [...new Set(allTags)];
 }

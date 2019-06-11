@@ -1,7 +1,11 @@
 import { styled } from "../theming/styled";
 import { spacing, size, font, media } from "../theming/symbols";
-import { valueToOutline } from "../utilities/editor";
+import {
+  getOutlineHeadingsFromEditorValue,
+  getOutlineTagsFromEditorValue
+} from "../utilities/editor";
 import { Value, Node } from "slate";
+import { Tag } from "./tag";
 
 const Wrap = styled.div<{ showing: boolean }>`
   position: sticky;
@@ -53,22 +57,32 @@ const OutlineHeadingTwo = styled.p`
   text-overflow: ellipsis;
 `;
 
+const Spacer = styled.div`
+  margin: ${spacing._0_5} 0;
+`;
+
+const TagsWrapper = styled.div`
+  margin: -${spacing._0_125};
+`;
+
 export function Outline({
   value,
-  onItemClick,
+  onHeadingClick,
   showing
 }: {
   value: Value;
-  onItemClick: (node: Node) => any;
+  onHeadingClick: (node: Node) => any;
   showing: boolean;
 }) {
-  const structure = valueToOutline(value);
+  const headings = getOutlineHeadingsFromEditorValue(value);
+  const hashtags = getOutlineTagsFromEditorValue(value);
+
   return (
     <Wrap showing={showing}>
-      {structure.map(block => (
+      {headings.map(block => (
         <OutlineItemWrapper
           key={block.key}
-          onClick={() => onItemClick(block.node)}
+          onClick={() => onHeadingClick(block.node)}
         >
           {block.type === "heading-one" ? (
             <OutlineHeadingOne>{block.name}</OutlineHeadingOne>
@@ -77,6 +91,12 @@ export function Outline({
           )}
         </OutlineItemWrapper>
       ))}
+      <Spacer />
+      <TagsWrapper>
+        {hashtags.map(tag => (
+          <Tag key={tag}>{tag}</Tag>
+        ))}
+      </TagsWrapper>
     </Wrap>
   );
 }

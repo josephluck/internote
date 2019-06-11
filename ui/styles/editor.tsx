@@ -712,7 +712,7 @@ export class InternoteEditor extends React.Component<Props, State> {
 
             <Outline
               value={this.state.value}
-              onItemClick={this.focusNode}
+              onHeadingClick={this.focusNode}
               showing={this.props.outlineShowing}
             />
           </EditorInnerWrap>
