@@ -50,11 +50,10 @@ function makeController(deps: Dependencies): RestController {
     );
     await tagsRepo.save(
       tagEntitiesToUpdate.map(t => ({
+        ...t,
         notes: t.notes ? [...t.notes, note] : [note]
       }))
     );
-
-    // TODO: null value in column "tag" violates not-null constraint
 
     // Remove note relationship with any tags that are no longer present in note
     const tagEntitiesToRemoveNoteRelationship = existingTags.filter(
