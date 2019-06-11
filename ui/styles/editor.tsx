@@ -680,7 +680,8 @@ export class InternoteEditor extends React.Component<Props, State> {
       hasSelection(this.state.value) ||
       !!this.props.speechSrc ||
       this.state.isCtrlHeld ||
-      toolbarIsExpanded;
+      toolbarIsExpanded ||
+      this.props.newTagSaving;
 
     return (
       <Wrap>
