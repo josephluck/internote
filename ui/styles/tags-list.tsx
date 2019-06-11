@@ -21,6 +21,10 @@ const ListInner = styled.div`
   padding: ${spacing._0_25} 0;
 `;
 
+const SavingIcon = styled.div`
+  margin-right: ${spacing._0_25};
+`;
+
 export function TagsList({
   search,
   tags,
@@ -86,7 +90,12 @@ export function TagsList({
     <Wrap>
       <ListInner>
         <NewTag isFocused={focusedIndex === 0}>
-          {newTagSaving ? <FontAwesomeIcon icon={faSpinner} spin /> : null}
+          {newTagSaving ? (
+            <SavingIcon>
+              {" "}
+              <FontAwesomeIcon icon={faSpinner} spin />{" "}
+            </SavingIcon>
+          ) : null}
           Create #{search}
         </NewTag>
         {filteredTags.map((tag, i) => (
