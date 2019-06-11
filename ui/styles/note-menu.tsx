@@ -6,7 +6,9 @@ import {
   faCheck,
   faTrash,
   faSearch,
-  faSpinner
+  faSpinner,
+  faHashtag,
+  faList
 } from "@fortawesome/free-solid-svg-icons";
 import {
   DropdownMenu,
@@ -25,6 +27,7 @@ import { OnNavigate } from "./on-navigate";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { combineStrings } from "../utilities/string";
 import { NoResults } from "./no-results";
+import { ExpandingIconButton } from "./expanding-icon-button";
 
 const DeleteIcon = styled.div`
   margin-left: ${spacing._1_5};
@@ -57,11 +60,17 @@ const NotesMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
       : size.notesMenuDropdownWidth};
 `;
 
+const HeadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding-right: ${spacing._0_25};
+  margin: ${spacing._0_25} ${spacing._0_25} 0;
+`;
+
 const SearchIcon = styled.div`
   position: absolute;
-  left: ${spacing._1};
+  left: ${spacing._0_75};
   top: 50%;
-  padding-top: ${spacing._0_25};
   transform: translateY(-50%);
   font-size: ${font._12.size};
   color: ${props => props.theme.dropdownMenuItemText};
@@ -72,7 +81,6 @@ const SearchIcon = styled.div`
 const SearchInput = styled.input`
   flex: 1;
   padding: ${spacing._0_5} ${spacing._0_5} ${spacing._0_5} ${spacing._1_75};
-  margin: ${spacing._0_25} ${spacing._0_25} 0;
   border: 0;
   color: ${props => props.theme.searchInputText};
   font: inherit;
@@ -85,6 +93,8 @@ const SearchInput = styled.input`
 `;
 
 const SearchBoxWrapper = styled.div<{ hasSearch: boolean }>`
+  flex: 1;
+  margin-right: ${spacing._0_5};
   position: relative;
   display: flex;
   align-items: center;
@@ -146,6 +156,7 @@ export function NoteMenu({
   const [searchText, setSearchText] = React.useState("");
   const [noteLoading, setNoteLoading] = React.useState(null);
   const [filteredNotes, setFilteredNotes] = React.useState<Note[]>([]);
+  const [tagView, setTagView] = React.useState(false);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
   function focusInput() {
@@ -194,21 +205,35 @@ export function NoteMenu({
           {menu.menuShowing && !searchFocused ? (
             <OnKeyboardShortcut keyCombo="s" cb={focusInput} />
           ) : null}
-          <SearchBoxWrapper hasSearch={searchText.length > 0}>
-            <SearchIcon>
-              <FontAwesomeIcon icon={faSearch} />
-            </SearchIcon>
-            <SearchInput
-              placeholder="Search for notes"
-              ref={inputRef}
-              value={searchText}
-              onFocus={() => setSearchFocused(true)}
-              onBlur={() => setSearchFocused(false)}
-              onInput={e => {
-                setSearchText(e.target.value);
-              }}
+          <HeadingWrapper>
+            <SearchBoxWrapper hasSearch={searchText.length > 0}>
+              <SearchIcon>
+                <FontAwesomeIcon icon={faSearch} />
+              </SearchIcon>
+              <SearchInput
+                placeholder="Search for notes or tags"
+                ref={inputRef}
+                value={searchText}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setSearchFocused(false)}
+                onInput={e => {
+                  setSearchText(e.target.value);
+                }}
+              />
+            </SearchBoxWrapper>
+            <ExpandingIconButton
+              forceShow={false}
+              text={tagView ? "Tags view" : "List view"}
+              onClick={() => setTagView(!tagView)}
+              icon={
+                tagView ? (
+                  <FontAwesomeIcon icon={faHashtag} />
+                ) : (
+                  <FontAwesomeIcon icon={faList} />
+                )
+              }
             />
-          </SearchBoxWrapper>
+          </HeadingWrapper>
           <DropdownMenuItem
             icon={
               noteLoading === "new-note" ? (
