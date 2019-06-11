@@ -23,7 +23,7 @@ function makeController(deps: Dependencies): RestController {
   async function removeOrphanedTags(user: UserEntity) {
     const latestTags = await tagsRepo.find({ where: { user: user.id } });
     await tagsRepo.remove(
-      latestTags.filter(t => !!t.notes && t.notes.length === 0)
+      latestTags.filter(t => !t.notes || t.notes.length === 0)
     );
   }
 

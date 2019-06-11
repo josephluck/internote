@@ -791,7 +791,7 @@ export class InternoteEditor extends React.Component<Props, State> {
             <ToolbarExpandedWrapper>
               <ToolbarExpandedInner>
                 <ToolbarInner>
-                  {this.state.isTagsMenuShowing ? (
+                  {this.state.isTagsMenuShowing || this.props.newTagSaving ? (
                     <TagsList
                       onTagSelected={this.insertTag}
                       onSaveTag={this.onSaveTag}
