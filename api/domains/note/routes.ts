@@ -34,11 +34,11 @@ function makeController(deps: Dependencies): RestController {
     const existingTagsStrs = existingTags.map(t => t.tag);
 
     // Create tags that are new and add relationship to note
-    const tagsStrsToCreate = tagsStrs.filter(
-      t => !existingTagsStrs.includes(t)
-    );
+    const tagsStrsToCreate = tagsStrs
+      .filter(t => !!t && t.length > 0)
+      .filter(t => !existingTagsStrs.includes(t));
     const tagEntitiesToCreate = [...new Set(tagsStrsToCreate)] // NB: dedupe tags
-      .map(tag => createTag({ tag }, user))
+      .map(t => createTag({ tag: t }, user))
       .filter(t => t.isOk())
       .map(t => t.toOption().get())
       .map(t => ({ ...t, notes: [note] }));
@@ -69,7 +69,8 @@ function makeController(deps: Dependencies): RestController {
       )
     );
 
-    // Remove any tags that no longer have any notes
+    // Remove any tags that no longer have notes
+    // TODO: move this to GET /tags?
     const latestTags = await tagsRepo.find({ where: { user: user.id } });
     await tagsRepo.remove(
       latestTags.filter(t => !!t.notes && t.notes.length === 0)
