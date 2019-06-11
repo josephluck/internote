@@ -19,6 +19,14 @@ function makeController(deps: Dependencies): RestController {
   const notesRepo = deps.db.getRepository(NoteEntity);
   const tagsRepo = deps.db.getRepository(TagEntity);
 
+  // TODO: move this to GET /tags?
+  async function removeOrphanedTags(user: UserEntity) {
+    const latestTags = await tagsRepo.find({ where: { user: user.id } });
+    await tagsRepo.remove(
+      latestTags.filter(t => !!t.notes && t.notes.length === 0)
+    );
+  }
+
   // Create any tags that are new
   // Add note relationship to any existing tags
   // Remove note relationship for any tags that have note relationship that are no longer present
@@ -59,27 +67,21 @@ function makeController(deps: Dependencies): RestController {
     const tagEntitiesToRemoveNoteRelationship = existingTags.filter(
       t => !tagsStrs.includes(t.tag)
     );
-    await Promise.all(
-      tagEntitiesToRemoveNoteRelationship.map(t =>
-        tagsRepo.save({
-          ...t,
-          notes: t.notes ? t.notes.filter(n => n.id !== note.id) : []
-        })
-      )
+    await tagsRepo.save(
+      tagEntitiesToRemoveNoteRelationship.map(t => ({
+        ...t,
+        notes: t.notes ? t.notes.filter(n => n.id !== note.id) : []
+      }))
     );
 
     // Remove any tags that no longer have notes
-    // TODO: move this to GET /tags?
-    const latestTags = await tagsRepo.find({ where: { user: user.id } });
-    await tagsRepo.remove(
-      latestTags.filter(t => !!t.notes && t.notes.length === 0)
-    );
+    await removeOrphanedTags(user);
 
+    // Respond with final tags
     const finalNote = await notesRepo.findOne({
       relations: ["tags"],
       where: { id: note.id, user: user.id }
     });
-
     return finalNote.tags;
   }
 

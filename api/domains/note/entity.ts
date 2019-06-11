@@ -60,6 +60,7 @@ export function createNote(fields: any, user: UserEntity) {
   });
 }
 
+// TODO: validate tags as an array of strings that start with '#'
 export function updateNote(fields: any, user: UserEntity) {
   return validate<UpdateNote>(fields, {
     content: [rules.required],
