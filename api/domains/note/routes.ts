@@ -69,7 +69,9 @@ function makeController(deps: Dependencies): RestController {
 
     // Remove any tags that no longer have any notes
     const latestTags = await tagsRepo.find({ where: { user: user.id } });
-    await tagsRepo.remove(latestTags.filter(t => t.notes.length === 0));
+    await tagsRepo.remove(
+      latestTags.filter(t => !!t.notes && t.notes.length === 0)
+    );
 
     const finalNote = await notesRepo.findOne({
       relations: ["tags"],
