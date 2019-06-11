@@ -22,14 +22,12 @@ function makeController(deps: Dependencies): RestController {
   // Create any tags that are new
   // Add note relationship to any existing tags
   // Remove note relationship for any tags that have note relationship that are no longer present
+  // Delete any tags that no longer have any notes
   async function createOrUpdateTagsForNote(
     tagsStrs: string[],
     note: NoteEntity,
     user: UserEntity
   ): Promise<TagEntity[]> {
-    // TODO: remove this
-    await tagsRepo.remove(await tagsRepo.find({ where: { user: user.id } }));
-
     const existingTags = await tagsRepo.find({
       where: { user: user.id }
     });
@@ -51,8 +49,12 @@ function makeController(deps: Dependencies): RestController {
       tagsStrs.includes(t.tag)
     );
     await tagsRepo.save(
-      tagEntitiesToUpdate.map(t => ({ notes: [...t.notes, note] }))
+      tagEntitiesToUpdate.map(t => ({
+        notes: t.notes ? [...t.notes, note] : [note]
+      }))
     );
+
+    // TODO: null value in column "tag" violates not-null constraint
 
     // Remove note relationship with any tags that are no longer present in note
     const tagEntitiesToRemoveNoteRelationship = existingTags.filter(
@@ -62,7 +64,7 @@ function makeController(deps: Dependencies): RestController {
       tagEntitiesToRemoveNoteRelationship.map(t =>
         tagsRepo.save({
           ...t,
-          notes: t.notes.filter(n => n.id !== note.id)
+          notes: t.notes ? t.notes.filter(n => n.id !== note.id) : []
         })
       )
     );

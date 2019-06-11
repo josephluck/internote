@@ -133,7 +133,7 @@ export function NoteMenu({
   const [searchText, setSearchText] = React.useState("");
   const [noteLoading, setNoteLoading] = React.useState(null);
   const [filteredNotes, setFilteredNotes] = React.useState<Note[]>([]);
-  const [tagView, setTagView] = React.useState(false);
+  const [tagView, setTagView] = React.useState(true);
   const notesByTag = tagView
     ? allTags
         .map(tag => ({
