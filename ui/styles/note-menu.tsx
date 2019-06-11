@@ -1,19 +1,11 @@
 import * as React from "react";
 import * as Fuse from "fuse.js";
 import { MenuControl } from "./menu-control";
-import {
-  faPlus,
-  faSearch,
-  faSpinner,
-  faHashtag,
-  faList
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import {
   DropdownMenu,
   DropdownMenuItem,
-  DropdownChevron,
-  DropdownMenuSpacer,
-  DropdownMenuItemWrap
+  DropdownChevron
 } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { styled } from "../theming/styled";
@@ -23,7 +15,6 @@ import { OnNavigate } from "./on-navigate";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { combineStrings } from "../utilities/string";
 import { NoResults } from "./no-results";
-import { ExpandingIconButton } from "./expanding-icon-button";
 import { Tag } from "./tag";
 import { NoteMenuItem } from "./note-menu-item";
 
@@ -71,7 +62,6 @@ const SearchInput = styled.input`
 
 const SearchBoxWrapper = styled.div<{ hasSearch: boolean }>`
   flex: 1;
-  margin-right: ${spacing._0_5};
   position: relative;
   display: flex;
   align-items: center;
@@ -99,17 +89,21 @@ const SearchBoxWrapper = styled.div<{ hasSearch: boolean }>`
   }
 `;
 
-const TagHeadingWrapper = styled(DropdownMenuItemWrap)`
-  padding-top: 0;
-  padding-bottom: ${spacing._0_25};
+const TagsWrapper = styled.div`
+  padding: 0 ${spacing._0_5};
+  border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
+`;
+
+const MaxHeight = styled.div`
+  max-height: ${size.notesMenuListMaxHeight};
+  overflow: auto;
+  margin: ${spacing._0_5} 0;
+  padding: ${spacing._0_5} 0;
+  border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
 `;
 
 function getNoteTitle(note: Note): string {
   return note.title;
-}
-
-function getTagText(tag: TagEntity): string {
-  return tag.tag;
 }
 
 export function NoteMenu({
@@ -131,23 +125,9 @@ export function NoteMenu({
   const [searchText, setSearchText] = React.useState("");
   const [noteLoading, setNoteLoading] = React.useState(null);
   const [filteredNotes, setFilteredNotes] = React.useState<Note[]>([]);
-  const [tagView, setTagView] = React.useState(true);
-  const untaggedNotes = tagView
-    ? filteredNotes.filter(n => !n.tags || n.tags.length === 0)
-    : [];
-  const notesByTag = tagView
-    ? allTags
-        .map(tag => ({
-          tag: tag.tag,
-          notes: filteredNotes.filter(n =>
-            n.tags.map(t => t.tag).includes(tag.tag)
-          )
-        }))
-        .concat([{ tag: "#untagged", notes: untaggedNotes }])
-        .filter(t => t.notes.length > 0)
-    : [];
-
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const isTagSearch = searchText.startsWith("#");
+
   function focusInput() {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -156,11 +136,7 @@ export function NoteMenu({
 
   React.useEffect(() => {
     searchNotes(searchText);
-  }, [
-    searchText,
-    combineStrings(allNotes.map(getNoteTitle)),
-    combineStrings(allTags.map(getTagText))
-  ]);
+  }, [searchText, combineStrings(allNotes.map(getNoteTitle))]);
 
   function searchNotes(value: string) {
     const fuzzy = new Fuse(allNotes, {
@@ -170,9 +146,14 @@ export function NoteMenu({
       distance: 30,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: ["title"]
+      keys: isTagSearch ? ["tags.tag"] : ["title"]
     });
     setFilteredNotes(value.length ? fuzzy.search(value) : allNotes);
+  }
+
+  function onTagClicked(tag: TagEntity) {
+    setSearchText(tag.tag);
+    focusInput();
   }
 
   return (
@@ -214,18 +195,6 @@ export function NoteMenu({
                 }}
               />
             </SearchBoxWrapper>
-            <ExpandingIconButton
-              forceShow={false}
-              text={tagView ? "List view" : "Tags view"}
-              onClick={() => setTagView(!tagView)}
-              icon={
-                tagView ? (
-                  <FontAwesomeIcon icon={faList} />
-                ) : (
-                  <FontAwesomeIcon icon={faHashtag} />
-                )
-              }
-            />
           </HeadingWrapper>
           <DropdownMenuItem
             icon={
@@ -242,60 +211,34 @@ export function NoteMenu({
           >
             <span>Create a new note</span>
           </DropdownMenuItem>
-          <DropdownMenuSpacer />
-          {tagView ? (
-            <>
-              {notesByTag.length === 0 ? (
-                <NoResults emojis="🔎 🙄" message="No notes found" />
-              ) : (
-                notesByTag.map((tag, i) => (
-                  <div key={tag.tag}>
-                    {i !== 0 ? <DropdownMenuSpacer /> : null}
-                    <TagHeadingWrapper>
-                      <Tag isFocused>{tag.tag}</Tag>
-                    </TagHeadingWrapper>
-                    {tag.notes.map(n => (
-                      <NoteMenuItem
-                        isLoading={noteLoading === n.id}
-                        isSelected={!!currentNote && n.id === currentNote.id}
-                        note={n}
-                        onSelect={() => {
-                          setNoteLoading(n.id);
-                        }}
-                        onDelete={() => {
-                          menu.toggleMenuShowing(false);
-                          onDeleteNote(n.id);
-                        }}
-                        searchText={searchText}
-                      />
-                    ))}
-                  </div>
-                ))
-              )}
-            </>
-          ) : (
-            <>
-              {filteredNotes.length === 0 ? (
-                <NoResults emojis="🔎 🙄" message="No notes found" />
-              ) : (
-                filteredNotes.map(n => (
-                  <NoteMenuItem
-                    isLoading={noteLoading === n.id}
-                    isSelected={!!currentNote && n.id === currentNote.id}
-                    note={n}
-                    onSelect={() => {
-                      setNoteLoading(n.id);
-                    }}
-                    onDelete={() => {
-                      menu.toggleMenuShowing(false);
-                      onDeleteNote(n.id);
-                    }}
-                    searchText={searchText}
-                  />
-                ))
-              )}
-            </>
-          )}
+          <MaxHeight>
+            {filteredNotes.length === 0 ? (
+              <NoResults emojis="🔎 🙄" message="No notes found" />
+            ) : (
+              filteredNotes.map(n => (
+                <NoteMenuItem
+                  isLoading={noteLoading === n.id}
+                  isSelected={!!currentNote && n.id === currentNote.id}
+                  note={n}
+                  onSelect={() => {
+                    setNoteLoading(n.id);
+                  }}
+                  onDelete={() => {
+                    menu.toggleMenuShowing(false);
+                    onDeleteNote(n.id);
+                  }}
+                  searchText={isTagSearch ? "" : searchText}
+                />
+              ))
+            )}
+          </MaxHeight>
+          <TagsWrapper>
+            {allTags.map(tag => (
+              <Tag key={tag.id} onClick={() => onTagClicked(tag)}>
+                {tag.tag}
+              </Tag>
+            ))}
+          </TagsWrapper>
         </NotesMenu>
       )}
     >

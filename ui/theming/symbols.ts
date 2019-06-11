@@ -74,9 +74,10 @@ export const media = {
 };
 
 export const size = {
-  notesMenuDropdownWidth: "14rem",
-  notesMenuDropdownWidthExpanded: "18rem",
+  notesMenuDropdownWidth: "12rem",
+  notesMenuDropdownWidthExpanded: "16rem",
   settingsMenuDropdownWidth: "8rem",
+  notesMenuListMaxHeight: "40vh",
   outlineWidth: "10rem",
   wrapperMaxWidth: "42rem",
   toolbarExpandedMaxHeight: "40vh",
