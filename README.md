@@ -18,7 +18,7 @@ Internote has been designed with simplicity and beauty in mind for effortless no
 
 Go full zen by entering focus mode. All distracting user interface disappears and the current section highlighted so you can focus on writing completely distraction-free.
 
-**Outline view**
+**Outline**
 
 See the overview of your document and quickly navigate to headings and subheadings using a handy outline view.
 
@@ -30,13 +30,17 @@ Multiple colour and typography themes. Serif's your jam? What about dark mode? N
 
 Emoji support because Internote is down with the kids :tada:
 
+**Tags**
+
+Tag notes using a simple #tag system. Easily search for notes by tag.
+
 **Dictionary**
 
-Can't find the perfect word or want to check that your use of a word is correct? Just highlight a word and you're a single click away to the full power of Oxford's full dictionary and thesaurus.
+Can't find the perfect word or want to check that your use of a word is correct? Just highlight a word and you're a single click away to the full power of Oxford's English Dictionary and thesaurus.
 
 **Speech**
 
-Text to speech - just highlight a sentence or paragraph and press the speech button to hear it. Choose from multiple voices, male or female.
+Just highlight a sentence or paragraph and press the speech button to hear it. Choose from multiple voices, male or female.
 
 **Full-screen mode**
 
@@ -46,9 +50,13 @@ Go completely distraction free by entering full-screen mode.
 
 Rich keyboard shortcuts system for power use.
 
-**Auto save in the cloud**
+**Auto save**
 
 No need to press save. Notes and settings are automatically saved to the cloud. Log in on many devices using the same account.
+
+**Conflict detection**
+
+No messy overwrites, Internote will let you know if you're about to overwrite your note.
 
 **More**
 
