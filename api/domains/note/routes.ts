@@ -76,7 +76,14 @@ function makeController(deps: Dependencies): RestController {
     await tagsRepo.save(tagEntitiesToCreate);
 
     // Remove any tags that no longer have any note relationships
+    // TODO: not sure if this is necessary as TypeORM might do this for us
     // await removeOrphanedTags(user);
+
+    // Respond with latest tags
+    const latestNote = await notesRepo.findOne(note.id, {
+      relations: ["tags"]
+    });
+    return latestNote.tags;
   }
 
   return {
@@ -150,16 +157,19 @@ function makeController(deps: Dependencies): RestController {
                   deps.messages.overwrite("Note will be overwritten")
                 );
               } else {
-                await createOrUpdateTagsForNote(updates.tags, existingNote, u);
-                const { tags, ...rest } = updates;
-                await notesRepo.save({
+                const tags = await createOrUpdateTagsForNote(
+                  updates.tags,
+                  existingNote,
+                  u
+                );
+                const { title, content } = updates;
+                const updatedNote = await notesRepo.save({
                   ...existingNote,
-                  ...rest
+                  title,
+                  content,
+                  tags
                 });
-                // Ensure we're getting the latest tags
-                ctx.body = await notesRepo.findOne(params.noteId, {
-                  relations: ["tags"]
-                });
+                ctx.body = { ...updatedNote, tags };
                 return ctx.body;
               }
             }
