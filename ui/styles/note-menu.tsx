@@ -1,7 +1,12 @@
 import * as React from "react";
 import * as Fuse from "fuse.js";
 import { MenuControl } from "./menu-control";
-import { faPlus, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faSearch,
+  faSpinner,
+  faTimes
+} from "@fortawesome/free-solid-svg-icons";
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -35,15 +40,25 @@ const HeadingWrapper = styled.div`
   margin: ${spacing._0_25} ${spacing._0_25} 0;
 `;
 
-const SearchIcon = styled.div`
+const InputIcon = styled.div`
   position: absolute;
-  left: ${spacing._0_75};
   top: 50%;
   transform: translateY(-50%);
   font-size: ${font._12.size};
   color: ${props => props.theme.dropdownMenuItemText};
-  pointer-events: none;
   transition: all 300ms ease;
+`;
+
+const SearchIcon = styled(InputIcon)`
+  left: ${spacing._0_75};
+  pointer-events: none;
+`;
+
+const ClearIcon = styled(InputIcon)<{ isShowing: boolean }>`
+  right: ${spacing._0_75};
+  pointer-events: ${props => (props.isShowing ? "initial" : "none")};
+  cursor: ${props => (props.isShowing ? "pointer" : "default")};
+  opacity: ${props => (props.isShowing ? 1 : 0)};
 `;
 
 const SearchInput = styled.input`
@@ -194,6 +209,15 @@ export function NoteMenu({
                   setSearchText(e.target.value);
                 }}
               />
+              <ClearIcon
+                isShowing={searchText.length > 0}
+                onClick={() => {
+                  setSearchText("");
+                  focusInput();
+                }}
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </ClearIcon>
             </SearchBoxWrapper>
           </HeadingWrapper>
           <DropdownMenuItem
