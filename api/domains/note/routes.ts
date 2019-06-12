@@ -7,6 +7,7 @@ import { Result, Option } from "space-lift";
 import { validate, rules } from "../../dependencies/validation";
 import { TagEntity, createTag } from "../tag/entity";
 import { UserEntity } from "../entities";
+import { dedupeArray } from "../../utilities/general";
 
 function makeDefaultNoteTags(note: NoteEntity) {
   return {
@@ -21,16 +22,16 @@ function makeController(deps: Dependencies): RestController {
 
   // TODO: move this to GET /tags?
   async function removeOrphanedTags(user: UserEntity) {
-    const latestTags = await tagsRepo.find({ where: { user: user.id } });
-    await tagsRepo.remove(
-      latestTags.filter(t => !t.notes || t.notes.length === 0)
-    );
+    const tags = await tagsRepo.find({ where: { user: user.id } });
+    const orphanedTags = tags.filter(t => t.notes.length === 0);
+    await tagsRepo.remove(orphanedTags);
   }
 
   // Create any tags that are new
   // Add note relationship to any existing tags
   // Remove note relationship for any tags that have note relationship that are no longer present
   // Delete any tags that no longer have any notes
+  // TODO: could do all create & update operations in a single db transaction
   async function createOrUpdateTagsForNote(
     tagsStrs: string[],
     note: NoteEntity,
@@ -39,31 +40,8 @@ function makeController(deps: Dependencies): RestController {
     const existingTags = await tagsRepo.find({
       where: { user: user.id }
     });
-    const existingTagsStrs = existingTags.map(t => t.tag);
 
-    // Create tags that are new and add relationship to note
-    const tagsStrsToCreate = tagsStrs
-      .filter(t => !!t && t.length > 0)
-      .filter(t => !existingTagsStrs.includes(t));
-    const tagEntitiesToCreate = [...new Set(tagsStrsToCreate)] // NB: dedupe tags
-      .map(t => createTag({ tag: t }, user))
-      .filter(t => t.isOk())
-      .map(t => t.toOption().get())
-      .map(t => ({ ...t, notes: [note] }));
-    await tagsRepo.save(tagEntitiesToCreate);
-
-    // Update any existing tags with note relationship
-    const tagEntitiesToUpdate = existingTags.filter(t =>
-      tagsStrs.includes(t.tag)
-    );
-    await tagsRepo.save(
-      tagEntitiesToUpdate.map(t => ({
-        ...t,
-        notes: t.notes ? [...t.notes, note] : [note]
-      }))
-    );
-
-    // Remove note relationship with any tags that are no longer present in note
+    // Remove note relationship with any tags that have been removed from note
     const tagEntitiesToRemoveNoteRelationship = existingTags.filter(
       t => !tagsStrs.includes(t.tag)
     );
@@ -74,7 +52,30 @@ function makeController(deps: Dependencies): RestController {
       }))
     );
 
-    // Remove any tags that no longer have notes
+    // Update existing tags with note relationship
+    const tagEntitiesToUpdate = existingTags.filter(t =>
+      tagsStrs.includes(t.tag)
+    );
+    await tagsRepo.save(
+      tagEntitiesToUpdate.map(t => ({
+        ...t,
+        notes: t.notes ? [...t.notes, note] : [note]
+      }))
+    );
+
+    // Create new tags and add relationship to note
+    const existingTagsStrs = existingTags.map(t => t.tag);
+    const tagsStrsToCreate: string[] = dedupeArray(tagsStrs)
+      .filter(t => !!t && t.length > 0)
+      .filter(t => !existingTagsStrs.includes(t));
+    const tagEntitiesToCreate: TagEntity[] = tagsStrsToCreate
+      .map(t => createTag({ tag: t }, user))
+      .filter(t => t.isOk())
+      .map(t => t.toOption().get())
+      .map(t => ({ ...t, notes: [note] }));
+    await tagsRepo.save(tagEntitiesToCreate);
+
+    // Remove any tags that no longer have any note relationships
     await removeOrphanedTags(user);
 
     // Respond with final tags
