@@ -21,11 +21,11 @@ function makeController(deps: Dependencies): RestController {
   const tagsRepo = deps.db.getRepository(TagEntity);
 
   // TODO: move this to GET /tags?
-  // async function removeOrphanedTags(user: UserEntity) {
-  //   const tags = await tagsRepo.find({ where: { user: user.id } });
-  //   const orphanedTags = tags.filter(t => !t.notes || t.notes.length === 0);
-  //   await tagsRepo.remove(orphanedTags);
-  // }
+  async function removeOrphanedTags(user: UserEntity) {
+    const tags = await tagsRepo.find({ where: { user: user.id } });
+    const orphanedTags = tags.filter(t => !t.notes || t.notes.length === 0);
+    await tagsRepo.remove(orphanedTags);
+  }
 
   // Create any tags that are new
   // Add note relationship to any existing tags
@@ -38,7 +38,8 @@ function makeController(deps: Dependencies): RestController {
     user: UserEntity
   ): Promise<TagEntity[]> {
     const existingTags = await tagsRepo.find({
-      where: { user: user.id }
+      where: { user: user.id },
+      relations: ['notes']
     });
 
     // Remove note relationship with any tags that have been removed from note
@@ -76,8 +77,7 @@ function makeController(deps: Dependencies): RestController {
     await tagsRepo.save(tagEntitiesToCreate);
 
     // Remove any tags that no longer have any note relationships
-    // TODO: not sure if this is necessary as TypeORM might do this for us
-    // await removeOrphanedTags(user);
+    await removeOrphanedTags(user);
 
     // Respond with latest tags
     const latestNote = await notesRepo.findOne(note.id, {
