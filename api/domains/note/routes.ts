@@ -39,30 +39,24 @@ function makeController(deps: Dependencies): RestController {
   ): Promise<TagEntity[]> {
     const existingTags = await tagsRepo.find({
       where: { user: user.id },
-      relations: ['notes']
+      relations: ["notes"]
     });
 
     // Remove note relationship with any tags that have been removed from note
-    const tagEntitiesToRemoveNoteRelationship = existingTags.filter(
-      t => !tagsStrs.includes(t.tag)
-    );
-    await tagsRepo.save(
-      tagEntitiesToRemoveNoteRelationship.map(t => ({
+    const tagEntitiesToRemoveNoteRelationship = existingTags
+      .filter(t => !tagsStrs.includes(t.tag))
+      .map(t => ({
         ...t,
         notes: t.notes ? t.notes.filter(n => n.id !== note.id) : []
-      }))
-    );
+      }));
 
     // Update existing tags with note relationship
-    const tagEntitiesToUpdate = existingTags.filter(t =>
-      tagsStrs.includes(t.tag)
-    );
-    await tagsRepo.save(
-      tagEntitiesToUpdate.map(t => ({
+    const tagEntitiesToCreateNoteRelationship = existingTags
+      .filter(t => tagsStrs.includes(t.tag))
+      .map(t => ({
         ...t,
         notes: t.notes ? [...t.notes, note] : [note]
-      }))
-    );
+      }));
 
     // Create new tags and add relationship to note
     const existingTagsStrs = existingTags.map(t => t.tag);
@@ -74,7 +68,13 @@ function makeController(deps: Dependencies): RestController {
       .filter(t => t.isOk())
       .map(t => t.toOption().get())
       .map(t => ({ ...t, notes: [note] }));
-    await tagsRepo.save(tagEntitiesToCreate);
+
+    // Save the tags to the db
+    await tagsRepo.save([
+      ...tagEntitiesToRemoveNoteRelationship,
+      ...tagEntitiesToCreateNoteRelationship,
+      ...tagEntitiesToCreate
+    ]);
 
     // Remove any tags that no longer have any note relationships
     await removeOrphanedTags(user);
