@@ -2,6 +2,7 @@ import { Result, Ok, Err } from "space-lift";
 import { UpdatePreferences, Preferences, AvailableVoice } from "./entity";
 import { AxiosInstance } from "axios";
 import { makeRequestConfig } from "../api";
+import { ApiError } from "../../dependencies/messages";
 
 export const availableVoices: AvailableVoice[] = [
   "Joey",
@@ -22,7 +23,7 @@ export function api(client: AxiosInstance) {
     update(
       token: string,
       preferences: Partial<UpdatePreferences>
-    ): Promise<Result<Error, Preferences>> {
+    ): Promise<Result<ApiError, Preferences>> {
       return client
         .put(`/preferences`, preferences, makeRequestConfig({ token }))
         .then(r => Ok(r.data))

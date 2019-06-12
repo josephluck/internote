@@ -21,11 +21,11 @@ function makeController(deps: Dependencies): RestController {
   const tagsRepo = deps.db.getRepository(TagEntity);
 
   // TODO: move this to GET /tags?
-  async function removeOrphanedTags(user: UserEntity) {
-    const tags = await tagsRepo.find({ where: { user: user.id } });
-    const orphanedTags = tags.filter(t => t.notes.length === 0);
-    await tagsRepo.remove(orphanedTags);
-  }
+  // async function removeOrphanedTags(user: UserEntity) {
+  //   const tags = await tagsRepo.find({ where: { user: user.id } });
+  //   const orphanedTags = tags.filter(t => !t.notes || t.notes.length === 0);
+  //   await tagsRepo.remove(orphanedTags);
+  // }
 
   // Create any tags that are new
   // Add note relationship to any existing tags
@@ -76,14 +76,7 @@ function makeController(deps: Dependencies): RestController {
     await tagsRepo.save(tagEntitiesToCreate);
 
     // Remove any tags that no longer have any note relationships
-    await removeOrphanedTags(user);
-
-    // Respond with final tags
-    const finalNote = await notesRepo.findOne({
-      relations: ["tags"],
-      where: { id: note.id, user: user.id }
-    });
-    return finalNote.tags;
+    // await removeOrphanedTags(user);
   }
 
   return {
@@ -157,16 +150,15 @@ function makeController(deps: Dependencies): RestController {
                   deps.messages.overwrite("Note will be overwritten")
                 );
               } else {
-                const tags = await createOrUpdateTagsForNote(
-                  updates.tags,
-                  existingNote,
-                  u
-                );
-                // TODO: remove old tags that are no longer used by any notes
-                ctx.body = await notesRepo.save({
+                await createOrUpdateTagsForNote(updates.tags, existingNote, u);
+                const { tags, ...rest } = updates;
+                await notesRepo.save({
                   ...existingNote,
-                  ...updates,
-                  tags
+                  ...rest
+                });
+                // Ensure we're getting the latest tags
+                ctx.body = await notesRepo.findOne(params.noteId, {
+                  relations: ["tags"]
                 });
                 return ctx.body;
               }

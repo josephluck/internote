@@ -11,7 +11,7 @@ export function api(client: AxiosInstance) {
         .get("/notes", makeRequestConfig({ token }))
         .then(r => r.data);
     },
-    findById(token: string, noteId: string): Promise<Result<Error, Note>> {
+    findById(token: string, noteId: string): Promise<Result<ApiError, Note>> {
       return client
         .get(`/notes/${noteId}`, makeRequestConfig({ token }))
         .then(r => Ok(r.data))
@@ -19,8 +19,8 @@ export function api(client: AxiosInstance) {
     },
     create(
       token: string,
-      payload: CreateNote = {}
-    ): Promise<Result<Error, Note>> {
+      payload: CreateNote
+    ): Promise<Result<ApiError, Note>> {
       return client
         .post("/notes", payload, makeRequestConfig({ token }))
         .then(r => Ok(r.data))
@@ -36,7 +36,7 @@ export function api(client: AxiosInstance) {
         .then(r => Ok(r.data))
         .catch(err => Err(err.response.data));
     },
-    deleteById(token: string, noteId: string): Promise<Result<Error, void>> {
+    deleteById(token: string, noteId: string): Promise<Result<ApiError, void>> {
       return client
         .delete(`/notes/${noteId}`, makeRequestConfig({ token }))
         .then(() => Ok(null))
