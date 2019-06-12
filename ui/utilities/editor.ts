@@ -250,3 +250,7 @@ export function getOutlineTagsFromEditorValue(value: Value): string[] {
     .toArray();
   return [...new Set(allTags)];
 }
+
+export function extractWord (word: string) {
+  return word.substring(1)
+};

@@ -49,7 +49,8 @@ import {
   shouldPreventEventForMenuNavigationShortcut,
   isShortcut,
   isTagShortcut,
-  getTagsFromEditorValue
+  getTagsFromEditorValue,
+  extractWord
 } from "../utilities/editor";
 import { Wrap, EditorStyles, Editor, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
@@ -279,7 +280,6 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   handleShortcutSearch = () => {
-    const extractWord = (word: string) => word.substring(1);
     const shortcut = getCurrentFocusedWord(this.editor.value).filter(
       isShortcut
     );
@@ -289,7 +289,11 @@ export class InternoteEditor extends React.Component<Props, State> {
       .filter(isEmojiShortcut)
       .map(extractWord)
       .fold(
-        () => this.setEmojiMenuShowing(false),
+        () => {
+          if (this.state.isEmojiMenuShowing) {
+            this.setEmojiMenuShowing(false)
+          }
+        },
         shortcutSearch => {
           this.setState({ shortcutSearch }, () => {
             this.setEmojiMenuShowing(true);
