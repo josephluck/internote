@@ -46,11 +46,13 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
           store.actions.speech.requestSpeech({ content, noteId: note.id })
         }
         onDiscardSpeech={() => store.actions.speech.setSpeechSrc(null)}
-        isDictionaryShowing={store.state.rest.dictionaryShowing}
-        isDictionaryLoading={store.state.rest.loading.requestDictionary}
-        closeDictionary={() => store.actions.rest.setDictionaryShowing(false)}
-        onRequestDictionary={store.actions.rest.requestDictionary}
-        dictionaryResults={store.state.rest.dictionaryResults}
+        isDictionaryShowing={store.state.dictionary.dictionaryShowing}
+        isDictionaryLoading={store.state.dictionary.loading.requestDictionary}
+        closeDictionary={() =>
+          store.actions.dictionary.setDictionaryShowing(false)
+        }
+        onRequestDictionary={store.actions.dictionary.requestDictionary}
+        dictionaryResults={store.state.dictionary.dictionaryResults}
         outlineShowing={store.state.preferences.outlineShowing}
         toggleOutlineShowing={store.actions.preferences.setOutlineShowing}
         tags={store.state.rest.tags}

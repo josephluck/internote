@@ -24,8 +24,6 @@ interface OwnState {
   notes: Types.Note[];
   confirmation: Confirmation | null;
   isFullscreen: boolean;
-  dictionaryShowing: boolean;
-  dictionaryResults: Types.DictionaryResult[];
   tags: Types.Tag[];
 }
 
@@ -36,9 +34,7 @@ interface OwnReducers {
   setConfirmation: Twine.Reducer<OwnState, Confirmation | null>;
   setConfirmationConfirmLoading: Twine.Reducer<OwnState, boolean>;
   setConfirmationCancelLoading: Twine.Reducer<OwnState, boolean>;
-  setDictionaryShowing: Twine.Reducer<OwnState, boolean>;
   setFullscreen: Twine.Reducer<OwnState, boolean>;
-  setDictionaryResults: Twine.Reducer<OwnState, Types.DictionaryResult[]>;
   setTags: Twine.Reducer<OwnState, Types.Tag[]>;
 }
 
@@ -60,7 +56,6 @@ interface OwnEffects {
   navigateToFirstNote: InternoteEffect0<Promise<void>>;
   handleApiError: InternoteEffect<AxiosError>;
   toggleFullscreen: InternoteEffect<boolean>;
-  requestDictionary: InternoteEffect<string>;
   fetchTags: InternoteEffect0;
   saveNewTag: InternoteEffect<UpdateNotePayload, Promise<void>>;
 }
@@ -71,8 +66,6 @@ function defaultState(): OwnState {
     notes: [],
     confirmation: null,
     isFullscreen: false,
-    dictionaryShowing: false,
-    dictionaryResults: [],
     tags: []
   };
 }
@@ -123,15 +116,6 @@ export function model(api: Api): Model {
       setFullscreen: (state, isFullscreen) => ({
         ...state,
         isFullscreen
-      }),
-      setDictionaryShowing: (state, dictionaryShowing) => ({
-        ...state,
-        dictionaryShowing,
-        dictionaryResults: dictionaryShowing ? state.dictionaryResults : []
-      }),
-      setDictionaryResults: (state, dictionaryResults) => ({
-        ...state,
-        dictionaryResults
       }),
       setTags: (state, tags) => ({
         ...state,
@@ -261,15 +245,6 @@ export function model(api: Api): Model {
         } else {
           exitFullscreen();
         }
-      },
-      async requestDictionary(state, actions, word) {
-        actions.rest.setDictionaryShowing(true);
-        const response = await api.dictionary.lookup(state.auth.session.token, {
-          word
-        });
-        response.map(({ results }) =>
-          actions.rest.setDictionaryResults(results)
-        );
       },
       async fetchTags(state, actions) {
         const response = await api.tag.getAll(state.auth.session.token);
