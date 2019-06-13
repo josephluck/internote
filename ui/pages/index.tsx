@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NextTwineSFC } from "../store/with-twine";
-import { State, Actions } from "../store";
+import { Store } from "../store";
 import { withAuth } from "../hoc/with-auth";
 import { Heading } from "../styles/heading";
 import { Global } from "../styles/global";
@@ -13,14 +13,9 @@ const PageWrapper = styled.div`
   height: 100%;
 `;
 
-const Page: NextTwineSFC<
-  State,
-  Actions,
-  { id: string },
-  { id: string }
-> = props => {
+const Page: NextTwineSFC<Store, { id: string }, { id: string }> = props => {
   const note = props.id
-    ? props.store.state.notes.find(n => n.id === props.id)
+    ? props.store.state.rest.notes.find(n => n.id === props.id)
     : null;
   return (
     <>
@@ -29,7 +24,7 @@ const Page: NextTwineSFC<
         {note ? (
           <Note store={props.store} note={note} />
         ) : (
-          <OnMount cb={props.store.actions.navigateToFirstNote} />
+          <OnMount cb={props.store.actions.rest.navigateToFirstNote} />
         )}
       </PageWrapper>
       <Global store={props.store} />
@@ -38,13 +33,13 @@ const Page: NextTwineSFC<
 };
 
 Page.getInitialProps = async ({ store, query }) => {
-  if (store.state.notes.length === 0) {
-    await store.actions.fetchNotes();
-    await store.actions.fetchTags();
+  if (store.state.rest.notes.length === 0) {
+    await store.actions.rest.fetchNotes();
+    await store.actions.rest.fetchTags();
   } else {
     // No need to wait if notes are already fetched - just update in background
-    store.actions.fetchNotes();
-    store.actions.fetchTags();
+    store.actions.rest.fetchNotes();
+    store.actions.rest.fetchTags();
   }
   return {
     id: query.id

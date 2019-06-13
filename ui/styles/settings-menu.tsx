@@ -60,11 +60,11 @@ export function SettingsMenu({
                 ),
                 subMenu: () => (
                   <>
-                    {store.state.colorThemes.map(theme => (
+                    {store.state.rest.colorThemes.map(theme => (
                       <DropdownMenuItem
-                        onClick={() => store.actions.setColorTheme(theme)}
+                        onClick={() => store.actions.rest.setColorTheme(theme)}
                         icon={
-                          theme.name === store.state.colorTheme.name ? (
+                          theme.name === store.state.rest.colorTheme.name ? (
                             <FontAwesomeIcon icon={faCheck} />
                           ) : null
                         }
@@ -89,11 +89,11 @@ export function SettingsMenu({
                 ),
                 subMenu: () => (
                   <>
-                    {store.state.fontThemes.map(theme => (
+                    {store.state.rest.fontThemes.map(theme => (
                       <DropdownMenuItem
-                        onClick={() => store.actions.setFontTheme(theme)}
+                        onClick={() => store.actions.rest.setFontTheme(theme)}
                         icon={
-                          theme.name === store.state.fontTheme.name ? (
+                          theme.name === store.state.rest.fontTheme.name ? (
                             <FontAwesomeIcon icon={faCheck} />
                           ) : null
                         }
@@ -121,9 +121,11 @@ export function SettingsMenu({
                 subMenu: () => (
                   <>
                     <DropdownMenuItem
-                      onClick={() => store.actions.setDistractionFree(false)}
+                      onClick={() =>
+                        store.actions.rest.setDistractionFree(false)
+                      }
                       icon={
-                        !store.state.distractionFree ? (
+                        !store.state.rest.distractionFree ? (
                           <FontAwesomeIcon icon={faCheck} />
                         ) : null
                       }
@@ -131,9 +133,11 @@ export function SettingsMenu({
                       Off
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => store.actions.setDistractionFree(true)}
+                      onClick={() =>
+                        store.actions.rest.setDistractionFree(true)
+                      }
                       icon={
-                        store.state.distractionFree ? (
+                        store.state.rest.distractionFree ? (
                           <FontAwesomeIcon icon={faCheck} />
                         ) : null
                       }
@@ -158,9 +162,11 @@ export function SettingsMenu({
                 subMenu: () => (
                   <>
                     <DropdownMenuItem
-                      onClick={() => store.actions.setOutlineShowing(false)}
+                      onClick={() =>
+                        store.actions.rest.setOutlineShowing(false)
+                      }
                       icon={
-                        !store.state.outlineShowing ? (
+                        !store.state.rest.outlineShowing ? (
                           <FontAwesomeIcon icon={faCheck} />
                         ) : null
                       }
@@ -168,9 +174,9 @@ export function SettingsMenu({
                       Off
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => store.actions.setOutlineShowing(true)}
+                      onClick={() => store.actions.rest.setOutlineShowing(true)}
                       icon={
-                        store.state.outlineShowing ? (
+                        store.state.rest.outlineShowing ? (
                           <FontAwesomeIcon icon={faCheck} />
                         ) : null
                       }
@@ -197,9 +203,9 @@ export function SettingsMenu({
                     {availableVoices.map(voice => (
                       <DropdownMenuItem
                         key={voice}
-                        onClick={() => store.actions.setVoice(voice)}
+                        onClick={() => store.actions.rest.setVoice(voice)}
                         icon={
-                          store.state.voice === voice ? (
+                          store.state.rest.voice === voice ? (
                             <FontAwesomeIcon icon={faCheck} />
                           ) : null
                         }
@@ -217,7 +223,7 @@ export function SettingsMenu({
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faSignOutAlt} />}
                     onClick={() => {
-                      store.actions.signOutConfirmation();
+                      store.actions.rest.signOutConfirmation();
                       menu.toggleMenuShowing(false);
                     }}
                   >
@@ -231,7 +237,7 @@ export function SettingsMenu({
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faTrash} />}
                     onClick={() => {
-                      store.actions.deleteAccountConfirmation();
+                      store.actions.rest.deleteAccountConfirmation();
                       menu.toggleMenuShowing(false);
                     }}
                   >

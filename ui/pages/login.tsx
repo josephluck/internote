@@ -2,7 +2,7 @@ import * as React from "react";
 import { spacing, font } from "../theming/symbols";
 import { Box, Flex } from "@rebass/grid";
 import { NextTwineSFC } from "../store/with-twine";
-import { State, Actions } from "../store";
+import { Store } from "../store";
 import { TextLink } from "../styles/link";
 import { Logo } from "../styles/logo";
 import { styled } from "../theming/styled";
@@ -22,7 +22,7 @@ const SubActionLink = styled.div`
   line-height: ${font._12.lineHeight};
 `;
 
-const Page: NextTwineSFC<State, Actions, {}> = props => {
+const Page: NextTwineSFC<Store, {}> = props => {
   return (
     <>
       <Modal open showCloseIcon={false} onClose={() => null}>
@@ -32,7 +32,7 @@ const Page: NextTwineSFC<State, Actions, {}> = props => {
         <form
           onSubmit={e => {
             e.preventDefault();
-            props.store.actions.authenticate({
+            props.store.actions.rest.authenticate({
               email: (document.getElementById("email") as any).value,
               password: (document.getElementById("password") as any).value
             });
@@ -51,7 +51,7 @@ const Page: NextTwineSFC<State, Actions, {}> = props => {
               type="submit"
               primary
               fullWidth
-              loading={props.store.state.loading.authenticate}
+              loading={props.store.state.rest.loading.authenticate}
             >
               Login
             </Button>

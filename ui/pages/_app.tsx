@@ -1,7 +1,7 @@
 import * as React from "react";
 import App, { Container } from "next/app";
 import { font } from "../theming/symbols";
-import { makeStore, State, Actions } from "../store";
+import { makeStore, Store } from "../store";
 import { withTwine } from "../store/with-twine";
 import { createGlobalStyle, ThemeProvider } from "../theming/styled";
 import Head from "next/head";
@@ -46,8 +46,8 @@ export class Application extends App {
     const { Component, pageProps, store } = this.props as any;
     return (
       <Container>
-        <ThemeProvider theme={store.state.colorTheme.theme}>
-          <ThemeProvider theme={store.state.fontTheme.theme}>
+        <ThemeProvider theme={store.state.rest.colorTheme.theme}>
+          <ThemeProvider theme={store.state.rest.fontTheme.theme}>
             <>
               <Head>
                 <title>Internote</title>
@@ -62,4 +62,4 @@ export class Application extends App {
   }
 }
 
-export default withTwine<State, Actions>(makeStore, Application);
+export default withTwine<Store>(makeStore, Application);

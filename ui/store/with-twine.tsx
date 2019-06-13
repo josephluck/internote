@@ -13,9 +13,9 @@ interface State {
   storeState: any;
 }
 
-function initStore<S, A>(
-  makeStore: () => Twine.Return<S, A>
-): Twine.Return<S, A> {
+function initStore<Store extends Twine.Return<any, any>>(
+  makeStore: () => Store
+): Store {
   if (isServer()) {
     return makeStore();
   } else if (window[STORE_KEY]) {
@@ -26,12 +26,12 @@ function initStore<S, A>(
   }
 }
 
-export function withTwine<S, A>(
-  makeStore: () => Twine.Return<S, A>,
+export function withTwine<Store extends Twine.Return<any, any>>(
+  makeStore: () => Store,
   Child: any
 ) {
   return class WithTwine extends React.Component<{}, State> {
-    store: Twine.Return<S, A>;
+    store: Store;
 
     constructor(props, context) {
       super(props, context);
@@ -48,7 +48,7 @@ export function withTwine<S, A>(
         this.store = store;
         this.store.replaceState(initialState);
       } else {
-        const newStore = initStore<S, A>(makeStore);
+        const newStore = initStore<Store>(makeStore);
         newStore.replaceState(initialState);
         this.store = newStore;
       }
@@ -58,7 +58,7 @@ export function withTwine<S, A>(
     }
 
     static async getInitialProps(appCtx) {
-      const store = initStore<S, A>(makeStore);
+      const store = initStore<Store>(makeStore);
 
       appCtx.ctx.store = { ...store, state: store.getState() };
 
@@ -99,17 +99,16 @@ export function withTwine<S, A>(
 }
 
 export interface NextTwineSFC<
-  State,
-  Actions,
+  Store extends Twine.Return<any, any>,
   ExtraProps = {},
   Query extends DefaultQuery = DefaultQuery
 >
   extends React.StatelessComponent<
     ExtraProps & {
-      store: Twine.Return<State, Actions>;
+      store: Store;
     }
   > {
   getInitialProps?: (
-    ctx: NextContext<Query> & { store: Twine.Return<State, Actions> }
+    ctx: NextContext<Query> & { store: Store }
   ) => Promise<ExtraProps>;
 }
