@@ -7,10 +7,15 @@ import { isServer } from "../utilities/window";
 import * as Speech from "./speech";
 import * as Preferences from "./preferences";
 import * as Auth from "./auth";
+import * as Dictionary from "./dictionary";
 import * as Rest from "./rest";
 
 type Models = Twine.Models<
-  Speech.Namespace & Preferences.Namespace & Auth.Namespace & Rest.Namespace
+  Speech.Namespace &
+    Preferences.Namespace &
+    Auth.Namespace &
+    Dictionary.Namespace &
+    Rest.Namespace
 >;
 export type GlobalActions = Models["actions"];
 export type GlobalState = Models["state"];
@@ -39,6 +44,7 @@ function makeModel(api: Api) {
       speech: Speech.model(api),
       preferences: Preferences.model(api),
       auth: Auth.model(api),
+      dictionary: Dictionary.model(api),
       rest: Rest.model(api)
     }
   };
@@ -52,7 +58,7 @@ export function makeStore() {
     loggingMiddleware,
     {
       onStateChange: (state, prevState) => {
-        const { session } = state.rest;
+        const { session } = state.auth;
         const token = session ? session.token : "";
 
         if (session && token) {
