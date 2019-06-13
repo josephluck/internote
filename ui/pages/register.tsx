@@ -32,7 +32,7 @@ const Page: NextTwineSFC<Store, {}> = props => {
         <form
           onSubmit={e => {
             e.preventDefault();
-            props.store.actions.rest.signUp({
+            props.store.actions.auth.signUp({
               email: (document.getElementById("email") as any).value,
               password: (document.getElementById("password") as any).value
             });
@@ -51,7 +51,7 @@ const Page: NextTwineSFC<Store, {}> = props => {
               type="submit"
               primary
               fullWidth
-              loading={props.store.state.rest.loading.signUp}
+              loading={props.store.state.auth.loading.signUp}
             >
               Register
             </Button>

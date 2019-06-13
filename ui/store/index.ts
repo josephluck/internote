@@ -6,10 +6,11 @@ import { isServer } from "../utilities/window";
 
 import * as Speech from "./speech";
 import * as Preferences from "./preferences";
+import * as Auth from "./auth";
 import * as Rest from "./rest";
 
 type Models = Twine.Models<
-  Speech.Namespace & Preferences.Namespace & Rest.Namespace
+  Speech.Namespace & Preferences.Namespace & Auth.Namespace & Rest.Namespace
 >;
 export type GlobalActions = Models["actions"];
 export type GlobalState = Models["state"];
@@ -37,6 +38,7 @@ function makeModel(api: Api) {
     models: {
       speech: Speech.model(api),
       preferences: Preferences.model(api),
+      auth: Auth.model(api),
       rest: Rest.model(api)
     }
   };

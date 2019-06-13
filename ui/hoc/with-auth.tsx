@@ -31,23 +31,23 @@ export function withAuth<C extends typeof React.Component>(Child: C) {
         const cookies = cookie(cookieString);
         const token = cookies.getAuthToken();
         if (!token) {
-          context.store.actions.rest.signOut();
+          context.store.actions.auth.signOut();
         } else if (
-          !context.store.state.rest.session ||
+          !context.store.state.auth.session ||
           cookies.isTokenNearExpiry()
         ) {
-          await context.store.actions.rest.session({ token });
+          await context.store.actions.auth.session({ token });
         }
       }
 
       await initAuthRequest().catch(() => {
-        context.store.actions.rest.signOut();
+        context.store.actions.auth.signOut();
         redirectToLogin();
       });
 
       const getInitialProps: any = (Child as any).getInitialProps;
 
-      if (!!context.store.getState().rest.session) {
+      if (!!context.store.getState().auth.session) {
         return getInitialProps ? getInitialProps(context) : {};
       } else {
         redirectToLogin();

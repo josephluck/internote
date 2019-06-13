@@ -233,7 +233,7 @@ export function SettingsMenu({
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faSignOutAlt} />}
                     onClick={() => {
-                      store.actions.rest.signOutConfirmation();
+                      store.actions.auth.signOutConfirmation();
                       menu.toggleMenuShowing(false);
                     }}
                   >
@@ -247,7 +247,7 @@ export function SettingsMenu({
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faTrash} />}
                     onClick={() => {
-                      store.actions.rest.deleteAccountConfirmation();
+                      store.actions.auth.deleteAccountConfirmation();
                       menu.toggleMenuShowing(false);
                     }}
                   >
