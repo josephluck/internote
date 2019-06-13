@@ -46,8 +46,8 @@ export class Application extends App {
     const { Component, pageProps, store } = this.props as any;
     return (
       <Container>
-        <ThemeProvider theme={store.state.rest.colorTheme.theme}>
-          <ThemeProvider theme={store.state.rest.fontTheme.theme}>
+        <ThemeProvider theme={store.state.preferences.colorTheme.theme}>
+          <ThemeProvider theme={store.state.preferences.fontTheme.theme}>
             <>
               <Head>
                 <title>Internote</title>

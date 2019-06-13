@@ -5,9 +5,12 @@ import { makeSubscriber } from "./make-subscriber";
 import { isServer } from "../utilities/window";
 
 import * as Speech from "./speech";
+import * as Preferences from "./preferences";
 import * as Rest from "./rest";
 
-type Models = Twine.Models<Speech.Namespace & Rest.Namespace>;
+type Models = Twine.Models<
+  Speech.Namespace & Preferences.Namespace & Rest.Namespace
+>;
 export type GlobalActions = Models["actions"];
 export type GlobalState = Models["state"];
 
@@ -33,6 +36,7 @@ function makeModel(api: Api) {
     effects: {},
     models: {
       speech: Speech.model(api),
+      preferences: Preferences.model(api),
       rest: Rest.model(api)
     }
   };
@@ -46,30 +50,41 @@ export function makeStore() {
     loggingMiddleware,
     {
       onStateChange: (state, prevState) => {
-        if (state.rest.session && state.rest.session.token) {
-          if (state.rest.colorTheme !== prevState.rest.colorTheme) {
-            api.preferences.update(state.rest.session.token, {
-              colorTheme: state.rest.colorTheme.name
+        const { session } = state.rest;
+        const token = session ? session.token : "";
+
+        if (session && token) {
+          if (
+            state.preferences.colorTheme !== prevState.preferences.colorTheme
+          ) {
+            api.preferences.update(token, {
+              colorTheme: state.preferences.colorTheme.name
             });
           }
-          if (state.rest.fontTheme !== prevState.rest.fontTheme) {
-            api.preferences.update(state.rest.session.token, {
-              fontTheme: state.rest.fontTheme.name
+          if (state.preferences.fontTheme !== prevState.preferences.fontTheme) {
+            api.preferences.update(token, {
+              fontTheme: state.preferences.fontTheme.name
             });
           }
-          if (state.rest.distractionFree !== prevState.rest.distractionFree) {
-            api.preferences.update(state.rest.session.token, {
-              distractionFree: state.rest.distractionFree
+          if (
+            state.preferences.distractionFree !==
+            prevState.preferences.distractionFree
+          ) {
+            api.preferences.update(token, {
+              distractionFree: state.preferences.distractionFree
             });
           }
-          if (state.rest.voice !== prevState.rest.voice) {
-            api.preferences.update(state.rest.session.token, {
-              voice: state.rest.voice
+          if (state.preferences.voice !== prevState.preferences.voice) {
+            api.preferences.update(token, {
+              voice: state.preferences.voice
             });
           }
-          if (state.rest.outlineShowing !== prevState.rest.outlineShowing) {
-            api.preferences.update(state.rest.session.token, {
-              outlineShowing: state.rest.outlineShowing
+          if (
+            state.preferences.outlineShowing !==
+            prevState.preferences.outlineShowing
+          ) {
+            api.preferences.update(token, {
+              outlineShowing: state.preferences.outlineShowing
             });
           }
         }

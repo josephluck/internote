@@ -8,7 +8,6 @@ import { isServer } from "../utilities/window";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { Theme, FontTheme, colorThemes, fontThemes } from "../theming/themes";
 import { requestFullScreen, exitFullscreen } from "../utilities/fullscreen";
-import { AvailableVoice } from "@internote/api/domains/preferences/entity";
 import { InternoteEffect0, InternoteEffect } from ".";
 
 const cookies = cookie();
@@ -23,29 +22,12 @@ interface Confirmation {
   cancelLoading?: boolean;
 }
 
-interface ColorThemeWithName {
-  name: string;
-  theme: Theme;
-}
-
-interface FontThemeWithName {
-  name: string;
-  theme: FontTheme;
-}
-
 interface OwnState {
   overwriteCount: number;
   session: Types.Session | null;
   notes: Types.Note[];
   confirmation: Confirmation | null;
-  colorTheme: ColorThemeWithName | null;
-  colorThemes: ColorThemeWithName[];
-  fontTheme: FontThemeWithName | null;
-  fontThemes: FontThemeWithName[];
-  distractionFree: boolean;
-  voice: AvailableVoice;
   isFullscreen: boolean;
-  outlineShowing: boolean;
   dictionaryShowing: boolean;
   dictionaryResults: Types.DictionaryResult[];
   tags: Types.Tag[];
@@ -59,13 +41,8 @@ interface OwnReducers {
   setConfirmation: Twine.Reducer<OwnState, Confirmation | null>;
   setConfirmationConfirmLoading: Twine.Reducer<OwnState, boolean>;
   setConfirmationCancelLoading: Twine.Reducer<OwnState, boolean>;
-  setColorTheme: Twine.Reducer<OwnState, ColorThemeWithName>;
-  setFontTheme: Twine.Reducer<OwnState, FontThemeWithName>;
-  setDistractionFree: Twine.Reducer<OwnState, boolean>;
   setDictionaryShowing: Twine.Reducer<OwnState, boolean>;
-  setVoice: Twine.Reducer<OwnState, AvailableVoice>;
   setFullscreen: Twine.Reducer<OwnState, boolean>;
-  setOutlineShowing: Twine.Reducer<OwnState, boolean>;
   setDictionaryResults: Twine.Reducer<OwnState, Types.DictionaryResult[]>;
   setTags: Twine.Reducer<OwnState, Types.Tag[]>;
 }
@@ -87,6 +64,7 @@ interface OwnEffects {
   deleteNote: InternoteEffect<{ noteId: string }>;
   navigateToFirstNote: InternoteEffect0<Promise<void>>;
   signUp: InternoteEffect<Types.SignupRequest, Promise<void>>;
+  storeSession: InternoteEffect<Types.Session>;
   session: InternoteEffect<{ token: string }, Promise<void>>;
   authenticate: InternoteEffect<Types.LoginRequest, Promise<void>>;
   signOutConfirmation: InternoteEffect0<void>;
@@ -106,15 +84,8 @@ function defaultState(): OwnState {
     overwriteCount: 0,
     notes: [],
     confirmation: null,
-    colorTheme: colorThemes[0],
-    colorThemes,
-    fontTheme: fontThemes[0],
-    fontThemes,
-    distractionFree: false,
     isFullscreen: false,
-    voice: "Joey",
     dictionaryShowing: false,
-    outlineShowing: false,
     dictionaryResults: [],
     tags: []
   };
@@ -169,15 +140,7 @@ export function model(api: Api): Model {
         }
         return {
           ...state,
-          session,
-          colorTheme: getColorThemeFromPreferences(session.user.preferences),
-          fontTheme: getFontThemeFromPreferences(session.user.preferences),
-          outlineShowing:
-            !!session.user.preferences &&
-            session.user.preferences.outlineShowing === true,
-          distractionFree:
-            !!session.user.preferences &&
-            session.user.preferences.distractionFree === true
+          session
         };
       },
       setNotes: (state, notes) => ({
@@ -202,23 +165,9 @@ export function model(api: Api): Model {
           cancelLoading
         }
       }),
-      setColorTheme: (state, colorTheme) => ({ ...state, colorTheme }),
-      setFontTheme: (state, fontTheme) => ({ ...state, fontTheme }),
-      setDistractionFree: (state, distractionFree) => ({
-        ...state,
-        distractionFree
-      }),
-      setVoice: (state, voice) => ({
-        ...state,
-        voice
-      }),
       setFullscreen: (state, isFullscreen) => ({
         ...state,
         isFullscreen
-      }),
-      setOutlineShowing: (state, outlineShowing) => ({
-        ...state,
-        outlineShowing
       }),
       setDictionaryShowing: (state, dictionaryShowing) => ({
         ...state,
@@ -340,18 +289,31 @@ export function model(api: Api): Model {
           Router.push(`/?id=${notes[0].id}`);
         }
       },
+      storeSession(_state, actions, session) {
+        actions.rest.setSession(session);
+        actions.preferences.setPreferences({
+          colorTheme: getColorThemeFromPreferences(session.user.preferences),
+          fontTheme: getFontThemeFromPreferences(session.user.preferences),
+          outlineShowing:
+            !!session.user.preferences &&
+            session.user.preferences.outlineShowing === true,
+          distractionFree:
+            !!session.user.preferences &&
+            session.user.preferences.distractionFree === true
+        });
+      },
       async signUp(_state, actions, payload) {
         const session = await api.auth.register(payload);
-        actions.rest.setSession(session);
+        actions.rest.storeSession(session);
         await actions.rest.navigateToFirstNote();
       },
       async session(_state, actions, { token }) {
         const session = await api.auth.session(token);
-        actions.rest.setSession(session);
+        actions.rest.storeSession(session);
       },
       async authenticate(_state, actions, payload) {
         const session = await api.auth.login(payload);
-        actions.rest.setSession(session);
+        actions.rest.storeSession(session);
         await actions.rest.navigateToFirstNote();
       },
       signOutConfirmation(_state, actions) {

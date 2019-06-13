@@ -83,7 +83,7 @@ export class Heading extends React.Component<Props, State> {
 
     return (
       <HeadingWrapper
-        distractionFree={this.props.store.state.rest.distractionFree}
+        distractionFree={this.props.store.state.preferences.distractionFree}
         forceShow={forceShow}
       >
         <HeadingInner>

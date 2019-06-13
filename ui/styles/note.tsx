@@ -39,7 +39,7 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
           })
         }
         saving={store.state.rest.loading.updateNote}
-        distractionFree={store.state.rest.distractionFree}
+        distractionFree={store.state.preferences.distractionFree}
         speechSrc={store.state.speech.speechSrc}
         isSpeechLoading={store.state.speech.loading.requestSpeech}
         onRequestSpeech={content =>
@@ -51,8 +51,8 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
         closeDictionary={() => store.actions.rest.setDictionaryShowing(false)}
         onRequestDictionary={store.actions.rest.requestDictionary}
         dictionaryResults={store.state.rest.dictionaryResults}
-        outlineShowing={store.state.rest.outlineShowing}
-        toggleOutlineShowing={store.actions.rest.setOutlineShowing}
+        outlineShowing={store.state.preferences.outlineShowing}
+        toggleOutlineShowing={store.actions.preferences.setOutlineShowing}
         tags={store.state.rest.tags}
         newTagSaving={store.state.rest.loading.saveNewTag}
       />

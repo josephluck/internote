@@ -46,7 +46,7 @@ export function model(api: Api): Model {
         const result = await api.speech.generate(state.rest.session.token, {
           noteId,
           content,
-          voice: state.rest.voice || "Joey"
+          voice: state.preferences.voice || "Joey"
         });
         result.map(response => actions.speech.setSpeechSrc(response.src));
       }
