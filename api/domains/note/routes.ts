@@ -22,8 +22,12 @@ function makeController(deps: Dependencies): RestController {
 
   // TODO: move this to GET /tags?
   async function removeOrphanedTags(user: UserEntity) {
-    const tags = await tagsRepo.find({ where: { user: user.id } });
+    const tags = await tagsRepo.find({
+      where: { user: user.id },
+      relations: ["notes"]
+    });
     const orphanedTags = tags.filter(t => !t.notes || t.notes.length === 0);
+    console.log("Removing orphans", JSON.stringify(orphanedTags));
     await tagsRepo.remove(orphanedTags);
   }
 
@@ -69,7 +73,6 @@ function makeController(deps: Dependencies): RestController {
       .map(t => t.toOption().get())
       .map(t => ({ ...t, notes: [note] }));
 
-    // Save the tags to the db
     await tagsRepo.save([
       ...tagEntitiesToRemoveNoteRelationship,
       ...tagEntitiesToCreateNoteRelationship,
