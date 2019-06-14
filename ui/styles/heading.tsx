@@ -93,7 +93,7 @@ export class Heading extends React.Component<Props, State> {
           <Flex flex="1" alignItems="center" justifyContent="center">
             <NoteMenu
               allNotes={this.props.store.state.rest.notes}
-              allTags={this.props.store.state.rest.tags}
+              allTags={this.props.store.state.tags.tags}
               onMenuToggled={this.setNoteMenuShowing}
               currentNote={this.props.note}
               onCreateNote={this.props.store.actions.rest.createNote}

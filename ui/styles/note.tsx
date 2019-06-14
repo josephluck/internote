@@ -28,7 +28,7 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
           })
         }
         onSaveTag={changes =>
-          store.actions.rest.saveNewTag({
+          store.actions.tags.saveNewTag({
             noteId: note.id,
             ...changes
           })
@@ -55,8 +55,8 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
         dictionaryResults={store.state.dictionary.dictionaryResults}
         outlineShowing={store.state.preferences.outlineShowing}
         toggleOutlineShowing={store.actions.preferences.setOutlineShowing}
-        tags={store.state.rest.tags}
-        newTagSaving={store.state.rest.loading.saveNewTag}
+        tags={store.state.tags.tags}
+        newTagSaving={store.state.tags.loading.saveNewTag}
       />
     </>
   );

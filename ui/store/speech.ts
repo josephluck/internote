@@ -43,7 +43,7 @@ export function model(api: Api): Model {
     },
     effects: {
       async requestSpeech(state, actions, { content, noteId }) {
-        const result = await api.speech.generate(state.rest.session.token, {
+        const result = await api.speech.generate(state.auth.session.token, {
           noteId,
           content,
           voice: state.preferences.voice || "Joey"

@@ -9,6 +9,7 @@ import * as Preferences from "./preferences";
 import * as Auth from "./auth";
 import * as Dictionary from "./dictionary";
 import * as Confirmation from "./confirmation";
+import * as Tags from "./tags";
 import * as Rest from "./rest";
 
 type Models = Twine.Models<
@@ -17,6 +18,7 @@ type Models = Twine.Models<
     Auth.Namespace &
     Dictionary.Namespace &
     Confirmation.Namespace &
+    Tags.Namespace &
     Rest.Namespace
 >;
 export type GlobalActions = Models["actions"];
@@ -48,6 +50,7 @@ function makeModel(api: Api) {
       auth: Auth.model(api),
       dictionary: Dictionary.model(api),
       confirmation: Confirmation.model(api),
+      tags: Tags.model(api),
       rest: Rest.model(api)
     }
   };

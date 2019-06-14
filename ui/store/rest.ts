@@ -13,7 +13,6 @@ interface OwnState {
   overwriteCount: number;
   notes: Types.Note[];
   isFullscreen: boolean;
-  tags: Types.Tag[];
 }
 
 interface OwnReducers {
@@ -21,10 +20,9 @@ interface OwnReducers {
   incrementOverwriteCount: Twine.Reducer0<OwnState>;
   setNotes: Twine.Reducer<OwnState, Types.Note[]>;
   setFullscreen: Twine.Reducer<OwnState, boolean>;
-  setTags: Twine.Reducer<OwnState, Types.Tag[]>;
 }
 
-interface UpdateNotePayload {
+export interface UpdateNotePayload {
   noteId: string;
   content: {};
   tags: string[];
@@ -42,16 +40,13 @@ interface OwnEffects {
   navigateToFirstNote: InternoteEffect0<Promise<void>>;
   handleApiError: InternoteEffect<AxiosError>;
   toggleFullscreen: InternoteEffect<boolean>;
-  fetchTags: InternoteEffect0;
-  saveNewTag: InternoteEffect<UpdateNotePayload, Promise<void>>;
 }
 
 function defaultState(): OwnState {
   return {
     overwriteCount: 0,
     notes: [],
-    isFullscreen: false,
-    tags: []
+    isFullscreen: false
   };
 }
 
@@ -83,10 +78,6 @@ export function model(api: Api): Model {
       setFullscreen: (state, isFullscreen) => ({
         ...state,
         isFullscreen
-      }),
-      setTags: (state, tags) => ({
-        ...state,
-        tags
       })
     },
     effects: {
@@ -145,7 +136,7 @@ export function model(api: Api): Model {
                     n.id === updatedNote.id ? updatedNote : n
                   )
                 );
-                await actions.rest.fetchTags();
+                await actions.tags.fetchTags();
               }
             );
           }
@@ -212,15 +203,6 @@ export function model(api: Api): Model {
         } else {
           exitFullscreen();
         }
-      },
-      async fetchTags(state, actions) {
-        const response = await api.tag.getAll(state.auth.session.token);
-        response.map(actions.rest.setTags);
-      },
-      async saveNewTag(_state, actions, payload) {
-        // NB: own effect for the purpose of loading state
-        // internally all we need to do is save the note (tags are automatically updated)
-        await actions.rest.updateNote(payload);
       }
     }
   };
