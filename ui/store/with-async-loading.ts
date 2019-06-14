@@ -49,14 +49,14 @@ export function withAsyncLoading<M extends AnyModel>(
           ) => {
             const rtn = originalEffect(state, actions, ...args);
             if (rtn && rtn.then) {
-              actions.rest.setLoading({ key: effectKey, loading: true });
+              actions.notes.setLoading({ key: effectKey, loading: true });
               return rtn
                 .then((response: any) => {
-                  actions.rest.setLoading({ key: effectKey, loading: false });
+                  actions.notes.setLoading({ key: effectKey, loading: false });
                   return response;
                 })
                 .catch(err => {
-                  actions.rest.setLoading({ key: effectKey, loading: false });
+                  actions.notes.setLoading({ key: effectKey, loading: false });
                   throw err;
                 });
             } else {

@@ -19,10 +19,10 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
       </Head>
       <InternoteEditor
         id={note.id}
-        overwriteCount={store.state.rest.overwriteCount}
+        overwriteCount={store.state.notes.overwriteCount}
         initialValue={note.content}
         onChange={changes =>
-          store.actions.rest.updateNote({
+          store.actions.notes.updateNote({
             noteId: note.id,
             ...changes
           })
@@ -34,11 +34,11 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
           })
         }
         onDelete={() =>
-          store.actions.rest.deleteNoteConfirmation({
+          store.actions.notes.deleteNoteConfirmation({
             noteId: note.id
           })
         }
-        saving={store.state.rest.loading.updateNote}
+        saving={store.state.notes.loading.updateNote}
         distractionFree={store.state.preferences.distractionFree}
         speechSrc={store.state.speech.speechSrc}
         isSpeechLoading={store.state.speech.loading.requestSpeech}

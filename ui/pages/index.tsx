@@ -15,7 +15,7 @@ const PageWrapper = styled.div`
 
 const Page: NextTwineSFC<Store, { id: string }, { id: string }> = props => {
   const note = props.id
-    ? props.store.state.rest.notes.find(n => n.id === props.id)
+    ? props.store.state.notes.notes.find(n => n.id === props.id)
     : null;
   return (
     <>
@@ -24,7 +24,7 @@ const Page: NextTwineSFC<Store, { id: string }, { id: string }> = props => {
         {note ? (
           <Note store={props.store} note={note} />
         ) : (
-          <OnMount cb={props.store.actions.rest.navigateToFirstNote} />
+          <OnMount cb={props.store.actions.ui.navigateToFirstNote} />
         )}
       </PageWrapper>
       <Global store={props.store} />
@@ -33,12 +33,12 @@ const Page: NextTwineSFC<Store, { id: string }, { id: string }> = props => {
 };
 
 Page.getInitialProps = async ({ store, query }) => {
-  if (store.state.rest.notes.length === 0) {
-    await store.actions.rest.fetchNotes();
+  if (store.state.notes.notes.length === 0) {
+    await store.actions.notes.fetchNotes();
     await store.actions.tags.fetchTags();
   } else {
     // No need to wait if notes are already fetched - just update in background
-    store.actions.rest.fetchNotes();
+    store.actions.notes.fetchNotes();
     store.actions.tags.fetchTags();
   }
   return {

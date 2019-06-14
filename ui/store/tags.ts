@@ -2,7 +2,7 @@ import { Twine } from "twine-js";
 import * as Types from "@internote/api/domains/types";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { Api, InternoteEffect, InternoteEffect0 } from ".";
-import { UpdateNotePayload } from "./rest";
+import { UpdateNotePayload } from "./notes";
 
 interface OwnState {
   tags: Types.Tag[];
@@ -52,7 +52,7 @@ export function model(api: Api): Model {
       async saveNewTag(_state, actions, payload) {
         // NB: own effect for the purpose of loading state
         // internally all we need to do is save the note (tags are automatically updated)
-        await actions.rest.updateNote(payload);
+        await actions.notes.updateNote(payload);
       }
     }
   };

@@ -1,5 +1,4 @@
 import styled, { keyframes, css } from "styled-components";
-import { color } from "../theming/symbols";
 
 const bounce = keyframes`
   0% {
