@@ -9,20 +9,9 @@ import { requestFullScreen, exitFullscreen } from "../utilities/fullscreen";
 import { InternoteEffect0, InternoteEffect } from ".";
 import { Option } from "space-lift";
 
-interface Confirmation {
-  message?: string;
-  confirmButtonText?: string;
-  cancelButtonText?: string;
-  onConfirm: () => any;
-  onCancel?: () => any;
-  confirmLoading?: boolean;
-  cancelLoading?: boolean;
-}
-
 interface OwnState {
   overwriteCount: number;
   notes: Types.Note[];
-  confirmation: Confirmation | null;
   isFullscreen: boolean;
   tags: Types.Tag[];
 }
@@ -31,9 +20,6 @@ interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
   incrementOverwriteCount: Twine.Reducer0<OwnState>;
   setNotes: Twine.Reducer<OwnState, Types.Note[]>;
-  setConfirmation: Twine.Reducer<OwnState, Confirmation | null>;
-  setConfirmationConfirmLoading: Twine.Reducer<OwnState, boolean>;
-  setConfirmationCancelLoading: Twine.Reducer<OwnState, boolean>;
   setFullscreen: Twine.Reducer<OwnState, boolean>;
   setTags: Twine.Reducer<OwnState, Types.Tag[]>;
 }
@@ -64,7 +50,6 @@ function defaultState(): OwnState {
   return {
     overwriteCount: 0,
     notes: [],
-    confirmation: null,
     isFullscreen: false,
     tags: []
   };
@@ -94,24 +79,6 @@ export function model(api: Api): Model {
       setNotes: (state, notes) => ({
         ...state,
         notes: notes.sort((a, b) => (a.dateUpdated > b.dateUpdated ? -1 : 1))
-      }),
-      setConfirmation: (state, confirmation) => ({
-        ...state,
-        confirmation
-      }),
-      setConfirmationConfirmLoading: (state, confirmLoading) => ({
-        ...state,
-        confirmation: {
-          ...state.confirmation,
-          confirmLoading
-        }
-      }),
-      setConfirmationCancelLoading: (state, cancelLoading) => ({
-        ...state,
-        confirmation: {
-          ...state.confirmation,
-          cancelLoading
-        }
       }),
       setFullscreen: (state, isFullscreen) => ({
         ...state,
@@ -185,36 +152,36 @@ export function model(api: Api): Model {
         );
       },
       overwriteNoteConfirmation(_state, actions, details) {
-        actions.rest.setConfirmation({
+        actions.confirmation.setConfirmation({
           message: `There's a more recent version of ${
             details.title
           }. What do you want to do?`,
           confirmButtonText: "Overwrite",
           cancelButtonText: "Discard",
           async onConfirm() {
-            actions.rest.setConfirmationConfirmLoading(true);
+            actions.confirmation.setConfirmationConfirmLoading(true);
             await actions.rest.updateNote({ ...details, overwrite: true });
             await actions.rest.fetchNotes(); // NB: important to get the latest dateUpdated from the server to avoid prompt again
             actions.rest.incrementOverwriteCount(); // HACK: Force the editor to re-render
-            actions.rest.setConfirmation(null);
+            actions.confirmation.setConfirmation(null);
           },
           async onCancel() {
-            actions.rest.setConfirmationCancelLoading(true);
+            actions.confirmation.setConfirmationCancelLoading(true);
             await actions.rest.fetchNotes(); // NB: important to get the latest dateUpdated from the server to avoid prompt again
             actions.rest.incrementOverwriteCount(); // HACK: Force the editor to re-render
-            actions.rest.setConfirmation(null);
+            actions.confirmation.setConfirmation(null);
           }
         });
       },
       deleteNoteConfirmation(state, actions, { noteId }) {
         const noteToDelete = state.rest.notes.find(note => note.id === noteId);
-        actions.rest.setConfirmation({
+        actions.confirmation.setConfirmation({
           message: `Are you sure you wish to delete ${noteToDelete.title}?`,
           confirmButtonText: "Delete",
           async onConfirm() {
-            actions.rest.setConfirmationConfirmLoading(true);
+            actions.confirmation.setConfirmationConfirmLoading(true);
             await actions.rest.deleteNote({ noteId });
-            actions.rest.setConfirmation(null);
+            actions.confirmation.setConfirmation(null);
           }
         });
       },

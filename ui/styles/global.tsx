@@ -23,62 +23,62 @@ export function Global({ store }: { store: Store }) {
   return (
     <>
       <Modal
-        open={!!store.state.rest.confirmation}
-        onClose={() => store.actions.rest.setConfirmation(null)}
+        open={!!store.state.confirmation.confirmation}
+        onClose={() => store.actions.confirmation.setConfirmation(null)}
       >
         <>
           <Box mb={spacing._1}>
-            {store.state.rest.confirmation
-              ? store.state.rest.confirmation.message
+            {store.state.confirmation.confirmation
+              ? store.state.confirmation.confirmation.message
               : "Are you sure?"}
           </Box>
           <Flex>
             <Box flex={1} mr={spacing._0_25}>
               <Button
                 onClick={() => {
-                  if (store.state.rest.confirmation.onCancel) {
-                    store.state.rest.confirmation.onCancel();
+                  if (store.state.confirmation.confirmation.onCancel) {
+                    store.state.confirmation.confirmation.onCancel();
                   } else {
-                    store.actions.rest.setConfirmation(null);
+                    store.actions.confirmation.setConfirmation(null);
                   }
                 }}
                 secondary
                 fullWidth
                 loading={
-                  store.state.rest.confirmation &&
-                  store.state.rest.confirmation.cancelLoading
+                  store.state.confirmation.confirmation &&
+                  store.state.confirmation.confirmation.cancelLoading
                 }
               >
-                {store.state.rest.confirmation &&
-                store.state.rest.confirmation.cancelButtonText
-                  ? store.state.rest.confirmation.cancelButtonText
+                {store.state.confirmation.confirmation &&
+                store.state.confirmation.confirmation.cancelButtonText
+                  ? store.state.confirmation.confirmation.cancelButtonText
                   : "Cancel"}
               </Button>
             </Box>
             <Box flex={1} ml={spacing._0_25}>
               <Button
                 onClick={
-                  store.state.rest.confirmation
-                    ? store.state.rest.confirmation.onConfirm
+                  store.state.confirmation.confirmation
+                    ? store.state.confirmation.confirmation.onConfirm
                     : undefined
                 }
                 secondary
                 fullWidth
                 loading={
-                  store.state.rest.confirmation &&
-                  store.state.rest.confirmation.confirmLoading
+                  store.state.confirmation.confirmation &&
+                  store.state.confirmation.confirmation.confirmLoading
                 }
               >
-                {store.state.rest.confirmation &&
-                store.state.rest.confirmation.confirmButtonText
-                  ? store.state.rest.confirmation.confirmButtonText
+                {store.state.confirmation.confirmation &&
+                store.state.confirmation.confirmation.confirmButtonText
+                  ? store.state.confirmation.confirmation.confirmButtonText
                   : "Yes"}
               </Button>
             </Box>
           </Flex>
         </>
       </Modal>
-      <DarkOverlay showing={!!store.state.rest.confirmation} />
+      <DarkOverlay showing={!!store.state.confirmation.confirmation} />
     </>
   );
 }
