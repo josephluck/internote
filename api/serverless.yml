@@ -27,7 +27,7 @@ provider:
   runtime: nodejs8.10
   stage: dev
   region: eu-west-1
-  memorySize: 128
+  memorySize: 1024
   timeout: 30
   iamRoleStatements:
     - Effect: "Allow"
