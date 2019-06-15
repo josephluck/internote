@@ -19,26 +19,26 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
       </Head>
       <InternoteEditor
         id={note.id}
-        overwriteCount={store.state.rest.overwriteCount}
+        overwriteCount={store.state.notes.overwriteCount}
         initialValue={note.content}
         onChange={changes =>
-          store.actions.rest.updateNote({
+          store.actions.notes.updateNote({
             noteId: note.id,
             ...changes
           })
         }
         onSaveTag={changes =>
-          store.actions.rest.saveNewTag({
+          store.actions.tags.saveNewTag({
             noteId: note.id,
             ...changes
           })
         }
         onDelete={() =>
-          store.actions.rest.deleteNoteConfirmation({
+          store.actions.notes.deleteNoteConfirmation({
             noteId: note.id
           })
         }
-        saving={store.state.rest.loading.updateNote}
+        saving={store.state.notes.loading.updateNote}
         distractionFree={store.state.preferences.distractionFree}
         speechSrc={store.state.speech.speechSrc}
         isSpeechLoading={store.state.speech.loading.requestSpeech}
@@ -55,8 +55,8 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
         dictionaryResults={store.state.dictionary.dictionaryResults}
         outlineShowing={store.state.preferences.outlineShowing}
         toggleOutlineShowing={store.actions.preferences.setOutlineShowing}
-        tags={store.state.rest.tags}
-        newTagSaving={store.state.rest.loading.saveNewTag}
+        tags={store.state.tags.tags}
+        newTagSaving={store.state.tags.loading.saveNewTag}
       />
     </>
   );

@@ -99,7 +99,7 @@ export function model(api: Api): Model {
       async signUp(_state, actions, payload) {
         const session = await api.auth.register(payload);
         actions.auth.storeSession(session);
-        await actions.rest.navigateToFirstNote();
+        await actions.ui.navigateToFirstNote();
       },
       async session(_state, actions, { token }) {
         const session = await api.auth.session(token);
@@ -108,37 +108,37 @@ export function model(api: Api): Model {
       async authenticate(_state, actions, payload) {
         const session = await api.auth.login(payload);
         actions.auth.storeSession(session);
-        await actions.rest.navigateToFirstNote();
+        await actions.ui.navigateToFirstNote();
       },
       signOutConfirmation(_state, actions) {
-        actions.rest.setConfirmation({
+        actions.confirmation.setConfirmation({
           message: `Are you sure you wish to sign out?`,
           confirmButtonText: "Sign out",
           onConfirm() {
             actions.auth.signOut();
-            actions.rest.setConfirmation(null);
+            actions.confirmation.setConfirmation(null);
           }
         });
       },
       async signOut(_state, actions) {
-        actions.rest.resetState();
+        actions.notes.resetState();
         if (!isServer()) {
           Router.push("/login");
         }
       },
       deleteAccountConfirmation(_state, actions) {
-        actions.rest.setConfirmation({
+        actions.confirmation.setConfirmation({
           message: `Are you sure you wish to delete your account? All of your notes will be removed!`,
           confirmButtonText: "Delete account",
           async onConfirm() {
-            actions.rest.setConfirmationConfirmLoading(true);
+            actions.confirmation.setConfirmationConfirmLoading(true);
             await actions.auth.deleteAccount();
-            actions.rest.setConfirmation(null);
+            actions.confirmation.setConfirmation(null);
           }
         });
       },
       async deleteAccount(state, actions) {
-        actions.rest.resetState();
+        actions.notes.resetState();
         await api.user.deleteById(
           state.auth.session.token,
           state.auth.session.user.id

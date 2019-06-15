@@ -8,14 +8,20 @@ import * as Speech from "./speech";
 import * as Preferences from "./preferences";
 import * as Auth from "./auth";
 import * as Dictionary from "./dictionary";
-import * as Rest from "./rest";
+import * as Confirmation from "./confirmation";
+import * as Tags from "./tags";
+import * as Ui from "./ui";
+import * as Notes from "./notes";
 
 type Models = Twine.Models<
   Speech.Namespace &
     Preferences.Namespace &
     Auth.Namespace &
     Dictionary.Namespace &
-    Rest.Namespace
+    Confirmation.Namespace &
+    Tags.Namespace &
+    Ui.Namespace &
+    Notes.Namespace
 >;
 export type GlobalActions = Models["actions"];
 export type GlobalState = Models["state"];
@@ -45,7 +51,10 @@ function makeModel(api: Api) {
       preferences: Preferences.model(api),
       auth: Auth.model(api),
       dictionary: Dictionary.model(api),
-      rest: Rest.model(api)
+      confirmation: Confirmation.model(api),
+      tags: Tags.model(api),
+      ui: Ui.model(api),
+      notes: Notes.model(api)
     }
   };
 }
@@ -104,7 +113,7 @@ export function makeStore() {
     res => res,
     err => {
       if (err && err.response) {
-        store.actions.rest.handleApiError(err);
+        store.actions.ui.handleApiError(err);
       }
       return Promise.reject(err);
     }
@@ -120,7 +129,7 @@ export function makeStore() {
         doc.webkitFullscreenElement ||
         doc.msFullscreenElement;
 
-      store.actions.rest.setFullscreen(!!fullscreenElm);
+      store.actions.ui.setFullscreen(!!fullscreenElm);
     });
   }
 

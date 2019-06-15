@@ -79,7 +79,7 @@ export class Heading extends React.Component<Props, State> {
     const forceShow =
       this.state.noteMenuShowing ||
       this.state.settingsMenuShowing ||
-      this.props.store.state.rest.loading.createNote;
+      this.props.store.state.notes.loading.createNote;
 
     return (
       <HeadingWrapper
@@ -92,31 +92,33 @@ export class Heading extends React.Component<Props, State> {
           </BlockLink>
           <Flex flex="1" alignItems="center" justifyContent="center">
             <NoteMenu
-              allNotes={this.props.store.state.rest.notes}
-              allTags={this.props.store.state.rest.tags}
+              allNotes={this.props.store.state.notes.notes}
+              allTags={this.props.store.state.tags.tags}
               onMenuToggled={this.setNoteMenuShowing}
               currentNote={this.props.note}
-              onCreateNote={this.props.store.actions.rest.createNote}
+              onCreateNote={this.props.store.actions.notes.createNote}
               onDeleteNote={noteId =>
-                this.props.store.actions.rest.deleteNoteConfirmation({ noteId })
+                this.props.store.actions.notes.deleteNoteConfirmation({
+                  noteId
+                })
               }
             />
           </Flex>
           <ButtonSpacer>
             <ExpandingIconButton
-              forceShow={this.props.store.state.rest.isFullscreen}
+              forceShow={this.props.store.state.ui.isFullscreen}
               text={
-                this.props.store.state.rest.isFullscreen
+                this.props.store.state.ui.isFullscreen
                   ? "Exit fullscreen"
                   : "Enter fullscreen"
               }
               onClick={() =>
-                this.props.store.actions.rest.toggleFullscreen(
-                  !this.props.store.state.rest.isFullscreen
+                this.props.store.actions.ui.toggleFullscreen(
+                  !this.props.store.state.ui.isFullscreen
                 )
               }
               icon={
-                this.props.store.state.rest.isFullscreen ? (
+                this.props.store.state.ui.isFullscreen ? (
                   <FontAwesomeIcon icon={faCompress} />
                 ) : (
                   <FontAwesomeIcon icon={faExpand} />
@@ -126,11 +128,11 @@ export class Heading extends React.Component<Props, State> {
           </ButtonSpacer>
           <ButtonSpacer>
             <ExpandingIconButton
-              forceShow={this.props.store.state.rest.loading.createNote}
+              forceShow={this.props.store.state.notes.loading.createNote}
               text="Create note"
-              onClick={this.props.store.actions.rest.createNote}
+              onClick={this.props.store.actions.notes.createNote}
               icon={
-                this.props.store.state.rest.loading.createNote ? (
+                this.props.store.state.notes.loading.createNote ? (
                   <FontAwesomeIcon icon={faSpinner} spin />
                 ) : (
                   <FontAwesomeIcon icon={faPlus} />
