@@ -23,8 +23,9 @@ const EmojiItem = styled.div`
   display: inline-block;
   margin: ${spacing._0_125};
   cursor: pointer;
-  opacity: ${props => (props.isFocused ? 1 : 0.4)};
-  transition: all 333ms ease;
+  opacity: ${props => (props.isFocused ? 1 : 0.5)};
+  transform: ${props => (props.isFocused ? "scale(1, 1)" : "scale(0.8, 0.8)")};
+  transition: all 200ms ease;
 `;
 
 const fuzzy = new Fuse(emojis, {
@@ -80,6 +81,7 @@ export function EmojiList({
             <EmojiItem
               key={emoji.codes}
               isFocused={search.length === 0 || focusedIndex === i}
+              onMouseEnter={() => setFocusedIndex(i)}
               onClick={(e: Event) => {
                 e.preventDefault();
                 onEmojiSelected(emoji);
