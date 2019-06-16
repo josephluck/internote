@@ -250,15 +250,15 @@ export function getOutlineHeadingsFromEditorValue(value: Value): OutlineItem[] {
   return value.document
     .getBlocks()
     .filter(block => blocksInOutline.includes(block.type as any))
-    .filter(
-      block =>
-        !!block.nodes.first() && !!block.nodes.first().toJSON().text.length
-    )
-    .map(block => {
-      const first = block.nodes.first();
+    .map(block => ({
+      block,
+      name: mapBlockToString(block)
+    }))
+    .filter(block => hasLength(block.name))
+    .map(({ block, name }) => {
       return {
         key: block.key,
-        name: first.toJSON().text,
+        name,
         type: block.type as any,
         node: block
       };
