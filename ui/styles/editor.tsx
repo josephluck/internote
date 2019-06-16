@@ -291,7 +291,7 @@ export class InternoteEditor extends React.Component<Props, State> {
       .fold(
         () => {
           if (this.state.isEmojiMenuShowing) {
-            this.setEmojiMenuShowing(false)
+            this.setEmojiMenuShowing(false);
           }
         },
         shortcutSearch => {
@@ -679,13 +679,13 @@ export class InternoteEditor extends React.Component<Props, State> {
     const toolbarIsExpanded =
       isEmojiMenuShowing ||
       this.state.isTagsMenuShowing ||
-      this.props.isDictionaryShowing;
+      this.props.isDictionaryShowing ||
+      this.props.newTagSaving;
     const isToolbarShowing =
       hasSelection(this.state.value) ||
       !!this.props.speechSrc ||
       this.state.isCtrlHeld ||
-      toolbarIsExpanded ||
-      this.props.newTagSaving;
+      toolbarIsExpanded;
 
     return (
       <Wrap>

@@ -52,7 +52,7 @@ export function model(api: Api): Model {
       async saveNewTag(_state, actions, payload) {
         // NB: own effect for the purpose of loading state
         // internally all we need to do is save the note (tags are automatically updated)
-        await actions.notes.updateNote(payload);
+        return await actions.notes.updateNote(payload);
       }
     }
   };

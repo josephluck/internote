@@ -27,6 +27,7 @@
     "aws-serverless-express": "^3.3.6"
   },
   "devDependencies": {
+    "@element-motion/core": "^2.7.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.18",
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
@@ -48,6 +49,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.0",
     "concurrently": "^4.1.0",
+    "emotion": "^10.0.9",
     "fuse.js": "^3.4.4",
     "is-hotkey": "^0.1.4",
     "lodash": "^4.17.11",
