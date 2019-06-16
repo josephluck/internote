@@ -72,5 +72,5 @@ export function model(_api: Api): Model {
       }
     }
   };
-  return withAsyncLoading(ownModel);
+  return withAsyncLoading(ownModel, "ui");
 }

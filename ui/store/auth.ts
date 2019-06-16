@@ -149,5 +149,5 @@ export function model(api: Api): Model {
       }
     }
   };
-  return withAsyncLoading(ownModel);
+  return withAsyncLoading(ownModel, "auth");
 }

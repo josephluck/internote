@@ -22,13 +22,17 @@ export interface WithAsyncLoadingModel<M extends AnyModel> {
 }
 
 export function withAsyncLoading<M extends AnyModel>(
-  model: any
+  model: any,
+  namespace: string
 ): WithAsyncLoadingModel<M> {
   return Object.assign({}, model, {
     state: Object.assign({}, model.state, {
       loading: Object.keys(model.effects).reduce((prev, effectKey) => {
-        return Object.assign({}, prev, { [effectKey]: false });
-      })
+        return {
+          ...prev,
+          [effectKey]: false
+        };
+      }, {})
     }),
     reducers: Object.assign({}, model.reducers, {
       setLoading: (state: any, { key, loading }: any) => {
@@ -49,14 +53,20 @@ export function withAsyncLoading<M extends AnyModel>(
           ) => {
             const rtn = originalEffect(state, actions, ...args);
             if (rtn && rtn.then) {
-              actions.notes.setLoading({ key: effectKey, loading: true });
+              actions[namespace].setLoading({ key: effectKey, loading: true });
               return rtn
                 .then((response: any) => {
-                  actions.notes.setLoading({ key: effectKey, loading: false });
+                  actions[namespace].setLoading({
+                    key: effectKey,
+                    loading: false
+                  });
                   return response;
                 })
                 .catch(err => {
-                  actions.notes.setLoading({ key: effectKey, loading: false });
+                  actions[namespace].setLoading({
+                    key: effectKey,
+                    loading: false
+                  });
                   throw err;
                 });
             } else {
