@@ -118,9 +118,17 @@ Internote runs on a serverless stack, and is set up with serverless-offline for 
 
 ## Logs
 
+#### CloudWatch
+
 Logging is available in CloudWatch.
 
 > Follow [these instructions](https://serverless-stack.com/chapters/api-gateway-and-lambda-logs.html#enable-api-gateway-cloudwatch-logs) to enable API Gateway logs in CloudWatch.
+
+#### Dashbird
+
+Logging and metrics are available in Dashbird
+
+> Follow [these instructions](https://dashbird.io/docs/get-started/quick-start/) to enable Dashbird
 
 ## Additional serverless AWS permissions
 
