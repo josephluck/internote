@@ -1,8 +1,31 @@
-import { Value, Node, Range, Point } from "slate";
+import { Value, Node, Range, Point, Block } from "slate";
 import isKeyHotkey from "is-hotkey";
 import { defaultNote } from "@internote/api/domains/note/default-note";
 import { Option, Some, None } from "space-lift";
 import { BlockType } from "./serializer";
+import { hasLength } from "./string";
+
+/**
+ * Returns the full combined text of a block
+ * including emojis, not #tags
+ */
+export function mapBlockToString(block: Block): string {
+  return block.nodes
+    .filter(
+      node =>
+        node.object === "text" ||
+        (node.object === "inline" && node.type === "emoji")
+    )
+    .reduceRight((prev, node) => {
+      if (node.object === "inline" && node.type === "emoji") {
+        return `${node.data.get("code")} ${prev}`;
+      } else if (node.text && node.text.length > 0) {
+        return `${node.text} ${prev}`;
+      } else {
+        return prev;
+      }
+    }, "");
+}
 
 export function getTitleFromEditorValue(
   editorValue: Value
@@ -12,10 +35,11 @@ export function getTitleFromEditorValue(
     editorValue.document.getBlocks &&
     editorValue.document.getBlocks()
   ) {
-    const block = editorValue.document
+    const text = editorValue.document
       .getBlocks()
-      .find(block => block.text != "");
-    return block ? block.text : undefined;
+      .map(mapBlockToString)
+      .find(hasLength);
+    return text ? text : undefined;
   } else {
     return undefined;
   }
@@ -251,6 +275,6 @@ export function getOutlineTagsFromEditorValue(value: Value): string[] {
   return [...new Set(allTags)];
 }
 
-export function extractWord (word: string) {
-  return word.substring(1)
-};
+export function extractWord(word: string) {
+  return word.substring(1);
+}
