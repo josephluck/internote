@@ -40,15 +40,15 @@ import {
   isCtrlHotKey,
   isEnterHotKey,
   hasSelection,
-  getSelectedContent,
+  getSelectedText,
   currentFocusIsWithinList,
   currentFocusHasBlock,
   currentFocusHasMark,
   getCurrentFocusedWord,
-  isEmojiShortcut,
-  shouldPreventEventForMenuNavigationShortcut,
+  wordIsEmojiShortcut,
+  isListShortcut,
   isShortcut,
-  isTagShortcut,
+  wordIsTagShortcut,
   getTagsFromEditorValue,
   extractWord
 } from "../utilities/editor";
@@ -219,13 +219,7 @@ export class InternoteEditor extends React.Component<Props, State> {
   onKeyDown: Plugin["onKeyDown"] = (event, editor, next) => {
     const menuShowing =
       this.state.isEmojiMenuShowing || this.state.isTagsMenuShowing;
-    if (
-      shouldPreventEventForMenuNavigationShortcut(
-        event,
-        this.state.shortcutSearch,
-        menuShowing
-      )
-    ) {
+    if (isListShortcut(event, this.state.shortcutSearch, menuShowing)) {
       event.preventDefault();
       return;
     }
@@ -284,7 +278,7 @@ export class InternoteEditor extends React.Component<Props, State> {
     );
     // Handle emojis
     shortcut
-      .filter(isEmojiShortcut)
+      .filter(wordIsEmojiShortcut)
       .map(extractWord)
       .fold(
         () => {
@@ -300,7 +294,7 @@ export class InternoteEditor extends React.Component<Props, State> {
       );
     // Handle tags
     shortcut
-      .filter(isTagShortcut)
+      .filter(wordIsTagShortcut)
       .map(extractWord)
       .fold(
         () => this.setTagsMenuShowing(false),
@@ -402,12 +396,12 @@ export class InternoteEditor extends React.Component<Props, State> {
   };
 
   onRequestSpeech = () => {
-    getSelectedContent(this.state.value).map(this.props.onRequestSpeech);
+    getSelectedText(this.state.value).map(this.props.onRequestSpeech);
     window.requestAnimationFrame(this.refocusEditor);
   };
 
   onRequestDictionary = () => {
-    getSelectedContent(this.state.value)
+    getSelectedText(this.state.value)
       .flatMap(getFirstWordFromString)
       .map(word => {
         this.props.onRequestDictionary(word);

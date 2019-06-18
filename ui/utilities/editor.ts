@@ -86,7 +86,7 @@ export function hasFocus(value: Value) {
   );
 }
 
-export function getSelectedContent(value: Value): Option<string> {
+export function getSelectedText(value: Value): Option<string> {
   return hasSelection(value)
     ? Some(value.fragment.text)
     : hasFocus(value)
@@ -183,11 +183,11 @@ export function getRangeFromWordInCurrentFocus(
     );
 }
 
-export function isEmojiShortcut(word: string): boolean {
+export function wordIsEmojiShortcut(word: string): boolean {
   return word.startsWith(":") && word.length > 1;
 }
 
-export function isTagShortcut(word: string): boolean {
+export function wordIsTagShortcut(word: string): boolean {
   return word.startsWith("#") && word.length > 1;
 }
 
@@ -196,7 +196,7 @@ export function isTagShortcut(word: string): boolean {
  * like an emoji or tag shortcut (: or #)
  */
 export function isShortcut(word: string): boolean {
-  return isEmojiShortcut(word) || isTagShortcut(word);
+  return wordIsEmojiShortcut(word) || wordIsTagShortcut(word);
 }
 
 export const isH1Hotkey = isKeyHotkey("mod+1");
@@ -225,15 +225,8 @@ export const isEnterHotKey = isKeyHotkey("enter");
 export const isRightHotKey = isKeyHotkey("right");
 export const isLeftHotKey = isKeyHotkey("left");
 
-export function shouldPreventEventForMenuNavigationShortcut(
-  event: Event,
-  search: string,
-  menuShowing: boolean
-): boolean {
-  const isNavigationShortcut =
-    isRightHotKey(event) || isLeftHotKey(event) || isEnterHotKey(event);
-
-  return search.length && menuShowing && isNavigationShortcut;
+export function isListShortcut(event: Event): boolean {
+  return isRightHotKey(event) || isLeftHotKey(event) || isEnterHotKey(event);
 }
 
 interface OutlineItem {
@@ -277,4 +270,18 @@ export function getOutlineTagsFromEditorValue(value: Value): string[] {
 
 export function extractWord(word: string) {
   return word.substring(1);
+}
+
+export interface OnChange {
+  content: Object;
+  title: string;
+  tags: string[];
+}
+
+export function getChanges(value: Value): OnChange {
+  return {
+    content: value.toJSON(),
+    title: getTitleFromEditorValue(value),
+    tags: getTagsFromEditorValue(value)
+  };
 }

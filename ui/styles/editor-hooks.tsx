@@ -24,7 +24,6 @@ import {
 } from "./toolbar";
 import {
   getValueOrDefault,
-  getTitleFromEditorValue,
   isBoldHotkey,
   isItalicHotkey,
   isUnderlinedHotkey,
@@ -37,17 +36,17 @@ import {
   isCtrlHotKey,
   isEnterHotKey,
   hasSelection,
-  getSelectedContent,
+  getSelectedText,
   currentFocusIsWithinList,
   currentFocusHasBlock,
   currentFocusHasMark,
   getCurrentFocusedWord,
-  isEmojiShortcut,
-  shouldPreventEventForMenuNavigationShortcut,
+  wordIsEmojiShortcut,
+  isListShortcut,
   isShortcut,
-  isTagShortcut,
-  getTagsFromEditorValue,
-  extractWord
+  wordIsTagShortcut,
+  OnChange,
+  getChanges
 } from "../utilities/editor";
 import { Wrap, EditorStyles, Editor, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
@@ -61,12 +60,6 @@ import { Tag } from "./tag";
 import { useDebounce, useThrottle } from "../utilities/hooks";
 
 const DEFAULT_NODE = "paragraph";
-
-interface OnChange {
-  content: Object;
-  title: string;
-  tags: string[];
-}
 
 const schema: SchemaProperties = {
   inlines: {
@@ -83,44 +76,44 @@ export function InternoteEditor({
   id,
   overwriteCount,
   initialValue,
-  onChange,
-  onSaveTag,
-  onDelete,
   saving,
   distractionFree,
   speechSrc,
   isSpeechLoading,
   isDictionaryLoading,
   isDictionaryShowing,
+  dictionaryResults,
+  outlineShowing,
+  tags,
+  newTagSaving,
   onRequestSpeech,
   onDiscardSpeech,
   onCloseDictionary,
   onRequestDictionary,
-  dictionaryResults,
-  outlineShowing,
-  tags,
-  newTagSaving
+  onChange,
+  onSaveTag,
+  onDelete
 }: {
   id: string;
   overwriteCount: number;
   initialValue: {};
-  onChange: (value: OnChange) => Promise<void>;
-  onSaveTag: (value: OnChange) => Promise<void>;
-  onDelete: () => void;
   saving: boolean;
   distractionFree: boolean;
   speechSrc: string;
   isSpeechLoading: boolean;
   isDictionaryLoading: boolean;
   isDictionaryShowing: boolean;
-  onRequestSpeech: (content: string) => any;
-  onDiscardSpeech: () => any;
-  onCloseDictionary: () => any;
-  onRequestDictionary: (word: string) => any;
   dictionaryResults: Types.DictionaryResult[];
   outlineShowing: boolean;
   tags: Types.Tag[];
   newTagSaving: boolean;
+  onChange: (value: OnChange) => Promise<void>;
+  onSaveTag: (value: OnChange) => Promise<void>;
+  onDelete: () => void;
+  onRequestSpeech: (content: string) => any;
+  onDiscardSpeech: () => any;
+  onCloseDictionary: () => any;
+  onRequestDictionary: (word: string) => any;
 }) {
   /**
    * State
@@ -130,23 +123,23 @@ export function InternoteEditor({
   );
   const [userScrolled, setUserScrolled] = React.useState(false);
   const [isCtrlHeld, setIsCtrlHeld] = React.useState(false);
-  const [isEmojiMenuShowing, setIsEmojiMenuShowing] = React.useState(false);
-  const [forceShowEmojiMenu, setForceShowEmojiMenu] = React.useState(false);
-  const [isTagsMenuShowing, setIsTagsMenuShowing] = React.useState(false);
-  const [shortcutSearch, setShortcutSearch] = React.useState("");
-  const [dictionaryRequestedWord, setDictionaryRequestedWord] = React.useState(
-    ""
-  );
+  const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
+  const selectedText = getSelectedText(value);
+  const shortcutSearch = getCurrentFocusedWord(value).filter(isShortcut);
+  const isEmojiShortcut = shortcutSearch
+    .filter(wordIsEmojiShortcut)
+    .isDefined();
+  const isTagsShortcut = shortcutSearch.filter(wordIsTagShortcut).isDefined();
 
   /**
    * Derived state
    */
   const debouncedValue = useDebounce(value, 1000);
   const throttledValue = useThrottle(value, 100);
-  const emojiMenuShowing = isEmojiMenuShowing || forceShowEmojiMenu;
   const toolbarIsExpanded =
-    emojiMenuShowing ||
-    isTagsMenuShowing ||
+    isEmojiShortcut ||
+    isEmojiButtonPressed ||
+    isTagsShortcut ||
     isDictionaryShowing ||
     newTagSaving;
   const isToolbarShowing =
@@ -157,7 +150,7 @@ export function InternoteEditor({
    */
   const editor = React.useRef<SlateEditor>();
   const scrollWrap = React.useRef<HTMLDivElement>();
-  const scroller = React.useRef<ReturnType<typeof zenscroll.createScroller>>();
+  const scrollRef = React.useRef<ReturnType<typeof zenscroll.createScroller>>();
   const preventScrollListener = React.useRef<boolean>(false);
   const focusedNodeKey = React.useRef<any>();
 
@@ -166,22 +159,21 @@ export function InternoteEditor({
    */
   React.useEffect(() => {
     if (scrollWrap.current) {
-      scroller.current = zenscroll.createScroller(scrollWrap.current, 200);
+      scrollRef.current = zenscroll.createScroller(scrollWrap.current, 200);
       scrollWrap.current.addEventListener("scroll", handleEditorScroll);
       scrollWrap.current.addEventListener("click", handleFocusModeScroll);
     }
   }, [scrollWrap.current]);
 
   /**
-   * Reload value when id or overwrite changes
+   * Replace value when id or overwrite changes
    */
   React.useEffect(() => {
     setValue(getValueOrDefault(initialValue));
-    refocusEditor();
   }, [id, overwriteCount]);
 
   /**
-   * Setup window events
+   * Setup window event listeners
    */
   React.useEffect(() => {
     window.addEventListener("keyup", onKeyUp);
@@ -192,10 +184,9 @@ export function InternoteEditor({
 
   /**
    * Emit changes to parent when value changes
-   * (debounced)
    */
   React.useEffect(() => {
-    emitChange();
+    onChange(getChanges(debouncedValue));
   }, [debouncedValue]);
 
   /**
@@ -206,31 +197,11 @@ export function InternoteEditor({
   }, [throttledValue]);
 
   /**
-   * Change handling
-   */
-  function getChanges(): OnChange {
-    return {
-      content: value.toJSON(),
-      title: getTitleFromEditorValue(value),
-      tags: getTagsFromEditorValue(value)
-    };
-  }
-  function change(newValue: any) {
-    handleShortcutSearch();
-    if (value !== newValue) {
-      setValue(newValue);
-    }
-  }
-  function emitChange() {
-    onChange(getChanges());
-  }
-
-  /**
    * Keyboard event handling
    */
-  function getEventHandlerFromKeyEvent(
+  const getToolbarShortcutHandlerFromKeyEvent = (
     event: Event
-  ): Option<(event: Event) => void> {
+  ): Option<(event: Event) => void> => {
     if (isBoldHotkey(event)) {
       return Some(onClickMark("bold"));
     } else if (isItalicHotkey(event)) {
@@ -252,34 +223,33 @@ export function InternoteEditor({
     } else {
       return None;
     }
-  }
-  function onKeyDown(event, editor, next) {
-    const menuShowing = isEmojiMenuShowing || isTagsMenuShowing;
-    if (
-      shouldPreventEventForMenuNavigationShortcut(
-        event,
-        shortcutSearch,
-        menuShowing
-      )
-    ) {
+  };
+  const onKeyDown = (event, editor, next) => {
+    // TODO: state is old? Maybe needs to be memo or triggered by an effect somehow
+    const menuShowing = isEmojiShortcut || isTagsShortcut;
+    if (menuShowing && isListShortcut(event) && shortcutSearch.isDefined()) {
       event.preventDefault();
       return;
     }
     handleResetBlockOnEnterPressed(event, editor, next);
-    if (isCtrlHotKey(event)) {
-      setIsCtrlHeld(true);
-    }
-    getEventHandlerFromKeyEvent(event).map(handler => {
+    getToolbarShortcutHandlerFromKeyEvent(event).map(handler => {
       event.preventDefault();
       handler(event);
     });
-  }
-  function onKeyUp(event: KeyboardEvent) {
+    if (isCtrlHotKey(event)) {
+      setIsCtrlHeld(true);
+    }
+  };
+  const onKeyUp = (event: KeyboardEvent) => {
     if (isCtrlHotKey(event)) {
       setIsCtrlHeld(false);
     }
-  }
-  function handleResetBlockOnEnterPressed(event: KeyboardEvent, editor, next) {
+  };
+  const handleResetBlockOnEnterPressed = (
+    event: KeyboardEvent,
+    editor,
+    next
+  ) => {
     const isEnterKey = isEnterHotKey(event) && !event.shiftKey;
     if (isEnterKey) {
       const previousBlockType = editor.value.focusBlock.type;
@@ -303,96 +273,57 @@ export function InternoteEditor({
       }
     }
     next();
-  }
-  function handleShortcutSearch() {
-    const shortcut = getCurrentFocusedWord(value).filter(isShortcut);
-    // Handle emojis
-    shortcut
-      .filter(isEmojiShortcut)
-      .map(extractWord)
-      .fold(
-        () => {
-          if (isEmojiMenuShowing) {
-            setEmojiMenuShowing(false);
-          }
-        },
-        shortcutSearch => {
-          setShortcutSearch(shortcutSearch);
-          setEmojiMenuShowing(true);
-        }
-      );
-    // Handle tags
-    shortcut
-      .filter(isTagShortcut)
-      .map(extractWord)
-      .fold(
-        () => setTagsMenuShowing(false),
-        shortcutSearch => {
-          setShortcutSearch(shortcutSearch);
-          setTagsMenuShowing(true);
-        }
-      );
-  }
+  };
 
   /**
    * Editor methods
    */
-  function resetBlocks(node: string = DEFAULT_NODE) {
+  const resetBlocks = (node: string = DEFAULT_NODE) => {
     editor.current
       .setBlocks(node)
       .unwrapBlock("bulleted-list")
       .unwrapBlock("numbered-list");
-  }
-  function undo() {
-    editor.current.undo();
-  }
-  function redo() {
-    editor.current.redo();
-  }
-  function refocusEditor() {
-    editor.current.focus();
-  }
-  function focusNode(node: Node) {
+  };
+  const focusNode = (node: Node) => {
     editor.current.moveToRangeOfNode(node);
     editor.current.moveFocusToStartOfNode(node);
     editor.current.focus();
-  }
+  };
 
   /**
    * Scrolling
    */
-  function handleEditorScroll() {
-    // TODO: this is screwing it up
+  const handleEditorScroll = () => {
+    // TODO: this is screwing focus mode
     if (scrollWrap && !userScrolled && !preventScrollListener.current) {
       // setUserScrolled(true);
     }
-  }
-  function handleFocusModeScroll() {
+  };
+  const handleFocusModeScroll = () => {
     const focusedBlock = document.querySelector(".node-focused");
     const editorScrollWrap = scrollWrap;
-    if (!hasSelection(value) && focusedBlock && editorScrollWrap && scroller) {
+    if (!hasSelection(value) && focusedBlock && editorScrollWrap && scrollRef) {
       preventScrollListener.current = true;
       scrollEditorToElement(focusedBlock as HTMLElement);
       setUserScrolled(false);
     }
-  }
-  function scrollEditorToElement(element: HTMLElement) {
-    scroller.current.center(element, 100, 0, () => {
-      // requestAnimationFrame
+  };
+  const scrollEditorToElement = (element: HTMLElement) => {
+    scrollRef.current.center(element, 100, 0, () => {
       preventScrollListener.current = false;
     });
-  }
+  };
 
   /**
    * Mark and block handling
    */
-  function onClickMark(type: MarkType) {
+  const onClickMark = (type: MarkType) => {
     return function(event: Event) {
       event.preventDefault();
       editor.current.toggleMark(type);
     };
-  }
-  function onClickBlock(type: BlockType) {
+  };
+  const onClickBlock = (type: BlockType) => {
     return function(event: Event) {
       event.preventDefault();
       // Handle everything but list buttons.
@@ -427,108 +358,67 @@ export function InternoteEditor({
         }
       }
     };
-  }
+  };
 
   /**
    * Speech
    */
-  function requestSpeech() {
-    getSelectedContent(value).map(onRequestSpeech);
-  }
+  const requestSpeech = () => {
+    getSelectedText(value).map(onRequestSpeech);
+  };
 
   /**
    * Dictionary
    */
-  function requestDictionary() {
-    getSelectedContent(value)
-      .flatMap(getFirstWordFromString)
-      .map(word => {
-        onRequestDictionary(word);
-        setDictionaryRequestedWord(word);
-      });
-  }
-  function onToggleDictionary() {
+  const requestDictionary = () => {
+    selectedText.flatMap(getFirstWordFromString).map(onRequestDictionary);
+  };
+  const onToggleDictionary = () => {
     if (isDictionaryShowing) {
-      closeDictionary();
+      onCloseDictionary();
     } else {
       requestDictionary();
     }
-  }
-  function closeDictionary() {
-    onCloseDictionary();
-    setDictionaryRequestedWord("");
-  }
+  };
 
   /**
    * Emojis
    */
-  function setEmojiMenuShowing(showing: boolean, force?: boolean) {
-    setIsEmojiMenuShowing(showing);
-    setForceShowEmojiMenu(
-      typeof force !== "undefined" ? force : forceShowEmojiMenu
-    );
-    if (!showing) {
-      refocusEditor();
-    }
-  }
-  function insertEmoji(emoji: Emoji) {
-    refocusEditor();
-    if (shortcutSearch.length > 0) {
-      editor.current.deleteBackward(shortcutSearch.length + 1); // NB: +1 required to compensate for colon
-    }
+  const insertEmoji = (emoji: Emoji) => {
+    shortcutSearch.map(word => {
+      editor.current.deleteBackward(word.length + 1); // NB: +1 required to compensate for colon
+    });
     editor.current.insertInline({ type: "emoji", data: { code: emoji.char } });
-    // requestAnimationFrame
-    setIsEmojiMenuShowing(false);
     editor.current.moveToStartOfNextText();
-    refocusEditor();
-  }
+  };
 
   /**
    * Tags
    */
-  function setTagsMenuShowing(showing: boolean) {
-    setIsTagsMenuShowing(showing);
-    if (!showing) {
-      refocusEditor();
-    }
-  }
-  function insertTag(tag: string, shouldCloseTagsMenu: boolean = true) {
-    refocusEditor();
-    if (shortcutSearch.length > 0) {
-      editor.current.deleteBackward(shortcutSearch.length + 1); // NB: +1 required to compensate for hash
-    }
+  const insertTag = (tag: string) => {
+    shortcutSearch.map(word => {
+      editor.current.deleteBackward(word.length + 1); // NB: +1 required to compensate for hash
+    });
     editor.current.insertInline({ type: "tag", data: { tag } });
-    if (shouldCloseTagsMenu) {
-      closeTagsMenu();
-    }
     editor.current.moveToStartOfNextText();
-    refocusEditor();
-  }
-  function closeTagsMenu() {
-    // requestAnimationFrame
-    setIsTagsMenuShowing(false);
-  }
-  async function saveTag(tag: string) {
-    // requestAnimationFrame
-    insertTag(tag, false);
-    // end
-    await onSaveTag(getChanges());
-    closeTagsMenu();
-  }
+  };
+  const saveTag = (tag: string) => {
+    insertTag(tag);
+    onSaveTag(getChanges(editor.current.value));
+  };
 
   /**
    * Toolbar
    */
-  function closeExpandedToolbar() {
-    setEmojiMenuShowing(false, false);
-    setTagsMenuShowing(false);
-    closeDictionary();
-  }
+  const closeExpandedToolbar = () => {
+    setIsEmojiButtonPressed(false);
+    onCloseDictionary();
+  };
 
   /**
    * Rendering
    */
-  function renderMarkButton(type: MarkType, shortcutNumber: number) {
+  const renderMarkButton = (type: MarkType, shortcutNumber: number) => {
     // TODO: onClick type
     return (
       <ToolbarButton
@@ -540,8 +430,8 @@ export function InternoteEditor({
         {renderToolbarIcon(type)}
       </ToolbarButton>
     );
-  }
-  function renderBlockButton(type: BlockType, shortcutNumber: number) {
+  };
+  const renderBlockButton = (type: BlockType, shortcutNumber: number) => {
     const isActive =
       currentFocusHasBlock(type, value) ||
       currentFocusIsWithinList(type, value);
@@ -555,8 +445,8 @@ export function InternoteEditor({
         {renderToolbarIcon(type)}
       </ToolbarButton>
     );
-  }
-  function renderBlock({ attributes, children, node, isSelected, key }) {
+  };
+  const renderBlock = ({ attributes, children, node, isSelected, key }) => {
     const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
     const preventForBlocks: (BlockType | BlockName)[] = [
       "list-item",
@@ -609,8 +499,8 @@ export function InternoteEditor({
           </li>
         );
     }
-  }
-  function renderMark(props, next) {
+  };
+  const renderMark = (props, next) => {
     const { children, mark, attributes } = props;
     switch (mark.type as MarkType) {
       case "bold":
@@ -624,8 +514,8 @@ export function InternoteEditor({
       default:
         return next();
     }
-  }
-  function renderInline(props, _editor, next) {
+  };
+  const renderInline = (props, _editor, next) => {
     const { attributes, node } = props;
     switch (node.type) {
       case "emoji":
@@ -653,7 +543,7 @@ export function InternoteEditor({
       default:
         return next();
     }
-  }
+  };
 
   return (
     <Wrap>
@@ -666,7 +556,7 @@ export function InternoteEditor({
             placeholder=""
             ref={editor}
             value={value as any}
-            onChange={c => change(c.value)}
+            onChange={c => setValue(c.value)}
             onKeyDown={onKeyDown}
             renderBlock={renderBlock}
             renderMark={renderMark}
@@ -675,7 +565,6 @@ export function InternoteEditor({
             schema={schema}
             distractionFree={distractionFree}
           />
-
           <Outline
             value={value}
             onHeadingClick={focusNode}
@@ -701,17 +590,23 @@ export function InternoteEditor({
             {renderMarkButton("underlined", 9)}
             <ButtonSpacer small>
               <EmojiToggle
-                isActive={emojiMenuShowing}
-                onClick={() =>
-                  setEmojiMenuShowing(!isEmojiMenuShowing, !isEmojiMenuShowing)
-                }
+                isActive={isEmojiShortcut || isEmojiButtonPressed}
+                onClick={() => setIsEmojiButtonPressed(!isEmojiButtonPressed)}
               />
             </ButtonSpacer>
             <ButtonSpacer small>
-              <UndoRedoButton onClick={undo} icon={faUndo} tooltip="Undo" />
+              <UndoRedoButton
+                onClick={editor.current && editor.current.undo}
+                icon={faUndo}
+                tooltip="Undo"
+              />
             </ButtonSpacer>
             <ButtonSpacer small>
-              <UndoRedoButton onClick={redo} icon={faRedo} tooltip="Redo" />
+              <UndoRedoButton
+                onClick={editor.current && editor.current.redo}
+                icon={faRedo}
+                tooltip="Redo"
+              />
             </ButtonSpacer>
           </Flex>
           <Flex alignItems="center">
@@ -745,24 +640,26 @@ export function InternoteEditor({
           <ToolbarExpandedWrapper>
             <ToolbarExpandedInner>
               <ToolbarInner>
-                {isTagsMenuShowing || newTagSaving ? (
+                {isTagsShortcut || newTagSaving ? (
                   <TagsList
                     onTagSelected={insertTag}
                     onSaveTag={saveTag}
                     tags={tags.map(t => t.tag)}
-                    search={shortcutSearch}
+                    search={shortcutSearch.getOrElse("")}
                     newTagSaving={newTagSaving}
                   />
-                ) : isEmojiMenuShowing ? (
+                ) : isEmojiButtonPressed || isEmojiShortcut ? (
                   <EmojiList
                     onEmojiSelected={insertEmoji}
-                    search={shortcutSearch}
+                    search={shortcutSearch.getOrElse("")}
                   />
                 ) : isDictionaryShowing ? (
                   <Dictionary
                     isLoading={isDictionaryLoading}
                     results={dictionaryResults}
-                    requestedWord={dictionaryRequestedWord}
+                    requestedWord={selectedText
+                      .flatMap(getFirstWordFromString)
+                      .getOrElse("")}
                   />
                 ) : null}
               </ToolbarInner>

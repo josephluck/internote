@@ -84,7 +84,7 @@ export function TagsList({
     return function() {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [filteredTags, focusedIndex, onTagSelected]);
+  }, [filteredTags, search, focusedIndex, onSaveTag, onTagSelected]);
 
   return (
     <Wrap>
