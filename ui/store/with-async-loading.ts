@@ -1,4 +1,5 @@
 import { Twine } from "twine-js";
+import { GlobalState } from ".";
 
 type AnyModel = Twine.Model<any, any, any>;
 
@@ -21,9 +22,9 @@ export interface WithAsyncLoadingModel<M extends AnyModel> {
   effects: M["effects"];
 }
 
-export function withAsyncLoading<M extends AnyModel>(
+export function withAsyncLoading<M extends AnyModel, K extends keyof GlobalState>(
   model: any,
-  namespace: string
+  namespace: K
 ): WithAsyncLoadingModel<M> {
   return Object.assign({}, model, {
     state: Object.assign({}, model.state, {
