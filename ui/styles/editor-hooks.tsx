@@ -50,7 +50,10 @@ import {
 } from "../utilities/editor";
 import { Wrap, EditorStyles, Editor, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
-import { getFirstWordFromString } from "../utilities/string";
+import {
+  getFirstWordFromString,
+  removeFirstLetterFromString
+} from "../utilities/string";
 import { Outline } from "./outline";
 import { EmojiToggle } from "./emoji-toggle";
 import { EmojiList } from "./emoji-list";
@@ -121,21 +124,21 @@ export function InternoteEditor({
   const [value, setValue] = React.useState(() =>
     getValueOrDefault(initialValue)
   );
+  const debouncedValue = useDebounce(value, 1000);
+  const throttledValue = useThrottle(value, 100);
   const [userScrolled, setUserScrolled] = React.useState(false);
   const [isCtrlHeld, setIsCtrlHeld] = React.useState(false);
   const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
+
+  /**
+   * Derived state
+   */
   const selectedText = getSelectedText(value);
   const shortcutSearch = getCurrentFocusedWord(value).filter(isShortcut);
   const isEmojiShortcut = shortcutSearch
     .filter(wordIsEmojiShortcut)
     .isDefined();
   const isTagsShortcut = shortcutSearch.filter(wordIsTagShortcut).isDefined();
-
-  /**
-   * Derived state
-   */
-  const debouncedValue = useDebounce(value, 1000);
-  const throttledValue = useThrottle(value, 100);
   const toolbarIsExpanded =
     isEmojiShortcut ||
     isEmojiButtonPressed ||
@@ -166,7 +169,7 @@ export function InternoteEditor({
   }, [scrollWrap.current]);
 
   /**
-   * Replace value when id or overwrite changes
+   * Replace value state in response to props
    */
   React.useEffect(() => {
     setValue(getValueOrDefault(initialValue));
@@ -176,9 +179,11 @@ export function InternoteEditor({
    * Setup window event listeners
    */
   React.useEffect(() => {
-    window.addEventListener("keyup", onKeyUp);
+    window.addEventListener("keyup", onWindowKeyUp);
+    window.addEventListener("keydown", onWindowKeyDown);
     return function() {
-      window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("keyup", onWindowKeyUp);
+      window.removeEventListener("keydown", onWindowKeyDown);
     };
   }, []);
 
@@ -224,32 +229,27 @@ export function InternoteEditor({
       return None;
     }
   };
-  const onKeyDown = (event, editor, next) => {
-    // TODO: state is old? Maybe needs to be memo or triggered by an effect somehow
-    const menuShowing = isEmojiShortcut || isTagsShortcut;
-    if (menuShowing && isListShortcut(event) && shortcutSearch.isDefined()) {
-      event.preventDefault();
-      return;
-    }
-    handleResetBlockOnEnterPressed(event, editor, next);
+  const onWindowKeyDown = (event: Event) => {
     getToolbarShortcutHandlerFromKeyEvent(event).map(handler => {
-      event.preventDefault();
       handler(event);
     });
     if (isCtrlHotKey(event)) {
       setIsCtrlHeld(true);
     }
   };
-  const onKeyUp = (event: KeyboardEvent) => {
-    if (isCtrlHotKey(event)) {
+  const onWindowKeyUp = (event: KeyboardEvent) => {
+    if (!isCtrlHotKey(event)) {
       setIsCtrlHeld(false);
     }
   };
-  const handleResetBlockOnEnterPressed = (
-    event: KeyboardEvent,
-    editor,
-    next
-  ) => {
+  const onEditorKeyDown = (event: KeyboardEvent, editor, next) => {
+    // TODO: state is old? Maybe needs to be memo or triggered by an effect somehow
+    const menuShowing = isEmojiShortcut || isTagsShortcut;
+    if (menuShowing && isListShortcut(event) && shortcutSearch.isDefined()) {
+      event.stopPropagation();
+      event.preventDefault();
+      return;
+    }
     const isEnterKey = isEnterHotKey(event) && !event.shiftKey;
     if (isEnterKey) {
       const previousBlockType = editor.value.focusBlock.type;
@@ -557,7 +557,7 @@ export function InternoteEditor({
             ref={editor}
             value={value as any}
             onChange={c => setValue(c.value)}
-            onKeyDown={onKeyDown}
+            onKeyDown={onEditorKeyDown}
             renderBlock={renderBlock}
             renderMark={renderMark}
             renderInline={renderInline}
@@ -645,13 +645,17 @@ export function InternoteEditor({
                     onTagSelected={insertTag}
                     onSaveTag={saveTag}
                     tags={tags.map(t => t.tag)}
-                    search={shortcutSearch.getOrElse("")}
+                    search={shortcutSearch
+                      .flatMap(removeFirstLetterFromString)
+                      .getOrElse("")}
                     newTagSaving={newTagSaving}
                   />
                 ) : isEmojiButtonPressed || isEmojiShortcut ? (
                   <EmojiList
                     onEmojiSelected={insertEmoji}
-                    search={shortcutSearch.getOrElse("")}
+                    search={shortcutSearch
+                      .flatMap(removeFirstLetterFromString)
+                      .getOrElse("")}
                   />
                 ) : isDictionaryShowing ? (
                   <Dictionary
