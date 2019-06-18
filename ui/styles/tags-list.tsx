@@ -29,13 +29,13 @@ export function TagsList({
   search,
   tags,
   onTagSelected,
-  onSaveTag,
+  onCreateNewTag,
   newTagSaving
 }: {
   search: string;
   tags: string[];
   onTagSelected: (tag: string) => any;
-  onSaveTag: (tag: string) => any;
+  onCreateNewTag: () => any;
   newTagSaving: boolean;
 }) {
   const [filteredTags, setFilteredTags] = useState<string[]>([]);
@@ -56,7 +56,7 @@ export function TagsList({
       search.length > 0 ? fuzzy.search(searchCriteria).map(i => tags[i]) : tags;
     setFocusedIndex(newFilteredTags.length > 0 ? 1 : 0);
     setFilteredTags(newFilteredTags);
-  }, [search, tags]);
+  }, [search, tags.length]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -72,11 +72,10 @@ export function TagsList({
       } else if (isEnterHotKey(event) && focusedIndex >= 0) {
         // NB: focused index is 1 indexed for existing tags
         const focusedTag = filteredTags[focusedIndex - 1];
-
         if (focusedTag) {
           onTagSelected(focusedTag);
         } else {
-          onSaveTag(`#${search}`);
+          onCreateNewTag();
         }
       }
     }
@@ -84,12 +83,19 @@ export function TagsList({
     return function() {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [filteredTags, search, focusedIndex, onSaveTag, onTagSelected]);
+  }, [filteredTags.length, focusedIndex]);
 
   return (
     <Wrap>
       <ListInner>
-        <NewTag isFocused={focusedIndex === 0}>
+        <NewTag
+          isFocused={focusedIndex === 0}
+          onMouseEnter={() => setFocusedIndex(0)}
+          onClick={(e: Event) => {
+            e.preventDefault();
+            onCreateNewTag();
+          }}
+        >
           {newTagSaving ? (
             <SavingIcon>
               {" "}

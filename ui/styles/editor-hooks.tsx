@@ -94,7 +94,7 @@ export function InternoteEditor({
   onCloseDictionary,
   onRequestDictionary,
   onChange,
-  onSaveTag,
+  onCreateNewTag,
   onDelete
 }: {
   id: string;
@@ -111,7 +111,7 @@ export function InternoteEditor({
   tags: Types.Tag[];
   newTagSaving: boolean;
   onChange: (value: OnChange) => Promise<void>;
-  onSaveTag: (value: OnChange) => Promise<void>;
+  onCreateNewTag: (value: OnChange) => Promise<void>;
   onDelete: () => void;
   onRequestSpeech: (content: string) => any;
   onDiscardSpeech: () => any;
@@ -385,26 +385,27 @@ export function InternoteEditor({
    * Emojis
    */
   const insertEmoji = (emoji: Emoji) => {
-    shortcutSearch.map(word => {
-      editor.current.deleteBackward(word.length + 1); // NB: +1 required to compensate for colon
-    });
+    // shortcutSearch.map(word => {
+    //   editor.current.deleteBackward(word.length + 1); // NB: +1 required to compensate for colon
+    // });
     editor.current.insertInline({ type: "emoji", data: { code: emoji.char } });
-    editor.current.moveToStartOfNextText();
+    // editor.current.moveToStartOfNextText();
   };
 
   /**
    * Tags
    */
   const insertTag = (tag: string) => {
-    shortcutSearch.map(word => {
-      editor.current.deleteBackward(word.length + 1); // NB: +1 required to compensate for hash
-    });
+    console.log("Insert tag", { tag });
+    // shortcutSearch.map(word => {
+    //   editor.current.deleteBackward(word.length + 1); // NB: +1 required to compensate for hash
+    // });
     editor.current.insertInline({ type: "tag", data: { tag } });
-    editor.current.moveToStartOfNextText();
+    // editor.current.moveToStartOfNextText();
   };
-  const saveTag = (tag: string) => {
-    insertTag(tag);
-    onSaveTag(getChanges(editor.current.value));
+  const createNewTag = () => {
+    onCreateNewTag(getChanges(editor.current.value));
+    shortcutSearch.map(insertTag);
   };
 
   /**
@@ -643,7 +644,7 @@ export function InternoteEditor({
                 {isTagsShortcut || newTagSaving ? (
                   <TagsList
                     onTagSelected={insertTag}
-                    onSaveTag={saveTag}
+                    onCreateNewTag={createNewTag}
                     tags={tags.map(t => t.tag)}
                     search={shortcutSearch
                       .flatMap(removeFirstLetterFromString)

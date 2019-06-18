@@ -76,7 +76,7 @@ interface Props {
   initialValue: {};
   debounceValue?: number;
   onChange: (value: OnChange) => Promise<void>;
-  onSaveTag: (value: OnChange) => Promise<void>;
+  onCreateNewTag: (value: OnChange) => Promise<void>;
   onDelete: () => void;
   saving: boolean;
   distractionFree: boolean;
@@ -496,11 +496,11 @@ export class InternoteEditor extends React.Component<Props, State> {
     });
   };
 
-  onSaveTag = async (tag: string) => {
+  onCreateNewTag = async (tag: string) => {
     window.requestAnimationFrame(() => {
       this.insertTag(tag, false);
     });
-    await this.props.onSaveTag(this.getChanges());
+    await this.props.onCreateNewTag(this.getChanges());
     this.closeTagsMenu();
   };
 
@@ -785,7 +785,7 @@ export class InternoteEditor extends React.Component<Props, State> {
                   {this.state.isTagsMenuShowing || this.props.newTagSaving ? (
                     <TagsList
                       onTagSelected={this.insertTag}
-                      onSaveTag={this.onSaveTag}
+                      onCreateNewTag={this.onCreateNewTag}
                       tags={this.props.tags.map(t => t.tag)}
                       search={this.state.shortcutSearch}
                       newTagSaving={this.props.newTagSaving}

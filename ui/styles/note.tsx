@@ -36,7 +36,7 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
               ...changes
             })
           }
-          onSaveTag={changes =>
+          onCreateNewTag={changes =>
             store.actions.tags.saveNewTag({
               noteId: note.id,
               ...changes
@@ -77,7 +77,7 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
             ...changes
           })
         }
-        onSaveTag={changes =>
+        onCreateNewTag={changes =>
           store.actions.tags.saveNewTag({
             noteId: note.id,
             ...changes
