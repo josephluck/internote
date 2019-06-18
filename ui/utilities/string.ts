@@ -15,3 +15,7 @@ export function combineStrings(arr: string[]): string {
 export function hasLength<A extends string | any[]>(a: A): boolean {
   return a.length > 0;
 }
+
+export function getLength<A extends string | any[]>(a: A): number {
+  return a.length;
+}

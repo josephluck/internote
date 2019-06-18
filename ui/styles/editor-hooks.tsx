@@ -52,7 +52,8 @@ import { Wrap, EditorStyles, Editor, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
 import {
   getFirstWordFromString,
-  removeFirstLetterFromString
+  removeFirstLetterFromString,
+  getLength
 } from "../utilities/string";
 import { Outline } from "./outline";
 import { EmojiToggle } from "./emoji-toggle";
@@ -94,7 +95,7 @@ export function InternoteEditor({
   onCloseDictionary,
   onRequestDictionary,
   onChange,
-  onCreateNewTag,
+  // onCreateNewTag, // TODO: fix this
   onDelete
 }: {
   id: string;
@@ -385,26 +386,22 @@ export function InternoteEditor({
    * Emojis
    */
   const insertEmoji = (emoji: Emoji) => {
-    // shortcutSearch.map(word => {
-    //   editor.current.deleteBackward(word.length + 1); // NB: +1 required to compensate for colon
-    // });
+    shortcutSearch.map(getLength).map(editor.current.deleteBackward);
     editor.current.insertInline({ type: "emoji", data: { code: emoji.char } });
-    // editor.current.moveToStartOfNextText();
+    editor.current.focus();
+    editor.current.moveToStartOfNextText();
   };
 
   /**
    * Tags
    */
   const insertTag = (tag: string) => {
-    console.log("Insert tag", { tag });
-    // shortcutSearch.map(word => {
-    //   editor.current.deleteBackward(word.length + 1); // NB: +1 required to compensate for hash
-    // });
+    shortcutSearch.map(getLength).map(editor.current.deleteBackward);
     editor.current.insertInline({ type: "tag", data: { tag } });
-    // editor.current.moveToStartOfNextText();
+    editor.current.focus();
+    editor.current.moveToStartOfNextText();
   };
   const createNewTag = () => {
-    onCreateNewTag(getChanges(editor.current.value));
     shortcutSearch.map(insertTag);
   };
 
