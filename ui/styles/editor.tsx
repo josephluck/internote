@@ -90,7 +90,6 @@ interface Props {
   onRequestDictionary: (word: string) => any;
   dictionaryResults: Types.DictionaryResult[];
   outlineShowing: boolean;
-  toggleOutlineShowing: (outlineShowing: boolean) => any;
   tags: Types.Tag[];
   newTagSaving: boolean;
 }
@@ -283,7 +282,6 @@ export class InternoteEditor extends React.Component<Props, State> {
     const shortcut = getCurrentFocusedWord(this.editor.value).filter(
       isShortcut
     );
-
     // Handle emojis
     shortcut
       .filter(isEmojiShortcut)
@@ -300,7 +298,6 @@ export class InternoteEditor extends React.Component<Props, State> {
           });
         }
       );
-
     // Handle tags
     shortcut
       .filter(isTagShortcut)
@@ -370,14 +367,11 @@ export class InternoteEditor extends React.Component<Props, State> {
 
   onClickBlock = (type: BlockType) => (event: Event) => {
     event.preventDefault();
-
     const { editor } = this;
-
     // Handle everything but list buttons.
     if (type !== "bulleted-list" && type !== "numbered-list") {
       const hasBeenMadeActive = currentFocusHasBlock(type, this.state.value);
       const isList = currentFocusHasBlock("list-item", this.state.value);
-
       if (isList) {
         this.resetBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
       } else {
@@ -393,7 +387,6 @@ export class InternoteEditor extends React.Component<Props, State> {
             (parent: any) => parent.type === type
           )
       );
-
       if (isList && isType) {
         this.resetBlocks();
       } else if (isList) {
@@ -451,7 +444,7 @@ export class InternoteEditor extends React.Component<Props, State> {
       },
       () => {
         if (!this.state.isEmojiMenuShowing) {
-          this.editor.focus();
+          this.refocusEditor();
         }
       }
     );
