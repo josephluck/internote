@@ -2,8 +2,6 @@ import React from "react";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import { Editor as SlateEditor } from "slate-react";
-// import { throttle } from "lodash";
-// import { debounce } from "lodash";
 import { Saving } from "./saving";
 import { Flex } from "@rebass/grid";
 import { SchemaProperties } from "slate";
@@ -60,7 +58,7 @@ import { EmojiList } from "./emoji-list";
 import { Emoji } from "../utilities/emojis";
 import { TagsList } from "./tags-list";
 import { Tag } from "./tag";
-import { useDebounce } from "../utilities/hooks";
+import { useDebounce, useThrottle } from "../utilities/hooks";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -124,6 +122,9 @@ export function InternoteEditor({
   tags: Types.Tag[];
   newTagSaving: boolean;
 }) {
+  /**
+   * State
+   */
   const [value, setValue] = React.useState(() =>
     getValueOrDefault(initialValue)
   );
@@ -136,7 +137,20 @@ export function InternoteEditor({
   const [dictionaryRequestedWord, setDictionaryRequestedWord] = React.useState(
     ""
   );
-  const debouncedValue = useDebounce(value);
+
+  /**
+   * Derived state
+   */
+  const debouncedValue = useDebounce(value, 1000);
+  const throttledValue = useThrottle(value, 100);
+  const emojiMenuShowing = isEmojiMenuShowing || forceShowEmojiMenu;
+  const toolbarIsExpanded =
+    emojiMenuShowing ||
+    isTagsMenuShowing ||
+    isDictionaryShowing ||
+    newTagSaving;
+  const isToolbarShowing =
+    hasSelection(value) || !!speechSrc || isCtrlHeld || toolbarIsExpanded;
 
   /**
    * Refs
@@ -172,7 +186,7 @@ export function InternoteEditor({
   React.useEffect(() => {
     window.addEventListener("keyup", onKeyUp);
     return function() {
-      window.removeEventListener("keyup", this.onKeyUp);
+      window.removeEventListener("keyup", onKeyUp);
     };
   }, []);
 
@@ -184,14 +198,12 @@ export function InternoteEditor({
     emitChange();
   }, [debouncedValue]);
 
-  const emojiMenuShowing = isEmojiMenuShowing || forceShowEmojiMenu;
-  const toolbarIsExpanded =
-    emojiMenuShowing ||
-    isTagsMenuShowing ||
-    isDictionaryShowing ||
-    newTagSaving;
-  const isToolbarShowing =
-    hasSelection(value) || !!speechSrc || isCtrlHeld || toolbarIsExpanded;
+  /**
+   * Focus block when value changes
+   */
+  React.useEffect(() => {
+    handleFocusModeScroll();
+  }, [throttledValue]);
 
   /**
    * Change handling
@@ -207,7 +219,6 @@ export function InternoteEditor({
     handleShortcutSearch();
     if (value !== newValue) {
       setValue(newValue);
-      window.requestAnimationFrame(handleFocusModeScroll);
     }
   }
   function emitChange() {
@@ -351,9 +362,9 @@ export function InternoteEditor({
    * Scrolling
    */
   function handleEditorScroll() {
-    // TODO: throttle
+    // TODO: this is screwing it up
     if (scrollWrap && !userScrolled && !preventScrollListener.current) {
-      setUserScrolled(true);
+      // setUserScrolled(true);
     }
   }
   function handleFocusModeScroll() {
@@ -367,9 +378,8 @@ export function InternoteEditor({
   }
   function scrollEditorToElement(element: HTMLElement) {
     scroller.current.center(element, 100, 0, () => {
-      window.requestAnimationFrame(() => {
-        preventScrollListener.current = false;
-      });
+      // requestAnimationFrame
+      preventScrollListener.current = false;
     });
   }
 
@@ -424,7 +434,6 @@ export function InternoteEditor({
    */
   function requestSpeech() {
     getSelectedContent(value).map(onRequestSpeech);
-    window.requestAnimationFrame(refocusEditor);
   }
 
   /**
@@ -437,7 +446,6 @@ export function InternoteEditor({
         onRequestDictionary(word);
         setDictionaryRequestedWord(word);
       });
-    window.requestAnimationFrame(refocusEditor);
   }
   function onToggleDictionary() {
     if (isDictionaryShowing) {
@@ -449,7 +457,6 @@ export function InternoteEditor({
   function closeDictionary() {
     onCloseDictionary();
     setDictionaryRequestedWord("");
-    window.requestAnimationFrame(refocusEditor);
   }
 
   /**
@@ -470,11 +477,10 @@ export function InternoteEditor({
       editor.current.deleteBackward(shortcutSearch.length + 1); // NB: +1 required to compensate for colon
     }
     editor.current.insertInline({ type: "emoji", data: { code: emoji.char } });
-    window.requestAnimationFrame(() => {
-      setIsEmojiMenuShowing(false);
-      editor.current.moveToStartOfNextText();
-      refocusEditor();
-    });
+    // requestAnimationFrame
+    setIsEmojiMenuShowing(false);
+    editor.current.moveToStartOfNextText();
+    refocusEditor();
   }
 
   /**
@@ -499,14 +505,13 @@ export function InternoteEditor({
     refocusEditor();
   }
   function closeTagsMenu() {
-    window.requestAnimationFrame(() => {
-      setIsTagsMenuShowing(false);
-    });
+    // requestAnimationFrame
+    setIsTagsMenuShowing(false);
   }
   async function saveTag(tag: string) {
-    window.requestAnimationFrame(() => {
-      insertTag(tag, false);
-    });
+    // requestAnimationFrame
+    insertTag(tag, false);
+    // end
     await onSaveTag(getChanges());
     closeTagsMenu();
   }
@@ -565,7 +570,8 @@ export function InternoteEditor({
       key !== focusedNodeKey.current;
     if (shouldFocusNode) {
       focusedNodeKey.current = key;
-      window.requestAnimationFrame(handleFocusModeScroll);
+      // requestAnimationFrame
+      handleFocusModeScroll();
     }
     switch ((node as any).type) {
       case "paragraph":
