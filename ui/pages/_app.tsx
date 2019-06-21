@@ -6,6 +6,7 @@ import { withTwine } from "../store/with-twine";
 import { createGlobalStyle, ThemeProvider } from "../theming/styled";
 import Head from "next/head";
 import { inter } from "../theming/themes";
+import { ShortcutsProvider } from "../styles/shortcuts";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -53,7 +54,9 @@ export class Application extends App {
                 <title>Internote</title>
               </Head>
               <GlobalStyles />
-              <Component {...pageProps} store={store} />
+              <ShortcutsProvider>
+                <Component {...pageProps} store={store} />
+              </ShortcutsProvider>
             </>
           </ThemeProvider>
         </ThemeProvider>

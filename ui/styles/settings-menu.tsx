@@ -1,3 +1,4 @@
+import React from "react";
 import { Store } from "../store";
 import { MenuControl } from "./menu-control";
 import {
@@ -14,11 +15,11 @@ import {
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { styled } from "../theming/styled";
-import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { size } from "../theming/symbols";
 import { ListMenuControl } from "./list-menu-control";
 import { ExpandingIconButton } from "./expanding-icon-button";
 import { availableVoices } from "@internote/api/domains/preferences/api";
+import { Shortcut } from "./shortcuts";
 
 const SettingsMenuWrap = styled(DropdownMenu)`
   width: ${size.settingsMenuDropdownWidth};
@@ -35,19 +36,26 @@ export function SettingsMenu({
   store: Store;
   onMenuToggled: (menuShowing: boolean) => void;
 }) {
+  const [subMenuOpen, setSubMenuOpen] = React.useState<boolean>(false);
   return (
     <Menu
       onMenuToggled={onMenuToggled}
+      menuName="Settings menu"
+      disableCloseShortcut={subMenuOpen}
       menu={menu => (
         <SettingsMenuWrap showing={menu.menuShowing} position="right">
-          <OnKeyboardShortcut
+          <Shortcut
+            id="open-settings-menu"
+            description="Open settings menu"
             keyCombo="mod+s"
-            cb={() => menu.toggleMenuShowing(true)}
+            callback={() => menu.toggleMenuShowing(true)}
           />
           <ListMenuControl
+            onSubMenuToggled={setSubMenuOpen}
             items={[
               {
                 title: "Colours",
+                shortcut: "c",
                 item: list => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faPalette} />}
@@ -80,6 +88,7 @@ export function SettingsMenu({
               },
               {
                 title: "Typography",
+                shortcut: "t",
                 item: list => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faFont} />}
@@ -114,6 +123,7 @@ export function SettingsMenu({
               },
               {
                 title: "Focus mode",
+                shortcut: "f",
                 item: list => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faEye} />}
@@ -155,6 +165,7 @@ export function SettingsMenu({
               },
               {
                 title: "Outline view",
+                shortcut: "o",
                 item: list => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faSearch} />}
@@ -196,6 +207,7 @@ export function SettingsMenu({
               },
               {
                 title: "Voice",
+                shortcut: "v",
                 item: list => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faMicrophone} />}

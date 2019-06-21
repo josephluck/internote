@@ -1,7 +1,7 @@
 import * as React from "react";
 import { OnClickOutside } from "./on-click-outside";
 import styled from "styled-components";
-import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
+import { Shortcut } from "./shortcuts";
 
 const MenuWrapper = styled(OnClickOutside)`
   position: relative;
@@ -18,15 +18,19 @@ interface State {
 export function MenuControl({
   children,
   menu,
+  menuName,
   className,
   onClose,
-  onMenuToggled
+  onMenuToggled,
+  disableCloseShortcut = false
 }: {
   children: (state: RenderProps) => React.ReactNode;
   menu: (state: RenderProps) => React.ReactNode;
+  menuName: string;
   className?: string;
   onClose?: () => any;
   onMenuToggled?: (menuShowing: boolean) => void;
+  disableCloseShortcut?: boolean;
 }) {
   const [menuShowing, setMenuShowing] = React.useState(false);
 
@@ -53,7 +57,16 @@ export function MenuControl({
   };
   return (
     <MenuWrapper className={className} onClickOutside={handleClose}>
-      <OnKeyboardShortcut keyCombo="esc" cb={handleClose} />
+      <Shortcut
+        id={menuName
+          .split(" ")
+          .join("-")
+          .toLowerCase()}
+        description={`Close ${menuName.toLowerCase()}`}
+        disabled={disableCloseShortcut}
+        keyCombo="esc"
+        callback={handleClose}
+      />
       {menu(renderProps)}
       {children(renderProps)}
     </MenuWrapper>

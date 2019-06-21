@@ -12,6 +12,8 @@ import * as Types from "@internote/api/domains/types";
 //   }
 // );
 
+// TODO: only dynamically import Slate, no need to dynamically import the
+// whole editor
 const InternoteEditorHooks = dynamic(
   import("../styles/editor-hooks").then(module => module.InternoteEditor),
   {

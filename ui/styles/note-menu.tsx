@@ -174,6 +174,7 @@ export function NoteMenu({
   return (
     <MenuControl
       onMenuToggled={onMenuToggled}
+      menuName="Notes menu"
       menu={menu => (
         <NotesMenu
           showing={menu.menuShowing}

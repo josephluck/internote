@@ -11,7 +11,6 @@ import { ToolbarButton, ButtonSpacer } from "./toolbar-button";
 import { Collapse } from "react-collapse";
 import * as Types from "@internote/api/domains/types";
 import { Dictionary } from "./dictionary";
-import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { DictionaryButton } from "./dictionary-button";
 import { DeleteNoteButton } from "./delete-note-button";
 import { UndoRedoButton } from "./undo-redo-button";
@@ -62,6 +61,7 @@ import { Emoji } from "../utilities/emojis";
 import { TagsList } from "./tags-list";
 import { Tag } from "./tag";
 import { useDebounce, useThrottle } from "../utilities/hooks";
+import { Shortcut } from "./shortcuts";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -631,9 +631,21 @@ export function InternoteEditor({
           </Flex>
         </ToolbarInner>
         {toolbarIsExpanded ? (
-          <OnKeyboardShortcut keyCombo="esc" cb={closeExpandedToolbar} />
+          <Shortcut
+            id="close-expanded-toolbar"
+            description="Close the toolbar"
+            keyCombo="esc"
+            callback={closeExpandedToolbar}
+          />
         ) : null}
-        <OnKeyboardShortcut keyCombo="mod+d" cb={requestDictionary} />
+        <Shortcut
+          id="request-dictionary"
+          description={`Lookup "${selectedText.getOrElse(
+            ""
+          )}" in the dictionary`}
+          keyCombo="mod+d"
+          callback={requestDictionary}
+        />
         <Collapse isOpened={toolbarIsExpanded} style={{ width: "100%" }}>
           <ToolbarExpandedWrapper>
             <ToolbarExpandedInner>

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { DropdownMenuItem, DropdownMenuSpacer } from "./dropdown-menu";
 import Motion, { Move } from "@element-motion/core";
+import { Shortcut } from "./shortcuts";
 
 interface RenderProps {
   toMainMenu: () => void;
@@ -15,40 +16,58 @@ interface MenuItem {
   subMenu?: (menu: RenderProps) => React.ReactNode;
   item: (menu: RenderProps) => React.ReactNode;
   spacerAfter?: boolean;
+  shortcut?: string;
 }
 
 export interface Props {
   items: MenuItem[];
+  onSubMenuToggled?: (showing: boolean) => void;
 }
 
-export function Component({ items }: Props) {
+export function Component({ items, onSubMenuToggled }: Props) {
   const [subMenu, setSubMenu] = React.useState<null | string>(null);
   const renderProps: RenderProps = {
     toSubMenu: (s: string) => setSubMenu(s),
     toMainMenu: () => setSubMenu(null)
   };
+
+  React.useEffect(() => {
+    if (onSubMenuToggled) {
+      onSubMenuToggled(!!subMenu);
+    }
+  }, [subMenu]);
+
   const subMenuItem = subMenu
     ? items.find(item => item.title === subMenu)
     : null;
+
   return (
     <Collapse isOpened>
       {subMenuItem && subMenuItem.subMenu ? (
-        <Motion name={`item-${subMenu}`}>
-          <Move scaleY={false}>
-            {motion => (
-              <div {...motion}>
-                <DropdownMenuItem
-                  onClick={() => setSubMenu(null)}
-                  icon={<FontAwesomeIcon icon={faChevronLeft} />}
-                >
-                  {subMenuItem.title}
-                </DropdownMenuItem>
-                <DropdownMenuSpacer />
-                {subMenuItem.subMenu(renderProps)}
-              </div>
-            )}
-          </Move>
-        </Motion>
+        <>
+          <Shortcut
+            id="back-to-main-menu"
+            description="Back to main menu"
+            keyCombo="esc"
+            callback={() => setSubMenu(null)}
+          />
+          <Motion name={`item-${subMenu}`}>
+            <Move scaleY={false}>
+              {motion => (
+                <div {...motion}>
+                  <DropdownMenuItem
+                    onClick={() => setSubMenu(null)}
+                    icon={<FontAwesomeIcon icon={faChevronLeft} />}
+                  >
+                    {subMenuItem.title}
+                  </DropdownMenuItem>
+                  <DropdownMenuSpacer />
+                  {subMenuItem.subMenu(renderProps)}
+                </div>
+              )}
+            </Move>
+          </Motion>
+        </>
       ) : (
         <div>
           {items.map((item, i) => (
@@ -58,6 +77,17 @@ export function Component({ items }: Props) {
                   <div {...motion}>
                     {item.item(renderProps)}
                     {item.spacerAfter ? <DropdownMenuSpacer /> : null}
+                    {item.shortcut ? (
+                      <Shortcut
+                        id={`open-menu-item-${item.title}-${item.shortcut}`}
+                        description={`Open ${item.title.toLowerCase()}`}
+                        keyCombo={item.shortcut}
+                        callback={() => {
+                          renderProps.toSubMenu(item.title);
+                        }}
+                        preventOtherShortcuts={true}
+                      />
+                    ) : null}
                   </div>
                 )}
               </Move>

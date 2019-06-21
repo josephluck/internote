@@ -8,6 +8,10 @@ interface Shortcut {
    */
   id: string;
   /**
+   * A description of what the shortcut does
+   */
+  description: string;
+  /**
    * The keyboard combination used to trigger the callback function
    */
   keyCombo: string;
@@ -20,6 +24,10 @@ interface Shortcut {
    * being called if this shortcut is higher up in the list of shortcuts.
    */
   preventOtherShortcuts?: boolean;
+  /**
+   * When truthy, prevents this shortcut from being triggered
+   */
+  disabled?: boolean;
 }
 
 interface Context {
@@ -39,14 +47,19 @@ interface Context {
   removeShortcut: (shortcut: Shortcut) => void;
 }
 
-const defaultContext: Context = {
+/**
+ * Default context
+ */
+const ShortcutsContext = React.createContext<Context>({
   shortcuts: [],
   addShortcut() {},
   removeShortcut() {}
-};
+});
 
-const ShortcutsContext = React.createContext(defaultContext);
-
+/**
+ * Context implementation and logic - wraps the app that needs
+ * shortcuts functionality
+ */
 export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
   /**
    * Adds a given shortcut to the list of available shortcuts.
@@ -55,7 +68,9 @@ export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
     setCtx(prevState => {
       return {
         ...prevState,
-        shortcuts: [...prevState.shortcuts, shortcut]
+        shortcuts: shortcutExists(prevState.shortcuts, shortcut)
+          ? prevState.shortcuts
+          : [shortcut, ...prevState.shortcuts]
       };
     });
   }
@@ -88,7 +103,13 @@ export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
     function onKeyDown(event: KeyboardEvent) {
       let isPrevented = false;
       ctx.shortcuts.map(shortcut => {
-        if (isKeyHotkey(shortcut.keyCombo, event) && !isPrevented) {
+        if (
+          !isPrevented &&
+          !shortcut.disabled &&
+          isKeyHotkey(shortcut.keyCombo, event)
+        ) {
+          event.preventDefault();
+          event.stopPropagation();
           if (shortcut.preventOtherShortcuts) {
             isPrevented = true;
           }
@@ -117,14 +138,14 @@ export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
  * When unmounted, removes the shortcut from the list of available
  * shortcuts.
  */
-function Shortcut(shortcut: Shortcut) {
+export function Shortcut(shortcut: Shortcut) {
   const { addShortcut, removeShortcut } = React.useContext(ShortcutsContext);
   useEffect(() => {
     addShortcut(shortcut);
     return function() {
       removeShortcut(shortcut);
     };
-  }, [shortcut.id, shortcut.keyCombo]);
+  }, [shortcut.id, shortcut.keyCombo, shortcut.disabled]);
 
   return null;
 }
@@ -135,4 +156,14 @@ function Shortcut(shortcut: Shortcut) {
  */
 function shortcutsHash(shortcuts: Shortcut[]): string {
   return shortcuts.reduce((prev, shortcut) => `${prev}-${shortcut.id}`, "");
+}
+
+/**
+ * Returns a boolean whether a given shortcut is in the list of given
+ * shortcuts.
+ *
+ * NB: uses the shortcut's ID property to determine inclusion.
+ */
+function shortcutExists(shortcuts: Shortcut[], shortcut: Shortcut): boolean {
+  return shortcuts.map(s => s.id).includes(shortcut.id);
 }
