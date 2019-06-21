@@ -147,6 +147,15 @@ export function SettingsMenu({
                       }
                     >
                       Off
+                      <Shortcut
+                        id="distraction-free-off"
+                        description="Turn off distraction-free mode"
+                        keyCombo="n"
+                        preventOtherShortcuts={true}
+                        callback={() =>
+                          store.actions.preferences.setDistractionFree(false)
+                        }
+                      />
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() =>
@@ -159,6 +168,15 @@ export function SettingsMenu({
                       }
                     >
                       On
+                      <Shortcut
+                        id="distraction-free-on"
+                        description="Turn on distraction-free mode"
+                        keyCombo="y"
+                        preventOtherShortcuts={true}
+                        callback={() =>
+                          store.actions.preferences.setDistractionFree(true)
+                        }
+                      />
                     </DropdownMenuItem>
                   </>
                 )
@@ -189,6 +207,15 @@ export function SettingsMenu({
                       }
                     >
                       Off
+                      <Shortcut
+                        id="outline-free-off"
+                        description="Turn off outline mode"
+                        keyCombo="n"
+                        preventOtherShortcuts={true}
+                        callback={() =>
+                          store.actions.preferences.setOutlineShowing(false)
+                        }
+                      />
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() =>
@@ -201,6 +228,15 @@ export function SettingsMenu({
                       }
                     >
                       On
+                      <Shortcut
+                        id="outline-free-on"
+                        description="Turn on outline mode"
+                        keyCombo="y"
+                        preventOtherShortcuts={true}
+                        callback={() =>
+                          store.actions.preferences.setOutlineShowing(true)
+                        }
+                      />
                     </DropdownMenuItem>
                   </>
                 )
