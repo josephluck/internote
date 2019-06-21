@@ -52,6 +52,7 @@ export function SettingsMenu({
           />
           <ListMenuControl
             onSubMenuToggled={setSubMenuOpen}
+            shortcutsEnabled={menu.menuShowing}
             items={[
               {
                 title: "Colours",

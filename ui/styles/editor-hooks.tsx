@@ -62,6 +62,7 @@ import { TagsList } from "./tags-list";
 import { Tag } from "./tag";
 import { useDebounce, useThrottle } from "../utilities/hooks";
 import { Shortcut } from "./shortcuts";
+import { ShortcutsReference } from "./shortcuts-reference";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -130,6 +131,10 @@ export function InternoteEditor({
   const [userScrolled, setUserScrolled] = React.useState(false);
   const [isCtrlHeld, setIsCtrlHeld] = React.useState(false);
   const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
+  const [
+    isShortcutsReferenceShowing,
+    setIsShortcutsReferenceShowing
+  ] = React.useState(true);
 
   /**
    * Derived state
@@ -145,7 +150,8 @@ export function InternoteEditor({
     isEmojiButtonPressed ||
     isTagsShortcut ||
     isDictionaryShowing ||
-    newTagSaving;
+    newTagSaving ||
+    isShortcutsReferenceShowing;
   const isToolbarShowing =
     hasSelection(value) || !!speechSrc || isCtrlHeld || toolbarIsExpanded;
 
@@ -545,6 +551,21 @@ export function InternoteEditor({
 
   return (
     <Wrap>
+      {isShortcutsReferenceShowing ? (
+        <Shortcut
+          id="hide-shortcuts-reference"
+          description="Hide shortcuts reference"
+          keyCombo={["esc", "mod+k"]}
+          callback={() => setIsShortcutsReferenceShowing(false)}
+        />
+      ) : (
+        <Shortcut
+          id="show-shortcuts-reference"
+          description="Show shortcuts reference"
+          keyCombo="mod+k"
+          callback={() => setIsShortcutsReferenceShowing(true)}
+        />
+      )}
       <EditorStyles ref={scrollWrap}>
         <EditorInnerWrap
           distractionFree={distractionFree}
@@ -638,14 +659,14 @@ export function InternoteEditor({
             callback={closeExpandedToolbar}
           />
         ) : null}
-        <Shortcut
-          id="request-dictionary"
-          description={`Lookup "${selectedText.getOrElse(
-            ""
-          )}" in the dictionary`}
-          keyCombo="mod+d"
-          callback={requestDictionary}
-        />
+        {editor.current && editor.current.focus && selectedText.isDefined() ? (
+          <Shortcut
+            id="request-dictionary"
+            description={`Lookup ${selectedText.getOrElse("")}`}
+            keyCombo="mod+d"
+            callback={requestDictionary}
+          />
+        ) : null}
         <Collapse isOpened={toolbarIsExpanded} style={{ width: "100%" }}>
           <ToolbarExpandedWrapper>
             <ToolbarExpandedInner>
@@ -675,6 +696,8 @@ export function InternoteEditor({
                       .flatMap(getFirstWordFromString)
                       .getOrElse("")}
                   />
+                ) : isShortcutsReferenceShowing ? (
+                  <ShortcutsReference />
                 ) : null}
               </ToolbarInner>
             </ToolbarExpandedInner>

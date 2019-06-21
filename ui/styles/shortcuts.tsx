@@ -53,7 +53,7 @@ interface Context {
 /**
  * Default context
  */
-const ShortcutsContext = React.createContext<Context>({
+export const ShortcutsContext = React.createContext<Context>({
   shortcuts: [],
   addShortcut() {},
   removeShortcut() {}
@@ -128,6 +128,8 @@ export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [shortcutsHash(ctx.shortcuts)]);
+
+  console.log(ctx.shortcuts);
 
   return (
     <ShortcutsContext.Provider value={ctx}>

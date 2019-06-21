@@ -22,12 +22,17 @@ interface MenuItem {
 export interface Props {
   items: MenuItem[];
   onSubMenuToggled?: (showing: boolean) => void;
+  shortcutsEnabled?: boolean;
 }
 
 // TODO: support up/down/right/enter to navigate menu
 // (left and esc are already supported)
 
-export function Component({ items, onSubMenuToggled }: Props) {
+export function Component({
+  items,
+  shortcutsEnabled = true,
+  onSubMenuToggled
+}: Props) {
   const [subMenu, setSubMenu] = React.useState<null | string>(null);
   const renderProps: RenderProps = {
     toSubMenu: (s: string) => setSubMenu(s),
@@ -80,7 +85,7 @@ export function Component({ items, onSubMenuToggled }: Props) {
                   <div {...motion}>
                     {item.item(renderProps)}
                     {item.spacerAfter ? <DropdownMenuSpacer /> : null}
-                    {item.shortcut ? (
+                    {item.shortcut && shortcutsEnabled ? (
                       <Shortcut
                         id={`open-menu-item-${item.title}-${item.shortcut}`}
                         description={`Open ${item.title.toLowerCase()}`}

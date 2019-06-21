@@ -57,16 +57,18 @@ export function MenuControl({
   };
   return (
     <MenuWrapper className={className} onClickOutside={handleClose}>
-      <Shortcut
-        id={menuName
-          .split(" ")
-          .join("-")
-          .toLowerCase()}
-        description={`Close ${menuName.toLowerCase()}`}
-        disabled={disableCloseShortcut}
-        keyCombo="esc"
-        callback={handleClose}
-      />
+      {menuShowing ? (
+        <Shortcut
+          id={menuName
+            .split(" ")
+            .join("-")
+            .toLowerCase()}
+          description={`Close ${menuName.toLowerCase()}`}
+          disabled={disableCloseShortcut}
+          keyCombo="esc"
+          callback={handleClose}
+        />
+      ) : null}
       {menu(renderProps)}
       {children(renderProps)}
     </MenuWrapper>
