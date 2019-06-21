@@ -4,6 +4,7 @@ import { AxiosInstance } from "axios";
 import { makeRequestConfig } from "../api";
 import { ApiError } from "../../dependencies/messages";
 
+// TODO: trim this down to two voices?
 export const availableVoices: AvailableVoice[] = [
   "Joey",
   "Justin",

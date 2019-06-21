@@ -148,14 +148,28 @@ export const daydream: Theme = {
   noResultsText: "#999999"
 };
 
-export const colorThemes = [
+export interface ColorThemeWithName {
+  name: string;
+  theme: Theme;
+  shortcut?: string;
+}
+
+export interface FontThemeWithName {
+  name: string;
+  theme: FontTheme;
+  shortcut?: string;
+}
+
+export const colorThemes: ColorThemeWithName[] = [
   {
     name: "Internote",
-    theme: internote
+    theme: internote,
+    shortcut: "i"
   },
   {
     name: "Daydream",
-    theme: daydream
+    theme: daydream,
+    shortcut: "d"
   }
 ];
 
@@ -195,37 +209,46 @@ export const sourceCodePro: FontTheme = {
   fontFamily: "'Source Code Pro', monospace"
 };
 
-export const fontThemes = [
+// TODO: trim this down to a few standard fonts (sans serif, serif and monospace)
+export const fontThemes: FontThemeWithName[] = [
   {
     name: "Inter",
-    theme: inter
+    theme: inter,
+    shortcut: "i"
   },
   {
     name: "Noto Sans SC",
-    theme: notoSansSc
+    theme: notoSansSc,
+    shortcut: "n"
   },
   {
     name: "Spectral",
-    theme: spectral
+    theme: spectral,
+    shortcut: "s"
   },
   {
     name: "EB Garamond",
-    theme: EBGaramond
+    theme: EBGaramond,
+    shortcut: "e"
   },
   {
     name: "Crimson Text",
-    theme: crimsonText
+    theme: crimsonText,
+    shortcut: "c"
   },
   {
     name: "Lora",
-    theme: lora
+    theme: lora,
+    shortcut: "l"
   },
   {
     name: "Overpass Mono",
-    theme: overpassMono
+    theme: overpassMono,
+    shortcut: "o"
   },
   {
     name: "Source Code Pro",
-    theme: sourceCodePro
+    theme: sourceCodePro,
+    shortcut: "shift+s"
   }
 ];

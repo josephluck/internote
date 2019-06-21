@@ -1,17 +1,12 @@
 import { Twine } from "twine-js";
 import { Api } from ".";
-import { Theme, FontTheme, colorThemes, fontThemes } from "../theming/themes";
+import {
+  colorThemes,
+  fontThemes,
+  ColorThemeWithName,
+  FontThemeWithName
+} from "../theming/themes";
 import { AvailableVoice } from "@internote/api/domains/preferences/entity";
-
-interface ColorThemeWithName {
-  name: string;
-  theme: Theme;
-}
-
-interface FontThemeWithName {
-  name: string;
-  theme: FontTheme;
-}
 
 interface OwnState {
   colorTheme: ColorThemeWithName | null;

@@ -81,6 +81,16 @@ export function SettingsMenu({
                         }
                       >
                         {theme.name}
+                        {theme.shortcut ? (
+                          <Shortcut
+                            id={`set-color-theme-${theme.name}`}
+                            description={`Set color theme to ${theme.name}`}
+                            keyCombo={theme.shortcut}
+                            callback={() =>
+                              store.actions.preferences.setColorTheme(theme)
+                            }
+                          />
+                        ) : null}
                       </DropdownMenuItem>
                     ))}
                   </>
@@ -116,6 +126,16 @@ export function SettingsMenu({
                         <span style={{ fontFamily: theme.theme.fontFamily }}>
                           {theme.name}
                         </span>
+                        {theme.shortcut ? (
+                          <Shortcut
+                            id={`set-typography-theme-${theme.name}`}
+                            description={`Set typography to ${theme.name}`}
+                            keyCombo={theme.shortcut}
+                            callback={() =>
+                              store.actions.preferences.setFontTheme(theme)
+                            }
+                          />
+                        ) : null}
                       </DropdownMenuItem>
                     ))}
                   </>
@@ -269,6 +289,7 @@ export function SettingsMenu({
                         }
                       >
                         {voice}
+                        {/* TODO: add keyboard shortcuts to voices */}
                       </DropdownMenuItem>
                     ))}
                   </>
