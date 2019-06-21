@@ -20,6 +20,9 @@ const ShortcutWrap = styled.div<{ disabled: boolean }>`
   margin-bottom: ${spacing._0_25};
   align-items: center;
   font-size: ${font._10.size};
+  transition: opacity 333ms ease;
+  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  cursor: ${props => (props.disabled ? "not-allowed" : "pointer")};
 `;
 
 const ShortcutKeyCombo = styled(Tag)`
@@ -40,16 +43,22 @@ export function ShortcutsReference() {
     <Wrap>
       <ListInner>
         {shortcuts.map(shortcut => (
-          <ShortcutWrap key={shortcut.id} disabled={shortcut.disabled}>
+          <ShortcutWrap
+            key={shortcut.id}
+            disabled={shortcut.disabled}
+            onClick={shortcut.disabled ? null : shortcut.callback}
+          >
             {typeof shortcut.keyCombo === "object" ? (
               shortcut.keyCombo.map((keyCombo, i) => (
                 <>
                   {i > 0 ? " / " : null}
-                  <ShortcutKeyCombo key={keyCombo}>{keyCombo}</ShortcutKeyCombo>
+                  <ShortcutKeyCombo key={keyCombo} isFocused>
+                    {keyCombo}
+                  </ShortcutKeyCombo>
                 </>
               ))
             ) : (
-              <ShortcutKeyCombo>{shortcut.keyCombo}</ShortcutKeyCombo>
+              <ShortcutKeyCombo isFocused>{shortcut.keyCombo}</ShortcutKeyCombo>
             )}
             <ShortcutDescription>{shortcut.description}</ShortcutDescription>
           </ShortcutWrap>

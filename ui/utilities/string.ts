@@ -19,3 +19,7 @@ export function hasLength<A extends string | any[]>(a: A): boolean {
 export function getLength<A extends string | any[]>(a: A): number {
   return a.length;
 }
+
+export function stringIsOneWord(str: string): boolean {
+  return str.split(" ").length === 1;
+}

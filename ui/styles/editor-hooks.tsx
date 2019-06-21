@@ -52,7 +52,8 @@ import { Option, Some, None } from "space-lift";
 import {
   getFirstWordFromString,
   removeFirstLetterFromString,
-  getLength
+  getLength,
+  stringIsOneWord
 } from "../utilities/string";
 import { Outline } from "./outline";
 import { EmojiToggle } from "./emoji-toggle";
@@ -566,6 +567,24 @@ export function InternoteEditor({
           callback={() => setIsShortcutsReferenceShowing(true)}
         />
       )}
+      {toolbarIsExpanded ? (
+        <Shortcut
+          id="close-expanded-toolbar"
+          description="Close the toolbar"
+          keyCombo="esc"
+          callback={closeExpandedToolbar}
+        />
+      ) : null}
+      {editor.current &&
+      editor.current.focus &&
+      selectedText.filter(stringIsOneWord).isDefined() ? (
+        <Shortcut
+          id="request-dictionary"
+          description={`Lookup ${selectedText.getOrElse("")}`}
+          keyCombo="mod+d"
+          callback={requestDictionary}
+        />
+      ) : null}
       <EditorStyles ref={scrollWrap}>
         <EditorInnerWrap
           distractionFree={distractionFree}
@@ -651,22 +670,6 @@ export function InternoteEditor({
             <Saving saving={saving} />
           </Flex>
         </ToolbarInner>
-        {toolbarIsExpanded ? (
-          <Shortcut
-            id="close-expanded-toolbar"
-            description="Close the toolbar"
-            keyCombo="esc"
-            callback={closeExpandedToolbar}
-          />
-        ) : null}
-        {editor.current && editor.current.focus && selectedText.isDefined() ? (
-          <Shortcut
-            id="request-dictionary"
-            description={`Lookup ${selectedText.getOrElse("")}`}
-            keyCombo="mod+d"
-            callback={requestDictionary}
-          />
-        ) : null}
         <Collapse isOpened={toolbarIsExpanded} style={{ width: "100%" }}>
           <ToolbarExpandedWrapper>
             <ToolbarExpandedInner>

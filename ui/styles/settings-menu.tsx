@@ -44,12 +44,14 @@ export function SettingsMenu({
       disableCloseShortcut={subMenuOpen}
       menu={menu => (
         <SettingsMenuWrap showing={menu.menuShowing} position="right">
-          <Shortcut
-            id="open-settings-menu"
-            description="Open settings menu"
-            keyCombo="mod+s"
-            callback={() => menu.toggleMenuShowing(true)}
-          />
+          {!menu.menuShowing ? (
+            <Shortcut
+              id="open-settings-menu"
+              description="Open settings menu"
+              keyCombo="mod+s"
+              callback={() => menu.toggleMenuShowing(true)}
+            />
+          ) : null}
           <ListMenuControl
             onSubMenuToggled={setSubMenuOpen}
             shortcutsEnabled={menu.menuShowing}
@@ -87,6 +89,10 @@ export function SettingsMenu({
                             id={`set-color-theme-${theme.name}`}
                             description={`Set color theme to ${theme.name}`}
                             keyCombo={theme.shortcut}
+                            disabled={
+                              theme.name ===
+                              store.state.preferences.colorTheme.name
+                            }
                             callback={() =>
                               store.actions.preferences.setColorTheme(theme)
                             }
@@ -132,6 +138,10 @@ export function SettingsMenu({
                             id={`set-typography-theme-${theme.name}`}
                             description={`Set typography to ${theme.name}`}
                             keyCombo={theme.shortcut}
+                            disabled={
+                              theme.name ===
+                              store.state.preferences.fontTheme.name
+                            }
                             callback={() =>
                               store.actions.preferences.setFontTheme(theme)
                             }
@@ -173,6 +183,7 @@ export function SettingsMenu({
                         description="Turn off distraction-free mode"
                         keyCombo="n"
                         preventOtherShortcuts={true}
+                        disabled={!store.state.preferences.distractionFree}
                         callback={() =>
                           store.actions.preferences.setDistractionFree(false)
                         }
@@ -194,6 +205,7 @@ export function SettingsMenu({
                         description="Turn on distraction-free mode"
                         keyCombo="y"
                         preventOtherShortcuts={true}
+                        disabled={store.state.preferences.distractionFree}
                         callback={() =>
                           store.actions.preferences.setDistractionFree(true)
                         }
@@ -233,6 +245,7 @@ export function SettingsMenu({
                         description="Turn off outline mode"
                         keyCombo="n"
                         preventOtherShortcuts={true}
+                        disabled={!store.state.preferences.outlineShowing}
                         callback={() =>
                           store.actions.preferences.setOutlineShowing(false)
                         }
@@ -254,6 +267,7 @@ export function SettingsMenu({
                         description="Turn on outline mode"
                         keyCombo="y"
                         preventOtherShortcuts={true}
+                        disabled={store.state.preferences.outlineShowing}
                         callback={() =>
                           store.actions.preferences.setOutlineShowing(true)
                         }
