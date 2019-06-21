@@ -12,9 +12,12 @@ interface Shortcut {
    */
   description: string;
   /**
-   * The keyboard combination used to trigger the callback function
+   * The keyboard combination used to trigger the callback function.
+   *
+   * An array of string is supported where each string in the array
+   * will become a keyCombo that will trigger the callback.
    */
-  keyCombo: string;
+  keyCombo: string | string[];
   /**
    * The callback to trigger when the keyCombo is pressed by the user.
    */
@@ -106,7 +109,9 @@ export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
         if (
           !isPrevented &&
           !shortcut.disabled &&
-          isKeyHotkey(shortcut.keyCombo, event)
+          typeof shortcut.keyCombo === "object"
+            ? shortcut.keyCombo.some(keyCombo => isKeyHotkey(keyCombo, event))
+            : isKeyHotkey(shortcut.keyCombo, event)
         ) {
           event.preventDefault();
           event.stopPropagation();

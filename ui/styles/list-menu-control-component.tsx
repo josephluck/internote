@@ -24,6 +24,9 @@ export interface Props {
   onSubMenuToggled?: (showing: boolean) => void;
 }
 
+// TODO: support up/down/right/enter to navigate menu
+// (left and esc are already supported)
+
 export function Component({ items, onSubMenuToggled }: Props) {
   const [subMenu, setSubMenu] = React.useState<null | string>(null);
   const renderProps: RenderProps = {
@@ -48,7 +51,7 @@ export function Component({ items, onSubMenuToggled }: Props) {
           <Shortcut
             id="back-to-main-menu"
             description="Back to main menu"
-            keyCombo="esc"
+            keyCombo={["esc", "left"]}
             callback={() => setSubMenu(null)}
           />
           <Motion name={`item-${subMenu}`}>
