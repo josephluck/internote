@@ -38,7 +38,7 @@ const ShortcutDescription = styled.div`
 
 export function ShortcutsReference() {
   const { shortcuts } = React.useContext(ShortcutsContext);
-
+  // TODO: infer disabled from preventOtherShortcuts
   return (
     <Wrap>
       <ListInner>

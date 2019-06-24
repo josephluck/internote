@@ -580,7 +580,7 @@ export function InternoteEditor({
       selectedText.filter(stringIsOneWord).isDefined() ? (
         <Shortcut
           id="request-dictionary"
-          description={`Lookup ${selectedText.getOrElse("")}`}
+          description={`Lookup "${selectedText.getOrElse("")}"`}
           keyCombo="mod+d"
           callback={requestDictionary}
         />

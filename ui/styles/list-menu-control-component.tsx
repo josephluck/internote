@@ -58,6 +58,8 @@ export function Component({
             description="Back to main menu"
             keyCombo={["esc", "left"]}
             callback={() => setSubMenu(null)}
+            priority={2}
+            preventOtherShortcuts={true}
           />
           <Motion name={`item-${subMenu}`}>
             <Move scaleY={false}>
@@ -94,6 +96,7 @@ export function Component({
                           renderProps.toSubMenu(item.title);
                         }}
                         preventOtherShortcuts={true}
+                        priority={3}
                       />
                     ) : null}
                   </div>

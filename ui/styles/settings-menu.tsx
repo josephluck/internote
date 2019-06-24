@@ -96,6 +96,7 @@ export function SettingsMenu({
                             callback={() =>
                               store.actions.preferences.setColorTheme(theme)
                             }
+                            priority={3}
                           />
                         ) : null}
                       </DropdownMenuItem>
@@ -145,6 +146,7 @@ export function SettingsMenu({
                             callback={() =>
                               store.actions.preferences.setFontTheme(theme)
                             }
+                            priority={3}
                           />
                         ) : null}
                       </DropdownMenuItem>
@@ -187,6 +189,7 @@ export function SettingsMenu({
                         callback={() =>
                           store.actions.preferences.setDistractionFree(false)
                         }
+                        priority={3}
                       />
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -209,6 +212,7 @@ export function SettingsMenu({
                         callback={() =>
                           store.actions.preferences.setDistractionFree(true)
                         }
+                        priority={3}
                       />
                     </DropdownMenuItem>
                   </>
@@ -249,6 +253,7 @@ export function SettingsMenu({
                         callback={() =>
                           store.actions.preferences.setOutlineShowing(false)
                         }
+                        priority={3}
                       />
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -271,6 +276,7 @@ export function SettingsMenu({
                         callback={() =>
                           store.actions.preferences.setOutlineShowing(true)
                         }
+                        priority={3}
                       />
                     </DropdownMenuItem>
                   </>

@@ -31,6 +31,14 @@ interface Shortcut {
    * When truthy, prevents this shortcut from being triggered
    */
   disabled?: boolean;
+  /**
+   * Determines the priority of a given shortcut against other shortcuts.
+   * This number determines the order in which shortcuts are traversed when
+   * a keyboard shortcut is fired. It also determines the order in which
+   * shortcuts appear in the list of available shortcuts.
+   * NB: defaults to 1.
+   */
+  priority?: number;
 }
 
 interface Context {
@@ -73,7 +81,7 @@ export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
         ...prevState,
         shortcuts: shortcutExists(prevState.shortcuts, shortcut)
           ? prevState.shortcuts
-          : [shortcut, ...prevState.shortcuts]
+          : [shortcut, ...prevState.shortcuts].sort(sortShortcuts)
       };
     });
   }
@@ -173,4 +181,20 @@ function shortcutsHash(shortcuts: Shortcut[]): string {
  */
 function shortcutExists(shortcuts: Shortcut[], shortcut: Shortcut): boolean {
   return shortcuts.map(s => s.id).includes(shortcut.id);
+}
+
+/**
+ * Sorts two shortcuts according to their priority then
+ * alphabetically on description
+ */
+function sortShortcuts(
+  { priority: priorityA = 1, description: descriptionA }: Shortcut,
+  { priority: priorityB = 1, description: descriptionB }: Shortcut
+): number {
+  if (priorityB === priorityA) {
+    // Sort alphabetically on description at equal priority
+    return descriptionA < descriptionB ? -1 : 1;
+  }
+  // Sort on priority if different
+  return priorityB - priorityA;
 }
