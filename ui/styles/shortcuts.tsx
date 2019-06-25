@@ -113,22 +113,18 @@ export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       let isPrevented = false;
-      ctx.shortcuts.map(shortcut => {
-        if (
-          !isPrevented &&
-          !shortcut.disabled &&
-          typeof shortcut.keyCombo === "object"
-            ? shortcut.keyCombo.some(keyCombo => isKeyHotkey(keyCombo, event))
-            : isKeyHotkey(shortcut.keyCombo, event)
-        ) {
-          event.preventDefault();
-          event.stopPropagation();
-          if (shortcut.preventOtherShortcuts) {
-            isPrevented = true;
+      ctx.shortcuts
+        .filter(shortcut => !shortcut.disabled)
+        .map(shortcut => {
+          if (!isPrevented && shouldEventTriggerShortcut(event, shortcut)) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (shortcut.preventOtherShortcuts) {
+              isPrevented = true;
+            }
+            shortcut.callback();
           }
-          shortcut.callback();
-        }
-      });
+        });
     }
 
     window.addEventListener("keydown", onKeyDown);
@@ -136,8 +132,6 @@ export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [shortcutsHash(ctx.shortcuts)]);
-
-  console.log(ctx.shortcuts);
 
   return (
     <ShortcutsContext.Provider value={ctx}>
@@ -197,4 +191,15 @@ function sortShortcuts(
   }
   // Sort on priority if different
   return priorityB - priorityA;
+}
+
+/**
+ * Determines whether a given event should trigger the
+ * callback of a given shortcut according to the shortcut's
+ * keyCombo
+ */
+function shouldEventTriggerShortcut(event: any, shortcut: Shortcut): boolean {
+  return typeof shortcut.keyCombo === "object"
+    ? shortcut.keyCombo.some(keyCombo => isKeyHotkey(keyCombo, event))
+    : isKeyHotkey(shortcut.keyCombo, event);
 }
