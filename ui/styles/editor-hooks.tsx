@@ -575,15 +575,26 @@ export function InternoteEditor({
           callback={closeExpandedToolbar}
         />
       ) : null}
-      {editor.current &&
-      editor.current.focus &&
-      selectedText.filter(stringIsOneWord).isDefined() ? (
-        <Shortcut
-          id="request-dictionary"
-          description={`Lookup "${selectedText.getOrElse("")}"`}
-          keyCombo="mod+d"
-          callback={requestDictionary}
-        />
+      {editor.current && editor.current.focus ? (
+        <>
+          {selectedText.isDefined() ? (
+            <Shortcut
+              id="request-speech"
+              description="Speak selected text"
+              keyCombo="mod+s"
+              callback={requestSpeech}
+              disabled={!!speechSrc}
+            />
+          ) : null}
+          {selectedText.filter(stringIsOneWord).isDefined() ? (
+            <Shortcut
+              id="request-dictionary"
+              description={`Lookup "${selectedText.getOrElse("")}"`}
+              keyCombo="mod+d"
+              callback={requestDictionary}
+            />
+          ) : null}
+        </>
       ) : null}
       <EditorStyles ref={scrollWrap}>
         <EditorInnerWrap

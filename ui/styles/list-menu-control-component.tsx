@@ -5,6 +5,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { DropdownMenuItem, DropdownMenuSpacer } from "./dropdown-menu";
 import Motion, { Move } from "@element-motion/core";
 import { Shortcut } from "./shortcuts";
+import { shortcutPriorities } from "../utilities/shortcuts";
 
 interface RenderProps {
   toMainMenu: () => void;
@@ -58,7 +59,7 @@ export function Component({
             description="Back to main menu"
             keyCombo={["esc", "left"]}
             callback={() => setSubMenu(null)}
-            priority={2}
+            priority={shortcutPriorities.listMenuBack}
             preventOtherShortcuts={true}
           />
           <Motion name={`item-${subMenu}`}>
@@ -96,7 +97,7 @@ export function Component({
                           renderProps.toSubMenu(item.title);
                         }}
                         preventOtherShortcuts={true}
-                        priority={3}
+                        priority={shortcutPriorities.listMenuCategory}
                       />
                     ) : null}
                   </div>

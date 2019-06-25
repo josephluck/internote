@@ -20,6 +20,7 @@ import { ListMenuControl } from "./list-menu-control";
 import { ExpandingIconButton } from "./expanding-icon-button";
 import { availableVoices } from "@internote/api/domains/preferences/api";
 import { Shortcut } from "./shortcuts";
+import { shortcutPriorities } from "../utilities/shortcuts";
 
 const SettingsMenuWrap = styled(DropdownMenu)`
   width: ${size.settingsMenuDropdownWidth};
@@ -48,7 +49,8 @@ export function SettingsMenu({
             <Shortcut
               id="open-settings-menu"
               description="Open settings menu"
-              keyCombo="mod+s"
+              keyCombo="mod+shift+s"
+              preventOtherShortcuts={true}
               callback={() => menu.toggleMenuShowing(true)}
             />
           ) : null}
@@ -96,7 +98,7 @@ export function SettingsMenu({
                             callback={() =>
                               store.actions.preferences.setColorTheme(theme)
                             }
-                            priority={3}
+                            priority={shortcutPriorities.settingsOption}
                           />
                         ) : null}
                       </DropdownMenuItem>
@@ -146,7 +148,7 @@ export function SettingsMenu({
                             callback={() =>
                               store.actions.preferences.setFontTheme(theme)
                             }
-                            priority={3}
+                            priority={shortcutPriorities.settingsOption}
                           />
                         ) : null}
                       </DropdownMenuItem>
@@ -189,7 +191,7 @@ export function SettingsMenu({
                         callback={() =>
                           store.actions.preferences.setDistractionFree(false)
                         }
-                        priority={3}
+                        priority={shortcutPriorities.settingsOption}
                       />
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -212,7 +214,7 @@ export function SettingsMenu({
                         callback={() =>
                           store.actions.preferences.setDistractionFree(true)
                         }
-                        priority={3}
+                        priority={shortcutPriorities.settingsOption}
                       />
                     </DropdownMenuItem>
                   </>
@@ -253,7 +255,7 @@ export function SettingsMenu({
                         callback={() =>
                           store.actions.preferences.setOutlineShowing(false)
                         }
-                        priority={3}
+                        priority={shortcutPriorities.settingsOption}
                       />
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -276,7 +278,7 @@ export function SettingsMenu({
                         callback={() =>
                           store.actions.preferences.setOutlineShowing(true)
                         }
-                        priority={3}
+                        priority={shortcutPriorities.settingsOption}
                       />
                     </DropdownMenuItem>
                   </>
