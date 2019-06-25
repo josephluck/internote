@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { spacing, size, font, borderRadius } from "../theming/symbols";
-import { ShortcutsContext } from "./shortcuts";
+import { ShortcutsContext, shortcutWillBePrevented } from "./shortcuts";
 import { Tag } from "./tag";
 
 const Wrap = styled.div`
@@ -38,14 +38,15 @@ const ShortcutDescription = styled.div`
 
 export function ShortcutsReference() {
   const { shortcuts } = React.useContext(ShortcutsContext);
-  // TODO: infer disabled from preventOtherShortcuts
   return (
     <Wrap>
       <ListInner>
         {shortcuts.map(shortcut => (
           <ShortcutWrap
             key={shortcut.id}
-            disabled={shortcut.disabled}
+            disabled={
+              shortcut.disabled || shortcutWillBePrevented(shortcut, shortcuts)
+            }
             onClick={shortcut.disabled ? null : shortcut.callback}
           >
             {typeof shortcut.keyCombo === "object" ? (

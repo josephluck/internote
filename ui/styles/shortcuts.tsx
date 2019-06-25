@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import isKeyHotkey from "is-hotkey";
+import { anyOverlappingStrOccurrences } from "../utilities/string";
 
 interface Shortcut {
   /**
@@ -202,4 +203,22 @@ function shouldEventTriggerShortcut(event: any, shortcut: Shortcut): boolean {
   return typeof shortcut.keyCombo === "object"
     ? shortcut.keyCombo.some(keyCombo => isKeyHotkey(keyCombo, event))
     : isKeyHotkey(shortcut.keyCombo, event);
+}
+
+/**
+ * Given a shortcut within a list of shortcuts, determines
+ * whether the shortcut will be prevented by higher priority
+ * shortcuts that are set to prevent other shortcuts
+ */
+export function shortcutWillBePrevented(
+  shortcut: Shortcut,
+  shortcuts: Shortcut[]
+): boolean {
+  const index = shortcuts.findIndex(s => s.id === shortcut.id);
+  return shortcuts.some(
+    (s, i) =>
+      s.preventOtherShortcuts &&
+      i < index &&
+      anyOverlappingStrOccurrences(shortcut.keyCombo, s.keyCombo)
+  );
 }
