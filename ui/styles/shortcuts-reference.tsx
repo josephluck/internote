@@ -14,15 +14,14 @@ const ListInner = styled.div`
   max-height: ${size.emojiMenuMaxHeight};
 `;
 
-const ShortcutWrap = styled.div<{ disabled: boolean }>`
+const ShortcutWrap = styled.div`
   display: inline-flex;
   width: 33%;
   margin-bottom: ${spacing._0_25};
   align-items: center;
   font-size: ${font._10.size};
   transition: opacity 333ms ease;
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
-  cursor: ${props => (props.disabled ? "not-allowed" : "pointer")};
+  cursor: pointer;
 `;
 
 const ShortcutKeyCombo = styled(Tag)`
@@ -41,29 +40,31 @@ export function ShortcutsReference() {
   return (
     <Wrap>
       <ListInner>
-        {shortcuts.map(shortcut => (
-          <ShortcutWrap
-            key={shortcut.id}
-            disabled={
-              shortcut.disabled || shortcutWillBePrevented(shortcut, shortcuts)
-            }
-            onClick={shortcut.disabled ? null : shortcut.callback}
-          >
-            {typeof shortcut.keyCombo === "object" ? (
-              shortcut.keyCombo.map((keyCombo, i) => (
-                <>
-                  {i > 0 ? " / " : null}
-                  <ShortcutKeyCombo key={keyCombo} isFocused>
-                    {keyCombo}
-                  </ShortcutKeyCombo>
-                </>
-              ))
-            ) : (
-              <ShortcutKeyCombo isFocused>{shortcut.keyCombo}</ShortcutKeyCombo>
-            )}
-            <ShortcutDescription>{shortcut.description}</ShortcutDescription>
-          </ShortcutWrap>
-        ))}
+        {shortcuts
+          .filter(
+            shortcut =>
+              !shortcut.disabled &&
+              !shortcutWillBePrevented(shortcut, shortcuts)
+          )
+          .map(shortcut => (
+            <ShortcutWrap key={shortcut.id} onClick={shortcut.callback}>
+              {typeof shortcut.keyCombo === "object" ? (
+                shortcut.keyCombo.map((keyCombo, i) => (
+                  <>
+                    {i > 0 ? " / " : null}
+                    <ShortcutKeyCombo key={keyCombo} isFocused>
+                      {keyCombo}
+                    </ShortcutKeyCombo>
+                  </>
+                ))
+              ) : (
+                <ShortcutKeyCombo isFocused>
+                  {shortcut.keyCombo}
+                </ShortcutKeyCombo>
+              )}
+              <ShortcutDescription>{shortcut.description}</ShortcutDescription>
+            </ShortcutWrap>
+          ))}
       </ListInner>
     </Wrap>
   );
