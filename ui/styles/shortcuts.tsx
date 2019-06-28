@@ -101,6 +101,10 @@ export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
+  /**
+   * Stores the current context including shortcuts and
+   * methods for adding and removing shortcuts.
+   */
   const [ctx, setCtx] = React.useState<Context>({
     shortcuts: [],
     addShortcut,
