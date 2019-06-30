@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import { Editor as SlateEditor } from "slate-react";
@@ -189,7 +189,7 @@ export function InternoteEditor({
   React.useEffect(() => {
     window.addEventListener("keyup", onWindowKeyUp);
     window.addEventListener("keydown", onWindowKeyDown);
-    return function() {
+    return function () {
       window.removeEventListener("keyup", onWindowKeyUp);
       window.removeEventListener("keydown", onWindowKeyDown);
     };
@@ -292,11 +292,11 @@ export function InternoteEditor({
       .unwrapBlock("bulleted-list")
       .unwrapBlock("numbered-list");
   };
-  const focusNode = (node: Node) => {
+  const focusNode = useCallback((node: Node) => {
     editor.current.moveToRangeOfNode(node);
     editor.current.moveFocusToStartOfNode(node);
     editor.current.focus();
-  };
+  }, [editor.current]);
 
   /**
    * Scrolling
@@ -326,13 +326,13 @@ export function InternoteEditor({
    * Mark and block handling
    */
   const onClickMark = (type: MarkType) => {
-    return function(event: Event) {
+    return function (event: Event) {
       event.preventDefault();
       editor.current.toggleMark(type);
     };
   };
   const onClickBlock = (type: BlockType) => {
-    return function(event: Event) {
+    return function (event: Event) {
       event.preventDefault();
       // Handle everything but list buttons.
       if (type !== "bulleted-list" && type !== "numbered-list") {
@@ -560,13 +560,13 @@ export function InternoteEditor({
           callback={() => setIsShortcutsReferenceShowing(false)}
         />
       ) : (
-        <Shortcut
-          id="show-shortcuts-reference"
-          description="Show shortcuts reference"
-          keyCombo="mod+k"
-          callback={() => setIsShortcutsReferenceShowing(true)}
-        />
-      )}
+          <Shortcut
+            id="show-shortcuts-reference"
+            description="Show shortcuts reference"
+            keyCombo="mod+k"
+            callback={() => setIsShortcutsReferenceShowing(true)}
+          />
+        )}
       {toolbarIsExpanded ? (
         <Shortcut
           id="close-expanded-toolbar"
@@ -615,7 +615,7 @@ export function InternoteEditor({
             distractionFree={distractionFree}
           />
           <Outline
-            value={value}
+            value={debouncedValue}
             onHeadingClick={focusNode}
             showing={outlineShowing}
           />

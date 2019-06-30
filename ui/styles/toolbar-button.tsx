@@ -3,7 +3,7 @@ import { styled } from "../theming/styled";
 import { RoundButton } from "./button";
 import { spacing, borderRadius, font } from "../theming/symbols";
 
-const Button = styled(RoundButton)<{ shortcutShowing }>`
+const Button = styled(RoundButton)<{ shortcutShowing: boolean }>`
   position: relative;
   width: ${spacing._1};
   height: ${spacing._1};
@@ -24,6 +24,10 @@ const Button = styled(RoundButton)<{ shortcutShowing }>`
       : props.theme.toolbarButtonInactiveText};
   border-radius: ${borderRadius._6};
   &:hover {
+    color: ${props =>
+      props.isActive
+        ? props.theme.toolbarButtonActiveText
+        : props.theme.toolbarButtonHoverText};
     background: ${props =>
       props.isActive
         ? props.theme.toolbarButtonActiveBackground
