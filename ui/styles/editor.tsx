@@ -1,20 +1,16 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
-import { Plugin, Editor as SlateEditor } from "slate-react";
-import { throttle } from "lodash";
-import { debounce } from "lodash";
+import { Editor as SlateEditor } from "slate-react";
 import { Saving } from "./saving";
 import { Flex } from "@rebass/grid";
-import { Value, SchemaProperties } from "slate";
+import { SchemaProperties } from "slate";
 import { faUndo, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { Speech } from "./speech";
 import { ToolbarButton, ButtonSpacer } from "./toolbar-button";
 import { Collapse } from "react-collapse";
 import * as Types from "@internote/api/domains/types";
 import { Dictionary } from "./dictionary";
-import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { DictionaryButton } from "./dictionary-button";
 import { DeleteNoteButton } from "./delete-note-button";
 import { UndoRedoButton } from "./undo-redo-button";
@@ -27,7 +23,6 @@ import {
 } from "./toolbar";
 import {
   getValueOrDefault,
-  getTitleFromEditorValue,
   isBoldHotkey,
   isItalicHotkey,
   isUnderlinedHotkey,
@@ -49,204 +44,220 @@ import {
   isListShortcut,
   isShortcut,
   wordIsTagShortcut,
-  getTagsFromEditorValue,
-  extractWord
+  OnChange,
+  getChanges
 } from "../utilities/editor";
 import { Wrap, EditorStyles, Editor, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
-import { getFirstWordFromString } from "../utilities/string";
+import {
+  getFirstWordFromString,
+  removeFirstLetterFromString,
+  getLength,
+  stringIsOneWord
+} from "../utilities/string";
 import { Outline } from "./outline";
 import { EmojiToggle } from "./emoji-toggle";
 import { EmojiList } from "./emoji-list";
 import { Emoji } from "../utilities/emojis";
 import { TagsList } from "./tags-list";
 import { Tag } from "./tag";
+import { useDebounce, useThrottle } from "../utilities/hooks";
+import { Shortcut } from "./shortcuts";
+import { ShortcutsReference } from "./shortcuts-reference";
 
 const DEFAULT_NODE = "paragraph";
 
-interface OnChange {
-  content: Object;
-  title: string;
-  tags: string[];
-}
+const schema: SchemaProperties = {
+  inlines: {
+    emoji: {
+      isVoid: true
+    },
+    tag: {
+      isVoid: true
+    }
+  }
+};
 
-interface Props {
+export function InternoteEditor({
+  id,
+  overwriteCount,
+  initialValue,
+  saving,
+  distractionFree,
+  speechSrc,
+  isSpeechLoading,
+  isDictionaryLoading,
+  isDictionaryShowing,
+  dictionaryResults,
+  outlineShowing,
+  tags,
+  newTagSaving,
+  onRequestSpeech,
+  onDiscardSpeech,
+  onCloseDictionary,
+  onRequestDictionary,
+  onChange,
+  // onCreateNewTag, // TODO: fix this
+  onDelete
+}: {
   id: string;
   overwriteCount: number;
   initialValue: {};
-  debounceValue?: number;
-  onChange: (value: OnChange) => Promise<void>;
-  onCreateNewTag: (value: OnChange) => Promise<void>;
-  onDelete: () => void;
   saving: boolean;
   distractionFree: boolean;
   speechSrc: string;
   isSpeechLoading: boolean;
   isDictionaryLoading: boolean;
   isDictionaryShowing: boolean;
-  onRequestSpeech: (content: string) => any;
-  onDiscardSpeech: () => any;
-  closeDictionary: () => any;
-  onRequestDictionary: (word: string) => any;
   dictionaryResults: Types.DictionaryResult[];
   outlineShowing: boolean;
   tags: Types.Tag[];
   newTagSaving: boolean;
-}
+  onChange: (value: OnChange) => Promise<void>;
+  onCreateNewTag: (value: OnChange) => Promise<void>;
+  onDelete: () => void;
+  onRequestSpeech: (content: string) => any;
+  onDiscardSpeech: () => any;
+  onCloseDictionary: () => any;
+  onRequestDictionary: (word: string) => any;
+}) {
+  /**
+   * State
+   */
+  const [value, setValue] = React.useState(() =>
+    getValueOrDefault(initialValue)
+  );
+  const debouncedValue = useDebounce(value, 1000);
+  const throttledValue = useThrottle(value, 100);
+  const [userScrolled, setUserScrolled] = React.useState(false);
+  const [isCtrlHeld, setIsCtrlHeld] = React.useState(false);
+  const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
+  const [
+    isShortcutsReferenceShowing,
+    setIsShortcutsReferenceShowing
+  ] = React.useState(true);
 
-interface State {
-  value: Value;
-  userScrolled: boolean;
-  isCtrlHeld: boolean;
-  isEmojiMenuShowing: boolean;
-  forceShowEmojiMenu: boolean;
-  isTagsMenuShowing: boolean;
-  shortcutSearch: string;
-  dictionaryRequestedWord: string;
-}
+  /**
+   * Derived state
+   */
+  const selectedText = getSelectedText(value);
+  const shortcutSearch = getCurrentFocusedWord(value).filter(isShortcut);
+  const isEmojiShortcut = shortcutSearch
+    .filter(wordIsEmojiShortcut)
+    .isDefined();
+  const isTagsShortcut = shortcutSearch.filter(wordIsTagShortcut).isDefined();
+  const toolbarIsExpanded =
+    isEmojiShortcut ||
+    isEmojiButtonPressed ||
+    isTagsShortcut ||
+    isDictionaryShowing ||
+    newTagSaving ||
+    isShortcutsReferenceShowing;
+  const isToolbarShowing =
+    hasSelection(value) || !!speechSrc || isCtrlHeld || toolbarIsExpanded;
 
-export class InternoteEditor extends React.Component<Props, State> {
-  debounceValue = 3000;
-  preventScrollListener = false;
-  scroller: ReturnType<typeof zenscroll.createScroller> | null = null;
-  focusedNodeKey: string = "";
-  editor: SlateEditor | null = null;
-  scrollWrap: HTMLDivElement | null;
-  schema: SchemaProperties = {
-    inlines: {
-      emoji: {
-        isVoid: true
-      },
-      tag: {
-        isVoid: true
-      }
+  /**
+   * Refs
+   */
+  const editor = React.useRef<SlateEditor>();
+  const scrollWrap = React.useRef<HTMLDivElement>();
+  const scrollRef = React.useRef<ReturnType<typeof zenscroll.createScroller>>();
+  const preventScrollListener = React.useRef<boolean>(false);
+  const focusedNodeKey = React.useRef<any>();
+
+  /**
+   * Handle scroll refs and focus mode handling
+   */
+  React.useEffect(() => {
+    if (scrollWrap.current) {
+      scrollRef.current = zenscroll.createScroller(scrollWrap.current, 200);
+      scrollWrap.current.addEventListener("scroll", handleEditorScroll);
+      scrollWrap.current.addEventListener("click", handleFocusModeScroll);
     }
-  };
+  }, [scrollWrap.current]);
 
-  constructor(props: Props) {
-    super(props);
-    this.debounceValue = props.debounceValue || 3000;
-    this.state = {
-      value: getValueOrDefault(props.initialValue),
-      userScrolled: false,
-      isCtrlHeld: false,
-      isEmojiMenuShowing: false,
-      forceShowEmojiMenu: false,
-      isTagsMenuShowing: false,
-      shortcutSearch: "",
-      dictionaryRequestedWord: ""
+  /**
+   * Replace value state in response to props
+   */
+  React.useEffect(() => {
+    setValue(getValueOrDefault(initialValue));
+  }, [id, overwriteCount]);
+
+  /**
+   * Setup window event listeners
+   */
+  React.useEffect(() => {
+    window.addEventListener("keyup", onWindowKeyUp);
+    window.addEventListener("keydown", onWindowKeyDown);
+    return function() {
+      window.removeEventListener("keyup", onWindowKeyUp);
+      window.removeEventListener("keydown", onWindowKeyDown);
     };
-  }
+  }, []);
 
-  componentDidUpdate(prevProps: Props) {
-    if (
-      prevProps.id !== this.props.id ||
-      prevProps.overwriteCount !== this.props.overwriteCount
-    ) {
-      this.setState(
-        {
-          value: getValueOrDefault(this.props.initialValue)
-        },
-        () => {
-          this.refocusEditor();
-        }
-      );
-    }
-  }
+  /**
+   * Emit changes to parent when value changes
+   */
+  React.useEffect(() => {
+    onChange(getChanges(debouncedValue));
+  }, [debouncedValue]);
 
-  componentDidMount() {
-    window.addEventListener("keyup", this.onKeyUp);
-  }
+  /**
+   * Focus block when value changes
+   */
+  React.useEffect(() => {
+    handleFocusModeScroll();
+  }, [throttledValue]);
 
-  storeEditorRef = (editor: SlateEditor) => {
-    this.editor = editor;
-  };
-
-  storeScrollWrapRef = (scrollWrap: HTMLDivElement) => {
-    this.scrollWrap = scrollWrap;
-    this.scroller = zenscroll.createScroller(scrollWrap, 200);
-    scrollWrap.addEventListener("scroll", this.handleEditorScroll);
-    scrollWrap.addEventListener("click", this.handleFocusModeScroll);
-  };
-
-  // TODO: value type should be Value
-  onChange = (value: any) => {
-    this.handleShortcutSearch();
-    if (this.state.value !== value) {
-      this.setState({ value }, this.emitChange);
-      window.requestAnimationFrame(this.handleFocusModeScroll);
-    }
-  };
-
-  getChanges = (): OnChange => {
-    return {
-      content: this.state.value.toJSON(),
-      title: getTitleFromEditorValue(this.state.value),
-      tags: getTagsFromEditorValue(this.state.value)
-    };
-  };
-
-  emitChange = debounce(() => {
-    this.props.onChange(this.getChanges());
-  }, this.debounceValue);
-
-  getEventHandlerFromKeyEvent = (
+  /**
+   * Keyboard event handling
+   */
+  const getToolbarShortcutHandlerFromKeyEvent = (
     event: Event
   ): Option<(event: Event) => void> => {
     if (isBoldHotkey(event)) {
-      return Some(this.onClickMark("bold"));
+      return Some(onClickMark("bold"));
     } else if (isItalicHotkey(event)) {
-      return Some(this.onClickMark("italic"));
+      return Some(onClickMark("italic"));
     } else if (isUnderlinedHotkey(event)) {
-      return Some(this.onClickMark("underlined"));
+      return Some(onClickMark("underlined"));
     } else if (isCodeHotkey(event)) {
-      return Some(this.onClickMark("code"));
+      return Some(onClickMark("code"));
     } else if (isH1Hotkey(event)) {
-      return Some(this.onClickBlock("heading-one"));
+      return Some(onClickBlock("heading-one"));
     } else if (isH2Hotkey(event)) {
-      return Some(this.onClickBlock("heading-two"));
+      return Some(onClickBlock("heading-two"));
     } else if (isQuoteHotkey(event)) {
-      return Some(this.onClickBlock("block-quote"));
+      return Some(onClickBlock("block-quote"));
     } else if (isOlHotkey(event)) {
-      return Some(this.onClickBlock("numbered-list"));
+      return Some(onClickBlock("numbered-list"));
     } else if (isUlHotkey(event)) {
-      return Some(this.onClickBlock("bulleted-list"));
+      return Some(onClickBlock("bulleted-list"));
     } else {
       return None;
     }
   };
-
-  onKeyDown: Plugin["onKeyDown"] = (event, editor, next) => {
-    const menuShowing =
-      this.state.isEmojiMenuShowing || this.state.isTagsMenuShowing;
-    if (isListShortcut(event, this.state.shortcutSearch, menuShowing)) {
+  const onWindowKeyDown = (event: Event) => {
+    getToolbarShortcutHandlerFromKeyEvent(event).map(handler => {
+      handler(event);
+    });
+    if (isCtrlHotKey(event)) {
+      setIsCtrlHeld(true);
+    }
+  };
+  const onWindowKeyUp = (event: KeyboardEvent) => {
+    if (!isCtrlHotKey(event)) {
+      setIsCtrlHeld(false);
+    }
+  };
+  const onEditorKeyDown = (event: KeyboardEvent, editor, next) => {
+    // TODO: state is old? Maybe needs to be memo or triggered by an effect somehow
+    const menuShowing = isEmojiShortcut || isTagsShortcut;
+    if (menuShowing && isListShortcut(event) && shortcutSearch.isDefined()) {
+      event.stopPropagation();
       event.preventDefault();
       return;
     }
-
-    this.handleResetBlockOnEnterPressed(event, editor, next);
-
-    if (isCtrlHotKey(event)) {
-      this.setState({ isCtrlHeld: true });
-    }
-
-    this.getEventHandlerFromKeyEvent(event).map(handler => {
-      event.preventDefault();
-      handler(event);
-    });
-  };
-
-  onKeyUp = (event: KeyboardEvent) => {
-    if (event.keyCode === 17) {
-      this.setState({ isCtrlHeld: false });
-    }
-  };
-
-  handleResetBlockOnEnterPressed: Plugin["onKeyDown"] = (
-    event: KeyboardEvent,
-    editor,
-    next
-  ) => {
     const isEnterKey = isEnterHotKey(event) && !event.shiftKey;
     if (isEnterKey) {
       const previousBlockType = editor.value.focusBlock.type;
@@ -254,10 +265,10 @@ export class InternoteEditor extends React.Component<Props, State> {
       if (!isListItem) {
         // NB: Allow enter key to progress to add new paragraph
         // it's important that next() is called before
-        // this.resetBlocks() as otherwise the previous formatting
+        // resetBlocks() as otherwise the previous formatting
         // will be removed
         next();
-        this.resetBlocks();
+        resetBlocks();
         return;
       }
       const lastBlockEmpty = editor.value.startText.text.length === 0;
@@ -265,297 +276,182 @@ export class InternoteEditor extends React.Component<Props, State> {
         !!editor.value.nextBlock && editor.value.nextBlock.type === "list-item";
       const shouldCloseList = lastBlockEmpty && !nextBlockIsListItem;
       if (shouldCloseList) {
-        this.resetBlocks();
+        resetBlocks();
         return;
       }
     }
     next();
   };
 
-  handleShortcutSearch = () => {
-    const shortcut = getCurrentFocusedWord(this.editor.value).filter(
-      isShortcut
-    );
-    // Handle emojis
-    shortcut
-      .filter(wordIsEmojiShortcut)
-      .map(extractWord)
-      .fold(
-        () => {
-          if (this.state.isEmojiMenuShowing) {
-            this.setEmojiMenuShowing(false);
-          }
-        },
-        shortcutSearch => {
-          this.setState({ shortcutSearch }, () => {
-            this.setEmojiMenuShowing(true);
-          });
-        }
-      );
-    // Handle tags
-    shortcut
-      .filter(wordIsTagShortcut)
-      .map(extractWord)
-      .fold(
-        () => this.setTagsMenuShowing(false),
-        shortcutSearch => {
-          this.setState({ shortcutSearch }, () => {
-            this.setTagsMenuShowing(true);
-          });
-        }
-      );
-  };
-
-  resetBlocks = (node: string = DEFAULT_NODE) => {
-    this.editor
+  /**
+   * Editor methods
+   */
+  const resetBlocks = (node: string = DEFAULT_NODE) => {
+    editor.current
       .setBlocks(node)
       .unwrapBlock("bulleted-list")
       .unwrapBlock("numbered-list");
   };
+  const focusNode = (node: Node) => {
+    editor.current.moveToRangeOfNode(node);
+    editor.current.moveFocusToStartOfNode(node);
+    editor.current.focus();
+  };
 
-  handleEditorScroll = throttle(
-    () => {
-      if (
-        this.scrollWrap &&
-        !this.state.userScrolled &&
-        !this.preventScrollListener
-      ) {
-        this.setState({ userScrolled: true });
-      }
-    },
-    500,
-    { leading: true, trailing: false }
-  );
-
-  handleFocusModeScroll = throttle(
-    () => {
-      const focusedBlock = document.querySelector(".node-focused");
-      const editorScrollWrap = this.scrollWrap;
-      if (
-        !hasSelection(this.state.value) &&
-        focusedBlock &&
-        editorScrollWrap &&
-        this.scroller
-      ) {
-        this.preventScrollListener = true;
-        this.scrollEditorToElement(focusedBlock as HTMLElement);
-        this.setState({ userScrolled: false });
-      }
-    },
-    100,
-    { leading: true, trailing: true }
-  );
-
-  scrollEditorToElement = (element: HTMLElement) => {
-    this.scroller.center(element, 100, 0, () => {
-      window.requestAnimationFrame(() => {
-        this.preventScrollListener = false;
-      });
+  /**
+   * Scrolling
+   */
+  const handleEditorScroll = () => {
+    // TODO: this is screwing focus mode
+    if (scrollWrap && !userScrolled && !preventScrollListener.current) {
+      // setUserScrolled(true);
+    }
+  };
+  const handleFocusModeScroll = () => {
+    const focusedBlock = document.querySelector(".node-focused");
+    const editorScrollWrap = scrollWrap;
+    if (!hasSelection(value) && focusedBlock && editorScrollWrap && scrollRef) {
+      preventScrollListener.current = true;
+      scrollEditorToElement(focusedBlock as HTMLElement);
+      setUserScrolled(false);
+    }
+  };
+  const scrollEditorToElement = (element: HTMLElement) => {
+    scrollRef.current.center(element, 100, 0, () => {
+      preventScrollListener.current = false;
     });
   };
 
-  onClickMark = (type: MarkType) => (event: Event) => {
-    event.preventDefault();
-    this.editor.toggleMark(type);
+  /**
+   * Mark and block handling
+   */
+  const onClickMark = (type: MarkType) => {
+    return function(event: Event) {
+      event.preventDefault();
+      editor.current.toggleMark(type);
+    };
   };
-
-  onClickBlock = (type: BlockType) => (event: Event) => {
-    event.preventDefault();
-    const { editor } = this;
-    // Handle everything but list buttons.
-    if (type !== "bulleted-list" && type !== "numbered-list") {
-      const hasBeenMadeActive = currentFocusHasBlock(type, this.state.value);
-      const isList = currentFocusHasBlock("list-item", this.state.value);
-      if (isList) {
-        this.resetBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
+  const onClickBlock = (type: BlockType) => {
+    return function(event: Event) {
+      event.preventDefault();
+      // Handle everything but list buttons.
+      if (type !== "bulleted-list" && type !== "numbered-list") {
+        const hasBeenMadeActive = currentFocusHasBlock(type, value);
+        const isList = currentFocusHasBlock("list-item", value);
+        if (isList) {
+          resetBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
+        } else {
+          editor.current.setBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
+        }
       } else {
-        editor.setBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
-      }
-    } else {
-      // Handle the extra wrapping required for list buttons.
-      const isList = currentFocusHasBlock("list-item", this.state.value);
-      const isType = editor.value.blocks.some(
-        block =>
-          !!editor.value.document.getClosest(
-            block.key,
-            (parent: any) => parent.type === type
-          )
-      );
-      if (isList && isType) {
-        this.resetBlocks();
-      } else if (isList) {
-        editor
-          .unwrapBlock(
-            type === "bulleted-list" ? "numbered-list" : "bulleted-list"
-          )
-          .wrapBlock(type);
-      } else {
-        editor.setBlocks("list-item").wrapBlock(type);
-      }
-    }
-  };
-
-  onRequestSpeech = () => {
-    getSelectedText(this.state.value).map(this.props.onRequestSpeech);
-    window.requestAnimationFrame(this.refocusEditor);
-  };
-
-  onRequestDictionary = () => {
-    getSelectedText(this.state.value)
-      .flatMap(getFirstWordFromString)
-      .map(word => {
-        this.props.onRequestDictionary(word);
-        this.setState({ dictionaryRequestedWord: word });
-      });
-    window.requestAnimationFrame(this.refocusEditor);
-  };
-
-  onToggleDictionary = () => {
-    if (this.props.isDictionaryShowing) {
-      this.closeDictionary();
-    } else {
-      this.onRequestDictionary();
-    }
-  };
-
-  closeDictionary = () => {
-    this.props.closeDictionary();
-    this.setState({ dictionaryRequestedWord: "" });
-    window.requestAnimationFrame(this.refocusEditor);
-  };
-
-  setEmojiMenuShowing = (
-    emojiMenuShowing: boolean,
-    forceShowEmojiMenu?: boolean
-  ) => {
-    this.setState(
-      {
-        isEmojiMenuShowing: emojiMenuShowing,
-        forceShowEmojiMenu:
-          typeof forceShowEmojiMenu !== "undefined"
-            ? forceShowEmojiMenu
-            : this.state.forceShowEmojiMenu
-      },
-      () => {
-        if (!this.state.isEmojiMenuShowing) {
-          this.refocusEditor();
+        // Handle the extra wrapping required for list buttons.
+        const isList = currentFocusHasBlock("list-item", value);
+        const isType = value.blocks.some(
+          block =>
+            !!value.document.getClosest(
+              block.key,
+              (parent: any) => parent.type === type
+            )
+        );
+        if (isList && isType) {
+          resetBlocks();
+        } else if (isList) {
+          editor.current
+            .unwrapBlock(
+              type === "bulleted-list" ? "numbered-list" : "bulleted-list"
+            )
+            .wrapBlock(type);
+        } else {
+          editor.current.setBlocks("list-item").wrapBlock(type);
         }
       }
-    );
+    };
   };
 
-  setTagsMenuShowing = (isTagsMenuShowing: boolean) => {
-    this.setState(
-      {
-        isTagsMenuShowing
-      },
-      () => {
-        if (!this.state.isTagsMenuShowing) {
-          this.editor.focus();
-        }
-      }
-    );
+  /**
+   * Speech
+   */
+  const requestSpeech = () => {
+    getSelectedText(value).map(onRequestSpeech);
   };
 
-  closeExpandedToolbar = () => {
-    this.setEmojiMenuShowing(false, false);
-    this.setTagsMenuShowing(false);
-    this.closeDictionary();
+  /**
+   * Dictionary
+   */
+  const requestDictionary = () => {
+    selectedText.flatMap(getFirstWordFromString).map(onRequestDictionary);
   };
-
-  insertEmoji = (emoji: Emoji) => {
-    this.refocusEditor();
-    if (this.state.shortcutSearch.length > 0) {
-      this.editor.deleteBackward(this.state.shortcutSearch.length + 1); // NB: +1 required to compensate for colon
+  const onToggleDictionary = () => {
+    if (isDictionaryShowing) {
+      onCloseDictionary();
+    } else {
+      requestDictionary();
     }
-    this.editor.insertInline({ type: "emoji", data: { code: emoji.char } });
-    window.requestAnimationFrame(() => {
-      this.setState({ isEmojiMenuShowing: false }, () => {
-        this.editor.moveToStartOfNextText();
-        this.refocusEditor();
-      });
-    });
   };
 
-  insertTag = (tag: string, shouldCloseTagsMenu: boolean = true) => {
-    this.refocusEditor();
-    if (this.state.shortcutSearch.length > 0) {
-      this.editor.deleteBackward(this.state.shortcutSearch.length + 1); // NB: +1 required to compensate for hash
-    }
-    this.editor.insertInline({ type: "tag", data: { tag } });
-    if (shouldCloseTagsMenu) {
-      this.closeTagsMenu();
-    }
-    this.editor.moveToStartOfNextText();
-    this.refocusEditor();
+  /**
+   * Emojis
+   */
+  const insertEmoji = (emoji: Emoji) => {
+    shortcutSearch.map(getLength).map(editor.current.deleteBackward);
+    editor.current.insertInline({ type: "emoji", data: { code: emoji.char } });
+    editor.current.focus();
+    editor.current.moveToStartOfNextText();
   };
 
-  closeTagsMenu = () => {
-    window.requestAnimationFrame(() => {
-      this.setState({ isTagsMenuShowing: false });
-    });
+  /**
+   * Tags
+   */
+  const insertTag = (tag: string) => {
+    shortcutSearch.map(getLength).map(editor.current.deleteBackward);
+    editor.current.insertInline({ type: "tag", data: { tag } });
+    editor.current.focus();
+    editor.current.moveToStartOfNextText();
+  };
+  const createNewTag = () => {
+    shortcutSearch.map(insertTag);
   };
 
-  onCreateNewTag = async (tag: string) => {
-    window.requestAnimationFrame(() => {
-      this.insertTag(tag, false);
-    });
-    await this.props.onCreateNewTag(this.getChanges());
-    this.closeTagsMenu();
+  /**
+   * Toolbar
+   */
+  const closeExpandedToolbar = () => {
+    setIsEmojiButtonPressed(false);
+    onCloseDictionary();
   };
 
-  undo = () => {
-    this.editor.undo();
-  };
-
-  redo = () => {
-    this.editor.redo();
-  };
-
-  refocusEditor = () => {
-    this.editor.focus();
-  };
-
-  focusNode = (node: Node) => {
-    this.editor.moveToRangeOfNode(node);
-    this.editor.moveFocusToStartOfNode(node);
-    this.editor.focus();
-  };
-
-  renderMarkButton = (type: MarkType, shortcutNumber: number) => {
+  /**
+   * Rendering
+   */
+  const renderMarkButton = (type: MarkType, shortcutNumber: number) => {
     // TODO: onClick type
     return (
       <ToolbarButton
-        onClick={this.onClickMark(type) as any}
-        isActive={currentFocusHasMark(type, this.state.value)}
+        onClick={onClickMark(type) as any}
+        isActive={currentFocusHasMark(type, value)}
         shortcutNumber={shortcutNumber}
-        shortcutShowing={this.state.isCtrlHeld}
+        shortcutShowing={isCtrlHeld}
       >
         {renderToolbarIcon(type)}
       </ToolbarButton>
     );
   };
-
-  renderBlockButton = (type: BlockType, shortcutNumber: number) => {
+  const renderBlockButton = (type: BlockType, shortcutNumber: number) => {
     const isActive =
-      currentFocusHasBlock(type, this.state.value) ||
-      currentFocusIsWithinList(type, this.state.value);
-
-    // TODO: onClick type
+      currentFocusHasBlock(type, value) ||
+      currentFocusIsWithinList(type, value);
     return (
       <ToolbarButton
-        onClick={this.onClickBlock(type) as any}
+        onClick={onClickBlock(type) as any}
         isActive={isActive}
         shortcutNumber={shortcutNumber}
-        shortcutShowing={this.state.isCtrlHeld}
+        shortcutShowing={isCtrlHeld}
       >
         {renderToolbarIcon(type)}
       </ToolbarButton>
     );
   };
-
-  // TODO: update this when types support
-  renderBlock: any = ({ attributes, children, node, isSelected, key }) => {
+  const renderBlock = ({ attributes, children, node, isSelected, key }) => {
     const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
     const preventForBlocks: (BlockType | BlockName)[] = [
       "list-item",
@@ -563,16 +459,15 @@ export class InternoteEditor extends React.Component<Props, State> {
       "numbered-list"
     ];
     const shouldFocusNode =
-      !hasSelection(this.state.value) &&
+      !hasSelection(value) &&
       !preventForBlocks.includes(node.type) &&
       isSelected &&
-      key !== this.focusedNodeKey;
-
+      key !== focusedNodeKey.current;
     if (shouldFocusNode) {
-      this.focusedNodeKey = key;
-      window.requestAnimationFrame(this.handleFocusModeScroll);
+      focusedNodeKey.current = key;
+      // requestAnimationFrame
+      handleFocusModeScroll();
     }
-
     switch ((node as any).type) {
       case "paragraph":
         return (
@@ -610,10 +505,8 @@ export class InternoteEditor extends React.Component<Props, State> {
         );
     }
   };
-
-  renderMark: Plugin["renderMark"] = (props, next) => {
+  const renderMark = (props, next) => {
     const { children, mark, attributes } = props;
-
     switch (mark.type as MarkType) {
       case "bold":
         return <strong {...attributes}>{children}</strong>;
@@ -627,11 +520,8 @@ export class InternoteEditor extends React.Component<Props, State> {
         return next();
     }
   };
-
-  // TODO: types
-  renderInline: any = (props, _editor, next) => {
+  const renderInline = (props, _editor, next) => {
     const { attributes, node } = props;
-
     switch (node.type) {
       case "emoji":
         return (
@@ -660,154 +550,174 @@ export class InternoteEditor extends React.Component<Props, State> {
     }
   };
 
-  render() {
-    const isEmojiMenuShowing =
-      this.state.isEmojiMenuShowing || this.state.forceShowEmojiMenu;
-    const toolbarIsExpanded =
-      isEmojiMenuShowing ||
-      this.state.isTagsMenuShowing ||
-      this.props.isDictionaryShowing ||
-      this.props.newTagSaving;
-    const isToolbarShowing =
-      hasSelection(this.state.value) ||
-      !!this.props.speechSrc ||
-      this.state.isCtrlHeld ||
-      toolbarIsExpanded;
-
-    return (
-      <Wrap>
-        <EditorStyles
-          ref={elm => {
-            const node = ReactDOM.findDOMNode(elm);
-            if (node) {
-              this.storeScrollWrapRef(node as HTMLDivElement);
-            }
-          }}
-        >
-          <EditorInnerWrap
-            distractionFree={this.props.distractionFree}
-            userScrolled={this.state.userScrolled}
-          >
-            <Editor
-              placeholder=""
-              ref={this.storeEditorRef}
-              value={this.state.value as any}
-              onChange={change => this.onChange(change.value)}
-              onKeyDown={this.onKeyDown}
-              renderBlock={this.renderBlock}
-              renderMark={this.renderMark}
-              renderInline={this.renderInline}
-              autoFocus
-              schema={this.schema}
-              distractionFree={this.props.distractionFree}
+  return (
+    <Wrap>
+      {isShortcutsReferenceShowing ? (
+        <Shortcut
+          id="hide-shortcuts-reference"
+          description="Hide shortcuts reference"
+          keyCombo={["esc", "mod+k"]}
+          callback={() => setIsShortcutsReferenceShowing(false)}
+        />
+      ) : (
+        <Shortcut
+          id="show-shortcuts-reference"
+          description="Show shortcuts reference"
+          keyCombo="mod+k"
+          callback={() => setIsShortcutsReferenceShowing(true)}
+        />
+      )}
+      {toolbarIsExpanded ? (
+        <Shortcut
+          id="close-expanded-toolbar"
+          description="Close the toolbar"
+          keyCombo="esc"
+          callback={closeExpandedToolbar}
+        />
+      ) : null}
+      {editor.current && editor.current.focus ? (
+        <>
+          {selectedText.isDefined() ? (
+            <Shortcut
+              id="request-speech"
+              description="Speak selected text"
+              keyCombo="mod+s"
+              callback={requestSpeech}
+              disabled={!!speechSrc}
             />
-
-            <Outline
-              value={this.state.value}
-              onHeadingClick={this.focusNode}
-              showing={this.props.outlineShowing}
-            />
-          </EditorInnerWrap>
-        </EditorStyles>
-
-        <ToolbarWrapper
-          distractionFree={this.props.distractionFree}
-          forceShow={isToolbarShowing}
-        >
-          <ToolbarInner>
-            <Flex flex={1}>
-              {this.renderBlockButton("heading-one", 1)}
-              {this.renderBlockButton("heading-two", 2)}
-              {this.renderBlockButton("numbered-list", 3)}
-              {this.renderBlockButton("bulleted-list", 4)}
-              {this.renderMarkButton("code", 5)}
-              {this.renderBlockButton("block-quote", 6)}
-              {this.renderMarkButton("bold", 7)}
-              {this.renderMarkButton("italic", 8)}
-              {this.renderMarkButton("underlined", 9)}
-              <ButtonSpacer small>
-                <EmojiToggle
-                  isActive={isEmojiMenuShowing}
-                  onClick={() =>
-                    this.setEmojiMenuShowing(
-                      !this.state.isEmojiMenuShowing,
-                      !this.state.isEmojiMenuShowing
-                    )
-                  }
-                />
-              </ButtonSpacer>
-              <ButtonSpacer small>
-                <UndoRedoButton
-                  onClick={this.undo}
-                  icon={faUndo}
-                  tooltip="Undo"
-                />
-              </ButtonSpacer>
-              <ButtonSpacer small>
-                <UndoRedoButton
-                  onClick={this.redo}
-                  icon={faRedo}
-                  tooltip="Redo"
-                />
-              </ButtonSpacer>
-            </Flex>
-            <Flex alignItems="center">
-              <ButtonSpacer small>
-                <DictionaryButton
-                  isLoading={this.props.isDictionaryLoading}
-                  isShowing={this.props.isDictionaryShowing}
-                  onClick={this.onToggleDictionary}
-                />
-              </ButtonSpacer>
-              <ButtonSpacer small>
-                <Speech
-                  onRequest={this.onRequestSpeech}
-                  src={this.props.speechSrc}
-                  isLoading={this.props.isSpeechLoading}
-                  onDiscard={this.props.onDiscardSpeech}
-                  onFinished={this.props.onDiscardSpeech}
-                />
-              </ButtonSpacer>
-              <ButtonSpacer>
-                <DeleteNoteButton onClick={this.props.onDelete} />
-              </ButtonSpacer>
-              <Saving saving={this.props.saving} />
-            </Flex>
-          </ToolbarInner>
-          {toolbarIsExpanded ? (
-            <OnKeyboardShortcut keyCombo="esc" cb={this.closeExpandedToolbar} />
           ) : null}
-          <OnKeyboardShortcut keyCombo="mod+d" cb={this.onRequestDictionary} />
-          <Collapse isOpened={toolbarIsExpanded} style={{ width: "100%" }}>
-            <ToolbarExpandedWrapper>
-              <ToolbarExpandedInner>
-                <ToolbarInner>
-                  {this.state.isTagsMenuShowing || this.props.newTagSaving ? (
-                    <TagsList
-                      onTagSelected={this.insertTag}
-                      onCreateNewTag={this.onCreateNewTag}
-                      tags={this.props.tags.map(t => t.tag)}
-                      search={this.state.shortcutSearch}
-                      newTagSaving={this.props.newTagSaving}
-                    />
-                  ) : isEmojiMenuShowing ? (
-                    <EmojiList
-                      onEmojiSelected={this.insertEmoji}
-                      search={this.state.shortcutSearch}
-                    />
-                  ) : this.props.isDictionaryShowing ? (
-                    <Dictionary
-                      isLoading={this.props.isDictionaryLoading}
-                      results={this.props.dictionaryResults}
-                      requestedWord={this.state.dictionaryRequestedWord}
-                    />
-                  ) : null}
-                </ToolbarInner>
-              </ToolbarExpandedInner>
-            </ToolbarExpandedWrapper>
-          </Collapse>
-        </ToolbarWrapper>
-      </Wrap>
-    );
-  }
+          {selectedText.filter(stringIsOneWord).isDefined() ? (
+            <Shortcut
+              id="request-dictionary"
+              description={`Lookup "${selectedText.getOrElse("")}"`}
+              keyCombo="mod+d"
+              callback={requestDictionary}
+            />
+          ) : null}
+        </>
+      ) : null}
+      <EditorStyles ref={scrollWrap}>
+        <EditorInnerWrap
+          distractionFree={distractionFree}
+          userScrolled={userScrolled}
+        >
+          <Editor
+            placeholder=""
+            ref={editor}
+            value={value as any}
+            onChange={c => setValue(c.value)}
+            onKeyDown={onEditorKeyDown}
+            renderBlock={renderBlock}
+            renderMark={renderMark}
+            renderInline={renderInline}
+            autoFocus
+            schema={schema}
+            distractionFree={distractionFree}
+          />
+          <Outline
+            value={value}
+            onHeadingClick={focusNode}
+            showing={outlineShowing}
+          />
+        </EditorInnerWrap>
+      </EditorStyles>
+
+      <ToolbarWrapper
+        distractionFree={distractionFree}
+        forceShow={isToolbarShowing}
+      >
+        <ToolbarInner>
+          <Flex flex={1}>
+            {renderBlockButton("heading-one", 1)}
+            {renderBlockButton("heading-two", 2)}
+            {renderBlockButton("numbered-list", 3)}
+            {renderBlockButton("bulleted-list", 4)}
+            {renderMarkButton("code", 5)}
+            {renderBlockButton("block-quote", 6)}
+            {renderMarkButton("bold", 7)}
+            {renderMarkButton("italic", 8)}
+            {renderMarkButton("underlined", 9)}
+            <ButtonSpacer small>
+              <EmojiToggle
+                isActive={isEmojiShortcut || isEmojiButtonPressed}
+                onClick={() => setIsEmojiButtonPressed(!isEmojiButtonPressed)}
+              />
+            </ButtonSpacer>
+            <ButtonSpacer small>
+              <UndoRedoButton
+                onClick={editor.current && editor.current.undo}
+                icon={faUndo}
+                tooltip="Undo"
+              />
+            </ButtonSpacer>
+            <ButtonSpacer small>
+              <UndoRedoButton
+                onClick={editor.current && editor.current.redo}
+                icon={faRedo}
+                tooltip="Redo"
+              />
+            </ButtonSpacer>
+          </Flex>
+          <Flex alignItems="center">
+            <ButtonSpacer small>
+              <DictionaryButton
+                isLoading={isDictionaryLoading}
+                isShowing={isDictionaryShowing}
+                onClick={onToggleDictionary}
+              />
+            </ButtonSpacer>
+            <ButtonSpacer small>
+              <Speech
+                onRequest={requestSpeech}
+                src={speechSrc}
+                isLoading={isSpeechLoading}
+                onDiscard={onDiscardSpeech}
+                onFinished={onDiscardSpeech}
+              />
+            </ButtonSpacer>
+            <ButtonSpacer>
+              <DeleteNoteButton onClick={onDelete} />
+            </ButtonSpacer>
+            <Saving saving={saving} />
+          </Flex>
+        </ToolbarInner>
+        <Collapse isOpened={toolbarIsExpanded} style={{ width: "100%" }}>
+          <ToolbarExpandedWrapper>
+            <ToolbarExpandedInner>
+              <ToolbarInner>
+                {isTagsShortcut || newTagSaving ? (
+                  <TagsList
+                    onTagSelected={insertTag}
+                    onCreateNewTag={createNewTag}
+                    tags={tags.map(t => t.tag)}
+                    search={shortcutSearch
+                      .flatMap(removeFirstLetterFromString)
+                      .getOrElse("")}
+                    newTagSaving={newTagSaving}
+                  />
+                ) : isEmojiButtonPressed || isEmojiShortcut ? (
+                  <EmojiList
+                    onEmojiSelected={insertEmoji}
+                    search={shortcutSearch
+                      .flatMap(removeFirstLetterFromString)
+                      .getOrElse("")}
+                  />
+                ) : isDictionaryShowing ? (
+                  <Dictionary
+                    isLoading={isDictionaryLoading}
+                    results={dictionaryResults}
+                    requestedWord={selectedText
+                      .flatMap(getFirstWordFromString)
+                      .getOrElse("")}
+                  />
+                ) : isShortcutsReferenceShowing ? (
+                  <ShortcutsReference />
+                ) : null}
+              </ToolbarInner>
+            </ToolbarExpandedInner>
+          </ToolbarExpandedWrapper>
+        </Collapse>
+      </ToolbarWrapper>
+    </Wrap>
+  );
 }
