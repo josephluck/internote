@@ -64,10 +64,9 @@ export function InternoteEditor({
   onDiscardSpeech,
   onCloseDictionary,
   onRequestDictionary,
-  onChange,
-  // onCreateNewTag, // TODO: fix this
-  onDelete
-}: {
+  onChange
+}: // onCreateNewTag, // TODO: fix this
+{
   id: string;
   overwriteCount: number;
   initialValue: {};
@@ -83,7 +82,6 @@ export function InternoteEditor({
   newTagSaving: boolean;
   onChange: (value: OnChange) => Promise<void>;
   onCreateNewTag: (value: OnChange) => Promise<void>;
-  onDelete: () => void;
   onRequestSpeech: (content: string) => any;
   onDiscardSpeech: () => any;
   onCloseDictionary: () => any;
@@ -505,6 +503,7 @@ export function InternoteEditor({
       </EditorStyles>
 
       <Toolbar
+        id={id}
         shortcutSearch={shortcutSearch}
         isDictionaryShowing={isDictionaryShowing}
         newTagSaving={newTagSaving}
@@ -519,7 +518,6 @@ export function InternoteEditor({
         isSpeechLoading={isSpeechLoading}
         onDiscardSpeech={onDiscardSpeech}
         saving={saving}
-        onDelete={onDelete}
         selectedText={selectedText}
         requestDictionary={requestDictionary}
         insertTag={insertTag}

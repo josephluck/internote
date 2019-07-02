@@ -1,7 +1,7 @@
 import * as React from "react";
 import { spacing } from "../theming/symbols";
 import { styled } from "../theming/styled";
-import { Store } from "../store";
+import { useTwine } from "../store";
 import { Modal } from "./modal";
 import { Button } from "./button";
 import { Flex, Box } from "@rebass/grid";
@@ -19,66 +19,53 @@ const DarkOverlay = styled.div<{ showing: boolean }>`
   pointer-events: none;
 `;
 
-export function Global({ store }: { store: Store }) {
+export function Global() {
+  const [{ confirmation }, { setConfirmation }] = useTwine(
+    state => ({ confirmation: state.confirmation.confirmation }),
+    actions => ({ setConfirmation: actions.confirmation.setConfirmation })
+  );
   return (
     <>
-      <Modal
-        open={!!store.state.confirmation.confirmation}
-        onClose={() => store.actions.confirmation.setConfirmation(null)}
-      >
+      <Modal open={!!confirmation} onClose={() => setConfirmation(null)}>
         <>
           <Box mb={spacing._1}>
-            {store.state.confirmation.confirmation
-              ? store.state.confirmation.confirmation.message
-              : "Are you sure?"}
+            {confirmation ? confirmation.message : "Are you sure?"}
           </Box>
           <Flex>
             <Box flex={1} mr={spacing._0_25}>
               <Button
                 onClick={() => {
-                  if (store.state.confirmation.confirmation.onCancel) {
-                    store.state.confirmation.confirmation.onCancel();
+                  if (confirmation.onCancel) {
+                    confirmation.onCancel();
                   } else {
-                    store.actions.confirmation.setConfirmation(null);
+                    setConfirmation(null);
                   }
                 }}
                 secondary
                 fullWidth
-                loading={
-                  store.state.confirmation.confirmation &&
-                  store.state.confirmation.confirmation.cancelLoading
-                }
+                loading={confirmation && confirmation.cancelLoading}
               >
-                {store.state.confirmation.confirmation &&
-                store.state.confirmation.confirmation.cancelButtonText
-                  ? store.state.confirmation.confirmation.cancelButtonText
+                {confirmation && confirmation.cancelButtonText
+                  ? confirmation.cancelButtonText
                   : "Cancel"}
               </Button>
             </Box>
             <Box flex={1} ml={spacing._0_25}>
               <Button
-                onClick={
-                  store.state.confirmation.confirmation
-                    ? store.state.confirmation.confirmation.onConfirm
-                    : undefined
-                }
+                onClick={confirmation ? confirmation.onConfirm : undefined}
                 secondary
                 fullWidth
-                loading={
-                  store.state.confirmation.confirmation &&
-                  store.state.confirmation.confirmation.confirmLoading
-                }
+                loading={confirmation && confirmation.confirmLoading}
               >
-                {store.state.confirmation.confirmation &&
-                store.state.confirmation.confirmation.confirmButtonText
-                  ? store.state.confirmation.confirmation.confirmButtonText
+                {confirmation && confirmation.confirmButtonText
+                  ? confirmation.confirmButtonText
                   : "Yes"}
               </Button>
             </Box>
           </Flex>
         </>
       </Modal>
-      <DarkOverlay showing={!!store.state.confirmation.confirmation} />
+      <DarkOverlay showing={!!confirmation} />
     </>
   );
 }

@@ -27,7 +27,7 @@ const Page: NextTwineSFC<Store, { id: string }, { id: string }> = props => {
           <OnMount cb={props.store.actions.ui.navigateToFirstNote} />
         )}
       </PageWrapper>
-      <Global store={props.store} />
+      <Global />
     </>
   );
 };

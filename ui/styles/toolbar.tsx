@@ -37,8 +37,10 @@ import { Option } from "space-lift";
 import { Value } from "slate";
 import { Tag, DictionaryResult } from "@internote/api/domains/types";
 import { Emoji } from "../utilities/emojis";
+import { useTwine } from "../store";
 
 export function Toolbar({
+  id,
   shortcutSearch,
   isDictionaryShowing,
   newTagSaving,
@@ -53,7 +55,6 @@ export function Toolbar({
   isSpeechLoading,
   onDiscardSpeech,
   saving,
-  onDelete,
   selectedText,
   requestDictionary,
   insertTag,
@@ -62,6 +63,7 @@ export function Toolbar({
   insertEmoji,
   dictionaryResults
 }: {
+  id: string;
   shortcutSearch: Option<string>;
   isDictionaryShowing: boolean;
   newTagSaving: boolean;
@@ -76,7 +78,6 @@ export function Toolbar({
   isSpeechLoading: boolean;
   onDiscardSpeech: () => any;
   saving: boolean;
-  onDelete: () => any;
   selectedText: Option<string>;
   requestDictionary: () => any;
   insertTag: (tag: string) => any;
@@ -85,6 +86,12 @@ export function Toolbar({
   insertEmoji: (emoji: Emoji) => any;
   dictionaryResults: DictionaryResult[];
 }) {
+  const [_, actions] = useTwine(
+    () => {},
+    actions => ({
+      onDelete: () => actions.notes.deleteNoteConfirmation({ noteId: id })
+    })
+  );
   const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
   const [
     isShortcutsReferenceShowing,
@@ -132,6 +139,8 @@ export function Toolbar({
     );
   };
 
+  console.log({ actions });
+
   return (
     <ToolbarWrapper
       distractionFree={distractionFree}
@@ -173,7 +182,7 @@ export function Toolbar({
             />
           </ButtonSpacer>
           <ButtonSpacer>
-            <DeleteNoteButton onClick={onDelete} />
+            <DeleteNoteButton onClick={actions.onDelete} />
           </ButtonSpacer>
           <Saving saving={saving} />
         </Flex>
