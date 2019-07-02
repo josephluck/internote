@@ -35,29 +35,17 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
             ...changes
           })
         }
-        onDelete={() =>
-          store.actions.notes.deleteNoteConfirmation({
-            noteId: note.id
-          })
-        }
-        saving={store.state.notes.loading.updateNote}
         distractionFree={store.state.preferences.distractionFree}
-        speechSrc={store.state.speech.speechSrc}
-        isSpeechLoading={store.state.speech.loading.requestSpeech}
         onRequestSpeech={content =>
           store.actions.speech.requestSpeech({ content, noteId: note.id })
         }
-        onDiscardSpeech={() => store.actions.speech.setSpeechSrc(null)}
         isDictionaryShowing={store.state.dictionary.dictionaryShowing}
         isDictionaryLoading={store.state.dictionary.loading.requestDictionary}
         onCloseDictionary={() =>
           store.actions.dictionary.setDictionaryShowing(false)
         }
         onRequestDictionary={store.actions.dictionary.requestDictionary}
-        dictionaryResults={store.state.dictionary.dictionaryResults}
         outlineShowing={store.state.preferences.outlineShowing}
-        tags={store.state.tags.tags}
-        newTagSaving={store.state.tags.loading.saveNewTag}
       />
     </>
   );

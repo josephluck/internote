@@ -35,7 +35,6 @@ import {
 } from "../utilities/editor";
 import { Option } from "space-lift";
 import { Value } from "slate";
-import { Tag, DictionaryResult } from "@internote/api/domains/types";
 import { Emoji } from "../utilities/emojis";
 import { useTwine } from "../store";
 
@@ -43,53 +42,57 @@ export function Toolbar({
   id,
   shortcutSearch,
   isDictionaryShowing,
-  newTagSaving,
   value,
-  speechSrc,
   onClickMark,
   onClickBlock,
   distractionFree,
   isDictionaryLoading,
   onToggleDictionary,
   requestSpeech,
-  isSpeechLoading,
-  onDiscardSpeech,
-  saving,
   selectedText,
   requestDictionary,
   insertTag,
   createNewTag,
-  tags,
-  insertEmoji,
-  dictionaryResults
+  insertEmoji
 }: {
   id: string;
   shortcutSearch: Option<string>;
   isDictionaryShowing: boolean;
-  newTagSaving: boolean;
   value: Value;
-  speechSrc: string;
   onClickMark: (type: any) => any;
   onClickBlock: (type: any) => any;
   distractionFree: boolean;
   isDictionaryLoading: boolean;
   onToggleDictionary: () => any;
   requestSpeech: () => any;
-  isSpeechLoading: boolean;
-  onDiscardSpeech: () => any;
-  saving: boolean;
   selectedText: Option<string>;
   requestDictionary: () => any;
   insertTag: (tag: string) => any;
-  tags: Tag[];
   createNewTag: () => any;
   insertEmoji: (emoji: Emoji) => any;
-  dictionaryResults: DictionaryResult[];
 }) {
-  const [_, actions] = useTwine(
-    () => {},
+  const [
+    {
+      tags,
+      saving,
+      speechSrc,
+      isSpeechLoading,
+      dictionaryResults,
+      newTagSaving
+    },
+    { onDelete, onDiscardSpeech }
+  ] = useTwine(
+    state => ({
+      tags: state.tags.tags,
+      saving: state.notes.loading.updateNote,
+      speechSrc: state.speech.speechSrc,
+      isSpeechLoading: state.speech.loading.requestSpeech,
+      dictionaryResults: state.dictionary.dictionaryResults,
+      newTagSaving: state.tags.loading.saveNewTag
+    }),
     actions => ({
-      onDelete: () => actions.notes.deleteNoteConfirmation({ noteId: id })
+      onDelete: () => actions.notes.deleteNoteConfirmation({ noteId: id }),
+      onDiscardSpeech: () => actions.speech.setSpeechSrc(null)
     })
   );
   const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
@@ -139,8 +142,6 @@ export function Toolbar({
     );
   };
 
-  console.log({ actions });
-
   return (
     <ToolbarWrapper
       distractionFree={distractionFree}
@@ -182,7 +183,7 @@ export function Toolbar({
             />
           </ButtonSpacer>
           <ButtonSpacer>
-            <DeleteNoteButton onClick={actions.onDelete} />
+            <DeleteNoteButton onClick={onDelete} />
           </ButtonSpacer>
           <Saving saving={saving} />
         </Flex>

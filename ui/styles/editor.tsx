@@ -3,7 +3,6 @@ import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import { Editor as SlateEditor } from "slate-react";
 import { SchemaProperties } from "slate";
-import * as Types from "@internote/api/domains/types";
 import {
   getValueOrDefault,
   isBoldHotkey,
@@ -47,45 +46,30 @@ const schema: SchemaProperties = {
 };
 
 export function InternoteEditor({
-  id,
-  overwriteCount,
-  initialValue,
-  saving,
   distractionFree,
-  speechSrc,
-  isSpeechLoading,
+  id,
+  initialValue,
   isDictionaryLoading,
   isDictionaryShowing,
-  dictionaryResults,
-  outlineShowing,
-  tags,
-  newTagSaving,
-  onRequestSpeech,
-  onDiscardSpeech,
+  onChange,
   onCloseDictionary,
   onRequestDictionary,
-  onChange
-}: // onCreateNewTag, // TODO: fix this
-{
-  id: string;
-  overwriteCount: number;
-  initialValue: {};
-  saving: boolean;
+  onRequestSpeech,
+  outlineShowing,
+  overwriteCount
+}: {
   distractionFree: boolean;
-  speechSrc: string;
-  isSpeechLoading: boolean;
+  id: string;
+  initialValue: {};
   isDictionaryLoading: boolean;
   isDictionaryShowing: boolean;
-  dictionaryResults: Types.DictionaryResult[];
-  outlineShowing: boolean;
-  tags: Types.Tag[];
-  newTagSaving: boolean;
   onChange: (value: OnChange) => Promise<void>;
-  onCreateNewTag: (value: OnChange) => Promise<void>;
-  onRequestSpeech: (content: string) => any;
-  onDiscardSpeech: () => any;
   onCloseDictionary: () => any;
+  onCreateNewTag: (value: OnChange) => Promise<void>; // TODO: fix this
   onRequestDictionary: (word: string) => any;
+  onRequestSpeech: (content: string) => any;
+  outlineShowing: boolean;
+  overwriteCount: number;
 }) {
   /**
    * State
@@ -506,25 +490,18 @@ export function InternoteEditor({
         id={id}
         shortcutSearch={shortcutSearch}
         isDictionaryShowing={isDictionaryShowing}
-        newTagSaving={newTagSaving}
         value={value}
-        speechSrc={speechSrc}
         onClickMark={onClickMark}
         onClickBlock={onClickBlock}
         distractionFree={distractionFree}
         isDictionaryLoading={isDictionaryLoading}
         onToggleDictionary={onToggleDictionary}
         requestSpeech={requestSpeech}
-        isSpeechLoading={isSpeechLoading}
-        onDiscardSpeech={onDiscardSpeech}
-        saving={saving}
         selectedText={selectedText}
         requestDictionary={requestDictionary}
         insertTag={insertTag}
         createNewTag={createNewTag}
-        tags={tags}
         insertEmoji={insertEmoji}
-        dictionaryResults={dictionaryResults}
       />
     </Wrap>
   );
