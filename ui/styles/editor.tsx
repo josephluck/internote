@@ -237,19 +237,19 @@ export function InternoteEditor({
       return None;
     }
   };
-  const onWindowKeyDown = (event: Event) => {
+  const onWindowKeyDown = useCallback((event: Event) => {
     getToolbarShortcutHandlerFromKeyEvent(event).map(handler => {
       handler(event);
     });
     if (isCtrlHotKey(event)) {
       setIsCtrlHeld(true);
     }
-  };
-  const onWindowKeyUp = (event: KeyboardEvent) => {
+  }, []);
+  const onWindowKeyUp = useCallback((event: KeyboardEvent) => {
     if (!isCtrlHotKey(event)) {
       setIsCtrlHeld(false);
     }
-  };
+  }, []);
   const onEditorKeyDown = (event: KeyboardEvent, editor, next) => {
     // TODO: state is old? Maybe needs to be memo or triggered by an effect somehow
     const menuShowing = isEmojiShortcut || isTagsShortcut;
@@ -315,11 +315,10 @@ export function InternoteEditor({
   };
   const handleFocusModeScroll = useCallback(() => {
     const focusedBlock = document.querySelector(".node-focused");
-    const editorScrollWrap = scrollWrap;
     if (
       !hasSelection(debouncedValue) &&
       focusedBlock &&
-      editorScrollWrap &&
+      scrollWrap.current &&
       scrollRef.current
     ) {
       preventScrollListener.current = true;
@@ -340,49 +339,45 @@ export function InternoteEditor({
    * Mark and block handling
    */
   const onClickMark = useCallback(
-    (type: MarkType) => {
-      return function(event: Event) {
-        event.preventDefault();
-        editor.current.toggleMark(type);
-      };
+    (type: MarkType) => (event: Event) => {
+      event.preventDefault();
+      editor.current.toggleMark(type);
     },
     [editor.current]
   );
-  const onClickBlock = (type: BlockType) => {
-    return function(event: Event) {
-      event.preventDefault();
-      // Handle everything but list buttons.
-      if (type !== "bulleted-list" && type !== "numbered-list") {
-        const hasBeenMadeActive = currentFocusHasBlock(type, value);
-        const isList = currentFocusHasBlock("list-item", value);
-        if (isList) {
-          resetBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
-        } else {
-          editor.current.setBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
-        }
+  const onClickBlock = (type: BlockType) => (event: Event) => {
+    event.preventDefault();
+    // Handle everything but list buttons.
+    if (type !== "bulleted-list" && type !== "numbered-list") {
+      const hasBeenMadeActive = currentFocusHasBlock(type, value);
+      const isList = currentFocusHasBlock("list-item", value);
+      if (isList) {
+        resetBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
       } else {
-        // Handle the extra wrapping required for list buttons.
-        const isList = currentFocusHasBlock("list-item", value);
-        const isType = value.blocks.some(
-          block =>
-            !!value.document.getClosest(
-              block.key,
-              (parent: any) => parent.type === type
-            )
-        );
-        if (isList && isType) {
-          resetBlocks();
-        } else if (isList) {
-          editor.current
-            .unwrapBlock(
-              type === "bulleted-list" ? "numbered-list" : "bulleted-list"
-            )
-            .wrapBlock(type);
-        } else {
-          editor.current.setBlocks("list-item").wrapBlock(type);
-        }
+        editor.current.setBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
       }
-    };
+    } else {
+      // Handle the extra wrapping required for list buttons.
+      const isList = currentFocusHasBlock("list-item", value);
+      const isType = value.blocks.some(
+        block =>
+          !!value.document.getClosest(
+            block.key,
+            (parent: any) => parent.type === type
+          )
+      );
+      if (isList && isType) {
+        resetBlocks();
+      } else if (isList) {
+        editor.current
+          .unwrapBlock(
+            type === "bulleted-list" ? "numbered-list" : "bulleted-list"
+          )
+          .wrapBlock(type);
+      } else {
+        editor.current.setBlocks("list-item").wrapBlock(type);
+      }
+    }
   };
 
   /**
@@ -450,7 +445,6 @@ export function InternoteEditor({
    * Rendering
    */
   const renderMarkButton = (type: MarkType, shortcutNumber: number) => {
-    // TODO: onClick type
     return (
       <ToolbarButton
         onClick={onClickMark(type) as any}
@@ -578,50 +572,6 @@ export function InternoteEditor({
 
   return (
     <Wrap>
-      {isShortcutsReferenceShowing ? (
-        <Shortcut
-          id="hide-shortcuts-reference"
-          description="Hide shortcuts reference"
-          keyCombo={["esc", "mod+k"]}
-          callback={() => setIsShortcutsReferenceShowing(false)}
-        />
-      ) : (
-        <Shortcut
-          id="show-shortcuts-reference"
-          description="Show shortcuts reference"
-          keyCombo="mod+k"
-          callback={() => setIsShortcutsReferenceShowing(true)}
-        />
-      )}
-      {toolbarIsExpanded ? (
-        <Shortcut
-          id="close-expanded-toolbar"
-          description="Close the toolbar"
-          keyCombo="esc"
-          callback={closeExpandedToolbar}
-        />
-      ) : null}
-      {editor.current && editor.current.focus ? (
-        <>
-          {selectedText.isDefined() ? (
-            <Shortcut
-              id="request-speech"
-              description="Speak selected text"
-              keyCombo="mod+s"
-              callback={requestSpeech}
-              disabled={!!speechSrc}
-            />
-          ) : null}
-          {selectedText.filter(stringIsOneWord).isDefined() ? (
-            <Shortcut
-              id="request-dictionary"
-              description={`Lookup "${selectedText.getOrElse("")}"`}
-              keyCombo="mod+d"
-              callback={requestDictionary}
-            />
-          ) : null}
-        </>
-      ) : null}
       <EditorStyles ref={scrollWrap}>
         <EditorInnerWrap
           distractionFree={distractionFree}
@@ -706,6 +656,50 @@ export function InternoteEditor({
             </ButtonSpacer>
             <Saving saving={saving} />
           </Flex>
+          {isShortcutsReferenceShowing ? (
+            <Shortcut
+              id="hide-shortcuts-reference"
+              description="Hide shortcuts reference"
+              keyCombo={["esc", "mod+k"]}
+              callback={() => setIsShortcutsReferenceShowing(false)}
+            />
+          ) : (
+            <Shortcut
+              id="show-shortcuts-reference"
+              description="Show shortcuts reference"
+              keyCombo="mod+k"
+              callback={() => setIsShortcutsReferenceShowing(true)}
+            />
+          )}
+          {toolbarIsExpanded ? (
+            <Shortcut
+              id="close-expanded-toolbar"
+              description="Close the toolbar"
+              keyCombo="esc"
+              callback={closeExpandedToolbar}
+            />
+          ) : null}
+          {editor.current && editor.current.focus ? (
+            <>
+              {selectedText.isDefined() ? (
+                <Shortcut
+                  id="request-speech"
+                  description="Speak selected text"
+                  keyCombo="mod+s"
+                  callback={requestSpeech}
+                  disabled={!!speechSrc}
+                />
+              ) : null}
+              {selectedText.filter(stringIsOneWord).isDefined() ? (
+                <Shortcut
+                  id="request-dictionary"
+                  description={`Lookup "${selectedText.getOrElse("")}"`}
+                  keyCombo="mod+d"
+                  callback={requestDictionary}
+                />
+              ) : null}
+            </>
+          ) : null}
         </ToolbarInner>
         <Collapse isOpened={toolbarIsExpanded} style={{ width: "100%" }}>
           <ToolbarExpandedWrapper>

@@ -59,7 +59,6 @@ export function Note({ store, note }: { store: Store; note: Types.Note }) {
         tags={store.state.tags.tags}
         newTagSaving={store.state.tags.loading.saveNewTag}
       />
-      {/* </Flex> */}
     </>
   );
 }
