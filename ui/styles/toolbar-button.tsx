@@ -67,13 +67,13 @@ export function ToolbarButton({
   onClick,
   isActive,
   shortcutNumber,
-  shortcutShowing
+  shortcutShowing = false
 }: {
   children: React.ReactNode;
   onClick?: Event;
   isActive: boolean;
   shortcutNumber: number;
-  shortcutShowing: boolean;
+  shortcutShowing?: boolean;
 }) {
   return (
     <Button

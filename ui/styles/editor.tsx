@@ -2,25 +2,8 @@ import React, { useCallback } from "react";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import { Editor as SlateEditor } from "slate-react";
-import { Saving } from "./saving";
-import { Flex } from "@rebass/grid";
 import { SchemaProperties } from "slate";
-import { faUndo, faRedo } from "@fortawesome/free-solid-svg-icons";
-import { Speech } from "./speech";
-import { ToolbarButton, ButtonSpacer } from "./toolbar-button";
-import { Collapse } from "react-collapse";
 import * as Types from "@internote/api/domains/types";
-import { Dictionary } from "./dictionary";
-import { DictionaryButton } from "./dictionary-button";
-import { DeleteNoteButton } from "./delete-note-button";
-import { UndoRedoButton } from "./undo-redo-button";
-import {
-  ToolbarWrapper,
-  ToolbarInner,
-  ToolbarExpandedWrapper,
-  ToolbarExpandedInner,
-  renderToolbarIcon
-} from "./toolbar";
 import {
   getValueOrDefault,
   isBoldHotkey,
@@ -32,38 +15,23 @@ import {
   isQuoteHotkey,
   isOlHotkey,
   isUlHotkey,
-  isCtrlHotKey,
   isEnterHotKey,
   hasSelection,
   getSelectedText,
-  currentFocusIsWithinList,
   currentFocusHasBlock,
-  currentFocusHasMark,
   getCurrentFocusedWord,
-  wordIsEmojiShortcut,
-  isListShortcut,
   isShortcut,
-  wordIsTagShortcut,
   OnChange,
   getChanges
 } from "../utilities/editor";
 import { Wrap, EditorStyles, Editor, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
-import {
-  getFirstWordFromString,
-  removeFirstLetterFromString,
-  getLength,
-  stringIsOneWord
-} from "../utilities/string";
+import { getFirstWordFromString, getLength } from "../utilities/string";
 import { Outline } from "./outline";
-import { EmojiToggle } from "./emoji-toggle";
-import { EmojiList } from "./emoji-list";
 import { Emoji } from "../utilities/emojis";
-import { TagsList } from "./tags-list";
 import { Tag } from "./tag";
 import { useDebounce, useThrottle } from "../utilities/hooks";
-import { Shortcut } from "./shortcuts";
-import { ShortcutsReference } from "./shortcuts-reference";
+import { Toolbar } from "./toolbar";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -130,31 +98,12 @@ export function InternoteEditor({
   const debouncedValue = useDebounce(value, 1000);
   const throttledValue = useThrottle(value, 100);
   const [userScrolled, setUserScrolled] = React.useState(false);
-  const [isCtrlHeld, setIsCtrlHeld] = React.useState(false);
-  const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
-  const [
-    isShortcutsReferenceShowing,
-    setIsShortcutsReferenceShowing
-  ] = React.useState(false);
 
   /**
    * Derived state
    */
   const selectedText = getSelectedText(value);
   const shortcutSearch = getCurrentFocusedWord(value).filter(isShortcut);
-  const isEmojiShortcut = shortcutSearch
-    .filter(wordIsEmojiShortcut)
-    .isDefined();
-  const isTagsShortcut = shortcutSearch.filter(wordIsTagShortcut).isDefined();
-  const toolbarIsExpanded =
-    isEmojiShortcut ||
-    isEmojiButtonPressed ||
-    isTagsShortcut ||
-    isDictionaryShowing ||
-    newTagSaving ||
-    isShortcutsReferenceShowing;
-  const isToolbarShowing =
-    hasSelection(value) || !!speechSrc || isCtrlHeld || toolbarIsExpanded;
 
   /**
    * Refs
@@ -187,10 +136,8 @@ export function InternoteEditor({
    * Setup window event listeners
    */
   React.useEffect(() => {
-    window.addEventListener("keyup", onWindowKeyUp);
     window.addEventListener("keydown", onWindowKeyDown);
     return function() {
-      window.removeEventListener("keyup", onWindowKeyUp);
       window.removeEventListener("keydown", onWindowKeyDown);
     };
   }, []);
@@ -241,23 +188,17 @@ export function InternoteEditor({
     getToolbarShortcutHandlerFromKeyEvent(event).map(handler => {
       handler(event);
     });
-    if (isCtrlHotKey(event)) {
-      setIsCtrlHeld(true);
-    }
-  }, []);
-  const onWindowKeyUp = useCallback((event: KeyboardEvent) => {
-    if (!isCtrlHotKey(event)) {
-      setIsCtrlHeld(false);
-    }
   }, []);
   const onEditorKeyDown = (event: KeyboardEvent, editor, next) => {
     // TODO: state is old? Maybe needs to be memo or triggered by an effect somehow
-    const menuShowing = isEmojiShortcut || isTagsShortcut;
-    if (menuShowing && isListShortcut(event) && shortcutSearch.isDefined()) {
-      event.stopPropagation();
-      event.preventDefault();
-      return;
-    }
+
+    // TODO: fix this
+    // const menuShowing = isEmojiShortcut || isTagsShortcut;
+    // if (isListShortcut(event) && shortcutSearch.isDefined()) {
+    //   event.stopPropagation();
+    //   event.preventDefault();
+    //   return;
+    // }
     const isEnterKey = isEnterHotKey(event) && !event.shiftKey;
     if (isEnterKey) {
       const previousBlockType = editor.value.focusBlock.type;
@@ -434,43 +375,8 @@ export function InternoteEditor({
   }, [shortcutSearch]);
 
   /**
-   * Toolbar
-   */
-  const closeExpandedToolbar = useCallback(() => {
-    setIsEmojiButtonPressed(false);
-    onCloseDictionary();
-  }, [onCloseDictionary]);
-
-  /**
    * Rendering
    */
-  const renderMarkButton = (type: MarkType, shortcutNumber: number) => {
-    return (
-      <ToolbarButton
-        onClick={onClickMark(type) as any}
-        isActive={currentFocusHasMark(type, value)}
-        shortcutNumber={shortcutNumber}
-        shortcutShowing={isCtrlHeld}
-      >
-        {renderToolbarIcon(type)}
-      </ToolbarButton>
-    );
-  };
-  const renderBlockButton = (type: BlockType, shortcutNumber: number) => {
-    const isActive =
-      currentFocusHasBlock(type, value) ||
-      currentFocusIsWithinList(type, value);
-    return (
-      <ToolbarButton
-        onClick={onClickBlock(type) as any}
-        isActive={isActive}
-        shortcutNumber={shortcutNumber}
-        shortcutShowing={isCtrlHeld}
-      >
-        {renderToolbarIcon(type)}
-      </ToolbarButton>
-    );
-  };
   const renderBlock = ({ attributes, children, node, isSelected, key }) => {
     const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
     const preventForBlocks: (BlockType | BlockName)[] = [
@@ -598,146 +504,30 @@ export function InternoteEditor({
         </EditorInnerWrap>
       </EditorStyles>
 
-      <ToolbarWrapper
+      <Toolbar
+        shortcutSearch={shortcutSearch}
+        isDictionaryShowing={isDictionaryShowing}
+        newTagSaving={newTagSaving}
+        value={value}
+        speechSrc={speechSrc}
+        onClickMark={onClickMark}
+        onClickBlock={onClickBlock}
         distractionFree={distractionFree}
-        forceShow={isToolbarShowing}
-      >
-        <ToolbarInner>
-          <Flex flex={1}>
-            {renderBlockButton("heading-one", 1)}
-            {renderBlockButton("heading-two", 2)}
-            {renderBlockButton("numbered-list", 3)}
-            {renderBlockButton("bulleted-list", 4)}
-            {renderMarkButton("code", 5)}
-            {renderBlockButton("block-quote", 6)}
-            {renderMarkButton("bold", 7)}
-            {renderMarkButton("italic", 8)}
-            {renderMarkButton("underlined", 9)}
-            <ButtonSpacer small>
-              <EmojiToggle
-                isActive={isEmojiShortcut || isEmojiButtonPressed}
-                onClick={() => setIsEmojiButtonPressed(!isEmojiButtonPressed)}
-              />
-            </ButtonSpacer>
-            <ButtonSpacer small>
-              <UndoRedoButton
-                onClick={editor.current && editor.current.undo}
-                icon={faUndo}
-                tooltip="Undo"
-              />
-            </ButtonSpacer>
-            <ButtonSpacer small>
-              <UndoRedoButton
-                onClick={editor.current && editor.current.redo}
-                icon={faRedo}
-                tooltip="Redo"
-              />
-            </ButtonSpacer>
-          </Flex>
-          <Flex alignItems="center">
-            <ButtonSpacer small>
-              <DictionaryButton
-                isLoading={isDictionaryLoading}
-                isShowing={isDictionaryShowing}
-                onClick={onToggleDictionary}
-              />
-            </ButtonSpacer>
-            <ButtonSpacer small>
-              <Speech
-                onRequest={requestSpeech}
-                src={speechSrc}
-                isLoading={isSpeechLoading}
-                onDiscard={onDiscardSpeech}
-                onFinished={onDiscardSpeech}
-              />
-            </ButtonSpacer>
-            <ButtonSpacer>
-              <DeleteNoteButton onClick={onDelete} />
-            </ButtonSpacer>
-            <Saving saving={saving} />
-          </Flex>
-          {isShortcutsReferenceShowing ? (
-            <Shortcut
-              id="hide-shortcuts-reference"
-              description="Hide shortcuts reference"
-              keyCombo={["esc", "mod+k"]}
-              callback={() => setIsShortcutsReferenceShowing(false)}
-            />
-          ) : (
-            <Shortcut
-              id="show-shortcuts-reference"
-              description="Show shortcuts reference"
-              keyCombo="mod+k"
-              callback={() => setIsShortcutsReferenceShowing(true)}
-            />
-          )}
-          {toolbarIsExpanded ? (
-            <Shortcut
-              id="close-expanded-toolbar"
-              description="Close the toolbar"
-              keyCombo="esc"
-              callback={closeExpandedToolbar}
-            />
-          ) : null}
-          {editor.current && editor.current.focus ? (
-            <>
-              {selectedText.isDefined() ? (
-                <Shortcut
-                  id="request-speech"
-                  description="Speak selected text"
-                  keyCombo="mod+s"
-                  callback={requestSpeech}
-                  disabled={!!speechSrc}
-                />
-              ) : null}
-              {selectedText.filter(stringIsOneWord).isDefined() ? (
-                <Shortcut
-                  id="request-dictionary"
-                  description={`Lookup "${selectedText.getOrElse("")}"`}
-                  keyCombo="mod+d"
-                  callback={requestDictionary}
-                />
-              ) : null}
-            </>
-          ) : null}
-        </ToolbarInner>
-        <Collapse isOpened={toolbarIsExpanded} style={{ width: "100%" }}>
-          <ToolbarExpandedWrapper>
-            <ToolbarExpandedInner>
-              <ToolbarInner>
-                {isTagsShortcut || newTagSaving ? (
-                  <TagsList
-                    onTagSelected={insertTag}
-                    onCreateNewTag={createNewTag}
-                    tags={tags.map(t => t.tag)}
-                    search={shortcutSearch
-                      .flatMap(removeFirstLetterFromString)
-                      .getOrElse("")}
-                    newTagSaving={newTagSaving}
-                  />
-                ) : isEmojiButtonPressed || isEmojiShortcut ? (
-                  <EmojiList
-                    onEmojiSelected={insertEmoji}
-                    search={shortcutSearch
-                      .flatMap(removeFirstLetterFromString)
-                      .getOrElse("")}
-                  />
-                ) : isDictionaryShowing ? (
-                  <Dictionary
-                    isLoading={isDictionaryLoading}
-                    results={dictionaryResults}
-                    requestedWord={selectedText
-                      .flatMap(getFirstWordFromString)
-                      .getOrElse("")}
-                  />
-                ) : isShortcutsReferenceShowing ? (
-                  <ShortcutsReference />
-                ) : null}
-              </ToolbarInner>
-            </ToolbarExpandedInner>
-          </ToolbarExpandedWrapper>
-        </Collapse>
-      </ToolbarWrapper>
+        isDictionaryLoading={isDictionaryLoading}
+        onToggleDictionary={onToggleDictionary}
+        requestSpeech={requestSpeech}
+        isSpeechLoading={isSpeechLoading}
+        onDiscardSpeech={onDiscardSpeech}
+        saving={saving}
+        onDelete={onDelete}
+        selectedText={selectedText}
+        requestDictionary={requestDictionary}
+        insertTag={insertTag}
+        createNewTag={createNewTag}
+        tags={tags}
+        insertEmoji={insertEmoji}
+        dictionaryResults={dictionaryResults}
+      />
     </Wrap>
   );
 }
