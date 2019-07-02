@@ -31,6 +31,7 @@ import { Emoji } from "../utilities/emojis";
 import { Tag } from "./tag";
 import { useDebounce, useThrottle } from "../utilities/hooks";
 import { Toolbar } from "./toolbar";
+import { useTwine } from "../store";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -46,31 +47,41 @@ const schema: SchemaProperties = {
 };
 
 export function InternoteEditor({
-  distractionFree,
   id,
-  initialValue,
-  isDictionaryLoading,
-  isDictionaryShowing,
-  onChange,
-  onCloseDictionary,
-  onRequestDictionary,
-  onRequestSpeech,
-  outlineShowing,
-  overwriteCount
+  initialValue
 }: {
-  distractionFree: boolean;
   id: string;
   initialValue: {};
-  isDictionaryLoading: boolean;
-  isDictionaryShowing: boolean;
-  onChange: (value: OnChange) => Promise<void>;
-  onCloseDictionary: () => any;
-  onCreateNewTag: (value: OnChange) => Promise<void>; // TODO: fix this
-  onRequestDictionary: (word: string) => any;
-  onRequestSpeech: (content: string) => any;
-  outlineShowing: boolean;
-  overwriteCount: number;
 }) {
+  const [
+    {
+      overwriteCount,
+      outlineShowing,
+      isDictionaryLoading,
+      isDictionaryShowing,
+      distractionFree
+    },
+    { onChange, onRequestDictionary, onCloseDictionary, onRequestSpeech }
+  ] = useTwine(
+    state => ({
+      overwriteCount: state.notes.overwriteCount,
+      outlineShowing: state.preferences.outlineShowing,
+      isDictionaryLoading: state.dictionary.loading.requestDictionary,
+      isDictionaryShowing: state.dictionary.dictionaryShowing,
+      distractionFree: state.preferences.distractionFree
+    }),
+    actions => ({
+      onChange: (value: OnChange) =>
+        actions.notes.updateNote({ noteId: id, ...value }),
+      onRequestDictionary: actions.dictionary.requestDictionary,
+      onCloseDictionary: () => actions.dictionary.setDictionaryShowing(false),
+      onRequestSpeech: (content: string) =>
+        actions.speech.requestSpeech({ content, noteId: id }),
+      onCreateNewTag: (value: OnChange) =>
+        actions.tags.saveNewTag({ ...value, noteId: id })
+    })
+  );
+
   /**
    * State
    */

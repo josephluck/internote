@@ -22,7 +22,7 @@ const Page: NextTwineSFC<Store, { id: string }, { id: string }> = props => {
       <Heading store={props.store} note={note} />
       <PageWrapper>
         {note ? (
-          <Note store={props.store} note={note} />
+          <Note note={note} />
         ) : (
           <OnMount cb={props.store.actions.ui.navigateToFirstNote} />
         )}
