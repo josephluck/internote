@@ -12,6 +12,7 @@ import * as Confirmation from "./confirmation";
 import * as Tags from "./tags";
 import * as Ui from "./ui";
 import * as Notes from "./notes";
+import { makeTwineHooks } from "./with-twine";
 
 type Models = Twine.Models<
   Speech.Namespace &
@@ -139,3 +140,5 @@ export function makeStore() {
 export type Store = Twine.Return<Models["state"], Models["actions"]>;
 
 export const Subscribe = makeSubscriber(makeStore());
+
+export const { useTwine, injectTwine } = makeTwineHooks(makeStore);

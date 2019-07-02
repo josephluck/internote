@@ -1,8 +1,7 @@
 import * as React from "react";
 import App, { Container } from "next/app";
 import { font } from "../theming/symbols";
-import { makeStore, Store } from "../store";
-import { withTwine } from "../store/with-twine";
+import { injectTwine } from "../store";
 import { createGlobalStyle, ThemeProvider } from "../theming/styled";
 import Head from "next/head";
 import { inter } from "../theming/themes";
@@ -65,4 +64,4 @@ export class Application extends App {
   }
 }
 
-export default withTwine<Store>(makeStore, Application);
+export default injectTwine(Application);
