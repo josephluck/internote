@@ -135,7 +135,7 @@ export function InternoteEditor({
   const [
     isShortcutsReferenceShowing,
     setIsShortcutsReferenceShowing
-  ] = React.useState(true);
+  ] = React.useState(false);
 
   /**
    * Derived state
