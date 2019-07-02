@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import { Editor as SlateEditor } from "slate-react";
@@ -286,17 +286,23 @@ export function InternoteEditor({
   /**
    * Editor methods
    */
-  const resetBlocks = (node: string = DEFAULT_NODE) => {
-    editor.current
-      .setBlocks(node)
-      .unwrapBlock("bulleted-list")
-      .unwrapBlock("numbered-list");
-  };
-  const focusNode = (node: Node) => {
-    editor.current.moveToRangeOfNode(node);
-    editor.current.moveFocusToStartOfNode(node);
-    editor.current.focus();
-  };
+  const resetBlocks = useCallback(
+    (node: string = DEFAULT_NODE) => {
+      editor.current
+        .setBlocks(node)
+        .unwrapBlock("bulleted-list")
+        .unwrapBlock("numbered-list");
+    },
+    [editor.current]
+  );
+  const focusNode = useCallback(
+    (node: Node) => {
+      editor.current.moveToRangeOfNode(node);
+      editor.current.moveFocusToStartOfNode(node);
+      editor.current.focus();
+    },
+    [editor.current]
+  );
 
   /**
    * Scrolling
@@ -307,30 +313,41 @@ export function InternoteEditor({
       // setUserScrolled(true);
     }
   };
-  const handleFocusModeScroll = () => {
+  const handleFocusModeScroll = useCallback(() => {
     const focusedBlock = document.querySelector(".node-focused");
     const editorScrollWrap = scrollWrap;
-    if (!hasSelection(value) && focusedBlock && editorScrollWrap && scrollRef) {
+    if (
+      !hasSelection(debouncedValue) &&
+      focusedBlock &&
+      editorScrollWrap &&
+      scrollRef.current
+    ) {
       preventScrollListener.current = true;
       scrollEditorToElement(focusedBlock as HTMLElement);
       setUserScrolled(false);
     }
-  };
-  const scrollEditorToElement = (element: HTMLElement) => {
-    scrollRef.current.center(element, 100, 0, () => {
-      preventScrollListener.current = false;
-    });
-  };
+  }, [debouncedValue, scrollRef.current]);
+  const scrollEditorToElement = useCallback(
+    (element: HTMLElement) => {
+      scrollRef.current.center(element, 100, 0, () => {
+        preventScrollListener.current = false;
+      });
+    },
+    [scrollRef.current]
+  );
 
   /**
    * Mark and block handling
    */
-  const onClickMark = (type: MarkType) => {
-    return function(event: Event) {
-      event.preventDefault();
-      editor.current.toggleMark(type);
-    };
-  };
+  const onClickMark = useCallback(
+    (type: MarkType) => {
+      return function(event: Event) {
+        event.preventDefault();
+        editor.current.toggleMark(type);
+      };
+    },
+    [editor.current]
+  );
   const onClickBlock = (type: BlockType) => {
     return function(event: Event) {
       event.preventDefault();
@@ -371,54 +388,63 @@ export function InternoteEditor({
   /**
    * Speech
    */
-  const requestSpeech = () => {
+  const requestSpeech = useCallback(() => {
     getSelectedText(value).map(onRequestSpeech);
-  };
+  }, [value]);
 
   /**
    * Dictionary
    */
-  const requestDictionary = () => {
+  const requestDictionary = useCallback(() => {
     selectedText.flatMap(getFirstWordFromString).map(onRequestDictionary);
-  };
-  const onToggleDictionary = () => {
+  }, [selectedText]);
+  const onToggleDictionary = useCallback(() => {
     if (isDictionaryShowing) {
       onCloseDictionary();
     } else {
       requestDictionary();
     }
-  };
+  }, [isDictionaryLoading, onCloseDictionary, requestDictionary]);
 
   /**
    * Emojis
    */
-  const insertEmoji = (emoji: Emoji) => {
-    shortcutSearch.map(getLength).map(editor.current.deleteBackward);
-    editor.current.insertInline({ type: "emoji", data: { code: emoji.char } });
-    editor.current.focus();
-    editor.current.moveToStartOfNextText();
-  };
+  const insertEmoji = useCallback(
+    (emoji: Emoji) => {
+      shortcutSearch.map(getLength).map(editor.current.deleteBackward);
+      editor.current.insertInline({
+        type: "emoji",
+        data: { code: emoji.char }
+      });
+      editor.current.focus();
+      editor.current.moveToStartOfNextText();
+    },
+    [shortcutSearch, editor.current]
+  );
 
   /**
    * Tags
    */
-  const insertTag = (tag: string) => {
-    shortcutSearch.map(getLength).map(editor.current.deleteBackward);
-    editor.current.insertInline({ type: "tag", data: { tag } });
-    editor.current.focus();
-    editor.current.moveToStartOfNextText();
-  };
-  const createNewTag = () => {
+  const insertTag = useCallback(
+    (tag: string) => {
+      shortcutSearch.map(getLength).map(editor.current.deleteBackward);
+      editor.current.insertInline({ type: "tag", data: { tag } });
+      editor.current.focus();
+      editor.current.moveToStartOfNextText();
+    },
+    [shortcutSearch, editor.current]
+  );
+  const createNewTag = useCallback(() => {
     shortcutSearch.map(insertTag);
-  };
+  }, [shortcutSearch]);
 
   /**
    * Toolbar
    */
-  const closeExpandedToolbar = () => {
+  const closeExpandedToolbar = useCallback(() => {
     setIsEmojiButtonPressed(false);
     onCloseDictionary();
-  };
+  }, [onCloseDictionary]);
 
   /**
    * Rendering
