@@ -1,151 +1,154 @@
 export interface Theme {
   appBackground: string;
   appText: string;
-  headingBackground: string;
-  modalBackdropBackground: string;
-  dropdownMenuItemText: string;
-  dropdownMenuSpacerBorder: string;
-  primaryButtonText: string;
-  secondaryButtonText: string;
-  inputBackground: string;
-  inputText: string;
-  secondaryButtonBackground: string;
-  primaryButtonBackground: string;
-  savingActive: string;
-  savingInactive: string;
-  textLinkText: string;
-  codeBlockBackground: string;
-  formatButtonActiveBackground: string;
-  formatButtonActiveText: string;
-  formatButtonInactiveText: string;
-  formatButtonInactiveBackground: string;
-  expandingIconButtonBackground: string;
-  expandingIconButtonActiveText: string;
-  expandingIconButtonInactiveText: string;
-  toolbarButtonActiveBackground: string;
-  toolbarButtonActiveText: string;
-  toolbarButtonInactiveText: string;
-  toolbarButtonInactiveBackground: string;
-  toolbarButtonHoverBackground: string;
+  audioTimelineActive: string;
+  audioTimelineInactive: string;
   blockQuoteBorder: string;
   blockQuoteText: string;
-  toolbarBackground: string;
+  codeBlockBackground: string;
+  dictionaryDescriptionText: string;
   dropdownMenuBackground: string;
+  dropdownMenuItemText: string;
+  dropdownMenuSpacerBorder: string;
+  expandingIconButtonActiveText: string;
+  expandingIconButtonBackground: string;
+  expandingIconButtonInactiveText: string;
+  formatButtonActiveBackground: string;
+  formatButtonActiveText: string;
+  formatButtonInactiveBackground: string;
+  formatButtonInactiveText: string;
+  headingBackground: string;
+  inputBackground: string;
   inputLabelText: string;
+  inputText: string;
+  modalBackdropBackground: string;
+  modalBackground: string;
   modalCloseIconColor: string;
+  noResultsText: string;
+  notesMenuItemTextInactive: string;
+  primaryButtonBackground: string;
+  primaryButtonText: string;
+  savingActive: string;
+  savingInactive: string;
   searchInputBackground: string;
   searchInputFocusedBackground: string;
   searchInputText: string;
-  notesMenuItemTextInactive: string;
-  modalBackground: string;
-  audioTimelineInactive: string;
-  audioTimelineActive: string;
-  dictionaryDescriptionText: string;
-  tagText: string;
-  tagBackground: string;
+  secondaryButtonBackground: string;
+  secondaryButtonText: string;
   tagActiveText: string;
+  tagBackground: string;
   tagNewBorder: string;
-  noResultsText: string;
+  tagText: string;
+  textLinkText: string;
+  toolbarBackground: string;
+  toolbarButtonActiveBackground: string;
+  toolbarButtonActiveText: string;
+  toolbarButtonHoverBackground: string;
+  toolbarButtonHoverText: string;
+  toolbarButtonInactiveBackground: string;
+  toolbarButtonInactiveText: string;
 }
 
 export const internote: Theme = {
   appBackground: "#0f0d16",
   appText: "#D0D2D4",
-  headingBackground: "#0f0d16",
-  modalBackdropBackground: "#0f0d16",
+  audioTimelineActive: "#9fc7ec",
+  audioTimelineInactive: "#504D5D",
+  blockQuoteBorder: "#504D5D",
+  blockQuoteText: "#999999",
+  codeBlockBackground: "#211F28",
+  dictionaryDescriptionText: "#999999",
+  dropdownMenuBackground: "#000000",
   dropdownMenuItemText: "#D0D2D4",
   dropdownMenuSpacerBorder: "#161617",
-  primaryButtonText: "#FFFFFF",
-  secondaryButtonText: "#D0D2D4",
-  inputBackground: "#19181B",
-  inputText: "#FFFFFF",
-  secondaryButtonBackground: "#19181B",
-  primaryButtonBackground: "#095efd",
-  savingActive: "#095efd",
-  savingInactive: "#2CCB62",
-  textLinkText: "#D0D2D4",
-  codeBlockBackground: "#211F28",
+  expandingIconButtonActiveText: "#999999",
+  expandingIconButtonBackground: "#19181B",
+  expandingIconButtonInactiveText: "#504D5D",
   formatButtonActiveBackground: "#095efd",
   formatButtonActiveText: "#FFFFFF",
   formatButtonInactiveBackground: "#19181B",
   formatButtonInactiveText: "#504D5D",
-  expandingIconButtonBackground: "#19181B",
-  expandingIconButtonActiveText: "#999999",
-  expandingIconButtonInactiveText: "#504D5D",
-  toolbarButtonActiveBackground: "#095efd",
-  toolbarButtonActiveText: "#FFFFFF",
-  toolbarButtonInactiveBackground: "transparent",
-  toolbarButtonHoverBackground: "#19181B",
-  toolbarButtonInactiveText: "#504D5D",
-  blockQuoteBorder: "#504D5D",
-  blockQuoteText: "#999999",
-  toolbarBackground: "#000000",
-  dropdownMenuBackground: "#000000",
+  headingBackground: "#0f0d16",
+  inputBackground: "#19181B",
   inputLabelText: "#737278",
+  inputText: "#FFFFFF",
+  modalBackdropBackground: "#0f0d16",
+  modalBackground: "#000000",
   modalCloseIconColor: "#737278",
+  noResultsText: "#999999",
+  notesMenuItemTextInactive: "#999999",
+  primaryButtonBackground: "#095efd",
+  primaryButtonText: "#FFFFFF",
+  savingActive: "#095efd",
+  savingInactive: "#2CCB62",
   searchInputBackground: "#000000",
   searchInputFocusedBackground: "#19181B",
   searchInputText: "#FFFFFF",
-  notesMenuItemTextInactive: "#999999",
-  modalBackground: "#000000",
-  audioTimelineActive: "#9fc7ec",
-  audioTimelineInactive: "#504D5D",
-  dictionaryDescriptionText: "#999999",
-  tagText: "#999999",
-  tagBackground: "#19181B",
+  secondaryButtonBackground: "#19181B",
+  secondaryButtonText: "#D0D2D4",
   tagActiveText: "#D0D2D4",
+  tagBackground: "#19181B",
   tagNewBorder: "#737278",
-  noResultsText: "#999999"
+  tagText: "#999999",
+  textLinkText: "#D0D2D4",
+  toolbarBackground: "#000000",
+  toolbarButtonActiveBackground: "#095efd",
+  toolbarButtonActiveText: "#FFFFFF",
+  toolbarButtonHoverBackground: "#19181B",
+  toolbarButtonHoverText: "#FFFFFF",
+  toolbarButtonInactiveBackground: "transparent",
+  toolbarButtonInactiveText: "#504D5D"
 };
 
 export const daydream: Theme = {
-  appBackground: "#F0F0F0",
-  appText: "#614B67",
-  headingBackground: "#F0F0F0",
-  modalBackdropBackground: "#221a24",
-  dropdownMenuItemText: "#614B67",
-  dropdownMenuSpacerBorder: "#F0F0F0",
-  primaryButtonText: "#FFFFFF",
-  secondaryButtonText: "#614B67",
-  inputBackground: "#dedbe3",
-  inputText: "#614B67",
-  secondaryButtonBackground: "#dedbe3",
-  primaryButtonBackground: "#8D6B99",
-  savingActive: "#8D6B99",
-  savingInactive: "#2CCB62",
-  textLinkText: "#614B67",
-  codeBlockBackground: "#DFDCE4",
-  formatButtonActiveBackground: "#8D6B99",
-  formatButtonActiveText: "#000000",
-  formatButtonInactiveBackground: "#F9F9FC",
-  formatButtonInactiveText: "#A79FAC",
-  expandingIconButtonBackground: "#DFDCE4",
-  expandingIconButtonActiveText: "#999999",
-  expandingIconButtonInactiveText: "#A79FAC",
-  toolbarButtonActiveBackground: "#8D6B99",
-  toolbarButtonActiveText: "#FFFFFF",
-  toolbarButtonInactiveBackground: "transparent",
-  toolbarButtonHoverBackground: "#F9F9FC",
-  toolbarButtonInactiveText: "#A79FAC",
-  blockQuoteBorder: "#A79FAC",
-  blockQuoteText: "#999999",
-  toolbarBackground: "#DFDCE4",
-  dropdownMenuBackground: "#DFDCE4",
-  inputLabelText: "#737278",
-  modalCloseIconColor: "#737278",
-  searchInputBackground: "#DFDCE4",
-  searchInputFocusedBackground: "#f0f0f0",
-  searchInputText: "#000000",
-  notesMenuItemTextInactive: "#999999",
-  modalBackground: "#F9F9FC",
+  appBackground: "#FFFFFF",
+  appText: "#000000",
   audioTimelineActive: "#9fc7ec",
   audioTimelineInactive: "#504D5D",
-  dictionaryDescriptionText: "#999999",
-  tagText: "#A79FAC",
-  tagBackground: "#F9F9FC",
-  tagActiveText: "#614B67",
-  tagNewBorder: "#A79FAC",
-  noResultsText: "#999999"
+  blockQuoteBorder: "#A79FAC",
+  blockQuoteText: "#555555",
+  codeBlockBackground: "#F0F0F0",
+  dictionaryDescriptionText: "#555555",
+  dropdownMenuBackground: "#F0F0F0",
+  dropdownMenuItemText: "#000000",
+  dropdownMenuSpacerBorder: "#FFFFFF",
+  expandingIconButtonActiveText: "#555555",
+  expandingIconButtonBackground: "#FFFFFF",
+  expandingIconButtonInactiveText: "#A79FAC",
+  formatButtonActiveBackground: "#E0E0E0",
+  formatButtonActiveText: "#000000",
+  formatButtonInactiveBackground: "#FFFFFF",
+  formatButtonInactiveText: "#A79FAC",
+  headingBackground: "#FFFFFF",
+  inputBackground: "#dedbe3",
+  inputLabelText: "#737278",
+  inputText: "#000000",
+  modalBackdropBackground: "#221a24",
+  modalBackground: "#FFFFFF",
+  modalCloseIconColor: "#737278",
+  noResultsText: "#555555",
+  notesMenuItemTextInactive: "#555555",
+  primaryButtonBackground: "#E0E0E0",
+  primaryButtonText: "#FFFFFF",
+  savingActive: "#095efd",
+  savingInactive: "#2CCB62",
+  searchInputBackground: "#F0F0F0",
+  searchInputFocusedBackground: "#FFFFFF",
+  searchInputText: "#000000",
+  secondaryButtonBackground: "#dedbe3",
+  secondaryButtonText: "#000000",
+  tagActiveText: "#000000",
+  tagBackground: "#FFFFFF",
+  tagNewBorder: "#444444",
+  tagText: "#444444",
+  textLinkText: "#000000",
+  toolbarBackground: "#F0F0F0",
+  toolbarButtonActiveBackground: "#FFFFFF",
+  toolbarButtonActiveText: "#000000",
+  toolbarButtonHoverBackground: "#FFFFFF",
+  toolbarButtonHoverText: "#000000",
+  toolbarButtonInactiveBackground: "transparent",
+  toolbarButtonInactiveText: "#A79FAC"
 };
 
 export interface ColorThemeWithName {

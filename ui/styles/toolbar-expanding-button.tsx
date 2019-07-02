@@ -13,6 +13,7 @@ export const ToolbarExpandingButton = styled.div<{
   border-radius: ${borderRadius._6};
   padding: ${spacing._0_25};
   height: ${spacing._1};
+  font-weight: 600;
   color: ${props =>
     props.isActive
       ? props.theme.toolbarButtonActiveText
