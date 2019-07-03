@@ -40,11 +40,11 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
     const [actions] = React.useState<RA>(() => mapActions(store.actions));
 
     React.useEffect(() => {
-      return store.subscribe(state => {
+      const unsubscribe = store.subscribe(state => {
         setState(mapState(state));
       });
+      return unsubscribe;
     }, []);
-
     return [state, actions] as [RS, RA];
   }
 

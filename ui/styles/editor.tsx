@@ -498,21 +498,21 @@ export function InternoteEditor({
       </EditorStyles>
 
       <Toolbar
-        id={id}
-        shortcutSearch={shortcutSearch}
-        isDictionaryShowing={isDictionaryShowing}
-        value={value}
-        onClickMark={onClickMark}
-        onClickBlock={onClickBlock}
+        createNewTag={createNewTag}
         distractionFree={distractionFree}
+        id={id}
+        insertEmoji={insertEmoji}
+        insertTag={insertTag}
         isDictionaryLoading={isDictionaryLoading}
+        isDictionaryShowing={isDictionaryShowing}
+        onClickBlock={onClickBlock}
+        onClickMark={onClickMark}
         onToggleDictionary={onToggleDictionary}
+        requestDictionary={requestDictionary}
         requestSpeech={requestSpeech}
         selectedText={selectedText}
-        requestDictionary={requestDictionary}
-        insertTag={insertTag}
-        createNewTag={createNewTag}
-        insertEmoji={insertEmoji}
+        shortcutSearch={shortcutSearch}
+        value={value}
       />
     </Wrap>
   );

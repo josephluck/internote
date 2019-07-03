@@ -1,5 +1,5 @@
 import React from "react";
-import { Store } from "../store";
+import { useTwine } from "../store";
 import { MenuControl } from "./menu-control";
 import {
   faCog,
@@ -31,13 +31,50 @@ const Menu = styled(MenuControl)`
 `;
 
 export function SettingsMenu({
-  store,
   onMenuToggled
 }: {
-  store: Store;
   onMenuToggled: (menuShowing: boolean) => void;
 }) {
   const [subMenuOpen, setSubMenuOpen] = React.useState<boolean>(false);
+  const [
+    {
+      colorThemes,
+      colorTheme,
+      fontThemes,
+      fontTheme,
+      distractionFree,
+      outlineShowing,
+      voice
+    },
+    {
+      setColorTheme,
+      setFontTheme,
+      setDistractionFree,
+      setOutlineShowing,
+      setVoice,
+      signOutConfirmation,
+      deleteAccountConfirmation
+    }
+  ] = useTwine(
+    state => ({
+      colorThemes: state.preferences.colorThemes,
+      colorTheme: state.preferences.colorTheme,
+      fontThemes: state.preferences.fontThemes,
+      fontTheme: state.preferences.fontTheme,
+      distractionFree: state.preferences.distractionFree,
+      outlineShowing: state.preferences.outlineShowing,
+      voice: state.preferences.voice
+    }),
+    actions => ({
+      setColorTheme: actions.preferences.setColorTheme,
+      setFontTheme: actions.preferences.setFontTheme,
+      setDistractionFree: actions.preferences.setDistractionFree,
+      setOutlineShowing: actions.preferences.setOutlineShowing,
+      setVoice: actions.preferences.setVoice,
+      signOutConfirmation: actions.auth.signOutConfirmation,
+      deleteAccountConfirmation: actions.auth.deleteAccountConfirmation
+    })
+  );
   return (
     <Menu
       onMenuToggled={onMenuToggled}
@@ -73,14 +110,11 @@ export function SettingsMenu({
                 ),
                 subMenu: () => (
                   <>
-                    {store.state.preferences.colorThemes.map(theme => (
+                    {colorThemes.map(theme => (
                       <DropdownMenuItem
-                        onClick={() =>
-                          store.actions.preferences.setColorTheme(theme)
-                        }
+                        onClick={() => setColorTheme(theme)}
                         icon={
-                          theme.name ===
-                          store.state.preferences.colorTheme.name ? (
+                          theme.name === colorTheme.name ? (
                             <FontAwesomeIcon icon={faCheck} />
                           ) : null
                         }
@@ -91,13 +125,8 @@ export function SettingsMenu({
                             id={`set-color-theme-${theme.name}`}
                             description={`Set color theme to ${theme.name}`}
                             keyCombo={theme.shortcut}
-                            disabled={
-                              theme.name ===
-                              store.state.preferences.colorTheme.name
-                            }
-                            callback={() =>
-                              store.actions.preferences.setColorTheme(theme)
-                            }
+                            disabled={theme.name === colorTheme.name}
+                            callback={() => setColorTheme(theme)}
                             priority={shortcutPriorities.settingsOption}
                           />
                         ) : null}
@@ -121,14 +150,11 @@ export function SettingsMenu({
                 ),
                 subMenu: () => (
                   <>
-                    {store.state.preferences.fontThemes.map(theme => (
+                    {fontThemes.map(theme => (
                       <DropdownMenuItem
-                        onClick={() =>
-                          store.actions.preferences.setFontTheme(theme)
-                        }
+                        onClick={() => setFontTheme(theme)}
                         icon={
-                          theme.name ===
-                          store.state.preferences.fontTheme.name ? (
+                          theme.name === fontTheme.name ? (
                             <FontAwesomeIcon icon={faCheck} />
                           ) : null
                         }
@@ -141,13 +167,8 @@ export function SettingsMenu({
                             id={`set-typography-theme-${theme.name}`}
                             description={`Set typography to ${theme.name}`}
                             keyCombo={theme.shortcut}
-                            disabled={
-                              theme.name ===
-                              store.state.preferences.fontTheme.name
-                            }
-                            callback={() =>
-                              store.actions.preferences.setFontTheme(theme)
-                            }
+                            disabled={theme.name === fontTheme.name}
+                            callback={() => setFontTheme(theme)}
                             priority={shortcutPriorities.settingsOption}
                           />
                         ) : null}
@@ -172,11 +193,9 @@ export function SettingsMenu({
                 subMenu: () => (
                   <>
                     <DropdownMenuItem
-                      onClick={() =>
-                        store.actions.preferences.setDistractionFree(false)
-                      }
+                      onClick={() => setDistractionFree(false)}
                       icon={
-                        !store.state.preferences.distractionFree ? (
+                        !distractionFree ? (
                           <FontAwesomeIcon icon={faCheck} />
                         ) : null
                       }
@@ -187,19 +206,15 @@ export function SettingsMenu({
                         description="Turn off distraction-free mode"
                         keyCombo="n"
                         preventOtherShortcuts={true}
-                        disabled={!store.state.preferences.distractionFree}
-                        callback={() =>
-                          store.actions.preferences.setDistractionFree(false)
-                        }
+                        disabled={!distractionFree}
+                        callback={() => setDistractionFree(false)}
                         priority={shortcutPriorities.settingsOption}
                       />
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() =>
-                        store.actions.preferences.setDistractionFree(true)
-                      }
+                      onClick={() => setDistractionFree(true)}
                       icon={
-                        store.state.preferences.distractionFree ? (
+                        distractionFree ? (
                           <FontAwesomeIcon icon={faCheck} />
                         ) : null
                       }
@@ -210,10 +225,8 @@ export function SettingsMenu({
                         description="Turn on distraction-free mode"
                         keyCombo="y"
                         preventOtherShortcuts={true}
-                        disabled={store.state.preferences.distractionFree}
-                        callback={() =>
-                          store.actions.preferences.setDistractionFree(true)
-                        }
+                        disabled={distractionFree}
+                        callback={() => setDistractionFree(true)}
                         priority={shortcutPriorities.settingsOption}
                       />
                     </DropdownMenuItem>
@@ -236,11 +249,9 @@ export function SettingsMenu({
                 subMenu: () => (
                   <>
                     <DropdownMenuItem
-                      onClick={() =>
-                        store.actions.preferences.setOutlineShowing(false)
-                      }
+                      onClick={() => setOutlineShowing(false)}
                       icon={
-                        !store.state.preferences.outlineShowing ? (
+                        !outlineShowing ? (
                           <FontAwesomeIcon icon={faCheck} />
                         ) : null
                       }
@@ -251,19 +262,15 @@ export function SettingsMenu({
                         description="Turn off outline mode"
                         keyCombo="n"
                         preventOtherShortcuts={true}
-                        disabled={!store.state.preferences.outlineShowing}
-                        callback={() =>
-                          store.actions.preferences.setOutlineShowing(false)
-                        }
+                        disabled={!outlineShowing}
+                        callback={() => setOutlineShowing(false)}
                         priority={shortcutPriorities.settingsOption}
                       />
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() =>
-                        store.actions.preferences.setOutlineShowing(true)
-                      }
+                      onClick={() => setOutlineShowing(true)}
                       icon={
-                        store.state.preferences.outlineShowing ? (
+                        outlineShowing ? (
                           <FontAwesomeIcon icon={faCheck} />
                         ) : null
                       }
@@ -274,10 +281,8 @@ export function SettingsMenu({
                         description="Turn on outline mode"
                         keyCombo="y"
                         preventOtherShortcuts={true}
-                        disabled={store.state.preferences.outlineShowing}
-                        callback={() =>
-                          store.actions.preferences.setOutlineShowing(true)
-                        }
+                        disabled={outlineShowing}
+                        callback={() => setOutlineShowing(true)}
                         priority={shortcutPriorities.settingsOption}
                       />
                     </DropdownMenuItem>
@@ -299,19 +304,17 @@ export function SettingsMenu({
                 ),
                 subMenu: () => (
                   <>
-                    {availableVoices.map(voice => (
+                    {availableVoices.map(v => (
                       <DropdownMenuItem
-                        key={voice}
-                        onClick={() =>
-                          store.actions.preferences.setVoice(voice)
-                        }
+                        key={v}
+                        onClick={() => setVoice(v)}
                         icon={
-                          store.state.preferences.voice === voice ? (
+                          v === voice ? (
                             <FontAwesomeIcon icon={faCheck} />
                           ) : null
                         }
                       >
-                        {voice}
+                        {v}
                         {/* TODO: add keyboard shortcuts to voices */}
                       </DropdownMenuItem>
                     ))}
@@ -325,7 +328,7 @@ export function SettingsMenu({
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faSignOutAlt} />}
                     onClick={() => {
-                      store.actions.auth.signOutConfirmation();
+                      signOutConfirmation();
                       menu.toggleMenuShowing(false);
                     }}
                   >
@@ -339,7 +342,7 @@ export function SettingsMenu({
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faTrash} />}
                     onClick={() => {
-                      store.actions.auth.deleteAccountConfirmation();
+                      deleteAccountConfirmation();
                       menu.toggleMenuShowing(false);
                     }}
                   >

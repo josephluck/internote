@@ -39,37 +39,37 @@ import { Emoji } from "../utilities/emojis";
 import { useTwine } from "../store";
 
 export function Toolbar({
-  id,
-  shortcutSearch,
-  isDictionaryShowing,
-  value,
-  onClickMark,
-  onClickBlock,
+  createNewTag,
   distractionFree,
+  id,
+  insertEmoji,
+  insertTag,
   isDictionaryLoading,
+  isDictionaryShowing,
+  onClickBlock,
+  onClickMark,
   onToggleDictionary,
+  requestDictionary,
   requestSpeech,
   selectedText,
-  requestDictionary,
-  insertTag,
-  createNewTag,
-  insertEmoji
+  shortcutSearch,
+  value
 }: {
-  id: string;
-  shortcutSearch: Option<string>;
-  isDictionaryShowing: boolean;
-  value: Value;
-  onClickMark: (type: any) => any;
-  onClickBlock: (type: any) => any;
+  createNewTag: () => any;
   distractionFree: boolean;
+  id: string;
+  insertEmoji: (emoji: Emoji) => any;
+  insertTag: (tag: string) => any;
   isDictionaryLoading: boolean;
+  isDictionaryShowing: boolean;
+  onClickBlock: (type: any) => any;
+  onClickMark: (type: any) => any;
   onToggleDictionary: () => any;
+  requestDictionary: () => any;
   requestSpeech: () => any;
   selectedText: Option<string>;
-  requestDictionary: () => any;
-  insertTag: (tag: string) => any;
-  createNewTag: () => any;
-  insertEmoji: (emoji: Emoji) => any;
+  shortcutSearch: Option<string>;
+  value: Value;
 }) {
   const [
     {
