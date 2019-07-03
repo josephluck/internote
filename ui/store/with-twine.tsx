@@ -30,18 +30,19 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
   function useTwine<
     S extends (state: Store["state"]) => any,
     A extends (actions: Store["actions"]) => any
-  >(mapStoreToState: S, mapStoreToActions: A) {
+  >(mapState: S, mapActions: A) {
     const store = React.useContext(TwineContext);
-    const [state, setState] = React.useState(() =>
-      mapStoreToState(store.state)
-    );
-    const [actions] = React.useState(() => mapStoreToActions(store.actions));
+    type RS = ReturnType<typeof mapState>;
+    const [state, setState] = React.useState<RS>(() => mapState(store.state));
+    type RA = ReturnType<typeof mapActions>;
+    const [actions] = React.useState<RA>(() => mapActions(store.actions));
     React.useEffect(() => {
-      return store.subscribe(state => {
-        setState(mapStoreToState(state));
+      const unsubscribe = store.subscribe(state => {
+        setState(mapState(state));
       });
+      return unsubscribe;
     }, []);
-    return [state, actions];
+    return [state, actions] as [RS, RA];
   }
 
   function injectTwine(Child: any) {

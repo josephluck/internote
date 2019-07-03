@@ -92,16 +92,8 @@ export class Heading extends React.Component<Props, State> {
           </BlockLink>
           <Flex flex="1" alignItems="center" justifyContent="center">
             <NoteMenu
-              allNotes={this.props.store.state.notes.notes}
-              allTags={this.props.store.state.tags.tags}
               onMenuToggled={this.setNoteMenuShowing}
               currentNote={this.props.note}
-              onCreateNote={this.props.store.actions.notes.createNote}
-              onDeleteNote={noteId =>
-                this.props.store.actions.notes.deleteNoteConfirmation({
-                  noteId
-                })
-              }
             />
           </Flex>
           <ButtonSpacer>
@@ -140,10 +132,7 @@ export class Heading extends React.Component<Props, State> {
               }
             />
           </ButtonSpacer>
-          <SettingsMenu
-            store={this.props.store}
-            onMenuToggled={this.setSettingsMenuShowing}
-          />
+          <SettingsMenu onMenuToggled={this.setSettingsMenuShowing} />
         </HeadingInner>
       </HeadingWrapper>
     );

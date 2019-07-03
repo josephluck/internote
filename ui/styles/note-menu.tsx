@@ -22,6 +22,7 @@ import { combineStrings } from "../utilities/string";
 import { NoResults } from "./no-results";
 import { Tag } from "./tag";
 import { NoteMenuItem } from "./note-menu-item";
+import { useTwine } from "../store";
 
 const NotesMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
   padding-top: 0;
@@ -122,20 +123,23 @@ function getNoteTitle(note: Note): string {
 }
 
 export function NoteMenu({
-  allNotes,
-  allTags,
   currentNote,
-  onCreateNote,
-  onMenuToggled,
-  onDeleteNote
+  onMenuToggled
 }: {
-  allNotes: Note[];
-  allTags: TagEntity[];
   currentNote: Note;
-  onCreateNote: () => any;
   onMenuToggled: (showing: boolean) => any;
-  onDeleteNote: (noteId: string) => any;
 }) {
+  const [{ allNotes, tags }, { onDeleteNote, onCreateNote }] = useTwine(
+    state => ({
+      allNotes: state.notes.notes,
+      tags: state.tags.tags
+    }),
+    actions => ({
+      onDeleteNote: (noteId: string) =>
+        actions.notes.deleteNoteConfirmation({ noteId }),
+      onCreateNote: actions.notes.createNote
+    })
+  );
   const [searchFocused, setSearchFocused] = React.useState(false);
   const [searchText, setSearchText] = React.useState("");
   const [noteLoading, setNoteLoading] = React.useState(null);
@@ -258,7 +262,7 @@ export function NoteMenu({
             )}
           </MaxHeight>
           <TagsWrapper>
-            {allTags.map(tag => (
+            {tags.map(tag => (
               <Tag key={tag.id} onClick={() => onTagClicked(tag)}>
                 {tag.tag}
               </Tag>
