@@ -2,7 +2,7 @@ import * as React from "react";
 import { spacing } from "../theming/symbols";
 import { Logo } from "../styles/logo";
 import { BlockLink } from "../styles/link";
-import { Store } from "../store";
+import { useTwine } from "../store";
 import { Wrapper } from "./wrapper";
 import { styled } from "../theming/styled";
 import { NoteMenu } from "./note-menu";
@@ -52,89 +52,66 @@ const ButtonSpacer = styled.div`
   margin-right: ${spacing._0_25};
 `;
 
-interface Props {
-  store: Store;
-  note: Types.Note | null;
-}
-interface State {
-  noteMenuShowing: boolean;
-  settingsMenuShowing: boolean;
-}
+export function Heading({ note }: { note: Types.Note | null }) {
+  const [noteMenuShowing, setNoteMenuShowing] = React.useState(false);
+  const [settingsMenuShowing, setSettingsMenuShowing] = React.useState(false);
 
-export class Heading extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { noteMenuShowing: false, settingsMenuShowing: false };
-  }
+  const [
+    { createNoteLoading, distractionFree, isFullscreen },
+    { toggleFullscreen, createNote }
+  ] = useTwine(
+    state => ({
+      createNoteLoading: state.notes.loading.createNote,
+      distractionFree: state.preferences.distractionFree,
+      isFullscreen: state.ui.isFullscreen
+    }),
+    actions => ({
+      toggleFullscreen: actions.ui.toggleFullscreen,
+      createNote: actions.notes.createNote
+    })
+  );
 
-  setNoteMenuShowing = (noteMenuShowing: boolean) => {
-    this.setState({ noteMenuShowing });
-  };
+  const forceShow = noteMenuShowing || settingsMenuShowing || createNoteLoading;
 
-  setSettingsMenuShowing = (settingsMenuShowing: boolean) => {
-    this.setState({ settingsMenuShowing });
-  };
-
-  render() {
-    const forceShow =
-      this.state.noteMenuShowing ||
-      this.state.settingsMenuShowing ||
-      this.props.store.state.notes.loading.createNote;
-
-    return (
-      <HeadingWrapper
-        distractionFree={this.props.store.state.preferences.distractionFree}
-        forceShow={forceShow}
-      >
-        <HeadingInner>
-          <BlockLink href="/">
-            <Logo>Internote</Logo>
-          </BlockLink>
-          <Flex flex="1" alignItems="center" justifyContent="center">
-            <NoteMenu
-              onMenuToggled={this.setNoteMenuShowing}
-              currentNote={this.props.note}
-            />
-          </Flex>
-          <ButtonSpacer>
-            <ExpandingIconButton
-              forceShow={this.props.store.state.ui.isFullscreen}
-              text={
-                this.props.store.state.ui.isFullscreen
-                  ? "Exit fullscreen"
-                  : "Enter fullscreen"
-              }
-              onClick={() =>
-                this.props.store.actions.ui.toggleFullscreen(
-                  !this.props.store.state.ui.isFullscreen
-                )
-              }
-              icon={
-                this.props.store.state.ui.isFullscreen ? (
-                  <FontAwesomeIcon icon={faCompress} />
-                ) : (
-                  <FontAwesomeIcon icon={faExpand} />
-                )
-              }
-            />
-          </ButtonSpacer>
-          <ButtonSpacer>
-            <ExpandingIconButton
-              forceShow={this.props.store.state.notes.loading.createNote}
-              text="Create note"
-              onClick={this.props.store.actions.notes.createNote}
-              icon={
-                this.props.store.state.notes.loading.createNote ? (
-                  <FontAwesomeIcon icon={faSpinner} spin />
-                ) : (
-                  <FontAwesomeIcon icon={faPlus} />
-                )
-              }
-            />
-          </ButtonSpacer>
-          <SettingsMenu onMenuToggled={this.setSettingsMenuShowing} />
-        </HeadingInner>
-      </HeadingWrapper>
-    );
-  }
+  return (
+    <HeadingWrapper distractionFree={distractionFree} forceShow={forceShow}>
+      <HeadingInner>
+        <BlockLink href="/">
+          <Logo>Internote</Logo>
+        </BlockLink>
+        <Flex flex="1" alignItems="center" justifyContent="center">
+          <NoteMenu onMenuToggled={setNoteMenuShowing} currentNote={note} />
+        </Flex>
+        <ButtonSpacer>
+          <ExpandingIconButton
+            forceShow={isFullscreen}
+            text={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+            onClick={() => toggleFullscreen(!isFullscreen)}
+            icon={
+              isFullscreen ? (
+                <FontAwesomeIcon icon={faCompress} />
+              ) : (
+                <FontAwesomeIcon icon={faExpand} />
+              )
+            }
+          />
+        </ButtonSpacer>
+        <ButtonSpacer>
+          <ExpandingIconButton
+            forceShow={createNoteLoading}
+            text="Create note"
+            onClick={createNote}
+            icon={
+              createNoteLoading ? (
+                <FontAwesomeIcon icon={faSpinner} spin />
+              ) : (
+                <FontAwesomeIcon icon={faPlus} />
+              )
+            }
+          />
+        </ButtonSpacer>
+        <SettingsMenu onMenuToggled={setSettingsMenuShowing} />
+      </HeadingInner>
+    </HeadingWrapper>
+  );
 }
