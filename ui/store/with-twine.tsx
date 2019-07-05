@@ -29,14 +29,17 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
 
   function useTwine<
     S extends (state: Store["state"]) => any,
-    A extends (actions: Store["actions"]) => any,
-    MS extends {
-      [K in keyof ReturnType<S>]: (
-        previousValue: ReturnType<S>[K],
-        nextValue: ReturnType<S>[K]
+    A extends (actions: Store["actions"]) => any
+  >(
+    mapState: S,
+    mapActions?: A,
+    memoiseState?: {
+      [K in keyof ReturnType<typeof mapState>]: (
+        previousValue: ReturnType<typeof mapState>[K],
+        nextValue: ReturnType<typeof mapState>[K]
       ) => boolean
     }
-  >(mapState: S, mapActions?: A, memoiseState?: MS) {
+  ) {
     const store = React.useContext(TwineContext);
 
     const initialState = React.useMemo(() => mapState(store.state), []);
