@@ -2,7 +2,7 @@ import * as React from "react";
 import { spacing, font } from "../theming/symbols";
 import { Box, Flex } from "@rebass/grid";
 import { NextTwineSFC } from "../store/with-twine";
-import { Store } from "../store";
+import { Store, useTwine } from "../store";
 import { TextLink } from "../styles/link";
 import { Logo } from "../styles/logo";
 import { styled } from "../theming/styled";
@@ -22,7 +22,14 @@ const SubActionLink = styled.div`
   line-height: ${font._12.lineHeight};
 `;
 
-const Page: NextTwineSFC<Store, {}> = props => {
+const Page: NextTwineSFC<Store, {}> = () => {
+  const [{ signUpLoading }, { signUp }] = useTwine(
+    state => ({ signUpLoading: state.auth.loading.signUp }),
+    actions => ({ signUp: actions.auth.signUp }),
+    {
+      signUpLoading: (prev, next) => prev !== next
+    }
+  );
   return (
     <>
       <Modal open showCloseIcon={false} onClose={() => null}>
@@ -32,7 +39,7 @@ const Page: NextTwineSFC<Store, {}> = props => {
         <form
           onSubmit={e => {
             e.preventDefault();
-            props.store.actions.auth.signUp({
+            signUp({
               email: (document.getElementById("email") as any).value,
               password: (document.getElementById("password") as any).value
             });
@@ -47,12 +54,7 @@ const Page: NextTwineSFC<Store, {}> = props => {
             <Input type="password" id="password" />
           </Flex>
           <Box mb={spacing._1}>
-            <Button
-              type="submit"
-              primary
-              fullWidth
-              loading={props.store.state.auth.loading.signUp}
-            >
+            <Button type="submit" primary fullWidth loading={signUpLoading}>
               Register
             </Button>
           </Box>

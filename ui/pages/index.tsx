@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NextTwineSFC } from "../store/with-twine";
-import { Store } from "../store";
+import { Store, useTwine } from "../store";
 import { withAuth } from "../hoc/with-auth";
 import { Heading } from "../styles/heading";
 import { Global } from "../styles/global";
@@ -14,18 +14,21 @@ const PageWrapper = styled.div`
 `;
 
 const Page: NextTwineSFC<Store, { id: string }, { id: string }> = props => {
-  const note = props.id
-    ? props.store.state.notes.notes.find(n => n.id === props.id)
-    : null;
+  const [{ notes }, { navigateToFirstNote }] = useTwine(
+    state => ({
+      notes: state.notes.notes
+    }),
+    actions => ({ navigateToFirstNote: actions.ui.navigateToFirstNote }),
+    {
+      notes: (prev, next) => prev.length !== next.length
+    }
+  );
+  const note = props.id ? notes.find(n => n.id === props.id) : null;
   return (
     <>
       <Heading note={note} />
       <PageWrapper>
-        {note ? (
-          <Note note={note} />
-        ) : (
-          <OnMount cb={props.store.actions.ui.navigateToFirstNote} />
-        )}
+        {note ? <Note note={note} /> : <OnMount cb={navigateToFirstNote} />}
       </PageWrapper>
       <Global />
     </>

@@ -2,7 +2,7 @@ import * as React from "react";
 import { spacing, font } from "../theming/symbols";
 import { Box, Flex } from "@rebass/grid";
 import { NextTwineSFC } from "../store/with-twine";
-import { Store } from "../store";
+import { Store, useTwine } from "../store";
 import { TextLink } from "../styles/link";
 import { Logo } from "../styles/logo";
 import { styled } from "../theming/styled";
@@ -22,7 +22,11 @@ const SubActionLink = styled.div`
   line-height: ${font._12.lineHeight};
 `;
 
-const Page: NextTwineSFC<Store, {}> = props => {
+const Page: NextTwineSFC<Store, {}> = () => {
+  const [{ authenticateLoading }, { authenticate }] = useTwine(
+    state => ({ authenticateLoading: state.auth.loading.authenticate }),
+    actions => ({ authenticate: actions.auth.authenticate })
+  );
   return (
     <>
       <Modal open showCloseIcon={false} onClose={() => null}>
@@ -32,7 +36,7 @@ const Page: NextTwineSFC<Store, {}> = props => {
         <form
           onSubmit={e => {
             e.preventDefault();
-            props.store.actions.auth.authenticate({
+            authenticate({
               email: (document.getElementById("email") as any).value,
               password: (document.getElementById("password") as any).value
             });
@@ -51,7 +55,7 @@ const Page: NextTwineSFC<Store, {}> = props => {
               type="submit"
               primary
               fullWidth
-              loading={props.store.state.auth.loading.authenticate}
+              loading={authenticateLoading}
             >
               Login
             </Button>

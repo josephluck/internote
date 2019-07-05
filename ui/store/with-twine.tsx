@@ -25,26 +25,62 @@ function initStore<Store extends Twine.Return<any, any>>(
 export function makeTwineHooks<Store extends Twine.Return<any, any>>(
   makeStore: () => Store
 ) {
-  const TwineContext = React.createContext<Store>(makeStore());
+  const TwineContext = React.createContext<Store>(initStore(makeStore));
 
   function useTwine<
     S extends (state: Store["state"]) => any,
-    A extends (actions: Store["actions"]) => any
-  >(mapState: S, mapActions: A) {
+    A extends (actions: Store["actions"]) => any,
+    MS extends {
+      [K in keyof ReturnType<S>]: (
+        previousValue: ReturnType<S>[K],
+        nextValue: ReturnType<S>[K]
+      ) => boolean
+    }
+  >(mapState: S, mapActions?: A, memoiseState?: MS) {
     const store = React.useContext(TwineContext);
 
+    const initialState = React.useMemo(() => mapState(store.state), []);
+
+    const defaultMemoiseState = React.useMemo(() => {
+      return Object.keys(initialState).reduce((prev, key) => {
+        return {
+          ...prev,
+          [key]: (prevState, nextState) => prevState != nextState
+        };
+      }, {});
+    }, []);
+
+    const finalMemoiseState = React.useMemo(
+      () => ({
+        ...defaultMemoiseState,
+        ...memoiseState
+      }),
+      []
+    );
+
     type RS = ReturnType<typeof mapState>;
-    const [state, setState] = React.useState<RS>(() => mapState(store.state));
+    const [state, setState] = React.useState<RS>(initialState);
 
     type RA = ReturnType<typeof mapActions>;
-    const [actions] = React.useState<RA>(() => mapActions(store.actions));
+    const actions = React.useMemo(
+      () => (mapActions ? mapActions(store.actions) : {}),
+      []
+    );
 
     React.useEffect(() => {
-      const unsubscribe = store.subscribe(state => {
-        setState(mapState(state));
+      const unsubscribe = store.subscribe(storeState => {
+        const newState = mapState(storeState);
+        const memoiseCheckFailed = Object.keys(finalMemoiseState).some(key => {
+          const check = finalMemoiseState[key];
+          return check(state[key], newState[key]);
+        });
+        if (memoiseCheckFailed) {
+          setState(newState);
+        }
       });
       return unsubscribe;
     }, []);
+
     return [state, actions] as [RS, RA];
   }
 

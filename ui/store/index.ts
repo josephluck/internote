@@ -1,7 +1,6 @@
 import twine, { Twine } from "twine-js";
 import logger from "twine-js/lib/log";
 import makeApi from "@internote/api/domains/api";
-import { makeSubscriber } from "./make-subscriber";
 import { isServer } from "../utilities/window";
 
 import * as Speech from "./speech";
@@ -138,7 +137,5 @@ export function makeStore() {
 }
 
 export type Store = Twine.Return<Models["state"], Models["actions"]>;
-
-export const Subscribe = makeSubscriber(makeStore());
 
 export const { useTwine, injectTwine } = makeTwineHooks(makeStore);

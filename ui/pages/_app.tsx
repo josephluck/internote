@@ -2,10 +2,11 @@ import * as React from "react";
 import App, { Container } from "next/app";
 import { font } from "../theming/symbols";
 import { injectTwine } from "../store";
-import { createGlobalStyle, ThemeProvider } from "../theming/styled";
+import { createGlobalStyle } from "../theming/styled";
 import Head from "next/head";
 import { inter } from "../theming/themes";
 import { ShortcutsProvider } from "../styles/shortcuts";
+import { InternoteThemes } from "../styles/theme-provider";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -46,19 +47,17 @@ export class Application extends App {
     const { Component, pageProps, store } = this.props as any;
     return (
       <Container>
-        <ThemeProvider theme={store.state.preferences.colorTheme.theme}>
-          <ThemeProvider theme={store.state.preferences.fontTheme.theme}>
-            <>
-              <Head>
-                <title>Internote</title>
-              </Head>
-              <GlobalStyles />
-              <ShortcutsProvider>
-                <Component {...pageProps} store={store} />
-              </ShortcutsProvider>
-            </>
-          </ThemeProvider>
-        </ThemeProvider>
+        <InternoteThemes>
+          <>
+            <Head>
+              <title>Internote</title>
+            </Head>
+            <GlobalStyles />
+            <ShortcutsProvider>
+              <Component {...pageProps} store={store} />
+            </ShortcutsProvider>
+          </>
+        </InternoteThemes>
       </Container>
     );
   }
