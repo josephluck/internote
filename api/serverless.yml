@@ -31,6 +31,9 @@ provider:
   timeout: 30
   apiGateway:
     minimumCompressionSize: 1024
+  throttle:
+    burstLimit: 5 # Limit connections to the database
+    rateLimit: 5 # Limit connections to the database
   iamRoleStatements:
     - Effect: "Allow"
       Action:
