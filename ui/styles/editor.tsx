@@ -31,7 +31,7 @@ import { Emoji } from "../utilities/emojis";
 import { Tag } from "./tag";
 import { useDebounce, useThrottle } from "../utilities/hooks";
 import { Toolbar } from "./toolbar";
-import { useTwine } from "../store";
+import { useTwineState, useTwineActions } from "../store";
 
 const DEFAULT_NODE = "paragraph";
 
@@ -53,34 +53,35 @@ export function InternoteEditor({
   id: string;
   initialValue: {};
 }) {
-  const [
-    {
-      overwriteCount,
-      outlineShowing,
-      isDictionaryLoading,
-      isDictionaryShowing,
-      distractionFree
-    },
-    { onChange, onRequestDictionary, onCloseDictionary, onRequestSpeech }
-  ] = useTwine(
-    state => ({
-      overwriteCount: state.notes.overwriteCount,
-      outlineShowing: state.preferences.outlineShowing,
-      isDictionaryLoading: state.dictionary.loading.requestDictionary,
-      isDictionaryShowing: state.dictionary.dictionaryShowing,
-      distractionFree: state.preferences.distractionFree
-    }),
-    actions => ({
-      onChange: (value: OnChange) =>
-        actions.notes.updateNote({ noteId: id, ...value }),
-      onRequestDictionary: actions.dictionary.requestDictionary,
-      onCloseDictionary: () => actions.dictionary.setDictionaryShowing(false),
-      onRequestSpeech: (content: string) =>
-        actions.speech.requestSpeech({ content, noteId: id }),
-      onCreateNewTag: (value: OnChange) =>
-        actions.tags.saveNewTag({ ...value, noteId: id })
-    })
+  const overwriteCount = useTwineState(state => state.notes.overwriteCount);
+  const outlineShowing = useTwineState(
+    state => state.preferences.outlineShowing
   );
+  const isDictionaryLoading = useTwineState(
+    state => state.dictionary.loading.requestDictionary
+  );
+  const isDictionaryShowing = useTwineState(
+    state => state.dictionary.dictionaryShowing
+  );
+  const distractionFree = useTwineState(
+    state => state.preferences.distractionFree
+  );
+
+  const {
+    onChange,
+    onRequestDictionary,
+    onCloseDictionary,
+    onRequestSpeech
+  } = useTwineActions(actions => ({
+    onChange: (value: OnChange) =>
+      actions.notes.updateNote({ noteId: id, ...value }),
+    onRequestDictionary: actions.dictionary.requestDictionary,
+    onCloseDictionary: () => actions.dictionary.setDictionaryShowing(false),
+    onRequestSpeech: (content: string) =>
+      actions.speech.requestSpeech({ content, noteId: id }),
+    onCreateNewTag: (value: OnChange) =>
+      actions.tags.saveNewTag({ ...value, noteId: id })
+  }));
 
   /**
    * State

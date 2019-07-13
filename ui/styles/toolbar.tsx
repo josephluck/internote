@@ -36,7 +36,7 @@ import {
 import { Option } from "space-lift";
 import { Value } from "slate";
 import { Emoji } from "../utilities/emojis";
-import { useTwine } from "../store";
+import { useTwineState, useTwineActions } from "../store";
 
 export function Toolbar({
   createNewTag,
@@ -71,30 +71,22 @@ export function Toolbar({
   shortcutSearch: Option<string>;
   value: Value;
 }) {
-  const [
-    {
-      tags,
-      saving,
-      speechSrc,
-      isSpeechLoading,
-      dictionaryResults,
-      newTagSaving
-    },
-    { onDelete, onDiscardSpeech }
-  ] = useTwine(
-    state => ({
-      tags: state.tags.tags,
-      saving: state.notes.loading.updateNote,
-      speechSrc: state.speech.speechSrc,
-      isSpeechLoading: state.speech.loading.requestSpeech,
-      dictionaryResults: state.dictionary.dictionaryResults,
-      newTagSaving: state.tags.loading.saveNewTag
-    }),
-    actions => ({
-      onDelete: () => actions.notes.deleteNoteConfirmation({ noteId: id }),
-      onDiscardSpeech: () => actions.speech.setSpeechSrc(null)
-    })
+  const tags = useTwineState(state => state.tags.tags);
+  const saving = useTwineState(state => state.notes.loading.updateNote);
+  const speechSrc = useTwineState(state => state.speech.speechSrc);
+  const isSpeechLoading = useTwineState(
+    state => state.speech.loading.requestSpeech
   );
+  const dictionaryResults = useTwineState(
+    state => state.dictionary.dictionaryResults
+  );
+  const newTagSaving = useTwineState(state => state.tags.loading.saveNewTag);
+
+  const { onDelete, onDiscardSpeech } = useTwineActions(actions => ({
+    onDelete: () => actions.notes.deleteNoteConfirmation({ noteId: id }),
+    onDiscardSpeech: () => actions.speech.setSpeechSrc(null)
+  }));
+
   const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
   const [
     isShortcutsReferenceShowing,

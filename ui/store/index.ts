@@ -138,4 +138,6 @@ export function makeStore() {
 
 export type Store = Twine.Return<Models["state"], Models["actions"]>;
 
-export const { useTwine, injectTwine } = makeTwineHooks(makeStore);
+export const { useTwineState, useTwineActions, injectTwine } = makeTwineHooks(
+  makeStore
+);

@@ -2,7 +2,7 @@ import * as React from "react";
 import { spacing, font } from "../theming/symbols";
 import { Box, Flex } from "@rebass/grid";
 import { NextTwineSFC } from "../store/with-twine";
-import { Store, useTwine } from "../store";
+import { Store, useTwineState, useTwineActions } from "../store";
 import { TextLink } from "../styles/link";
 import { Logo } from "../styles/logo";
 import { styled } from "../theming/styled";
@@ -23,10 +23,9 @@ const SubActionLink = styled.div`
 `;
 
 const Page: NextTwineSFC<Store, {}> = () => {
-  const [{ authenticateLoading }, { authenticate }] = useTwine(
-    state => ({ authenticateLoading: state.auth.loading.authenticate }),
-    actions => ({ authenticate: actions.auth.authenticate })
-  );
+  const authenticateLoading = useTwineState(state => state.auth.loading.authenticate)
+  const authenticate = useTwineActions(actions => actions.auth.authenticate)
+
   return (
     <>
       <Modal open showCloseIcon={false} onClose={() => null}>

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { spacing } from "../theming/symbols";
 import { styled } from "../theming/styled";
-import { useTwine } from "../store";
+import { useTwineState, useTwineActions } from "../store";
 import { Modal } from "./modal";
 import { Button } from "./button";
 import { Flex, Box } from "@rebass/grid";
@@ -20,10 +20,11 @@ const DarkOverlay = styled.div<{ showing: boolean }>`
 `;
 
 export function Global() {
-  const [{ confirmation }, { setConfirmation }] = useTwine(
-    state => ({ confirmation: state.confirmation.confirmation }),
-    actions => ({ setConfirmation: actions.confirmation.setConfirmation })
+  const confirmation = useTwineState(state => state.confirmation.confirmation);
+  const setConfirmation = useTwineActions(
+    actions => actions.confirmation.setConfirmation
   );
+
   return (
     <>
       <Modal open={!!confirmation} onClose={() => setConfirmation(null)}>

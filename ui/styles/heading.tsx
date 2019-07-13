@@ -2,7 +2,7 @@ import * as React from "react";
 import { spacing } from "../theming/symbols";
 import { Logo } from "../styles/logo";
 import { BlockLink } from "../styles/link";
-import { useTwine } from "../store";
+import { useTwineState, useTwineActions } from "../store";
 import { Wrapper } from "./wrapper";
 import { styled } from "../theming/styled";
 import { NoteMenu } from "./note-menu";
@@ -53,23 +53,21 @@ const ButtonSpacer = styled.div`
 `;
 
 export function Heading({ note }: { note: Types.Note | null }) {
+  const createNoteLoading = useTwineState(
+    state => state.notes.loading.createNote
+  );
+  const distractionFree = useTwineState(
+    state => state.preferences.distractionFree
+  );
+  const isFullscreen = useTwineState(state => state.ui.isFullscreen);
+
+  const { toggleFullscreen, createNote } = useTwineActions(actions => ({
+    toggleFullscreen: actions.ui.toggleFullscreen,
+    createNote: actions.notes.createNote
+  }));
+
   const [noteMenuShowing, setNoteMenuShowing] = React.useState(false);
   const [settingsMenuShowing, setSettingsMenuShowing] = React.useState(false);
-
-  const [
-    { createNoteLoading, distractionFree, isFullscreen },
-    { toggleFullscreen, createNote }
-  ] = useTwine(
-    state => ({
-      createNoteLoading: state.notes.loading.createNote,
-      distractionFree: state.preferences.distractionFree,
-      isFullscreen: state.ui.isFullscreen
-    }),
-    actions => ({
-      toggleFullscreen: actions.ui.toggleFullscreen,
-      createNote: actions.notes.createNote
-    })
-  );
 
   const forceShow = noteMenuShowing || settingsMenuShowing || createNoteLoading;
 

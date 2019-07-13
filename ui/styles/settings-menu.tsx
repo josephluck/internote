@@ -1,5 +1,5 @@
 import React from "react";
-import { useTwine } from "../store";
+import { useTwineState, useTwineActions } from "../store";
 import { MenuControl } from "./menu-control";
 import {
   faCog,
@@ -35,46 +35,37 @@ export function SettingsMenu({
 }: {
   onMenuToggled: (menuShowing: boolean) => void;
 }) {
-  const [subMenuOpen, setSubMenuOpen] = React.useState<boolean>(false);
-  const [
-    {
-      colorThemes,
-      colorTheme,
-      fontThemes,
-      fontTheme,
-      distractionFree,
-      outlineShowing,
-      voice
-    },
-    {
-      setColorTheme,
-      setFontTheme,
-      setDistractionFree,
-      setOutlineShowing,
-      setVoice,
-      signOutConfirmation,
-      deleteAccountConfirmation
-    }
-  ] = useTwine(
-    state => ({
-      colorThemes: state.preferences.colorThemes,
-      colorTheme: state.preferences.colorTheme,
-      fontThemes: state.preferences.fontThemes,
-      fontTheme: state.preferences.fontTheme,
-      distractionFree: state.preferences.distractionFree,
-      outlineShowing: state.preferences.outlineShowing,
-      voice: state.preferences.voice
-    }),
-    actions => ({
-      setColorTheme: actions.preferences.setColorTheme,
-      setFontTheme: actions.preferences.setFontTheme,
-      setDistractionFree: actions.preferences.setDistractionFree,
-      setOutlineShowing: actions.preferences.setOutlineShowing,
-      setVoice: actions.preferences.setVoice,
-      signOutConfirmation: actions.auth.signOutConfirmation,
-      deleteAccountConfirmation: actions.auth.deleteAccountConfirmation
-    })
+  const colorThemes = useTwineState(state => state.preferences.colorThemes);
+  const colorTheme = useTwineState(state => state.preferences.colorTheme);
+  const fontThemes = useTwineState(state => state.preferences.fontThemes);
+  const fontTheme = useTwineState(state => state.preferences.fontTheme);
+  const distractionFree = useTwineState(
+    state => state.preferences.distractionFree
   );
+  const outlineShowing = useTwineState(
+    state => state.preferences.outlineShowing
+  );
+  const voice = useTwineState(state => state.preferences.voice);
+  const {
+    setColorTheme,
+    setFontTheme,
+    setDistractionFree,
+    setOutlineShowing,
+    setVoice,
+    signOutConfirmation,
+    deleteAccountConfirmation
+  } = useTwineActions(actions => ({
+    setColorTheme: actions.preferences.setColorTheme,
+    setFontTheme: actions.preferences.setFontTheme,
+    setDistractionFree: actions.preferences.setDistractionFree,
+    setOutlineShowing: actions.preferences.setOutlineShowing,
+    setVoice: actions.preferences.setVoice,
+    signOutConfirmation: actions.auth.signOutConfirmation,
+    deleteAccountConfirmation: actions.auth.deleteAccountConfirmation
+  }));
+
+  const [subMenuOpen, setSubMenuOpen] = React.useState<boolean>(false);
+
   return (
     <Menu
       onMenuToggled={onMenuToggled}

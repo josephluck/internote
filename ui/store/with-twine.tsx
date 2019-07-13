@@ -22,69 +22,49 @@ function initStore<Store extends Twine.Return<any, any>>(
   }
 }
 
+function defaultMemoise<S extends any>(state1: S, state2: S): boolean {
+  return state1 === state2;
+}
+
 export function makeTwineHooks<Store extends Twine.Return<any, any>>(
   makeStore: () => Store
 ) {
   const TwineContext = React.createContext<Store>(initStore(makeStore));
 
-  function useTwine<
-    S extends (state: Store["state"]) => any,
-    A extends (actions: Store["actions"]) => any
-  >(
+  function useTwineState<S extends (state: Store["state"]) => any>(
     mapState: S,
-    mapActions?: A,
-    memoiseState?: {
-      [K in keyof ReturnType<typeof mapState>]: (
-        previousValue: ReturnType<typeof mapState>[K],
-        nextValue: ReturnType<typeof mapState>[K]
-      ) => boolean
-    }
+    memoiseState: (
+      previousValue: ReturnType<typeof mapState>,
+      nextValue: ReturnType<typeof mapState>
+    ) => boolean = defaultMemoise
   ) {
+    type MS = ReturnType<typeof mapState>;
     const store = React.useContext(TwineContext);
-
-    const initialState = React.useMemo(() => mapState(store.state), []);
-
-    const defaultMemoiseState = React.useMemo(() => {
-      return Object.keys(initialState).reduce((prev, key) => {
-        return {
-          ...prev,
-          [key]: (prevState, nextState) => prevState != nextState
-        };
-      }, {});
-    }, []);
-
-    const finalMemoiseState = React.useMemo(
-      () => ({
-        ...defaultMemoiseState,
-        ...memoiseState
-      }),
-      []
-    );
-
-    type RS = ReturnType<typeof mapState>;
-    const [state, setState] = React.useState<RS>(initialState);
-
-    type RA = ReturnType<typeof mapActions>;
-    const actions = React.useMemo(
-      () => (mapActions ? mapActions(store.actions) : {}),
-      []
-    );
+    const [state, setState] = React.useState<MS>(() => mapState(store.state));
 
     React.useEffect(() => {
       const unsubscribe = store.subscribe(storeState => {
         const newState = mapState(storeState);
-        const memoiseCheckFailed = Object.keys(finalMemoiseState).some(key => {
-          const check = finalMemoiseState[key];
-          return check(state[key], newState[key]);
-        });
-        if (memoiseCheckFailed) {
+        if (!memoiseState(state, newState)) {
           setState(newState);
         }
       });
       return unsubscribe;
     }, []);
 
-    return [state, actions] as [RS, RA];
+    return state as MS;
+  }
+
+  function useTwineActions<A extends (actions: Store["actions"]) => any>(
+    mapActions: A
+  ) {
+    const store = React.useContext(TwineContext);
+    const actions = React.useMemo(
+      () => (mapActions ? mapActions(store.actions) : {}),
+      []
+    );
+
+    return actions as ReturnType<typeof mapActions>;
   }
 
   function injectTwine(Child: any) {
@@ -142,7 +122,8 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
   }
 
   return {
-    useTwine,
+    useTwineState,
+    useTwineActions,
     injectTwine
   };
 }
