@@ -82,10 +82,13 @@ export function Toolbar({
   );
   const newTagSaving = useTwineState(state => state.tags.loading.saveNewTag);
 
-  const { onDelete, onDiscardSpeech } = useTwineActions(actions => ({
-    onDelete: () => actions.notes.deleteNoteConfirmation({ noteId: id }),
-    onDiscardSpeech: () => actions.speech.setSpeechSrc(null)
-  }));
+  const { onDelete, onDiscardSpeech } = useTwineActions(
+    actions => ({
+      onDelete: () => actions.notes.deleteNoteConfirmation({ noteId: id }),
+      onDiscardSpeech: () => actions.speech.setSpeechSrc(null)
+    }),
+    [id]
+  );
 
   const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
   const [

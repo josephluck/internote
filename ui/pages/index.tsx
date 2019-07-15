@@ -14,9 +14,15 @@ const PageWrapper = styled.div`
 `;
 
 const Page: NextTwineSFC<Store, { id: string }, { id: string }> = props => {
-  const notes = useTwineState(state => state.notes.notes, (prev, next) => prev.length !== next.length)
-  const navigateToFirstNote = useTwineActions(actions => actions.ui.navigateToFirstNote)
+  const notes = useTwineState(
+    state => state.notes.notes,
+    (prev, next) => prev.length !== next.length
+  );
+  const navigateToFirstNote = useTwineActions(
+    actions => actions.ui.navigateToFirstNote
+  );
   const note = props.id ? notes.find(n => n.id === props.id) : null;
+
   return (
     <>
       <Heading note={note} />

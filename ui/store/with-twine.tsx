@@ -31,6 +31,7 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
 ) {
   const TwineContext = React.createContext<Store>(initStore(makeStore));
 
+  // TODO: support dependencies by useEffect so that external variables can be used in mapState fn
   function useTwineState<S extends (state: Store["state"]) => any>(
     mapState: S,
     memoiseState: (
@@ -56,12 +57,13 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
   }
 
   function useTwineActions<A extends (actions: Store["actions"]) => any>(
-    mapActions: A
+    mapActions: A,
+    dependencies: any[] = []
   ) {
     const store = React.useContext(TwineContext);
     const actions = React.useMemo(
       () => (mapActions ? mapActions(store.actions) : {}),
-      []
+      dependencies
     );
 
     return actions as ReturnType<typeof mapActions>;

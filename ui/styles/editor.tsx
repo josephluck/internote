@@ -72,16 +72,19 @@ export function InternoteEditor({
     onRequestDictionary,
     onCloseDictionary,
     onRequestSpeech
-  } = useTwineActions(actions => ({
-    onChange: (value: OnChange) =>
-      actions.notes.updateNote({ noteId: id, ...value }),
-    onRequestDictionary: actions.dictionary.requestDictionary,
-    onCloseDictionary: () => actions.dictionary.setDictionaryShowing(false),
-    onRequestSpeech: (content: string) =>
-      actions.speech.requestSpeech({ content, noteId: id }),
-    onCreateNewTag: (value: OnChange) =>
-      actions.tags.saveNewTag({ ...value, noteId: id })
-  }));
+  } = useTwineActions(
+    actions => ({
+      onChange: (value: OnChange) =>
+        actions.notes.updateNote({ ...value, noteId: id }),
+      onRequestDictionary: actions.dictionary.requestDictionary,
+      onCloseDictionary: () => actions.dictionary.setDictionaryShowing(false),
+      onRequestSpeech: (content: string) =>
+        actions.speech.requestSpeech({ content, noteId: id }),
+      onCreateNewTag: (value: OnChange) =>
+        actions.tags.saveNewTag({ ...value, noteId: id })
+    }),
+    [id]
+  );
 
   /**
    * State
