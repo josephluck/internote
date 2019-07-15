@@ -30,7 +30,9 @@ export function Global() {
       <Modal open={!!confirmation} onClose={() => setConfirmation(null)}>
         <>
           <Box mb={spacing._1}>
-            {confirmation ? confirmation.message : "Are you sure?"}
+            {confirmation && confirmation.message
+              ? confirmation.message
+              : "Are you sure?"}
           </Box>
           <Flex>
             <Box flex={1} mr={spacing._0_25}>

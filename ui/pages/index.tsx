@@ -13,15 +13,15 @@ const PageWrapper = styled.div`
   height: 100%;
 `;
 
-const Page: NextTwineSFC<Store, { id: string }, { id: string }> = props => {
-  const notes = useTwineState(
-    state => state.notes.notes,
-    (prev, next) => prev.length !== next.length
+const Page: NextTwineSFC<Store, { id: string }, { id: string }> = ({ id }) => {
+  const note = useTwineState(
+    state => (id ? state.notes.notes.find(n => n.id === id) : null),
+    [id],
+    (prev, next) => prev.id === next.id
   );
   const navigateToFirstNote = useTwineActions(
     actions => actions.ui.navigateToFirstNote
   );
-  const note = props.id ? notes.find(n => n.id === props.id) : null;
 
   return (
     <>

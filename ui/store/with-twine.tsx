@@ -33,7 +33,24 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
 
   // TODO: support dependencies by useEffect so that external variables can be used in mapState fn
   function useTwineState<S extends (state: Store["state"]) => any>(
+    /**
+     * A function that takes global store state and should return a
+     * slice of state for use.
+     */
     mapState: S,
+    /**
+     * An array of dependencies to track that, when changed, will re-run
+     * mapState. Useful if mapState relies on any variables or closures
+     */
+    dependencies: any[] = [],
+    /**
+     * A function that will be called to check whether the state has changed.
+     * Can be used to optimise performance to prevent unnecessary re-renders.
+     *
+     * If this function returns false, the state will be updated.
+     *
+     * NB: defaults to strict equality check
+     */
     memoiseState: (
       previousValue: ReturnType<typeof mapState>,
       nextValue: ReturnType<typeof mapState>
@@ -53,11 +70,23 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
       return unsubscribe;
     }, []);
 
+    React.useEffect(() => {
+      setState(mapState(store.state));
+    }, dependencies);
+
     return state as MS;
   }
 
   function useTwineActions<A extends (actions: Store["actions"]) => any>(
+    /**
+     * A function that takes global store actions and should return a
+     * slice of state for use.
+     */
     mapActions: A,
+    /**
+     * An array of dependencies to track that, when changed, will re-run
+     * mapActions. Useful if mapActions relies on any variables or closures
+     */
     dependencies: any[] = []
   ) {
     const store = React.useContext(TwineContext);
