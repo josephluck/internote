@@ -91,6 +91,12 @@ export function model(api: Api): Model {
         actions,
         { noteId, content, title, tags, overwrite = false }
       ) {
+        // NB: Prevent save if there's an existing save in progress.
+        // this is so that is there are concurrent requests, they do
+        // not conflict with one another.
+        if (state.notes.loading.updateNote) {
+          return;
+        }
         return Option(state.notes.notes.find(note => note.id === noteId)).fold(
           () => Promise.resolve(),
           async ({ dateUpdated }) => {

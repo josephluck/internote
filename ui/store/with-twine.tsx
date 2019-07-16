@@ -51,7 +51,7 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
      *
      * NB: defaults to strict equality check
      */
-    memoiseState: (
+    _memoiseState: (
       previousValue: ReturnType<typeof mapState>,
       nextValue: ReturnType<typeof mapState>
     ) => boolean = defaultMemoise
@@ -63,9 +63,10 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
     React.useEffect(() => {
       const unsubscribe = store.subscribe(storeState => {
         const newState = mapState(storeState);
-        if (!memoiseState(state, newState)) {
-          setState(newState);
-        }
+        // TODO: fix this since state is invalid
+        // if (!memoiseState(state, newState)) {
+        setState(newState);
+        // }
       });
       return unsubscribe;
     }, []);

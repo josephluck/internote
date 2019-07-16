@@ -131,6 +131,7 @@ export function NoteMenu({
 }) {
   const allNotes = useTwineState(state => state.notes.notes);
   const tags = useTwineState(state => state.tags.tags);
+
   const { onDeleteNote, onCreateNote } = useTwineActions(actions => ({
     onDeleteNote: (noteId: string) =>
       actions.notes.deleteNoteConfirmation({ noteId }),
