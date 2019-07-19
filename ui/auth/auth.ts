@@ -39,8 +39,14 @@ export function makeAuth() {
   }
 
   async function signOut() {
-    user = undefined;
     await Auth.signOut();
+  }
+
+  async function getUser() {
+    if (!user) {
+      user = await Auth.currentAuthenticatedUser();
+    }
+    return user;
   }
 
   async function isAuthenticated() {
@@ -52,7 +58,9 @@ export function makeAuth() {
     signUp,
     signIn,
     answerCustomChallenge,
-    signOut
+    signOut,
+    isAuthenticated,
+    getUser
   };
 }
 

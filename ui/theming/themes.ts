@@ -51,7 +51,7 @@ export interface Theme {
 
 export const internote: Theme = {
   appBackground: "#0f0d16",
-  appText: "#D0D2D4",
+  appText: "#FFFFFF",
   audioTimelineActive: "#9fc7ec",
   audioTimelineInactive: "#504D5D",
   blockQuoteBorder: "#504D5D",

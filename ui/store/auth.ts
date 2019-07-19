@@ -12,11 +12,13 @@ const cookies = cookie();
 
 interface OwnState {
   session: Types.Session | null;
+  needsVerify: boolean;
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
   setSession: Twine.Reducer<OwnState, Types.Session>;
+  setNeedsVerify: Twine.Reducer<OwnState, boolean>;
 }
 
 interface OwnEffects {
@@ -35,7 +37,8 @@ interface OwnEffects {
 
 function defaultState(): OwnState {
   return {
-    session: null
+    session: null,
+    needsVerify: true
   };
 }
 
@@ -84,7 +87,8 @@ export function model(api: Api, auth: Auth): Model {
           ...state,
           session
         };
-      }
+      },
+      setNeedsVerify: (state, needsVerify) => ({ ...state, needsVerify })
     },
     effects: {
       storeSession(_state, actions, session) {
@@ -100,15 +104,25 @@ export function model(api: Api, auth: Auth): Model {
             session.user.preferences.distractionFree === true
         });
       },
-      async signUp2(_state, _actions, payload) {
-        await auth.signUp(payload.email);
-        await auth.signIn(payload.email);
+      async signUp2(_state, actions, payload) {
+        try {
+          await auth.signUp(payload.email);
+          await actions.auth.signIn2(payload);
+        } catch (err) {
+          if (err && err.code && err.code === "UsernameExistsException") {
+            return await actions.auth.signIn2(payload);
+          }
+          return err;
+        }
       },
-      async signIn2(_state, _actions, payload) {
+      async signIn2(_state, actions, payload) {
         await auth.signIn(payload.email);
+        actions.auth.setNeedsVerify(true);
       },
-      async verify(_state, _actions, payload) {
+      async verify(_state, actions, payload) {
         await auth.answerCustomChallenge(payload.code);
+        Router.push("/");
+        actions.auth.setNeedsVerify(false);
       },
       async signUp(_state, actions, payload) {
         const session = await api.auth.register(payload);

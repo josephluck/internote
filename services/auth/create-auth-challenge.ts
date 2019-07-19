@@ -45,17 +45,16 @@ async function sendEmail(emailAddress: string, secretLoginCode: string) {
       Body: {
         Html: {
           Charset: "UTF-8",
-          Data: `<html><body><p>This is your secret login code:</p>
-                           <h3>${secretLoginCode}</h3></body></html>`
+          Data: `<html><body><h1>Verify your email to log in to Internote</h1><p>To complete the log in process, please enter the following verification code in to the form:</p><h3>${secretLoginCode}</h3></body></html>`
         },
         Text: {
           Charset: "UTF-8",
-          Data: `Your secret login code: ${secretLoginCode}`
+          Data: `Internote verification code: ${secretLoginCode}`
         }
       },
       Subject: {
         Charset: "UTF-8",
-        Data: "Your secret login code"
+        Data: `Internote verification code: ${secretLoginCode}`
       }
     },
     Source: process.env.SES_FROM_ADDRESS!
