@@ -30,13 +30,21 @@ plugins:
   - serverless-domain-manager
 
 functions:
-  get:
+  health:
     handler: handler.health
     events:
       - http:
           path: health
           method: get
           cors: true
+  authenticated:
+    handler: handler.authenticated
+    events:
+      - http:
+          path: authenticated
+          method: get
+          cors: true
+          authorizer: aws_iam
 
 resources:
   # As this is the main service, API gateway is exposed here

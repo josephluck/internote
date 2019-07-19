@@ -83,31 +83,6 @@ resources:
           - CUSTOM_AUTH_FLOW_ONLY
         GenerateSecret: false
 
-    # The federated identity for our user pool to auth with
-    CognitoIdentityPool:
-      Type: AWS::Cognito::IdentityPool
-      Properties:
-        # Generate a name based on the stage
-        IdentityPoolName: ${self:custom.stage}MonoIdentityPool
-        # Don't allow unathenticated users
-        AllowUnauthenticatedIdentities: false
-        # Link to our User Pool
-        CognitoIdentityProviders:
-          - ClientId:
-              Ref: CognitoUserPoolClient
-            ProviderName:
-              Fn::GetAtt: ["CognitoUserPoolCognitoUserPool", "ProviderName"]
-
-    # IAM roles
-    CognitoIdentityPoolRoles:
-      Type: AWS::Cognito::IdentityPoolRoleAttachment
-      Properties:
-        IdentityPoolId:
-          Ref: CognitoIdentityPool
-        Roles:
-          authenticated:
-            Fn::GetAtt: [CognitoAuthRole, Arn]
-
     # IAM role used for authenticated users
     CognitoAuthRole:
       Type: AWS::IAM::Role
@@ -167,6 +142,30 @@ resources:
                 #           - "$"
                 #           - "{cognito-identity.amazonaws.com:sub}/*"
 
+    # The federated identity for our user pool to auth with
+    CognitoIdentityPool:
+      Type: AWS::Cognito::IdentityPool
+      Properties:
+        # Generate a name based on the stage
+        IdentityPoolName: ${self:custom.stage}InternoteIdentityPool
+        # Don't allow unathenticated users
+        AllowUnauthenticatedIdentities: false
+        # Link to our User Pool
+        CognitoIdentityProviders:
+          - ClientId:
+              Ref: CognitoUserPoolClient
+            ProviderName:
+              Fn::GetAtt: ["CognitoUserPoolCognitoUserPool", "ProviderName"]
+
+    # IAM roles
+    CognitoIdentityPoolRoles:
+      Type: AWS::Cognito::IdentityPoolRoleAttachment
+      Properties:
+        IdentityPoolId:
+          Ref: CognitoIdentityPool
+        Roles:
+          authenticated:
+            Fn::GetAtt: [CognitoAuthRole, Arn]
   # Print out the Id of the User Pool and Identity Pool that are created
   Outputs:
     UserPoolId:

@@ -1890,6 +1890,11 @@ aws-serverless-express@^3.3.6:
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
+aws4fetch@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/aws4fetch/-/aws4fetch-1.0.0.tgz#3be1d3f7b5f1b0de2513c5dfe90388669da9bb0e"
+  integrity sha512-QsZzkthE9pUSGkJi6fDlwZQQLdXjs/BPbdz4tJ/IG+tNbOuBRGA+drpLhQxgKHFDDIYPAvhXwe85Wg6qvgU3tA==
+
 axios@^0.18.0:
   version "0.18.0"
   resolved "http://registry.npmjs.org/axios/-/axios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
