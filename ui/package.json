@@ -27,11 +27,14 @@
     "aws-serverless-express": "^3.3.6"
   },
   "devDependencies": {
+    "@aws-amplify/auth": "^1.2.26",
+    "@aws-amplify/core": "^1.0.28",
     "@element-motion/core": "^2.7.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.18",
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@internote/api": "*",
+    "@internote/services": "*",
     "@rebass/grid": "^6.0.0-7",
     "@types/lodash": "^4.14.129",
     "@types/next": "^8.0.5",

@@ -1,0 +1,35 @@
+service: internote-services
+
+custom:
+  serverless-offline:
+    port: 2020
+  stage: ${opt:stage, self:provider.stage}
+  domains:
+    prod: services.internote.app
+    dev: dev-services.internote.app
+  customDomain:
+    basePath: ""
+    domainName: ${self:custom.domains.${self:custom.stage}}
+    certificateName: "internote.app"
+    stage: "${self:custom.stage}"
+    createRoute53Record: true
+    endpointType: "regional"
+
+plugins:
+  - serverless-plugin-monorepo
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-domain-manager
+  # - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-1
+  memorySize: 1024
+  timeout: 30
+
+resources:
+  - ${file(attachments/s3-bucket.yml)}
+  - ${file(api-gateway/errors.yml)}

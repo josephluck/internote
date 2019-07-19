@@ -18,7 +18,10 @@
   "workspaces": {
     "packages": [
       "api",
-      "ui"
+      "ui",
+      "services",
+      "services/auth",
+      "services/health"
     ]
   }
 }

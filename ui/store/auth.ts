@@ -6,6 +6,7 @@ import { isServer } from "../utilities/window";
 import cookie from "../utilities/cookie";
 import { colorThemes, fontThemes } from "../theming/themes";
 import Router from "next/router";
+import { Auth } from "../auth/auth";
 
 const cookies = cookie();
 
@@ -23,6 +24,9 @@ interface OwnEffects {
   storeSession: InternoteEffect<Types.Session>;
   session: InternoteEffect<{ token: string }, Promise<void>>;
   authenticate: InternoteEffect<Types.LoginRequest, Promise<void>>;
+  signUp2: InternoteEffect<{ email: string }, Promise<void>>;
+  signIn2: InternoteEffect<{ email: string }, Promise<void>>;
+  verify: InternoteEffect<{ code: string }, Promise<void>>;
   signOut: InternoteEffect0;
   signOutConfirmation: InternoteEffect0;
   deleteAccount: InternoteEffect0<Promise<void>>;
@@ -62,7 +66,7 @@ function getFontThemeFromPreferences(
     : fontThemes[0];
 }
 
-export function model(api: Api): Model {
+export function model(api: Api, auth: Auth): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
@@ -95,6 +99,16 @@ export function model(api: Api): Model {
             !!session.user.preferences &&
             session.user.preferences.distractionFree === true
         });
+      },
+      async signUp2(_state, _actions, payload) {
+        await auth.signUp(payload.email);
+        await auth.signIn(payload.email);
+      },
+      async signIn2(_state, _actions, payload) {
+        await auth.signIn(payload.email);
+      },
+      async verify(_state, _actions, payload) {
+        await auth.answerCustomChallenge(payload.code);
       },
       async signUp(_state, actions, payload) {
         const session = await api.auth.register(payload);

@@ -1,0 +1,41 @@
+{
+  "name": "@internote/services",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "*"
+  ],
+  "scripts": {
+    "dev": "sls offline start",
+    "deploy": "yarn deploy:dev",
+    "deploy:dev": "yarn deploy:dev:domain && yarn deploy:dev:app",
+    "deploy:dev:domain": "serverless create_domain --stage dev",
+    "deploy:dev:app": "SLS_DEBUG=* NODE_ENV=development sls deploy --stage dev",
+    "deploy:dev:auth": "SLS_DEBUG=* NODE_ENV=development sls deploy --config auth/serverless.yml --stage dev",
+    "deploy:prod": "yarn deploy:prod:domain && yarn deploy:prod:app",
+    "deploy:prod:domain": "serverless create_domain --stage prod",
+    "deploy:prod:app": "NODE_ENV=production sls deploy --stage prod"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.464.0",
+    "crypto-secure-random-digit": "^1.0.8",
+    "mandle": "^2.2.0",
+    "reflect-metadata": "^0.1.13",
+    "serverless": "^1.44.1",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-http": "^2.0.2",
+    "serverless-offline": "^4.10.6",
+    "serverless-plugin-typescript": "^1.1.7",
+    "space-lift": "^0.8.7",
+    "ts-node": "^8.2.0",
+    "ts-node-dev": "^1.0.0-pre.39",
+    "type-zoo": "^3.3.0",
+    "typescript": "^3.4.5"
+  },
+  "devDependencies": {
+    "serverless-domain-manager": "^3.2.2",
+    "serverless-plugin-monorepo": "^0.7.0"
+  }
+}

@@ -12,6 +12,8 @@ import * as Tags from "./tags";
 import * as Ui from "./ui";
 import * as Notes from "./notes";
 import { makeTwineHooks } from "./with-twine";
+import { env } from "../env";
+import { makeAuth, Auth as AuthDependency } from "../auth/auth";
 
 type Models = Twine.Models<
   Speech.Namespace &
@@ -41,7 +43,7 @@ export type InternoteEffect0<Return = void> = Twine.Effect0<
 
 export type Api = ReturnType<typeof makeApi>;
 
-function makeModel(api: Api) {
+function makeModel(api: Api, auth: AuthDependency) {
   return {
     state: {},
     reducers: {},
@@ -49,7 +51,7 @@ function makeModel(api: Api) {
     models: {
       speech: Speech.model(api),
       preferences: Preferences.model(api),
-      auth: Auth.model(api),
+      auth: Auth.model(api, auth),
       dictionary: Dictionary.model(api),
       confirmation: Confirmation.model(api),
       tags: Tags.model(api),
@@ -60,54 +62,60 @@ function makeModel(api: Api) {
 }
 
 export function makeStore() {
-  const api = makeApi(process.env.API_BASE_URL);
+  const api = makeApi(env.API_BASE_URL);
+  const auth = makeAuth();
   const loggingMiddleware =
     !isServer() && process.env.NODE_ENV !== "production" ? logger : undefined;
-  const store = twine<Models["state"], Models["actions"]>(makeModel(api), [
-    loggingMiddleware,
-    {
-      onStateChange: (state, prevState) => {
-        const { session } = state.auth;
-        const token = session ? session.token : "";
+  const store = twine<Models["state"], Models["actions"]>(
+    makeModel(api, auth),
+    [
+      loggingMiddleware,
+      {
+        onStateChange: (state, prevState) => {
+          const { session } = state.auth;
+          const token = session ? session.token : "";
 
-        if (session && token) {
-          if (
-            state.preferences.colorTheme !== prevState.preferences.colorTheme
-          ) {
-            api.preferences.update(token, {
-              colorTheme: state.preferences.colorTheme.name
-            });
-          }
-          if (state.preferences.fontTheme !== prevState.preferences.fontTheme) {
-            api.preferences.update(token, {
-              fontTheme: state.preferences.fontTheme.name
-            });
-          }
-          if (
-            state.preferences.distractionFree !==
-            prevState.preferences.distractionFree
-          ) {
-            api.preferences.update(token, {
-              distractionFree: state.preferences.distractionFree
-            });
-          }
-          if (state.preferences.voice !== prevState.preferences.voice) {
-            api.preferences.update(token, {
-              voice: state.preferences.voice
-            });
-          }
-          if (
-            state.preferences.outlineShowing !==
-            prevState.preferences.outlineShowing
-          ) {
-            api.preferences.update(token, {
-              outlineShowing: state.preferences.outlineShowing
-            });
+          if (session && token) {
+            if (
+              state.preferences.colorTheme !== prevState.preferences.colorTheme
+            ) {
+              api.preferences.update(token, {
+                colorTheme: state.preferences.colorTheme.name
+              });
+            }
+            if (
+              state.preferences.fontTheme !== prevState.preferences.fontTheme
+            ) {
+              api.preferences.update(token, {
+                fontTheme: state.preferences.fontTheme.name
+              });
+            }
+            if (
+              state.preferences.distractionFree !==
+              prevState.preferences.distractionFree
+            ) {
+              api.preferences.update(token, {
+                distractionFree: state.preferences.distractionFree
+              });
+            }
+            if (state.preferences.voice !== prevState.preferences.voice) {
+              api.preferences.update(token, {
+                voice: state.preferences.voice
+              });
+            }
+            if (
+              state.preferences.outlineShowing !==
+              prevState.preferences.outlineShowing
+            ) {
+              api.preferences.update(token, {
+                outlineShowing: state.preferences.outlineShowing
+              });
+            }
           }
         }
       }
-    }
-  ]);
+    ]
+  );
 
   api.client.interceptors.response.use(
     res => res,
