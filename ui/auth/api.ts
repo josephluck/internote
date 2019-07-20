@@ -118,7 +118,7 @@ export function makeAuthApi({
      * JWT for the current authenticated user
      */
     accessToken: string
-  ): Promise<IdentityId> {
+  ): Promise<IdentityPoolUserIdResponse> {
     const response = await Axios.post(
       COGNITO_IDENTITY_URL,
       {
@@ -407,7 +407,10 @@ interface Credentials {
   IdentityId: string;
 }
 
-interface IdentityId {
+interface IdentityPoolUserIdResponse {
+  /**
+   * See https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_GetId.html#API_GetId_ResponseSyntax
+   */
   IdentityId: string;
 }
 
