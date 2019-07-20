@@ -56,12 +56,12 @@ export function withAuth<C extends typeof React.Component>(
 
       const getInitialProps: any = (Child as any).getInitialProps;
 
-      if (!!context.store.getState().auth.session) {
+      if (!!context.store.getState().auth.authSession) {
         return getInitialProps ? getInitialProps(context) : {};
       } else if (options.restricted) {
-        return {};
+        redirectToLogin();
       }
-      redirectToLogin();
+      return {};
     }
 
     render() {

@@ -933,6 +933,11 @@
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.26.tgz#ebb164a95317b1350c5a57f719e8cb803a76fc97"
   integrity sha512-RI32vdCHAtKaFpjA9Wp2+VGrE4aagsiHhAEopWCcMDZreZjyC26Wlnwu2CZvqycMjKjZ1tLhpHIJC/VmjJIspQ==
 
+"@types/aws4@^1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@types/aws4/-/aws4-1.5.1.tgz#361fadab198a030ab398269183ae3fa86e958ed9"
+  integrity sha1-Nh+tqxmKAwqzmCaRg64/qG6Vjtk=
+
 "@types/bcryptjs@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@types/bcryptjs/-/bcryptjs-2.4.2.tgz#e3530eac9dd136bfdfb0e43df2c4c5ce1f77dfae"
@@ -1841,10 +1846,10 @@ aws-serverless-express@^3.3.6:
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
-aws4fetch@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/aws4fetch/-/aws4fetch-1.0.0.tgz#3be1d3f7b5f1b0de2513c5dfe90388669da9bb0e"
-  integrity sha512-QsZzkthE9pUSGkJi6fDlwZQQLdXjs/BPbdz4tJ/IG+tNbOuBRGA+drpLhQxgKHFDDIYPAvhXwe85Wg6qvgU3tA==
+aws4@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
+  integrity sha512-ReZxvNHIOv88FlT7rxcXIIC0fPt4KZqZbOlivyWtXLt8ESx84zd3kMC6iK5jVeS2qt+g7ftS7ye4fi06X5rtRQ==
 
 axios@^0.18.0:
   version "0.18.0"

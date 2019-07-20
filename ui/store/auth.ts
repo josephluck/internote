@@ -7,8 +7,9 @@ import cookie from "../utilities/cookie";
 import { colorThemes, fontThemes } from "../theming/themes";
 import Router from "next/router";
 import { AuthApi, makeAuthStorage, AuthSession } from "../auth/api";
-import { AwsClient } from "aws4fetch";
+import { AwsV4Signer } from "aws4fetch";
 import { env } from "../env";
+import Axios from "axios";
 
 const cookies = cookie();
 
@@ -242,23 +243,20 @@ export function model(api: Api, auth: AuthApi): Model {
         }
       },
       async testAuthentication(state) {
-        console.log("testing");
-        const aws = new AwsClient({
+        const aws = new AwsV4Signer({
+          url: "https://dev-services.internote.app/authenticated",
+          method: "get",
           accessKeyId: state.auth.authSession.accessKeyId,
           secretAccessKey: state.auth.authSession.secretKey,
           sessionToken: state.auth.authSession.sessionToken,
           region: env.SERVICES_REGION,
           service: "execute-api"
         });
-        async function invoke() {
-          const res = await aws.fetch(
-            "https://dev-services.internote.app/authenticated"
-          );
-          return res.json();
-        }
-        console.log("hey");
-        const response = await invoke();
-        console.log(response);
+        const response = await Axios.get(
+          "https://dev-services.internote.app/authenticated",
+          await aws.sign()
+        );
+        console.log(response.data);
       }
     }
   };

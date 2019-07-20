@@ -31,14 +31,14 @@ plugins:
 
 functions:
   health:
-    handler: handler.health
+    handler: health.handler
     events:
       - http:
           path: health
           method: get
           cors: true
   authenticated:
-    handler: handler.authenticated
+    handler: authenticated.handler
     events:
       - http:
           path: authenticated
