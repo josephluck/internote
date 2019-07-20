@@ -16,6 +16,6 @@ export async function authenticated() {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true
     },
-    body: "Authenticated"
+    body: { message: "Authenticated" }
   };
 }

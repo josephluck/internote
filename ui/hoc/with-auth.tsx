@@ -3,7 +3,7 @@ import Router from "next/router";
 import { NextContext } from "next";
 import { Store } from "../store";
 import { isServer } from "../utilities/window";
-import cookie from "../utilities/cookie";
+import { makeAuthStorage } from "../auth/api";
 
 interface Options {
   restricted: boolean;
@@ -27,19 +27,23 @@ export function withAuth<C extends typeof React.Component>(
       }
 
       async function initAuthRequest(): Promise<any> {
-        const cookieString =
+        const cookie =
           isServer() && context.req && context.req.headers
             ? (context.req.headers.cookie as string) || ""
             : "";
-        const cookies = cookie(cookieString);
-        const token = cookies.getAuthToken();
-        if (!token) {
+        const authStorage = makeAuthStorage(cookie);
+
+        const session = authStorage.getSession();
+        context.store.actions.auth.setAuthSession(session);
+
+        if (!session.sessionToken) {
           context.store.actions.auth.signOut();
         } else if (
-          !context.store.state.auth.session ||
-          cookies.isTokenNearExpiry()
+          !context.store.state.auth.authSession &&
+          session.refreshToken
+          // TODO: firm this up so that it refreshes if near expiry
         ) {
-          await context.store.actions.auth.session({ token });
+          await context.store.actions.auth.refreshToken(session.refreshToken);
         }
       }
 

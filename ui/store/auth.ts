@@ -7,6 +7,8 @@ import cookie from "../utilities/cookie";
 import { colorThemes, fontThemes } from "../theming/themes";
 import Router from "next/router";
 import { AuthApi, makeAuthStorage, AuthSession } from "../auth/api";
+import { AwsClient } from "aws4fetch";
+import { env } from "../env";
 
 const cookies = cookie();
 
@@ -31,7 +33,7 @@ interface OwnReducers {
 }
 
 interface OwnEffects {
-  init: InternoteEffect0<void>;
+  init: InternoteEffect0;
   signUp: InternoteEffect<Types.SignupRequest, Promise<void>>;
   storeSession: InternoteEffect<Types.Session>;
   session: InternoteEffect<{ token: string }, Promise<void>>;
@@ -40,10 +42,12 @@ interface OwnEffects {
   signIn2: InternoteEffect<{ email: string }, Promise<void>>;
   verify: InternoteEffect<{ code: string }, Promise<void>>;
   getAndSetCredentials: InternoteEffect0<Promise<void>>;
+  refreshToken: InternoteEffect<string, Promise<void>>;
   signOut: InternoteEffect0;
   signOutConfirmation: InternoteEffect0;
   deleteAccount: InternoteEffect0<Promise<void>>;
   deleteAccountConfirmation: InternoteEffect0;
+  testAuthentication: InternoteEffect0;
 }
 
 function defaultState(): OwnState {
@@ -176,6 +180,16 @@ export function model(api: Api, auth: AuthApi): Model {
         });
         actions.auth.setAuthSession(authStorage.getSession());
       },
+      async refreshToken(_state, actions, refreshToken) {
+        const credentials = await auth.refreshSession(refreshToken);
+        authStorage.storeSession({
+          accessToken: credentials.AuthenticationResult.AccessToken,
+          expires: credentials.AuthenticationResult.ExpiresIn,
+          idToken: credentials.AuthenticationResult.IdToken
+        });
+        actions.auth.setAuthSession(authStorage.getSession());
+        await actions.auth.getAndSetCredentials();
+      },
       async signUp(_state, actions, payload) {
         const session = await api.auth.register(payload);
         actions.auth.storeSession(session);
@@ -226,6 +240,25 @@ export function model(api: Api, auth: AuthApi): Model {
         if (!isServer()) {
           Router.push("/register");
         }
+      },
+      async testAuthentication(state) {
+        console.log("testing");
+        const aws = new AwsClient({
+          accessKeyId: state.auth.authSession.accessKeyId,
+          secretAccessKey: state.auth.authSession.secretKey,
+          sessionToken: state.auth.authSession.sessionToken,
+          region: env.SERVICES_REGION,
+          service: "execute-api"
+        });
+        async function invoke() {
+          const res = await aws.fetch(
+            "https://dev-services.internote.app/authenticated"
+          );
+          return res.json();
+        }
+        console.log("hey");
+        const response = await invoke();
+        console.log(response);
       }
     }
   };

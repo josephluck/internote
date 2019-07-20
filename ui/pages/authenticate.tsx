@@ -10,6 +10,7 @@ import { Modal } from "../styles/modal";
 import { Input, InputLabel } from "../styles/input";
 import { AwsClient } from "aws4fetch";
 import { env } from "../env";
+import { withAuth } from "../hoc/with-auth";
 
 const CenteredLogo = styled.div`
   display: flex;
@@ -113,8 +114,9 @@ const Page: NextTwineSFC<Store, {}> = () => {
   );
 };
 
-Page.getInitialProps = async _ctx => {
+Page.getInitialProps = async ctx => {
+  await ctx.store.actions.auth.testAuthentication();
   return {};
 };
 
-export default Page;
+export default withAuth(Page as any);
