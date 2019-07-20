@@ -5,11 +5,14 @@ import { Store } from "../store";
 import { isServer } from "../utilities/window";
 import cookie from "../utilities/cookie";
 
-export interface AuthenticationOptions {
-  restricted?: boolean;
+interface Options {
+  restricted: boolean;
 }
 
-export function withAuth<C extends typeof React.Component>(Child: C) {
+export function withAuth<C extends typeof React.Component>(
+  Child: C,
+  options: Options = { restricted: true }
+) {
   return class WrappedComponent extends React.PureComponent<any, any> {
     static async getInitialProps(context: NextContext<{}> & { store: Store }) {
       function redirectToLogin() {
@@ -42,17 +45,19 @@ export function withAuth<C extends typeof React.Component>(Child: C) {
 
       await initAuthRequest().catch(() => {
         context.store.actions.auth.signOut();
-        redirectToLogin();
+        if (options.restricted) {
+          redirectToLogin();
+        }
       });
 
       const getInitialProps: any = (Child as any).getInitialProps;
 
       if (!!context.store.getState().auth.session) {
         return getInitialProps ? getInitialProps(context) : {};
-      } else {
-        redirectToLogin();
+      } else if (options.restricted) {
         return {};
       }
+      redirectToLogin();
     }
 
     render() {

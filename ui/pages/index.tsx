@@ -50,4 +50,4 @@ Page.getInitialProps = async ({ store, query }) => {
   };
 };
 
-export default withAuth(Page as any);
+export default withAuth(Page as any, { restricted: true });
