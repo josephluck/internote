@@ -38,7 +38,7 @@ export function makeAuthApi({
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-amz-json-1.1",
           "X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth"
         }
       }
@@ -64,7 +64,7 @@ export function makeAuthApi({
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-amz-json-1.1",
           "X-Amz-Target": "AWSCognitoIdentityProviderService.GetUser"
         }
       }
@@ -81,9 +81,9 @@ export function makeAuthApi({
    */
   async function getCredentials(
     /**
-     * JWT for the current authenticated user
+     * ID token JWT for the current authenticated user
      */
-    accessToken: string,
+    idToken: string,
     /**
      * The ID of the user in the identity pool (see getIdentityId)
      */
@@ -93,13 +93,13 @@ export function makeAuthApi({
       COGNITO_IDENTITY_URL,
       {
         Logins: {
-          [`cognito-idp.${region}.amazonaws.com/${userPoolId}`]: accessToken
+          [`cognito-idp.${region}.amazonaws.com/${userPoolId}`]: idToken
         },
         IdentityId: identityId
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-amz-json-1.1",
           "X-Amz-Target": "AWSCognitoIdentityService.GetCredentialsForIdentity"
         }
       }
@@ -129,7 +129,7 @@ export function makeAuthApi({
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-amz-json-1.1",
           "X-Amz-Target": "AWSCognitoIdentityService.GetId"
         }
       }
@@ -173,7 +173,7 @@ export function makeAuthApi({
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-amz-json-1.1",
           "X-Amz-Target":
             "AWSCognitoIdentityProviderService.RespondToAuthChallenge"
         }
@@ -203,7 +203,7 @@ export function makeAuthApi({
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-amz-json-1.1",
           "X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth"
         }
       }
@@ -222,23 +222,27 @@ export function makeAuthApi({
      */
     username: string
   ): Promise<SignUpResponse> {
-    const response = await Axios.post(
-      COGNITO_URL,
-      {
-        ClientId: userPoolClientId,
-        Username: username,
-        Password: getRandomString(30),
-        UserAttributes: [],
-        ValidationData: null
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "X-Amz-Target": "AWSCognitoIdentityProviderService.SignUp"
+    try {
+      const response = await Axios.post(
+        COGNITO_URL,
+        {
+          ClientId: userPoolClientId,
+          Username: username,
+          Password: getRandomString(30),
+          UserAttributes: [],
+          ValidationData: null
+        },
+        {
+          headers: {
+            "Content-Type": "application/x-amz-json-1.1",
+            "X-Amz-Target": "AWSCognitoIdentityProviderService.SignUp"
+          }
         }
-      }
-    );
-    return response.data;
+      );
+      return response.data;
+    } catch (err) {
+      return err;
+    }
   }
 
   return {
@@ -260,26 +264,26 @@ export function makeAuthStorage(
 ) {
   const cookies = isServer() ? new CookieFactory(cookie) : new CookieFactory();
 
-  function storeItem<K extends keyof Storage>(
+  function storeItem<K extends keyof AuthSession>(
     key: K,
-    value: Storage[K]
-  ): Storage[K] {
+    value: AuthSession[K]
+  ): AuthSession[K] {
     cookies.set(key, value);
     return value;
   }
 
-  function getItem<K extends keyof Storage>(key: K): Storage[K] {
+  function getItem<K extends keyof AuthSession>(key: K): AuthSession[K] {
     return cookies.get(key);
   }
 
-  function storeSession(session: Partial<Storage>) {
+  function storeSession(session: Partial<AuthSession>) {
     return Object.keys(session).map(key => {
       cookies.set(key, session[key]);
     });
   }
 
-  function getSession(): Storage {
-    const defaultSession: Storage = {
+  function getSession(): AuthSession {
+    const defaultSession: AuthSession = {
       accessToken: "",
       expires: 0,
       idToken: "",
@@ -295,7 +299,7 @@ export function makeAuthStorage(
         ...prev,
         [key]: cookies.get(key) || defaultSession[key]
       }),
-      {} as Storage
+      {} as AuthSession
     );
   }
 
@@ -306,6 +310,8 @@ export function makeAuthStorage(
     getSession
   };
 }
+
+export type AuthApi = ReturnType<typeof makeAuthApi>;
 
 function intToHex(nr: number) {
   return nr.toString(16).padStart(2, "0");
@@ -319,7 +325,7 @@ function getRandomString(bytes: number = 30) {
     .join("");
 }
 
-interface Storage {
+export interface AuthSession {
   /**
    * See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AuthenticationResultType.html
    */

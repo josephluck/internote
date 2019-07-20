@@ -13,7 +13,7 @@ import * as Ui from "./ui";
 import * as Notes from "./notes";
 import { makeTwineHooks } from "./with-twine";
 import { env } from "../env";
-import { makeAuth, Auth as AuthDependency } from "../auth/auth";
+import { AuthApi, makeAuthApi } from "../auth/api";
 
 type Models = Twine.Models<
   Speech.Namespace &
@@ -43,7 +43,7 @@ export type InternoteEffect0<Return = void> = Twine.Effect0<
 
 export type Api = ReturnType<typeof makeApi>;
 
-function makeModel(api: Api, auth: AuthDependency) {
+function makeModel(api: Api, auth: AuthApi) {
   return {
     state: {},
     reducers: {},
@@ -63,7 +63,12 @@ function makeModel(api: Api, auth: AuthDependency) {
 
 export function makeStore() {
   const api = makeApi(env.API_BASE_URL);
-  const auth = makeAuth();
+  const auth = makeAuthApi({
+    region: env.SERVICES_REGION,
+    userPoolId: env.COGNITO_USER_POOL_ID,
+    userPoolClientId: env.COGNITO_USER_POOL_CLIENT_ID,
+    identityPoolId: env.COGNITO_IDENTITY_POOL_ID
+  });
   const loggingMiddleware =
     !isServer() && process.env.NODE_ENV !== "production" ? logger : undefined;
   const store = twine<Models["state"], Models["actions"]>(

@@ -6,25 +6,32 @@ import { isServer } from "../utilities/window";
 import cookie from "../utilities/cookie";
 import { colorThemes, fontThemes } from "../theming/themes";
 import Router from "next/router";
-import { Auth } from "../auth/auth";
-import { ICredentials } from "@aws-amplify/core";
+import { AuthApi, makeAuthStorage, AuthSession } from "../auth/api";
 
 const cookies = cookie();
+
+interface SignInSession {
+  email: string;
+  session: string;
+}
 
 interface OwnState {
   session: Types.Session | null;
   needsVerify: boolean;
-  credentials: ICredentials | null;
+  authSession: AuthSession | null;
+  signInSession: SignInSession;
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
   setSession: Twine.Reducer<OwnState, Types.Session>;
-  setCredentials: Twine.Reducer<OwnState, ICredentials>;
+  setAuthSession: Twine.Reducer<OwnState, AuthSession>;
   setNeedsVerify: Twine.Reducer<OwnState, boolean>;
+  setSignInSession: Twine.Reducer<OwnState, SignInSession>;
 }
 
 interface OwnEffects {
+  init: InternoteEffect0<void>;
   signUp: InternoteEffect<Types.SignupRequest, Promise<void>>;
   storeSession: InternoteEffect<Types.Session>;
   session: InternoteEffect<{ token: string }, Promise<void>>;
@@ -32,7 +39,7 @@ interface OwnEffects {
   signUp2: InternoteEffect<{ email: string }, Promise<void>>;
   signIn2: InternoteEffect<{ email: string }, Promise<void>>;
   verify: InternoteEffect<{ code: string }, Promise<void>>;
-  resession: InternoteEffect0<Promise<void>>;
+  getAndSetCredentials: InternoteEffect0<Promise<void>>;
   signOut: InternoteEffect0;
   signOutConfirmation: InternoteEffect0;
   deleteAccount: InternoteEffect0<Promise<void>>;
@@ -43,7 +50,8 @@ function defaultState(): OwnState {
   return {
     session: null,
     needsVerify: false,
-    credentials: null
+    authSession: null,
+    signInSession: { email: "", session: "" }
   };
 }
 
@@ -74,7 +82,9 @@ function getFontThemeFromPreferences(
     : fontThemes[0];
 }
 
-export function model(api: Api, auth: Auth): Model {
+export function model(api: Api, auth: AuthApi): Model {
+  const authStorage = makeAuthStorage();
+
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
@@ -94,9 +104,14 @@ export function model(api: Api, auth: Auth): Model {
         };
       },
       setNeedsVerify: (state, needsVerify) => ({ ...state, needsVerify }),
-      setCredentials: (state, credentials) => ({ ...state, credentials })
+      setAuthSession: (state, authSession) => ({ ...state, authSession }),
+      setSignInSession: (state, signInSession) => ({ ...state, signInSession })
     },
     effects: {
+      init(_state, actions) {
+        // TODO: refresh token
+        actions.auth.setAuthSession(authStorage.getSession());
+      },
       storeSession(_state, actions, session) {
         actions.auth.setSession(session);
         actions.preferences.setPreferences({
@@ -121,19 +136,45 @@ export function model(api: Api, auth: Auth): Model {
           return err;
         }
       },
-      async signIn2(_state, actions, payload) {
-        await auth.signIn(payload.email);
-        await actions.auth.resession();
+      async signIn2(_state, actions, { email }) {
+        const response = await auth.signIn(email);
+        actions.auth.setSignInSession({
+          email: email,
+          session: response.Session
+        });
         actions.auth.setNeedsVerify(true);
       },
-      async verify(_state, actions, payload) {
-        await auth.answerCustomChallenge(payload.code);
+      async verify(state, actions, payload) {
+        const credentials = await auth.respondToAuthChallenge(
+          state.auth.signInSession.email,
+          payload.code,
+          state.auth.signInSession.session
+        );
+        authStorage.storeSession({
+          accessToken: credentials.AuthenticationResult.AccessToken,
+          expires: credentials.AuthenticationResult.ExpiresIn,
+          idToken: credentials.AuthenticationResult.IdToken,
+          refreshToken: credentials.AuthenticationResult.RefreshToken
+        });
+        actions.auth.setAuthSession(authStorage.getSession());
+        await actions.auth.getAndSetCredentials();
         // Router.push("/");
         actions.auth.setNeedsVerify(false);
       },
-      async resession(_state, actions) {
-        const credentials = await auth.getCredentials();
-        actions.auth.setCredentials(credentials);
+      async getAndSetCredentials(_state, actions) {
+        const session = authStorage.getSession();
+        const response = await auth.getIdentityId(session.idToken);
+        const credentials = await auth.getCredentials(
+          session.idToken,
+          response.IdentityId
+        );
+        authStorage.storeSession({
+          accessKeyId: credentials.Credentials.AccessKeyId,
+          expiration: credentials.Credentials.Expiration,
+          secretKey: credentials.Credentials.SecretKey,
+          sessionToken: credentials.Credentials.SessionToken
+        });
+        actions.auth.setAuthSession(authStorage.getSession());
       },
       async signUp(_state, actions, payload) {
         const session = await api.auth.register(payload);

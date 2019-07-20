@@ -28,7 +28,7 @@ const Page: NextTwineSFC<Store, {}> = () => {
   const authenticateLoading = useTwineState(
     state => state.auth.loading.signUp2
   );
-  const credentials = useTwineState(state => state.auth.credentials);
+  const credentials = useTwineState(state => state.auth.authSession);
   const verifyLoading = useTwineState(state => state.auth.loading.verify);
   const needsVerify = useTwineState(state => state.auth.needsVerify);
   const authenticate = useTwineActions(actions => actions.auth.signUp2);
@@ -36,7 +36,7 @@ const Page: NextTwineSFC<Store, {}> = () => {
   const test = React.useCallback(async () => {
     const aws = new AwsClient({
       accessKeyId: credentials.accessKeyId,
-      secretAccessKey: credentials.secretAccessKey,
+      secretAccessKey: credentials.secretKey,
       sessionToken: credentials.sessionToken,
       region: env.SERVICES_REGION,
       service: "execute-api"

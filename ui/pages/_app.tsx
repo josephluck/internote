@@ -44,7 +44,7 @@ const GlobalStyles = createGlobalStyle`
 
 export class Application extends App {
   async componentDidMount() {
-    await (this.props as any).store.actions.auth.resession();
+    await (this.props as any).store.actions.auth.init();
   }
   render() {
     const { Component, pageProps, store } = this.props as any;
