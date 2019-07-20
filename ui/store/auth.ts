@@ -35,7 +35,6 @@ interface OwnReducers {
 }
 
 interface OwnEffects {
-  init: InternoteEffect0;
   signUp: InternoteEffect<Types.SignupRequest, Promise<void>>;
   storeSession: InternoteEffect<Types.Session>;
   session: InternoteEffect<{ token: string }, Promise<void>>;
@@ -114,9 +113,6 @@ export function model(api: Api, auth: AuthApi): Model {
       setSignInSession: (state, signInSession) => ({ ...state, signInSession })
     },
     effects: {
-      init(_state, actions) {
-        actions.auth.setAuthSession(authStorage.getSession());
-      },
       storeSession(_state, actions, session) {
         actions.auth.setSession(session);
         actions.preferences.setPreferences({
