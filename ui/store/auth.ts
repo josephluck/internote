@@ -7,17 +7,20 @@ import cookie from "../utilities/cookie";
 import { colorThemes, fontThemes } from "../theming/themes";
 import Router from "next/router";
 import { Auth } from "../auth/auth";
+import { ICredentials } from "@aws-amplify/core";
 
 const cookies = cookie();
 
 interface OwnState {
   session: Types.Session | null;
   needsVerify: boolean;
+  credentials: ICredentials | null;
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
   setSession: Twine.Reducer<OwnState, Types.Session>;
+  setCredentials: Twine.Reducer<OwnState, ICredentials>;
   setNeedsVerify: Twine.Reducer<OwnState, boolean>;
 }
 
@@ -29,6 +32,7 @@ interface OwnEffects {
   signUp2: InternoteEffect<{ email: string }, Promise<void>>;
   signIn2: InternoteEffect<{ email: string }, Promise<void>>;
   verify: InternoteEffect<{ code: string }, Promise<void>>;
+  resession: InternoteEffect0<Promise<void>>;
   signOut: InternoteEffect0;
   signOutConfirmation: InternoteEffect0;
   deleteAccount: InternoteEffect0<Promise<void>>;
@@ -38,7 +42,8 @@ interface OwnEffects {
 function defaultState(): OwnState {
   return {
     session: null,
-    needsVerify: true
+    needsVerify: false,
+    credentials: null
   };
 }
 
@@ -88,7 +93,8 @@ export function model(api: Api, auth: Auth): Model {
           session
         };
       },
-      setNeedsVerify: (state, needsVerify) => ({ ...state, needsVerify })
+      setNeedsVerify: (state, needsVerify) => ({ ...state, needsVerify }),
+      setCredentials: (state, credentials) => ({ ...state, credentials })
     },
     effects: {
       storeSession(_state, actions, session) {
@@ -117,12 +123,17 @@ export function model(api: Api, auth: Auth): Model {
       },
       async signIn2(_state, actions, payload) {
         await auth.signIn(payload.email);
+        await actions.auth.resession();
         actions.auth.setNeedsVerify(true);
       },
       async verify(_state, actions, payload) {
         await auth.answerCustomChallenge(payload.code);
-        Router.push("/");
+        // Router.push("/");
         actions.auth.setNeedsVerify(false);
+      },
+      async resession(_state, actions) {
+        const credentials = await auth.getCredentials();
+        actions.auth.setCredentials(credentials);
       },
       async signUp(_state, actions, payload) {
         const session = await api.auth.register(payload);

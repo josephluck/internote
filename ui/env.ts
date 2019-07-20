@@ -4,7 +4,8 @@ export interface Env {
   ASSET_PREFIX: string;
   COGNITO_USER_POOL_ID: string;
   COGNITO_USER_POOL_CLIENT_ID: string;
-  COGNITO_REGION: string;
+  SERVICES_REGION: string;
+  COGNITO_IDENTITY_POOL_ID: string;
 }
 
 export const env: Env = {
@@ -13,5 +14,6 @@ export const env: Env = {
   ASSET_PREFIX: process.env.ASSET_PREFIX,
   COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
   COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID,
-  COGNITO_REGION: process.env.COGNITO_REGION
+  SERVICES_REGION: process.env.SERVICES_REGION,
+  COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID
 };

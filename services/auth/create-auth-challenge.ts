@@ -45,7 +45,17 @@ async function sendEmail(emailAddress: string, secretLoginCode: string) {
       Body: {
         Html: {
           Charset: "UTF-8",
-          Data: `<html><body><h1>Verify your email to log in to Internote</h1><p>To complete the log in process, please enter the following verification code in to the form:</p><h3>${secretLoginCode}</h3></body></html>`
+          Data: `
+            <html>
+              <body>
+                <h2 style="font-size: 24px; margin: 30px 0;">Verify your email to log in to Internote</h2>
+                <p style="font-size: 14px; line-height: 24px;">To complete the log in process, please enter the following verification code in to the form:</p>
+                <h2 style="font-size: 18px; margin: 26px 0;">${secretLoginCode}</h2>
+                <hr style="margin: 26px 0; border-top: 1px solid #eaeaea;" />
+                <p style="font-size: 12px; line-height: 24px; color: #666666;">If you didn't attempt to log in but received this email, please ignore this email.</p>
+              </body>
+            </html>
+          `
         },
         Text: {
           Charset: "UTF-8",

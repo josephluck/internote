@@ -8,9 +8,10 @@ export function makeAuth() {
 
   Amplify.configure({
     Auth: {
-      region: env.COGNITO_REGION,
+      region: env.SERVICES_REGION,
       userPoolId: env.COGNITO_USER_POOL_ID,
       userPoolWebClientId: env.COGNITO_USER_POOL_CLIENT_ID,
+      identityPoolId: env.COGNITO_IDENTITY_POOL_ID,
       mandatorySignIn: false,
       cookieStorage: {
         domain: isServer() ? ".internote.app" : window.location.hostname,
@@ -54,13 +55,18 @@ export function makeAuth() {
     return !!user;
   }
 
+  async function getCredentials() {
+    return await Auth.currentCredentials();
+  }
+
   return {
     signUp,
     signIn,
     answerCustomChallenge,
     signOut,
     isAuthenticated,
-    getUser
+    getUser,
+    getCredentials
   };
 }
 

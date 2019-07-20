@@ -8,6 +8,8 @@ import { styled } from "../theming/styled";
 import { Button } from "../styles/button";
 import { Modal } from "../styles/modal";
 import { Input, InputLabel } from "../styles/input";
+import { AwsClient } from "aws4fetch";
+import { env } from "../env";
 
 const CenteredLogo = styled.div`
   display: flex;
@@ -26,10 +28,28 @@ const Page: NextTwineSFC<Store, {}> = () => {
   const authenticateLoading = useTwineState(
     state => state.auth.loading.signUp2
   );
+  const credentials = useTwineState(state => state.auth.credentials);
   const verifyLoading = useTwineState(state => state.auth.loading.verify);
   const needsVerify = useTwineState(state => state.auth.needsVerify);
   const authenticate = useTwineActions(actions => actions.auth.signUp2);
   const verify = useTwineActions(actions => actions.auth.verify);
+  const test = React.useCallback(async () => {
+    const aws = new AwsClient({
+      accessKeyId: credentials.accessKeyId,
+      secretAccessKey: credentials.secretAccessKey,
+      sessionToken: credentials.sessionToken,
+      region: env.SERVICES_REGION,
+      service: "execute-api"
+    });
+    async function invoke() {
+      const res = await aws.fetch(
+        "https://dev-services.internote.app/authenticated"
+      );
+      return res.json();
+    }
+    const response = await invoke();
+    console.log(response);
+  }, [credentials]);
 
   return (
     <>
@@ -37,6 +57,7 @@ const Page: NextTwineSFC<Store, {}> = () => {
         <CenteredLogo>
           <Logo large>Internote</Logo>
         </CenteredLogo>
+        <button onClick={test}>Test authentication</button>
         {needsVerify ? (
           <form
             onSubmit={e => {
