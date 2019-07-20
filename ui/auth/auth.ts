@@ -45,17 +45,19 @@ export function makeAuth() {
 
   async function getUser() {
     if (!user) {
+      console.log("Getting current authenticated user");
       user = await Auth.currentAuthenticatedUser();
     }
     return user;
   }
 
   async function isAuthenticated() {
-    const user = await Auth.currentAuthenticatedUser();
+    const user = await getUser();
     return !!user;
   }
 
   async function getCredentials() {
+    console.log("Getting current credentials");
     return await Auth.currentCredentials();
   }
 
