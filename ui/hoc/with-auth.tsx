@@ -3,7 +3,8 @@ import Router from "next/router";
 import { NextContext } from "next";
 import { Store } from "../store";
 import { isServer } from "../utilities/window";
-import { makeAuthStorage } from "../auth/api";
+import { isNearExpiry } from "../auth/api";
+import { makeAuthStorage } from "../auth/storage";
 
 interface Options {
   restricted: boolean;
@@ -36,13 +37,13 @@ export function withAuth<C extends typeof React.Component>(
         const session = authStorage.getSession();
         context.store.actions.auth.setAuthSession(session);
 
-        if (!session.sessionToken) {
-          context.store.actions.auth.signOut();
-        } else if (
-          !context.store.state.auth.authSession &&
-          session.refreshToken
-          // TODO: firm this up so that it refreshes if near expiry
-        ) {
+        const tokenNearExpiry =
+          session.refreshToken && isNearExpiry(session.expires);
+
+        const tokensMissing =
+          !session.accessKeyId || !session.secretKey || !session.sessionToken;
+
+        if (tokenNearExpiry || (session.refreshToken && tokensMissing)) {
           await context.store.actions.auth.refreshToken(session.refreshToken);
         }
       }

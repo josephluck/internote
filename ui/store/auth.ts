@@ -6,10 +6,11 @@ import { isServer } from "../utilities/window";
 import cookie from "../utilities/cookie";
 import { colorThemes, fontThemes } from "../theming/themes";
 import Router from "next/router";
-import { AuthApi, makeAuthStorage, AuthSession } from "../auth/api";
+import { AuthApi } from "../auth/api";
 import { AwsV4Signer } from "aws4fetch";
 import { env } from "../env";
 import Axios from "axios";
+import { AuthSession, makeAuthStorage } from "../auth/storage";
 
 const cookies = cookie();
 
@@ -114,7 +115,6 @@ export function model(api: Api, auth: AuthApi): Model {
     },
     effects: {
       init(_state, actions) {
-        // TODO: refresh token
         actions.auth.setAuthSession(authStorage.getSession());
       },
       storeSession(_state, actions, session) {
