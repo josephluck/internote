@@ -7,10 +7,10 @@ import cookie from "../utilities/cookie";
 import { colorThemes, fontThemes } from "../theming/themes";
 import Router from "next/router";
 import { AuthApi } from "../auth/api";
-import { AwsV4Signer } from "aws4fetch";
 import { env } from "../env";
 import Axios from "axios";
 import { AuthSession, makeAuthStorage } from "../auth/storage";
+import aws4 from "aws4";
 
 const cookies = cookie();
 
@@ -29,7 +29,7 @@ interface OwnState {
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
   setSession: Twine.Reducer<OwnState, Types.Session>;
-  setAuthSession: Twine.Reducer<OwnState, AuthSession>;
+  setAuthSession: Twine.Reducer<OwnState, Partial<AuthSession>>;
   setNeedsVerify: Twine.Reducer<OwnState, boolean>;
   setSignInSession: Twine.Reducer<OwnState, SignInSession>;
 }
@@ -109,7 +109,10 @@ export function model(api: Api, auth: AuthApi): Model {
         };
       },
       setNeedsVerify: (state, needsVerify) => ({ ...state, needsVerify }),
-      setAuthSession: (state, authSession) => ({ ...state, authSession }),
+      setAuthSession: (state, authSession) => ({
+        ...state,
+        authSession: { ...state.authSession, ...authSession }
+      }),
       setSignInSession: (state, signInSession) => ({ ...state, signInSession })
     },
     effects: {
@@ -162,29 +165,37 @@ export function model(api: Api, auth: AuthApi): Model {
         // Router.push("/");
         actions.auth.setNeedsVerify(false);
       },
-      async getAndSetCredentials(_state, actions) {
-        const session = authStorage.getSession();
-        const response = await auth.getIdentityId(session.idToken);
+      async getAndSetCredentials(state, actions) {
+        const response = await auth.getIdentityId(
+          state.auth.authSession.idToken
+        );
         const credentials = await auth.getCredentials(
-          session.idToken,
+          state.auth.authSession.idToken,
           response.IdentityId
         );
-        authStorage.storeSession({
+        const session = {
+          ...state.auth.authSession,
           accessKeyId: credentials.Credentials.AccessKeyId,
           expiration: credentials.Credentials.Expiration,
           secretKey: credentials.Credentials.SecretKey,
           sessionToken: credentials.Credentials.SessionToken
-        });
-        actions.auth.setAuthSession(authStorage.getSession());
+        };
+        authStorage.storeSession(session);
+        actions.auth.setAuthSession(session);
+        // TODO: set up interval for calling calling this repeatedly
+        // when user is using the app (since the tokens are short-lived)
       },
-      async refreshToken(_state, actions, refreshToken) {
+      async refreshToken(state, actions, refreshToken) {
         const credentials = await auth.refreshSession(refreshToken);
-        authStorage.storeSession({
+        const session = {
+          ...state.auth.authSession,
+          refreshToken,
           accessToken: credentials.AuthenticationResult.AccessToken,
           expires: credentials.AuthenticationResult.ExpiresIn,
           idToken: credentials.AuthenticationResult.IdToken
-        });
-        actions.auth.setAuthSession(authStorage.getSession());
+        };
+        authStorage.storeSession(session);
+        actions.auth.setAuthSession(session);
         await actions.auth.getAndSetCredentials();
       },
       async signUp(_state, actions, payload) {
@@ -239,19 +250,25 @@ export function model(api: Api, auth: AuthApi): Model {
         }
       },
       async testAuthentication(state) {
-        const aws = new AwsV4Signer({
-          url: "https://dev-services.internote.app/authenticated",
-          method: "get",
-          accessKeyId: state.auth.authSession.accessKeyId,
-          secretAccessKey: state.auth.authSession.secretKey,
-          sessionToken: state.auth.authSession.sessionToken,
-          region: env.SERVICES_REGION,
-          service: "execute-api"
-        });
-        const response = await Axios.get(
-          "https://dev-services.internote.app/authenticated",
-          await aws.sign()
+        const request = aws4.sign(
+          {
+            host: "dev-services.internote.app",
+            path: "/authenticated",
+            url: "https://dev-services.internote.app/authenticated",
+            method: "GET",
+            region: env.SERVICES_REGION,
+            service: "execute-api"
+          },
+          {
+            accessKeyId: state.auth.authSession.accessKeyId,
+            secretAccessKey: state.auth.authSession.secretKey,
+            sessionToken: state.auth.authSession.sessionToken
+          }
         );
+        console.log({ request });
+        delete request.headers["Host"];
+        delete request.headers["Content-Length"];
+        const response = await Axios(request);
         console.log(response.data);
       }
     }

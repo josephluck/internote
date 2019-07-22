@@ -24,7 +24,8 @@
     "static:remove": "rm -rf .static"
   },
   "dependencies": {
-    "aws-serverless-express": "^3.3.6"
+    "aws-serverless-express": "^3.3.6",
+    "nookies": "^2.0.8"
   },
   "devDependencies": {
     "@element-motion/core": "^2.7.0",
@@ -60,6 +61,7 @@
     "next-plugin-custom-babel-config": "^1.0.2",
     "next-plugin-transpile-modules": "^2.0.0",
     "next-router-events": "^2.1.0",
+    "nookies": "^2.0.8",
     "react": "^16.8.6",
     "react-collapse": "^4.0.3",
     "react-dom": "^16.8.6",

@@ -6,15 +6,29 @@ const withCustomBabelConfig = require("next-plugin-custom-babel-config");
 
 const isProd = process.env.NODE_ENV === "production";
 
-module.exports = withCustomBabelConfig(
-  withDotenv(
-    withTypescript(
-      withTranspile({
-        transpileModules: ["@internote"],
-        babelConfigFile: path.resolve("./babel.config.js"),
-        target: "serverless",
-        assetPrefix: process.env.ASSET_PREFIX || ""
-      })
+function withExternals(nextConfig) {
+  return Object.assign({}, nextConfig, {
+    webpack(config, options) {
+      config.externals = config.externals || [];
+      if (typeof nextConfig.webpack === "function") {
+        return nextConfig.webpack(config, options);
+      }
+      return config;
+    }
+  });
+}
+
+module.exports = withExternals(
+  withCustomBabelConfig(
+    withDotenv(
+      withTypescript(
+        withTranspile({
+          transpileModules: ["@internote"],
+          babelConfigFile: path.resolve("./babel.config.js"),
+          target: "serverless",
+          assetPrefix: process.env.ASSET_PREFIX || ""
+        })
+      )
     )
   )
 );

@@ -3,8 +3,9 @@ export async function handler() {
     statusCode: 200,
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true
+      "Access-Control-Allow-Credentials": true,
+      "Content-Type": "application/json"
     },
-    body: { message: "Hello World" }
+    body: JSON.stringify({ message: "Hello World" })
   };
 }

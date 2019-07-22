@@ -1,5 +1,18 @@
 import { isServer } from "../utilities/window";
-import CookieFactory from "universal-cookie";
+import CookieFactory, { CookieSetOptions } from "universal-cookie";
+
+const days30InMs = 2.592e9;
+
+function makeExpiryDate(adjustmentInMs: number) {
+  return new Date(Date.now() + adjustmentInMs);
+}
+
+export function cookieOptions(): CookieSetOptions {
+  return {
+    path: "/",
+    expires: makeExpiryDate(days30InMs)
+  };
+}
 
 export function makeAuthStorage(
   /**
@@ -13,8 +26,12 @@ export function makeAuthStorage(
     key: K,
     value: AuthSession[K]
   ): AuthSession[K] {
-    cookies.set(key, value);
+    cookies.set(key, value, cookieOptions());
     return value;
+  }
+
+  function removeItem<K extends keyof AuthSession>(key: K) {
+    cookies.remove(key, cookieOptions());
   }
 
   function getItem<K extends keyof AuthSession>(key: K): AuthSession[K] {
@@ -23,7 +40,7 @@ export function makeAuthStorage(
 
   function storeSession(session: Partial<AuthSession>) {
     return Object.keys(session).map(key => {
-      cookies.set(key, session[key]);
+      storeItem(key as keyof AuthSession, session[key]);
     });
   }
 
@@ -51,6 +68,7 @@ export function makeAuthStorage(
   return {
     storeItem,
     getItem,
+    removeItem,
     storeSession,
     getSession
   };
@@ -62,6 +80,7 @@ export interface AuthSession {
    */
   accessToken: string;
   /**
+   * The length of time that the session token is valid for
    * See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AuthenticationResultType.html
    */
   expires: number;
@@ -82,6 +101,7 @@ export interface AuthSession {
    */
   expiration: number;
   /**
+   * The timestamp in ms since the epoch that the session token expires
    * See https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_Credentials.html
    */
   secretKey: string;

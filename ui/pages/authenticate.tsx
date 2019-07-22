@@ -8,7 +8,6 @@ import { styled } from "../theming/styled";
 import { Button } from "../styles/button";
 import { Modal } from "../styles/modal";
 import { Input, InputLabel } from "../styles/input";
-import { AwsClient } from "aws4fetch";
 import { env } from "../env";
 import { withAuth } from "../hoc/with-auth";
 
@@ -29,29 +28,11 @@ const Page: NextTwineSFC<Store, {}> = () => {
   const authenticateLoading = useTwineState(
     state => state.auth.loading.signUp2
   );
-  const credentials = useTwineState(state => state.auth.authSession);
   const verifyLoading = useTwineState(state => state.auth.loading.verify);
   const needsVerify = useTwineState(state => state.auth.needsVerify);
   const authenticate = useTwineActions(actions => actions.auth.signUp2);
   const verify = useTwineActions(actions => actions.auth.verify);
-  const test = React.useCallback(async () => {
-    const aws = new AwsClient({
-      accessKeyId: credentials.accessKeyId,
-      secretAccessKey: credentials.secretKey,
-      sessionToken: credentials.sessionToken,
-      region: env.SERVICES_REGION,
-      service: "execute-api"
-    });
-    async function invoke() {
-      const res = await aws.fetch(
-        "https://dev-services.internote.app/authenticated"
-      );
-      return res.json();
-    }
-    const response = await invoke();
-    console.log(response);
-  }, [credentials]);
-
+  const test = useTwineActions(actions => actions.auth.testAuthentication);
   return (
     <>
       <Modal open showCloseIcon={false} onClose={() => null}>
@@ -115,7 +96,7 @@ const Page: NextTwineSFC<Store, {}> = () => {
 };
 
 Page.getInitialProps = async ctx => {
-  await ctx.store.actions.auth.testAuthentication();
+  // await ctx.store.actions.auth.testAuthentication();
   return {};
 };
 

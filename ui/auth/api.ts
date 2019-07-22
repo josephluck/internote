@@ -275,6 +275,8 @@ function makeExpiryDate(adjustmentInMs: number) {
 }
 
 export function isNearExpiry(expires: number): boolean {
+  // 1563825778
+  // 1563823931339
   return expires < makeExpiryDate(hourInMs).valueOf();
 }
 

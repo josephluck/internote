@@ -5,6 +5,7 @@ import { Store } from "../store";
 import { isServer } from "../utilities/window";
 import { isNearExpiry } from "../auth/api";
 import { makeAuthStorage } from "../auth/storage";
+import { setCookie } from "nookies";
 
 interface Options {
   restricted: boolean;
@@ -38,7 +39,7 @@ export function withAuth<C extends typeof React.Component>(
         context.store.actions.auth.setAuthSession(session);
 
         const tokenNearExpiry =
-          session.refreshToken && isNearExpiry(session.expires);
+          session.refreshToken && isNearExpiry(session.expiration);
 
         const tokensMissing =
           !session.accessKeyId || !session.secretKey || !session.sessionToken;
@@ -46,6 +47,13 @@ export function withAuth<C extends typeof React.Component>(
         if (tokenNearExpiry || (session.refreshToken && tokensMissing)) {
           await context.store.actions.auth.refreshToken(session.refreshToken);
         }
+        const latestSession = context.store.getState().auth.authSession;
+        Object.keys(latestSession).map(key => {
+          setCookie(context, key, latestSession[key], {
+            path: "",
+            maxAge: 30 * 24 * 60 * 60
+          });
+        });
       }
 
       await initAuthRequest().catch(() => {

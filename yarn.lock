@@ -2693,7 +2693,7 @@ cookie@0.3.1, cookie@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
 
-cookie@0.4.0:
+cookie@0.4.0, cookie@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.0.tgz#beb437e7022b3b6d49019d088665303ebe9c14ba"
   integrity sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
@@ -4884,6 +4884,11 @@ jsesc@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
 
+jsmin@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jsmin/-/jsmin-1.0.1.tgz#e7bd0dcd6496c3bf4863235bf461a3d98aa3b98c"
+  integrity sha1-570NzWSWw79IYyNb9GGj2YqjuYw=
+
 json-cycle@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/json-cycle/-/json-cycle-1.3.0.tgz#c4f6f7d926c2979012cba173b06f9cae9e866d3f"
@@ -5914,6 +5919,15 @@ node-source-walk@^4.0.0, node-source-walk@^4.2.0:
   integrity sha512-hPs/QMe6zS94f5+jG3kk9E7TNm4P2SulrKiLWMzKszBfNZvL/V6wseHlTd7IvfW0NZWqPtK3+9yYNr+3USGteA==
   dependencies:
     "@babel/parser" "^7.0.0"
+
+nookies@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/nookies/-/nookies-2.0.8.tgz#e1e72349d7b5ea24ef7e96900346e8764a6851d1"
+  integrity sha512-aSJqgRxcEf4BjLjsKP/Ypc9bo0VO1mHrJp+2+1tnQUVHszcM27Ysfh0Go8thUf5eArW4lA5wfnXaEDRg+zc2wA==
+  dependencies:
+    cookie "^0.4.0"
+    jsmin "^1.0.1"
+    set-cookie-parser "^2.2.1"
 
 nopt@^4.0.1:
   version "4.0.1"
@@ -7448,6 +7462,11 @@ serverless@^1.44.1:
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
+
+set-cookie-parser@^2.2.1:
+  version "2.3.8"
+  resolved "https://registry.yarnpkg.com/set-cookie-parser/-/set-cookie-parser-2.3.8.tgz#39fac433be81c80c43f18ffb5af91329d0727b68"
+  integrity sha512-u8H4aHJ1vkhrisLPYlsE8HXlrK9nnwoo/4LeTtO3MXsz1fQ+7Yd7a/rG3hY+3PyrljJl+JubOjB+tLLzHCuPrg==
 
 set-immediate-shim@~1.0.1:
   version "1.0.1"
