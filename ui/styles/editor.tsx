@@ -23,7 +23,7 @@ import {
   OnChange,
   getChanges
 } from "../utilities/editor";
-import { Wrap, EditorStyles, Editor, EditorInnerWrap } from "./editor-styles";
+import { Wrap, EditorStyles, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
 import { getFirstWordFromString, getLength } from "../utilities/string";
 import { Outline } from "./outline";
@@ -32,6 +32,11 @@ import { Tag } from "./tag";
 import { useDebounce, useThrottle } from "../utilities/hooks";
 import { Toolbar } from "./toolbar";
 import { useTwineState, useTwineActions } from "../store";
+import dynamic from "next/dynamic";
+
+const Editor = dynamic(import("./slate").then(mod => mod.Editor), {
+  ssr: false
+});
 
 const DEFAULT_NODE = "paragraph";
 

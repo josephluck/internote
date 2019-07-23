@@ -1,6 +1,5 @@
 import { styled } from "../theming/styled";
 import { spacing, borderRadius, font } from "../theming/symbols";
-import { Editor as SlateEditor } from "slate-react";
 import { Wrapper } from "./wrapper";
 
 export const Wrap = styled.div`
@@ -84,10 +83,4 @@ export const EditorInnerWrap = styled(Wrapper)<{
     opacity: 1;
     transition: all 100ms ease;
   }
-`;
-
-export const Editor = styled(SlateEditor)<{ distractionFree: boolean }>`
-  padding-top: ${props => (props.distractionFree ? "50vh" : 0)};
-  padding-bottom: ${props => (props.distractionFree ? "50vh" : spacing._1)};
-  flex: 1;
 `;
