@@ -97,7 +97,9 @@ export interface AuthSession {
    */
   accessKeyId: string;
   /**
+   * The time at which the token will session expire
    * See https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_Credentials.html
+   * Note that expiration is in seconds (not milliseconds) since epoch
    */
   expiration: number;
   /**

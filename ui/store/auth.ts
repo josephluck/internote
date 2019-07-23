@@ -109,10 +109,14 @@ export function model(api: Api, auth: AuthApi): Model {
         };
       },
       setNeedsVerify: (state, needsVerify) => ({ ...state, needsVerify }),
-      setAuthSession: (state, authSession) => ({
-        ...state,
-        authSession: { ...state.authSession, ...authSession }
-      }),
+      setAuthSession: (state, authSession) => {
+        const latestSession = { ...state.authSession, ...authSession };
+        authStorage.storeSession(latestSession);
+        return {
+          ...state,
+          authSession: latestSession
+        };
+      },
       setSignInSession: (state, signInSession) => ({ ...state, signInSession })
     },
     effects: {
@@ -154,13 +158,12 @@ export function model(api: Api, auth: AuthApi): Model {
           payload.code,
           state.auth.signInSession.session
         );
-        authStorage.storeSession({
+        actions.auth.setAuthSession({
           accessToken: credentials.AuthenticationResult.AccessToken,
           expires: credentials.AuthenticationResult.ExpiresIn,
           idToken: credentials.AuthenticationResult.IdToken,
           refreshToken: credentials.AuthenticationResult.RefreshToken
         });
-        actions.auth.setAuthSession(authStorage.getSession());
         await actions.auth.getAndSetCredentials();
         // Router.push("/");
         actions.auth.setNeedsVerify(false);
@@ -173,29 +176,25 @@ export function model(api: Api, auth: AuthApi): Model {
           state.auth.authSession.idToken,
           response.IdentityId
         );
-        const session = {
+        actions.auth.setAuthSession({
           ...state.auth.authSession,
           accessKeyId: credentials.Credentials.AccessKeyId,
           expiration: credentials.Credentials.Expiration,
           secretKey: credentials.Credentials.SecretKey,
           sessionToken: credentials.Credentials.SessionToken
-        };
-        authStorage.storeSession(session);
-        actions.auth.setAuthSession(session);
+        });
         // TODO: set up interval for calling calling this repeatedly
         // when user is using the app (since the tokens are short-lived)
       },
       async refreshToken(state, actions, refreshToken) {
         const credentials = await auth.refreshSession(refreshToken);
-        const session = {
+        actions.auth.setAuthSession({
           ...state.auth.authSession,
           refreshToken,
           accessToken: credentials.AuthenticationResult.AccessToken,
           expires: credentials.AuthenticationResult.ExpiresIn,
           idToken: credentials.AuthenticationResult.IdToken
-        };
-        authStorage.storeSession(session);
-        actions.auth.setAuthSession(session);
+        });
         await actions.auth.getAndSetCredentials();
       },
       async signUp(_state, actions, payload) {

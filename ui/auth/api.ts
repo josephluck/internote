@@ -102,6 +102,7 @@ export function makeAuthApi({
         }
       }
     );
+    console.log(response.data);
     return response.data;
   }
 
@@ -274,10 +275,14 @@ function makeExpiryDate(adjustmentInMs: number) {
   return new Date(Date.now() + adjustmentInMs);
 }
 
+/**
+ * Determines whether a given expiry is within the
+ * next 30 minutes.
+ *
+ * Expects to be provided a timestamp in ms since epoch.
+ */
 export function isNearExpiry(expires: number): boolean {
-  // 1563825778
-  // 1563823931339
-  return expires < makeExpiryDate(hourInMs).valueOf();
+  return expires < makeExpiryDate(hourInMs / 2).valueOf();
 }
 
 interface SessionWithoutRefreshToken {
@@ -323,6 +328,9 @@ interface Credentials {
    */
   Credentials: {
     AccessKeyId: string;
+    /**
+     * Note that Expires is in seconds (not milliseconds) since epoch
+     */
     Expiration: number;
     SecretKey: string;
     SessionToken: string;

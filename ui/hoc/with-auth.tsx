@@ -39,7 +39,7 @@ export function withAuth<C extends typeof React.Component>(
         context.store.actions.auth.setAuthSession(session);
 
         const tokenNearExpiry =
-          session.refreshToken && isNearExpiry(session.expiration);
+          session.refreshToken && isNearExpiry(session.expiration * 1000);
 
         const tokensMissing =
           !session.accessKeyId || !session.secretKey || !session.sessionToken;
@@ -47,11 +47,13 @@ export function withAuth<C extends typeof React.Component>(
         if (tokenNearExpiry || (session.refreshToken && tokensMissing)) {
           await context.store.actions.auth.refreshToken(session.refreshToken);
         }
+
         const latestSession = context.store.getState().auth.authSession;
-        Object.keys(latestSession).map(key => {
+
+        Object.keys(latestSession).forEach(key => {
           setCookie(context, key, latestSession[key], {
-            path: "",
-            maxAge: 30 * 24 * 60 * 60
+            path: "/",
+            maxAge: latestSession.expiration
           });
         });
       }
@@ -63,9 +65,10 @@ export function withAuth<C extends typeof React.Component>(
         }
       });
 
-      const getInitialProps: any = (Child as any).getInitialProps;
+      const latestSession = !!context.store.getState().auth.authSession;
 
-      if (!!context.store.getState().auth.authSession) {
+      if (latestSession) {
+        const getInitialProps: any = (Child as any).getInitialProps;
         return getInitialProps ? getInitialProps(context) : {};
       } else if (options.restricted) {
         redirectToLogin();
