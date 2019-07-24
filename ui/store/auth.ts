@@ -4,10 +4,8 @@ import { Api, InternoteEffect, InternoteEffect0 } from ".";
 import { isServer } from "../utilities/window";
 import Router from "next/router";
 import { AuthApi } from "../auth/api";
-import { env } from "../env";
-import Axios from "axios";
 import { AuthSession, makeAuthStorage } from "../auth/storage";
-import aws4 from "aws4";
+import { ServicesApi } from "../api/api";
 
 interface SignInSession {
   email: string;
@@ -58,7 +56,7 @@ export interface Namespace {
   auth: Twine.ModelApi<State, Actions>;
 }
 
-export function model(_api: Api, auth: AuthApi): Model {
+export function model(api: ServicesApi, auth: AuthApi): Model {
   const authStorage = makeAuthStorage();
 
   const ownModel: OwnModel = {
@@ -180,26 +178,8 @@ export function model(_api: Api, auth: AuthApi): Model {
         // );
       },
       async testAuthentication(state) {
-        const request = aws4.sign(
-          {
-            host: "dev-services.internote.app",
-            path: "/authenticated",
-            url: "https://dev-services.internote.app/authenticated",
-            method: "GET",
-            region: env.SERVICES_REGION,
-            service: "execute-api"
-          },
-          {
-            accessKeyId: state.auth.authSession.accessKeyId,
-            secretAccessKey: state.auth.authSession.secretKey,
-            sessionToken: state.auth.authSession.sessionToken
-          }
-        );
-        console.log({ request });
-        delete request.headers["Host"];
-        delete request.headers["Content-Length"];
-        const response = await Axios(request);
-        console.log(response.data);
+        const response = await api.health.authenticated(state.auth.authSession);
+        console.log(response);
       }
     }
   };

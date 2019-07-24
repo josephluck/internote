@@ -33,7 +33,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@internote/api": "*",
-    "@internote/services": "*",
+    "@internote/health-service": "*",
     "@rebass/grid": "^6.0.0-7",
     "@types/aws4": "^1.5.1",
     "@types/lodash": "^4.14.129",
