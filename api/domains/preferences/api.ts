@@ -22,7 +22,7 @@ export const availableVoices: AvailableVoice[] = [
 export function api(client: AxiosInstance) {
   return {
     update(
-      token: string,
+      token: any,
       preferences: Partial<UpdatePreferences>
     ): Promise<Result<ApiError, Preferences>> {
       return client

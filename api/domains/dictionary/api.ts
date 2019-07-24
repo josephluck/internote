@@ -7,7 +7,7 @@ import { ApiError } from "../../dependencies/messages";
 export function api(client: AxiosInstance) {
   return {
     lookup(
-      token: string,
+      token: any,
       payload: LookupRequest
     ): Promise<Result<ApiError, LookupResponse>> {
       return client

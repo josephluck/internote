@@ -53,7 +53,7 @@ export function model(api: Api): Model {
     effects: {
       async requestDictionary(state, actions, word) {
         actions.dictionary.setDictionaryShowing(true);
-        const response = await api.dictionary.lookup(state.auth.session.token, {
+        const response = await api.dictionary.lookup(state.auth.authSession, {
           word
         });
         response.map(({ results }) =>

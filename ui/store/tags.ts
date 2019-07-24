@@ -46,7 +46,7 @@ export function model(api: Api): Model {
     },
     effects: {
       async fetchTags(state, actions) {
-        const response = await api.tag.getAll(state.auth.session.token);
+        const response = await api.tag.getAll(state.auth.authSession);
         response.map(actions.tags.setTags);
       },
       async saveNewTag(_state, actions, payload) {

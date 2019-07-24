@@ -25,14 +25,14 @@ export function api(baseURL: string) {
   };
 }
 
-export function makeAuthHeader(token: string) {
+export function makeAuthHeader(token: any) {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
 export function makeRequestConfig({
   token
 }: {
-  token: string;
+  token: any;
 }): AxiosRequestConfig {
   return {
     headers: {

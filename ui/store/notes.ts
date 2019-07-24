@@ -70,12 +70,12 @@ export function model(api: Api): Model {
     },
     effects: {
       async fetchNotes(state, actions) {
-        const notes = await api.note.findAll(state.auth.session.token);
+        const notes = await api.note.findAll(state.auth.authSession);
         actions.notes.setNotes(notes);
         return notes;
       },
       async createNote(state, actions) {
-        const result = await api.note.create(state.auth.session.token, {
+        const result = await api.note.create(state.auth.authSession, {
           title: `New note - ${new Date().toDateString()}`,
           tags: []
         });
@@ -101,7 +101,7 @@ export function model(api: Api): Model {
           () => Promise.resolve(),
           async ({ dateUpdated }) => {
             const savedNote = await api.note.updateById(
-              state.auth.session.token,
+              state.auth.authSession,
               noteId,
               {
                 content,
@@ -171,7 +171,7 @@ export function model(api: Api): Model {
         });
       },
       async deleteNote(state, actions, { noteId }) {
-        await api.note.deleteById(state.auth.session.token, noteId);
+        await api.note.deleteById(state.auth.authSession, noteId);
         actions.notes.setNotes(
           state.notes.notes.filter(note => note.id !== noteId)
         );

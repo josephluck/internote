@@ -8,8 +8,7 @@ import { styled } from "../theming/styled";
 import { Button } from "../styles/button";
 import { Modal } from "../styles/modal";
 import { Input, InputLabel } from "../styles/input";
-import { env } from "../env";
-import { withAuth } from "../hoc/with-auth";
+import { withAuth } from "../auth/with-auth";
 
 const CenteredLogo = styled.div`
   display: flex;
@@ -25,12 +24,10 @@ const Instructions = styled.p`
 `;
 
 const Page: NextTwineSFC<Store, {}> = () => {
-  const authenticateLoading = useTwineState(
-    state => state.auth.loading.signUp2
-  );
+  const authenticateLoading = useTwineState(state => state.auth.loading.signUp);
   const verifyLoading = useTwineState(state => state.auth.loading.verify);
   const needsVerify = useTwineState(state => state.auth.needsVerify);
-  const authenticate = useTwineActions(actions => actions.auth.signUp2);
+  const authenticate = useTwineActions(actions => actions.auth.signUp);
   const verify = useTwineActions(actions => actions.auth.verify);
   const test = useTwineActions(actions => actions.auth.testAuthentication);
   return (
@@ -95,8 +92,8 @@ const Page: NextTwineSFC<Store, {}> = () => {
   );
 };
 
-Page.getInitialProps = async ctx => {
-  await ctx.store.actions.auth.testAuthentication();
+Page.getInitialProps = async _ctx => {
+  // await ctx.store.actions.auth.testAuthentication();
   return {};
 };
 

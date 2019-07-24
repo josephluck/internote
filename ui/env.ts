@@ -9,7 +9,7 @@ export interface Env {
 }
 
 export const env: Env = {
-  LOCALHOST: process.env.LOCALHOST,
+  LOCALHOST: process.env.LOCALHOST as "true" | "false",
   API_BASE_URL: process.env.API_BASE_URL,
   ASSET_PREFIX: process.env.ASSET_PREFIX,
   COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,

@@ -3,8 +3,8 @@ import Router from "next/router";
 import { NextContext } from "next";
 import { Store } from "../store";
 import { isServer } from "../utilities/window";
-import { isNearExpiry } from "../auth/api";
-import { makeAuthStorage } from "../auth/storage";
+import { isNearExpiry } from "./api";
+import { makeAuthStorage } from "./storage";
 import { setCookie } from "nookies";
 
 interface Options {

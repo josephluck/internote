@@ -6,18 +6,18 @@ import { ApiError } from "../../dependencies/messages";
 
 export function api(client: AxiosInstance) {
   return {
-    findAll(token: string): Promise<User[]> {
+    findAll(token: any): Promise<User[]> {
       return client
         .get("/users", makeRequestConfig({ token }))
         .then(r => r.data);
     },
-    findById(token: string, userId: string): Promise<Result<ApiError, User>> {
+    findById(token: any, userId: string): Promise<Result<ApiError, User>> {
       return client
         .get(`/users/${userId}`, makeRequestConfig({ token }))
         .then(r => Ok(r.data))
         .catch(err => Err(err));
     },
-    deleteById(token: string, userId: string): Promise<Result<ApiError, void>> {
+    deleteById(token: any, userId: string): Promise<Result<ApiError, void>> {
       return client
         .delete(`/users/${userId}`, makeRequestConfig({ token }))
         .then(() => Ok(null))

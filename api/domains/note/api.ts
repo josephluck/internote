@@ -6,28 +6,25 @@ import { ApiError } from "../../dependencies/messages";
 
 export function api(client: AxiosInstance) {
   return {
-    findAll(token: string): Promise<Note[]> {
+    findAll(token: any): Promise<Note[]> {
       return client
         .get("/notes", makeRequestConfig({ token }))
         .then(r => r.data);
     },
-    findById(token: string, noteId: string): Promise<Result<ApiError, Note>> {
+    findById(token: any, noteId: string): Promise<Result<ApiError, Note>> {
       return client
         .get(`/notes/${noteId}`, makeRequestConfig({ token }))
         .then(r => Ok(r.data))
         .catch(err => Err(err));
     },
-    create(
-      token: string,
-      payload: CreateNote
-    ): Promise<Result<ApiError, Note>> {
+    create(token: any, payload: CreateNote): Promise<Result<ApiError, Note>> {
       return client
         .post("/notes", payload, makeRequestConfig({ token }))
         .then(r => Ok(r.data))
         .catch(err => Err(err));
     },
     updateById(
-      token: string,
+      token: any,
       noteId: string,
       payload: UpdateNote
     ): Promise<Result<ApiError, Note>> {
@@ -36,7 +33,7 @@ export function api(client: AxiosInstance) {
         .then(r => Ok(r.data))
         .catch(err => Err(err.response.data));
     },
-    deleteById(token: string, noteId: string): Promise<Result<ApiError, void>> {
+    deleteById(token: any, noteId: string): Promise<Result<ApiError, void>> {
       return client
         .delete(`/notes/${noteId}`, makeRequestConfig({ token }))
         .then(() => Ok(null))
