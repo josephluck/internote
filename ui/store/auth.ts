@@ -155,7 +155,7 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
       async signOut(_state, actions) {
         actions.notes.resetState();
         if (!isServer()) {
-          Router.push("/login");
+          Router.push("/authenticate");
         }
       },
       deleteAccountConfirmation(_state, actions) {
@@ -171,12 +171,12 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
       },
       async deleteAccount(_state, actions) {
         actions.notes.resetState();
-        actions.auth.signOut();
         // TODO - API stuff for this
         // await api.user.deleteById(
         //   state.auth.authSession,
         //   state.auth.session.user.id
         // );
+        actions.auth.signOut();
       },
       async testAuthentication(state, actions) {
         const response = await api.health.authenticated(state.auth.authSession);
