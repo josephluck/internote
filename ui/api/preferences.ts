@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { Session } from "./types";
 import { MakeSignedRequest } from "./api";
-import { Preferences } from "@internote/preferences-service/types";
+import { Preferences } from "@internote/preferences-service/db/models";
 
 export function preferences(makeRequest: MakeSignedRequest) {
   return {

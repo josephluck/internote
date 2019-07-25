@@ -1,19 +1,12 @@
 import middy from "middy";
 import { httpErrorHandler, cors } from "middy/middlewares";
-import { Preferences } from "./types";
 import { ensureJSONBody } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
+import { find } from "./db/queries";
 
-const defaultPreferences: Preferences = {
-  colorTheme: "Internote",
-  fontTheme: "Inter",
-  distractionFree: false,
-  voice: "Joey",
-  outlineShowing: true
-};
-
-export const handler = middy((_event, _context, callback) => {
-  return success(defaultPreferences, callback);
+export const handler = middy(async (_event, context, callback) => {
+  const preferences = find(context.identity.cognitoIdentityId);
+  return success(preferences, callback);
 })
   .use(ensureJSONBody())
   .use(httpErrorHandler())

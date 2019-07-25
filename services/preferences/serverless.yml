@@ -18,12 +18,16 @@ custom:
     stage: "${self:custom.stage}"
     createRoute53Record: true
     endpointType: "regional"
+  tableName: ${self:custom.stage}-preferences
 
 provider:
   name: aws
   runtime: nodejs8.10
   stage: dev
   region: eu-west-1
+  environment:
+    REGION: eu-west-1
+    DYNAMO_ENDPOINT: https://dynamodb.eu-west-1.amazonaws.com
   memorySize: 1024
   timeout: 30
   apiGateway:
@@ -31,6 +35,18 @@ provider:
       "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiId
     restApiRootResourceId:
       "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiRootResourceId
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - "Fn::GetAtt": [PreferencesTable, Arn]
 
 plugins:
   - serverless-plugin-monorepo
@@ -47,3 +63,17 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+
+resources:
+  Resources:
+    PreferencesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST

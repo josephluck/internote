@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@internote/lib": "*",
-    "middy": "^0.28.4"
+    "middy": "^0.28.4",
+    "type-dynamo": "^0.1.6"
   },
   "devDependencies": {
     "serverless": "^1.44.1",
