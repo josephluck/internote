@@ -14,6 +14,7 @@ import * as Notes from "./notes";
 import { makeTwineHooks } from "./with-twine";
 import { env } from "../env";
 import { AuthApi, makeAuthApi } from "../auth/api";
+import { makeServicesApi, ServicesApi } from "../api/api";
 
 type Models = Twine.Models<
   Speech.Namespace &
@@ -43,7 +44,7 @@ export type InternoteEffect0<Return = void> = Twine.Effect0<
 
 export type Api = ReturnType<typeof makeApi>;
 
-function makeModel(api: Api, auth: AuthApi) {
+function makeModel(api: Api, servicesApi: ServicesApi, auth: AuthApi) {
   return {
     state: {},
     reducers: {},
@@ -51,7 +52,7 @@ function makeModel(api: Api, auth: AuthApi) {
     models: {
       speech: Speech.model(api),
       preferences: Preferences.model(api),
-      auth: Auth.model(api, auth),
+      auth: Auth.model(servicesApi, auth),
       dictionary: Dictionary.model(api),
       confirmation: Confirmation.model(api),
       tags: Tags.model(api),
@@ -62,6 +63,10 @@ function makeModel(api: Api, auth: AuthApi) {
 }
 
 export function makeStore() {
+  const servicesApi = makeServicesApi({
+    host: env.SERVICES_HOST,
+    region: env.SERVICES_REGION
+  });
   const api = makeApi(env.API_BASE_URL);
   const auth = makeAuthApi({
     region: env.SERVICES_REGION,
@@ -72,13 +77,13 @@ export function makeStore() {
   const loggingMiddleware =
     !isServer() && process.env.NODE_ENV !== "production" ? logger : undefined;
   const store = twine<Models["state"], Models["actions"]>(
-    makeModel(api, auth),
+    makeModel(api, servicesApi, auth),
     [
       loggingMiddleware,
       {
         onStateChange: (state, prevState) => {
-          const { session } = state.auth;
-          const token = session ? session.token : "";
+          const { authSession: session } = state.auth;
+          const token = session ? session.accessToken : "";
 
           if (session && token) {
             if (

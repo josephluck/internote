@@ -6,7 +6,7 @@ import { Tag } from "./entity";
 
 export function api(client: AxiosInstance) {
   return {
-    getAll(token: string): Promise<Result<ApiError, Tag[]>> {
+    getAll(token: any): Promise<Result<ApiError, Tag[]>> {
       return client
         .get(`/tags`, makeRequestConfig({ token }))
         .then(r => Ok(r.data))

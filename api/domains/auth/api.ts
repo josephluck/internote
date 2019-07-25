@@ -10,7 +10,7 @@ export function api(client: AxiosInstance) {
     register(data: SignupRequest): Promise<Session> {
       return client.post("/register", data).then(r => r.data);
     },
-    session(token: string): Promise<Session> {
+    session(token: any): Promise<Session> {
       return client
         .get("/session", makeRequestConfig({ token }))
         .then(r => r.data);

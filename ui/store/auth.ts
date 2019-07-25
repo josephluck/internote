@@ -1,18 +1,11 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { Api, InternoteEffect, InternoteEffect0 } from ".";
-import * as Types from "@internote/api/domains/types";
+import { InternoteEffect, InternoteEffect0 } from ".";
 import { isServer } from "../utilities/window";
-import cookie from "../utilities/cookie";
-import { colorThemes, fontThemes } from "../theming/themes";
 import Router from "next/router";
 import { AuthApi } from "../auth/api";
-import { env } from "../env";
-import Axios from "axios";
 import { AuthSession, makeAuthStorage } from "../auth/storage";
-import aws4 from "aws4";
-
-const cookies = cookie();
+import { ServicesApi } from "../api/api";
 
 interface SignInSession {
   email: string;
@@ -20,7 +13,6 @@ interface SignInSession {
 }
 
 interface OwnState {
-  session: Types.Session | null;
   needsVerify: boolean;
   authSession: AuthSession | null;
   signInSession: SignInSession;
@@ -28,19 +20,14 @@ interface OwnState {
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
-  setSession: Twine.Reducer<OwnState, Types.Session>;
   setAuthSession: Twine.Reducer<OwnState, Partial<AuthSession>>;
   setNeedsVerify: Twine.Reducer<OwnState, boolean>;
   setSignInSession: Twine.Reducer<OwnState, SignInSession>;
 }
 
 interface OwnEffects {
-  signUp: InternoteEffect<Types.SignupRequest, Promise<void>>;
-  storeSession: InternoteEffect<Types.Session>;
-  session: InternoteEffect<{ token: string }, Promise<void>>;
-  authenticate: InternoteEffect<Types.LoginRequest, Promise<void>>;
-  signUp2: InternoteEffect<{ email: string }, Promise<void>>;
-  signIn2: InternoteEffect<{ email: string }, Promise<void>>;
+  signUp: InternoteEffect<{ email: string }, Promise<void>>;
+  signIn: InternoteEffect<{ email: string }, Promise<void>>;
   verify: InternoteEffect<{ code: string }, Promise<void>>;
   getAndSetCredentials: InternoteEffect0<Promise<void>>;
   refreshToken: InternoteEffect<string, Promise<void>>;
@@ -53,7 +40,6 @@ interface OwnEffects {
 
 function defaultState(): OwnState {
   return {
-    session: null,
     needsVerify: false,
     authSession: null,
     signInSession: { email: "", session: "" }
@@ -70,43 +56,14 @@ export interface Namespace {
   auth: Twine.ModelApi<State, Actions>;
 }
 
-function getColorThemeFromPreferences(
-  preferences: Types.Preferences | undefined
-) {
-  return preferences
-    ? colorThemes.find(theme => theme.name === preferences.colorTheme) ||
-        colorThemes[0]
-    : colorThemes[0];
-}
-function getFontThemeFromPreferences(
-  preferences: Types.Preferences | undefined
-) {
-  return preferences
-    ? fontThemes.find(theme => theme.name === preferences.fontTheme) ||
-        fontThemes[0]
-    : fontThemes[0];
-}
-
-export function model(api: Api, auth: AuthApi): Model {
+export function model(api: ServicesApi, auth: AuthApi): Model {
   const authStorage = makeAuthStorage();
 
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
-      resetState: () => defaultState(),
-      setSession(state, session) {
-        if (session) {
-          cookies.persistAuthToken(session.token);
-        } else if (process.env.NODE_ENV === "production") {
-          // NB: checking for production solves logging out from
-          // hot-module reloading this file since state isn't
-          // persisted between hot-module reloads
-          cookies.removeAuthToken();
-        }
-        return {
-          ...state,
-          session
-        };
+      resetState: () => {
+        return defaultState();
       },
       setNeedsVerify: (state, needsVerify) => ({ ...state, needsVerify }),
       setAuthSession: (state, authSession) => {
@@ -120,31 +77,18 @@ export function model(api: Api, auth: AuthApi): Model {
       setSignInSession: (state, signInSession) => ({ ...state, signInSession })
     },
     effects: {
-      storeSession(_state, actions, session) {
-        actions.auth.setSession(session);
-        actions.preferences.setPreferences({
-          colorTheme: getColorThemeFromPreferences(session.user.preferences),
-          fontTheme: getFontThemeFromPreferences(session.user.preferences),
-          outlineShowing:
-            !!session.user.preferences &&
-            session.user.preferences.outlineShowing === true,
-          distractionFree:
-            !!session.user.preferences &&
-            session.user.preferences.distractionFree === true
-        });
-      },
-      async signUp2(_state, actions, payload) {
+      async signUp(_state, actions, payload) {
         try {
           await auth.signUp(payload.email);
-          await actions.auth.signIn2(payload);
+          await actions.auth.signIn(payload);
         } catch (err) {
           if (err && err.code && err.code === "UsernameExistsException") {
-            return await actions.auth.signIn2(payload);
+            return await actions.auth.signIn(payload);
           }
           return err;
         }
       },
-      async signIn2(_state, actions, { email }) {
+      async signIn(_state, actions, { email }) {
         const response = await auth.signIn(email);
         actions.auth.setSignInSession({
           email: email,
@@ -197,20 +141,6 @@ export function model(api: Api, auth: AuthApi): Model {
         });
         await actions.auth.getAndSetCredentials();
       },
-      async signUp(_state, actions, payload) {
-        const session = await api.auth.register(payload);
-        actions.auth.storeSession(session);
-        await actions.ui.navigateToFirstNote();
-      },
-      async session(_state, actions, { token }) {
-        const session = await api.auth.session(token);
-        actions.auth.storeSession(session);
-      },
-      async authenticate(_state, actions, payload) {
-        const session = await api.auth.login(payload);
-        actions.auth.storeSession(session);
-        await actions.ui.navigateToFirstNote();
-      },
       signOutConfirmation(_state, actions) {
         actions.confirmation.setConfirmation({
           message: `Are you sure you wish to sign out?`,
@@ -238,37 +168,18 @@ export function model(api: Api, auth: AuthApi): Model {
           }
         });
       },
-      async deleteAccount(state, actions) {
+      async deleteAccount(_state, actions) {
         actions.notes.resetState();
-        await api.user.deleteById(
-          state.auth.session.token,
-          state.auth.session.user.id
-        );
-        if (!isServer()) {
-          Router.push("/register");
-        }
+        actions.auth.signOut();
+        // TODO - API stuff for this
+        // await api.user.deleteById(
+        //   state.auth.authSession,
+        //   state.auth.session.user.id
+        // );
       },
       async testAuthentication(state) {
-        const request = aws4.sign(
-          {
-            host: "dev-services.internote.app",
-            path: "/authenticated",
-            url: "https://dev-services.internote.app/authenticated",
-            method: "GET",
-            region: env.SERVICES_REGION,
-            service: "execute-api"
-          },
-          {
-            accessKeyId: state.auth.authSession.accessKeyId,
-            secretAccessKey: state.auth.authSession.secretKey,
-            sessionToken: state.auth.authSession.sessionToken
-          }
-        );
-        console.log({ request });
-        delete request.headers["Host"];
-        delete request.headers["Content-Length"];
-        const response = await Axios(request);
-        console.log(response.data);
+        const response = await api.health.authenticated(state.auth.authSession);
+        console.log(response);
       }
     }
   };

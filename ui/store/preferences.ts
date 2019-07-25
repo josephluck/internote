@@ -8,6 +8,34 @@ import {
 } from "../theming/themes";
 import { AvailableVoice } from "@internote/api/domains/preferences/entity";
 
+// TODO - API stuff for this
+// function getColorThemeFromPreferences(
+//   preferences: Types.Preferences | undefined
+// ) {
+//   return preferences
+//     ? colorThemes.find(theme => theme.name === preferences.colorTheme) ||
+//         colorThemes[0]
+//     : colorThemes[0];
+// }
+// function getFontThemeFromPreferences(
+//   preferences: Types.Preferences | undefined
+// ) {
+//   return preferences
+//     ? fontThemes.find(theme => theme.name === preferences.fontTheme) ||
+//         fontThemes[0]
+//     : fontThemes[0];
+// }
+// actions.preferences.setPreferences({
+//   colorTheme: getColorThemeFromPreferences(session.user.preferences),
+//   fontTheme: getFontThemeFromPreferences(session.user.preferences),
+//   outlineShowing:
+//     !!session.user.preferences &&
+//     session.user.preferences.outlineShowing === true,
+//   distractionFree:
+//     !!session.user.preferences &&
+//     session.user.preferences.distractionFree === true
+// });
+
 interface OwnState {
   colorTheme: ColorThemeWithName | null;
   colorThemes: ColorThemeWithName[];

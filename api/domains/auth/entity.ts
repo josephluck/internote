@@ -12,5 +12,5 @@ export interface SignupRequest {
 
 export interface Session {
   user: User;
-  token: string;
+  token: any;
 }

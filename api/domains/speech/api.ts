@@ -7,7 +7,7 @@ import { ApiError } from "../../dependencies/messages";
 export function api(client: AxiosInstance) {
   return {
     generate(
-      token: string,
+      token: any,
       payload: GenerateRequest
     ): Promise<Result<ApiError, GenerateResponse>> {
       return client

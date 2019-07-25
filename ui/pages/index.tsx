@@ -1,7 +1,7 @@
 import * as React from "react";
 import { NextTwineSFC } from "../store/with-twine";
 import { Store, useTwineState, useTwineActions } from "../store";
-import { withAuth } from "../hoc/with-auth";
+import { withAuth } from "../auth/with-auth";
 import { Heading } from "../styles/heading";
 import { Global } from "../styles/global";
 import { Note } from "../styles/note";
