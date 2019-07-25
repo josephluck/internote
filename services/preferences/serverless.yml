@@ -1,0 +1,49 @@
+service: internote-preferences-service
+
+custom:
+  serverless-offline:
+    port: 2020
+  stage: ${opt:stage, self:provider.stage}
+  domains:
+    prod: services.internote.app
+    dev: dev-services.internote.app
+  webpack:
+    config: "webpack.config.js"
+    includeModules: true
+    packager: "npm"
+  customDomain:
+    basePath: ""
+    domainName: ${self:custom.domains.${self:custom.stage}}
+    certificateName: "internote.app"
+    stage: "${self:custom.stage}"
+    createRoute53Record: true
+    endpointType: "regional"
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-1
+  memorySize: 1024
+  timeout: 30
+  apiGateway:
+    restApiId:
+      "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiId
+    restApiRootResourceId:
+      "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiRootResourceId
+
+plugins:
+  - serverless-plugin-monorepo
+  - serverless-offline
+  - serverless-webpack
+  - serverless-domain-manager
+
+functions:
+  get:
+    handler: get.handler
+    events:
+      - http:
+          path: preferences
+          method: get
+          cors: true
+          authorizer: aws_iam

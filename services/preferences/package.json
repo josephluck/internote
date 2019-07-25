@@ -1,0 +1,35 @@
+{
+  "name": "@internote/preferences-service",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "*"
+  ],
+  "scripts": {
+    "dev": "sls offline start",
+    "deploy": "yarn deploy:dev",
+    "deploy:dev": "yarn deploy:dev:domain && yarn deploy:dev:services",
+    "deploy:dev:domain": "serverless create_domain --stage dev",
+    "deploy:dev:services": "NODE_ENV=development sls deploy --stage dev",
+    "deploy:prod": "yarn deploy:prod:domain && yarn deploy:prod:services",
+    "deploy:prod:domain": "serverless create_domain --stage prod",
+    "deploy:prod:services": "NODE_ENV=production sls deploy --stage prod"
+  },
+  "dependencies": {
+    "@internote/lib": "*",
+    "middy": "^0.28.4"
+  },
+  "devDependencies": {
+    "serverless": "^1.44.1",
+    "serverless-domain-manager": "^3.2.2",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-offline": "^4.10.6",
+    "serverless-plugin-monorepo": "^0.7.0",
+    "serverless-plugin-typescript": "^1.1.7",
+    "serverless-webpack": "^5.3.1",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.4.5"
+  }
+}

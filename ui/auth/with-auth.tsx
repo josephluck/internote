@@ -20,11 +20,11 @@ export function withAuth<C extends typeof React.Component>(
       function redirectToLogin() {
         if (context.res) {
           context.res.writeHead(302, {
-            Location: "/login"
+            Location: "/authenticate"
           });
           context.res.end();
         } else if (!isServer()) {
-          Router.push("/login");
+          Router.push("/authenticate");
         }
       }
 

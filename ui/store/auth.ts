@@ -127,6 +127,7 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
           secretKey: credentials.Credentials.SecretKey,
           sessionToken: credentials.Credentials.SessionToken
         });
+        await actions.preferences.get();
         // TODO: set up interval for calling calling this repeatedly
         // when user is using the app (since the tokens are short-lived)
       },
@@ -177,9 +178,10 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
         //   state.auth.session.user.id
         // );
       },
-      async testAuthentication(state) {
+      async testAuthentication(state, actions) {
         const response = await api.health.authenticated(state.auth.authSession);
         console.log(response);
+        await actions.preferences.get();
       }
     }
   };

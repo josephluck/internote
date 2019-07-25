@@ -1,5 +1,5 @@
 import { Twine } from "twine-js";
-import { Api } from ".";
+import { InternoteEffect0 } from ".";
 import {
   colorThemes,
   fontThemes,
@@ -7,6 +7,7 @@ import {
   FontThemeWithName
 } from "../theming/themes";
 import { AvailableVoice } from "@internote/api/domains/preferences/entity";
+import { ServicesApi } from "../api/api";
 
 // TODO - API stuff for this
 // function getColorThemeFromPreferences(
@@ -56,7 +57,9 @@ interface OwnReducers {
   setOutlineShowing: Twine.Reducer<OwnState, boolean>;
 }
 
-interface OwnEffects {}
+interface OwnEffects {
+  get: InternoteEffect0
+}
 
 function defaultState(): OwnState {
   return {
@@ -78,7 +81,7 @@ export interface Namespace {
   preferences: Twine.ModelApi<State, Actions>;
 }
 
-export function model(_api: Api): Model {
+export function model(api: ServicesApi): Model {
   return {
     state: defaultState(),
     reducers: {
@@ -99,6 +102,16 @@ export function model(_api: Api): Model {
         outlineShowing
       })
     },
-    effects: {}
+    effects: {
+      async get(state, actions) {
+        const preferences = await api.preferences.get(state.auth.authSession)
+        actions.preferences.setPreferences({
+          ...preferences,
+          colorTheme: colorThemes.find(theme => theme.name === preferences.colorTheme),
+          fontTheme: fontThemes.find(theme => theme.name === preferences.fontTheme),
+          voice: preferences.voice as AvailableVoice
+        })
+      }
+    }
   };
 }

@@ -97,4 +97,4 @@ Page.getInitialProps = async ctx => {
   return {};
 };
 
-export default withAuth(Page as any);
+export default withAuth(Page as any, { restricted: false });

@@ -19,9 +19,7 @@
     "packages": [
       "api",
       "ui",
-      "services",
-      "services/auth",
-      "services/health"
+      "services/*"
     ]
   }
 }
