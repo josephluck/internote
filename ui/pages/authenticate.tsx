@@ -96,7 +96,7 @@ const Page: NextTwineSFC<Store, {}> = () => {
 };
 
 Page.getInitialProps = async ctx => {
-  // await ctx.store.actions.auth.testAuthentication();
+  await ctx.store.actions.auth.testAuthentication();
   return {};
 };
 
