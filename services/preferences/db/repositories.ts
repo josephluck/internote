@@ -3,7 +3,7 @@ import { db } from "./db";
 
 export const PreferencesRepository = db
   .define(Preferences, {
-    tableName: "PreferencesTable",
+    tableName: process.env.TABLE_NAME,
     partitionKey: "id"
   })
   .getInstance();

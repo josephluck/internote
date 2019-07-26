@@ -10,7 +10,7 @@ custom:
   webpack:
     config: "webpack.config.js"
     includeModules: true
-    packager: "npm"
+    packager: "yarn"
   customDomain:
     basePath: ""
     domainName: ${self:custom.domains.${self:custom.stage}}
@@ -28,6 +28,7 @@ provider:
   environment:
     REGION: eu-west-1
     DYNAMO_ENDPOINT: https://dynamodb.eu-west-1.amazonaws.com
+    TABLE_NAME: ${self:custom.tableName}
   memorySize: 1024
   timeout: 30
   apiGateway:

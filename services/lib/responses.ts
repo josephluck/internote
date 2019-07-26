@@ -12,3 +12,13 @@ export function success<J, C extends Callback<{ statusCode: number; body: J }>>(
     body: json
   });
 }
+
+/**
+ * Makes a failed lambda response
+ */
+export function failure<E extends string | Error, C extends Callback<any>>(
+  err: E,
+  callback: C
+) {
+  return callback(err);
+}
