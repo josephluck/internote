@@ -9,7 +9,9 @@
   ],
   "scripts": {},
   "dependencies": {
-    "middy": "^0.28.4"
+    "mandle": "^2.2.0",
+    "middy": "^0.28.4",
+    "space-lift": "^0.8.7"
   },
   "devDependencies": {
     "ts-loader": "^6.0.4",
