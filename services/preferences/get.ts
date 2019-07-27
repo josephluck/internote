@@ -1,24 +1,28 @@
 import middy from "middy";
 import { httpErrorHandler, cors } from "middy/middlewares";
-import { ensureJSONResponse } from "@internote/lib/middlewares";
+import { encodeResponse } from "@internote/lib/middlewares";
 import { success, exception } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { isError } from "@internote/lib/errors";
-import { find, create } from "./db/queries";
+import { GetHandler } from "@internote/lib/types";
+import { findPreferencesById, createPreferences } from "./db/queries";
 
-export const handler = middy(async (event, _context, callback) => {
+const get: GetHandler = async (event, _ctx, callback) => {
+  console.log("Getting preferences");
   try {
-    const preferences = await find(getUserIdentityId(event));
-    return success(preferences, callback);
+    const preferences = await findPreferencesById(getUserIdentityId(event));
+    return callback(null, success(preferences));
   } catch (err) {
     if (isError(err, "NOT_FOUND")) {
-      const preferences = await create(getUserIdentityId(event));
-      return success(preferences, callback);
+      const preferences = await createPreferences(getUserIdentityId(event));
+      return callback(null, success(preferences));
     } else {
-      return exception(err, callback);
+      throw exception(err);
     }
   }
-})
-  .use(ensureJSONResponse())
+};
+
+export const handler = middy(get)
+  .use(encodeResponse())
   .use(httpErrorHandler())
   .use(cors());

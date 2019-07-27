@@ -15,7 +15,8 @@
     "deploy:dev:services": "NODE_ENV=development sls deploy --stage dev",
     "deploy:prod": "yarn deploy:prod:domain && yarn deploy:prod:services",
     "deploy:prod:domain": "serverless create_domain --stage prod",
-    "deploy:prod:services": "NODE_ENV=production sls deploy --stage prod"
+    "deploy:prod:services": "NODE_ENV=production sls deploy --stage prod",
+    "test": "jest"
   },
   "dependencies": {
     "@internote/lib": "*",
@@ -24,6 +25,8 @@
     "type-dynamo": "^0.1.6"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "jest": "^24.8.0",
     "serverless": "^1.44.1",
     "serverless-domain-manager": "^3.2.2",
     "serverless-dotenv-plugin": "^2.1.1",
@@ -32,6 +35,22 @@
     "serverless-plugin-typescript": "^1.1.7",
     "serverless-webpack": "^5.3.1",
     "ts-loader": "^6.0.4",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.3"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "((spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "clearMocks": true
   }
 }

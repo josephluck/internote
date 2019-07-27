@@ -9,7 +9,9 @@ custom:
     dev: dev-services.internote.app
   webpack:
     config: "webpack.config.js"
-    includeModules: true
+    includeModules:
+      forceExclude:
+        - aws-sdk
     packager: "yarn"
   customDomain:
     basePath: ""
@@ -62,6 +64,14 @@ functions:
       - http:
           path: preferences
           method: get
+          cors: true
+          authorizer: aws_iam
+  update:
+    handler: update.handler
+    events:
+      - http:
+          path: preferences
+          method: put
           cors: true
           authorizer: aws_iam
 

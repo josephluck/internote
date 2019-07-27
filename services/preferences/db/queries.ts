@@ -1,13 +1,14 @@
 import { Preferences, defaultPreferences } from "./models";
 import { PreferencesRepository } from "./repositories";
 import { notFoundError, isDbError } from "@internote/lib/errors";
+import { attributeNotExists } from "type-dynamo";
 
-export const find = async (id: string) => {
+export const findPreferencesById = async (id: string) => {
   try {
-    const { data: preferences } = await PreferencesRepository.find({
+    const result = await PreferencesRepository.find({
       id
     }).execute();
-    return preferences;
+    return result.data;
   } catch (err) {
     if (isDbError(err, "ItemNotFound")) {
       throw notFoundError(`Preferences for user ${id} could not be found`);
@@ -17,26 +18,46 @@ export const find = async (id: string) => {
   }
 };
 
-export const update = async (id: string, updates: Partial<Preferences>) => {
-  const { data: preferences } = await PreferencesRepository.update({
-    ...updates,
-    id
-  }).execute();
-  return preferences;
+export const updatePreferencesById = async (
+  id: string,
+  updates: Partial<Preferences>
+) => {
+  try {
+    const result = await PreferencesRepository.update(
+      { id },
+      updates
+    ).execute();
+    return result.data;
+  } catch (err) {
+    if (isDbError(err, "ItemNotFound")) {
+      throw notFoundError(`Preferences for user ${id} could not be found`);
+    } else {
+      throw err;
+    }
+  }
 };
 
-export const create = async (id: string) => {
-  console.log("Creating preferences");
-  const { data: preferences } = await PreferencesRepository.save({
+export const createPreferences = async (id: string) => {
+  const result = await PreferencesRepository.save({
     ...defaultPreferences,
     id
-  }).execute();
-  return preferences;
+  })
+    .withCondition(attributeNotExists("id"))
+    .execute();
+  return result.data;
 };
 
-export const destroy = async (id: string) => {
-  const { data: preferences } = await PreferencesRepository.delete({
-    id
-  }).execute();
-  return preferences;
+export const deletePreferencesById = async (id: string) => {
+  try {
+    const result = await PreferencesRepository.delete({
+      id
+    }).execute();
+    return result.data;
+  } catch (err) {
+    if (isDbError(err, "ItemNotFound")) {
+      throw notFoundError(`Preferences for user ${id} could not be found`);
+    } else {
+      throw err;
+    }
+  }
 };

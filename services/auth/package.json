@@ -16,12 +16,12 @@
     "deploy:prod:services": "NODE_ENV=production sls deploy --stage prod"
   },
   "dependencies": {
-    "crypto-secure-random-digit": "^1.0.8",
-    "typescript": "^3.4.5"
+    "crypto-secure-random-digit": "^1.0.8"
   },
   "devDependencies": {
+    "serverless": "^1.44.1",
     "serverless-plugin-monorepo": "^0.7.0",
     "serverless-plugin-typescript": "^1.1.7",
-    "serverless": "^1.44.1"
+    "typescript": "^3.5.3"
   }
 }

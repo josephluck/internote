@@ -17,15 +17,14 @@
     "deploy:prod:domain": "serverless create_domain --stage prod",
     "deploy:prod:services": "NODE_ENV=production sls deploy --stage prod"
   },
-  "dependencies": {
-    "typescript": "^3.4.5"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "serverless": "^1.44.1",
     "serverless-domain-manager": "^3.2.2",
     "serverless-dotenv-plugin": "^2.1.1",
     "serverless-offline": "^4.10.6",
     "serverless-plugin-monorepo": "^0.7.0",
     "serverless-plugin-typescript": "^1.1.7",
-    "serverless": "^1.44.1"
+    "typescript": "^3.5.3"
   }
 }

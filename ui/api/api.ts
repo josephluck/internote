@@ -9,6 +9,7 @@ export interface AwsSignedRequest {
   path: string;
   session: Session;
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+  body?: any;
 }
 
 export function makeServicesApi({
@@ -18,7 +19,12 @@ export function makeServicesApi({
   host: string;
   region: string;
 }) {
-  const makeSignedRequest: MakeSignedRequest = ({ path, session, method }) => {
+  const makeSignedRequest: MakeSignedRequest = ({
+    path,
+    session,
+    method,
+    body
+  }) => {
     const request = aws4.sign(
       {
         host,
@@ -26,7 +32,14 @@ export function makeServicesApi({
         url: `https://${host}${path}`,
         method,
         region,
-        service: "execute-api"
+        service: "execute-api",
+        data: body,
+        body: body ? JSON.stringify(body) : undefined,
+        headers: body
+          ? {
+              "Content-Type": "application/json"
+            }
+          : undefined
       },
       {
         accessKeyId: session.accessKeyId,

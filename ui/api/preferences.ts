@@ -14,6 +14,17 @@ export function preferences(makeRequest: MakeSignedRequest) {
         })
       );
       return response.data;
+    },
+    async update(session: Session, preferences: Partial<Preferences>) {
+      const response = await Axios(
+        makeRequest({
+          path: "/preferences",
+          method: "PUT",
+          session,
+          body: preferences
+        })
+      );
+      return response.data;
     }
   };
 }

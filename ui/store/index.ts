@@ -89,9 +89,9 @@ export function makeStore() {
             if (
               state.preferences.colorTheme !== prevState.preferences.colorTheme
             ) {
-              // api.preferences.update(token, {
-              //   colorTheme: state.preferences.colorTheme.name
-              // });
+              servicesApi.preferences.update(state.auth.authSession, {
+                colorTheme: "Daydream"
+              });
             }
             if (
               state.preferences.fontTheme !== prevState.preferences.fontTheme

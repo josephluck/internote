@@ -1,50 +1,39 @@
-import { Callback } from "aws-lambda";
-
 /**
  * Makes a successful lambda response
  */
-export function success<J, C extends Callback<{ statusCode: number; body: J }>>(
-  json: J,
-  callback: C
-) {
-  return callback(null, {
+export function success<J>(json: J) {
+  return {
     statusCode: 200,
     body: json
-  });
+  };
 }
 
 /**
  * Makes a bad request lambda response
  */
-export function badRequest<
-  J,
-  C extends Callback<{ statusCode: number; body: J }>
->(json: J, callback: C) {
-  return callback(null, {
+export function badRequest<J>(json: J) {
+  return {
     statusCode: 400,
-    body: json
-  });
+    message: json
+  };
 }
 
 /**
  * Makes a not found lambda response
  */
-export function notFound<
-  M extends string,
-  C extends Callback<{ statusCode: number; body: M }>
->(message: M, callback: C) {
-  return callback(null, {
+export function notFound<M extends string>(message: M) {
+  return {
     statusCode: 400,
-    body: message
-  });
+    message: message
+  };
 }
 
 /**
  * Makes a failed lambda response
  */
-export function exception<E extends string | Error, C extends Callback<any>>(
-  err: E,
-  callback: C
-) {
-  return callback(err);
+export function exception<E extends string | Error>(err: E) {
+  return {
+    statusCode: 500,
+    message: err
+  };
 }
