@@ -83,8 +83,8 @@ export function InternoteEditor({
         actions.notes.updateNote({ ...value, noteId: id }),
       onRequestDictionary: actions.dictionary.requestDictionary,
       onCloseDictionary: () => actions.dictionary.setDictionaryShowing(false),
-      onRequestSpeech: (content: string) =>
-        actions.speech.requestSpeech({ content, noteId: id }),
+      onRequestSpeech: (words: string) =>
+        actions.speech.requestSpeech({ words, id }),
       onCreateNewTag: (value: OnChange) =>
         actions.tags.saveNewTag({ ...value, noteId: id })
     }),

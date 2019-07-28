@@ -50,7 +50,7 @@ function makeModel(api: Api, servicesApi: ServicesApi, auth: AuthApi) {
     reducers: {},
     effects: {},
     models: {
-      speech: Speech.model(api),
+      speech: Speech.model(servicesApi),
       preferences: Preferences.model(servicesApi),
       auth: Auth.model(servicesApi, auth),
       dictionary: Dictionary.model(api),

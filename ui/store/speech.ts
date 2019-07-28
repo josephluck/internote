@@ -1,6 +1,7 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { Api, InternoteEffect } from ".";
+import { InternoteEffect } from ".";
+import { ServicesApi } from "../api/api";
 
 interface OwnState {
   speechSrc: string | null;
@@ -12,7 +13,7 @@ interface OwnReducers {
 }
 
 interface OwnEffects {
-  requestSpeech: InternoteEffect<{ content: string; noteId: string }>;
+  requestSpeech: InternoteEffect<{ words: string; id: string }>;
 }
 
 function defaultState(): OwnState {
@@ -31,7 +32,7 @@ export interface Namespace {
   speech: Twine.ModelApi<State, Actions>;
 }
 
-export function model(api: Api): Model {
+export function model(api: ServicesApi): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
@@ -42,10 +43,10 @@ export function model(api: Api): Model {
       })
     },
     effects: {
-      async requestSpeech(state, actions, { content, noteId }) {
-        const result = await api.speech.generate(state.auth.authSession, {
-          noteId,
-          content,
+      async requestSpeech(state, actions, { words, id }) {
+        const result = await api.speech.create(state.auth.authSession, {
+          id,
+          words,
           voice: state.preferences.voice || "Joey"
         });
         result.map(response => actions.speech.setSpeechSrc(response.src));

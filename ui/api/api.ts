@@ -2,6 +2,7 @@ import aws4 from "aws4";
 import { health } from "./health";
 import { preferences } from "./preferences";
 import { Session } from "./types";
+import { speech } from "./speech";
 
 export type MakeSignedRequest = (options: AwsSignedRequest) => any;
 
@@ -53,7 +54,8 @@ export function makeServicesApi({
   };
   return {
     health: health(makeSignedRequest),
-    preferences: preferences(makeSignedRequest)
+    preferences: preferences(makeSignedRequest),
+    speech: speech(makeSignedRequest)
   };
 }
 

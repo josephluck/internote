@@ -1,3 +1,4 @@
+import HttpError from "http-errors";
 import middy from "middy";
 import { jsonBodyParser, cors } from "middy/middlewares";
 import {
@@ -7,7 +8,6 @@ import {
 } from "@internote/lib/middlewares";
 import { success, exception, notFound } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
-import { isError } from "@internote/lib/errors";
 import { updatePreferencesById } from "./db/queries";
 import { Preferences } from "./db/models";
 import { UpdateHandler } from "@internote/lib/types";
@@ -27,7 +27,7 @@ const update: UpdateHandler<Preferences> = async (event, _ctx, callback) => {
     const preferences = await updatePreferencesById(userId, event.body);
     return callback(null, success(preferences));
   } catch (err) {
-    if (isError(err, "NOT_FOUND")) {
+    if (err instanceof HttpError.NotFound) {
       throw notFound(`Preferences for user ${userId} not found`);
     } else {
       throw exception(err);

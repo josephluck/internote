@@ -182,6 +182,10 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
         const response = await api.health.authenticated(state.auth.authSession);
         console.log(response);
         await actions.preferences.get();
+        await actions.speech.requestSpeech({
+          words: "Internote services are coming along!",
+          id: "123"
+        });
       }
     }
   };

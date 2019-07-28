@@ -8,6 +8,8 @@ export interface UpdateEvent<T> extends Omit<APIGatewayProxyEvent, "body"> {
 
 export type UpdateHandler<T> = Handler<UpdateEvent<T>>;
 
+export type CreateHandler<T> = UpdateHandler<T>;
+
 export type GetHandler = Handler<APIGatewayProxyEvent>;
 
 export type ApiResponse<T> = Promise<Result<HttpResponseError, T>>;
