@@ -67,7 +67,7 @@ export function validate<C extends Record<string, any>, F extends any>(
 }
 
 export const required: Constraint = (val, key) =>
-  val ? undefined : `${key} is required`;
+  typeof val !== "undefined" ? undefined : `${key} is required`;
 
 export const isString: Constraint = (val, key) =>
   typeof val === "string" ? undefined : `${key} must be a string`;
