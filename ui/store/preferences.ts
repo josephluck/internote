@@ -58,7 +58,7 @@ interface OwnReducers {
 }
 
 interface OwnEffects {
-  get: InternoteEffect0
+  get: InternoteEffect0;
 }
 
 function defaultState(): OwnState {
@@ -104,13 +104,19 @@ export function model(api: ServicesApi): Model {
     },
     effects: {
       async get(state, actions) {
-        const preferences = await api.preferences.get(state.auth.authSession)
-        actions.preferences.setPreferences({
-          ...preferences,
-          colorTheme: colorThemes.find(theme => theme.name === preferences.colorTheme),
-          fontTheme: fontThemes.find(theme => theme.name === preferences.fontTheme),
-          voice: preferences.voice as AvailableVoice
-        })
+        const result = await api.preferences.get(state.auth.authSession);
+        result.map(preferences => {
+          actions.preferences.setPreferences({
+            ...preferences,
+            colorTheme: colorThemes.find(
+              theme => theme.name === preferences.colorTheme
+            ),
+            fontTheme: fontThemes.find(
+              theme => theme.name === preferences.fontTheme
+            ),
+            voice: preferences.voice as AvailableVoice
+          });
+        });
       }
     }
   };

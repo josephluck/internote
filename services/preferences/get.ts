@@ -1,9 +1,9 @@
+import HttpError from "http-errors";
 import middy from "middy";
 import { httpErrorHandler, cors } from "middy/middlewares";
 import { encodeResponse } from "@internote/lib/middlewares";
 import { success, exception } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
-import { isError } from "@internote/lib/errors";
 import { GetHandler } from "@internote/lib/types";
 import { findPreferencesById, createPreferences } from "./db/queries";
 
@@ -13,7 +13,7 @@ const get: GetHandler = async (event, _ctx, callback) => {
     const preferences = await findPreferencesById(getUserIdentityId(event));
     return callback(null, success(preferences));
   } catch (err) {
-    if (isError(err, "NOT_FOUND")) {
+    if (err instanceof HttpError.NotFound) {
       const preferences = await createPreferences(getUserIdentityId(event));
       return callback(null, success(preferences));
     } else {

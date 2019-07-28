@@ -1,6 +1,7 @@
+import HttpError from "http-errors";
 import { Preferences, defaultPreferences } from "./models";
 import { PreferencesRepository } from "./repositories";
-import { notFoundError, isDbError } from "@internote/lib/errors";
+import { isDbError } from "@internote/lib/errors";
 import { attributeNotExists } from "type-dynamo";
 
 export const findPreferencesById = async (id: string) => {
@@ -11,7 +12,9 @@ export const findPreferencesById = async (id: string) => {
     return result.data;
   } catch (err) {
     if (isDbError(err, "ItemNotFound")) {
-      throw notFoundError(`Preferences for user ${id} could not be found`);
+      throw new HttpError.NotFound(
+        `Preferences for user ${id} could not be found`
+      );
     } else {
       throw err;
     }
@@ -30,7 +33,9 @@ export const updatePreferencesById = async (
     return result.data;
   } catch (err) {
     if (isDbError(err, "ItemNotFound")) {
-      throw notFoundError(`Preferences for user ${id} could not be found`);
+      throw new HttpError.NotFound(
+        `Preferences for user ${id} could not be found`
+      );
     } else {
       throw err;
     }
@@ -55,7 +60,9 @@ export const deletePreferencesById = async (id: string) => {
     return result.data;
   } catch (err) {
     if (isDbError(err, "ItemNotFound")) {
-      throw notFoundError(`Preferences for user ${id} could not be found`);
+      throw new HttpError.NotFound(
+        `Preferences for user ${id} could not be found`
+      );
     } else {
       throw err;
     }

@@ -34,6 +34,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@internote/api": "*",
     "@internote/health-service": "*",
+    "@internote/lib": "*",
     "@internote/preferences-service": "*",
     "@rebass/grid": "^6.0.0-7",
     "@types/aws4": "^1.5.1",
