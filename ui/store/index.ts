@@ -82,21 +82,21 @@ export function makeStore() {
       loggingMiddleware,
       {
         onStateChange: (state, prevState) => {
-          const { authSession: session } = state.auth;
+          const { session: session } = state.auth;
           const token = session ? session.accessToken : "";
 
           if (session && token) {
             if (
               state.preferences.colorTheme !== prevState.preferences.colorTheme
             ) {
-              servicesApi.preferences.update(state.auth.authSession, {
+              servicesApi.preferences.update(state.auth.session, {
                 colorTheme: state.preferences.colorTheme.name
               });
             }
             if (
               state.preferences.fontTheme !== prevState.preferences.fontTheme
             ) {
-              servicesApi.preferences.update(state.auth.authSession, {
+              servicesApi.preferences.update(state.auth.session, {
                 fontTheme: state.preferences.fontTheme.name
               });
             }
@@ -104,12 +104,12 @@ export function makeStore() {
               state.preferences.distractionFree !==
               prevState.preferences.distractionFree
             ) {
-              servicesApi.preferences.update(state.auth.authSession, {
+              servicesApi.preferences.update(state.auth.session, {
                 distractionFree: state.preferences.distractionFree
               });
             }
             if (state.preferences.voice !== prevState.preferences.voice) {
-              servicesApi.preferences.update(state.auth.authSession, {
+              servicesApi.preferences.update(state.auth.session, {
                 voice: state.preferences.voice
               });
             }
@@ -117,7 +117,7 @@ export function makeStore() {
               state.preferences.outlineShowing !==
               prevState.preferences.outlineShowing
             ) {
-              servicesApi.preferences.update(state.auth.authSession, {
+              servicesApi.preferences.update(state.auth.session, {
                 outlineShowing: state.preferences.outlineShowing
               });
             }

@@ -22,30 +22,30 @@ export function makeAuthStorage(
 ) {
   const cookies = isServer() ? new CookieFactory(cookie) : new CookieFactory();
 
-  function storeItem<K extends keyof AuthSession>(
+  function storeItem<K extends keyof Session>(
     key: K,
-    value: AuthSession[K]
-  ): AuthSession[K] {
+    value: Session[K]
+  ): Session[K] {
     cookies.set(key, value, cookieOptions());
     return value;
   }
 
-  function removeItem<K extends keyof AuthSession>(key: K) {
+  function removeItem<K extends keyof Session>(key: K) {
     cookies.remove(key, cookieOptions());
   }
 
-  function getItem<K extends keyof AuthSession>(key: K): AuthSession[K] {
+  function getItem<K extends keyof Session>(key: K): Session[K] {
     return cookies.get(key);
   }
 
-  function storeSession(session: Partial<AuthSession>) {
+  function storeSession(session: Partial<Session>) {
     return Object.keys(session).map(key => {
-      storeItem(key as keyof AuthSession, session[key]);
+      storeItem(key as keyof Session, session[key]);
     });
   }
 
-  function getSession(): AuthSession {
-    const defaultSession: AuthSession = {
+  function getSession(): Session {
+    const defaultSession: Session = {
       accessToken: "",
       expires: 0,
       idToken: "",
@@ -61,7 +61,7 @@ export function makeAuthStorage(
         ...prev,
         [key]: cookies.get(key) || defaultSession[key]
       }),
-      {} as AuthSession
+      {} as Session
     );
   }
 
@@ -74,7 +74,7 @@ export function makeAuthStorage(
   };
 }
 
-export interface AuthSession {
+export interface Session {
   /**
    * See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AuthenticationResultType.html
    */

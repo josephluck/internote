@@ -104,7 +104,7 @@ export function model(api: ServicesApi): Model {
     },
     effects: {
       async get(state, actions) {
-        const result = await api.preferences.get(state.auth.authSession);
+        const result = await api.preferences.get(state.auth.session);
         result.map(preferences => {
           actions.preferences.setPreferences({
             ...preferences,

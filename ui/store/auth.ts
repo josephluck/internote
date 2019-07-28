@@ -4,7 +4,7 @@ import { InternoteEffect, InternoteEffect0 } from ".";
 import { isServer } from "../utilities/window";
 import Router from "next/router";
 import { AuthApi } from "../auth/api";
-import { AuthSession, makeAuthStorage } from "../auth/storage";
+import { Session, makeAuthStorage } from "../auth/storage";
 import { ServicesApi } from "../api/api";
 
 interface SignInSession {
@@ -14,13 +14,13 @@ interface SignInSession {
 
 interface OwnState {
   needsVerify: boolean;
-  authSession: AuthSession | null;
+  session: Session | null;
   signInSession: SignInSession;
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
-  setAuthSession: Twine.Reducer<OwnState, Partial<AuthSession>>;
+  setSession: Twine.Reducer<OwnState, Partial<Session>>;
   setNeedsVerify: Twine.Reducer<OwnState, boolean>;
   setSignInSession: Twine.Reducer<OwnState, SignInSession>;
 }
@@ -41,7 +41,7 @@ interface OwnEffects {
 function defaultState(): OwnState {
   return {
     needsVerify: false,
-    authSession: null,
+    session: null,
     signInSession: { email: "", session: "" }
   };
 }
@@ -66,12 +66,12 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
         return defaultState();
       },
       setNeedsVerify: (state, needsVerify) => ({ ...state, needsVerify }),
-      setAuthSession: (state, authSession) => {
-        const latestSession = { ...state.authSession, ...authSession };
+      setSession: (state, authSession) => {
+        const latestSession = { ...state.session, ...authSession };
         authStorage.storeSession(latestSession);
         return {
           ...state,
-          authSession: latestSession
+          session: latestSession
         };
       },
       setSignInSession: (state, signInSession) => ({ ...state, signInSession })
@@ -102,7 +102,7 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
           payload.code,
           state.auth.signInSession.session
         );
-        actions.auth.setAuthSession({
+        actions.auth.setSession({
           accessToken: credentials.AuthenticationResult.AccessToken,
           expires: credentials.AuthenticationResult.ExpiresIn,
           idToken: credentials.AuthenticationResult.IdToken,
@@ -113,15 +113,13 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
         actions.auth.setNeedsVerify(false);
       },
       async getAndSetCredentials(state, actions) {
-        const response = await auth.getIdentityId(
-          state.auth.authSession.idToken
-        );
+        const response = await auth.getIdentityId(state.auth.session.idToken);
         const credentials = await auth.getCredentials(
-          state.auth.authSession.idToken,
+          state.auth.session.idToken,
           response.IdentityId
         );
-        actions.auth.setAuthSession({
-          ...state.auth.authSession,
+        actions.auth.setSession({
+          ...state.auth.session,
           accessKeyId: credentials.Credentials.AccessKeyId,
           expiration: credentials.Credentials.Expiration,
           secretKey: credentials.Credentials.SecretKey,
@@ -133,8 +131,8 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
       },
       async refreshToken(state, actions, refreshToken) {
         const credentials = await auth.refreshSession(refreshToken);
-        actions.auth.setAuthSession({
-          ...state.auth.authSession,
+        actions.auth.setSession({
+          ...state.auth.session,
           refreshToken,
           accessToken: credentials.AuthenticationResult.AccessToken,
           expires: credentials.AuthenticationResult.ExpiresIn,
@@ -179,7 +177,7 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
         actions.auth.signOut();
       },
       async testAuthentication(state, actions) {
-        const response = await api.health.authenticated(state.auth.authSession);
+        const response = await api.health.authenticated(state.auth.session);
         console.log(response);
         await actions.preferences.get();
         await actions.speech.requestSpeech({

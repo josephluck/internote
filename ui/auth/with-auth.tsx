@@ -36,7 +36,7 @@ export function withAuth<C extends typeof React.Component>(
         const authStorage = makeAuthStorage(cookie);
 
         const session = authStorage.getSession();
-        context.store.actions.auth.setAuthSession(session);
+        context.store.actions.auth.setSession(session);
 
         const tokenNearExpiry =
           session.refreshToken && isNearExpiry(session.expiration * 1000);
@@ -48,7 +48,7 @@ export function withAuth<C extends typeof React.Component>(
           await context.store.actions.auth.refreshToken(session.refreshToken);
         }
 
-        const latestSession = context.store.getState().auth.authSession;
+        const latestSession = context.store.getState().auth.session;
 
         Object.keys(latestSession).forEach(key => {
           setCookie(context, key, latestSession[key], {
@@ -65,7 +65,7 @@ export function withAuth<C extends typeof React.Component>(
         }
       });
 
-      const latestSession = !!context.store.getState().auth.authSession;
+      const latestSession = !!context.store.getState().auth.session;
 
       if (latestSession) {
         const getInitialProps: any = (Child as any).getInitialProps;

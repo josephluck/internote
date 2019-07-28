@@ -44,7 +44,7 @@ export function model(api: ServicesApi): Model {
     },
     effects: {
       async requestSpeech(state, actions, { words, id }) {
-        const result = await api.speech.create(state.auth.authSession, {
+        const result = await api.speech.create(state.auth.session, {
           id,
           words,
           voice: state.preferences.voice || "Joey"
