@@ -77,6 +77,11 @@ export const inArray = <A extends any>(arr: A[]): Constraint => (val, key) =>
     ? undefined
     : `${key} is not in the available range of options`;
 
+export const isSingleWord: Constraint = (val, key) =>
+  val.trim().split(" ").length === 1
+    ? undefined
+    : `${key} must be a single word`;
+
 export const rules = {
   required
 };

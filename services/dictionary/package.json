@@ -1,5 +1,5 @@
 {
-  "name": "@internote/speech-service",
+  "name": "@internote/dictionary-service",
   "version": "1.0.0",
   "description": "",
   "author": "",
@@ -21,9 +21,10 @@
   "dependencies": {
     "@internote/lib": "*",
     "aws-sdk": "^2.500.0",
+    "axios": "^0.19.0",
     "http-errors": "^1.7.3",
-    "md5": "^2.2.1",
-    "middy": "^0.28.4"
+    "middy": "^0.28.4",
+    "space-lift": "^0.8.7"
   },
   "devDependencies": {
     "@types/jest": "^24.0.15",

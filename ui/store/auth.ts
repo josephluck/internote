@@ -184,6 +184,7 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
           words: "Internote services are coming along!",
           id: "123"
         });
+        await actions.dictionary.lookup("Design");
       }
     }
   };

@@ -10,3 +10,4 @@ node_modules
 .lambdas
 .webpack
 generated-lambdas
+env.json

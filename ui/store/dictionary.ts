@@ -1,7 +1,8 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { Api, InternoteEffect } from ".";
+import { InternoteEffect } from ".";
 import * as Types from "@internote/api/domains/types";
+import { ServicesApi } from "../api/api";
 
 interface OwnState {
   dictionaryShowing: boolean;
@@ -15,7 +16,7 @@ interface OwnReducers {
 }
 
 interface OwnEffects {
-  requestDictionary: InternoteEffect<string>;
+  lookup: InternoteEffect<string>;
 }
 
 function defaultState(): OwnState {
@@ -35,7 +36,7 @@ export interface Namespace {
   dictionary: Twine.ModelApi<State, Actions>;
 }
 
-export function model(api: Api): Model {
+export function model(api: ServicesApi): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
@@ -51,7 +52,7 @@ export function model(api: Api): Model {
       })
     },
     effects: {
-      async requestDictionary(state, actions, word) {
+      async lookup(state, actions, word) {
         actions.dictionary.setDictionaryShowing(true);
         const response = await api.dictionary.lookup(state.auth.session, {
           word

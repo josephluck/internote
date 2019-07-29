@@ -53,7 +53,7 @@ function makeModel(api: Api, servicesApi: ServicesApi, auth: AuthApi) {
       speech: Speech.model(servicesApi),
       preferences: Preferences.model(servicesApi),
       auth: Auth.model(servicesApi, auth),
-      dictionary: Dictionary.model(api),
+      dictionary: Dictionary.model(servicesApi),
       confirmation: Confirmation.model(api),
       tags: Tags.model(api),
       ui: Ui.model(api),

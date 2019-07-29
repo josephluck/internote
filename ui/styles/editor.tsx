@@ -63,7 +63,7 @@ export function InternoteEditor({
     state => state.preferences.outlineShowing
   );
   const isDictionaryLoading = useTwineState(
-    state => state.dictionary.loading.requestDictionary
+    state => state.dictionary.loading.lookup
   );
   const isDictionaryShowing = useTwineState(
     state => state.dictionary.dictionaryShowing
@@ -81,7 +81,7 @@ export function InternoteEditor({
     actions => ({
       onChange: (value: OnChange) =>
         actions.notes.updateNote({ ...value, noteId: id }),
-      onRequestDictionary: actions.dictionary.requestDictionary,
+      onRequestDictionary: actions.dictionary.lookup,
       onCloseDictionary: () => actions.dictionary.setDictionaryShowing(false),
       onRequestSpeech: (words: string) =>
         actions.speech.requestSpeech({ words, id }),
