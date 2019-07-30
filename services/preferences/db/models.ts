@@ -1,6 +1,6 @@
 export class Preferences {
   /**
-   * Cognito user id
+   * Cognito identity id
    */
   id: string;
   colorTheme?: string;
