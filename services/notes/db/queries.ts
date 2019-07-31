@@ -2,14 +2,14 @@ import HttpError from "http-errors";
 import { Note, defaultNote } from "./models";
 import { NotesRepository } from "./repositories";
 import { isDbError } from "@internote/lib/errors";
+import { match, isEqualTo } from "type-dynamo";
 
 export const listNotesByUserId = async (userId: string) => {
   try {
-    const result = await NotesRepository.find([
-      {
-        userId
-      }
-    ]).execute();
+    const result = await NotesRepository.find()
+      .filter(match("userId", isEqualTo(userId)))
+      .allResults()
+      .execute();
     return result.data;
   } catch (err) {
     throw err;

@@ -98,9 +98,14 @@ resources:
       Properties:
         TableName: ${self:custom.tableName}
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: noteId
+            AttributeType: S
+          - AttributeName: userId
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: noteId
             KeyType: HASH
+        KeySchema:
+          - AttributeName: userId
+            KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
