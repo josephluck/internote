@@ -27,7 +27,7 @@ export interface UpdateNotePayload {
 }
 
 interface OwnEffects {
-  fetchNotes: InternoteEffect0;
+  fetchNotes: InternoteEffect0<Promise<GetNoteDTO[]>>;
   createNote: InternoteEffect0;
   updateNote: InternoteEffect<UpdateNotePayload, Promise<void>>;
   overwriteNoteConfirmation: InternoteEffect<UpdateNotePayload>;
@@ -70,7 +70,13 @@ export function model(api: ServicesApi): Model {
     effects: {
       async fetchNotes(state, actions) {
         const response = await api.notes.list(state.auth.session);
-        response.map(actions.notes.setNotes);
+        return response.fold(
+          () => [],
+          notes => {
+            actions.notes.setNotes(notes);
+            return notes;
+          }
+        );
       },
       async createNote(state, actions) {
         const result = await api.notes.create(state.auth.session, {

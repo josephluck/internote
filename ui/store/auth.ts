@@ -109,7 +109,7 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
           refreshToken: credentials.AuthenticationResult.RefreshToken
         });
         await actions.auth.getAndSetCredentials();
-        // Router.push("/");
+        Router.push("/");
         actions.auth.setNeedsVerify(false);
       },
       async getAndSetCredentials(state, actions) {

@@ -57,7 +57,7 @@ function makeModel(api: Api, servicesApi: ServicesApi, auth: AuthApi) {
       confirmation: Confirmation.model(api),
       tags: Tags.model(api),
       ui: Ui.model(api),
-      notes: Notes.model(api)
+      notes: Notes.model(servicesApi)
     }
   };
 }
