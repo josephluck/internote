@@ -113,7 +113,6 @@ resources:
         KeySchema:
           - AttributeName: noteId
             KeyType: HASH
-        KeySchema:
           - AttributeName: userId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
