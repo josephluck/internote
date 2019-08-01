@@ -6,7 +6,7 @@ import { styled } from "../theming/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { spacing, font } from "../theming/symbols";
-import { Note } from "@internote/api/domains/types";
+import { GetNoteDTO } from "@internote/notes-service/types";
 
 const DeleteIcon = styled.div`
   margin-left: ${spacing._1_5};
@@ -52,14 +52,14 @@ export function NoteMenuItem({
 }: {
   isLoading: boolean;
   isSelected: boolean;
-  note: Note;
+  note: GetNoteDTO;
   onDelete: () => void;
   onSelect: () => void;
   searchText: string;
 }) {
   return (
     <NoteMenuItemWrapper
-      key={note.id}
+      key={note.noteId}
       icon={
         isLoading ? (
           <FontAwesomeIcon icon={faSpinner} spin />
@@ -76,7 +76,7 @@ export function NoteMenuItem({
         }}
         onClick={onSelect}
       >
-        <Link href={`?id=${note.id}`} passHref>
+        <Link href={`?id=${note.noteId}`} passHref>
           <a>
             <Highlighter
               searchWords={searchText.split("")}

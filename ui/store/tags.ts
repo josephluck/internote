@@ -1,16 +1,15 @@
 import { Twine } from "twine-js";
-import * as Types from "@internote/api/domains/types";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { Api, InternoteEffect, InternoteEffect0 } from ".";
 import { UpdateNotePayload } from "./notes";
 
 interface OwnState {
-  tags: Types.Tag[];
+  tags: string[];
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
-  setTags: Twine.Reducer<OwnState, Types.Tag[]>;
+  setTags: Twine.Reducer<OwnState, string[]>;
 }
 
 interface OwnEffects {
@@ -34,7 +33,8 @@ export interface Namespace {
   tags: Twine.ModelApi<State, Actions>;
 }
 
-export function model(api: Api): Model {
+// TODO: fix tags using list of notes reduced to array of deduplicated tags as strings
+export function model(_api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
@@ -45,9 +45,9 @@ export function model(api: Api): Model {
       })
     },
     effects: {
-      async fetchTags(state, actions) {
-        const response = await api.tag.getAll(state.auth.session);
-        response.map(actions.tags.setTags);
+      async fetchTags(_state, _actions) {
+        // const response = await api.tag.getAll(state.auth.session);
+        // response.map(actions.tags.setTags);
       },
       async saveNewTag(_state, actions, payload) {
         // NB: own effect for the purpose of loading state

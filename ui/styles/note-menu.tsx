@@ -15,7 +15,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { styled } from "../theming/styled";
 import { spacing, font, borderRadius, size } from "../theming/symbols";
-import { Note, Tag as TagEntity } from "@internote/api/domains/types";
 import { OnNavigate } from "./on-navigate";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { combineStrings } from "../utilities/string";
@@ -23,6 +22,7 @@ import { NoResults } from "./no-results";
 import { Tag } from "./tag";
 import { NoteMenuItem } from "./note-menu-item";
 import { useTwineState, useTwineActions } from "../store";
+import { GetNoteDTO } from "@internote/notes-service/types";
 
 const NotesMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
   padding-top: 0;
@@ -118,7 +118,7 @@ const MaxHeight = styled.div`
   border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
 `;
 
-function getNoteTitle(note: Note): string {
+function getNoteTitle(note: GetNoteDTO): string {
   return note.title;
 }
 
@@ -126,7 +126,7 @@ export function NoteMenu({
   currentNote,
   onMenuToggled
 }: {
-  currentNote: Note;
+  currentNote: GetNoteDTO;
   onMenuToggled: (showing: boolean) => any;
 }) {
   const allNotes = useTwineState(state => state.notes.notes);
@@ -141,7 +141,7 @@ export function NoteMenu({
   const [searchFocused, setSearchFocused] = React.useState(false);
   const [searchText, setSearchText] = React.useState("");
   const [noteLoading, setNoteLoading] = React.useState(null);
-  const [filteredNotes, setFilteredNotes] = React.useState<Note[]>([]);
+  const [filteredNotes, setFilteredNotes] = React.useState<GetNoteDTO[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const isTagSearch = searchText.startsWith("#");
 
@@ -163,13 +163,13 @@ export function NoteMenu({
       distance: 30,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: isTagSearch ? ["tags.tag"] : ["title"]
+      keys: isTagSearch ? ["tags"] : ["title"]
     });
     setFilteredNotes(value.length ? fuzzy.search(value) : allNotes);
   }
 
-  function onTagClicked(tag: TagEntity) {
-    setSearchText(tag.tag);
+  function onTagClicked(tag: string) {
+    setSearchText(tag);
     focusInput();
   }
 
@@ -244,15 +244,15 @@ export function NoteMenu({
             ) : (
               filteredNotes.map(n => (
                 <NoteMenuItem
-                  isLoading={noteLoading === n.id}
-                  isSelected={!!currentNote && n.id === currentNote.id}
+                  isLoading={noteLoading === n.noteId}
+                  isSelected={!!currentNote && n.noteId === currentNote.noteId}
                   note={n}
                   onSelect={() => {
-                    setNoteLoading(n.id);
+                    setNoteLoading(n.noteId);
                   }}
                   onDelete={() => {
                     menu.toggleMenuShowing(false);
-                    onDeleteNote(n.id);
+                    onDeleteNote(n.noteId);
                   }}
                   searchText={isTagSearch ? "" : searchText}
                 />
@@ -261,8 +261,8 @@ export function NoteMenu({
           </MaxHeight>
           <TagsWrapper>
             {tags.map(tag => (
-              <Tag key={tag.id} onClick={() => onTagClicked(tag)}>
-                {tag.tag}
+              <Tag key={tag} onClick={() => onTagClicked(tag)}>
+                {tag}
               </Tag>
             ))}
           </TagsWrapper>

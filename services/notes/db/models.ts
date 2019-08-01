@@ -8,6 +8,10 @@ export class Note {
    */
   userId: string;
   /**
+   * The title of the note.
+   */
+  title: string;
+  /**
    * The content of the note as a compressed
    * binary string.
    *

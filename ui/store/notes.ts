@@ -1,21 +1,21 @@
 import { Twine } from "twine-js";
-import * as Types from "@internote/api/domains/types";
-import makeApi from "@internote/api/domains/api";
 import Router from "next/router";
 import { isServer } from "../utilities/window";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { InternoteEffect0, InternoteEffect } from ".";
 import { Option } from "space-lift";
+import { ServicesApi } from "../api/api";
+import { GetNoteDTO } from "@internote/notes-service/types";
 
 interface OwnState {
   overwriteCount: number;
-  notes: Types.Note[];
+  notes: GetNoteDTO[];
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
   incrementOverwriteCount: Twine.Reducer0<OwnState>;
-  setNotes: Twine.Reducer<OwnState, Types.Note[]>;
+  setNotes: Twine.Reducer<OwnState, GetNoteDTO[]>;
 }
 
 export interface UpdateNotePayload {
@@ -27,7 +27,7 @@ export interface UpdateNotePayload {
 }
 
 interface OwnEffects {
-  fetchNotes: InternoteEffect0<Promise<Types.Note[]>>;
+  fetchNotes: InternoteEffect0;
   createNote: InternoteEffect0;
   updateNote: InternoteEffect<UpdateNotePayload, Promise<void>>;
   overwriteNoteConfirmation: InternoteEffect<UpdateNotePayload>;
@@ -42,8 +42,6 @@ function defaultState(): OwnState {
   };
 }
 
-type Api = ReturnType<typeof makeApi>;
-
 type OwnModel = Twine.Model<OwnState, OwnReducers, OwnEffects>;
 
 export type Model = WithAsyncLoadingModel<OwnModel>;
@@ -54,7 +52,7 @@ export interface Namespace {
   notes: Twine.ModelApi<State, Actions>;
 }
 
-export function model(api: Api): Model {
+export function model(api: ServicesApi): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
@@ -65,31 +63,32 @@ export function model(api: Api): Model {
       }),
       setNotes: (state, notes) => ({
         ...state,
-        notes: notes.sort((a, b) => (a.dateUpdated > b.dateUpdated ? -1 : 1))
+        // notes: notes.sort((a, b) => (a.dateUpdated > b.dateUpdated ? -1 : 1))
+        notes
       })
     },
     effects: {
       async fetchNotes(state, actions) {
-        const notes = await api.note.findAll(state.auth.session);
-        actions.notes.setNotes(notes);
-        return notes;
+        const response = await api.notes.list(state.auth.session);
+        response.map(actions.notes.setNotes);
       },
       async createNote(state, actions) {
-        const result = await api.note.create(state.auth.session, {
+        const result = await api.notes.create(state.auth.session, {
           title: `New note - ${new Date().toDateString()}`,
           tags: []
         });
         result.map(note => {
           actions.notes.setNotes([note, ...state.notes.notes]);
           if (!isServer()) {
-            Router.push(`/?id=${note.id}`);
+            Router.push(`/?id=${note.noteId}`);
           }
         });
       },
       async updateNote(
         state,
         actions,
-        { noteId, content, title, tags, overwrite = false }
+        // { noteId, content, title, tags, overwrite = false }
+        { noteId, content, title, tags }
       ) {
         // NB: Prevent save if there's an existing save in progress.
         // this is so that is there are concurrent requests, they do
@@ -97,29 +96,32 @@ export function model(api: Api): Model {
         if (state.notes.loading.updateNote) {
           return;
         }
-        return Option(state.notes.notes.find(note => note.id === noteId)).fold(
+        return Option(
+          state.notes.notes.find(note => note.noteId === noteId)
+        ).fold(
           () => Promise.resolve(),
-          async ({ dateUpdated }) => {
-            const savedNote = await api.note.updateById(
+          async () => {
+            const savedNote = await api.notes.update(
               state.auth.session,
               noteId,
               {
                 content,
                 title,
-                dateUpdated,
-                tags,
-                overwrite
+                // dateUpdated,
+                tags
+                // overwrite
               }
             );
             await savedNote.fold(
               err => {
-                if (err.type === "overwrite") {
-                  actions.notes.overwriteNoteConfirmation({
-                    noteId,
-                    content,
-                    tags,
-                    title
-                  });
+                if (err.type === "BadRequest") {
+                  // TODO: fix this by adding an Overwrite error type
+                  // actions.notes.overwriteNoteConfirmation({
+                  //   noteId,
+                  //   content,
+                  //   tags,
+                  //   title
+                  // });
                 }
               },
               async updatedNote => {
@@ -127,7 +129,7 @@ export function model(api: Api): Model {
                 // works properly
                 actions.notes.setNotes(
                   state.notes.notes.map(n =>
-                    n.id === updatedNote.id ? updatedNote : n
+                    n.noteId === updatedNote.noteId ? updatedNote : n
                   )
                 );
                 await actions.tags.fetchTags();
@@ -159,7 +161,9 @@ export function model(api: Api): Model {
         });
       },
       deleteNoteConfirmation(state, actions, { noteId }) {
-        const noteToDelete = state.notes.notes.find(note => note.id === noteId);
+        const noteToDelete = state.notes.notes.find(
+          note => note.noteId === noteId
+        );
         actions.confirmation.setConfirmation({
           message: `Are you sure you wish to delete ${noteToDelete.title}?`,
           confirmButtonText: "Delete",
@@ -171,9 +175,9 @@ export function model(api: Api): Model {
         });
       },
       async deleteNote(state, actions, { noteId }) {
-        await api.note.deleteById(state.auth.session, noteId);
+        await api.notes.delete(state.auth.session, noteId);
         actions.notes.setNotes(
-          state.notes.notes.filter(note => note.id !== noteId)
+          state.notes.notes.filter(note => note.noteId !== noteId)
         );
       }
     }

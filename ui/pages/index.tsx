@@ -15,9 +15,9 @@ const PageWrapper = styled.div`
 
 const Page: NextTwineSFC<Store, { id: string }, { id: string }> = ({ id }) => {
   const note = useTwineState(
-    state => (id ? state.notes.notes.find(n => n.id === id) : null),
+    state => (id ? state.notes.notes.find(n => n.noteId === id) : null),
     [id],
-    (prev, next) => prev.id === next.id
+    (prev, next) => prev.noteId === next.noteId
   );
   const navigateToFirstNote = useTwineActions(
     actions => actions.ui.navigateToFirstNote

@@ -16,7 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { ExpandingIconButton } from "./expanding-icon-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as Types from "@internote/api/domains/types";
+import { GetNoteDTO } from "@internote/notes-service/types";
 
 const HeadingWrapper = styled.div<{
   distractionFree: boolean;
@@ -52,7 +52,7 @@ const ButtonSpacer = styled.div`
   margin-right: ${spacing._0_25};
 `;
 
-export function Heading({ note }: { note: Types.Note | null }) {
+export function Heading({ note }: { note: GetNoteDTO | null }) {
   const createNoteLoading = useTwineState(
     state => state.notes.loading.createNote
   );

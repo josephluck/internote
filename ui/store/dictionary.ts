@@ -1,17 +1,17 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { InternoteEffect } from ".";
-import * as Types from "@internote/api/domains/types";
 import { ServicesApi } from "../api/api";
+import { DictionaryResult } from "@internote/dictionary-service/types";
 
 interface OwnState {
   dictionaryShowing: boolean;
-  dictionaryResults: Types.DictionaryResult[];
+  dictionaryResults: DictionaryResult[];
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
-  setDictionaryResults: Twine.Reducer<OwnState, Types.DictionaryResult[]>;
+  setDictionaryResults: Twine.Reducer<OwnState, DictionaryResult[]>;
   setDictionaryShowing: Twine.Reducer<OwnState, boolean>;
 }
 

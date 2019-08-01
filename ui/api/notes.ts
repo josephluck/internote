@@ -75,6 +75,20 @@ export function notes(makeRequest: MakeSignedRequest) {
       } catch (err) {
         return Err(err);
       }
+    },
+    async delete(session: Session, noteId: string): ApiResponse<void> {
+      try {
+        const response = await Axios(
+          makeRequest({
+            path: `/notes/${noteId}`,
+            method: "DELETE",
+            session
+          })
+        );
+        return Ok(response.data);
+      } catch (err) {
+        return Err(err);
+      }
     }
   };
 }

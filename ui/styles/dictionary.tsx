@@ -1,9 +1,9 @@
-import * as Types from "@internote/api/domains/types";
 import { styled } from "../theming/styled";
 import { HeadingTwo, GhostHeadingTwo, BaseGhostElement } from "./typography";
 import { spacing, font } from "../theming/symbols";
 import { NoResults } from "./no-results";
 import { Tag } from "./tag";
+import { DictionaryResult } from "@internote/dictionary-service/types";
 
 const DictionaryHeadingWrapper = styled.div`
   display: flex;
@@ -68,7 +68,7 @@ const DictionaryEntryWrapper = styled.div`
   }
 `;
 
-function DictionaryEntry({ result }: { result: Types.DictionaryResult }) {
+function DictionaryEntry({ result }: { result: DictionaryResult }) {
   return (
     <DictionaryEntryWrapper>
       <DictionaryHeadingWrapper>
@@ -95,7 +95,7 @@ export function Dictionary({
   requestedWord
 }: {
   isLoading?: boolean;
-  results: Types.DictionaryResult[];
+  results: DictionaryResult[];
   requestedWord: string;
 }) {
   if (isLoading) {
