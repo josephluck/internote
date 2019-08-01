@@ -26,4 +26,13 @@ export type GetHandler<Q extends Record<string, string> = {}> = Handler<
   GetEvent<Q>
 >;
 
+export interface DeleteEvent<Q extends Record<string, string>>
+  extends Omit<APIGatewayProxyEvent, "pathParameters"> {
+  pathParameters: Q;
+}
+
+export type DeleteHandler<Q extends Record<string, string> = {}> = Handler<
+  DeleteEvent<Q>
+>;
+
 export type ApiResponse<T> = Promise<Result<HttpResponseError, T>>;

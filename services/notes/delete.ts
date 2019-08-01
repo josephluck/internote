@@ -4,34 +4,31 @@ import { httpErrorHandler, cors } from "middy/middlewares";
 import { encodeResponse } from "@internote/lib/middlewares";
 import { success, exception, notFound } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
-import { GetHandler } from "@internote/lib/types";
-import { findNoteById } from "./db/queries";
-import { GetNoteDTO } from "./types";
-import { decompress } from "@internote/lib/compression";
+import { DeleteHandler } from "@internote/lib/types";
+import { deleteNoteById } from "./db/queries";
 
-const get: GetHandler<{ noteId: string }> = async (event, _ctx, callback) => {
+const del33t: DeleteHandler<{ noteId: string }> = async (
+  event,
+  _ctx,
+  callback
+) => {
   const { noteId } = event.pathParameters;
   const userId = getUserIdentityId(event);
   try {
-    const note = await findNoteById(noteId, userId);
-    const content = JSON.parse(await decompress(note.content));
-    const noteDto: GetNoteDTO = {
-      ...note,
-      content
-    };
-    return callback(null, success(noteDto));
+    await deleteNoteById(noteId, userId);
+    return callback(null, success({}));
   } catch (err) {
     if (err instanceof HttpError.NotFound) {
       throw notFound(`Note ${noteId} not found`);
     } else if (err instanceof HttpError.InternalServerError) {
-      throw exception(`Something went wrong retrieving note ${noteId}`);
+      throw exception(`Something went wrong deleting note ${noteId}`);
     } else {
       throw exception(err);
     }
   }
 };
 
-export const handler = middy(get)
+export const handler = middy(del33t)
   .use(encodeResponse())
   .use(httpErrorHandler())
   .use(cors());

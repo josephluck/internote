@@ -5,33 +5,35 @@ import { encodeResponse } from "@internote/lib/middlewares";
 import { success, exception, notFound } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { GetHandler } from "@internote/lib/types";
-import { findNoteById } from "./db/queries";
+import { listNotesByUserId } from "./db/queries";
 import { GetNoteDTO } from "./types";
 import { decompress } from "@internote/lib/compression";
 
-const get: GetHandler<{ noteId: string }> = async (event, _ctx, callback) => {
-  const { noteId } = event.pathParameters;
+const list: GetHandler = async (event, _ctx, callback) => {
   const userId = getUserIdentityId(event);
   try {
-    const note = await findNoteById(noteId, userId);
-    const content = JSON.parse(await decompress(note.content));
-    const noteDto: GetNoteDTO = {
-      ...note,
-      content
-    };
-    return callback(null, success(noteDto));
+    const notes = await listNotesByUserId(userId);
+    const decompressedNotes = await Promise.all(
+      notes.map(
+        async ({ content, ...rest }): Promise<GetNoteDTO> => ({
+          ...rest,
+          content: JSON.parse(await decompress(content))
+        })
+      )
+    );
+    return callback(null, success(decompressedNotes));
   } catch (err) {
     if (err instanceof HttpError.NotFound) {
-      throw notFound(`Note ${noteId} not found`);
+      throw notFound(`Notes not found`);
     } else if (err instanceof HttpError.InternalServerError) {
-      throw exception(`Something went wrong retrieving note ${noteId}`);
+      throw exception("Something went wrong retrieving notes");
     } else {
       throw exception(err);
     }
   }
 };
 
-export const handler = middy(get)
+export const handler = middy(list)
   .use(encodeResponse())
   .use(httpErrorHandler())
   .use(cors());

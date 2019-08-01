@@ -82,6 +82,13 @@ export const isSingleWord: Constraint = (val, key) =>
     ? undefined
     : `${key} must be a single word`;
 
+export const isArray = (
+  check: (v: any) => boolean = () => true
+): Constraint => (val, key) =>
+  Array.isArray(val) && val.every(check)
+    ? undefined
+    : `${key} must be an array`;
+
 export const rules = {
   required
 };

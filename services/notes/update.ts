@@ -1,28 +1,17 @@
 import HttpError from "http-errors";
 import middy from "middy";
 import { jsonBodyParser, cors } from "middy/middlewares";
-import {
-  encodeResponse,
-  validateRequestBody,
-  jsonErrorHandler
-} from "@internote/lib/middlewares";
+import { encodeResponse, jsonErrorHandler } from "@internote/lib/middlewares";
 import { success, exception, notFound } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { updateNoteById } from "./db/queries";
 import { UpdateHandler } from "@internote/lib/types";
-import { required } from "@internote/lib/validator";
-import { NoteDTO } from "./types";
-import { Note } from "./db/models";
-import { compress } from "./compression";
+import { compress, decompress } from "@internote/lib/compression";
+import { required, isArray } from "@internote/lib/validator";
+import { validateRequestBody } from "@internote/lib/middlewares";
+import { UpdateNoteDTO, GetNoteDTO } from "./types";
 
-const validator = validateRequestBody<NoteDTO>({
-  noteId: [],
-  userId: [],
-  content: [required],
-  tags: [required]
-});
-
-const update: UpdateHandler<NoteDTO, { noteId: string }> = async (
+const update: UpdateHandler<UpdateNoteDTO, { noteId: string }> = async (
   event,
   _ctx,
   callback
@@ -31,13 +20,17 @@ const update: UpdateHandler<NoteDTO, { noteId: string }> = async (
   const { noteId } = event.pathParameters;
   try {
     const content = await compress(JSON.stringify(event.body.content));
-    const update: Note = {
+    const updatedNote = await updateNoteById(noteId, userId, {
       ...event.body,
       noteId,
       userId,
-      content
+      content,
+      tags: [...new Set(event.body.tags)]
+    });
+    const note: GetNoteDTO = {
+      ...updatedNote,
+      content: JSON.parse(await decompress(updatedNote.content))
     };
-    const note = await updateNoteById(noteId, userId, update);
     return callback(null, success(note));
   } catch (err) {
     if (err instanceof HttpError.NotFound) {
@@ -49,6 +42,13 @@ const update: UpdateHandler<NoteDTO, { noteId: string }> = async (
     }
   }
 };
+
+export const validator = validateRequestBody<UpdateNoteDTO>({
+  noteId: [],
+  userId: [],
+  content: [required], // TODO: validate slate schema
+  tags: [required, isArray(v => typeof v === "string")]
+});
 
 export const handler = middy(update)
   .use(jsonBodyParser())

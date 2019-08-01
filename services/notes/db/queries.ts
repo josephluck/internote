@@ -1,5 +1,5 @@
 import HttpError from "http-errors";
-import { Note, defaultNote } from "./models";
+import { Note } from "./models";
 import { NotesRepository } from "./repositories";
 import { isDbError } from "@internote/lib/errors";
 import { match, isEqualTo } from "type-dynamo";
@@ -52,9 +52,13 @@ export const updateNoteById = async (
   }
 };
 
-export const createNote = async (noteId: string, userId: string) => {
+export const createNote = async (
+  noteId: string,
+  userId: string,
+  note: Note
+) => {
   const result = await NotesRepository.save({
-    ...defaultNote,
+    ...note,
     noteId,
     userId
   }).execute();
