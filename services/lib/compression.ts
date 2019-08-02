@@ -5,26 +5,25 @@ import zlib from "zlib";
  */
 export function compress(str: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    zlib.gzip(Buffer.from(str, "utf-8"), (err, result) => {
+    zlib.gzip(str, (err, buffer) => {
       if (err) {
         reject(err);
       }
-      resolve(result.toString());
+      resolve(Buffer.from(buffer).toString("base64"));
     });
   });
 }
 
 /**
- * Decompresses a string.
+ * Decompresses a gzipped string.
  */
 export function decompress(str: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    zlib.deflate(str, (err, result) => {
+    zlib.gunzip(Buffer.from(str, "base64"), (err, result) => {
       if (err) {
         reject(err);
       }
-
-      resolve(result.toString());
+      resolve(result.toString("utf-8"));
     });
   });
 }

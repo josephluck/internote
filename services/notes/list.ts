@@ -15,10 +15,15 @@ const list: GetHandler = async (event, _ctx, callback) => {
     const notes = await listNotesByUserId(userId);
     const decompressedNotes = await Promise.all(
       notes.map(
-        async (note): Promise<GetNoteDTO> => ({
-          ...note,
-          content: JSON.parse(await decompress(note.content))
-        })
+        async (note): Promise<GetNoteDTO> => {
+          const decompressedContent = JSON.parse(
+            await decompress(note.content)
+          );
+          return {
+            ...note,
+            content: decompressedContent
+          };
+        }
       )
     );
     return callback(null, success(decompressedNotes));

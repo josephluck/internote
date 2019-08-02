@@ -15,17 +15,21 @@ const create: CreateHandler<CreateNoteDTO> = async (event, _ctx, callback) => {
   const userId = getUserIdentityId(event);
   const noteId = uuid();
   try {
-    const content = await compress(JSON.stringify(defaultNote));
+    const content = await compress(JSON.stringify(defaultNote.content));
     const createdNote = await createNote(noteId, userId, {
+      ...defaultNote,
       ...event.body,
       noteId,
       userId,
       content,
       tags: []
     });
+    const decompressedContent = JSON.parse(
+      await decompress(createdNote.content)
+    );
     const note: GetNoteDTO = {
       ...createdNote,
-      content: JSON.parse(await decompress(createdNote.content))
+      content: decompressedContent
     };
     return callback(null, success(note));
   } catch (err) {

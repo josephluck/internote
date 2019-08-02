@@ -25,4 +25,5 @@ export interface GetNoteDTO extends Omit<Note, "content"> {
  *
  * NB: new notes requests don't have any properties
  */
-export interface CreateNoteDTO {}
+export interface CreateNoteDTO
+  extends Omit<Note, "noteId" | "userId" | "content" | "tags"> {}

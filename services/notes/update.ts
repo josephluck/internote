@@ -7,7 +7,7 @@ import { getUserIdentityId } from "@internote/lib/user";
 import { updateNoteById } from "./db/queries";
 import { UpdateHandler } from "@internote/lib/types";
 import { compress, decompress } from "@internote/lib/compression";
-import { required, isArray } from "@internote/lib/validator";
+import { required, isArray, isString } from "@internote/lib/validator";
 import { validateRequestBody } from "@internote/lib/middlewares";
 import { UpdateNoteDTO, GetNoteDTO } from "./types";
 
@@ -47,6 +47,7 @@ export const validator = validateRequestBody<UpdateNoteDTO>({
   noteId: [],
   userId: [],
   content: [required], // TODO: validate slate schema
+  title: [required, isString],
   tags: [required, isArray(v => typeof v === "string")]
 });
 

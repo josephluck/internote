@@ -53,7 +53,7 @@ export function model(_api: Api): Model {
         if (notes.length === 0) {
           await actions.notes.createNote();
         } else if (!isServer()) {
-          Router.push(`/?id=${notes[0].id}`);
+          Router.push(`/?id=${notes[0].noteId}`);
         }
       },
       handleApiError(_state, actions, error) {

@@ -80,8 +80,7 @@ export function model(api: ServicesApi): Model {
       },
       async createNote(state, actions) {
         const result = await api.notes.create(state.auth.session, {
-          title: `New note - ${new Date().toDateString()}`,
-          tags: []
+          title: `New note - ${new Date().toDateString()}`
         });
         result.map(note => {
           actions.notes.setNotes([note, ...state.notes.notes]);
