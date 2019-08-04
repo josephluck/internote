@@ -153,7 +153,7 @@ export function InternoteEditor({
    */
   React.useEffect(() => {
     onChange(getChanges(debouncedValue));
-  }, [debouncedValue]);
+  }, [debouncedValue.document]);
 
   /**
    * Focus block when value changes
