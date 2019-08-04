@@ -34,7 +34,6 @@ export interface Namespace {
   tags: Twine.ModelApi<State, Actions>;
 }
 
-// TODO: fix tags using list of notes reduced to array of deduplicated tags as strings
 export function model(api: ServicesApi): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
