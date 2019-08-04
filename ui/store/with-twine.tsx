@@ -59,21 +59,19 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
     type MS = ReturnType<typeof mapState>;
     const store = React.useContext(TwineContext);
     const [state, setState] = React.useState<MS>(() => mapState(store.state));
+    const stateMapper = React.useCallback(mapState, dependencies);
 
     React.useEffect(() => {
+      setState(stateMapper(store.state));
       const unsubscribe = store.subscribe(storeState => {
-        const newState = mapState(storeState);
+        const newState = stateMapper(storeState);
         // TODO: fix this since state is invalid
         // if (!memoiseState(state, newState)) {
         setState(newState);
         // }
       });
       return unsubscribe;
-    }, []);
-
-    React.useEffect(() => {
-      setState(mapState(store.state));
-    }, dependencies);
+    }, [...dependencies, stateMapper]);
 
     return state as MS;
   }
