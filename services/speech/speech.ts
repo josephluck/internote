@@ -12,19 +12,7 @@ import { required, inArray, isString } from "@internote/lib/validator";
 import AWS from "aws-sdk";
 import md5 from "md5";
 
-export const availableVoices: AvailableVoice[] = [
-  "Joey",
-  "Justin",
-  "Matthew",
-  "Ivy",
-  "Joanna",
-  "Kendra",
-  "Brian",
-  "Amy",
-  "Emma",
-  "Nicole",
-  "Russell"
-];
+export const availableVoices: AvailableVoice[] = ["Male", "Female"];
 
 const validator = validateRequestBody<SpeechRequestBody>({
   id: [required],
@@ -38,7 +26,8 @@ const speech: CreateHandler<SpeechRequestBody> = async (
   callback
 ) => {
   try {
-    const voiceId: AvailableVoice = event.body.voice || "Joey";
+    const chosenVoice: AvailableVoice = event.body.voice || "Male";
+    const voiceId = chosenVoice === "Male" ? "Joey" : "Joanna";
     const Polly = new AWS.Polly();
     const S3 = new AWS.S3();
 
