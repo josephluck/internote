@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
-import { Editor as SlateEditor } from "slate-react";
+import { Editor as SlateEditor, EditorProps } from "slate-react";
 import { SchemaProperties } from "slate";
 import {
   getValueOrDefault,
@@ -34,9 +34,13 @@ import { Toolbar } from "./toolbar";
 import { useTwineState, useTwineActions } from "../store";
 import dynamic from "next/dynamic";
 
-const Editor = dynamic(import("./slate").then(mod => mod.Editor), {
+const DynamicEditor = dynamic(import("./slate").then(mod => mod.Editor), {
   ssr: false
 });
+
+const Editor = React.forwardRef<unknown, EditorProps>((props, ref) => (
+  <DynamicEditor {...props} forwardedRef={ref} />
+));
 
 const DEFAULT_NODE = "paragraph";
 
