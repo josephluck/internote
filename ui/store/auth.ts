@@ -57,6 +57,7 @@ export interface Namespace {
 }
 
 export function model(api: ServicesApi, auth: AuthApi): Model {
+  let authInterval: number = -1;
   const authStorage = makeAuthStorage();
 
   const ownModel: OwnModel = {
@@ -126,8 +127,12 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
           sessionToken: credentials.Credentials.SessionToken
         });
         await actions.preferences.get();
-        // TODO: set up interval for calling calling this repeatedly
-        // when user is using the app (since the tokens are short-lived)
+        if (!authInterval) {
+          const ms45mins = 2.7e6;
+          authInterval = setInterval(() => {
+            actions.auth.getAndSetCredentials();
+          }, ms45mins);
+        }
       },
       async refreshToken(state, actions, refreshToken) {
         const credentials = await auth.refreshSession(refreshToken);
@@ -152,6 +157,7 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
       },
       async signOut(_state, actions) {
         actions.notes.resetState();
+        clearInterval(authInterval);
         if (!isServer()) {
           Router.push("/authenticate");
         }

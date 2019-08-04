@@ -331,22 +331,22 @@ export function InternoteEditor({
    * Speech
    */
   const requestSpeech = useCallback(() => {
-    getSelectedText(value).map(onRequestSpeech);
-  }, [value]);
+    selectedText.map(onRequestSpeech);
+  }, [selectedText, onRequestSpeech]);
 
   /**
    * Dictionary
    */
   const requestDictionary = useCallback(() => {
     selectedText.flatMap(getFirstWordFromString).map(onRequestDictionary);
-  }, [selectedText]);
+  }, [selectedText, onRequestDictionary]);
   const onToggleDictionary = useCallback(() => {
     if (isDictionaryShowing) {
       onCloseDictionary();
     } else {
       requestDictionary();
     }
-  }, [isDictionaryLoading, onCloseDictionary, requestDictionary]);
+  }, [isDictionaryShowing, onCloseDictionary, requestDictionary]);
 
   /**
    * Emojis
