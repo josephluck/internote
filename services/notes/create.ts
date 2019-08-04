@@ -7,30 +7,13 @@ import { success, exception } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { createNote } from "./db/queries";
 import { CreateHandler } from "@internote/lib/types";
-import { CreateNoteDTO, GetNoteDTO } from "./types";
-import { defaultNote } from "./db/models";
-import { compress, decompress } from "@internote/lib/compression";
+import { CreateNoteDTO } from "./types";
 
 const create: CreateHandler<CreateNoteDTO> = async (event, _ctx, callback) => {
   const userId = getUserIdentityId(event);
   const noteId = uuid();
   try {
-    const content = await compress(JSON.stringify(defaultNote.content));
-    const createdNote = await createNote(noteId, userId, {
-      ...defaultNote,
-      ...event.body,
-      noteId,
-      userId,
-      content,
-      tags: []
-    });
-    const decompressedContent = JSON.parse(
-      await decompress(createdNote.content)
-    );
-    const note: GetNoteDTO = {
-      ...createdNote,
-      content: decompressedContent
-    };
+    const note = await createNote(noteId, userId, event.body);
     return callback(null, success(note));
   } catch (err) {
     if (err instanceof HttpError.InternalServerError) {

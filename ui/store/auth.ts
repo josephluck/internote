@@ -30,6 +30,7 @@ interface OwnEffects {
   signIn: InternoteEffect<{ email: string }, Promise<void>>;
   verify: InternoteEffect<{ code: string }, Promise<void>>;
   getAndSetCredentials: InternoteEffect0<Promise<void>>;
+  scheduleRefresh: InternoteEffect0;
   refreshToken: InternoteEffect<string, Promise<void>>;
   signOut: InternoteEffect0;
   signOutConfirmation: InternoteEffect0;
@@ -57,7 +58,7 @@ export interface Namespace {
 }
 
 export function model(api: ServicesApi, auth: AuthApi): Model {
-  let authInterval: number = -1;
+  let authInterval: number = null;
   const authStorage = makeAuthStorage();
 
   const ownModel: OwnModel = {
@@ -127,10 +128,18 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
           sessionToken: credentials.Credentials.SessionToken
         });
         await actions.preferences.get();
-        if (!authInterval) {
+        actions.auth.scheduleRefresh();
+      },
+      scheduleRefresh(state, actions) {
+        if (
+          !isServer() &&
+          !authInterval &&
+          state.auth.session &&
+          state.auth.session.refreshToken
+        ) {
           const ms45mins = 2.7e6;
           authInterval = setInterval(() => {
-            actions.auth.getAndSetCredentials();
+            actions.auth.refreshToken(state.auth.session.refreshToken);
           }, ms45mins);
         }
       },

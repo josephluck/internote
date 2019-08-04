@@ -6,20 +6,13 @@ import { success, exception, notFound } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { GetHandler } from "@internote/lib/types";
 import { findNoteById } from "./db/queries";
-import { GetNoteDTO } from "./types";
-import { decompress } from "@internote/lib/compression";
 
 const get: GetHandler<{ noteId: string }> = async (event, _ctx, callback) => {
   const { noteId } = event.pathParameters;
   const userId = getUserIdentityId(event);
   try {
     const note = await findNoteById(noteId, userId);
-    const content = JSON.parse(await decompress(note.content));
-    const noteDto: GetNoteDTO = {
-      ...note,
-      content
-    };
-    return callback(null, success(noteDto));
+    return callback(null, success(note));
   } catch (err) {
     if (err instanceof HttpError.NotFound) {
       throw notFound(`Note ${noteId} not found`);

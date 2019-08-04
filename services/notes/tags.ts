@@ -11,12 +11,17 @@ const list: GetHandler = async (event, _ctx, callback) => {
   const userId = getUserIdentityId(event);
   try {
     const notes = await listNotesByUserId(userId);
-    return callback(null, success(notes));
+    const allTags = notes.reduce(
+      (ts, note) => [...ts, ...note.tags],
+      [] as string[]
+    );
+    const dedupedTags = [...new Set(allTags)];
+    return callback(null, success(dedupedTags));
   } catch (err) {
     if (err instanceof HttpError.NotFound) {
-      throw notFound(`Notes not found`);
+      throw notFound(`Tags not found`);
     } else if (err instanceof HttpError.InternalServerError) {
-      throw exception("Something went wrong retrieving notes");
+      throw exception("Something went wrong retrieving tags");
     } else {
       throw exception(err);
     }

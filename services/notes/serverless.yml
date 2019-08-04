@@ -98,6 +98,14 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
+  tags:
+    handler: tags.handler
+    events:
+      - http:
+          path: tags
+          method: get
+          cors: true
+          authorizer: aws_iam
 
 resources:
   Resources:

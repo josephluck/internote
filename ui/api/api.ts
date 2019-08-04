@@ -5,6 +5,7 @@ import { Session } from "./types";
 import { speech } from "./speech";
 import { dictionary } from "./dictionary";
 import { notes } from "./notes";
+import { tags } from "./tags";
 
 export type MakeSignedRequest = (options: AwsSignedRequest) => any;
 
@@ -59,7 +60,8 @@ export function makeServicesApi({
     preferences: preferences(makeSignedRequest),
     speech: speech(makeSignedRequest),
     dictionary: dictionary(makeSignedRequest),
-    notes: notes(makeSignedRequest)
+    notes: notes(makeSignedRequest),
+    tags: tags(makeSignedRequest)
   };
 }
 

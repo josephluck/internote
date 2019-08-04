@@ -6,10 +6,9 @@ import { success, exception, notFound } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { updateNoteById } from "./db/queries";
 import { UpdateHandler } from "@internote/lib/types";
-import { compress, decompress } from "@internote/lib/compression";
 import { required, isArray, isString } from "@internote/lib/validator";
 import { validateRequestBody } from "@internote/lib/middlewares";
-import { UpdateNoteDTO, GetNoteDTO } from "./types";
+import { UpdateNoteDTO } from "./types";
 
 const update: UpdateHandler<UpdateNoteDTO, { noteId: string }> = async (
   event,
@@ -19,18 +18,7 @@ const update: UpdateHandler<UpdateNoteDTO, { noteId: string }> = async (
   const userId = getUserIdentityId(event);
   const { noteId } = event.pathParameters;
   try {
-    const content = await compress(JSON.stringify(event.body.content));
-    const updatedNote = await updateNoteById(noteId, userId, {
-      ...event.body,
-      noteId,
-      userId,
-      content,
-      tags: [...new Set(event.body.tags)]
-    });
-    const note: GetNoteDTO = {
-      ...updatedNote,
-      content: JSON.parse(await decompress(updatedNote.content))
-    };
+    const note = await updateNoteById(noteId, userId, event.body);
     return callback(null, success(note));
   } catch (err) {
     if (err instanceof HttpError.NotFound) {

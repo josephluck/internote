@@ -1,7 +1,8 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { Api, InternoteEffect, InternoteEffect0 } from ".";
+import { InternoteEffect, InternoteEffect0 } from ".";
 import { UpdateNotePayload } from "./notes";
+import { ServicesApi } from "../api/api";
 
 interface OwnState {
   tags: string[];
@@ -34,7 +35,7 @@ export interface Namespace {
 }
 
 // TODO: fix tags using list of notes reduced to array of deduplicated tags as strings
-export function model(_api: Api): Model {
+export function model(api: ServicesApi): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
@@ -45,13 +46,13 @@ export function model(_api: Api): Model {
       })
     },
     effects: {
-      async fetchTags(_state, _actions) {
-        // const response = await api.tag.getAll(state.auth.session);
-        // response.map(actions.tags.setTags);
+      async fetchTags(state, actions) {
+        const response = await api.tags.list(state.auth.session);
+        response.map(actions.tags.setTags);
       },
       async saveNewTag(_state, actions, payload) {
-        // NB: own effect for the purpose of loading state
-        // internally all we need to do is save the note (tags are automatically updated)
+        // NB: own effect for the purpose of loading state inside tags drawer...
+        // internally all we need to do is save the current note
         await actions.notes.updateNote(payload);
       }
     }

@@ -43,6 +43,10 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 export class Application extends App {
+  componentDidMount() {
+    const { store } = this.props as any;
+    store.actions.auth.scheduleRefresh();
+  }
   render() {
     const { Component, pageProps, store } = this.props as any;
     return (
