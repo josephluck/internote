@@ -36,7 +36,6 @@ interface OwnEffects {
   signOutConfirmation: InternoteEffect0;
   deleteAccount: InternoteEffect0<Promise<void>>;
   deleteAccountConfirmation: InternoteEffect0;
-  testAuthentication: InternoteEffect0;
 }
 
 function defaultState(): OwnState {
@@ -57,7 +56,7 @@ export interface Namespace {
   auth: Twine.ModelApi<State, Actions>;
 }
 
-export function model(api: Api, auth: AuthApi): Model {
+export function model(_api: Api, auth: AuthApi): Model {
   let authInterval: number = null;
   const authStorage = makeAuthStorage();
 
@@ -190,15 +189,6 @@ export function model(api: Api, auth: AuthApi): Model {
         //   state.auth.session.user.id
         // );
         actions.auth.signOut();
-      },
-      async testAuthentication(state, actions) {
-        await api.health.authenticated(state.auth.session);
-        await actions.preferences.get();
-        await actions.speech.requestSpeech({
-          words: "Internote services are coming along!",
-          id: "123"
-        });
-        await actions.dictionary.lookup("Design");
       }
     }
   };

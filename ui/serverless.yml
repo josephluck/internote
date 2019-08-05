@@ -1,27 +1,16 @@
 service: internote-ui
 
 functions:
-  login:
-    handler: generated-lambdas/login.handler
+  authenticate:
+    handler: generated-lambdas/authenticate.handler
     events:
       - http:
           method: GET
-          path: /login/
+          path: /authenticate/
           cors: true
       - http:
           method: ANY
-          path: /login/{any+}
-          cors: true
-  register:
-    handler: generated-lambdas/register.handler
-    events:
-      - http:
-          method: GET
-          path: /register/
-          cors: true
-      - http:
-          method: ANY
-          path: /register/{any+}
+          path: /authenticate/{any+}
           cors: true
   index:
     handler: generated-lambdas/index.handler
