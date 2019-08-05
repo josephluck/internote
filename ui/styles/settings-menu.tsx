@@ -18,9 +18,9 @@ import { styled } from "../theming/styled";
 import { size } from "../theming/symbols";
 import { ListMenuControl } from "./list-menu-control";
 import { ExpandingIconButton } from "./expanding-icon-button";
-import { availableVoices } from "@internote/api/domains/preferences/api";
 import { Shortcut } from "./shortcuts";
 import { shortcutPriorities } from "../utilities/shortcuts";
+import { availableVoices } from "@internote/speech-service/available-voices";
 
 const SettingsMenuWrap = styled(DropdownMenu)`
   width: ${size.settingsMenuDropdownWidth};

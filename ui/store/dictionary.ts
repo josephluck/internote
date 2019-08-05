@@ -1,7 +1,7 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { InternoteEffect } from ".";
-import { ServicesApi } from "../api/api";
+import { Api } from "../api/api";
 import { DictionaryResult } from "@internote/dictionary-service/types";
 
 interface OwnState {
@@ -36,7 +36,7 @@ export interface Namespace {
   dictionary: Twine.ModelApi<State, Actions>;
 }
 
-export function model(api: ServicesApi): Model {
+export function model(api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {

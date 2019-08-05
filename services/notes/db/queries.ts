@@ -1,10 +1,11 @@
 import HttpError from "http-errors";
-import { defaultNote, Note } from "./models";
+import { Note } from "./models";
 import { NotesRepository } from "./repositories";
 import { isDbError } from "@internote/lib/errors";
 import { match, isEqualTo } from "type-dynamo";
 import { GetNoteDTO, UpdateNoteDTO, CreateNoteDTO } from "../types";
 import { decompress, compress } from "@internote/lib/compression";
+import { defaultNote } from "./default-note";
 
 export const listNotesByUserId = async (
   userId: string

@@ -4,7 +4,7 @@ import { isServer } from "../utilities/window";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { InternoteEffect0, InternoteEffect } from ".";
 import { Option } from "space-lift";
-import { ServicesApi } from "../api/api";
+import { Api } from "../api/api";
 import { GetNoteDTO } from "@internote/notes-service/types";
 
 interface OwnState {
@@ -52,7 +52,7 @@ export interface Namespace {
   notes: Twine.ModelApi<State, Actions>;
 }
 
-export function model(api: ServicesApi): Model {
+export function model(api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {

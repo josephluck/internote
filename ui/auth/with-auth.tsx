@@ -68,6 +68,7 @@ export function withAuth<C extends typeof React.Component>(
       const latestSession = !!context.store.getState().auth.session;
 
       if (latestSession) {
+        await context.store.actions.preferences.get();
         const getInitialProps: any = (Child as any).getInitialProps;
         return getInitialProps ? getInitialProps(context) : {};
       } else if (options.restricted) {

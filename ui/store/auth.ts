@@ -5,7 +5,7 @@ import { isServer } from "../utilities/window";
 import Router from "next/router";
 import { AuthApi } from "../auth/api";
 import { Session, makeAuthStorage } from "../auth/storage";
-import { ServicesApi } from "../api/api";
+import { Api } from "../api/api";
 
 interface SignInSession {
   email: string;
@@ -57,7 +57,7 @@ export interface Namespace {
   auth: Twine.ModelApi<State, Actions>;
 }
 
-export function model(api: ServicesApi, auth: AuthApi): Model {
+export function model(api: Api, auth: AuthApi): Model {
   let authInterval: number = null;
   const authStorage = makeAuthStorage();
 
@@ -192,8 +192,7 @@ export function model(api: ServicesApi, auth: AuthApi): Model {
         actions.auth.signOut();
       },
       async testAuthentication(state, actions) {
-        const response = await api.health.authenticated(state.auth.session);
-        console.log(response);
+        await api.health.authenticated(state.auth.session);
         await actions.preferences.get();
         await actions.speech.requestSpeech({
           words: "Internote services are coming along!",

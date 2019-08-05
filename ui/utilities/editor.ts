@@ -1,9 +1,9 @@
 import { Value, Node, Range, Point, Block } from "slate";
 import isKeyHotkey from "is-hotkey";
-import { defaultNote } from "@internote/api/domains/note/default-note";
 import { Option, Some, None } from "space-lift";
 import { BlockType } from "./serializer";
 import { hasLength } from "./string";
+import { defaultNote } from "@internote/notes-service/db/default-note";
 
 /**
  * Returns the full combined text of a block
