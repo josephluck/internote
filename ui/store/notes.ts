@@ -92,8 +92,7 @@ export function model(api: Api): Model {
       async updateNote(
         state,
         actions,
-        // { noteId, content, title, tags, overwrite = false }
-        { noteId, content, title, tags }
+        { noteId, content, title, tags, overwrite = false }
       ) {
         // NB: Prevent save if there's an existing save in progress.
         // this is so that is there are concurrent requests, they do
@@ -105,33 +104,32 @@ export function model(api: Api): Model {
           state.notes.notes.find(note => note.noteId === noteId)
         ).fold(
           () => Promise.resolve(),
-          async () => {
+          async existingNote => {
             const savedNote = await api.notes.update(
               state.auth.session,
               noteId,
               {
                 content,
                 title,
-                // dateUpdated,
-                tags
-                // overwrite
+                dateUpdated: existingNote.dateUpdated,
+                tags,
+                overwrite
               }
             );
             await savedNote.fold(
               err => {
-                if (err.type === "BadRequest") {
-                  // TODO: fix this by adding an Overwrite error type
-                  // actions.notes.overwriteNoteConfirmation({
-                  //   noteId,
-                  //   content,
-                  //   tags,
-                  //   title
-                  // });
+                if (err.type === "Conflict") {
+                  actions.notes.overwriteNoteConfirmation({
+                    noteId,
+                    content,
+                    tags,
+                    title
+                  });
                 }
               },
               async updatedNote => {
-                // NB: update dateUpdated so that overwrite confirmation
-                // works properly
+                // NB: update dateUpdated in list so that
+                // overwrite confirmation works correctly
                 actions.notes.setNotes(
                   state.notes.notes.map(n =>
                     n.noteId === updatedNote.noteId ? updatedNote : n

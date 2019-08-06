@@ -25,4 +25,14 @@ export class Note {
    * NB: this is a set of strings.
    */
   tags: string[];
+  /**
+   * The datetime that the note was last updated
+   * - timestamp in ms
+   */
+  dateUpdated?: number;
+  /**
+   * The datetime that the note was created
+   * - timestamp in ms
+   */
+  dateCreated?: number;
 }
