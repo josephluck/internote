@@ -17,7 +17,7 @@ export function tags(makeRequest: MakeSignedRequest) {
         );
         return Ok(response.data);
       } catch (err) {
-        return Err(err);
+        return Err(err.response.data);
       }
     }
   };
