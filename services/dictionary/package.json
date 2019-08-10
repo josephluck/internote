@@ -8,7 +8,6 @@
     "*"
   ],
   "scripts": {
-    "dev": "sls offline start",
     "deploy": "yarn deploy:dev",
     "deploy:dev": "yarn deploy:dev:domain && yarn deploy:dev:services",
     "deploy:dev:domain": "serverless create_domain --stage dev",

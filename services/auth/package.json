@@ -8,7 +8,6 @@
     "*"
   ],
   "scripts": {
-    "dev": "sls offline start",
     "deploy": "yarn deploy:dev",
     "deploy:dev": "yarn deploy:dev:services",
     "deploy:dev:services": "NODE_ENV=development sls deploy --stage dev -v",
