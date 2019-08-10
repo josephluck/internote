@@ -29,14 +29,12 @@ const Page: NextTwineSFC<Store, {}> = () => {
   const needsVerify = useTwineState(state => state.auth.needsVerify);
   const authenticate = useTwineActions(actions => actions.auth.signUp);
   const verify = useTwineActions(actions => actions.auth.verify);
-  const test = useTwineActions(actions => actions.auth.testAuthentication);
   return (
     <>
       <Modal open showCloseIcon={false} onClose={() => null}>
         <CenteredLogo>
           <Logo large>Internote</Logo>
         </CenteredLogo>
-        <button onClick={test}>Test authentication</button>
         {needsVerify ? (
           <form
             onSubmit={e => {
@@ -90,11 +88,6 @@ const Page: NextTwineSFC<Store, {}> = () => {
       </Modal>
     </>
   );
-};
-
-Page.getInitialProps = async ctx => {
-  // await ctx.store.actions.auth.testAuthentication();
-  return {};
 };
 
 export default withAuth(Page as any, { restricted: false });

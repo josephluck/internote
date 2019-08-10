@@ -11,8 +11,7 @@ import { SpeechRequestBody, SpeechResponseBody, AvailableVoice } from "./types";
 import { required, inArray, isString } from "@internote/lib/validator";
 import AWS from "aws-sdk";
 import md5 from "md5";
-
-export const availableVoices: AvailableVoice[] = ["Male", "Female"];
+import { availableVoices } from "./available-voices";
 
 const validator = validateRequestBody<SpeechRequestBody>({
   id: [required],

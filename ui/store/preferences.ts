@@ -6,7 +6,7 @@ import {
   ColorThemeWithName,
   FontThemeWithName
 } from "../theming/themes";
-import { ServicesApi } from "../api/api";
+import { Api } from "../api/api";
 import { AvailableVoice } from "@internote/speech-service/types";
 
 interface OwnState {
@@ -53,7 +53,7 @@ export interface Namespace {
   preferences: Twine.ModelApi<State, Actions>;
 }
 
-export function model(api: ServicesApi): Model {
+export function model(api: Api): Model {
   return {
     state: defaultState(),
     reducers: {
@@ -80,12 +80,13 @@ export function model(api: ServicesApi): Model {
         result.map(preferences => {
           actions.preferences.setPreferences({
             ...preferences,
-            colorTheme: colorThemes.find(
-              theme => theme.name === preferences.colorTheme
-            ),
-            fontTheme: fontThemes.find(
-              theme => theme.name === preferences.fontTheme
-            ),
+            colorTheme:
+              colorThemes.find(
+                theme => theme.name === preferences.colorTheme
+              ) || colorThemes[0],
+            fontTheme:
+              fontThemes.find(theme => theme.name === preferences.fontTheme) ||
+              fontThemes[0],
             voice: preferences.voice as AvailableVoice
           });
         });

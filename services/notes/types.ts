@@ -7,6 +7,16 @@ import { Note } from "./db/models";
  * in the database, but not over the API.
  */
 export interface UpdateNoteDTO extends Omit<Note, "content"> {
+  /**
+   * If true, will force overwrite the note regardless
+   * of whether there is a newer one in the database
+   */
+  overwrite?: boolean;
+  /**
+   * Pass the last date updated to determine whether there
+   * is a newer note saved. Used to avoid conflicts.
+   */
+  dateUpdated?: number;
   content: {};
 }
 

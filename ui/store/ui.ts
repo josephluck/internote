@@ -1,10 +1,11 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { Api, InternoteEffect, InternoteEffect0 } from ".";
+import { InternoteEffect, InternoteEffect0 } from ".";
 import { requestFullScreen, exitFullscreen } from "../utilities/fullscreen";
 import { isServer } from "../utilities/window";
 import Router from "next/router";
 import { AxiosError } from "axios";
+import { Api } from "../api/api";
 
 interface OwnState {
   isFullscreen: boolean;

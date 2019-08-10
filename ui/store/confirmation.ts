@@ -1,5 +1,5 @@
 import { Twine } from "twine-js";
-import { Api } from ".";
+import { Api } from "../api/api";
 
 interface Confirmation {
   message?: string;

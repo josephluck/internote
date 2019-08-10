@@ -16,13 +16,7 @@ export interface AwsSignedRequest {
   body?: any;
 }
 
-export function makeServicesApi({
-  host,
-  region
-}: {
-  host: string;
-  region: string;
-}) {
+export function makeApi({ host, region }: { host: string; region: string }) {
   const makeSignedRequest: MakeSignedRequest = ({
     path,
     session,
@@ -65,4 +59,4 @@ export function makeServicesApi({
   };
 }
 
-export type ServicesApi = ReturnType<typeof makeServicesApi>;
+export type Api = ReturnType<typeof makeApi>;

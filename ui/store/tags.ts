@@ -2,7 +2,7 @@ import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { InternoteEffect, InternoteEffect0 } from ".";
 import { UpdateNotePayload } from "./notes";
-import { ServicesApi } from "../api/api";
+import { Api } from "../api/api";
 
 interface OwnState {
   tags: string[];
@@ -34,7 +34,7 @@ export interface Namespace {
   tags: Twine.ModelApi<State, Actions>;
 }
 
-export function model(api: ServicesApi): Model {
+export function model(api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {

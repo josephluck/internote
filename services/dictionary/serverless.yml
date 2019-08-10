@@ -29,9 +29,10 @@ provider:
     REGION: eu-west-1
     OXFORD_API_ID: ${self:custom.environment.OXFORD_API_ID}
     OXFORD_API_KEY: ${self:custom.environment.OXFORD_API_KEY}
-  memorySize: 1024
+  memorySize: 256
   timeout: 30
   apiGateway:
+    minimumCompressionSize: 1024
     restApiId:
       "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiId
     restApiRootResourceId:

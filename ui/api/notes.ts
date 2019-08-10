@@ -22,7 +22,7 @@ export function notes(makeRequest: MakeSignedRequest) {
         );
         return Ok(response.data);
       } catch (err) {
-        return Err(err);
+        return Err(err.response.data);
       }
     },
     async get(session: Session, noteId: string): ApiResponse<GetNoteDTO> {
@@ -36,7 +36,7 @@ export function notes(makeRequest: MakeSignedRequest) {
         );
         return Ok(response.data);
       } catch (err) {
-        return Err(err);
+        return Err(err.response.data);
       }
     },
     async create(
@@ -54,7 +54,7 @@ export function notes(makeRequest: MakeSignedRequest) {
         );
         return Ok(response.data);
       } catch (err) {
-        return Err(err);
+        return Err(err.response.data);
       }
     },
     async update(
@@ -73,7 +73,7 @@ export function notes(makeRequest: MakeSignedRequest) {
         );
         return Ok(response.data);
       } catch (err) {
-        return Err(err);
+        return Err(err.response.data);
       }
     },
     async delete(session: Session, noteId: string): ApiResponse<void> {
@@ -87,7 +87,7 @@ export function notes(makeRequest: MakeSignedRequest) {
         );
         return Ok(response.data);
       } catch (err) {
-        return Err(err);
+        return Err(err.response.data);
       }
     }
   };

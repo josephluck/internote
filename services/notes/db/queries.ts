@@ -1,10 +1,11 @@
 import HttpError from "http-errors";
-import { defaultNote, Note } from "./models";
+import { Note } from "./models";
 import { NotesRepository } from "./repositories";
 import { isDbError } from "@internote/lib/errors";
 import { match, isEqualTo } from "type-dynamo";
 import { GetNoteDTO, UpdateNoteDTO, CreateNoteDTO } from "../types";
 import { decompress, compress } from "@internote/lib/compression";
+import { defaultNote } from "./default-note";
 
 export const listNotesByUserId = async (
   userId: string
@@ -38,18 +39,20 @@ export const findNoteById = async (
 export const updateNoteById = async (
   noteId: string,
   userId: string,
-  updates: Partial<UpdateNoteDTO>
+  body: Partial<UpdateNoteDTO>
 ): Promise<GetNoteDTO> => {
   try {
     const result = await NotesRepository.update({
-      ...updates,
       noteId,
       userId,
-      content: await compress(JSON.stringify(updates.content)),
-      tags: [...new Set(updates.tags)]
+      title: body.title,
+      content: await compress(JSON.stringify(body.content)),
+      tags: [...new Set(body.tags)],
+      dateUpdated: Date.now()
     }).execute();
     return await unmarshallNote(result.data);
   } catch (err) {
+    // TODO: handle other DB errors (like failed updates)
     if (isDbError(err, "ItemNotFound")) {
       throw new HttpError.NotFound(`Note ${noteId} could not be found`);
     } else {
@@ -61,15 +64,16 @@ export const updateNoteById = async (
 export const createNote = async (
   noteId: string,
   userId: string,
-  note: CreateNoteDTO
+  body: CreateNoteDTO
 ): Promise<GetNoteDTO> => {
   const result = await NotesRepository.save({
     ...defaultNote,
-    ...note,
+    title: body.title,
     content: await compress(JSON.stringify(defaultNote.content)),
     tags: [],
     noteId,
-    userId
+    userId,
+    dateCreated: Date.now()
   }).execute();
   return await unmarshallNote(result.data);
 };

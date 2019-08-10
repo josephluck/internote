@@ -1,6 +1,5 @@
 import twine, { Twine } from "twine-js";
 import logger from "twine-js/lib/log";
-import makeApi from "@internote/api/domains/api";
 import { isServer } from "../utilities/window";
 
 import * as Speech from "./speech";
@@ -14,7 +13,7 @@ import * as Notes from "./notes";
 import { makeTwineHooks } from "./with-twine";
 import { env } from "../env";
 import { AuthApi, makeAuthApi } from "../auth/api";
-import { makeServicesApi, ServicesApi } from "../api/api";
+import { makeApi, Api } from "../api/api";
 
 type Models = Twine.Models<
   Speech.Namespace &
@@ -42,32 +41,29 @@ export type InternoteEffect0<Return = void> = Twine.Effect0<
   Return
 >;
 
-export type Api = ReturnType<typeof makeApi>;
-
-function makeModel(api: Api, servicesApi: ServicesApi, auth: AuthApi) {
+function makeModel(api: Api, auth: AuthApi) {
   return {
     state: {},
     reducers: {},
     effects: {},
     models: {
-      speech: Speech.model(servicesApi),
-      preferences: Preferences.model(servicesApi),
-      auth: Auth.model(servicesApi, auth),
-      dictionary: Dictionary.model(servicesApi),
+      speech: Speech.model(api),
+      preferences: Preferences.model(api),
+      auth: Auth.model(api, auth),
+      dictionary: Dictionary.model(api),
       confirmation: Confirmation.model(api),
       tags: Tags.model(api),
       ui: Ui.model(api),
-      notes: Notes.model(servicesApi)
+      notes: Notes.model(api)
     }
   };
 }
 
 export function makeStore() {
-  const servicesApi = makeServicesApi({
+  const api = makeApi({
     host: env.SERVICES_HOST,
     region: env.SERVICES_REGION
   });
-  const api = makeApi(env.API_BASE_URL);
   const auth = makeAuthApi({
     region: env.SERVICES_REGION,
     userPoolId: env.COGNITO_USER_POOL_ID,
@@ -77,7 +73,7 @@ export function makeStore() {
   const loggingMiddleware =
     !isServer() && process.env.NODE_ENV !== "production" ? logger : undefined;
   const store = twine<Models["state"], Models["actions"]>(
-    makeModel(api, servicesApi, auth),
+    makeModel(api, auth),
     [
       loggingMiddleware,
       {
@@ -89,14 +85,14 @@ export function makeStore() {
             if (
               state.preferences.colorTheme !== prevState.preferences.colorTheme
             ) {
-              servicesApi.preferences.update(state.auth.session, {
+              api.preferences.update(state.auth.session, {
                 colorTheme: state.preferences.colorTheme.name
               });
             }
             if (
               state.preferences.fontTheme !== prevState.preferences.fontTheme
             ) {
-              servicesApi.preferences.update(state.auth.session, {
+              api.preferences.update(state.auth.session, {
                 fontTheme: state.preferences.fontTheme.name
               });
             }
@@ -104,12 +100,12 @@ export function makeStore() {
               state.preferences.distractionFree !==
               prevState.preferences.distractionFree
             ) {
-              servicesApi.preferences.update(state.auth.session, {
+              api.preferences.update(state.auth.session, {
                 distractionFree: state.preferences.distractionFree
               });
             }
             if (state.preferences.voice !== prevState.preferences.voice) {
-              servicesApi.preferences.update(state.auth.session, {
+              api.preferences.update(state.auth.session, {
                 voice: state.preferences.voice
               });
             }
@@ -117,7 +113,7 @@ export function makeStore() {
               state.preferences.outlineShowing !==
               prevState.preferences.outlineShowing
             ) {
-              servicesApi.preferences.update(state.auth.session, {
+              api.preferences.update(state.auth.session, {
                 outlineShowing: state.preferences.outlineShowing
               });
             }
@@ -127,15 +123,16 @@ export function makeStore() {
     ]
   );
 
-  api.client.interceptors.response.use(
-    res => res,
-    err => {
-      if (err && err.response) {
-        store.actions.ui.handleApiError(err);
-      }
-      return Promise.reject(err);
-    }
-  );
+  // TODO: do this
+  // api.client.interceptors.response.use(
+  //   res => res,
+  //   err => {
+  //     if (err && err.response) {
+  //       store.actions.ui.handleApiError(err);
+  //     }
+  //     return Promise.reject(err);
+  //   }
+  // );
 
   if (!isServer()) {
     document.addEventListener("fullscreenchange", () => {
