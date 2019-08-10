@@ -9,5 +9,6 @@ node_modules
 .static
 .lambdas
 .webpack
-generated-lambdas
+.generated-lambdas
+.service-worker
 env.json

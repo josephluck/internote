@@ -63,7 +63,7 @@ interface Options {
 
 function run({
   typescript = true,
-  outputDir = "generated-lambdas"
+  outputDir = ".generated-lambdas"
 }: Options = {}) {
   const outputFullPath = makeOutputFullPath({ outputDir });
   rimraf(outputFullPath);
@@ -92,4 +92,4 @@ function rimraf(dir_path) {
   }
 }
 
-run({ typescript: true, outputDir: "generated-lambdas" });
+run({ typescript: true, outputDir: ".generated-lambdas" });

@@ -2,7 +2,7 @@ service: internote-ui
 
 functions:
   authenticate:
-    handler: generated-lambdas/authenticate.handler
+    handler: .generated-lambdas/authenticate.handler
     events:
       - http:
           method: GET
@@ -13,7 +13,7 @@ functions:
           path: /authenticate/{any+}
           cors: true
   index:
-    handler: generated-lambdas/index.handler
+    handler: .generated-lambdas/index.handler
     events:
       - http:
           method: GET
@@ -23,6 +23,12 @@ functions:
           method: ANY
           path: /{any+}
           cors: true
+  serve-service-worker:
+    handler: service-worker/lambda.handler
+    events:
+      - http:
+          path: /
+          method: get
 
 plugins:
   - serverless-plugin-monorepo

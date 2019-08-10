@@ -7,6 +7,7 @@ import Head from "next/head";
 import { sansSerif } from "../theming/themes";
 import { ShortcutsProvider } from "../styles/shortcuts";
 import { InternoteThemes } from "../styles/theme-provider";
+import { isServer } from "../utilities/window";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -41,6 +42,19 @@ const GlobalStyles = createGlobalStyle`
     background: inherit;
   }
 `;
+
+if (!isServer() && navigator.serviceWorker) {
+  window.addEventListener("load", async () => {
+    try {
+      await navigator.serviceWorker.register("/service-worker.js");
+      await navigator.serviceWorker.ready;
+      await registration.sync.register("sync");
+      console.log("Registered service worker");
+    } catch (err) {
+      console.log(`ServiceWorker registration failed: ${err}`);
+    }
+  });
+}
 
 export class Application extends App {
   componentDidMount() {

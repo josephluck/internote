@@ -9,23 +9,25 @@
     "test:tsc": "tsc --noEmit",
     "deploy:dev": "yarn deploy:dev:prepare && yarn deploy:dev:domain && yarn deploy:dev:app && yarn deploy:clean-up",
     "deploy:dev:build": "NODE_ENV=production STAGE=dev next build",
-    "deploy:dev:prepare": "rm -rf .next && yarn deploy:dev:build && yarn static:copy && yarn lambdas:generate",
+    "deploy:dev:prepare": "rm -rf .next && yarn deploy:dev:build && yarn static:copy && yarn lambdas:generate && yarn service-worker:create",
     "deploy:dev:domain": "serverless create_domain --stage dev",
     "deploy:dev:app": "SLS_DEBUG=1 NODE_ENV=production serverless deploy --stage dev",
     "deploy:prod": "yarn deploy:prod:prepare && yarn deploy:prod:domain && yarn deploy:prod:app && yarn deploy:clean-up",
     "deploy:prod:build": "NODE_ENV=production STAGE=prod next build",
-    "deploy:prod:prepare": "rm -rf .next && yarn deploy:prod:build && yarn static:copy && yarn lambdas:generate",
+    "deploy:prod:prepare": "rm -rf .next && yarn deploy:prod:build && yarn static:copy && yarn lambdas:generate && yarn service-worker:create",
     "deploy:prod:domain": "serverless create_domain --stage prod",
     "deploy:prod:app": "SLS_DEBUG=* NODE_ENV=production serverless deploy --stage prod",
     "deploy:clean-up": "yarn static:remove && yarn lambdas:remove",
     "lambdas:generate": "ts-node generate-lambdas.ts",
-    "lambdas:remove": "rm -rf generated-lambdas",
+    "lambdas:remove": "rm -rf .generated-lambdas",
     "static:copy": "yarn static:remove && mkdir .static && mkdir .static/_next && cp -r .next/static .static/_next",
-    "static:remove": "rm -rf .static"
+    "static:remove": "rm -rf .static",
+    "service-worker:create": "webpack --config service-worker-webpack.config.js"
   },
   "dependencies": {
     "aws-serverless-express": "^3.3.6",
-    "nookies": "^2.0.8"
+    "nookies": "^2.0.8",
+    "serverless-aws-static-file-handler": "^2.0.2"
   },
   "devDependencies": {
     "@element-motion/core": "^2.7.0",
@@ -83,10 +85,12 @@
     "slate-react": "^0.22.3",
     "space-lift": "^0.8.7",
     "styled-components": "^4.2.0",
+    "ts-loader": "^6.0.4",
     "ts-node": "^8.2.0",
     "twine-js": "^2.0.2",
     "typescript": "^3.5.3",
     "universal-cookie": "^4.0.0",
+    "webpack": "^4.39.1",
     "zenscroll": "^4.0.2"
   }
 }
