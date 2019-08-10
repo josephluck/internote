@@ -93,20 +93,6 @@ Feel free to request new features too, but please bear in mind that this is a pe
 - AWS Route 53
 - AWS S3
 
-## Local development environment
-
-Internote runs on a serverless stack, and is set up with serverless-offline for localhost development.
-
-- Install node & yarn
-- Run `yarn` to install dependencies
-- Create a cloud instance of postgres (ElephantSQL is pretty good)
-- Copy `/api/.env.reference` to `/api/.env.development` and fill it out (ensuring you copy the right things from the PostgreSQL instance)
-- Do the same for `/ui/.env.reference`
-- Run `yarn dev` from the root of the project
-- Visit `http://localhost:3000`
-
-> The UI application runs on http://localhost:3000 and the API runs on port http://localhost:2020
-
 ## Deployment
 
 - Create an AWS account

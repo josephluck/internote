@@ -1,8 +1,6 @@
 service: internote-auth-service
 
 custom:
-  serverless-offline:
-    port: 2020
   stage: ${opt:stage, self:provider.stage}
 
 provider:

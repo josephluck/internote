@@ -25,15 +25,4 @@ export interface SpeechResponseBody {
  * A list of all the available voices that Internote
  * supports for TTS.
  */
-export type AvailableVoice =
-  | "Joey"
-  | "Justin"
-  | "Matthew"
-  | "Ivy"
-  | "Joanna"
-  | "Kendra"
-  | "Brian"
-  | "Amy"
-  | "Emma"
-  | "Nicole"
-  | "Russell";
+export type AvailableVoice = "Male" | "Female";

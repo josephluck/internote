@@ -39,7 +39,6 @@ plugins:
   - serverless-plugin-monorepo
   - serverless-plugin-typescript
   - serverless-plugin-include-dependencies
-  - serverless-offline
   - serverless-s3-sync
   - serverless-domain-manager
 
@@ -47,8 +46,6 @@ custom:
   s3Sync:
     - bucketName: internote-${self:custom.stage}-ui-static
       localDir: .static
-  serverless-offline:
-    port: 3000
   stage: ${opt:stage, self:provider.stage}
   domains:
     prod: internote.app

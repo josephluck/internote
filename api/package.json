@@ -45,7 +45,6 @@
     "serverless": "^1.44.1",
     "serverless-dotenv-plugin": "^2.1.1",
     "serverless-http": "^2.0.2",
-    "serverless-offline": "^4.10.6",
     "serverless-plugin-typescript": "^1.1.7",
     "space-lift": "^0.8.7",
     "ts-node": "^8.2.0",

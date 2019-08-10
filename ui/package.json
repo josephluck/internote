@@ -75,7 +75,6 @@
     "rimraf": "^2.6.3",
     "serverless": "^1.44.1",
     "serverless-domain-manager": "^3.2.2",
-    "serverless-offline": "^4.10.6",
     "serverless-plugin-include-dependencies": "^3.2.1",
     "serverless-plugin-monorepo": "^0.7.0",
     "serverless-plugin-typescript": "^1.1.7",

@@ -49,7 +49,7 @@ export interface Theme {
   toolbarButtonInactiveText: string;
 }
 
-export const internote: Theme = {
+export const dark: Theme = {
   appBackground: "#0f0d16",
   appText: "#FFFFFF",
   audioTimelineActive: "#9fc7ec",
@@ -100,7 +100,7 @@ export const internote: Theme = {
   toolbarButtonInactiveText: "#504D5D"
 };
 
-export const daydream: Theme = {
+export const light: Theme = {
   appBackground: "#FFFFFF",
   appText: "#000000",
   audioTimelineActive: "#9fc7ec",
@@ -165,13 +165,13 @@ export interface FontThemeWithName {
 
 export const colorThemes: ColorThemeWithName[] = [
   {
-    name: "Internote",
-    theme: internote,
+    name: "Dark",
+    theme: dark,
     shortcut: "i"
   },
   {
-    name: "Daydream",
-    theme: daydream,
+    name: "Light",
+    theme: light,
     shortcut: "d"
   }
 ];
@@ -180,78 +180,32 @@ export interface FontTheme {
   fontFamily: string;
 }
 
-export const inter: FontTheme = {
+export const sansSerif: FontTheme = {
   fontFamily: "'Inter UI', Helvetica, Arial, sans-serif"
 };
 
-export const notoSansSc: FontTheme = {
-  fontFamily: "'Noto Sans SC', Helvetica, Arial, sans-serif"
-};
-
-export const spectral: FontTheme = {
-  fontFamily: "'Spectral', serif"
-};
-
-export const EBGaramond: FontTheme = {
+export const serif: FontTheme = {
   fontFamily: "'EB Garamond', serif"
 };
 
-export const crimsonText: FontTheme = {
-  fontFamily: "'Crimson Text', serif"
-};
-
-export const lora: FontTheme = {
-  fontFamily: "'Lora', serif"
-};
-
-export const overpassMono: FontTheme = {
+export const monospace: FontTheme = {
   fontFamily: "'Overpass Mono', monospace"
 };
 
-export const sourceCodePro: FontTheme = {
-  fontFamily: "'Source Code Pro', monospace"
-};
-
-// TODO: trim this down to a few standard fonts (sans serif, serif and monospace)
 export const fontThemes: FontThemeWithName[] = [
   {
-    name: "Inter",
-    theme: inter,
+    name: "Sans serif",
+    theme: sansSerif,
     shortcut: "i"
   },
   {
-    name: "Noto Sans SC",
-    theme: notoSansSc,
-    shortcut: "n"
-  },
-  {
-    name: "Spectral",
-    theme: spectral,
-    shortcut: "s"
-  },
-  {
-    name: "EB Garamond",
-    theme: EBGaramond,
+    name: "Serif",
+    theme: serif,
     shortcut: "e"
   },
   {
-    name: "Crimson Text",
-    theme: crimsonText,
-    shortcut: "c"
-  },
-  {
-    name: "Lora",
-    theme: lora,
-    shortcut: "l"
-  },
-  {
-    name: "Overpass Mono",
-    theme: overpassMono,
+    name: "Monospace",
+    theme: monospace,
     shortcut: "o"
-  },
-  {
-    name: "Source Code Pro",
-    theme: sourceCodePro,
-    shortcut: "shift+s"
   }
 ];

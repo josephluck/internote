@@ -1,8 +1,6 @@
 service: internote-speech-service
 
 custom:
-  serverless-offline:
-    port: 2020
   stage: ${opt:stage, self:provider.stage}
   domains:
     prod: services.internote.app
@@ -56,7 +54,6 @@ provider:
 
 plugins:
   - serverless-plugin-monorepo
-  - serverless-offline
   - serverless-webpack
   - serverless-domain-manager
 

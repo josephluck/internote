@@ -12,9 +12,9 @@ export class Preferences {
 
 export const defaultPreferences: Preferences = {
   id: "",
-  colorTheme: "Internote",
-  fontTheme: "Inter",
+  colorTheme: "Dark",
+  fontTheme: "Sans serif",
   distractionFree: false,
-  voice: "Joey",
+  voice: "Male",
   outlineShowing: true
 };

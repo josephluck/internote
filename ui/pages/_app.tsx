@@ -4,7 +4,7 @@ import { font } from "../theming/symbols";
 import { injectTwine } from "../store";
 import { createGlobalStyle } from "../theming/styled";
 import Head from "next/head";
-import { inter } from "../theming/themes";
+import { sansSerif } from "../theming/themes";
 import { ShortcutsProvider } from "../styles/shortcuts";
 import { InternoteThemes } from "../styles/theme-provider";
 
@@ -17,7 +17,7 @@ const GlobalStyles = createGlobalStyle`
   body, html, #__next {
     color: ${props => props.theme.appText};
     background-color: ${props => props.theme.appBackground};
-    font-family: ${inter.fontFamily};
+    font-family: ${sansSerif.fontFamily};
     font-size: ${font._24.size};
     line-height: ${font._24.lineHeight};
     height: 100%;

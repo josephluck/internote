@@ -1,8 +1,6 @@
 service: internote-health-service
 
 custom:
-  serverless-offline:
-    port: 2020
   stage: ${opt:stage, self:provider.stage}
   domains:
     prod: services.internote.app
@@ -26,7 +24,6 @@ provider:
 plugins:
   - serverless-plugin-monorepo
   - serverless-plugin-typescript
-  - serverless-offline
   - serverless-domain-manager
 
 functions:
