@@ -1,6 +1,6 @@
 import * as React from "react";
 import { spacing } from "../theming/symbols";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { useTwineState, useTwineActions } from "../store";
 import { Modal } from "./modal";
 import { Button } from "./button";

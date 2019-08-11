@@ -4,7 +4,7 @@ import { Box, Flex } from "@rebass/grid";
 import { NextTwineSFC } from "../store/with-twine";
 import { Store, useTwineState, useTwineActions } from "../store";
 import { Logo } from "../styles/logo";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { Button } from "../styles/button";
 import { Modal } from "../styles/modal";
 import { Input, InputLabel } from "../styles/input";

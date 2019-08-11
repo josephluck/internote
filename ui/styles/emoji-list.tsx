@@ -19,7 +19,7 @@ const ListInner = styled.div`
   margin: -${spacing._0_125};
 `;
 
-const EmojiItem = styled.div`
+const EmojiItem = styled.div<{ isFocused: boolean }>`
   display: inline-block;
   margin: ${spacing._0_125};
   cursor: pointer;
@@ -82,7 +82,7 @@ export function EmojiList({
               key={emoji.codes}
               isFocused={search.length === 0 || focusedIndex === i}
               onMouseEnter={() => setFocusedIndex(i)}
-              onClick={(e: Event) => {
+              onClick={e => {
                 e.preventDefault();
                 onEmojiSelected(emoji);
               }}

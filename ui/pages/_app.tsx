@@ -2,12 +2,12 @@ import * as React from "react";
 import App, { Container } from "next/app";
 import { font } from "../theming/symbols";
 import { injectTwine } from "../store";
-import { createGlobalStyle } from "../theming/styled";
+import { createGlobalStyle } from "styled-components";
 import Head from "next/head";
 import { sansSerif } from "../theming/themes";
 import { ShortcutsProvider } from "../styles/shortcuts";
 import { InternoteThemes } from "../styles/theme-provider";
-import { isServer } from "../utilities/window";
+// import { isServer } from "../utilities/window";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -43,18 +43,18 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-if (!isServer() && navigator.serviceWorker) {
-  window.addEventListener("load", async () => {
-    try {
-      await navigator.serviceWorker.register("/service-worker.js");
-      const registration = await navigator.serviceWorker.ready;
-      await registration.sync.register("sync");
-      console.log("Registered service worker");
-    } catch (err) {
-      console.log(`ServiceWorker registration failed: ${err}`);
-    }
-  });
-}
+// if (!isServer() && navigator.serviceWorker) {
+//   window.addEventListener("load", async () => {
+//     try {
+//       await navigator.serviceWorker.register("/service-worker.js");
+//       const registration = await navigator.serviceWorker.ready;
+//       await registration.sync.register("sync");
+//       console.log("Registered service worker");
+//     } catch (err) {
+//       console.log(`ServiceWorker registration failed: ${err}`);
+//     }
+//   });
+// }
 
 export class Application extends App {
   componentDidMount() {

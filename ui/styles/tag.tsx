@@ -1,4 +1,4 @@
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { font, spacing, borderRadius } from "../theming/symbols";
 
 export const Tag = styled.div<{ isFocused: boolean; large?: boolean }>`

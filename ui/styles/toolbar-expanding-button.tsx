@@ -1,9 +1,9 @@
 import { font, spacing, borderRadius } from "../theming/symbols";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 
 export const ToolbarExpandingButton = styled.div<{
-  forceShow: boolean;
-  isActive: boolean;
+  forceShow?: boolean;
+  isActive?: boolean;
 }>`
   display: inline-flex;
   overflow: hidden;

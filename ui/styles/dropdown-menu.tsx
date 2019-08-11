@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { spacing, borderRadius, font } from "../theming/symbols";
 import { Box } from "@rebass/grid";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";

@@ -1,4 +1,4 @@
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { spacing, borderRadius, font } from "../theming/symbols";
 import { Wrapper } from "./wrapper";
 

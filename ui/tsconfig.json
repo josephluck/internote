@@ -2,7 +2,22 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "jsx": "preserve",
-    "lib": ["dom", "es2017"]
+    "lib": [
+      "dom",
+      "es2017"
+    ],
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "module": "esnext",
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
-  "include": ["../**/*", "**/*"]
+  "include": [
+    "../**/*",
+    "**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

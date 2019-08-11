@@ -1,4 +1,4 @@
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { HeadingTwo, GhostHeadingTwo, BaseGhostElement } from "./typography";
 import { spacing, font } from "../theming/symbols";
 import { NoResults } from "./no-results";

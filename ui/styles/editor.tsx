@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
-import { Editor as SlateEditor, EditorProps } from "slate-react";
-import { SchemaProperties } from "slate";
+import { Editor as SlateEditor } from "slate-react";
+import { SchemaProperties, Block } from "slate";
 import {
   getValueOrDefault,
   isBoldHotkey,
@@ -33,14 +33,21 @@ import { useDebounce, useThrottle } from "../utilities/hooks";
 import { Toolbar } from "./toolbar";
 import { useTwineState, useTwineActions } from "../store";
 import dynamic from "next/dynamic";
+import {
+  InternoteSlateEditorPropsWithRef,
+  InternoteSlateEditorProps
+} from "./slate";
 
-const DynamicEditor = dynamic(import("./slate").then(mod => mod.Editor), {
-  ssr: false
-});
+const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
+  import("./slate").then(mod => mod.Editor),
+  {
+    ssr: false
+  }
+) as any;
 
-const Editor = React.forwardRef<unknown, EditorProps>((props, ref) => (
-  <DynamicEditor {...props} forwardedRef={ref} />
-));
+const Editor = React.forwardRef<unknown, InternoteSlateEditorProps>(
+  (props, ref) => <DynamicEditor {...props} forwardedRef={ref} />
+);
 
 const DEFAULT_NODE = "paragraph";
 
@@ -243,7 +250,7 @@ export function InternoteEditor({
     [editor.current]
   );
   const focusNode = useCallback(
-    (node: Node) => {
+    (node: Block) => {
       editor.current.moveToRangeOfNode(node);
       editor.current.moveFocusToStartOfNode(node);
       editor.current.focus();

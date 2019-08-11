@@ -1,6 +1,6 @@
 import * as React from "react";
 import { spacing, borderRadius, font } from "../theming/symbols";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 

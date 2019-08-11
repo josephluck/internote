@@ -1,4 +1,4 @@
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { font, color } from "../theming/symbols";
 
 export const Logo = styled.div<{ large?: boolean }>`

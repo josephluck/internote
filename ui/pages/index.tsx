@@ -6,14 +6,14 @@ import { Heading } from "../styles/heading";
 import { Global } from "../styles/global";
 import { Note } from "../styles/note";
 import { OnMount } from "../styles/on-mount";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 
 const PageWrapper = styled.div`
   min-height: 100%;
   height: 100%;
 `;
 
-const Page: NextTwineSFC<Store, { id: string }, { id: string }> = ({ id }) => {
+const Page: NextTwineSFC<Store, { id: string | string[] }> = ({ id }) => {
   const note = useTwineState(
     state => (id ? state.notes.notes.find(n => n.noteId === id) : null),
     [id],

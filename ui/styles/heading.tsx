@@ -4,7 +4,7 @@ import { Logo } from "../styles/logo";
 import { BlockLink } from "../styles/link";
 import { useTwineState, useTwineActions } from "../store";
 import { Wrapper } from "./wrapper";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { NoteMenu } from "./note-menu";
 import { Flex } from "@rebass/grid";
 import { SettingsMenu } from "./settings-menu";

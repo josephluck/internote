@@ -1,4 +1,4 @@
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { borderRadius, spacing, font } from "../theming/symbols";
 
 export const Input = styled.input`

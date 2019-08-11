@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { RoundButton } from "./button";
 import { spacing, borderRadius, font } from "../theming/symbols";
 
@@ -70,7 +70,7 @@ export function ToolbarButton({
   shortcutShowing = false
 }: {
   children: React.ReactNode;
-  onClick?: Event;
+  onClick?: () => void;
   isActive: boolean;
   shortcutNumber: number;
   shortcutShowing?: boolean;

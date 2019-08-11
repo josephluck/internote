@@ -52,7 +52,6 @@
     "@types/slate-react": "^0.22.5",
     "@types/styled-components": "^4.1.18",
     "@types/zenscroll": "^4.0.0",
-    "@zeit/next-typescript": "^1.1.1",
     "awesome-typescript-loader": "^5.2.1",
     "aws4": "^1.8.0",
     "babel-loader": "^8.0.6",

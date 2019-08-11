@@ -1,4 +1,4 @@
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { media, spacing, size } from "../theming/symbols";
 
 export const Wrapper = styled.div`

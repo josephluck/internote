@@ -1,11 +1,11 @@
 import * as React from "react";
 import Router from "next/router";
-import { NextContext } from "next";
 import { Store } from "../store";
 import { isServer } from "../utilities/window";
 import { isNearExpiry } from "./api";
 import { makeAuthStorage } from "./storage";
 import { setCookie } from "nookies";
+import { NextPageContext } from "next";
 
 interface Options {
   restricted: boolean;
@@ -16,7 +16,7 @@ export function withAuth<C extends typeof React.Component>(
   options: Options = { restricted: true }
 ) {
   return class WrappedComponent extends React.PureComponent<any, any> {
-    static async getInitialProps(context: NextContext<{}> & { store: Store }) {
+    static async getInitialProps(context: NextPageContext & { store: Store }) {
       function redirectToLogin() {
         if (context.res) {
           context.res.writeHead(302, {

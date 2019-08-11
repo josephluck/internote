@@ -1,4 +1,4 @@
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { borderRadius, spacing, font } from "../theming/symbols";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -90,7 +90,4 @@ export const RoundButton = styled.button<{ isActive: boolean }>`
   transition: all 300ms ease;
   font-weight: bold;
   cursor: pointer;
-  &:hover {
-    color: ${props => props.formatButtonActiveText};
-  }
 `;

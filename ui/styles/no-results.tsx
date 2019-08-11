@@ -1,4 +1,4 @@
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { font, spacing } from "../theming/symbols";
 
 const Wrap = styled.div`

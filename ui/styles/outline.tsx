@@ -1,4 +1,4 @@
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { spacing, size, font, media } from "../theming/symbols";
 import {
   getOutlineHeadingsFromEditorValue,
@@ -94,7 +94,9 @@ export function Outline({
       <Spacer />
       <TagsWrapper>
         {hashtags.map(tag => (
-          <Tag key={tag}>{tag}</Tag>
+          <Tag key={tag} isFocused={false}>
+            {tag}
+          </Tag>
         ))}
       </TagsWrapper>
     </Wrap>

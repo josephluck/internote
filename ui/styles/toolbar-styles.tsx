@@ -1,4 +1,4 @@
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { font, spacing, size } from "../theming/symbols";
 import { Wrapper } from "./wrapper";
 import { MarkType, BlockType } from "../utilities/serializer";

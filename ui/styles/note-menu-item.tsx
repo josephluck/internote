@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Box } from "@rebass/grid";
 import ReactHighlight from "react-highlight-words";
 import { DropdownMenuItem } from "./dropdown-menu";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { spacing, font } from "../theming/symbols";

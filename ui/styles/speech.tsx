@@ -9,7 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 import { AudioRenderProps, AudioPlayer } from "./audio";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { spacing } from "../theming/symbols";
 import { Flex } from "@rebass/grid";
 import {

@@ -14,7 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { size } from "../theming/symbols";
 import { ListMenuControl } from "./list-menu-control";
 import { ExpandingIconButton } from "./expanding-icon-button";

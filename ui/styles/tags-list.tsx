@@ -91,7 +91,7 @@ export function TagsList({
         <NewTag
           isFocused={focusedIndex === 0}
           onMouseEnter={() => setFocusedIndex(0)}
-          onClick={(e: Event) => {
+          onClick={e => {
             e.preventDefault();
             onCreateNewTag();
           }}
@@ -109,7 +109,7 @@ export function TagsList({
             key={tag}
             isFocused={search.length === 0 || focusedIndex === i + 1}
             onMouseEnter={() => setFocusedIndex(i + 1)}
-            onClick={(e: Event) => {
+            onClick={e => {
               e.preventDefault();
               onTagSelected(tag);
             }}

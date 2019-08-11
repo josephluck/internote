@@ -13,7 +13,7 @@ import {
   DropdownChevron
 } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 import { spacing, font, borderRadius, size } from "../theming/symbols";
 import { OnNavigate } from "./on-navigate";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
@@ -209,7 +209,7 @@ export function NoteMenu({
                 value={searchText}
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setSearchFocused(false)}
-                onInput={e => {
+                onInput={(e: any) => {
                   setSearchText(e.target.value);
                 }}
               />
@@ -262,7 +262,11 @@ export function NoteMenu({
           </MaxHeight>
           <TagsWrapper>
             {tags.map(tag => (
-              <Tag key={tag} onClick={() => onTagClicked(tag)}>
+              <Tag
+                key={tag}
+                isFocused={false}
+                onClick={() => onTagClicked(tag)}
+              >
                 {tag}
               </Tag>
             ))}

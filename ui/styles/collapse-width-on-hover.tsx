@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Motion, spring } from "react-motion";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   cursor: ${props => (props.onClick ? "pointer" : "default")};

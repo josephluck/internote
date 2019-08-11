@@ -1,6 +1,6 @@
 import * as React from "react";
 import NextLink from "next/link";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 
 interface Props {
   href: string;

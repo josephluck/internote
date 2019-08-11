@@ -8,7 +8,7 @@ import {
 } from "./toolbar-expanding-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGrinAlt } from "@fortawesome/free-solid-svg-icons";
-import { styled } from "../theming/styled";
+import styled from "styled-components";
 
 const IconWrap = styled(ToolbarExpandingButtonIconWrap)`
   font-size: ${font._12.lineHeight};
