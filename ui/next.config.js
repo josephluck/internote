@@ -24,7 +24,8 @@ module.exports = withExternals(
         transpileModules: ["@internote"],
         babelConfigFile: path.resolve("./babel.config.js"),
         target: "serverless",
-        assetPrefix: process.env.ASSET_PREFIX || ""
+        assetPrefix: process.env.ASSET_PREFIX || "",
+        experimental: { publicDirectory: true }
       })
     )
   )
