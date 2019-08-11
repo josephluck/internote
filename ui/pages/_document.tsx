@@ -17,9 +17,10 @@ export default class MyDocument extends Document {
       });
 
     const initialProps = await Document.getInitialProps(ctx);
+    // TODO: correct types
     return {
       ...(initialProps || {}),
-      styles: [...initialProps.styles, ...sheet.getStyleElement()]
+      styles: [...(initialProps.styles as any), ...sheet.getStyleElement()]
     };
   }
   render() {

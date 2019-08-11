@@ -7,7 +7,9 @@ self.addEventListener("sync", async (event: any) => {
   event.respondWith("Done!");
 });
 
-self.addEventListener("fetch", (event: any) => {
-  console.log("Caught request for " + event.request.url);
-  event.respondWith(new Response("Hello world!"));
+self.addEventListener("fetch", async (event: any) => {
+  console.log("Caught request for", event.request.url);
+  const response = await fetch(event.request);
+  console.log("Response", { response });
+  event.respondWith(response);
 });

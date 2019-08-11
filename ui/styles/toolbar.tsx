@@ -223,7 +223,7 @@ export function Toolbar({
                 <TagsList
                   onTagSelected={insertTag}
                   onCreateNewTag={createNewTag}
-                  tags={tags.map(t => t.tag)}
+                  tags={tags}
                   search={shortcutSearch
                     .flatMap(removeFirstLetterFromString)
                     .getOrElse("")}

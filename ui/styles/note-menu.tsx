@@ -156,7 +156,8 @@ export function NoteMenu({
   }, [searchText, combineStrings(allNotes.map(getNoteTitle))]);
 
   function searchNotes(value: string) {
-    const fuzzy = new Fuse(allNotes, {
+    const fuse: any = Fuse; // TODO: fix types
+    const fuzzy = new fuse(allNotes, {
       shouldSort: true,
       threshold: 0.6,
       location: 0,

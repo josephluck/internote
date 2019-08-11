@@ -7,7 +7,7 @@ export function InternoteThemes({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeProvider theme={colorTheme}>
-      <ThemeProvider theme={fontTheme}>{children}</ThemeProvider>
+      <ThemeProvider theme={fontTheme as any}>{children as any}</ThemeProvider>
     </ThemeProvider>
   );
 }

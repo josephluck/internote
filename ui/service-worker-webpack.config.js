@@ -1,13 +1,17 @@
+const path = require("path");
+const { CheckerPlugin } = require("awesome-typescript-loader");
+
 module.exports = {
-  entry: "./src/service-worker/index.ts",
+  entry: "./service-worker/index.ts",
   output: {
     filename: "service-worker.js",
     path: path.resolve(__dirname, ".service-worker")
   },
   resolve: {
-    extensions: ["", ".ts"]
+    extensions: [".ts"]
   },
   module: {
-    loaders: [{ test: /\.ts$/, loader: "ts-loader" }]
-  }
+    rules: [{ test: /\.ts$/, loader: "awesome-typescript-loader" }]
+  },
+  plugins: [new CheckerPlugin()]
 };

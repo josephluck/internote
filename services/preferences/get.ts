@@ -8,7 +8,6 @@ import { GetHandler } from "@internote/lib/types";
 import { findPreferencesById, createPreferences } from "./db/queries";
 
 const get: GetHandler = async (event, _ctx, callback) => {
-  console.log("Getting preferences");
   try {
     const preferences = await findPreferencesById(getUserIdentityId(event));
     return callback(null, success(preferences));

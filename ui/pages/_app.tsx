@@ -47,7 +47,7 @@ if (!isServer() && navigator.serviceWorker) {
   window.addEventListener("load", async () => {
     try {
       await navigator.serviceWorker.register("/service-worker.js");
-      await navigator.serviceWorker.ready;
+      const registration = await navigator.serviceWorker.ready;
       await registration.sync.register("sync");
       console.log("Registered service worker");
     } catch (err) {

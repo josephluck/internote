@@ -47,7 +47,7 @@ export function model(api: Api): Model {
         const result = await api.speech.create(state.auth.session, {
           id,
           words,
-          voice: state.preferences.voice || "Joey"
+          voice: state.preferences.voice || "Male"
         });
         result.map(response => actions.speech.setSpeechSrc(response.src));
       }

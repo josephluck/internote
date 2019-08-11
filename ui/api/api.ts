@@ -1,3 +1,4 @@
+import "isomorphic-fetch";
 import aws4 from "aws4";
 import { health } from "./health";
 import { preferences } from "./preferences";
@@ -6,6 +7,7 @@ import { speech } from "./speech";
 import { dictionary } from "./dictionary";
 import { notes } from "./notes";
 import { tags } from "./tags";
+import { Err, Ok } from "space-lift";
 
 export type MakeSignedRequest = (options: AwsSignedRequest) => any;
 
@@ -17,7 +19,7 @@ export interface AwsSignedRequest {
 }
 
 export function makeApi({ host, region }: { host: string; region: string }) {
-  const makeSignedRequest: MakeSignedRequest = ({
+  const makeSignedRequest: MakeSignedRequest = async ({
     path,
     session,
     method,
@@ -45,10 +47,19 @@ export function makeApi({ host, region }: { host: string; region: string }) {
         sessionToken: session.sessionToken
       }
     );
-    delete request.headers["Host"];
-    delete request.headers["Content-Length"];
-    return request;
+    const response = await fetch(request.url, {
+      method,
+      headers: request.headers,
+      body: body ? JSON.stringify(body) : undefined
+    });
+    if (!response.ok) {
+      const json = await response.json();
+      return Err(json);
+    }
+    const json = await response.json();
+    return Ok(json);
   };
+
   return {
     health: health(makeSignedRequest),
     preferences: preferences(makeSignedRequest),
