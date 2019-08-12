@@ -1,6 +1,9 @@
 import UrlPattern from "url-pattern";
 
-type Handler = (event: any, params: Record<string, string>) => Promise<any>;
+type Handler = (
+  event: FetchEvent,
+  params: Record<string, string>
+) => Promise<any>;
 
 interface Route {
   path: string;
@@ -13,7 +16,7 @@ export const makeRouter = () => {
 
   const add = (route: Route) => routes.push(route);
 
-  const handle = (event: any) => {
+  const handle = (event: FetchEvent) => {
     const { request } = event;
     const route = routes.find(({ path, method }) => {
       const pattern = new UrlPattern(path);

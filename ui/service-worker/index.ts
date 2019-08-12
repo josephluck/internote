@@ -8,14 +8,14 @@ const sleep = (duration: number = 5000) =>
 const log = (msg: string, ...args: any[]) =>
   console.log(`[SW] ${msg}`, ...args);
 
-self.addEventListener("fetch", async (event: any) => {
+self.addEventListener("fetch", async event => {
   const router = makeRouter();
 
   router.add({
     path: "notes/:id",
     method: "PUT",
-    handler: async (event, params) => {
-      log("Handling update note request", { event, params });
+    handler: async (event, { id }) => {
+      log("Handling update note request", { event, id });
       await sleep(5000);
       log("Slept for 5s");
       const response = await fetch(event.request);
