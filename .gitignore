@@ -11,4 +11,5 @@ node_modules
 .webpack
 .generated-lambdas
 .service-worker
+public/service-worker.js
 env.json
