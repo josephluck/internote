@@ -1,3 +1,4 @@
+const nodeExternals = require("webpack-node-externals");
 const path = require("path");
 const { CheckerPlugin } = require("awesome-typescript-loader");
 
@@ -15,5 +16,11 @@ module.exports = {
   module: {
     rules: [{ test: /\.ts$/, loader: "awesome-typescript-loader" }]
   },
+  externals: [
+    nodeExternals(),
+    nodeExternals({
+      modulesDir: path.resolve(__dirname, "../node_modules")
+    })
+  ],
   plugins: [new CheckerPlugin()]
 };
