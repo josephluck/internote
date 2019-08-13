@@ -225,7 +225,7 @@ export const isEnterHotKey = isKeyHotkey("enter");
 export const isRightHotKey = isKeyHotkey("right");
 export const isLeftHotKey = isKeyHotkey("left");
 
-export function isListShortcut(event: Event): boolean {
+export function isListNavigationShortcut(event: Event): boolean {
   return isRightHotKey(event) || isLeftHotKey(event) || isEnterHotKey(event);
 }
 

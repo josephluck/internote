@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import { Editor as SlateEditor } from "slate-react";
@@ -21,7 +21,8 @@ import {
   getCurrentFocusedWord,
   isShortcut,
   OnChange,
-  getChanges
+  getChanges,
+  isListNavigationShortcut
 } from "../utilities/editor";
 import { Wrap, EditorStyles, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
@@ -108,6 +109,9 @@ export function InternoteEditor({
   const [value, setValue] = React.useState(() =>
     getValueOrDefault(initialValue)
   );
+  // TODO: hack as per https://github.com/ianstormtaylor/slate/issues/2927
+  const valueRef = useRef(value);
+  valueRef.current = value;
   const debouncedValue = useDebounce(value, 1000);
   const throttledValue = useThrottle(value, 100);
   const [userScrolled, setUserScrolled] = React.useState(false);
@@ -117,6 +121,9 @@ export function InternoteEditor({
    */
   const selectedText = getSelectedText(value);
   const shortcutSearch = getCurrentFocusedWord(value).filter(isShortcut);
+  // TODO: hack as per https://github.com/ianstormtaylor/slate/issues/2927
+  const shortcutSearchRef = useRef(shortcutSearch);
+  shortcutSearchRef.current = shortcutSearch;
 
   /**
    * Refs
@@ -174,7 +181,6 @@ export function InternoteEditor({
     } else if (isCodeHotkey(event)) {
       return Some(onClickMark("code"));
     } else if (isH1Hotkey(event)) {
-      console.log("isH1");
       return Some(onClickBlock("heading-one"));
     } else if (isH2Hotkey(event)) {
       return Some(onClickBlock("heading-two"));
@@ -202,37 +208,49 @@ export function InternoteEditor({
       });
     };
     window.addEventListener("keydown", onWindowKeyDown);
-    return function() {
+    return () => {
       window.removeEventListener("keydown", onWindowKeyDown);
     };
   }, [editor.current, value]);
 
-  const onEditorKeyDown = (event: KeyboardEvent, editor, next) => {
-    // TODO: state is old? Maybe needs to be memo or triggered by an effect somehow
-
-    // TODO: fix this
-    // const menuShowing = isEmojiShortcut || isTagsShortcut;
-    // if (isListShortcut(event) && shortcutSearch.isDefined()) {
-    //   event.stopPropagation();
-    //   event.preventDefault();
-    //   return;
-    // }
+  /**
+   * Editor keydown behavior:
+   *
+   * When user is searching (for tags and emojis), prevent
+   * the usual keypress from affecting the editor.
+   *
+   * When the user is on their last list item and presses enter,
+   * reset the current formatting to a paragraph.
+   *
+   * When the user is in a block and presses enter without typing
+   * anything, reset the current formatting to a paragraph.
+   */
+  const onEditorKeyDown = useCallback((event: KeyboardEvent, _editor, next) => {
+    if (
+      isListNavigationShortcut(event) &&
+      shortcutSearchRef.current.isDefined()
+    ) {
+      event.stopPropagation();
+      event.preventDefault();
+      return;
+    }
     const isEnterKey = isEnterHotKey(event) && !event.shiftKey;
     if (isEnterKey) {
-      const previousBlockType = editor.value.focusBlock.type;
+      const previousBlockType = valueRef.current.focusBlock.type;
       const isListItem = previousBlockType === "list-item";
       if (!isListItem) {
         // NB: Allow enter key to progress to add new paragraph
         // it's important that next() is called before
         // resetBlocks() as otherwise the previous formatting
-        // will be removed
+        // will be removed (next places the cursor on the next line)
         next();
         resetBlocks();
         return;
       }
-      const lastBlockEmpty = editor.value.startText.text.length === 0;
+      const lastBlockEmpty = valueRef.current.startText.text.length === 0;
       const nextBlockIsListItem =
-        !!editor.value.nextBlock && editor.value.nextBlock.type === "list-item";
+        !!valueRef.current.nextBlock &&
+        valueRef.current.nextBlock.type === "list-item";
       const shouldCloseList = lastBlockEmpty && !nextBlockIsListItem;
       if (shouldCloseList) {
         resetBlocks();
@@ -240,7 +258,7 @@ export function InternoteEditor({
       }
     }
     next();
-  };
+  }, []); // TODO: this relies on resetBlocks but https://github.com/ianstormtaylor/slate/issues/2927 prevents it from being cache-busted
 
   /**
    * Editor methods
@@ -312,7 +330,6 @@ export function InternoteEditor({
       const isList = currentFocusHasBlock("list-item", value);
       if (type !== "bulleted-list" && type !== "numbered-list") {
         const hasBeenMadeActive = currentFocusHasBlock(type, value);
-        console.log({ hasBeenMadeActive });
         if (isList) {
           resetBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
         } else {
