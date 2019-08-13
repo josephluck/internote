@@ -18,7 +18,7 @@
     "deploy:prod:domain": "serverless create_domain --stage prod",
     "deploy:prod:app": "SLS_DEBUG=* NODE_ENV=production serverless deploy --stage prod",
     "deploy:clean-up": "yarn static:remove && yarn lambdas:remove",
-    "lambdas:generate": "ts-node generate-lambdas.ts",
+    "lambdas:generate": "ts-node --project tsconfig.lambdas.json generate-lambdas.ts",
     "lambdas:remove": "rm -rf .generated-lambdas",
     "static:copy": "yarn static:remove && mkdir .static && mkdir .static/_next && cp -r .next/static .static/_next",
     "static:remove": "rm -rf .static",
