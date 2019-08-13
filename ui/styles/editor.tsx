@@ -146,16 +146,6 @@ export function InternoteEditor({
   }, [id, overwriteCount]);
 
   /**
-   * Setup window event listeners
-   */
-  React.useEffect(() => {
-    window.addEventListener("keydown", onWindowKeyDown);
-    return function() {
-      window.removeEventListener("keydown", onWindowKeyDown);
-    };
-  }, []);
-
-  /**
    * Emit changes to parent when value changes
    */
   React.useEffect(() => {
@@ -184,6 +174,7 @@ export function InternoteEditor({
     } else if (isCodeHotkey(event)) {
       return Some(onClickMark("code"));
     } else if (isH1Hotkey(event)) {
+      console.log("isH1");
       return Some(onClickBlock("heading-one"));
     } else if (isH2Hotkey(event)) {
       return Some(onClickBlock("heading-two"));
@@ -197,11 +188,25 @@ export function InternoteEditor({
       return None;
     }
   };
-  const onWindowKeyDown = useCallback((event: Event) => {
-    getToolbarShortcutHandlerFromKeyEvent(event).map(handler => {
-      handler(event);
-    });
-  }, []);
+
+  /**
+   * Setup block / mark keyboard shortcuts.
+   *
+   * NB: block shortcuts rely on value & editor ref
+   * and mark shortcuts only rely on editor ref.
+   */
+  React.useEffect(() => {
+    const onWindowKeyDown = (event: Event) => {
+      getToolbarShortcutHandlerFromKeyEvent(event).map(handler => {
+        handler(event);
+      });
+    };
+    window.addEventListener("keydown", onWindowKeyDown);
+    return function() {
+      window.removeEventListener("keydown", onWindowKeyDown);
+    };
+  }, [editor.current, value]);
+
   const onEditorKeyDown = (event: KeyboardEvent, editor, next) => {
     // TODO: state is old? Maybe needs to be memo or triggered by an effect somehow
 
@@ -299,40 +304,44 @@ export function InternoteEditor({
     },
     [editor.current]
   );
-  const onClickBlock = (type: BlockType) => (event: Event) => {
-    event.preventDefault();
-    // Handle everything but list buttons.
-    if (type !== "bulleted-list" && type !== "numbered-list") {
-      const hasBeenMadeActive = currentFocusHasBlock(type, value);
+
+  const onClickBlock = useCallback(
+    (type: BlockType) => (event: Event) => {
+      event.preventDefault();
+      // Handle everything but list buttons.
       const isList = currentFocusHasBlock("list-item", value);
-      if (isList) {
-        resetBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
+      if (type !== "bulleted-list" && type !== "numbered-list") {
+        const hasBeenMadeActive = currentFocusHasBlock(type, value);
+        console.log({ hasBeenMadeActive });
+        if (isList) {
+          resetBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
+        } else {
+          editor.current.setBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
+        }
       } else {
-        editor.current.setBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
+        // Handle the extra wrapping required for list buttons.
+        const isType = value.blocks.some(
+          block =>
+            !!value.document.getClosest(
+              block.key,
+              (parent: any) => parent.type === type
+            )
+        );
+        if (isList && isType) {
+          resetBlocks();
+        } else if (isList) {
+          editor.current
+            .unwrapBlock(
+              type === "bulleted-list" ? "numbered-list" : "bulleted-list"
+            )
+            .wrapBlock(type);
+        } else {
+          editor.current.setBlocks("list-item").wrapBlock(type);
+        }
       }
-    } else {
-      // Handle the extra wrapping required for list buttons.
-      const isList = currentFocusHasBlock("list-item", value);
-      const isType = value.blocks.some(
-        block =>
-          !!value.document.getClosest(
-            block.key,
-            (parent: any) => parent.type === type
-          )
-      );
-      if (isList && isType) {
-        resetBlocks();
-      } else if (isList) {
-        editor.current
-          .unwrapBlock(
-            type === "bulleted-list" ? "numbered-list" : "bulleted-list"
-          )
-          .wrapBlock(type);
-      } else {
-        editor.current.setBlocks("list-item").wrapBlock(type);
-      }
-    }
-  };
+    },
+    [editor.current, value, resetBlocks]
+  );
 
   /**
    * Speech
