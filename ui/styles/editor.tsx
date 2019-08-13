@@ -230,7 +230,6 @@ export function InternoteEditor({
       isListNavigationShortcut(event) &&
       shortcutSearchRef.current.isDefined()
     ) {
-      event.stopPropagation();
       event.preventDefault();
       return;
     }
@@ -290,6 +289,7 @@ export function InternoteEditor({
       // setUserScrolled(true);
     }
   };
+
   const handleFocusModeScroll = useCallback(() => {
     const focusedBlock = document.querySelector(".node-focused");
     if (
@@ -303,6 +303,7 @@ export function InternoteEditor({
       setUserScrolled(false);
     }
   }, [debouncedValue, scrollRef.current]);
+
   const scrollEditorToElement = useCallback(
     (element: HTMLElement) => {
       scrollRef.current.center(element, 100, 0, () => {
@@ -402,6 +403,7 @@ export function InternoteEditor({
    */
   const insertTag = useCallback(
     (tag: string) => {
+      console.log("Called insertTag");
       shortcutSearch.map(getLength).map(editor.current.deleteBackward);
       editor.current.insertInline({ type: "tag", data: { tag } });
       editor.current.focus();
@@ -409,6 +411,7 @@ export function InternoteEditor({
     },
     [shortcutSearch, editor.current]
   );
+
   const createNewTag = useCallback(() => {
     shortcutSearch.map(insertTag);
   }, [shortcutSearch]);

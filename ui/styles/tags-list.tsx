@@ -59,28 +59,36 @@ export function TagsList({
   }, [search, tags.length]);
 
   useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      // NB: start focused index for selected index is 1
+    const onKeyDown = (event: KeyboardEvent) => {
       if (isRightHotKey(event)) {
+        // NB: start focused index for selected index is 1 to compensate with create new tag being index 0
         setFocusedIndex(
           focusedIndex === filteredTags.length ? 0 : focusedIndex + 1
         );
-      } else if (isLeftHotKey(event)) {
+        return;
+      }
+
+      if (isLeftHotKey(event)) {
         setFocusedIndex(
           focusedIndex === 0 ? filteredTags.length : focusedIndex - 1
         );
-      } else if (isEnterHotKey(event) && focusedIndex >= 0) {
-        // NB: focused index is 1 indexed for existing tags
-        const focusedTag = filteredTags[focusedIndex - 1];
-        if (focusedTag) {
-          onTagSelected(focusedTag);
+        return;
+      }
+
+      const shouldEnterTag = isEnterHotKey(event) && focusedIndex >= 0;
+      if (shouldEnterTag) {
+        // NB: focused index is 1 indexed for existing tags to compensate with create new tag being index 0
+        const focusedExistingTag = filteredTags[focusedIndex - 1];
+        if (focusedExistingTag) {
+          onTagSelected(focusedExistingTag);
         } else {
           onCreateNewTag();
         }
+        return;
       }
-    }
+    };
     window.addEventListener("keydown", onKeyDown);
-    return function() {
+    return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [filteredTags.length, focusedIndex]);
