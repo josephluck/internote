@@ -1,46 +1,20 @@
 service: internote-ui
 
-functions:
-  authenticate:
-    handler: .generated-lambdas/authenticate.handler
-    events:
-      - http:
-          method: GET
-          path: /authenticate/
-          cors: true
-      - http:
-          method: ANY
-          path: /authenticate/{any+}
-          cors: true
-  index:
-    handler: .generated-lambdas/index.handler
-    events:
-      - http:
-          method: GET
-          path: /
-          cors: true
-      - http:
-          method: ANY
-          path: /{any+}
-          cors: true
-  # serve-service-worker:
-  #   handler: service-worker/lambda.handler
-  #   events:
-  #     - http:
-  #         path: /
-  #         method: get
+# functions:
+# serve-service-worker:
+#   handler: service-worker/lambda.handler
+#   events:
+#     - http:
+#         path: /
+#         method: get
 
 plugins:
   - serverless-plugin-monorepo
-  - serverless-plugin-typescript
   - serverless-plugin-include-dependencies
-  - serverless-s3-sync
   - serverless-domain-manager
+  - serverless-nextjs-plugin
 
 custom:
-  s3Sync:
-    - bucketName: internote-${self:custom.stage}-ui-static
-      localDir: .static
   stage: ${opt:stage, self:provider.stage}
   domains:
     prod: internote.app
@@ -52,6 +26,8 @@ custom:
     stage: "${self:custom.stage}"
     createRoute53Record: true
     endpointType: "regional"
+  serverless-nextjs:
+    createAssetBucket: false # TODO: PR to https://github.com/danielcondemarin/serverless-nextjs-plugin to check for existence of bucket before creating it
 
 provider:
   name: aws
@@ -62,24 +38,25 @@ provider:
   timeout: 30
   apiGateway:
     minimumCompressionSize: 1024
-
-resources:
-  Resources:
-    InternoteUiStaticBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: "internote-${self:custom.stage}-ui-static"
-        AccessControl: PublicRead
-    InternoteUiStaticBucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        Bucket:
-          Ref: InternoteUiStaticBucket
-        PolicyDocument:
-          Statement:
-            - Sid: PublicReadGetObject
-              Effect: Allow
-              Principal: "*"
-              Action:
-                - s3:GetObject
-              Resource: arn:aws:s3:::internote-${self:custom.stage}-ui-static/*
+  environment:
+    STAGE: ${self:custom.stage}
+# resources:
+#   Resources:
+# InternoteUiStaticBucket:
+#   Type: AWS::S3::Bucket
+#   Properties:
+#     BucketName: "internote-${self:custom.stage}-ui-static"
+#     AccessControl: PublicRead
+# InternoteUiStaticBucketPolicy:
+#   Type: AWS::S3::BucketPolicy
+#   Properties:
+#     Bucket:
+#       Ref: InternoteUiStaticBucket
+#     PolicyDocument:
+#       Statement:
+#         - Sid: PublicReadGetObject
+#           Effect: Allow
+#           Principal: "*"
+#           Action:
+#             - s3:GetObject
+#           Resource: arn:aws:s3:::internote-${self:custom.stage}-ui-static/*

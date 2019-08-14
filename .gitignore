@@ -6,10 +6,6 @@ node_modules
 .env.local
 .serverless
 .build
-.static
-.lambdas
 .webpack
-.generated-lambdas
-.service-worker
 ui/public/service-worker.js
 env.json

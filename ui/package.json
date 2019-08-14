@@ -7,25 +7,16 @@
   "scripts": {
     "dev": "next -p 3000",
     "test:tsc": "tsc --noEmit",
-    "deploy:dev": "yarn deploy:dev:prepare && yarn deploy:dev:domain && yarn deploy:dev:app && yarn deploy:clean-up",
-    "deploy:dev:build": "NODE_ENV=production STAGE=dev next build",
-    "deploy:dev:prepare": "rm -rf .next && yarn deploy:dev:build && yarn static:copy && yarn lambdas:generate && yarn service-worker:create",
+    "deploy:dev": "yarn deploy:dev:domain && yarn deploy:dev:app",
     "deploy:dev:domain": "serverless create_domain --stage dev",
-    "deploy:dev:app": "SLS_DEBUG=1 NODE_ENV=production serverless deploy --stage dev",
-    "deploy:prod": "yarn deploy:prod:prepare && yarn deploy:prod:domain && yarn deploy:prod:app && yarn deploy:clean-up",
-    "deploy:prod:build": "NODE_ENV=production STAGE=prod next build",
-    "deploy:prod:prepare": "rm -rf .next && yarn deploy:prod:build && yarn static:copy && yarn lambdas:generate && yarn service-worker:create",
+    "deploy:dev:app": "NODE_ENV=production STAGE=dev serverless deploy --stage dev",
+    "deploy:prod": "yarn deploy:prod:domain && yarn deploy:prod:app",
     "deploy:prod:domain": "serverless create_domain --stage prod",
-    "deploy:prod:app": "SLS_DEBUG=* NODE_ENV=production serverless deploy --stage prod",
-    "deploy:clean-up": "yarn static:remove && yarn lambdas:remove",
-    "lambdas:generate": "ts-node --project tsconfig.lambdas.json generate-lambdas.ts",
-    "lambdas:remove": "rm -rf .generated-lambdas",
-    "static:copy": "yarn static:remove && mkdir .static && mkdir .static/_next && cp -r .next/static .static/_next",
-    "static:remove": "rm -rf .static",
+    "deploy:prod:app": "NODE_ENV=production STAGE=prod serverless deploy --stage prod",
     "service-worker:create": "webpack --config service-worker-webpack.config.js"
   },
   "dependencies": {
-    "next-aws-lambda": "^2.0.5-alpha.0"
+    "serverless-nextjs-plugin": "^2.3.1"
   },
   "devDependencies": {
     "@element-motion/core": "^2.11.0",
@@ -74,6 +65,7 @@
     "react-highlight": "^0.12.0",
     "react-highlight-words": "^0.16.0",
     "react-motion": "^0.5.2",
+    "react-ssr-prepass": "^1.0.6",
     "rimraf": "^2.6.3",
     "serverless": "^1.49.0",
     "serverless-aws-static-file-handler": "^2.0.2",
