@@ -42,7 +42,7 @@ export function EmojiList({
   search,
   onEmojiSelected
 }: {
-  onEmojiSelected: (emoji: Emoji) => any;
+  onEmojiSelected: (emoji: Emoji, searchText: string) => any;
   search: string;
 }) {
   const [filteredEmojis, setFilteredEmojis] = useState<Emoji[]>([]);
@@ -64,14 +64,14 @@ export function EmojiList({
           focusedIndex === 0 ? filteredEmojis.length - 1 : focusedIndex - 1
         );
       } else if (isEnterHotKey(event) && focusedIndex >= 0) {
-        onEmojiSelected(filteredEmojis[focusedIndex]);
+        onEmojiSelected(filteredEmojis[focusedIndex], `:${search}`);
       }
     }
     window.addEventListener("keydown", onKeyDown);
     return function() {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [filteredEmojis, focusedIndex, onEmojiSelected]);
+  }, [filteredEmojis, focusedIndex, onEmojiSelected, search]);
 
   return (
     <Wrap>
@@ -84,7 +84,7 @@ export function EmojiList({
               onMouseEnter={() => setFocusedIndex(i)}
               onClick={e => {
                 e.preventDefault();
-                onEmojiSelected(emoji);
+                onEmojiSelected(emoji, `:${search}`);
               }}
             >
               {emoji.char}

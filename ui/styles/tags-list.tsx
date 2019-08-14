@@ -34,8 +34,8 @@ export function TagsList({
 }: {
   search: string;
   tags: string[];
-  onTagSelected: (tag: string) => any;
-  onCreateNewTag: () => any;
+  onTagSelected: (tag: string, searchText: string) => any;
+  onCreateNewTag: (searchText: string) => any;
   newTagSaving: boolean;
 }) {
   const [filteredTags, setFilteredTags] = useState<string[]>([]);
@@ -80,9 +80,9 @@ export function TagsList({
         // NB: focused index is 1 indexed for existing tags to compensate with create new tag being index 0
         const focusedExistingTag = filteredTags[focusedIndex - 1];
         if (focusedExistingTag) {
-          onTagSelected(focusedExistingTag);
+          onTagSelected(focusedExistingTag, `#${search}`);
         } else {
-          onCreateNewTag();
+          onCreateNewTag(`#${search}`);
         }
         return;
       }
@@ -91,7 +91,7 @@ export function TagsList({
     return () => {
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [filteredTags.length, focusedIndex]);
+  }, [filteredTags.length, focusedIndex, search]);
 
   return (
     <Wrap>
@@ -101,7 +101,7 @@ export function TagsList({
           onMouseEnter={() => setFocusedIndex(0)}
           onClick={e => {
             e.preventDefault();
-            onCreateNewTag();
+            onCreateNewTag(`#${search}`);
           }}
         >
           {newTagSaving ? (
@@ -119,7 +119,7 @@ export function TagsList({
             onMouseEnter={() => setFocusedIndex(i + 1)}
             onClick={e => {
               e.preventDefault();
-              onTagSelected(tag);
+              onTagSelected(tag, search);
             }}
           >
             {tag}

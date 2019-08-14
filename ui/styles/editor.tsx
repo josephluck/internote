@@ -26,7 +26,7 @@ import {
 } from "../utilities/editor";
 import { Wrap, EditorStyles, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
-import { getFirstWordFromString, getLength } from "../utilities/string";
+import { getFirstWordFromString } from "../utilities/string";
 import { Outline } from "./outline";
 import { Emoji } from "../utilities/emojis";
 import { Tag } from "./tag";
@@ -386,8 +386,8 @@ export function InternoteEditor({
    * Emojis
    */
   const insertEmoji = useCallback(
-    (emoji: Emoji) => {
-      shortcutSearch.map(getLength).map(editor.current.deleteBackward);
+    (emoji: Emoji, searchText: string) => {
+      editor.current.deleteBackward(searchText.length);
       editor.current.insertInline({
         type: "emoji",
         data: { code: emoji.char }
@@ -402,9 +402,8 @@ export function InternoteEditor({
    * Tags
    */
   const insertTag = useCallback(
-    (tag: string) => {
-      console.log("Called insertTag");
-      shortcutSearch.map(getLength).map(editor.current.deleteBackward);
+    (tag: string, searchText: string) => {
+      editor.current.deleteBackward(searchText.length);
       editor.current.insertInline({ type: "tag", data: { tag } });
       editor.current.focus();
       editor.current.moveToStartOfNextText();
@@ -412,9 +411,12 @@ export function InternoteEditor({
     [shortcutSearch, editor.current]
   );
 
-  const createNewTag = useCallback(() => {
-    shortcutSearch.map(insertTag);
-  }, [shortcutSearch]);
+  const createNewTag = useCallback(
+    (tagName: string) => {
+      insertTag(tagName, tagName);
+    },
+    [insertTag]
+  );
 
   /**
    * Rendering

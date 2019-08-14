@@ -55,11 +55,11 @@ export function Toolbar({
   shortcutSearch,
   value
 }: {
-  createNewTag: () => any;
+  createNewTag: (searchText: string) => any;
   distractionFree: boolean;
   id: string;
-  insertEmoji: (emoji: Emoji) => any;
-  insertTag: (tag: string) => any;
+  insertEmoji: (emoji: Emoji, searchText: string) => any;
+  insertTag: (tag: string, searchText: string) => any;
   isDictionaryLoading: boolean;
   isDictionaryShowing: boolean;
   onClickBlock: (type: any) => any;
