@@ -28,25 +28,19 @@ function writeAwsLambda(outputDir: string, fileName: string, lambda: string) {
 
 function createAwsLambda({ typescript }: Options, pageName: string) {
   if (typescript) {
-    return `import * as pageProxy from "aws-serverless-express";
-import * as nextLambda from "../.next/serverless/pages/${pageName}";
-
-const pageHandler = pageProxy.createServer((req, res) => {
-  return (nextLambda as any).render(req, res);
-});
-
-module.exports.handler = (event, context) => {
-  pageProxy.proxy(pageHandler, event, context);
+    return `import * as compat from "next-aws-lambda";
+import * as page from "../.next/serverless/pages/${pageName}";
+module.exports.render = (event, _context, callback) => {
+  const { req, res } = compat(page)(event, callback);
+  page.render(req, res);
 };
 `;
   } else {
-    return `var pageProxy = require("aws-serverless-express");
-var nextLambda = require("../.next/serverless/pages/${pageName}");
-var pageHandler = pageProxy.createServer(function(req, res) {
-  return nextLambda.render(req, res)
-});
-module.exports.handler = function(event, context) {
-  pageProxy.proxy(pageHandler, event, context);
+    return `var compat = require("next-aws-lambda");
+var page = require("../.next/serverless/pages/${pageName}");
+module.exports.render = (event, _context, callback) => {
+  const { req, res } = compat(page)(event, callback);
+  page.render(req, res);
 };
 `;
   }

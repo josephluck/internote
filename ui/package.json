@@ -25,7 +25,7 @@
     "service-worker:create": "webpack --config service-worker-webpack.config.js"
   },
   "dependencies": {
-    "aws-serverless-express": "^3.3.6"
+    "next-aws-lambda": "^2.0.5-alpha.0"
   },
   "devDependencies": {
     "@element-motion/core": "^2.11.0",

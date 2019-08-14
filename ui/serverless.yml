@@ -23,12 +23,12 @@ functions:
           method: ANY
           path: /{any+}
           cors: true
-  serve-service-worker:
-    handler: service-worker/lambda.handler
-    events:
-      - http:
-          path: /
-          method: get
+  # serve-service-worker:
+  #   handler: service-worker/lambda.handler
+  #   events:
+  #     - http:
+  #         path: /
+  #         method: get
 
 plugins:
   - serverless-plugin-monorepo

@@ -2426,14 +2426,6 @@ aws-sdk@>=2.365.0, aws-sdk@^2.177.0, aws-sdk@^2.346.0, aws-sdk@^2.496.0, aws-sdk
     xml2js "0.4.17"
     xmlbuilder "4.2.1"
 
-aws-serverless-express@^3.3.6:
-  version "3.3.6"
-  resolved "https://registry.yarnpkg.com/aws-serverless-express/-/aws-serverless-express-3.3.6.tgz#5fb35c23af3d6e18a6bebdb4397d20dfdcc0a828"
-  integrity sha512-VTn8YQpPpMAEdMeGjyaSygy7Rc0057C9MUjeZION0NBqmwTyphpu9Tc5DCHRNF4qNFQ9x1xcOte6OXKzJvvDhw==
-  dependencies:
-    binary-case "^1.0.0"
-    type-is "^1.6.16"
-
 aws-sign2@~0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
@@ -2646,11 +2638,6 @@ bignumber.js@^3.0.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-3.1.2.tgz#f3bdb99ad5268a15fc1f0bed2fb018e2693fe236"
   integrity sha1-8725mtUmihX8HwvtL7AY4mk/4jY=
-
-binary-case@^1.0.0:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/binary-case/-/binary-case-1.1.4.tgz#d687104d59e38f2b9e658d3a58936963c59ab931"
-  integrity sha512-9Kq8m6NZTAgy05Ryuh7U3Qc4/ujLQU1AZ5vMw4cr3igTdi5itZC6kCNrRr2X8NzPiDn2oUIFTfa71DKMnue/Zg==
 
 binary-extensions@^1.0.0:
   version "1.13.1"
@@ -7619,6 +7606,11 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
+
+next-aws-lambda@^2.0.5-alpha.0:
+  version "2.0.5-alpha.0"
+  resolved "https://registry.yarnpkg.com/next-aws-lambda/-/next-aws-lambda-2.0.5-alpha.0.tgz#09c6893190630356917f45b45181f11c1906ac35"
+  integrity sha512-LvESaEK4XO2E9TPdwrXGO4LK7gyj0g8d9tdScQlFLXuE4W6p76GQxQCxJZGc8rPHG4yqtZYXu/ZO/X6imo4iMA==
 
 next-plugin-custom-babel-config@^1.0.2:
   version "1.0.2"
