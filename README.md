@@ -58,6 +58,10 @@ No need to press save. Notes and settings are automatically saved to the cloud. 
 
 No messy overwrites, Internote will let you know if you're about to overwrite your note.
 
+**Password-less login**
+
+Always forget your password? Just enter your e-mail and receive a one-time-passcode to sign up or sign in.
+
 **More**
 
 Many more features are [planned](https://github.com/josephluck/internote/issues) and if you feel like lending a hand, feel free to contribute to any of the open issues.
