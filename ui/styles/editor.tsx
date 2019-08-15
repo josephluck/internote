@@ -22,7 +22,11 @@ import {
   isShortcut,
   OnChange,
   getChanges,
-  isListNavigationShortcut
+  isListNavigationShortcut,
+  isSpaceHotKey,
+  isBackspaceHotKey,
+  handleMarkdownFormatShortcut,
+  handleMarkdownBackspaceShortcut
 } from "../utilities/editor";
 import { Wrap, EditorStyles, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
@@ -133,17 +137,7 @@ export function InternoteEditor({
   const scrollRef = React.useRef<ReturnType<typeof zenscroll.createScroller>>();
   const preventScrollListener = React.useRef<boolean>(false);
   const focusedNodeKey = React.useRef<any>();
-
-  /**
-   * Handle scroll refs and focus mode handling
-   */
-  React.useEffect(() => {
-    if (scrollWrap.current) {
-      scrollRef.current = zenscroll.createScroller(scrollWrap.current, 200);
-      scrollWrap.current.addEventListener("scroll", handleEditorScroll);
-      scrollWrap.current.addEventListener("click", handleFocusModeScroll);
-    }
-  }, [scrollWrap.current]);
+  const isMouseDown = React.useRef(false);
 
   /**
    * Replace value state in response to props
@@ -226,6 +220,7 @@ export function InternoteEditor({
    * anything, reset the current formatting to a paragraph.
    */
   const onEditorKeyDown = useCallback((event: KeyboardEvent, _editor, next) => {
+    // Prevent cursor navigation when inside a list (like tags, emojis)
     if (
       isListNavigationShortcut(event) &&
       shortcutSearchRef.current.isDefined()
@@ -233,6 +228,29 @@ export function InternoteEditor({
       event.preventDefault();
       return;
     }
+
+    // Handle markdown shortcuts for lists and headings
+    if (isSpaceHotKey(event)) {
+      handleMarkdownFormatShortcut(
+        event,
+        editor.current,
+        valueRef.current,
+        next
+      );
+    }
+
+    // Handle markdown backspace resetting
+    // TODO: not sure if strictly necessary
+    if (isBackspaceHotKey(event)) {
+      handleMarkdownBackspaceShortcut(
+        event,
+        editor.current,
+        valueRef.current,
+        next
+      );
+    }
+
+    // Handle enter key
     const isEnterKey = isEnterHotKey(event) && !event.shiftKey;
     if (isEnterKey) {
       const previousBlockType = valueRef.current.focusBlock.type;
@@ -271,6 +289,7 @@ export function InternoteEditor({
     },
     [editor.current]
   );
+
   const focusNode = useCallback(
     (node: Block) => {
       editor.current.moveToRangeOfNode(node);
@@ -281,33 +300,65 @@ export function InternoteEditor({
   );
 
   /**
+   * Mouse down (should prevent focus mode scroll)
+   */
+  React.useEffect(() => {
+    const onMouseDown = () => (isMouseDown.current = true);
+    const onMouseUp = () => (isMouseDown.current = false);
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mouseup", onMouseUp);
+    return function() {
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, []);
+
+  /**
    * Scrolling
    */
-  const handleEditorScroll = () => {
-    // TODO: this is screwing focus mode
-    if (scrollWrap && !userScrolled && !preventScrollListener.current) {
-      // setUserScrolled(true);
+  const handleEditorScroll = useCallback(() => {
+    console.log("Handling editor scroll", preventScrollListener.current);
+    if (!preventScrollListener.current) {
+      setUserScrolled(true);
     }
-  };
+  }, [preventScrollListener.current]);
+
+  /**
+   * Handle scroll refs and focus mode handling
+   */
+  React.useEffect(() => {
+    if (scrollWrap.current) {
+      scrollRef.current = zenscroll.createScroller(scrollWrap.current, 200);
+      scrollWrap.current.addEventListener("scroll", handleEditorScroll);
+      scrollWrap.current.addEventListener("click", handleFocusModeScroll);
+    }
+    return function() {
+      scrollWrap.current.removeEventListener("scroll", handleEditorScroll);
+      scrollWrap.current.removeEventListener("click", handleFocusModeScroll);
+    };
+  }, [scrollWrap.current, preventScrollListener.current, handleEditorScroll]);
 
   const handleFocusModeScroll = useCallback(() => {
     const focusedBlock = document.querySelector(".node-focused");
     if (
-      !hasSelection(debouncedValue) &&
+      !hasSelection(throttledValue) &&
+      !isMouseDown.current &&
       focusedBlock &&
       scrollWrap.current &&
       scrollRef.current
     ) {
       preventScrollListener.current = true;
       scrollEditorToElement(focusedBlock as HTMLElement);
-      setUserScrolled(false);
     }
-  }, [debouncedValue, scrollRef.current]);
+  }, [throttledValue, scrollWrap.current, scrollRef.current]);
 
   const scrollEditorToElement = useCallback(
     (element: HTMLElement) => {
       scrollRef.current.center(element, 100, 0, () => {
         preventScrollListener.current = false;
+        requestAnimationFrame(() => {
+          setUserScrolled(false);
+        });
       });
     },
     [scrollRef.current]
@@ -475,6 +526,7 @@ export function InternoteEditor({
         );
     }
   };
+
   const renderMark = (props, next) => {
     const { children, mark, attributes } = props;
     switch (mark.type as MarkType) {
@@ -490,6 +542,7 @@ export function InternoteEditor({
         return next();
     }
   };
+
   const renderInline = (props, _editor, next) => {
     const { attributes, node } = props;
     switch (node.type) {

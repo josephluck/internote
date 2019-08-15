@@ -1,5 +1,5 @@
 import twine, { Twine } from "twine-js";
-import logger from "twine-js/lib/log";
+// import logger from "twine-js/lib/log";
 import { isServer } from "../utilities/window";
 
 import * as Speech from "./speech";
@@ -70,12 +70,12 @@ export function makeStore() {
     userPoolClientId: env.COGNITO_USER_POOL_CLIENT_ID,
     identityPoolId: env.COGNITO_IDENTITY_POOL_ID
   });
-  const loggingMiddleware =
-    !isServer() && process.env.NODE_ENV !== "production" ? logger : undefined;
+  // const loggingMiddleware =
+  //   !isServer() && process.env.NODE_ENV !== "production" ? logger : undefined;
   const store = twine<Models["state"], Models["actions"]>(
     makeModel(api, auth),
     [
-      loggingMiddleware,
+      // loggingMiddleware,
       {
         onStateChange: (state, prevState) => {
           const { session: session } = state.auth;

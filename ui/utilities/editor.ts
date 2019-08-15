@@ -4,6 +4,7 @@ import { Option, Some, None } from "space-lift";
 import { BlockType } from "./serializer";
 import { hasLength } from "./string";
 import { defaultNote } from "@internote/notes-service/db/default-note";
+import { Editor } from "slate-react";
 
 /**
  * Returns the full combined text of a block
@@ -100,7 +101,6 @@ export function getSelectedText(value: Value): Option<string> {
  * the current focus or selection position is
  * inside a list item or not.
  */
-
 export function currentFocusIsWithinList(
   type: BlockType,
   value: Value
@@ -224,6 +224,8 @@ export const isCtrlHotKey = (e: Event) => {
 export const isEnterHotKey = isKeyHotkey("enter");
 export const isRightHotKey = isKeyHotkey("right");
 export const isLeftHotKey = isKeyHotkey("left");
+export const isSpaceHotKey = isKeyHotkey("space");
+export const isBackspaceHotKey = isKeyHotkey("backspace");
 
 export function isListNavigationShortcut(event: Event): boolean {
   return isRightHotKey(event) || isLeftHotKey(event) || isEnterHotKey(event);
@@ -284,4 +286,84 @@ export function getChanges(value: Value): OnChange {
     title: getTitleFromEditorValue(value),
     tags: getTagsFromEditorValue(value)
   };
+}
+
+/**
+ * When user enters any matching markdown formatting options
+ * at the start of a block, set the format according to the
+ * appropriate markdown. For example:
+ *
+ * # becomes a heading-one
+ * ## becomes a heading-two
+ * > becomes a block-quote
+ */
+export function handleMarkdownFormatShortcut(
+  event: Event,
+  editor: Editor,
+  value: Value,
+  next: () => any
+) {
+  const { selection, startBlock } = value;
+  const chars = startBlock.text
+    .slice(0, selection.start.offset)
+    .replace(/\s*/g, "");
+  const type = convertMarkdownToBlockOrMarkType(chars);
+  const isEmpty =
+    startBlock.getInlines().isEmpty() && startBlock.getMarks().isEmpty();
+  if (
+    !isEmpty ||
+    selection.isExpanded ||
+    !type ||
+    (type === "list-item" && startBlock.type === "list-item")
+  ) {
+    return next();
+  }
+  event.preventDefault();
+  editor.setBlocks(type);
+  if (type === "list-item") {
+    editor.wrapBlock("bulleted-list");
+  }
+  editor.moveFocusToStartOfNode(startBlock).delete();
+}
+
+export function handleMarkdownBackspaceShortcut(
+  event: Event,
+  editor: Editor,
+  value: Value,
+  next: () => any
+) {
+  const { selection, startBlock } = value;
+  if (
+    selection.isExpanded ||
+    selection.start.offset !== 0 ||
+    startBlock.type === "paragraph"
+  ) {
+    return next();
+  }
+  event.preventDefault();
+  editor.setBlocks("paragraph");
+  if (startBlock.type === "list-item") {
+    editor.unwrapBlock("bulleted-list");
+  }
+}
+
+/**
+ * Maps markdown formatting options to slate formatting
+ * options.
+ */
+export function convertMarkdownToBlockOrMarkType(str: string) {
+  switch (str) {
+    case "*":
+    case "-":
+    case "+":
+      return "list-item";
+    case ">":
+      return "block-quote";
+    case "#":
+      return "heading-one";
+    case "##":
+      return "heading-two";
+    default:
+      return null;
+  }
 }
