@@ -61,6 +61,30 @@ export const updateNoteById = async (
   }
 };
 
+export const syncNotesByUserId = async (
+  userId: string,
+  body: Partial<UpdateNoteDTO>[]
+): Promise<GetNoteDTO[]> => {
+  try {
+    const updates = await Promise.all(
+      body.map(async note => ({
+        noteId: note.noteId,
+        userId,
+        title: note.title,
+        content: await compress(JSON.stringify(note.content)),
+        tags: [...new Set(note.tags)],
+        dateUpdated: Date.now()
+      }))
+    );
+    console.log({ updates });
+    await NotesRepository.save(updates).execute();
+    return await listNotesByUserId(userId);
+  } catch (err) {
+    // TODO: handle other DB errors (like failed updates)
+    throw err;
+  }
+};
+
 export const createNote = async (
   noteId: string,
   userId: string,

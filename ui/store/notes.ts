@@ -3,7 +3,6 @@ import Router from "next/router";
 import { isServer } from "../utilities/window";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { InternoteEffect0, InternoteEffect } from ".";
-import { Option } from "space-lift";
 import { Api } from "../api/api";
 import { GetNoteDTO } from "@internote/notes-service/types";
 
@@ -30,7 +29,8 @@ interface OwnEffects {
   fetchNotes: InternoteEffect0<Promise<GetNoteDTO[]>>;
   createNote: InternoteEffect0;
   updateNote: InternoteEffect<UpdateNotePayload, Promise<void>>;
-  overwriteNoteConfirmation: InternoteEffect<UpdateNotePayload>;
+  syncNotes: InternoteEffect<{ overwrite: boolean }, Promise<void>>;
+  overwriteNotesConfirmation: InternoteEffect<{ message: string }>;
   deleteNoteConfirmation: InternoteEffect<{ noteId: string }>;
   deleteNote: InternoteEffect<{ noteId: string }>;
 }
@@ -89,69 +89,48 @@ export function model(api: Api): Model {
           }
         });
       },
-      async updateNote(
-        state,
-        actions,
-        { noteId, content, title, tags, overwrite = false }
-      ) {
-        // NB: Prevent save if there's an existing save in progress.
-        // this is so that is there are concurrent requests, they do
-        // not conflict with one another.
-        if (state.notes.loading.updateNote) {
+      async updateNote(state, actions, { noteId, content, title, tags }) {
+        actions.notes.setNotes(
+          state.notes.notes.map(note =>
+            note.noteId === noteId ? { ...note, content, title, tags } : note
+          )
+        );
+        actions.notes.syncNotes({ overwrite: false });
+      },
+      async syncNotes(state, actions) {
+        // NB: don't allow concurrent requests
+        // TODO: revisit this
+        if (state.notes.loading.syncNotes) {
           return;
         }
-        return Option(
-          state.notes.notes.find(note => note.noteId === noteId)
-        ).fold(
-          () => Promise.resolve(),
-          async existingNote => {
-            const savedNote = await api.notes.update(
-              state.auth.session,
-              noteId,
-              {
-                content,
-                title,
-                dateUpdated: existingNote.dateUpdated,
-                tags,
-                overwrite
-              }
-            );
-            await savedNote.fold(
-              err => {
-                if (err.type === "Conflict") {
-                  actions.notes.overwriteNoteConfirmation({
-                    noteId,
-                    content,
-                    tags,
-                    title
-                  });
-                }
-              },
-              async updatedNote => {
-                // NB: update dateUpdated in list so that
-                // overwrite confirmation works correctly
-                actions.notes.setNotes(
-                  state.notes.notes.map(n =>
-                    n.noteId === updatedNote.noteId ? updatedNote : n
-                  )
-                );
-                await actions.tags.fetchTags();
-              }
-            );
+        const updates = state.notes.notes.map(note => ({
+          noteId: note.noteId,
+          userId: note.userId,
+          title: note.title,
+          content: note.content,
+          tags: note.tags,
+          dateUpdated: note.dateUpdated
+        }));
+        const result = await api.notes.sync(state.auth.session, {
+          notes: updates
+        });
+        result.fold(
+          err => {
+            actions.notes.overwriteNotesConfirmation({ message: err.message });
+          },
+          notes => {
+            actions.notes.setNotes(notes);
           }
         );
       },
-      overwriteNoteConfirmation(_state, actions, details) {
+      overwriteNotesConfirmation(_state, actions, { message }) {
         actions.confirmation.setConfirmation({
-          message: `There's a more recent version of ${
-            details.title
-          }. What do you want to do?`,
+          message,
           confirmButtonText: "Overwrite",
           cancelButtonText: "Discard",
           async onConfirm() {
             actions.confirmation.setConfirmationConfirmLoading(true);
-            await actions.notes.updateNote({ ...details, overwrite: true });
-            await actions.notes.fetchNotes(); // NB: important to get the latest dateUpdated from the server to avoid prompt again
+            await actions.notes.syncNotes({ overwrite: true });
             actions.notes.incrementOverwriteCount(); // HACK: Force the editor to re-render
             actions.confirmation.setConfirmation(null);
           },

@@ -80,6 +80,14 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  sync:
+    handler: sync.handler
+    events:
+      - http:
+          path: notes/sync
+          method: put
+          cors: true
+          authorizer: aws_iam
   update:
     handler: update.handler
     events:

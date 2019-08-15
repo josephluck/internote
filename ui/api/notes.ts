@@ -3,7 +3,8 @@ import { MakeSignedRequest } from "./api";
 import {
   UpdateNoteDTO,
   CreateNoteDTO,
-  GetNoteDTO
+  GetNoteDTO,
+  SyncNotesDTO
 } from "@internote/notes-service/types";
 import { ApiResponse } from "@internote/lib/types";
 
@@ -25,25 +26,36 @@ export function notes(makeRequest: MakeSignedRequest) {
     },
     async create(
       session: Session,
-      note: Partial<CreateNoteDTO> = {}
+      body: Partial<CreateNoteDTO> = {}
     ): ApiResponse<GetNoteDTO> {
       return makeRequest({
         path: "/notes",
         method: "POST",
         session,
-        body: note
+        body
       });
     },
     async update(
       session: Session,
       noteId: string,
-      note: Partial<UpdateNoteDTO>
+      body: Partial<UpdateNoteDTO>
     ): ApiResponse<GetNoteDTO> {
       return makeRequest({
         path: `/notes/${noteId}`,
         method: "PUT",
         session,
-        body: note
+        body
+      });
+    },
+    async sync(
+      session: Session,
+      body: SyncNotesDTO
+    ): ApiResponse<GetNoteDTO[]> {
+      return makeRequest({
+        path: `/notes/sync`,
+        method: "PUT",
+        session,
+        body
       });
     },
     async delete(session: Session, noteId: string): ApiResponse<void> {

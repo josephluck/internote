@@ -21,6 +21,18 @@ export interface UpdateNoteDTO extends Omit<Note, "content" | "dateCreated"> {
 }
 
 /**
+ * Represents the sync notes DTO.
+ */
+export interface SyncNotesDTO {
+  notes: Omit<UpdateNoteDTO, "overwrite">[];
+  /**
+   * If true, will force overwrite the notes regardless
+   * of whether there are any newer ones in the database
+   */
+  overwrite?: boolean;
+}
+
+/**
  * Represents the get note DTO.
  *
  * NB: needed since the note content is compressed
