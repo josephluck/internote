@@ -156,8 +156,8 @@ export function InternoteEditor({
    * Emit changes to parent when value changes
    */
   React.useEffect(() => {
-    onChange(getChanges(throttledValue));
-  }, [throttledValue.document]);
+    onChange(getChanges(debouncedValue));
+  }, [debouncedValue.document]);
 
   /**
    * Focus block when value changes
