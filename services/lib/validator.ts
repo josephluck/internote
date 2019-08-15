@@ -71,7 +71,7 @@ export const validateArrayItems = (
 ): Constraint => (val: any[]) => {
   const results = val.map(fields => validate(constraints, fields));
   const invalidIndex = results.findIndex(result => !result.isOk());
-  if (invalidIndex) {
+  if (invalidIndex >= 0) {
     return `Item ${invalidIndex} is invalid: ${JSON.stringify(
       results[invalidIndex].get()
     )}`;

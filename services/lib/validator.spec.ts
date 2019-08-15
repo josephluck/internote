@@ -116,4 +116,22 @@ describe("validator", () => {
       expect(err.b).toEqual(`Item 2 is invalid: {"c":"Value must be c"}`);
     });
   });
+
+  it("Allows valid arrays of objects", () => {
+    const input = {
+      a: "a",
+      b: [{ c: "c" }, { c: "c" }, { c: "c" }]
+    };
+    const constraints = {
+      a: [required],
+      b: [
+        required,
+        validateArrayItems({
+          c: [required, val => (val === "c" ? undefined : "Value must be c")]
+        })
+      ]
+    };
+    const result = validate(constraints, input);
+    expect(result.type).toEqual("ok");
+  });
 });
