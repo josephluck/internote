@@ -66,6 +66,20 @@ export function validate<C extends Record<string, any>, F extends any>(
   return result as Result<typeof errors, typeof fields>;
 }
 
+export const validateArrayItems = (
+  constraints: Record<string, Constraint[]>
+): Constraint => (val: any[]) => {
+  const results = val.map(fields => validate(constraints, fields));
+  const invalidIndex = results.findIndex(result => !result.isOk());
+  if (invalidIndex) {
+    return `Item ${invalidIndex} is invalid: ${JSON.stringify(
+      results[invalidIndex].get()
+    )}`;
+  } else {
+    return undefined;
+  }
+};
+
 export const required: Constraint = (val, key) =>
   typeof val !== "undefined" ? undefined : `${key} is required`;
 

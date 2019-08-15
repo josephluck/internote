@@ -1,4 +1,4 @@
-import { validate, required } from "./validator";
+import { validate, required, validateArrayItems } from "./validator";
 
 describe("validator", () => {
   it("Returns the valid fields when valid", () => {
@@ -20,7 +20,7 @@ describe("validator", () => {
   it("Returns errors for required fields", () => {
     const input = {
       a: "a",
-      b: ""
+      b: undefined
     };
     const constraints = {
       a: [required],
@@ -82,7 +82,7 @@ describe("validator", () => {
 
   it("Ignores extra fields when not in strict mode but still validates fields with constraints", () => {
     const input = {
-      a: "",
+      a: undefined,
       b: "b"
     };
     const constraints = {
@@ -92,6 +92,28 @@ describe("validator", () => {
     expect(result.type).toEqual("err");
     result.mapError(err => {
       expect(Object.keys(err)).toEqual(["a"]);
+    });
+  });
+
+  it("Allows validating arrays of objects", () => {
+    const input = {
+      a: "a",
+      b: [{ c: "c" }, { c: "c" }, { c: "d" }]
+    };
+    const constraints = {
+      a: [required],
+      b: [
+        required,
+        validateArrayItems({
+          c: [required, val => (val === "c" ? undefined : "Value must be c")]
+        })
+      ]
+    };
+    const result = validate(constraints, input);
+    expect(result.type).toEqual("err");
+    result.mapError(err => {
+      expect(Object.keys(err)).toEqual(["b"]);
+      expect(err.b).toEqual(`Item 2 is invalid: {"c":"Value must be c"}`);
     });
   });
 });

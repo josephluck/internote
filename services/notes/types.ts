@@ -6,7 +6,7 @@ import { Note } from "./db/models";
  * NB: needed since the note content is compressed
  * in the database, but not over the API.
  */
-export interface UpdateNoteDTO extends Omit<Note, "content"> {
+export interface UpdateNoteDTO extends Omit<Note, "content" | "dateCreated"> {
   /**
    * If true, will force overwrite the note regardless
    * of whether there is a newer one in the database

@@ -38,7 +38,6 @@ export const validator = validateRequestBody<UpdateNoteDTO>({
   content: [required], // TODO: validate slate schema
   title: [required, isString],
   tags: [required, isArray(v => typeof v === "string")],
-  dateCreated: [],
   dateUpdated: [],
   overwrite: []
 });
