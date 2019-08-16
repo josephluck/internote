@@ -1,8 +1,14 @@
 import { makeRouter } from "./router";
-import { notesIndex } from "./db";
+import { notesIndex, unmarshallNoteIndexToNote } from "./db";
 import { makeApi } from "../api/api";
 import { env } from "../env";
-import { listNotes, updateNote, deleteNote, createNote } from "./api";
+import {
+  listNotes,
+  updateNote,
+  deleteNote,
+  createNote,
+  markNoteAsSynced as markNoteIndexAsSynced
+} from "./api";
 
 // TODO: env might need to be done through webpack at build time?
 const api = makeApi({
@@ -50,7 +56,8 @@ self.addEventListener("fetch", async event => {
     method: "DELETE",
     handler: async (event, { noteId }) => {
       log("Handling delete note request", { event, noteId });
-      await deleteNote(noteId);
+      // TODO: delete note request now needs to know about the note
+      await deleteNote(noteId, await event.request.json());
       return new Response(JSON.stringify({}));
     }
   });
@@ -59,12 +66,31 @@ self.addEventListener("fetch", async event => {
 });
 
 const syncNotes = async () => {
+  const session = {} as any; // TODO: get session
   const allNotes = await notesIndex.notes.toArray();
   const notesToSync = allNotes.filter(note => !note.synced);
   await Promise.all(
-    notesToSync.map(note => {
-      // TODO: make request here
-      api.notes.update();
+    notesToSync.map(async note => {
+      const update = unmarshallNoteIndexToNote(note);
+      if (note.state === "CREATE") {
+        await api.notes.create(session, {
+          title: update.title,
+          content: update.content,
+          tags: update.tags
+        });
+      } else if (note.state === "UPDATE") {
+        // TODO: the noteId might not work server-side if it's set by indexDB UUID.
+        // figure out whether to do a create on the API to handle this, or fix it in
+        // the IndexDB cache.
+        await api.notes.update(session, note.noteId, {
+          title: update.title,
+          content: update.content,
+          tags: update.tags
+        });
+      } else if (note.state === "DELETE") {
+        await api.notes.delete(session, note.noteId);
+      }
+      await markNoteIndexAsSynced(note.noteId);
     })
   );
 };

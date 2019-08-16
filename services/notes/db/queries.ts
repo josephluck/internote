@@ -69,8 +69,10 @@ export const createNote = async (
   const result = await NotesRepository.save({
     ...defaultNote,
     title: body.title,
-    content: await compress(JSON.stringify(defaultNote.content)),
-    tags: [],
+    content: await compress(
+      JSON.stringify(body.content || defaultNote.content)
+    ),
+    tags: body.tags || [],
     noteId,
     userId,
     dateCreated: Date.now()

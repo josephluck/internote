@@ -18,26 +18,7 @@ export const listNotes = async (): Promise<GetNoteDTO[]> => {
  * NB: assumes the user is creating a brand new note.
  */
 export const createNote = async (body: UpdateNoteDTO) =>
-  addNote(body, "CREATE");
-
-/**
- * Adds a note to the index.
- * NB: doesn't assume that the user is creating a new note.
- * The note could simply not be in the index yet.
- */
-export const addNote = async (
-  body: UpdateNoteDTO,
-  state: NoteIndexState = "CREATE"
-): Promise<NoteIndex> => {
-  const updates = marshallNoteToNoteIndex(body, state);
-  const noteId = await notesIndex.notes.add({
-    noteId: uuid(),
-    ...updates,
-    dateCreated: Date.now(),
-    synced: false
-  });
-  return await notesIndex.notes.get(noteId);
-};
+  addNoteToIndex(body, "CREATE");
 
 /**
  * Updates a note in the index
@@ -56,10 +37,7 @@ export const updateNote = async (
       synced: false
     });
   } else {
-    // NB: if not found in the index, add a new note to the index
-    // this doesn't necessarily mean that the note doesn't exist on
-    // the server, so still store the state as 'UPDATE'.
-    await addNote(body, "UPDATE");
+    await addNoteToIndex(body, "UPDATE");
   }
   return await notesIndex.notes.get(noteId);
 };
@@ -80,6 +58,31 @@ export const deleteNote = async (
     });
     return notesIndex.notes.get(noteId);
   } else {
-    return await addNote(body, "DELETE");
+    return await addNoteToIndex(body, "DELETE");
   }
+};
+
+/**
+ * Adds a note to the index.
+ * NB: doesn't assume that the user is creating a new note
+ * as he note could simply not be in the index yet, so store
+ * a state alongside it.
+ */
+export const addNoteToIndex = async (
+  body: UpdateNoteDTO,
+  state: NoteIndexState = "CREATE"
+): Promise<NoteIndex> => {
+  const updates = marshallNoteToNoteIndex(body, state);
+  const noteId = await notesIndex.notes.add({
+    noteId: uuid(),
+    ...updates,
+    dateCreated: state === "CREATE" ? Date.now() : updates.dateCreated,
+    synced: false
+  });
+  return await notesIndex.notes.get(noteId);
+};
+
+export const markNoteAsSynced = async (noteId: string): Promise<NoteIndex> => {
+  await notesIndex.notes.update(noteId, { synced: true });
+  return await notesIndex.notes.get(noteId);
 };
