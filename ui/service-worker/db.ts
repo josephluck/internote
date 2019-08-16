@@ -3,9 +3,9 @@ import { GetNoteDTO, UpdateNoteDTO } from "@internote/notes-service/types";
 
 /**
  * Used by the sync mechanism to determine which
- * API call to make for the note.
+ * API call to make for the note when it is synced.
  */
-export type NoteIndexState = "CREATE" | "UPDATE" | "DELETE";
+export type NoteIndexState = "UPDATE" | "DELETE";
 
 /**
  * Represents a note DTO that is cached in IndexDB
@@ -28,6 +28,11 @@ export interface NoteIndex extends GetNoteDTO {
    * API call to make for the note.
    */
   state: NoteIndexState;
+  /**
+   * Used by the sync mechanism to determine whether
+   * it needs to create a note before updating it.
+   */
+  createOnServer: boolean;
 }
 
 class NotesIndex extends Dexie {
@@ -37,7 +42,7 @@ class NotesIndex extends Dexie {
     super("NotesDatabase");
     this.version(1).stores({
       notes:
-        "&noteId, userId, title, content, *tags, dateUpdated, dateCreated, synched"
+        "&noteId, userId, title, content, *tags, dateUpdated, dateCreated, state, synced"
     });
     this.notes = this.table("notes");
   }
@@ -53,7 +58,8 @@ class NotesIndex extends Dexie {
 export const marshallNoteToNoteIndex = (
   body: UpdateNoteDTO,
   state: NoteIndexState,
-  synced: boolean = false
+  createOnServer: boolean,
+  synced: boolean
 ): NoteIndex => ({
   noteId: body.noteId,
   userId: body.userId,
@@ -62,7 +68,8 @@ export const marshallNoteToNoteIndex = (
   tags: [...new Set(body.tags)],
   dateUpdated: body.dateUpdated,
   state,
-  synced
+  synced,
+  createOnServer
 });
 
 /**

@@ -1,13 +1,15 @@
 import { makeRouter } from "./router";
-import { notesIndex, unmarshallNoteIndexToNote } from "./db";
+import { unmarshallNoteIndexToNote } from "./db";
 import { makeApi } from "../api/api";
 import { env } from "../env";
 import {
   listNotes,
-  updateNote,
-  deleteNote,
+  updateNoteInIndex,
+  deleteNoteInIndex,
   createNote,
-  markNoteAsSynced as markNoteIndexAsSynced
+  removeNoteFromIndex,
+  getNotesToSync,
+  replaceNoteInIndexWithServerNote
 } from "./api";
 
 // TODO: env might need to be done through webpack at build time?
@@ -27,7 +29,7 @@ self.addEventListener("fetch", async event => {
     handler: async event => {
       log("Handling get notes request", { event });
       const notes = await listNotes();
-      return new Response(JSON.stringify(notes));
+      return new Response(JSON.stringify(notes.map(unmarshallNoteIndexToNote)));
     }
   });
 
@@ -37,7 +39,7 @@ self.addEventListener("fetch", async event => {
     handler: async event => {
       log("Handling create note request", { event });
       const note = await createNote(await event.request.json());
-      return new Response(JSON.stringify(note));
+      return new Response(JSON.stringify(unmarshallNoteIndexToNote(note)));
     }
   });
 
@@ -46,8 +48,8 @@ self.addEventListener("fetch", async event => {
     method: "PUT",
     handler: async (event, { noteId }) => {
       log("Handling update note request", { event, noteId });
-      const note = await updateNote(noteId, await event.request.json());
-      return new Response(JSON.stringify(note));
+      const note = await updateNoteInIndex(noteId, await event.request.json());
+      return new Response(JSON.stringify(unmarshallNoteIndexToNote(note)));
     }
   });
 
@@ -56,8 +58,7 @@ self.addEventListener("fetch", async event => {
     method: "DELETE",
     handler: async (event, { noteId }) => {
       log("Handling delete note request", { event, noteId });
-      // TODO: delete note request now needs to know about the note
-      await deleteNote(noteId, await event.request.json());
+      await deleteNoteInIndex(noteId);
       return new Response(JSON.stringify({}));
     }
   });
@@ -66,31 +67,56 @@ self.addEventListener("fetch", async event => {
 });
 
 const syncNotes = async () => {
-  const session = {} as any; // TODO: get session
-  const allNotes = await notesIndex.notes.toArray();
-  const notesToSync = allNotes.filter(note => !note.synced);
+  const session = {} as any; // TODO: get session from IndexDB
+
+  const noteIndexesToCreate = await getNotesToSync(
+    note => note.createOnServer && note.state !== "DELETE"
+  );
   await Promise.all(
-    notesToSync.map(async note => {
-      const update = unmarshallNoteIndexToNote(note);
-      if (note.state === "CREATE") {
-        await api.notes.create(session, {
-          title: update.title,
-          content: update.content,
-          tags: update.tags
-        });
-      } else if (note.state === "UPDATE") {
-        // TODO: the noteId might not work server-side if it's set by indexDB UUID.
-        // figure out whether to do a create on the API to handle this, or fix it in
-        // the IndexDB cache.
-        await api.notes.update(session, note.noteId, {
-          title: update.title,
-          content: update.content,
-          tags: update.tags
-        });
-      } else if (note.state === "DELETE") {
-        await api.notes.delete(session, note.noteId);
-      }
-      await markNoteIndexAsSynced(note.noteId);
+    noteIndexesToCreate.map(async noteIndex => {
+      log(`[SYNC] creating note ${noteIndex.title}`);
+      const update = unmarshallNoteIndexToNote(noteIndex);
+      const result = await api.notes.create(session, {
+        title: update.title,
+        content: update.content,
+        tags: update.tags
+      });
+      return await result.fold(
+        () => Promise.resolve(),
+        async serverNote =>
+          await replaceNoteInIndexWithServerNote(noteIndex.noteId, serverNote)
+      );
+    })
+  );
+
+  const noteIndexesToUpdate = await getNotesToSync(
+    note => !note.createOnServer && note.state === "UPDATE"
+  );
+  await Promise.all(
+    noteIndexesToUpdate.map(async noteIndex => {
+      log(`[SYNC] updating note ${noteIndex.title}`);
+      const update = unmarshallNoteIndexToNote(noteIndex);
+      const result = await api.notes.update(session, update.noteId, {
+        title: update.title,
+        content: update.content,
+        tags: update.tags
+      });
+      return result.fold(
+        () => Promise.resolve(),
+        async serverNote =>
+          await replaceNoteInIndexWithServerNote(noteIndex.noteId, serverNote)
+      );
+    })
+  );
+
+  const noteIndexesToDelete = await getNotesToSync(
+    note => !note.createOnServer && note.state === "DELETE"
+  );
+  await Promise.all(
+    noteIndexesToDelete.map(async noteIndex => {
+      log(`[SYNC] deleting note ${noteIndex.title}`);
+      await api.notes.delete(session, noteIndex.noteId);
+      await removeNoteFromIndex(noteIndex.noteId);
     })
   );
 };

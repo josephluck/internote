@@ -4,31 +4,35 @@ import {
   notesIndex,
   NoteIndex,
   marshallNoteToNoteIndex,
-  unmarshallNoteIndexToNote,
   NoteIndexState
 } from "./db";
 
-export const listNotes = async (): Promise<GetNoteDTO[]> => {
-  const notes = await notesIndex.notes.toArray();
-  return notes.map(unmarshallNoteIndexToNote);
+/**
+ *
+ */
+export const listNotes = async (): Promise<NoteIndex[]> => {
+  return await notesIndex.notes.toArray();
 };
 
 /**
  * Creates a new note in the index.
  * NB: assumes the user is creating a brand new note.
  */
-export const createNote = async (body: UpdateNoteDTO) =>
-  addNoteToIndex(body, "CREATE");
+export const createNote = async (body: UpdateNoteDTO): Promise<NoteIndex> =>
+  addNoteToIndex(body, "UPDATE", true);
 
 /**
- * Updates a note in the index
+ * Updates a note in the index.
+ * NB: creates a note in the index if a note is
+ * not found. This happens in edge cases where the
+ * index has not been filled with a GET to /notes
  */
-export const updateNote = async (
+export const updateNoteInIndex = async (
   noteId: string,
   body: UpdateNoteDTO
 ): Promise<NoteIndex> => {
   const note = await notesIndex.notes.get(noteId);
-  const updates = marshallNoteToNoteIndex(body, "UPDATE");
+  const updates = marshallNoteToNoteIndex(body, "UPDATE", false, false);
   if (note) {
     await notesIndex.notes.update(noteId, {
       ...note,
@@ -37,52 +41,84 @@ export const updateNote = async (
       synced: false
     });
   } else {
-    await addNoteToIndex(body, "UPDATE");
+    // TODO: createOnServer might need to be set to true?
+    await addNoteToIndex(body, "UPDATE", false);
   }
   return await notesIndex.notes.get(noteId);
 };
 
 /**
- * Deletes the note from the index
+ * Marks the note as deleted from the index
  */
-export const deleteNote = async (
-  noteId: string,
-  body: UpdateNoteDTO
-): Promise<NoteIndex> => {
+export const deleteNoteInIndex = async (noteId: string): Promise<NoteIndex> => {
   const note = await notesIndex.notes.get(noteId);
   if (note) {
     await notesIndex.notes.update(note.noteId, {
       ...note,
-      state: "DELETED",
+      state: "DELETE",
       synced: false
     });
     return notesIndex.notes.get(noteId);
-  } else {
-    return await addNoteToIndex(body, "DELETE");
   }
 };
 
 /**
  * Adds a note to the index.
- * NB: doesn't assume that the user is creating a new note
- * as he note could simply not be in the index yet, so store
- * a state alongside it.
  */
 export const addNoteToIndex = async (
   body: UpdateNoteDTO,
-  state: NoteIndexState = "CREATE"
+  state: NoteIndexState,
+  createOnServer: boolean
 ): Promise<NoteIndex> => {
-  const updates = marshallNoteToNoteIndex(body, state);
+  const updates = marshallNoteToNoteIndex(body, state, createOnServer, false);
   const noteId = await notesIndex.notes.add({
     noteId: uuid(),
     ...updates,
-    dateCreated: state === "CREATE" ? Date.now() : updates.dateCreated,
+    dateCreated: createOnServer ? Date.now() : updates.dateCreated,
     synced: false
   });
   return await notesIndex.notes.get(noteId);
 };
 
-export const markNoteAsSynced = async (noteId: string): Promise<NoteIndex> => {
+/**
+ * Returns a list of notes in the index that are pending to be
+ * synced with the server.
+ */
+export const getNotesToSync = async (
+  filter: (note: NoteIndex) => boolean
+): Promise<NoteIndex[]> => {
+  return notesIndex.notes.filter(n => !n.synced && filter(n)).toArray();
+};
+
+/**
+ * Replaces a note in the index with a note stored in the server.
+ *
+ * This takes the noteIndexId which can be different if
+ * a note was created rather than updated, because we assign a
+ * temporary uuid to the note when it's in a pending creation state.
+ */
+export const replaceNoteInIndexWithServerNote = async (
+  noteIndexId: string,
+  serverNote: GetNoteDTO
+): Promise<NoteIndex> => {
+  await removeNoteFromIndex(noteIndexId);
+  await addNoteToIndex(serverNote, "UPDATE", false);
+  return await markNoteIndexAsSynced(serverNote.noteId);
+};
+
+/**
+ * Marks the given note in the index as synced.
+ */
+export const markNoteIndexAsSynced = async (
+  noteId: string
+): Promise<NoteIndex> => {
   await notesIndex.notes.update(noteId, { synced: true });
   return await notesIndex.notes.get(noteId);
+};
+
+/**
+ * Removes a note from the index.
+ */
+export const removeNoteFromIndex = async (noteId: string): Promise<void> => {
+  await notesIndex.notes.delete(noteId);
 };
