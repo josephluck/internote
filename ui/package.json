@@ -83,6 +83,7 @@
     "typescript": "^3.5.3",
     "universal-cookie": "^4.0.2",
     "url-pattern": "^1.0.3",
+    "uuid": "^3.3.2",
     "webpack": "^4.39.1",
     "webpack-cli": "^3.3.6",
     "webpack-node-externals": "^1.7.2",
