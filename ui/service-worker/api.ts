@@ -41,14 +41,21 @@ export const updateNoteInIndex = async (
       synced: false
     });
   } else {
-    // TODO: createOnServer might need to be set to true?
-    await addNoteToIndex(body, "UPDATE", false);
+    await notesIndex.notes.add({
+      ...updates,
+      noteId: uuid(),
+      createOnServer: true,
+      dateCreated: Date.now(),
+      synced: false
+    });
   }
   return await notesIndex.notes.get(noteId);
 };
 
 /**
- * Marks the note as deleted from the index
+ * Marks the note as deleted from the index.
+ * This will be synced via a DELETE request when the notes
+ * are synced later.
  */
 export const deleteNoteInIndex = async (noteId: string): Promise<NoteIndex> => {
   const note = await notesIndex.notes.get(noteId);
