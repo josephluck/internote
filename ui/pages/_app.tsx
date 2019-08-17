@@ -7,7 +7,7 @@ import Head from "next/head";
 import { sansSerif } from "../theming/themes";
 import { ShortcutsProvider } from "../styles/shortcuts";
 import { InternoteThemes } from "../styles/theme-provider";
-// import { isServer } from "../utilities/window";
+import { isServer } from "../utilities/window";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -43,25 +43,25 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-// if (!isServer() && navigator.serviceWorker) {
-//   window.addEventListener("load", async () => {
-//     try {
-//       await navigator.serviceWorker.register("/service-worker.js", {
-//         scope: "/"
-//       });
-//       const registration = await navigator.serviceWorker.ready;
-//       await registration.sync.register("sync");
-//       console.log("Registered service worker");
-//     } catch (err) {
-//       console.log(`ServiceWorker registration failed: ${err}`);
-//     }
-//   });
-// }
-
 export class Application extends App {
   componentDidMount() {
     const { store } = this.props as any;
     store.actions.auth.scheduleRefresh();
+
+    if (!isServer() && navigator.serviceWorker) {
+      window.addEventListener("load", async () => {
+        try {
+          await navigator.serviceWorker.register("/service-worker.js", {
+            scope: "/"
+          });
+          const registration = await navigator.serviceWorker.ready;
+          await store.actions.sync.register(registration);
+          console.log("Registered service worker");
+        } catch (err) {
+          console.log(`ServiceWorker registration failed: ${err}`);
+        }
+      });
+    }
   }
   render() {
     const { Component, pageProps, store } = this.props as any;

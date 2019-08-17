@@ -111,6 +111,7 @@ describe("SW / api sync", () => {
     await service.syncNotesFromIndexToServer();
     expect(api.notes.create).toBeCalledTimes(1);
     expect(api.notes.update).toBeCalledTimes(0);
+    expect(api.notes.delete).toBeCalledTimes(0);
     const notes = await service.listNotesFromIndex();
     expect(notes).toHaveLength(3);
     expect(notes[0]).toHaveProperty("synced", true);
@@ -150,6 +151,7 @@ describe("SW / api sync", () => {
     await service.syncNotesFromIndexToServer();
     expect(api.notes.create).toBeCalledTimes(0);
     expect(api.notes.update).toBeCalledTimes(1);
+    expect(api.notes.delete).toBeCalledTimes(0);
     const notes = await service.listNotesFromIndex();
     expect(notes).toHaveLength(2);
     expect(notes[0]).toHaveProperty("synced", true);
@@ -185,6 +187,7 @@ describe("SW / api sync", () => {
     );
     await service.syncNotesFromIndexToServer();
     expect(api.notes.create).toBeCalledTimes(0);
+    expect(api.notes.update).toBeCalledTimes(0);
     expect(api.notes.delete).toBeCalledTimes(1);
     const notes = await service.listNotesFromIndex();
     expect(notes).toHaveLength(1);
