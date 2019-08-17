@@ -168,7 +168,7 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
     const session = {} as any; // TODO: get session from IndexDB
 
     const noteIndexesToCreate = await getNotesToSync(
-      note => note.createOnServer && note.state !== "DELETE"
+      note => note.createOnServer === true && note.state !== "DELETE"
     );
     await Promise.all(
       noteIndexesToCreate.map(async noteIndex => {
@@ -187,7 +187,7 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
     );
 
     const noteIndexesToUpdate = await getNotesToSync(
-      note => !note.createOnServer && note.state === "UPDATE"
+      note => note.createOnServer === false && note.state === "UPDATE"
     );
     await Promise.all(
       noteIndexesToUpdate.map(async noteIndex => {
@@ -206,8 +206,9 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
     );
 
     const noteIndexesToDelete = await getNotesToSync(
-      note => !note.createOnServer && note.state === "DELETE"
+      note => note.createOnServer === false && note.state === "DELETE"
     );
+    console.log({ noteIndexesToDelete });
     await Promise.all(
       noteIndexesToDelete.map(async noteIndex => {
         await api.notes.delete(session, noteIndex.noteId);
