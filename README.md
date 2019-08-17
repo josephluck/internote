@@ -2,17 +2,13 @@
 
 Beautiful web-based note editor with a focus on distraction-free content creation.
 
-**[Get started!](https://internote.app)**
+**[Get started](https://internote.app)**
 
 ## Features
 
 **Rich editor**
 
 All the standard formatting options you'd expect from a modern editor.
-
-**Offline sync**
-
-Don't worry about dropping off the WiFi or accidentally closing Internote, notes are saved offline and synced periodically to the server in the background, even when Internote is closed.
 
 **Beautiful design**
 
@@ -61,6 +57,10 @@ Familiar with markdown? Use markdown shortcuts like `## Heading two` and `> Bloc
 **Auto save**
 
 No need to press save. Notes and settings are automatically saved to the cloud. Log in on many devices using the same account.
+
+**Offline sync**
+
+Don't worry about dropping off the WiFi or accidentally closing Internote, notes are saved offline and synced periodically to the server in the background, even when Internote is closed.
 
 **Conflict detection**
 

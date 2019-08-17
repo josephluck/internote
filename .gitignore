@@ -9,3 +9,4 @@ node_modules
 .webpack
 ui/public/service-worker.js
 env.json
+sls-next-build
