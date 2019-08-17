@@ -1,0 +1,124 @@
+service: internote-notes-service
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  domains:
+    prod: services.internote.app
+    dev: dev-services.internote.app
+  webpack:
+    config: "webpack.config.js"
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: "yarn"
+  customDomain:
+    basePath: ""
+    domainName: ${self:custom.domains.${self:custom.stage}}
+    certificateName: "internote.app"
+    stage: "${self:custom.stage}"
+    createRoute53Record: true
+    endpointType: "regional"
+  tableName: ${self:custom.stage}-notes
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-1
+  environment:
+    REGION: eu-west-1
+    DYNAMO_ENDPOINT: https://dynamodb.eu-west-1.amazonaws.com
+    TABLE_NAME: ${self:custom.tableName}
+  memorySize: 256
+  timeout: 30
+  apiGateway:
+    minimumCompressionSize: 1024
+    restApiId:
+      "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiId
+    restApiRootResourceId:
+      "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiRootResourceId
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - "Fn::GetAtt": [NotesTable, Arn]
+
+plugins:
+  - serverless-plugin-monorepo
+  - serverless-webpack
+  - serverless-domain-manager
+
+functions:
+  list:
+    handler: list.handler
+    events:
+      - http:
+          path: notes
+          method: get
+          cors: true
+          authorizer: aws_iam
+  get:
+    handler: get.handler
+    events:
+      - http:
+          path: notes/{noteId}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  create:
+    handler: create.handler
+    events:
+      - http:
+          path: notes
+          method: post
+          cors: true
+          authorizer: aws_iam
+  update:
+    handler: update.handler
+    events:
+      - http:
+          path: notes/{noteId}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  delete:
+    handler: delete.handler
+    events:
+      - http:
+          path: notes/{noteId}
+          method: delete
+          cors: true
+          authorizer: aws_iam
+  tags:
+    handler: tags.handler
+    events:
+      - http:
+          path: tags
+          method: get
+          cors: true
+          authorizer: aws_iam
+
+resources:
+  Resources:
+    NotesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: noteId
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: noteId
+            KeyType: HASH
+          - AttributeName: userId
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST

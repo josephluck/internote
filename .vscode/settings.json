@@ -1,0 +1,15 @@
+{
+  "cSpell.words": [
+    "Repo",
+    "bodyparser",
+    "deserialize",
+    "fontawesome",
+    "fortawesome",
+    "internote",
+    "mandle",
+    "prefetch",
+    "typeorm",
+    "workspaces"
+  ],
+  "editor.formatOnSave": true
+}

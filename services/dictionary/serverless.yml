@@ -1,0 +1,54 @@
+service: internote-dictionary-service
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  domains:
+    prod: services.internote.app
+    dev: dev-services.internote.app
+  webpack:
+    config: "webpack.config.js"
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: "yarn"
+  customDomain:
+    basePath: ""
+    domainName: ${self:custom.domains.${self:custom.stage}}
+    certificateName: "internote.app"
+    stage: "${self:custom.stage}"
+    createRoute53Record: true
+    endpointType: "regional"
+  environment: ${file(env.json):${self:custom.stage}, file(env.json):dev}
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-1
+  environment:
+    REGION: eu-west-1
+    OXFORD_API_ID: ${self:custom.environment.OXFORD_API_ID}
+    OXFORD_API_KEY: ${self:custom.environment.OXFORD_API_KEY}
+  memorySize: 256
+  timeout: 30
+  apiGateway:
+    minimumCompressionSize: 1024
+    restApiId:
+      "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiId
+    restApiRootResourceId:
+      "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiRootResourceId
+
+plugins:
+  - serverless-plugin-monorepo
+  - serverless-webpack
+  - serverless-domain-manager
+
+functions:
+  lookup:
+    handler: lookup.handler
+    events:
+      - http:
+          path: dictionary/lookup
+          method: post
+          cors: true
+          authorizer: aws_iam

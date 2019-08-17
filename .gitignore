@@ -1,0 +1,11 @@
+node_modules
+*.log
+.next
+.env
+.env.development
+.env.local
+.serverless
+.build
+.webpack
+ui/public/service-worker.js
+env.json

@@ -1,0 +1,56 @@
+{
+  "name": "@internote/speech-service",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "*"
+  ],
+  "scripts": {
+    "deploy": "yarn deploy:dev",
+    "deploy:dev": "yarn deploy:dev:domain && yarn deploy:dev:services",
+    "deploy:dev:domain": "serverless create_domain --stage dev",
+    "deploy:dev:services": "NODE_ENV=development sls deploy --stage dev",
+    "deploy:prod": "yarn deploy:prod:domain && yarn deploy:prod:services",
+    "deploy:prod:domain": "serverless create_domain --stage prod",
+    "deploy:prod:services": "NODE_ENV=production sls deploy --stage prod",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@internote/lib": "*",
+    "aws-sdk": "^2.500.0",
+    "http-errors": "^1.7.3",
+    "md5": "^2.2.1",
+    "middy": "^0.28.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "@types/md5": "^2.1.33",
+    "jest": "^24.8.0",
+    "serverless": "^1.44.1",
+    "serverless-domain-manager": "^3.2.2",
+    "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-plugin-monorepo": "^0.7.0",
+    "serverless-plugin-typescript": "^1.1.7",
+    "serverless-webpack": "^5.3.1",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "((spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "clearMocks": true
+  }
+}

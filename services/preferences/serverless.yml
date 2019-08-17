@@ -1,0 +1,88 @@
+service: internote-preferences-service
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  domains:
+    prod: services.internote.app
+    dev: dev-services.internote.app
+  webpack:
+    config: "webpack.config.js"
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: "yarn"
+  customDomain:
+    basePath: ""
+    domainName: ${self:custom.domains.${self:custom.stage}}
+    certificateName: "internote.app"
+    stage: "${self:custom.stage}"
+    createRoute53Record: true
+    endpointType: "regional"
+  tableName: ${self:custom.stage}-preferences
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-1
+  environment:
+    REGION: eu-west-1
+    DYNAMO_ENDPOINT: https://dynamodb.eu-west-1.amazonaws.com
+    TABLE_NAME: ${self:custom.tableName}
+  memorySize: 256
+  timeout: 30
+  apiGateway:
+    minimumCompressionSize: 1024
+    restApiId:
+      "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiId
+    restApiRootResourceId:
+      "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiRootResourceId
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - "Fn::GetAtt": [PreferencesTable, Arn]
+
+plugins:
+  - serverless-plugin-monorepo
+  - serverless-webpack
+  - serverless-domain-manager
+
+functions:
+  get:
+    handler: get.handler
+    events:
+      - http:
+          path: preferences
+          method: get
+          cors: true
+          authorizer: aws_iam
+  update:
+    handler: update.handler
+    events:
+      - http:
+          path: preferences
+          method: put
+          cors: true
+          authorizer: aws_iam
+
+resources:
+  Resources:
+    PreferencesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
