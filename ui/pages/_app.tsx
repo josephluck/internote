@@ -8,7 +8,6 @@ import { sansSerif } from "../theming/themes";
 import { ShortcutsProvider } from "../styles/shortcuts";
 import { InternoteThemes } from "../styles/theme-provider";
 import { isServer } from "../utilities/window";
-import { env } from "../env";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -52,7 +51,7 @@ export class Application extends App {
     if (!isServer() && navigator.serviceWorker) {
       window.addEventListener("load", async () => {
         try {
-          await navigator.serviceWorker.register(`${env.PUBLIC_PREFIX}/service-worker.js`, {
+          await navigator.serviceWorker.register("/service-worker.js", {
             scope: "/"
           });
           const registration = await navigator.serviceWorker.ready;

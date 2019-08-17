@@ -10,6 +10,10 @@ Beautiful web-based note editor with a focus on distraction-free content creatio
 
 All the standard formatting options you'd expect from a modern editor.
 
+**Offline sync**
+
+Don't worry about dropping off the WiFi or accidentally closing Internote, notes are saved offline and synced periodically to the server in the background, even when Internote is closed.
+
 **Beautiful design**
 
 Internote has been designed with simplicity and beauty in mind for effortless note taking.
@@ -50,6 +54,10 @@ Go completely distraction free by entering full-screen mode.
 
 Rich keyboard shortcuts system for power use.
 
+**Markdown shortcuts**
+
+Familiar with markdown? Use markdown shortcuts like `## Heading two` and `> Block quote` and `- List item` for quick formatting.
+
 **Auto save**
 
 No need to press save. Notes and settings are automatically saved to the cloud. Log in on many devices using the same account.
@@ -78,6 +86,7 @@ Feel free to request new features too, but please bear in mind that this is a pe
 - Twine
 - Styled components
 - Slate
+- Service workers
 
 #### Back-end
 
@@ -85,26 +94,34 @@ Feel free to request new features too, but please bear in mind that this is a pe
 - Koa
 - PostgreSQL
 - TypeORM
-- A variety of amazon web services
+- A variety of AWS services
 - Oxford dictionary API
 
-#### Dev-ops
+#### Ops / architecture
 
 - Serverless (AWS)
-- AWS Lambda
-- AWS API Gateway
-- AWS CloudWatch
-- AWS Route 53
-- AWS S3
+- Lambda
+- API Gateway
+- CloudWatch
+- Route 53
+- S3
+- Dashbird
 
 ## Deployment
 
 - Create an AWS account
 - Follow [these](https://serverless.com/framework/docs/providers/aws/guide/installation/) and [these](https://serverless.com/framework/docs/providers/aws/guide/credentials/) instructions
 - Use the `serverless config credentials --provider aws --key EXAMPLE --secret EXAMPLEKEY` method of authenticating serverless with AWS
-- Update the serverless policy you created to include the `"s3:PutBucketAcl"` permission
-- Create `.env` files in both `ui` and `api` and fill them out with production configuration
-- Run `yarn deploy:prod` from the root of this project
+- Follow instructions in each package in this repo for individual service deployment
+
+#### Domains & SSL certificates
+
+The domain names for deployment are managed manually through Route53 and AWS Certificate Manager.
+
+- Create a custom domain name in Route53
+- Create a SSL certificate in AWS Certificate Manager
+- Link up the SSL certificate with the domain name in [API Gateway](https://eu-west-1.console.aws.amazon.com/apigateway/home?region=eu-west-1#/custom-domain-names)
+- Grab the SSL certificate ARN from AWS Certificate Manager and enter it in to the `cloudFront` configuration in `ui/serverless.yml`
 
 ## Logs
 
@@ -116,7 +133,7 @@ Logging is available in CloudWatch.
 
 #### Dashbird
 
-Logging and metrics are available in Dashbird
+Logging and metrics are also available in Dashbird.
 
 > Follow [these instructions](https://dashbird.io/docs/get-started/quick-start/) to enable Dashbird
 
