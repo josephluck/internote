@@ -8,7 +8,6 @@ import {
   NotesDbInterface
 } from "./db";
 import { Api } from "../api/api";
-import { swLog } from ".";
 
 export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
   /**
@@ -66,7 +65,7 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
         createOnServer: true,
         synced: false
       });
-      db.add({
+      await db.add({
         ...note,
         ...updates,
         noteId
@@ -88,6 +87,7 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
       await db.update(note.noteId, {
         ...note,
         state: "DELETE",
+        createOnServer: false,
         synced: false
       });
       return db.get(noteId);
@@ -172,7 +172,6 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
     );
     await Promise.all(
       noteIndexesToCreate.map(async noteIndex => {
-        swLog(`[SYNC] creating note ${noteIndex.title}`);
         const update = unmarshallNoteIndexToNote(noteIndex);
         const result = await api.notes.create(session, {
           title: update.title,
@@ -192,7 +191,6 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
     );
     await Promise.all(
       noteIndexesToUpdate.map(async noteIndex => {
-        swLog(`[SYNC] updating note ${noteIndex.title}`);
         const update = unmarshallNoteIndexToNote(noteIndex);
         const result = await api.notes.update(session, update.noteId, {
           title: update.title,
@@ -212,7 +210,6 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
     );
     await Promise.all(
       noteIndexesToDelete.map(async noteIndex => {
-        swLog(`[SYNC] deleting note ${noteIndex.title}`);
         await api.notes.delete(session, noteIndex.noteId);
         await removeNoteFromIndex(noteIndex.noteId);
       })
