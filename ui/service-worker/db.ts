@@ -7,13 +7,7 @@ import { GetNoteDTO, UpdateNoteDTO } from "@internote/notes-service/types";
  */
 export type NoteIndexState = "UPDATE" | "DELETE";
 
-/**
- * Represents a note DTO that is cached in IndexDB
- * NB: the userId property is sometimes stored here
- * but the server never relies on it since the API
- * overrides the userId from the incoming request.
- */
-export interface NoteIndex extends GetNoteDTO {
+interface AdditionalNoteIndexProperties {
   /**
    * Used to determine whether the note has
    * been saved on the server or not.
@@ -35,6 +29,14 @@ export interface NoteIndex extends GetNoteDTO {
   createOnServer: boolean;
 }
 
+/**
+ * Represents a note DTO that is cached in IndexDB
+ * NB: the userId property is sometimes stored here
+ * but the server never relies on it since the API
+ * overrides the userId from the incoming request.
+ */
+export interface NoteIndex extends GetNoteDTO, AdditionalNoteIndexProperties {}
+
 class NotesIndex extends Dexie {
   public notes: Dexie.Table<NoteIndex, string>;
 
@@ -51,15 +53,10 @@ class NotesIndex extends Dexie {
 /**
  * Prepares an incoming note add or update for storage
  * in the IndexDB cache.
- *
- * Set synched to false if the note should be synched to
- * the server using background-sync.
  */
 export const marshallNoteToNoteIndex = (
   body: UpdateNoteDTO,
-  state: NoteIndexState,
-  createOnServer: boolean,
-  synced: boolean
+  additionalProperties: AdditionalNoteIndexProperties
 ): NoteIndex => ({
   noteId: body.noteId,
   userId: body.userId,
@@ -67,9 +64,7 @@ export const marshallNoteToNoteIndex = (
   content: body.content,
   tags: [...new Set(body.tags)],
   dateUpdated: body.dateUpdated,
-  state,
-  synced,
-  createOnServer
+  ...additionalProperties
 });
 
 /**
