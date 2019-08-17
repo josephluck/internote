@@ -157,4 +157,147 @@ describe("SW / api sync", () => {
     expect(notes[1]).toHaveProperty("createOnServer", false);
     expect(notes[1]).toHaveProperty("title", "Updated");
   });
+
+  it("Syncs a deleted note with the server", async () => {
+    const api = makeMockedApi([
+      { ...defaultNote, noteId: "a" },
+      { ...defaultNote, noteId: "b" }
+    ]);
+    const notesDbInterface = makeMockedNotesDbInterface([
+      {
+        ...defaultNote,
+        noteId: "a",
+        synced: true,
+        createOnServer: false,
+        state: "UPDATE" as NoteIndexState
+      },
+      {
+        ...defaultNote,
+        noteId: "b",
+        synced: false,
+        createOnServer: false,
+        state: "DELETE" as NoteIndexState
+      }
+    ]);
+    const service = makeServiceWorkerApi(
+      notesDbInterface as NotesDbInterface,
+      api
+    );
+    await service.syncNotesFromIndexToServer();
+    expect(api.notes.create).toBeCalledTimes(0);
+    expect(api.notes.delete).toBeCalledTimes(1);
+    const notes = await service.listNotesFromIndex();
+    expect(notes).toHaveLength(1);
+    expect(notes[0]).toHaveProperty("synced", true);
+  });
+
+  it("Syncs new notes from the server that have been created", async () => {
+    const api = makeMockedApi([
+      { ...defaultNote, noteId: "a" },
+      { ...defaultNote, noteId: "b" },
+      { ...defaultNote, noteId: "y" },
+      { ...defaultNote, noteId: "z" }
+    ]);
+    const notesDbInterface = makeMockedNotesDbInterface([
+      {
+        ...defaultNote,
+        noteId: "a",
+        synced: true,
+        createOnServer: false,
+        state: "UPDATE" as NoteIndexState
+      },
+      {
+        ...defaultNote,
+        noteId: "b",
+        synced: true,
+        createOnServer: false,
+        state: "UPDATE" as NoteIndexState
+      }
+    ]);
+    const service = makeServiceWorkerApi(
+      notesDbInterface as NotesDbInterface,
+      api
+    );
+    await service.syncNotesFromIndexToServer();
+    expect(api.notes.create).toBeCalledTimes(0);
+    expect(api.notes.update).toBeCalledTimes(0);
+    expect(api.notes.delete).toBeCalledTimes(0);
+    const notes = await service.listNotesFromIndex();
+    expect(notes).toHaveLength(4);
+    expect(notes[0]).toHaveProperty("synced", true);
+    expect(notes[1]).toHaveProperty("synced", true);
+    expect(notes[2]).toHaveProperty("synced", true);
+    expect(notes[3]).toHaveProperty("synced", true);
+    expect(notes[0]).toHaveProperty("createOnServer", false);
+    expect(notes[1]).toHaveProperty("createOnServer", false);
+    expect(notes[2]).toHaveProperty("createOnServer", false);
+    expect(notes[3]).toHaveProperty("createOnServer", false);
+    expect(notes[2]).toHaveProperty("noteId", "y");
+    expect(notes[3]).toHaveProperty("noteId", "z");
+  });
+
+  it("Syncs multiple operations with the server", async () => {
+    const api = makeMockedApi([
+      { ...defaultNote, noteId: "a" },
+      { ...defaultNote, noteId: "b" },
+      { ...defaultNote, noteId: "c" },
+      { ...defaultNote, noteId: "y" },
+      { ...defaultNote, noteId: "z" }
+    ]);
+    const notesDbInterface = makeMockedNotesDbInterface([
+      {
+        ...defaultNote,
+        noteId: "a",
+        synced: true,
+        createOnServer: false,
+        state: "UPDATE" as NoteIndexState
+      },
+      {
+        ...defaultNote,
+        noteId: "b",
+        synced: false,
+        createOnServer: false,
+        state: "DELETE" as NoteIndexState
+      },
+      {
+        ...defaultNote,
+        noteId: "c",
+        synced: false,
+        createOnServer: false,
+        state: "UPDATE" as NoteIndexState,
+        title: "Updated"
+      },
+      {
+        ...defaultNote,
+        noteId: "d",
+        synced: false,
+        createOnServer: true,
+        state: "UPDATE" as NoteIndexState,
+        title: "New"
+      }
+    ]);
+    const service = makeServiceWorkerApi(
+      notesDbInterface as NotesDbInterface,
+      api
+    );
+    await service.syncNotesFromIndexToServer();
+    expect(api.notes.create).toBeCalledTimes(1);
+    expect(api.notes.update).toBeCalledTimes(1);
+    expect(api.notes.delete).toBeCalledTimes(1);
+    const notes = await service.listNotesFromIndex();
+    expect(notes).toHaveLength(5);
+    expect(notes[0]).toHaveProperty("synced", true);
+    expect(notes[1]).toHaveProperty("synced", true);
+    expect(notes[2]).toHaveProperty("synced", true);
+    expect(notes[0]).toHaveProperty("createOnServer", false);
+    expect(notes[1]).toHaveProperty("createOnServer", false);
+    expect(notes[2]).toHaveProperty("createOnServer", false);
+    expect(notes[0]).toHaveProperty("noteId", "a");
+    expect(notes[1]).toHaveProperty("noteId", "c");
+    expect(notes[2]).toHaveProperty("noteId", "y");
+    expect(notes[3]).toHaveProperty("noteId", "z");
+    // NB: note index 4 has been created with uuid on server so can't check it's value...
+    expect(notes[1]).toHaveProperty("title", "Updated");
+    expect(notes[4]).toHaveProperty("title", "New");
+  });
 });
