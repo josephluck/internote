@@ -1,14 +1,17 @@
 import { makeRouter } from "./router";
-import { unmarshallNoteIndexToNote } from "./db";
-import {
-  listNotes,
-  updateNoteInIndex,
-  setNoteToDeletedInIndex,
-  createNewNoteInIndex,
-  syncNotesToServer
-} from "./api";
+import { unmarshallNoteIndexToNote, makeNotesDbInterface } from "./db";
+import { makeServiceWorkerApi } from "./api";
+import { makeApi } from "../api/api";
+import { env } from "../env";
 
 declare const self: ServiceWorkerGlobalScope;
+
+const db = makeNotesDbInterface();
+const serverApi = makeApi({
+  host: env.SERVICES_HOST,
+  region: env.SERVICES_REGION
+});
+const api = makeServiceWorkerApi(db, serverApi);
 
 self.addEventListener("fetch", async event => {
   const router = makeRouter();
@@ -18,7 +21,7 @@ self.addEventListener("fetch", async event => {
     method: "GET",
     handler: async event => {
       swLog("[HANDLER] Handling get notes request", { event });
-      const notes = await listNotes();
+      const notes = await api.listNotesFromIndex();
       return new Response(JSON.stringify(notes.map(unmarshallNoteIndexToNote)));
     }
   });
@@ -28,7 +31,7 @@ self.addEventListener("fetch", async event => {
     method: "POST",
     handler: async event => {
       swLog("[HANDLER] Handling create note request", { event });
-      const note = await createNewNoteInIndex(await event.request.json());
+      const note = await api.createNewNoteInIndex(await event.request.json());
       return new Response(JSON.stringify(unmarshallNoteIndexToNote(note)));
     }
   });
@@ -38,7 +41,10 @@ self.addEventListener("fetch", async event => {
     method: "PUT",
     handler: async (event, { noteId }) => {
       swLog("[HANDLER] Handling update note request", { event, noteId });
-      const note = await updateNoteInIndex(noteId, await event.request.json());
+      const note = await api.updateNoteInIndex(
+        noteId,
+        await event.request.json()
+      );
       return new Response(JSON.stringify(unmarshallNoteIndexToNote(note)));
     }
   });
@@ -48,7 +54,7 @@ self.addEventListener("fetch", async event => {
     method: "DELETE",
     handler: async (event, { noteId }) => {
       swLog("[HANDLER] Handling delete note request", { event, noteId });
-      await setNoteToDeletedInIndex(noteId);
+      await api.setNoteToDeletedInIndex(noteId);
       return new Response(JSON.stringify({}));
     }
   });
@@ -60,7 +66,7 @@ self.addEventListener("sync", async event => {
   if (event.tag === "sync-notes") {
     swLog("[SYNC] starting sync");
     // TODO: debounce this!
-    event.waitUntil(syncNotesToServer());
+    event.waitUntil(api.syncNotesFromIndexToServer());
   }
 });
 

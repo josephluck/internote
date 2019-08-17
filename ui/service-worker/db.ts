@@ -84,3 +84,45 @@ export const unmarshallNoteIndexToNote = (
 });
 
 export const notesIndex = new NotesIndex();
+
+/**
+ * Provides an interface for operating on the
+ * IndexDB. Useful for simplifying the API and
+ * for stubbing out the DB during testing.
+ */
+export function makeNotesDbInterface() {
+  function getAll() {
+    return notesIndex.notes.toArray();
+  }
+
+  function get(id: string) {
+    return notesIndex.notes.get(id);
+  }
+
+  function add(body: NoteIndex) {
+    return notesIndex.notes.add(body);
+  }
+
+  function update(id: string, body: NoteIndex) {
+    return notesIndex.notes.update(id, body);
+  }
+
+  function getUnsynced(filter: (note: NoteIndex) => boolean) {
+    return notesIndex.notes.filter(n => !n.synced && filter(n)).toArray();
+  }
+
+  function remove(id: string) {
+    return notesIndex.notes.delete(id);
+  }
+
+  return {
+    getAll,
+    get,
+    add,
+    update,
+    getUnsynced,
+    remove
+  };
+}
+
+export type NotesDbInterface = ReturnType<typeof makeNotesDbInterface>;
