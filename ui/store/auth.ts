@@ -119,13 +119,15 @@ export function model(_api: Api, auth: AuthApi): Model {
           state.auth.session.idToken,
           response.IdentityId
         );
-        actions.auth.setSession({
+        const session: Session = {
           ...state.auth.session,
           accessKeyId: credentials.Credentials.AccessKeyId,
           expiration: credentials.Credentials.Expiration,
           secretKey: credentials.Credentials.SecretKey,
           sessionToken: credentials.Credentials.SessionToken
-        });
+        };
+        actions.auth.setSession(session);
+        await actions.sync.storeSession(session);
         await actions.preferences.get();
         actions.auth.scheduleRefresh();
       },

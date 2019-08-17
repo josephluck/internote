@@ -1,17 +1,22 @@
 import { makeRouter } from "./router";
-import { unmarshallNoteIndexToNote, makeNotesDbInterface } from "./db";
+import {
+  unmarshallNoteIndexToNote,
+  makeNotesDbInterface,
+  makeAuthDbInterface
+} from "./db";
 import { makeServiceWorkerApi } from "./api";
 import { makeApi } from "../api/api";
 import { env } from "../env";
 
 declare const self: ServiceWorkerGlobalScope;
 
-const db = makeNotesDbInterface();
+const authDb = makeAuthDbInterface();
+const notesDb = makeNotesDbInterface();
 const serverApi = makeApi({
   host: env.SERVICES_HOST,
   region: env.SERVICES_REGION
 });
-const api = makeServiceWorkerApi(db, serverApi);
+const api = makeServiceWorkerApi(authDb, notesDb, serverApi);
 
 self.addEventListener("fetch", async event => {
   const router = makeRouter();
@@ -56,6 +61,16 @@ self.addEventListener("fetch", async event => {
       swLog("[HANDLER] Handling delete note request", { event, noteId });
       await api.setNoteToDeletedInIndex(noteId);
       return new Response(JSON.stringify({}));
+    }
+  });
+
+  router.add({
+    path: "store-session-in-index-db",
+    method: "POST",
+    handler: async event => {
+      swLog("[HANDLER] Storing auth session in index DB");
+      await authDb.set(await event.request.json());
+      return new Response(JSON.stringify({ success: true }));
     }
   });
 

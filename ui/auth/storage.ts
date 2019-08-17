@@ -46,9 +46,9 @@ export function makeAuthStorage(
 
   function getSession(): Session {
     const defaultSession: Session = {
+      idToken: "",
       accessToken: "",
       expires: 0,
-      idToken: "",
       refreshToken: "",
       accessKeyId: "",
       expiration: 0,
@@ -76,6 +76,11 @@ export function makeAuthStorage(
 
 export interface Session {
   /**
+   * Unique for each user
+   * See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AuthenticationResultType.html
+   */
+  idToken: string;
+  /**
    * See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AuthenticationResultType.html
    */
   accessToken: string;
@@ -84,10 +89,6 @@ export interface Session {
    * See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AuthenticationResultType.html
    */
   expires: number;
-  /**
-   * See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AuthenticationResultType.html
-   */
-  idToken: string;
   /**
    * See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AuthenticationResultType.html
    */

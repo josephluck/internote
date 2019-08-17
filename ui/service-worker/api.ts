@@ -4,11 +4,16 @@ import {
   NoteIndex,
   marshallNoteToNoteIndex,
   unmarshallNoteIndexToNote,
-  NotesDbInterface
+  NotesDbInterface,
+  AuthDbInterface
 } from "./db";
 import { Api } from "../api/api";
 
-export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
+export function makeServiceWorkerApi(
+  authDb: AuthDbInterface,
+  notesDb: NotesDbInterface,
+  api: Api
+) {
   /**
    * Returns the list of notes in the index.
    *
@@ -16,7 +21,7 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
    * this should be done at the handler level.
    */
   const listNotesFromIndex = async (): Promise<NoteIndex[]> => {
-    return await db.getAll();
+    return await notesDb.getAll();
   };
 
   /**
@@ -31,8 +36,8 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
       createOnServer: true,
       synced: false
     });
-    const noteId = await db.add({ noteId: uuid(), ...updates });
-    return await db.get(noteId);
+    const noteId = await notesDb.add({ noteId: uuid(), ...updates });
+    return await notesDb.get(noteId);
   };
 
   /**
@@ -47,14 +52,14 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
     noteId: string,
     body: UpdateNoteDTO
   ): Promise<NoteIndex> => {
-    const note = await db.get(noteId);
+    const note = await notesDb.get(noteId);
     if (note) {
       const updates = marshallNoteToNoteIndex(body, {
         state: "UPDATE",
         createOnServer: false,
         synced: false
       });
-      await db.update(noteId, {
+      await notesDb.update(noteId, {
         ...note,
         ...updates
       });
@@ -64,13 +69,13 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
         createOnServer: true,
         synced: false
       });
-      await db.add({
+      await notesDb.add({
         ...note,
         ...updates,
         noteId
       });
     }
-    return await db.get(noteId);
+    return await notesDb.get(noteId);
   };
 
   /**
@@ -81,15 +86,15 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
   const setNoteToDeletedInIndex = async (
     noteId: string
   ): Promise<NoteIndex> => {
-    const note = await db.get(noteId);
+    const note = await notesDb.get(noteId);
     if (note) {
-      await db.update(note.noteId, {
+      await notesDb.update(note.noteId, {
         ...note,
         state: "DELETE",
         createOnServer: false,
         synced: false
       });
-      return db.get(noteId);
+      return notesDb.get(noteId);
     }
   };
 
@@ -100,7 +105,7 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
   const getNotesToSync = async (
     filter: (note: NoteIndex) => boolean
   ): Promise<NoteIndex[]> => {
-    return await db.getUnsynced(filter);
+    return await notesDb.getUnsynced(filter);
   };
 
   /**
@@ -117,21 +122,21 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
     serverNote: GetNoteDTO
   ): Promise<NoteIndex> => {
     await removeNoteFromIndex(noteIndexId);
-    await db.add(
+    await notesDb.add(
       marshallNoteToNoteIndex(serverNote, {
         synced: true,
         state: "UPDATE",
         createOnServer: false
       })
     );
-    return await db.get(noteIndexId);
+    return await notesDb.get(noteIndexId);
   };
 
   /**
    * Removes a note from the index.
    */
   const removeNoteFromIndex = async (noteId: string): Promise<void> => {
-    return await db.remove(noteId);
+    return await notesDb.remove(noteId);
   };
 
   /**
@@ -140,75 +145,77 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
    * of the note in the index.
    */
   const syncNotesFromIndexToServer = async () => {
-    const session = {} as any; // TODO: get session from IndexDB
+    const session = await authDb.get(); // TODO: get session from IndexDB
 
-    const noteIndexesToCreate = await getNotesToSync(
-      note => note.createOnServer === true && note.state !== "DELETE"
-    );
-    await Promise.all(
-      noteIndexesToCreate.map(async noteIndex => {
-        const update = unmarshallNoteIndexToNote(noteIndex);
-        const result = await api.notes.create(session, {
-          title: update.title,
-          content: update.content,
-          tags: update.tags
-        });
-        return await result.fold(
-          () => Promise.resolve(),
-          async serverNote => {
-            return await replaceNoteInIndexWithServerNote(
-              noteIndex.noteId,
-              serverNote
-            );
-          }
-        );
-      })
-    );
+    if (session) {
+      const noteIndexesToCreate = await getNotesToSync(
+        note => note.createOnServer === true && note.state !== "DELETE"
+      );
+      await Promise.all(
+        noteIndexesToCreate.map(async noteIndex => {
+          const update = unmarshallNoteIndexToNote(noteIndex);
+          const result = await api.notes.create(session, {
+            title: update.title,
+            content: update.content,
+            tags: update.tags
+          });
+          return await result.fold(
+            () => Promise.resolve(),
+            async serverNote => {
+              return await replaceNoteInIndexWithServerNote(
+                noteIndex.noteId,
+                serverNote
+              );
+            }
+          );
+        })
+      );
 
-    const noteIndexesToUpdate = await getNotesToSync(
-      note => note.createOnServer === false && note.state === "UPDATE"
-    );
-    await Promise.all(
-      noteIndexesToUpdate.map(async noteIndex => {
-        const update = unmarshallNoteIndexToNote(noteIndex);
-        const result = await api.notes.update(session, update.noteId, {
-          title: update.title,
-          content: update.content,
-          tags: update.tags
-        });
-        return await result.fold(
-          () => Promise.resolve(),
-          async serverNote => {
-            return await replaceNoteInIndexWithServerNote(
-              noteIndex.noteId,
-              serverNote
-            );
-          }
-        );
-      })
-    );
+      const noteIndexesToUpdate = await getNotesToSync(
+        note => note.createOnServer === false && note.state === "UPDATE"
+      );
+      await Promise.all(
+        noteIndexesToUpdate.map(async noteIndex => {
+          const update = unmarshallNoteIndexToNote(noteIndex);
+          const result = await api.notes.update(session, update.noteId, {
+            title: update.title,
+            content: update.content,
+            tags: update.tags
+          });
+          return await result.fold(
+            () => Promise.resolve(),
+            async serverNote => {
+              return await replaceNoteInIndexWithServerNote(
+                noteIndex.noteId,
+                serverNote
+              );
+            }
+          );
+        })
+      );
 
-    const noteIndexesToDelete = await getNotesToSync(
-      note => note.createOnServer === false && note.state === "DELETE"
-    );
-    await Promise.all(
-      noteIndexesToDelete.map(async noteIndex => {
-        await api.notes.delete(session, noteIndex.noteId);
-        await removeNoteFromIndex(noteIndex.noteId);
-      })
-    );
+      const noteIndexesToDelete = await getNotesToSync(
+        note => note.createOnServer === false && note.state === "DELETE"
+      );
+      await Promise.all(
+        noteIndexesToDelete.map(async noteIndex => {
+          await api.notes.delete(session, noteIndex.noteId);
+          await removeNoteFromIndex(noteIndex.noteId);
+        })
+      );
 
-    const latestNotesFromServer = await api.notes.list(session);
-    await latestNotesFromServer.fold(
-      () => Promise.resolve,
-      async notes => {
-        return await Promise.all(
-          notes.map(async note => {
-            return await replaceNoteInIndexWithServerNote(note.noteId, note);
-          })
-        );
-      }
-    );
+      const latestNotesFromServer = await api.notes.list(session);
+      await latestNotesFromServer.fold(
+        () => Promise.resolve,
+        async notes => {
+          return await Promise.all(
+            notes.map(async note => {
+              return await replaceNoteInIndexWithServerNote(note.noteId, note);
+            })
+          );
+        }
+      );
+    }
   };
 
   return {

@@ -10,11 +10,12 @@
     "test:tsc": "tsc --noEmit",
     "deploy:dev": "yarn deploy:dev:domain && yarn deploy:dev:app",
     "deploy:dev:domain": "serverless create_domain --stage dev",
+    "deploy:dev:create-service-worker": "STAGE=dev webpack --config service-worker-webpack.config.js",
     "deploy:dev:app": "NODE_ENV=production STAGE=dev serverless deploy --stage dev",
     "deploy:prod": "yarn deploy:prod:domain && yarn deploy:prod:app",
     "deploy:prod:domain": "serverless create_domain --stage prod",
-    "deploy:prod:app": "NODE_ENV=production STAGE=prod serverless deploy --stage prod",
-    "service-worker:create": "webpack --config service-worker-webpack.config.js"
+    "deploy:prod:create-service-worker": "STAGE=prod webpack --config service-worker-webpack.config.js",
+    "deploy:prod:app": "NODE_ENV=production STAGE=prod serverless deploy --stage prod"
   },
   "dependencies": {
     "serverless-nextjs-plugin": "^2.3.1"

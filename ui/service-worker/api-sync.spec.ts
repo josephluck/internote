@@ -1,10 +1,24 @@
 import { makeServiceWorkerApi } from "./api";
-import { NotesDbInterface, NoteIndex, NoteIndexState } from "./db";
+import {
+  NotesDbInterface,
+  NoteIndex,
+  NoteIndexState,
+  AuthDbInterface
+} from "./db";
 import { defaultNote } from "@internote/notes-service/db/default-note";
 import { Api } from "../api/api";
 import { Ok } from "space-lift";
 import uuid from "uuid";
 import { GetNoteDTO } from "@internote/notes-service/types";
+
+const authDbInterface: AuthDbInterface = {
+  get() {
+    return Promise.resolve({} as any);
+  },
+  set(_session) {
+    return Promise.resolve();
+  }
+};
 
 function makeMockedApi(initialNotes: GetNoteDTO[]): Api {
   let notes = initialNotes;
@@ -105,6 +119,7 @@ describe("SW / api sync", () => {
       }
     ]);
     const service = makeServiceWorkerApi(
+      authDbInterface,
       notesDbInterface as NotesDbInterface,
       api
     );
@@ -145,6 +160,7 @@ describe("SW / api sync", () => {
       }
     ]);
     const service = makeServiceWorkerApi(
+      authDbInterface,
       notesDbInterface as NotesDbInterface,
       api
     );
@@ -182,6 +198,7 @@ describe("SW / api sync", () => {
       }
     ]);
     const service = makeServiceWorkerApi(
+      authDbInterface,
       notesDbInterface as NotesDbInterface,
       api
     );
@@ -218,6 +235,7 @@ describe("SW / api sync", () => {
       }
     ]);
     const service = makeServiceWorkerApi(
+      authDbInterface,
       notesDbInterface as NotesDbInterface,
       api
     );
@@ -280,6 +298,7 @@ describe("SW / api sync", () => {
       }
     ]);
     const service = makeServiceWorkerApi(
+      authDbInterface,
       notesDbInterface as NotesDbInterface,
       api
     );

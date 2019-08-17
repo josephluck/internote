@@ -1,5 +1,6 @@
 import Dexie from "dexie";
 import { GetNoteDTO, UpdateNoteDTO } from "@internote/notes-service/types";
+import { Session } from "../auth/storage";
 
 /**
  * Used by the sync mechanism to determine which
@@ -37,16 +38,20 @@ interface AdditionalNoteIndexProperties {
  */
 export interface NoteIndex extends GetNoteDTO, AdditionalNoteIndexProperties {}
 
-class NotesIndex extends Dexie {
+class IndexDb extends Dexie {
   public notes: Dexie.Table<NoteIndex, string>;
+  public auth: Dexie.Table<Session, string>;
 
   constructor() {
-    super("NotesDatabase");
+    super("IndexDb");
     this.version(1).stores({
       notes:
-        "&noteId, userId, title, content, *tags, dateUpdated, dateCreated, state, synced"
+        "&noteId, userId, title, content, *tags, dateUpdated, dateCreated, synced, state, createOnServer",
+      auth:
+        "&idToken, accessToken, expires, refreshToken, accessKeyId, expiration, secretKey, sessionToken"
     });
     this.notes = this.table("notes");
+    this.auth = this.table("auth");
   }
 }
 
@@ -83,7 +88,7 @@ export const unmarshallNoteIndexToNote = (
   dateUpdated: noteIndex.dateUpdated
 });
 
-export const notesIndex = new NotesIndex();
+export const db = new IndexDb();
 
 /**
  * Provides an interface for operating on the
@@ -92,27 +97,27 @@ export const notesIndex = new NotesIndex();
  */
 export function makeNotesDbInterface() {
   function getAll() {
-    return notesIndex.notes.toArray();
+    return db.notes.toArray();
   }
 
   function get(id: string) {
-    return notesIndex.notes.get(id);
+    return db.notes.get(id);
   }
 
   function add(body: NoteIndex) {
-    return notesIndex.notes.add(body);
+    return db.notes.add(body);
   }
 
   function update(id: string, body: NoteIndex) {
-    return notesIndex.notes.update(id, body);
+    return db.notes.update(id, body);
   }
 
   function getUnsynced(filter: (note: NoteIndex) => boolean) {
-    return notesIndex.notes.filter(n => !n.synced && filter(n)).toArray();
+    return db.notes.filter(n => !n.synced && filter(n)).toArray();
   }
 
   function remove(id: string) {
-    return notesIndex.notes.delete(id);
+    return db.notes.delete(id);
   }
 
   return {
@@ -126,3 +131,29 @@ export function makeNotesDbInterface() {
 }
 
 export type NotesDbInterface = ReturnType<typeof makeNotesDbInterface>;
+
+/**
+ * Provides an interface for operating on the
+ * IndexDB. Useful for simplifying the API and
+ * for stubbing out the DB during testing.
+ */
+export function makeAuthDbInterface() {
+  async function get() {
+    const all = await db.auth.toArray();
+    // TODO: refresh the token here so it's forever fresh
+    return all[0];
+  }
+
+  async function set(session: Session) {
+    const all = await db.auth.toArray();
+    await Promise.all(all.map(s => db.auth.delete(s.idToken)));
+    await db.auth.add(session);
+  }
+
+  return {
+    get,
+    set
+  };
+}
+
+export type AuthDbInterface = ReturnType<typeof makeAuthDbInterface>;

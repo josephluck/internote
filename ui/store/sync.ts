@@ -2,23 +2,29 @@ import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { InternoteEffect, InternoteEffect0 } from ".";
 import { Api } from "../api/api";
+import { Session } from "../auth/storage";
 
 interface OwnState {
+  isPolling: boolean;
   registration: null | ServiceWorkerRegistration;
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
+  setIsPolling: Twine.Reducer<OwnState, boolean>;
   setRegistration: Twine.Reducer<OwnState, ServiceWorkerRegistration>;
 }
 
 interface OwnEffects {
   register: InternoteEffect<ServiceWorkerRegistration>;
+  startPolling: InternoteEffect0;
   sync: InternoteEffect0;
+  storeSession: InternoteEffect<Session>;
 }
 
 function defaultState(): OwnState {
   return {
+    isPolling: false,
     registration: null
   };
 }
@@ -41,21 +47,36 @@ export function model(_api: Api): Model {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
+      setIsPolling: (state, isPolling) => ({ ...state, isPolling }),
       setRegistration: (state, registration) => ({
         ...state,
         registration
       })
     },
     effects: {
-      async register(_state, actions, registration) {
+      async register(state, actions, registration) {
         actions.sync.setRegistration(registration);
-        actions.sync.sync();
+        if (!state.sync.isPolling) {
+          actions.sync.startPolling();
+        }
       },
-      async sync(state, actions) {
+      async startPolling(state, actions) {
         if (state.sync.registration) {
-          state.sync.registration.sync.register("sync-notes");
-          await sleep(5000);
           actions.sync.sync();
+          actions.sync.setIsPolling(true);
+          await sleep(5000);
+          actions.sync.startPolling();
+        }
+      },
+      async sync(state) {
+        state.sync.registration.sync.register("sync-notes");
+      },
+      async storeSession(state, session) {
+        if (state.sync.registration) {
+          return fetch("/store-session-in-index-db", {
+            method: "POST",
+            body: JSON.stringify(session)
+          });
         }
       }
     }

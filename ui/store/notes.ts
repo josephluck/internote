@@ -79,6 +79,18 @@ export function model(api: Api): Model {
         );
       },
       async createNote(state, actions) {
+        /**
+         * TODO: there's a problem when creating a note offline,
+         * navigating to it, making edits whilst offline and then
+         * coming back online since the temporary noteId will be replaced
+         * with the final one from the server but the noteId in the Twine
+         * store and in the URL will still be the temporary one created
+         * by the service worker. If nothing is done to resolve this, then
+         * there will be duplicate notes in the server, and perhaps lost work?
+         *
+         * Maybe when the user comes back online an the note has been
+         * synced, we force the user to reload...?
+         */
         const result = await api.notes.create(state.auth.session, {
           title: `New note - ${new Date().toDateString()}`
         });
