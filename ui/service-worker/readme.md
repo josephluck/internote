@@ -60,7 +60,7 @@ Using service worker background sync the sync mechanism reads through the IndexD
 
 - Find note in IndexDB
 - _If found_, set it's state to DELETE
-- Set synched to false
+- Set synced to false
 - Respond with void
 - _If not found_, run through create note flow but set the noteId to the request's noteId (without response) and then update note flow
 

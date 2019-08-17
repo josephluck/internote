@@ -3,7 +3,6 @@ import { UpdateNoteDTO, GetNoteDTO } from "@internote/notes-service/types";
 import {
   NoteIndex,
   marshallNoteToNoteIndex,
-  NoteIndexState,
   unmarshallNoteIndexToNote,
   NotesDbInterface
 } from "./db";
@@ -95,27 +94,6 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
   };
 
   /**
-   * Adds a note to the index.
-   */
-  const addNoteToIndex = async (
-    body: UpdateNoteDTO,
-    state: NoteIndexState,
-    createOnServer: boolean
-  ): Promise<NoteIndex> => {
-    const updates = marshallNoteToNoteIndex(body, {
-      state,
-      createOnServer,
-      synced: false
-    });
-    const noteId = await db.add({
-      noteId: uuid(),
-      ...updates,
-      synced: false
-    });
-    return await db.get(noteId);
-  };
-
-  /**
    * Returns a list of notes in the index that are pending to be
    * synced with the server.
    */
@@ -139,24 +117,21 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
     serverNote: GetNoteDTO
   ): Promise<NoteIndex> => {
     await removeNoteFromIndex(noteIndexId);
-    await addNoteToIndex(serverNote, "UPDATE", false);
-    return await markNoteIndexAsSynced(serverNote.noteId);
-  };
-
-  /**
-   * Marks the given note in the index as synced.
-   */
-  const markNoteIndexAsSynced = async (noteId: string): Promise<NoteIndex> => {
-    const note = await db.get(noteId);
-    await db.update(noteId, { ...note, synced: true });
-    return await db.get(noteId);
+    await db.add(
+      marshallNoteToNoteIndex(serverNote, {
+        synced: true,
+        state: "UPDATE",
+        createOnServer: false
+      })
+    );
+    return await db.get(noteIndexId);
   };
 
   /**
    * Removes a note from the index.
    */
   const removeNoteFromIndex = async (noteId: string): Promise<void> => {
-    await db.remove(noteId);
+    return await db.remove(noteId);
   };
 
   /**
@@ -180,8 +155,12 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
         });
         return await result.fold(
           () => Promise.resolve(),
-          async serverNote =>
-            await replaceNoteInIndexWithServerNote(noteIndex.noteId, serverNote)
+          async serverNote => {
+            return await replaceNoteInIndexWithServerNote(
+              noteIndex.noteId,
+              serverNote
+            );
+          }
         );
       })
     );
@@ -197,10 +176,14 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
           content: update.content,
           tags: update.tags
         });
-        return result.fold(
+        return await result.fold(
           () => Promise.resolve(),
-          async serverNote =>
-            await replaceNoteInIndexWithServerNote(noteIndex.noteId, serverNote)
+          async serverNote => {
+            return await replaceNoteInIndexWithServerNote(
+              noteIndex.noteId,
+              serverNote
+            );
+          }
         );
       })
     );
@@ -208,12 +191,23 @@ export function makeServiceWorkerApi(db: NotesDbInterface, api: Api) {
     const noteIndexesToDelete = await getNotesToSync(
       note => note.createOnServer === false && note.state === "DELETE"
     );
-    console.log({ noteIndexesToDelete });
     await Promise.all(
       noteIndexesToDelete.map(async noteIndex => {
         await api.notes.delete(session, noteIndex.noteId);
         await removeNoteFromIndex(noteIndex.noteId);
       })
+    );
+
+    const latestNotesFromServer = await api.notes.list(session);
+    await latestNotesFromServer.fold(
+      () => Promise.resolve,
+      async notes => {
+        return await Promise.all(
+          notes.map(async note => {
+            return await replaceNoteInIndexWithServerNote(note.noteId, note);
+          })
+        );
+      }
     );
   };
 

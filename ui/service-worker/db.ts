@@ -12,7 +12,7 @@ interface AdditionalNoteIndexProperties {
    * Used to determine whether the note has
    * been saved on the server or not.
    * When a request comes in to add or update a note,
-   * the synched property will be set to false.
+   * the synced property will be set to false.
    * When the service worker processes the IndexDB cache,
    * the synced property will be set to true.
    */
