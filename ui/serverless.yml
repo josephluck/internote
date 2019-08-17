@@ -1,13 +1,5 @@
 service: internote-ui
 
-# functions:
-# serve-service-worker:
-#   handler: service-worker/lambda.handler
-#   events:
-#     - http:
-#         path: /
-#         method: get
-
 plugins:
   - serverless-plugin-monorepo
   - serverless-plugin-include-dependencies
@@ -28,6 +20,7 @@ custom:
     endpointType: "regional"
   serverless-nextjs:
     createAssetBucket: false # TODO: PR to https://github.com/danielcondemarin/serverless-nextjs-plugin to check for existence of bucket before creating it
+    cloudFront: true
 
 provider:
   name: aws
@@ -60,3 +53,7 @@ provider:
 #           Action:
 #             - s3:GetObject
 #           Resource: arn:aws:s3:::internote-${self:custom.stage}-ui-static/*
+
+package:
+  exclude:
+    - ./**
