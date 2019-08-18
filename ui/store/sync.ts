@@ -19,7 +19,7 @@ interface OwnEffects {
   register: InternoteEffect<ServiceWorkerRegistration>;
   startPolling: InternoteEffect0;
   sync: InternoteEffect0;
-  storeSession: InternoteEffect0;
+  storeSession: InternoteEffect0<Promise<void>>;
 }
 
 function defaultState(): OwnState {
@@ -78,10 +78,11 @@ export function model(_api: Api): Model {
       },
       async storeSession(state) {
         if (state.sync.registration && state.auth.session) {
-          await authDb.set(state.auth.session);
+          return await authDb.set(state.auth.session);
         }
+        return Promise.resolve();
       }
     }
   };
-  return withAsyncLoading(ownModel, "notes");
+  return withAsyncLoading(ownModel, "sync");
 }

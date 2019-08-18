@@ -70,7 +70,7 @@ export function isValidSlateValue(value: Object): boolean {
 export function getValueOrDefault(value: Object): Value {
   return isValidSlateValue(value)
     ? Value.fromJSON(value)
-    : Value.fromJSON(defaultNote as any); // TODO: type correctly
+    : Value.fromJSON(defaultNote.content);
 }
 
 export function hasSelection(value: Value) {

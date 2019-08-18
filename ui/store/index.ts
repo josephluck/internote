@@ -126,17 +126,6 @@ export function makeStore() {
     ]
   );
 
-  // TODO: do this
-  // api.client.interceptors.response.use(
-  //   res => res,
-  //   err => {
-  //     if (err && err.response) {
-  //       store.actions.ui.handleApiError(err);
-  //     }
-  //     return Promise.reject(err);
-  //   }
-  // );
-
   if (!isServer()) {
     document.addEventListener("fullscreenchange", () => {
       const doc = document as any;

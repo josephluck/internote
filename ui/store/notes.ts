@@ -63,8 +63,7 @@ export function model(api: Api): Model {
       }),
       setNotes: (state, notes) => ({
         ...state,
-        // notes: notes.sort((a, b) => (a.dateUpdated > b.dateUpdated ? -1 : 1))
-        notes
+        notes: notes.sort((a, b) => (a.dateUpdated > b.dateUpdated ? -1 : 1))
       })
     },
     effects: {
