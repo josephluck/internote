@@ -29,9 +29,9 @@ export const makeRouter = () => {
       const pattern = new UrlPattern(route.path);
       const pathname = getLocation(request.url).pathname;
       const params = pattern.match(pathname);
-      event.waitUntil(route.handler(event, params || {}));
+      event.respondWith(route.handler(event, params || {}));
     } else {
-      event.waitUntil(fetch(request));
+      event.respondWith(fetch(request));
     }
   };
 

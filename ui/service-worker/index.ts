@@ -60,7 +60,11 @@ self.addEventListener("fetch", async event => {
     handler: async (event, { noteId }) => {
       swLog("[HANDLER] Handling delete note request", { event, noteId });
       await api.setNoteToDeletedInIndex(noteId);
-      return new Response(JSON.stringify({}));
+      return new Response(
+        JSON.stringify({
+          message: `SW will delete ${noteId} when it next syncs`
+        })
+      );
     }
   });
 
@@ -69,7 +73,6 @@ self.addEventListener("fetch", async event => {
 
 self.addEventListener("sync", async event => {
   if (event.tag === "sync-notes") {
-    swLog("[SYNC] starting sync");
     event.waitUntil(api.syncNotesFromIndexToServer());
   }
 });

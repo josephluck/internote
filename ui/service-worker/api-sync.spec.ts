@@ -67,8 +67,8 @@ function makeMockedNotesDbInterface(
     getAll() {
       return Promise.resolve(notes);
     },
-    getUnsynced(filter: (note: NoteIndex) => boolean) {
-      return Promise.resolve(notes.filter(n => !n.synced && filter(n)));
+    getUnsynced() {
+      return Promise.resolve(notes.filter(n => !n.synced));
     },
     get(id: string) {
       return Promise.resolve(notes.find(n => n.noteId === id));

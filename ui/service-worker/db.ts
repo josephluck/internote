@@ -113,8 +113,8 @@ export function makeNotesDbInterface() {
     return db.notes.update(id, updates);
   }
 
-  function getUnsynced(filter: (note: NoteIndex) => boolean) {
-    return db.notes.filter(n => !n.synced && filter(n)).toArray();
+  function getUnsynced() {
+    return db.notes.filter(n => !n.synced).toArray();
   }
 
   function remove(id: string) {
