@@ -8,6 +8,10 @@ export class Preferences {
   distractionFree?: boolean;
   voice?: string;
   outlineShowing?: boolean;
+  /**
+   * Experimental offline sync
+   */
+  offlineSync?: boolean;
 }
 
 export const defaultPreferences: Preferences = {
@@ -16,5 +20,6 @@ export const defaultPreferences: Preferences = {
   fontTheme: "Sans serif",
   distractionFree: false,
   voice: "Male",
-  outlineShowing: true
+  outlineShowing: true,
+  offlineSync: false
 };

@@ -120,6 +120,14 @@ export function makeStore() {
                 outlineShowing: state.preferences.outlineShowing
               });
             }
+            if (
+              state.preferences.offlineSync !==
+              prevState.preferences.offlineSync
+            ) {
+              api.preferences.update(state.auth.session, {
+                offlineSync: state.preferences.offlineSync
+              });
+            }
           }
         }
       }

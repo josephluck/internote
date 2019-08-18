@@ -1,23 +1,29 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect, InternoteEffect0 } from ".";
+import { InternoteEffect0, InternoteEffect } from ".";
 import { Api } from "../api/api";
 import { makeAuthDbInterface } from "../service-worker/db";
+import { isServer } from "../utilities/window";
 
 interface OwnState {
   isPolling: boolean;
   registration: null | ServiceWorkerRegistration;
+  interval: number;
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
   setIsPolling: Twine.Reducer<OwnState, boolean>;
   setRegistration: Twine.Reducer<OwnState, ServiceWorkerRegistration>;
+  setInterval: Twine.Reducer<OwnState, number>;
 }
 
 interface OwnEffects {
-  register: InternoteEffect<ServiceWorkerRegistration>;
+  register: InternoteEffect0;
+  unregister: InternoteEffect0;
+  setOfflineSync: InternoteEffect<boolean>;
   startPolling: InternoteEffect0;
+  stopPolling: InternoteEffect0;
   sync: InternoteEffect0;
   storeSession: InternoteEffect0<Promise<void>>;
 }
@@ -25,7 +31,8 @@ interface OwnEffects {
 function defaultState(): OwnState {
   return {
     isPolling: false,
-    registration: null
+    registration: null,
+    interval: -1
   };
 }
 
@@ -39,9 +46,6 @@ export interface Namespace {
   sync: Twine.ModelApi<State, Actions>;
 }
 
-const sleep = (duration: number) =>
-  new Promise(resolve => setTimeout(resolve, duration));
-
 export function model(_api: Api): Model {
   const authDb = makeAuthDbInterface();
   const ownModel: OwnModel = {
@@ -52,25 +56,70 @@ export function model(_api: Api): Model {
       setRegistration: (state, registration) => ({
         ...state,
         registration
+      }),
+      setInterval: (state, timer) => ({
+        ...state,
+        interval: timer
       })
     },
     effects: {
-      async register(state, actions, registration) {
-        actions.sync.setRegistration(registration);
-        if (!state.sync.isPolling) {
-          actions.sync.startPolling();
+      async register(_state, actions) {
+        return new Promise(async resolve => {
+          if (!isServer() && navigator.serviceWorker) {
+            try {
+              await navigator.serviceWorker.register("/service-worker.js", {
+                scope: "/"
+              });
+              const registration = await navigator.serviceWorker.ready;
+              console.log("[SW] [APP] Registered");
+              actions.sync.setRegistration(registration);
+              actions.sync.startPolling();
+              resolve();
+            } catch (err) {
+              console.log(`[SW] [APP] Registration failed: ${err}`);
+            }
+          } else {
+            return Promise.resolve();
+          }
+        });
+      },
+      async unregister(state, actions) {
+        if (state.sync.registration) {
+          await state.sync.registration.unregister();
+          actions.sync.setRegistration(null);
+          console.log("[SW] [APP] Unregistered");
+        } else {
+          return Promise.resolve();
+        }
+      },
+      async setOfflineSync(_state, actions, on) {
+        actions.preferences.setOfflineSync(on);
+        if (on) {
+          await actions.sync.register();
+        } else {
+          await actions.sync.unregister();
         }
       },
       async startPolling(state, actions) {
-        if (state.sync.registration) {
-          actions.sync.sync();
-          actions.sync.setIsPolling(true);
-          await sleep(30000); // Sync every 30 seconds
-          actions.sync.startPolling();
+        if (
+          !isServer() &&
+          state.sync.interval === -1 &&
+          state.sync.registration
+        ) {
+          actions.sync.setInterval(setInterval(actions.sync.sync, 10000));
+          console.log("[SW] [APP] Started polling");
+        }
+      },
+      async stopPolling(state, actions) {
+        if (!isServer() && state.sync.interval > -1) {
+          clearInterval(state.sync.interval);
+          actions.sync.setInterval(-1);
+          console.log("[SW] [APP] Stopped polling");
         }
       },
       async sync(state, actions) {
         if (state.sync.registration && state.auth.session) {
+          console.log("[SW] [APP] Sync started");
           await actions.sync.storeSession();
           actions.notes.fetchNotes();
           state.sync.registration.sync.register("sync-notes");

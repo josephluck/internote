@@ -47,6 +47,7 @@ export interface Theme {
   toolbarButtonHoverText: string;
   toolbarButtonInactiveBackground: string;
   toolbarButtonInactiveText: string;
+  settingsMenuDescriptionText: string;
 }
 
 export const dark: Theme = {
@@ -97,7 +98,8 @@ export const dark: Theme = {
   toolbarButtonHoverBackground: "#19181B",
   toolbarButtonHoverText: "#FFFFFF",
   toolbarButtonInactiveBackground: "transparent",
-  toolbarButtonInactiveText: "#504D5D"
+  toolbarButtonInactiveText: "#504D5D",
+  settingsMenuDescriptionText: "#999999"
 };
 
 export const light: Theme = {
@@ -148,7 +150,8 @@ export const light: Theme = {
   toolbarButtonHoverBackground: "#FFFFFF",
   toolbarButtonHoverText: "#000000",
   toolbarButtonInactiveBackground: "transparent",
-  toolbarButtonInactiveText: "#A79FAC"
+  toolbarButtonInactiveText: "#A79FAC",
+  settingsMenuDescriptionText: "#444444"
 };
 
 export interface ColorThemeWithName {

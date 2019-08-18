@@ -18,7 +18,8 @@ const validator = validateRequestBody<Preferences>({
   fontTheme: [],
   distractionFree: [],
   voice: [],
-  outlineShowing: []
+  outlineShowing: [],
+  offlineSync: []
 });
 
 const update: UpdateHandler<Preferences> = async (event, _ctx, callback) => {

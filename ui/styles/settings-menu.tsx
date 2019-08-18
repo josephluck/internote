@@ -10,12 +10,17 @@ import {
   faFont,
   faEye,
   faMicrophone,
-  faSearch
+  faSearch,
+  faSync
 } from "@fortawesome/free-solid-svg-icons";
-import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuItem,
+  DropdownMenuSpacer
+} from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { size } from "../theming/symbols";
+import { size, font, spacing } from "../theming/symbols";
 import { ListMenuControl } from "./list-menu-control";
 import { ExpandingIconButton } from "./expanding-icon-button";
 import { Shortcut } from "./shortcuts";
@@ -28,6 +33,13 @@ const SettingsMenuWrap = styled(DropdownMenu)`
 
 const Menu = styled(MenuControl)`
   display: flex;
+`;
+
+const Description = styled.p`
+  font-size: ${font._12.size};
+  line-height: ${font._16.lineHeight};
+  color: ${props => props.theme.settingsMenuDescriptionText};
+  padding: 0 ${spacing._1} ${spacing._0_25};
 `;
 
 export function SettingsMenu({
@@ -45,12 +57,17 @@ export function SettingsMenu({
   const outlineShowing = useTwineState(
     state => state.preferences.outlineShowing
   );
+  const offlineSync = useTwineState(state => state.preferences.offlineSync);
+  const offlineSyncPreferenceSaving = useTwineState(
+    state => state.sync.loading.setOfflineSync
+  );
   const voice = useTwineState(state => state.preferences.voice);
   const {
     setColorTheme,
     setFontTheme,
     setDistractionFree,
     setOutlineShowing,
+    setOfflineSync,
     setVoice,
     signOutConfirmation,
     deleteAccountConfirmation
@@ -59,6 +76,7 @@ export function SettingsMenu({
     setFontTheme: actions.preferences.setFontTheme,
     setDistractionFree: actions.preferences.setDistractionFree,
     setOutlineShowing: actions.preferences.setOutlineShowing,
+    setOfflineSync: actions.sync.setOfflineSync,
     setVoice: actions.preferences.setVoice,
     signOutConfirmation: actions.auth.signOutConfirmation,
     deleteAccountConfirmation: actions.auth.deleteAccountConfirmation
@@ -249,7 +267,7 @@ export function SettingsMenu({
                     >
                       Off
                       <Shortcut
-                        id="outline-free-off"
+                        id="outline-mode-off"
                         description="Turn off outline mode"
                         keyCombo="n"
                         preventOtherShortcuts={true}
@@ -268,7 +286,7 @@ export function SettingsMenu({
                     >
                       On
                       <Shortcut
-                        id="outline-free-on"
+                        id="outline-mode-on"
                         description="Turn on outline mode"
                         keyCombo="y"
                         preventOtherShortcuts={true}
@@ -310,6 +328,80 @@ export function SettingsMenu({
                       </DropdownMenuItem>
                     ))}
                   </>
+                ),
+                spacerAfter: false
+              },
+              {
+                title: "Offline sync",
+                shortcut: "s",
+                item: list => (
+                  <DropdownMenuItem
+                    icon={<FontAwesomeIcon icon={faSync} />}
+                    onClick={() => {
+                      list.toSubMenu("Offline sync");
+                    }}
+                  >
+                    Offline sync
+                  </DropdownMenuItem>
+                ),
+                subMenu: () => (
+                  <div>
+                    <Description>
+                      Offline sync isn't ready for prime time yet. You might
+                      loose your notes, overwrite things by mistake and
+                      Internote might completely stop working if you turn it
+                      on...
+                    </Description>
+                    <DropdownMenuSpacer />
+                    <DropdownMenuItem
+                      onClick={() => setOfflineSync(false)}
+                      icon={
+                        !offlineSync ? (
+                          <FontAwesomeIcon
+                            icon={
+                              offlineSyncPreferenceSaving ? faSync : faCheck
+                            }
+                            spin={offlineSyncPreferenceSaving}
+                          />
+                        ) : null
+                      }
+                    >
+                      Off
+                      <Shortcut
+                        id="offline-sync-off"
+                        description="Turn off offline sync"
+                        keyCombo="n"
+                        preventOtherShortcuts={true}
+                        disabled={!offlineSync}
+                        callback={() => setOfflineSync(false)}
+                        priority={shortcutPriorities.settingsOption}
+                      />
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => setOfflineSync(true)}
+                      icon={
+                        offlineSync ? (
+                          <FontAwesomeIcon
+                            icon={
+                              offlineSyncPreferenceSaving ? faSync : faCheck
+                            }
+                            spin={offlineSyncPreferenceSaving}
+                          />
+                        ) : null
+                      }
+                    >
+                      Yes, I understand the risks
+                      <Shortcut
+                        id="offline-sync-on"
+                        description="Turn on offline sync"
+                        keyCombo="y"
+                        preventOtherShortcuts={true}
+                        disabled={offlineSync}
+                        callback={() => setOfflineSync(true)}
+                        priority={shortcutPriorities.settingsOption}
+                      />
+                    </DropdownMenuItem>
+                  </div>
                 ),
                 spacerAfter: true
               },

@@ -17,6 +17,7 @@ interface OwnState {
   distractionFree: boolean;
   voice: AvailableVoice;
   outlineShowing: boolean;
+  offlineSync: boolean;
 }
 
 interface OwnReducers {
@@ -27,6 +28,7 @@ interface OwnReducers {
   setDistractionFree: Twine.Reducer<OwnState, boolean>;
   setVoice: Twine.Reducer<OwnState, AvailableVoice>;
   setOutlineShowing: Twine.Reducer<OwnState, boolean>;
+  setOfflineSync: Twine.Reducer<OwnState, boolean>;
 }
 
 interface OwnEffects {
@@ -41,7 +43,8 @@ function defaultState(): OwnState {
     fontThemes,
     distractionFree: false,
     voice: "Male",
-    outlineShowing: false
+    outlineShowing: false,
+    offlineSync: false
   };
 }
 
@@ -72,12 +75,19 @@ export function model(api: Api): Model {
       setOutlineShowing: (state, outlineShowing) => ({
         ...state,
         outlineShowing
+      }),
+      setOfflineSync: (state, offlineSync) => ({
+        ...state,
+        offlineSync
       })
     },
     effects: {
       async get(state, actions) {
         const result = await api.preferences.get(state.auth.session);
         result.map(preferences => {
+          if (preferences.offlineSync) {
+            actions.sync.register();
+          }
           actions.preferences.setPreferences({
             ...preferences,
             colorTheme:
