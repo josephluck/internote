@@ -53,11 +53,19 @@ export function makeApi({ host, region }: { host: string; region: string }) {
       body: body ? JSON.stringify(body) : undefined
     });
     if (!response.ok) {
-      const json = await response.json();
-      return Err(json);
+      try {
+        const json = await response.json();
+        return Err(json);
+      } catch (err) {
+        return Err("Response error was not JSON");
+      }
     }
-    const json = await response.json();
-    return Ok(json);
+    try {
+      const json = await response.json();
+      return Ok(json);
+    } catch (err) {
+      return Err("Response error was not JSON");
+    }
   };
 
   return {
