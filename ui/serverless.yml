@@ -3,7 +3,6 @@ service: internote-ui
 plugins:
   - serverless-plugin-monorepo
   - serverless-plugin-include-dependencies
-  - serverless-domain-manager
   - serverless-nextjs-plugin
 
 custom:
@@ -14,13 +13,6 @@ custom:
   assetsBucketNames:
     prod: internote-prod-ui-static
     dev: internote-dev-ui-static
-  customDomain:
-    basePath: ""
-    domainName: ${self:custom.domains.${self:custom.stage}}
-    certificateName: "internote.app"
-    stage: "${self:custom.stage}"
-    createRoute53Record: true
-    endpointType: "regional"
   serverless-nextjs:
     createAssetBucket: true
     assetsBucketName: ${self:custom.assetsBucketNames.${self:custom.stage}}
