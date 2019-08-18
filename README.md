@@ -119,7 +119,7 @@ Feel free to request new features too, but please bear in mind that this is a pe
 The domain names for deployment are managed manually through Route53 and AWS Certificate Manager.
 
 - Create a custom domain name in Route53
-- Create a SSL certificate in AWS Certificate Manager
+- Create a SSL certificate in AWS Certificate Manager. The certificate has to be in the _es-east-1_ AWS region for it to work with CloudFront.
 - Link up the SSL certificate with the domain name in [API Gateway](https://eu-west-1.console.aws.amazon.com/apigateway/home?region=eu-west-1#/custom-domain-names)
 - Grab the SSL certificate ARN from AWS Certificate Manager and enter it in to the `cloudFront` configuration in `ui/serverless.yml`
 

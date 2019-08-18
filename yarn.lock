@@ -8215,10 +8215,10 @@ neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-next-aws-lambda@^2.0.5-alpha.0:
-  version "2.0.5-alpha.0"
-  resolved "https://registry.yarnpkg.com/next-aws-lambda/-/next-aws-lambda-2.0.5-alpha.0.tgz#09c6893190630356917f45b45181f11c1906ac35"
-  integrity sha512-LvESaEK4XO2E9TPdwrXGO4LK7gyj0g8d9tdScQlFLXuE4W6p76GQxQCxJZGc8rPHG4yqtZYXu/ZO/X6imo4iMA==
+next-aws-lambda@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/next-aws-lambda/-/next-aws-lambda-2.3.2.tgz#35ab409a6410248adc0d25414c5dc7d51f3fab7c"
+  integrity sha512-o+Ynh02On7pOjFMRhUOJ8Jd3SzByYQ78YGF/0BheHTRNcUjs7GGI8OYvpp5XgK3R232KuPBjCl11oqOivEF08A==
 
 next-plugin-custom-babel-config@^1.0.2:
   version "1.0.2"
@@ -10147,10 +10147,10 @@ serverless-dotenv-plugin@^2.1.1:
     dotenv "^4.0.0"
     dotenv-expand "^4.0.1"
 
-serverless-nextjs-plugin@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/serverless-nextjs-plugin/-/serverless-nextjs-plugin-2.3.1.tgz#f1b4bb3b7c884abeea878966a3c2d4fd3339a498"
-  integrity sha512-yIaDj3MwEKTaO/+3yHpArHaTYRpwCQJ6nA8VUClLwrtHPKkpfQfLv/BYdFxAnTheTNsWFcPd940dE4nxXNO5WA==
+serverless-nextjs-plugin@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/serverless-nextjs-plugin/-/serverless-nextjs-plugin-2.3.2.tgz#0bc7587be1f8d8db584cdd56525dcb037735bdf1"
+  integrity sha512-ggqeRJwSiwptN7iX903SVDjW00ovSdQqR5+ipD1VUnZEzNyOE+r+60KkTjwpUFi98T22+o5E0rvsXCp3iGUbfA==
   dependencies:
     "@mapbox/s3urls" "^1.5.3"
     chalk "^2.4.2"
@@ -10161,7 +10161,7 @@ serverless-nextjs-plugin@^2.3.1:
     lodash.clonedeep "^4.5.0"
     lodash.merge "^4.6.1"
     mime "^2.4.0"
-    next-aws-lambda "^2.0.5-alpha.0"
+    next-aws-lambda "^2.3.2"
 
 serverless-plugin-include-dependencies@^3.2.1:
   version "3.2.1"

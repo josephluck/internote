@@ -11,6 +11,9 @@ custom:
   domains:
     prod: internote.app
     dev: dev.internote.app
+  assetsBucketNames:
+    prod: internote-prod-ui-static
+    dev: internote-dev-ui-static
   customDomain:
     basePath: ""
     domainName: ${self:custom.domains.${self:custom.stage}}
@@ -19,14 +22,16 @@ custom:
     createRoute53Record: true
     endpointType: "regional"
   serverless-nextjs:
-    createAssetBucket: true # TODO: PR to https://github.com/danielcondemarin/serverless-nextjs-plugin to check for existence of bucket before creating it
+    createAssetBucket: true
+    assetsBucketName: ${self:custom.assetsBucketNames.${self:custom.stage}}
     cloudFront:
       Properties:
         DistributionConfig:
           Aliases:
             - ${self:custom.domains.${self:custom.stage}}
           ViewerCertificate:
-            AcmCertificateArn: arn:aws:acm:eu-west-1:822567739604:certificate/36c91c47-2303-4f85-b4b4-f4742b55748d
+            AcmCertificateArn: arn:aws:acm:us-east-1:822567739604:certificate/cba4ce61-ca15-4d6b-8eac-3569e4eae88b
+            SslSupportMethod: sni-only
 
 provider:
   name: aws

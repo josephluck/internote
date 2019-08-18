@@ -70,7 +70,7 @@ export function model(_api: Api): Model {
         }
       },
       async sync(state, actions) {
-        if (state.sync.registration) {
+        if (state.sync.registration && state.auth.session) {
           await actions.sync.storeSession();
           actions.notes.fetchNotes();
           state.sync.registration.sync.register("sync-notes");

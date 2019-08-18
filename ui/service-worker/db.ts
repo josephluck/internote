@@ -141,7 +141,6 @@ export type NotesDbInterface = ReturnType<typeof makeNotesDbInterface>;
 export function makeAuthDbInterface() {
   async function get() {
     const all = await db.auth.toArray();
-    // TODO: refresh the token here so it's forever fresh
     return all[0];
   }
 

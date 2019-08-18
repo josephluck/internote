@@ -18,7 +18,7 @@
     "deploy:prod:app": "NODE_ENV=production STAGE=prod serverless deploy --stage prod"
   },
   "dependencies": {
-    "serverless-nextjs-plugin": "^2.3.1"
+    "serverless-nextjs-plugin": "^2.3.2"
   },
   "devDependencies": {
     "@element-motion/core": "^2.11.0",

@@ -47,6 +47,10 @@ export function makeServiceWorkerApi(
    * Ensure that the same noteId is used so that updating notes that are
    * not yet in the index are persisted with the same noteId as on the
    * server so that when syncing, the PUT request works as expected.
+   * TODO: this won't work if the user creates a note in the interface
+   * (this creates a temporary UUID in the service worker), then syncs
+   * (this creates the final UUID on the server) as there are now two
+   * UUIDs for the same note without any way of marrying them up.
    */
   const updateNoteInIndex = async (
     noteId: string,
@@ -56,7 +60,7 @@ export function makeServiceWorkerApi(
     if (note) {
       const updates = marshallNoteToNoteIndex(body, {
         state: "UPDATE",
-        createOnServer: false,
+        createOnServer: note.createOnServer || false,
         synced: false
       });
       await notesDb.update(noteId, {
@@ -145,7 +149,7 @@ export function makeServiceWorkerApi(
    * of the note in the index.
    */
   const syncNotesFromIndexToServer = async () => {
-    const session = await authDb.get(); // TODO: get session from IndexDB
+    const session = await authDb.get();
 
     if (session) {
       const noteIndexesToCreate = await getNotesToSync(
