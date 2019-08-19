@@ -1,7 +1,11 @@
 import React, { useCallback, useRef } from "react";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
-import { Editor as SlateEditor } from "slate-react";
+import {
+  Editor as SlateEditor,
+  RenderBlockProps,
+  RenderMarkProps
+} from "slate-react";
 import { SchemaProperties, Block } from "slate";
 import {
   getValueOrDefault,
@@ -59,10 +63,24 @@ const DEFAULT_NODE = "paragraph";
 const schema: SchemaProperties = {
   inlines: {
     emoji: {
-      isVoid: true
+      isVoid: true,
+      data: {
+        code: code => !!code && code.length > 0
+      }
     },
     tag: {
-      isVoid: true
+      isVoid: true,
+      data: {
+        tag: tag => !!tag && tag.length > 0
+      }
+    }
+  },
+  blocks: {
+    ide: {
+      isVoid: true,
+      data: {
+        content: _content => true
+      }
     }
   }
 };
@@ -300,7 +318,8 @@ export function InternoteEditor({
   );
 
   /**
-   * Mouse down (should prevent focus mode scroll)
+   * Mouse down - should prevent focus mode scroll so that user
+   * can drag to select text without the scroll going whacky.
    */
   React.useEffect(() => {
     const onMouseDown = () => (isMouseDown.current = true);
@@ -471,72 +490,77 @@ export function InternoteEditor({
   /**
    * Rendering
    */
-  const renderBlock = ({ attributes, children, node, isSelected, key }) => {
-    const fadeClassName = isSelected ? "node-focused" : "node-unfocused";
-    const preventForBlocks: (BlockType | BlockName)[] = [
+  const renderBlock = (props: RenderBlockProps) => {
+    const fadeClassName = props.isSelected ? "node-focused" : "node-unfocused";
+    type NodeTypes = BlockType | BlockName;
+    const preventForBlocks: NodeTypes[] = [
       "list-item",
       "bulleted-list",
       "numbered-list"
     ];
     const shouldFocusNode =
       !hasSelection(value) &&
-      !preventForBlocks.includes(node.type) &&
-      isSelected &&
-      key !== focusedNodeKey.current;
+      !preventForBlocks.includes(props.node.type as NodeTypes) &&
+      props.isSelected &&
+      props.key !== focusedNodeKey.current;
     if (shouldFocusNode) {
-      focusedNodeKey.current = key;
-      // requestAnimationFrame
+      focusedNodeKey.current = props.key;
       handleFocusModeScroll();
     }
-    switch ((node as any).type) {
+    switch (props.node.type as NodeTypes) {
       case "paragraph":
         return (
-          <p {...attributes} className={fadeClassName}>
-            {children}
+          <p {...props.attributes} className={fadeClassName}>
+            {props.children}
           </p>
         );
       case "block-quote":
         return (
-          <blockquote {...attributes} className={fadeClassName}>
-            {children}
+          <blockquote {...props.attributes} className={fadeClassName}>
+            {props.children}
           </blockquote>
         );
       case "bulleted-list":
-        return <ul {...attributes}>{children}</ul>;
+        return <ul {...props.attributes}>{props.children}</ul>;
       case "numbered-list":
-        return <ol {...attributes}>{children}</ol>;
+        return <ol {...props.attributes}>{props.children}</ol>;
       case "heading-one":
         return (
-          <h1 {...attributes} className={fadeClassName}>
-            {children}
+          <h1 {...props.attributes} className={fadeClassName}>
+            {props.children}
           </h1>
         );
       case "heading-two":
         return (
-          <h2 {...attributes} className={fadeClassName}>
-            {children}
+          <h2 {...props.attributes} className={fadeClassName}>
+            {props.children}
           </h2>
         );
       case "list-item":
         return (
-          <li {...attributes} className={fadeClassName}>
-            {children}
+          <li {...props.attributes} className={fadeClassName}>
+            {props.children}
           </li>
         );
+      case "ide":
+        return <Ide {...props} className={fadeClassName} />;
     }
   };
 
-  const renderMark = (props, next) => {
-    const { children, mark, attributes } = props;
-    switch (mark.type as MarkType) {
+  const renderMark = (
+    props: RenderMarkProps,
+    _editor: any,
+    next: () => any
+  ) => {
+    switch (props.mark.type as MarkType) {
       case "bold":
-        return <strong {...attributes}>{children}</strong>;
+        return <strong {...props.attributes}>{props.children}</strong>;
       case "code":
-        return <code {...attributes}>{children}</code>;
+        return <code {...props.attributes}>{props.children}</code>;
       case "italic":
-        return <em {...attributes}>{children}</em>;
+        return <em {...props.attributes}>{props.children}</em>;
       case "underlined":
-        return <u {...attributes}>{children}</u>;
+        return <u {...props.attributes}>{props.children}</u>;
       default:
         return next();
     }
@@ -618,5 +642,34 @@ export function InternoteEditor({
         value={value}
       />
     </Wrap>
+  );
+}
+
+function Ide({
+  className,
+  node,
+  editor,
+  ...props
+}: {
+  className?: string;
+} & RenderBlockProps) {
+  console.log(props);
+  const onChange = useCallback((content: any) => {
+    editor.setNodeByKey(node.key, {
+      object: "block",
+      type: "ide",
+      data: { content }
+    });
+  }, []);
+
+  return (
+    <textarea
+      {...props.attributes}
+      className={className}
+      style={{ background: "white" }}
+      onChange={onChange}
+    >
+      {node.data.get("content")}
+    </textarea>
   );
 }

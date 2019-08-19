@@ -148,11 +148,12 @@ export function Toolbar({
           {renderBlockButton("heading-two", 2)}
           {renderBlockButton("numbered-list", 3)}
           {renderBlockButton("bulleted-list", 4)}
-          {renderMarkButton("code", 5)}
+          {renderBlockButton("ide", 5)}
           {renderBlockButton("block-quote", 6)}
-          {renderMarkButton("bold", 7)}
-          {renderMarkButton("italic", 8)}
-          {renderMarkButton("underlined", 9)}
+          {renderMarkButton("code", 7)}
+          {renderMarkButton("bold", 8)}
+          {renderMarkButton("italic", 9)}
+          {renderMarkButton("underlined", 0)}
           <ButtonSpacer small>
             <EmojiToggle
               isActive={isEmojiShortcut || isEmojiButtonPressed}

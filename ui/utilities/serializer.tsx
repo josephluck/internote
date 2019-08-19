@@ -15,4 +15,5 @@ export type BlockType =
   | "heading-two"
   | "block-quote"
   | "numbered-list"
-  | "bulleted-list";
+  | "bulleted-list"
+  | "ide";
