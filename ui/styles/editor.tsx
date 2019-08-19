@@ -646,6 +646,7 @@ export function InternoteEditor({
 }
 
 // TODO: https://github.com/ianstormtaylor/slate/issues/2504
+// also: https://github.com/ianstormtaylor/slate/blob/master/examples/embeds/video.js#L30
 function Ide({
   className,
   node,
