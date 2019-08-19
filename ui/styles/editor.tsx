@@ -645,6 +645,7 @@ export function InternoteEditor({
   );
 }
 
+// TODO: https://github.com/ianstormtaylor/slate/issues/2504
 function Ide({
   className,
   node,
@@ -663,13 +664,12 @@ function Ide({
   }, []);
 
   return (
-    <textarea
+    <input
       {...props.attributes}
       className={className}
       style={{ background: "white" }}
       onChange={onChange}
-    >
-      {node.data.get("content")}
-    </textarea>
+      value={node.data.get("content")}
+    />
   );
 }
