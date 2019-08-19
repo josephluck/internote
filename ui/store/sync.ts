@@ -83,14 +83,13 @@ export function model(_api: Api): Model {
           }
         });
       },
-      async unregister(state, actions) {
-        if (state.sync.registration) {
-          await state.sync.registration.unregister();
-          actions.sync.setRegistration(null);
-          console.log("[SW] [APP] Unregistered");
-        } else {
-          return Promise.resolve();
-        }
+      async unregister(_state, actions) {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(
+          registrations.map(registration => registration.unregister())
+        );
+        actions.sync.setRegistration(null);
+        console.log("[SW] [APP] Unregistered");
       },
       async setOfflineSync(_state, actions, on) {
         actions.preferences.setOfflineSync(on);
