@@ -19,6 +19,7 @@ function withExternals(nextConfig) {
   });
 }
 
+// TODO: https://github.com/Microsoft/monaco-editor-webpack-plugin/issues/32#issuecomment-447618998
 function withMonacoEditor(nextConfig) {
   return Object.assign({}, nextConfig, {
     webpack(config, options) {
@@ -27,7 +28,11 @@ function withMonacoEditor(nextConfig) {
         globalObject: "self"
       };
       config.plugins = config.plugins || [];
-      config.plugins.push(new MonacoWebpackPlugin());
+      config.plugins.push(
+        new MonacoWebpackPlugin({
+          languages: ["javascript", "typescript"]
+        })
+      );
       if (typeof nextConfig.webpack === "function") {
         return nextConfig.webpack(config, options);
       }
