@@ -2,6 +2,8 @@ const path = require("path");
 const withTranspile = require("next-plugin-transpile-modules");
 const withDotenv = require("./with-dotenv");
 const withCustomBabelConfig = require("next-plugin-custom-babel-config");
+const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
+const withCss = require("@zeit/next-css");
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -17,15 +19,40 @@ function withExternals(nextConfig) {
   });
 }
 
+function withMonacoEditor(nextConfig) {
+  return Object.assign({}, nextConfig, {
+    webpack(config, options) {
+      config.output = {
+        ...config.output,
+        globalObject: "self"
+      };
+      config.plugins = config.plugins || [];
+      config.plugins.push(new MonacoWebpackPlugin());
+      if (typeof nextConfig.webpack === "function") {
+        return nextConfig.webpack(config, options);
+      }
+      return config;
+    }
+  });
+}
+
 module.exports = withExternals(
   withCustomBabelConfig(
     withDotenv(
-      withTranspile({
-        transpileModules: ["@internote"],
-        babelConfigFile: path.resolve("./babel.config.js"),
-        target: "serverless",
-        experimental: { publicDirectory: true }
-      })
+      withTranspile(
+        withMonacoEditor(
+          withCss({
+            transpileModules: [
+              "@internote",
+              "monaco-editor",
+              "react-monaco-editor"
+            ],
+            babelConfigFile: path.resolve("./babel.config.js"),
+            target: "serverless",
+            experimental: { publicDirectory: true }
+          })
+        )
+      )
     )
   )
 );

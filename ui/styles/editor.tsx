@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import {
@@ -46,6 +46,11 @@ import {
   InternoteSlateEditorPropsWithRef,
   InternoteSlateEditorProps
 } from "./slate";
+
+const MonacoEditor = dynamic(
+  import("react-monaco-editor/src/editor").then(module => module.default),
+  { ssr: false }
+) as any;
 
 const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
   import("./slate").then(mod => mod.Editor),
@@ -656,21 +661,24 @@ function Ide({
   className?: string;
 } & RenderBlockProps) {
   console.log(props);
-  const onChange = useCallback((content: any) => {
+  const [code, setCode] = useState(node.data.get("content"));
+  const onChange = useCallback((changes: any) => {
+    setCode(changes);
     editor.setNodeByKey(node.key, {
       object: "block",
       type: "ide",
-      data: { content }
+      data: { content: changes }
     });
   }, []);
 
   return (
-    <input
-      {...props.attributes}
-      className={className}
-      style={{ background: "white" }}
-      onChange={onChange}
-      value={node.data.get("content")}
-    />
+    <div className={className}>
+      <MonacoEditor
+        onChange={onChange}
+        value={code}
+        language="typescript"
+        theme="vs-dark"
+      />
+    </div>
   );
 }
