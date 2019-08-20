@@ -30,7 +30,8 @@ function withMonacoEditor(nextConfig) {
       config.plugins = config.plugins || [];
       config.plugins.push(
         new MonacoWebpackPlugin({
-          languages: ["javascript", "typescript"]
+          languages: ["javascript", "typescript"],
+          output: "../static" // NB: this places the webworkers for monaco into the static directory ready to be served
         })
       );
       if (typeof nextConfig.webpack === "function") {

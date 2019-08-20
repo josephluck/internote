@@ -10,3 +10,5 @@ node_modules
 ui/public/service-worker.js
 env.json
 sls-next-build
+*.worker.js
+*.worker.js.map

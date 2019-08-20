@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import zenscroll from "zenscroll";
 import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import {
@@ -47,11 +47,6 @@ import {
   InternoteSlateEditorProps
 } from "./slate";
 
-const MonacoEditor = dynamic(
-  import("react-monaco-editor/src/editor").then(module => module.default),
-  { ssr: false }
-) as any;
-
 const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
   import("./slate").then(mod => mod.Editor),
   {
@@ -62,6 +57,8 @@ const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
 const Editor = React.forwardRef<unknown, InternoteSlateEditorProps>(
   (props, ref) => <DynamicEditor {...props} forwardedRef={ref} />
 );
+
+const Ide = dynamic(import("./ide").then(module => module.Ide), { ssr: false });
 
 const DEFAULT_NODE = "paragraph";
 
@@ -647,38 +644,5 @@ export function InternoteEditor({
         value={value}
       />
     </Wrap>
-  );
-}
-
-// TODO: https://github.com/ianstormtaylor/slate/issues/2504
-// also: https://github.com/ianstormtaylor/slate/blob/master/examples/embeds/video.js#L30
-function Ide({
-  className,
-  node,
-  editor,
-  ...props
-}: {
-  className?: string;
-} & RenderBlockProps) {
-  console.log(props);
-  const [code, setCode] = useState(node.data.get("content"));
-  const onChange = useCallback((changes: any) => {
-    setCode(changes);
-    editor.setNodeByKey(node.key, {
-      object: "block",
-      type: "ide",
-      data: { content: changes }
-    });
-  }, []);
-
-  return (
-    <div className={className}>
-      <MonacoEditor
-        onChange={onChange}
-        value={code}
-        language="typescript"
-        theme="vs-dark"
-      />
-    </div>
   );
 }

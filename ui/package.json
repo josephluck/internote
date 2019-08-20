@@ -6,6 +6,7 @@
   "license": "ISC",
   "scripts": {
     "dev": "next -p 3000",
+    "build": "next build",
     "test": "jest",
     "test:tsc": "tsc --noEmit",
     "deploy:dev": "yarn deploy:dev:create-service-worker && yarn deploy:dev:app",
