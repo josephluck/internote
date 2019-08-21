@@ -224,6 +224,8 @@ export const isCtrlHotKey = (e: Event) => {
 export const isEnterHotKey = isKeyHotkey("enter");
 export const isRightHotKey = isKeyHotkey("right");
 export const isLeftHotKey = isKeyHotkey("left");
+export const isUpHotKey = isKeyHotkey("up");
+export const isDownHotKey = isKeyHotkey("down");
 export const isSpaceHotKey = isKeyHotkey("space");
 export const isBackspaceHotKey = isKeyHotkey("backspace");
 

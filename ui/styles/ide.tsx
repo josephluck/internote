@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { RenderBlockProps } from "slate-react";
 import { useState, useCallback } from "react";
+import { EditorDidMount } from "react-monaco-editor";
 import MonacoEditor from "react-monaco-editor/src/editor";
+import * as MonacoEditorApi from "monaco-editor/esm/vs/editor/editor.api";
+import { isUpHotKey, isDownHotKey } from "../utilities/editor";
 
 // import "monaco-editor/esm/vs/editor/editor.api";
 // await import("monaco-editor/esm/vs/editor/editor.api");
@@ -19,6 +22,45 @@ export function Ide({
 } & RenderBlockProps) {
   console.log(props);
   const [code, setCode] = useState(node.data.get("content"));
+
+  const monacoEditor = useRef<MonacoEditorApi.editor.IStandaloneCodeEditor>(
+    null
+  );
+  const monacoInstance = useRef<any>(null);
+
+  const editorDidMount: EditorDidMount = (editor, monaco) => {
+    monacoEditor.current = editor;
+    monacoInstance.current = monaco;
+  };
+
+  useEffect(() => {
+    if (monacoEditor.current) {
+      const keydownBinding = monacoEditor.current.onKeyDown(e => {
+        const position = monacoEditor.current.getPosition();
+        if (!position) {
+          return;
+        }
+        if (isUpHotKey(e.browserEvent)) {
+          if (position.lineNumber === 1) {
+            console.log("Focus previous block");
+          }
+          return;
+        }
+        if (isDownHotKey(e.browserEvent)) {
+          const lastLine = monacoEditor.current.getModel().getLinesContent()
+            .length;
+          if (position.lineNumber === lastLine) {
+            console.log("Focus next block");
+          }
+          return;
+        }
+      });
+      return () => {
+        keydownBinding.dispose();
+      };
+    }
+  }, [monacoEditor.current]);
+
   const onChange = useCallback((changes: any) => {
     setCode(changes);
     editor.setNodeByKey(node.key, {
@@ -36,6 +78,7 @@ export function Ide({
         language="typescript"
         theme="vs-dark"
         height="200"
+        editorDidMount={editorDidMount}
         options={{
           extraEditorClassName: "", // TODO styles
           minimap: {
