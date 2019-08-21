@@ -1,7 +1,7 @@
 import { Value, Node, Range, Point, Block } from "slate";
 import isKeyHotkey from "is-hotkey";
 import { Option, Some, None } from "space-lift";
-import { BlockType } from "./serializer";
+import { BlockType, BlockName } from "./serializer";
 import { hasLength } from "./string";
 import { defaultNote } from "@internote/notes-service/db/default-note";
 import { Editor } from "slate-react";
@@ -353,7 +353,9 @@ export function handleMarkdownBackspaceShortcut(
  * Maps markdown formatting options to slate formatting
  * options.
  */
-export function convertMarkdownToBlockOrMarkType(str: string) {
+export function convertMarkdownToBlockOrMarkType(
+  str: string
+): BlockType | BlockName {
   switch (str) {
     case "*":
     case "-":
@@ -365,6 +367,8 @@ export function convertMarkdownToBlockOrMarkType(str: string) {
       return "heading-one";
     case "##":
       return "heading-two";
+    case "```":
+      return "ide";
     default:
       return null;
   }
