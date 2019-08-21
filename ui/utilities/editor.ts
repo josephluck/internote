@@ -321,11 +321,14 @@ export function handleMarkdownFormatShortcut(
     return next();
   }
   event.preventDefault();
+  if (type !== "ide") {
+    // NB: if we don't do this, the editor gets removed immediately
+    editor.moveFocusToStartOfNode(startBlock).delete();
+  }
   editor.setBlocks(type);
   if (type === "list-item") {
     editor.wrapBlock("bulleted-list");
   }
-  editor.moveFocusToStartOfNode(startBlock).delete();
 }
 
 export function handleMarkdownBackspaceShortcut(

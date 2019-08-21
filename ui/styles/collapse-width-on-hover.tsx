@@ -50,8 +50,7 @@ export function CollapseWidthOnHover({
         }
       }
     }
-
-    window.requestAnimationFrame(handleWidth);
+    requestAnimationFrame(handleWidth);
   }, [collapsedContentRef, isHovering, collapsedContent]);
 
   const onHoverIn = () => setIsHovering(true);

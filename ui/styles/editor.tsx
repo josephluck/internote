@@ -494,22 +494,21 @@ export function InternoteEditor({
    */
   const renderBlock = (props: RenderBlockProps) => {
     const fadeClassName = props.isSelected ? "node-focused" : "node-unfocused";
-    type NodeTypes = BlockType | BlockName;
-    const preventForBlocks: NodeTypes[] = [
+    const preventForBlocks: BlockName[] = [
       "list-item",
       "bulleted-list",
       "numbered-list"
     ];
     const shouldFocusNode =
       !hasSelection(value) &&
-      !preventForBlocks.includes(props.node.type as NodeTypes) &&
+      !preventForBlocks.includes(props.node.type as BlockName) &&
       props.isSelected &&
       props.key !== focusedNodeKey.current;
     if (shouldFocusNode) {
       focusedNodeKey.current = props.key;
       handleFocusModeScroll();
     }
-    switch (props.node.type as NodeTypes) {
+    switch (props.node.type as BlockName) {
       case "paragraph":
         return (
           <p {...props.attributes} className={fadeClassName}>

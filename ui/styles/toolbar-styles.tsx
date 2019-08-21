@@ -66,9 +66,7 @@ export const ToolbarExpandedInner = styled.div`
   max-height: ${size.toolbarExpandedMaxHeight};
 `;
 
-export function renderToolbarIcon(
-  type: MarkType | BlockType | "outline"
-): React.ReactNode {
+export function renderToolbarIcon(type: MarkType | BlockType): React.ReactNode {
   if (type === "bold") {
     return <FontAwesomeIcon icon={faBold} />;
   } else if (type === "italic") {

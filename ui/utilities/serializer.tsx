@@ -1,12 +1,13 @@
 export type BlockName =
-  | "block-quote"
-  | "paragraph"
-  | "code"
   | "heading-one"
   | "heading-two"
-  | "list-item"
+  | "block-quote"
+  | "numbered-list"
   | "bulleted-list"
-  | "numbered-list";
+  | "ide"
+  | "paragraph"
+  | "code"
+  | "list-item";
 
 export type MarkType = "bold" | "italic" | "underlined" | "code";
 

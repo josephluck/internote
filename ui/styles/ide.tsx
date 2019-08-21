@@ -16,6 +16,7 @@ export function Ide({
   className,
   node,
   editor,
+  isFocused,
   ...props
 }: {
   className?: string;
@@ -60,6 +61,14 @@ export function Ide({
       };
     }
   }, [monacoEditor.current]);
+
+  useEffect(() => {
+    if (isFocused) {
+      requestAnimationFrame(() => {
+        monacoEditor.current.focus();
+      });
+    }
+  }, [isFocused, monacoEditor.current]);
 
   const onChange = useCallback((changes: any) => {
     setCode(changes);
