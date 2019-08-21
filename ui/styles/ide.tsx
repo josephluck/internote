@@ -7,7 +7,8 @@ import * as MonacoEditorApi from "monaco-editor/esm/vs/editor/editor.api";
 import {
   isUpHotKey,
   isDownHotKey,
-  isBackspaceHotKey
+  isBackspaceHotKey,
+  isShiftEnterHotKey
 } from "../utilities/editor";
 
 // import "monaco-editor/esm/vs/editor/editor.api";
@@ -43,6 +44,10 @@ export function Ide({
       const keydownBinding = monacoEditor.current.onKeyDown(e => {
         const position = monacoEditor.current.getPosition();
         if (!position) {
+          return;
+        }
+        if (isShiftEnterHotKey(e.browserEvent)) {
+          console.log("Break out of the editor in to a new line");
           return;
         }
         if (isBackspaceHotKey(e.browserEvent)) {

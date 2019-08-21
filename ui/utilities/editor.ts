@@ -228,6 +228,7 @@ export const isUpHotKey = isKeyHotkey("up");
 export const isDownHotKey = isKeyHotkey("down");
 export const isSpaceHotKey = isKeyHotkey("space");
 export const isBackspaceHotKey = isKeyHotkey("backspace");
+export const isShiftEnterHotKey = isKeyHotkey("shift+enter");
 
 export function isListNavigationShortcut(event: Event): boolean {
   return isRightHotKey(event) || isLeftHotKey(event) || isEnterHotKey(event);
