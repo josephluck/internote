@@ -1,6 +1,6 @@
 import * as React from "react";
 import App, { Container } from "next/app";
-import { font } from "../theming/symbols";
+import { font, borderRadius } from "../theming/symbols";
 import { injectTwine } from "../store";
 import { createGlobalStyle } from "styled-components";
 import Head from "next/head";
@@ -39,6 +39,20 @@ const GlobalStyles = createGlobalStyle`
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
     background: inherit;
+  }
+
+  .monaco-editor {
+    overflow: hidden;
+    border-radius: ${borderRadius._4};
+  }
+  .monaco-editor-background {
+    background: ${props => props.theme.codeBlockBackground} !important;
+  }
+  .monaco-editor .scroll-decoration {
+    display: none;
+  }
+  .monaco-editor .margin-view-overlays .current-line-margin {
+    border: 0 !important;
   }
 `;
 
