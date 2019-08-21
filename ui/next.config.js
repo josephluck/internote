@@ -27,6 +27,7 @@ function withMonacoEditor(nextConfig) {
         ...config.output,
         globalObject: "self"
       };
+
       config.plugins = config.plugins || [];
       config.plugins.push(
         new MonacoWebpackPlugin({
@@ -50,7 +51,7 @@ module.exports = withExternals(
           withCss({
             transpileModules: [
               "@internote",
-              "monaco-editor",
+              // "monaco-editor",
               "react-monaco-editor"
             ],
             babelConfigFile: path.resolve("./babel.config.js"),

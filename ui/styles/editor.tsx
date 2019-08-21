@@ -319,6 +319,25 @@ export function InternoteEditor({
     [editor.current]
   );
 
+  const focusPreviousBlock = useCallback(() => {
+    // TODO: would be good to preserve cursor column too
+    editor.current.moveToEndOfPreviousBlock();
+  }, [editor.current]);
+
+  const focusNextBlock = useCallback(() => {
+    // TODO: would be good to preserve cursor column too
+    editor.current.moveToEndOfNextBlock();
+  }, [editor.current]);
+
+  const addNewBlockAndFocus = useCallback(() => {
+    editor.current.insertBlock("paragraph");
+    editor.current.moveToEndOfNextBlock();
+  }, [editor.current]);
+
+  const destroyCurrentBlock = useCallback(() => {
+    editor.current.deleteCharBackward();
+  }, [editor.current]);
+
   /**
    * Mouse down - should prevent focus mode scroll so that user
    * can drag to select text without the scroll going whacky.
@@ -544,7 +563,16 @@ export function InternoteEditor({
           </li>
         );
       case "ide":
-        return <Ide {...props} className={fadeClassName} />;
+        return (
+          <Ide
+            {...props}
+            onFocusPrevious={focusPreviousBlock}
+            onFocusNext={focusNextBlock}
+            onBreakToNewLine={addNewBlockAndFocus}
+            onDestroy={destroyCurrentBlock}
+            className={fadeClassName}
+          />
+        );
     }
   };
 

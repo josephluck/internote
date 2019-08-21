@@ -10,6 +10,7 @@ import {
   isBackspaceHotKey,
   isShiftEnterHotKey
 } from "../utilities/editor";
+import { Node } from "slate";
 
 // import "monaco-editor/esm/vs/editor/editor.api";
 // await import("monaco-editor/esm/vs/editor/editor.api");
@@ -22,51 +23,56 @@ export function Ide({
   node,
   editor,
   isFocused,
-  ...props
+  onFocusNext,
+  onFocusPrevious,
+  onDestroy,
+  onBreakToNewLine
 }: {
   className?: string;
+  onFocusPrevious: (node: Node) => void;
+  onFocusNext: (node: Node) => void;
+  onDestroy: (node: Node) => void;
+  onBreakToNewLine: (node: Node) => void;
 } & RenderBlockProps) {
-  console.log(props);
   const [code, setCode] = useState(node.data.get("content"));
 
-  const monacoEditor = useRef<MonacoEditorApi.editor.IStandaloneCodeEditor>(
-    null
-  );
-  const monacoInstance = useRef<any>(null);
+  const monaco = useRef<MonacoEditorApi.editor.IStandaloneCodeEditor>(null);
 
-  const editorDidMount: EditorDidMount = (editor, monaco) => {
-    monacoEditor.current = editor;
-    monacoInstance.current = monaco;
+  const editorDidMount: EditorDidMount = editor => {
+    monaco.current = editor;
   };
 
   useEffect(() => {
-    if (monacoEditor.current) {
-      const keydownBinding = monacoEditor.current.onKeyDown(e => {
-        const position = monacoEditor.current.getPosition();
+    if (monaco.current) {
+      const keydownBinding = monaco.current.onKeyDown(e => {
+        const position = monaco.current.getPosition();
         if (!position) {
           return;
         }
         if (isShiftEnterHotKey(e.browserEvent)) {
-          console.log("Break out of the editor in to a new line");
+          console.log("onBreakToNewLine");
+          onBreakToNewLine(node);
           return;
         }
         if (isBackspaceHotKey(e.browserEvent)) {
-          if (monacoEditor.current.getModel().getValueLength() === 0) {
-            console.log("Destroy this editor");
+          if (monaco.current.getModel().getValueLength() === 0) {
+            console.log("onDestroy");
+            onDestroy(node);
           }
           return;
         }
         if (isUpHotKey(e.browserEvent)) {
           if (position.lineNumber === 1) {
-            console.log("Focus previous block");
+            console.log("onFocusPrevious");
+            onFocusPrevious(node);
           }
           return;
         }
         if (isDownHotKey(e.browserEvent)) {
-          const lastLine = monacoEditor.current.getModel().getLinesContent()
-            .length;
+          const lastLine = monaco.current.getModel().getLinesContent().length;
           if (position.lineNumber === lastLine) {
-            console.log("Focus next block");
+            console.log("onFocusNext");
+            onFocusNext(node);
           }
           return;
         }
@@ -75,15 +81,36 @@ export function Ide({
         keydownBinding.dispose();
       };
     }
-  }, [monacoEditor.current]);
+  }, [
+    monaco.current,
+    onDestroy,
+    onFocusNext,
+    onFocusPrevious,
+    onBreakToNewLine
+  ]);
+
+  // useEffect(() => {
+  //   if (monaco.current) {
+  //     const focusBinding = monaco.current.onDidFocusEditorText(() => {
+  //       onEditorFocussed();
+  //       requestAnimationFrame(() => {
+  //         monaco.current.focus();
+  //       });
+  //     });
+
+  //     return () => {
+  //       focusBinding.dispose();
+  //     };
+  //   }
+  // }, [monaco.current, onEditorFocussed]);
 
   useEffect(() => {
     if (isFocused) {
       requestAnimationFrame(() => {
-        monacoEditor.current.focus();
+        monaco.current.focus();
       });
     }
-  }, [isFocused, monacoEditor.current]);
+  }, [isFocused, monaco.current]);
 
   const onChange = useCallback((changes: any) => {
     setCode(changes);
@@ -114,6 +141,7 @@ export function Ide({
           contextmenu: false,
           formatOnType: true,
           codeLens: true,
+          lineNumbers: "off",
           folding: false,
           renderIndentGuides: false,
           renderLineHighlight: "gutter", // TODO: tweak this
@@ -128,25 +156,14 @@ export function Ide({
   );
 }
 
-// TODO: these paths aren't working quite right. Maybe need to be absolute paths?
-function getWorkerUrl(_workerId: string, label: string) {
-  switch (label) {
-    case "javascript":
-    case "typescript":
-      return "static/typescript.worker.js";
-    default:
-      return "static/editor.worker.js";
-  }
-}
-
-// TODO: these paths aren't working quite right. Maybe need to be absolute paths?
 (window as any).MonacoEnvironment = {
-  getWorkerUrl(workerId: string, label: string) {
-    const url = getWorkerUrl(workerId, label);
-    return `data:text/javascript;charset=utf-8,${encodeURIComponent(`                        
-                    self.MonacoEnvironment = {
-                      baseUrl: '/static'
-                    };
-                    importScripts('${url}');`)}`;
+  getWorkerUrl(_workerId: string, label: string) {
+    switch (label) {
+      case "javascript":
+      case "typescript":
+        return "/static/typescript.worker.js";
+      default:
+        return "/static/editor.worker.js";
+    }
   }
 };

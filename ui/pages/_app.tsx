@@ -54,6 +54,9 @@ const GlobalStyles = createGlobalStyle`
   .monaco-editor .margin-view-overlays .current-line-margin {
     border: 0 !important;
   }
+  .monaco-editor .decorationsOverviewRuler {
+    opacity: 0;
+  }
 `;
 
 export class Application extends App {
