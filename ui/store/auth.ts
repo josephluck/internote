@@ -166,6 +166,10 @@ export function model(_api: Api, auth: AuthApi): Model {
         });
       },
       async signOut(_state, actions) {
+        authStorage.removeSession();
+        actions.sync.unregister();
+        actions.preferences.resetState();
+        actions.auth.resetState();
         actions.notes.resetState();
         clearInterval(authInterval);
         if (!isServer()) {

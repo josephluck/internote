@@ -7,6 +7,17 @@ function makeExpiryDate(adjustmentInMs: number) {
   return new Date(Date.now() + adjustmentInMs);
 }
 
+const defaultSession: Session = {
+  idToken: "",
+  accessToken: "",
+  expires: 0,
+  refreshToken: "",
+  accessKeyId: "",
+  expiration: 0,
+  secretKey: "",
+  sessionToken: ""
+};
+
 export function cookieOptions(): CookieSetOptions {
   return {
     path: "/",
@@ -44,18 +55,13 @@ export function makeAuthStorage(
     });
   }
 
-  function getSession(): Session {
-    const defaultSession: Session = {
-      idToken: "",
-      accessToken: "",
-      expires: 0,
-      refreshToken: "",
-      accessKeyId: "",
-      expiration: 0,
-      secretKey: "",
-      sessionToken: ""
-    };
+  function removeSession() {
+    return Object.keys(defaultSession).map(key => {
+      removeItem(key as keyof Session);
+    });
+  }
 
+  function getSession(): Session {
     return Object.keys(defaultSession).reduce(
       (prev, key) => ({
         ...prev,
@@ -70,7 +76,8 @@ export function makeAuthStorage(
     getItem,
     removeItem,
     storeSession,
-    getSession
+    getSession,
+    removeSession
   };
 }
 
