@@ -4,7 +4,11 @@ import { useState, useCallback } from "react";
 import { EditorDidMount } from "react-monaco-editor";
 import MonacoEditor from "react-monaco-editor/src/editor";
 import * as MonacoEditorApi from "monaco-editor/esm/vs/editor/editor.api";
-import { isUpHotKey, isDownHotKey } from "../utilities/editor";
+import {
+  isUpHotKey,
+  isDownHotKey,
+  isBackspaceHotKey
+} from "../utilities/editor";
 
 // import "monaco-editor/esm/vs/editor/editor.api";
 // await import("monaco-editor/esm/vs/editor/editor.api");
@@ -39,6 +43,12 @@ export function Ide({
       const keydownBinding = monacoEditor.current.onKeyDown(e => {
         const position = monacoEditor.current.getPosition();
         if (!position) {
+          return;
+        }
+        if (isBackspaceHotKey(e.browserEvent)) {
+          if (monacoEditor.current.getModel().getValueLength() === 0) {
+            console.log("Destroy this editor");
+          }
           return;
         }
         if (isUpHotKey(e.browserEvent)) {
