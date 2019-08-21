@@ -45,7 +45,7 @@ const GlobalStyles = createGlobalStyle`
     overflow: hidden;
     border-radius: ${borderRadius._4};
   }
-  .monaco-editor-background {
+  .monaco-editor-background, .monaco-editor .margin {
     background: ${props => props.theme.codeBlockBackground} !important;
   }
   .monaco-editor .scroll-decoration {
