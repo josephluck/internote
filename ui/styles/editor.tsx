@@ -311,32 +311,54 @@ export function InternoteEditor({
   );
 
   const focusNode = useCallback(
-    (node: Block) => {
+    (node: Block, end: boolean = false) => {
       editor.current.moveToRangeOfNode(node);
-      editor.current.moveFocusToStartOfNode(node);
+      if (end) {
+        editor.current.moveStartToEndOfBlock();
+        editor.current.moveFocusToEndOfNode(node);
+      } else {
+        editor.current.moveFocusToStartOfNode(node);
+      }
       editor.current.focus();
     },
     [editor.current]
   );
 
-  const focusPreviousBlock = useCallback(() => {
-    // TODO: would be good to preserve cursor column too
-    editor.current.moveToEndOfPreviousBlock();
-  }, [editor.current]);
+  const focusPreviousBlock = useCallback(
+    (_: Block) => {
+      // TODO: would be good to preserve cursor column too
+      const previousBlock = valueRef.current.previousBlock;
+      focusNode(previousBlock, true);
+    },
+    [editor.current]
+  );
 
-  const focusNextBlock = useCallback(() => {
-    // TODO: would be good to preserve cursor column too
-    editor.current.moveToEndOfNextBlock();
-  }, [editor.current]);
+  const focusNextBlock = useCallback(
+    (_: Block) => {
+      // TODO: would be good to preserve cursor column too
+      const nextBlock = valueRef.current.nextBlock;
+      focusNode(nextBlock);
+    },
+    [editor.current]
+  );
 
-  const addNewBlockAndFocus = useCallback(() => {
-    editor.current.insertBlock("paragraph");
-    editor.current.moveToEndOfNextBlock();
-  }, [editor.current]);
+  const addNewBlockAndFocus = useCallback(
+    (_currentBlock: Block) => {
+      // TODO: this doesn't insert the block at the right place
+      // need to use valueRef.current somewhere.
+      editor.current.insertBlock("paragraph");
+      editor.current.moveFocusToEndOfNextBlock();
+    },
+    [editor.current]
+  );
 
-  const destroyCurrentBlock = useCallback(() => {
-    editor.current.deleteCharBackward();
-  }, [editor.current]);
+  const destroyCurrentBlock = useCallback(
+    (_currentBlock: Block) => {
+      editor.current.deleteCharBackward();
+      editor.current.focus();
+    },
+    [editor.current]
+  );
 
   /**
    * Mouse down - should prevent focus mode scroll so that user

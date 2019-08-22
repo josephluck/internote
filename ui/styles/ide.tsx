@@ -8,9 +8,11 @@ import {
   isUpHotKey,
   isDownHotKey,
   isBackspaceHotKey,
-  isShiftEnterHotKey
+  isShiftEnterHotKey,
+  isLeftHotKey,
+  isRightHotKey
 } from "../utilities/editor";
-import { Node } from "slate";
+import { Block } from "slate";
 
 // import "monaco-editor/esm/vs/editor/editor.api";
 // await import("monaco-editor/esm/vs/editor/editor.api");
@@ -29,10 +31,10 @@ export function Ide({
   onBreakToNewLine
 }: {
   className?: string;
-  onFocusPrevious: (node: Node) => void;
-  onFocusNext: (node: Node) => void;
-  onDestroy: (node: Node) => void;
-  onBreakToNewLine: (node: Node) => void;
+  onFocusPrevious: (node: Block) => void;
+  onFocusNext: (node: Block) => void;
+  onDestroy: (node: Block) => void;
+  onBreakToNewLine: (node: Block) => void;
 } & RenderBlockProps) {
   const [code, setCode] = useState(node.data.get("content"));
 
@@ -50,20 +52,27 @@ export function Ide({
           return;
         }
         if (isShiftEnterHotKey(e.browserEvent)) {
-          console.log("onBreakToNewLine");
+          e.browserEvent.preventDefault();
           onBreakToNewLine(node);
           return;
         }
         if (isBackspaceHotKey(e.browserEvent)) {
           if (monaco.current.getModel().getValueLength() === 0) {
-            console.log("onDestroy");
+            e.browserEvent.preventDefault();
             onDestroy(node);
           }
           return;
         }
         if (isUpHotKey(e.browserEvent)) {
           if (position.lineNumber === 1) {
-            console.log("onFocusPrevious");
+            e.browserEvent.preventDefault();
+            onFocusPrevious(node);
+          }
+          return;
+        }
+        if (isLeftHotKey(e.browserEvent)) {
+          if (position.lineNumber === 1 && position.column === 1) {
+            e.browserEvent.preventDefault();
             onFocusPrevious(node);
           }
           return;
@@ -71,7 +80,22 @@ export function Ide({
         if (isDownHotKey(e.browserEvent)) {
           const lastLine = monaco.current.getModel().getLinesContent().length;
           if (position.lineNumber === lastLine) {
-            console.log("onFocusNext");
+            e.browserEvent.preventDefault();
+            onFocusNext(node);
+          }
+          return;
+        }
+        if (isRightHotKey(e.browserEvent)) {
+          const lastLine = monaco.current.getModel().getLinesContent().length;
+          const lastColumn = monaco.current
+            .getModel()
+            .getLineLastNonWhitespaceColumn(lastLine);
+          const atLastLine = position.lineNumber === lastLine;
+          const atLastColumn =
+            position.column === lastColumn ||
+            (lastColumn === 0 && position.column === 1);
+          if (atLastLine && atLastColumn) {
+            e.browserEvent.preventDefault();
             onFocusNext(node);
           }
           return;
@@ -106,9 +130,9 @@ export function Ide({
 
   useEffect(() => {
     if (isFocused) {
-      requestAnimationFrame(() => {
-        monaco.current.focus();
-      });
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => monaco.current.focus())
+      );
     }
   }, [isFocused, monaco.current]);
 
