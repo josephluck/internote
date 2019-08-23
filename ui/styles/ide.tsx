@@ -13,12 +13,9 @@ import {
   isRightHotKey
 } from "../utilities/editor";
 import { Block } from "slate";
+import { throttle } from "lodash";
 
-// import "monaco-editor/esm/vs/editor/editor.api";
-// await import("monaco-editor/esm/vs/editor/editor.api");
-
-// TODO: https://github.com/ianstormtaylor/slate/issues/2504
-// also: https://github.com/ianstormtaylor/slate/blob/master/examples/embeds/video.js#L30
+const LINE_HEIGHT = 30;
 
 export function Ide({
   className,
@@ -38,7 +35,11 @@ export function Ide({
   onBreakToNewLine: (node: Block) => void;
   onClick: (node: Block) => void;
 } & RenderBlockProps) {
-  const [code, setCode] = useState(node.data.get("content"));
+  const content = node.data.get("content");
+  const [code, setCode] = useState(content);
+  const [height, setHeight] = useState(() =>
+    constrainToMaxHeight(content.split("\n").length * LINE_HEIGHT)
+  );
 
   const monaco = useRef<MonacoEditorApi.editor.IStandaloneCodeEditor>(null);
 
@@ -115,21 +116,6 @@ export function Ide({
     onBreakToNewLine
   ]);
 
-  // useEffect(() => {
-  //   if (monaco.current) {
-  //     const focusBinding = monaco.current.onDidFocusEditorText(() => {
-  //       onEditorFocussed();
-  //       requestAnimationFrame(() => {
-  //         monaco.current.focus();
-  //       });
-  //     });
-
-  //     return () => {
-  //       focusBinding.dispose();
-  //     };
-  //   }
-  // }, [monaco.current, onEditorFocussed]);
-
   useEffect(() => {
     if (isFocused) {
       requestAnimationFrame(() =>
@@ -147,6 +133,23 @@ export function Ide({
     });
   }, []);
 
+  useEffect(() => {
+    const resize = throttle(
+      () => {
+        requestAnimationFrame(() => {
+          const lines = monaco.current.getModel().getLinesContent().length;
+          setHeight(constrainToMaxHeight(lines * LINE_HEIGHT));
+        });
+      },
+      200,
+      { leading: true, trailing: true }
+    );
+    const resizeBinding = monaco.current.onDidChangeModelDecorations(resize);
+    return () => {
+      resizeBinding.dispose();
+    };
+  }, [monaco.current]);
+
   return (
     <div className={className} onClick={() => onClick(node)}>
       <MonacoEditor
@@ -154,7 +157,7 @@ export function Ide({
         value={code}
         language="typescript"
         theme="vs-dark"
-        height="200"
+        height={height}
         editorDidMount={editorDidMount}
         options={{
           extraEditorClassName: "", // TODO styles
@@ -193,3 +196,8 @@ export function Ide({
     }
   }
 };
+
+const MAX_HEIGHT = 300;
+
+const constrainToMaxHeight = (targetHeight: number) =>
+  targetHeight > MAX_HEIGHT ? MAX_HEIGHT : targetHeight;
