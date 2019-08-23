@@ -232,7 +232,10 @@ export function Toolbar({
                 />
               ) : isEmojiButtonPressed || isEmojiShortcut ? (
                 <EmojiList
-                  onEmojiSelected={insertEmoji}
+                  onEmojiSelected={(emoji, searchText) => {
+                    setIsEmojiButtonPressed(false);
+                    insertEmoji(emoji, searchText);
+                  }}
                   search={shortcutSearch
                     .flatMap(removeFirstLetterFromString)
                     .getOrElse("")}
