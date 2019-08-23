@@ -28,13 +28,15 @@ export function Ide({
   onFocusNext,
   onFocusPrevious,
   onDestroy,
-  onBreakToNewLine
+  onBreakToNewLine,
+  onClick
 }: {
   className?: string;
   onFocusPrevious: (node: Block) => void;
   onFocusNext: (node: Block) => void;
   onDestroy: (node: Block) => void;
   onBreakToNewLine: (node: Block) => void;
+  onClick: (node: Block) => void;
 } & RenderBlockProps) {
   const [code, setCode] = useState(node.data.get("content"));
 
@@ -146,7 +148,7 @@ export function Ide({
   }, []);
 
   return (
-    <div className={className}>
+    <div className={className} onClick={() => onClick(node)}>
       <MonacoEditor
         onChange={onChange}
         value={code}

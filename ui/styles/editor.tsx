@@ -310,7 +310,7 @@ export function InternoteEditor({
     [editor.current]
   );
 
-  const focusNode = useCallback(
+  const focusBlock = useCallback(
     (node: Block, end: boolean = false) => {
       editor.current.moveToRangeOfNode(node);
       if (end) {
@@ -328,7 +328,7 @@ export function InternoteEditor({
     (_: Block) => {
       // TODO: would be good to preserve cursor column too
       const previousBlock = valueRef.current.previousBlock;
-      focusNode(previousBlock, true);
+      focusBlock(previousBlock, true);
     },
     [editor.current]
   );
@@ -337,17 +337,15 @@ export function InternoteEditor({
     (_: Block) => {
       // TODO: would be good to preserve cursor column too
       const nextBlock = valueRef.current.nextBlock;
-      focusNode(nextBlock);
+      focusBlock(nextBlock);
     },
     [editor.current]
   );
 
   const addNewBlockAndFocus = useCallback(
     (_currentBlock: Block) => {
-      // TODO: this doesn't insert the block at the right place
-      // need to use valueRef.current somewhere.
       editor.current.insertBlock("paragraph");
-      editor.current.moveFocusToEndOfNextBlock();
+      focusNextBlock(_currentBlock);
     },
     [editor.current]
   );
@@ -593,6 +591,7 @@ export function InternoteEditor({
             onBreakToNewLine={addNewBlockAndFocus}
             onDestroy={destroyCurrentBlock}
             className={fadeClassName}
+            onClick={focusBlock}
           />
         );
     }
@@ -669,7 +668,7 @@ export function InternoteEditor({
           />
           <Outline
             value={value}
-            onHeadingClick={focusNode}
+            onHeadingClick={focusBlock}
             showing={outlineShowing}
           />
         </EditorInnerWrap>
