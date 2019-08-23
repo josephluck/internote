@@ -12,7 +12,6 @@
     <br />
   </h1>
   <br />
-  <br />
   <p>
     Beautiful web-based note editor with a focus on distraction-free content creation.
   </p>
