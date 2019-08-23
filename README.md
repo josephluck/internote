@@ -13,22 +13,16 @@
   </h1>
   <br />
   <br />
-  <br />
   <p>
     Beautiful web-based note editor with a focus on distraction-free content creation.
   </p>
-  <br />
-  <br />
   <br />
   <pre><a href="https://internote.app">https://internote.app</a></pre>
   <br />
   <br />
   <br />
   <br />
-  <br />
 </div>
-
----
 
 ## Features
 
