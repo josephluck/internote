@@ -35,7 +35,7 @@ export function Ide({
   onBreakToNewLine: (node: Block) => void;
   onClick: (node: Block) => void;
 } & RenderBlockProps) {
-  const content = node.data.get("content");
+  const content = node.data.get("content") || "";
   const [code, setCode] = useState(content);
   const [height, setHeight] = useState(() =>
     constrainToMaxHeight(content.split("\n").length * LINE_HEIGHT)
@@ -199,5 +199,9 @@ export function Ide({
 
 const MAX_HEIGHT = 300;
 
-const constrainToMaxHeight = (targetHeight: number) =>
-  targetHeight > MAX_HEIGHT ? MAX_HEIGHT : targetHeight;
+const constrainToMaxHeight = (targetHeight: number) => {
+  if (targetHeight < LINE_HEIGHT) {
+    return LINE_HEIGHT;
+  }
+  return targetHeight > MAX_HEIGHT ? MAX_HEIGHT : targetHeight;
+};
