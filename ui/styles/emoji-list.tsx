@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { emojis, Emoji } from "../utilities/emojis";
 import styled from "styled-components";
-import { spacing, size } from "../theming/symbols";
+import { spacing, size, font } from "../theming/symbols";
 import Fuse from "fuse.js";
 import {
   isRightHotKey,
@@ -26,6 +26,8 @@ const EmojiItem = styled.div<{ isFocused: boolean }>`
   opacity: ${props => (props.isFocused ? 1 : 0.5)};
   transform: ${props => (props.isFocused ? "scale(1, 1)" : "scale(0.8, 0.8)")};
   transition: all 200ms ease;
+  font-size: ${font._24.size};
+  line-height: ${font._24.lineHeight};
 `;
 
 const fuzzy = new Fuse(emojis, {
