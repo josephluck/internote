@@ -18,16 +18,12 @@ const validator = validateRequestBody<CreateExportDTO>({
   content: [required]
 });
 
-const markdown: CreateHandler<CreateExportDTO> = async (
-  event,
-  _ctx,
-  callback
-) => {
+const html: CreateHandler<CreateExportDTO> = async (event, _ctx, callback) => {
   const S3 = new AWS.S3();
   const { title, content } = event.body;
   const output = serialize(content.document);
   const hash = md5(output);
-  const S3UploadPath = `${title} - ${hash}.md`;
+  const S3UploadPath = `${title} - ${hash}.html`;
   await S3.upload({
     Bucket: process.env.EXPORT_BUCKET,
     Key: S3UploadPath,
@@ -42,7 +38,7 @@ const markdown: CreateHandler<CreateExportDTO> = async (
   return callback(null, success(response));
 };
 
-export const handler = middy(markdown)
+export const handler = middy(html)
   .use(jsonBodyParser())
   .use(validator)
   .use(encodeResponse())

@@ -29,9 +29,13 @@ export function ExportMenu({
   const exportMarkdownLoading = useTwineState(
     state => state.exportNote.loading.markdown
   );
+  const exportHtmlLoading = useTwineState(
+    state => state.exportNote.loading.html
+  );
 
-  const { exportMarkdown } = useTwineActions(actions => ({
-    exportMarkdown: actions.exportNote.markdown
+  const { exportMarkdown, exportHtml } = useTwineActions(actions => ({
+    exportMarkdown: actions.exportNote.markdown,
+    exportHtml: actions.exportNote.html
   }));
 
   const [subMenuOpen, setSubMenuOpen] = React.useState<boolean>(false);
@@ -83,12 +87,12 @@ export function ExportMenu({
                   <DropdownMenuItem
                     icon={
                       <FontAwesomeIcon
-                        icon={exportMarkdownLoading ? faSpinner : faHtml5}
-                        spin={exportMarkdownLoading}
+                        icon={exportHtmlLoading ? faSpinner : faHtml5}
+                        spin={exportHtmlLoading}
                       />
                     }
                     onClick={async () => {
-                      await exportMarkdown({ noteId });
+                      await exportHtml({ noteId });
                       menu.toggleMenuShowing(false);
                     }}
                   >

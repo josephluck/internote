@@ -55,11 +55,19 @@ plugins:
   - serverless-domain-manager
 
 functions:
-  create:
+  markdown:
     handler: markdown.handler
     events:
       - http:
           path: export/markdown
+          method: post
+          cors: true
+          authorizer: aws_iam
+  html:
+    handler: html.handler
+    events:
+      - http:
+          path: export/html
           method: post
           cors: true
           authorizer: aws_iam

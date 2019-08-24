@@ -18,6 +18,17 @@ export function exportNote(makeRequest: MakeSignedRequest) {
         session,
         body: request
       });
+    },
+    async html(
+      session: Session,
+      request: CreateExportDTO
+    ): ApiResponse<ExportResponseDTO> {
+      return makeRequest({
+        path: `/export/html`,
+        method: "POST",
+        session,
+        body: request
+      });
     }
   };
 }

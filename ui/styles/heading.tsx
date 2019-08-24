@@ -102,7 +102,7 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
         </ButtonSpacer>
         <ButtonSpacer>
           <ExportMenu
-            noteId={note.noteId}
+            noteId={note ? note.noteId : ""}
             onMenuToggled={setExportMenuShowing}
           />
         </ButtonSpacer>

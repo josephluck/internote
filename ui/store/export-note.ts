@@ -12,6 +12,7 @@ interface OwnReducers {
 
 interface OwnEffects {
   markdown: InternoteEffect<{ noteId: string }, Promise<void>>;
+  html: InternoteEffect<{ noteId: string }, Promise<void>>;
 }
 
 function defaultState(): OwnState {
@@ -40,6 +41,20 @@ export function model(api: Api): Model {
           n => n.noteId === noteId
         );
         const result = await api.exportNote.markdown(state.auth.session, {
+          content,
+          title
+        } as any); // TODO: improve type of NoteDTO to include new schema types from export service
+        result.map(response => {
+          if (!isServer()) {
+            window.open(response.src, "_blank");
+          }
+        });
+      },
+      async html(state, _actions, { noteId }) {
+        const { content, title } = state.notes.notes.find(
+          n => n.noteId === noteId
+        );
+        const result = await api.exportNote.html(state.auth.session, {
           content,
           title
         } as any); // TODO: improve type of NoteDTO to include new schema types from export service
