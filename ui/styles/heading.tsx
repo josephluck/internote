@@ -108,9 +108,9 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
             onClick={() => exportMarkdown({ noteId: note.noteId })}
             icon={
               exportNoteLoading ? (
-                <FontAwesomeIcon icon={faDownload} spin />
+                <FontAwesomeIcon icon={faSpinner} spin />
               ) : (
-                <FontAwesomeIcon icon={faPlus} />
+                <FontAwesomeIcon icon={faDownload} />
               )
             }
           />
