@@ -12,12 +12,12 @@ import {
   faPlus,
   faSpinner,
   faCompress,
-  faExpand,
-  faDownload
+  faExpand
 } from "@fortawesome/free-solid-svg-icons";
 import { ExpandingIconButton } from "./expanding-icon-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GetNoteDTO } from "@internote/notes-service/types";
+import { ExportMenu } from "./export-menu";
 
 const HeadingWrapper = styled.div<{
   distractionFree: boolean;
@@ -57,26 +57,25 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
   const createNoteLoading = useTwineState(
     state => state.notes.loading.createNote
   );
-  const exportNoteLoading = useTwineState(
-    state => state.exportNote.loading.markdown
-  );
   const distractionFree = useTwineState(
     state => state.preferences.distractionFree
   );
   const isFullscreen = useTwineState(state => state.ui.isFullscreen);
 
-  const { toggleFullscreen, createNote, exportMarkdown } = useTwineActions(
-    actions => ({
-      toggleFullscreen: actions.ui.toggleFullscreen,
-      createNote: actions.notes.createNote,
-      exportMarkdown: actions.exportNote.markdown
-    })
-  );
+  const { toggleFullscreen, createNote } = useTwineActions(actions => ({
+    toggleFullscreen: actions.ui.toggleFullscreen,
+    createNote: actions.notes.createNote
+  }));
 
   const [noteMenuShowing, setNoteMenuShowing] = React.useState(false);
   const [settingsMenuShowing, setSettingsMenuShowing] = React.useState(false);
+  const [exportMenuShowing, setExportMenuShowing] = React.useState(false);
 
-  const forceShow = noteMenuShowing || settingsMenuShowing || createNoteLoading;
+  const forceShow =
+    noteMenuShowing ||
+    settingsMenuShowing ||
+    createNoteLoading ||
+    exportMenuShowing;
 
   return (
     <HeadingWrapper distractionFree={distractionFree} forceShow={forceShow}>
@@ -102,17 +101,9 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
           />
         </ButtonSpacer>
         <ButtonSpacer>
-          <ExpandingIconButton
-            forceShow={exportNoteLoading}
-            text="Export note"
-            onClick={() => exportMarkdown({ noteId: note.noteId })}
-            icon={
-              exportNoteLoading ? (
-                <FontAwesomeIcon icon={faSpinner} spin />
-              ) : (
-                <FontAwesomeIcon icon={faDownload} />
-              )
-            }
+          <ExportMenu
+            noteId={note.noteId}
+            onMenuToggled={setExportMenuShowing}
           />
         </ButtonSpacer>
         <ButtonSpacer>

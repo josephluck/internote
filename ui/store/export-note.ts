@@ -11,7 +11,7 @@ interface OwnReducers {
 }
 
 interface OwnEffects {
-  markdown: InternoteEffect<{ noteId: string }>;
+  markdown: InternoteEffect<{ noteId: string }, Promise<void>>;
 }
 
 function defaultState(): OwnState {

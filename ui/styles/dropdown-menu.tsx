@@ -58,6 +58,7 @@ const DropdownMenuItemIcon = styled.div`
   width: ${spacing._0_5};
   opacity: 0.5;
   transition: opacity 150ms ease;
+  text-align: center;
 `;
 
 export const DropdownMenuItemWrap = styled.div`
