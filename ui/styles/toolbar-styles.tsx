@@ -16,7 +16,7 @@ import {
 import {
   SchemaMarkType,
   SchemaBlockType
-} from "@internote/services/export-service/types";
+} from "@internote/export-service/types";
 
 export const ToolbarWrapper = styled.div<{
   distractionFree: boolean;
@@ -70,7 +70,7 @@ export const ToolbarExpandedInner = styled.div`
 `;
 
 export function renderToolbarIcon(
-  type: SchemaMarkType | SchemaBlockType
+  type: SchemaMarkType | SchemaBlockType | "outline"
 ): React.ReactNode {
   if (type === "bold") {
     return <FontAwesomeIcon icon={faBold} />;

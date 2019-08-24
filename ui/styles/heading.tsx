@@ -12,7 +12,8 @@ import {
   faPlus,
   faSpinner,
   faCompress,
-  faExpand
+  faExpand,
+  faDownload
 } from "@fortawesome/free-solid-svg-icons";
 import { ExpandingIconButton } from "./expanding-icon-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -61,10 +62,13 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
   );
   const isFullscreen = useTwineState(state => state.ui.isFullscreen);
 
-  const { toggleFullscreen, createNote } = useTwineActions(actions => ({
-    toggleFullscreen: actions.ui.toggleFullscreen,
-    createNote: actions.notes.createNote
-  }));
+  const { toggleFullscreen, createNote, exportMarkdown } = useTwineActions(
+    actions => ({
+      toggleFullscreen: actions.ui.toggleFullscreen,
+      createNote: actions.notes.createNote,
+      exportMarkdown: actions.exportNote.markdown
+    })
+  );
 
   const [noteMenuShowing, setNoteMenuShowing] = React.useState(false);
   const [settingsMenuShowing, setSettingsMenuShowing] = React.useState(false);
@@ -92,6 +96,14 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
                 <FontAwesomeIcon icon={faExpand} />
               )
             }
+          />
+        </ButtonSpacer>
+        <ButtonSpacer>
+          <ExpandingIconButton
+            forceShow={isFullscreen}
+            text="Export note"
+            onClick={() => exportMarkdown({ noteId: note.noteId })}
+            icon={<FontAwesomeIcon icon={faDownload} />}
           />
         </ButtonSpacer>
         <ButtonSpacer>

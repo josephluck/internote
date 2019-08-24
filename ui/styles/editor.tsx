@@ -48,7 +48,7 @@ import {
 import {
   SchemaMarkType,
   SchemaBlockType
-} from "@internote/services/export-service/types";
+} from "@internote/export-service/types";
 
 const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
   import("./slate").then(mod => mod.Editor),

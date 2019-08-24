@@ -18,7 +18,7 @@ custom:
     stage: "${self:custom.stage}"
     createRoute53Record: true
     endpointType: "regional"
-  bucketName: internote-${self:custom.stage}-api-speech-audio-files
+  bucketName: internote-${self:custom.stage}-services-speech-audio-files
 
 provider:
   name: aws

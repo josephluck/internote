@@ -11,6 +11,7 @@ import * as Tags from "./tags";
 import * as Ui from "./ui";
 import * as Notes from "./notes";
 import * as Sync from "./sync";
+import * as ExportNote from "./export-note";
 import { makeTwineHooks } from "./with-twine";
 import { env } from "../env";
 import { AuthApi, makeAuthApi } from "../auth/api";
@@ -25,7 +26,8 @@ type Models = Twine.Models<
     Tags.Namespace &
     Ui.Namespace &
     Notes.Namespace &
-    Sync.Namespace
+    Sync.Namespace &
+    ExportNote.Namespace
 >;
 export type GlobalActions = Models["actions"];
 export type GlobalState = Models["state"];
@@ -57,7 +59,8 @@ function makeModel(api: Api, auth: AuthApi) {
       tags: Tags.model(api),
       ui: Ui.model(api),
       notes: Notes.model(api),
-      sync: Sync.model(api)
+      sync: Sync.model(api),
+      exportNote: ExportNote.model(api)
     }
   };
 }

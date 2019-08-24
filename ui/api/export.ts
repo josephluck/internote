@@ -1,0 +1,23 @@
+import { Session } from "./types";
+import { MakeSignedRequest } from "./api";
+import { ApiResponse } from "@internote/lib/types";
+import {
+  CreateExportDTO,
+  ExportResponseDTO
+} from "@internote/export-service/types";
+
+export function exportNote(makeRequest: MakeSignedRequest) {
+  return {
+    async markdown(
+      session: Session,
+      request: CreateExportDTO
+    ): ApiResponse<ExportResponseDTO> {
+      return makeRequest({
+        path: `/export/markdown`,
+        method: "POST",
+        session,
+        body: request
+      });
+    }
+  };
+}

@@ -4,7 +4,7 @@ import { Option, Some, None } from "space-lift";
 import { hasLength } from "./string";
 import { defaultNote } from "@internote/notes-service/db/default-note";
 import { Editor } from "slate-react";
-import { SchemaBlockType } from "@internote/services/export-service/types";
+import { SchemaBlockType } from "@internote/export-service/types";
 
 /**
  * Returns the full combined text of a block
@@ -102,7 +102,7 @@ export function getSelectedText(value: Value): Option<string> {
  * inside a list item or not.
  */
 export function currentFocusIsWithinList(
-  type: BlockType,
+  type: SchemaBlockType,
   value: Value
 ): boolean {
   const isList = ["numbered-list", "bulleted-list"].includes(type);

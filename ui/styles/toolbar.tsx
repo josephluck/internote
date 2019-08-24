@@ -39,7 +39,7 @@ import { useTwineState, useTwineActions } from "../store";
 import {
   SchemaMarkType,
   SchemaBlockType
-} from "@internote/services/export-service/types";
+} from "@internote/export-service/types";
 
 export function Toolbar({
   createNewTag,

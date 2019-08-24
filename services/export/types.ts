@@ -1,4 +1,18 @@
-export type CreateExportDTO = Schema;
+export type CreateExportDTO = {
+  title: string;
+  content: {
+    object: "value";
+    document: Schema;
+  };
+};
+
+export interface ExportResponseDTO {
+  /**
+   * A public-read URL pointing to the output
+   * that has been made
+   */
+  src: string;
+}
 
 export interface Schema {
   object: "document";

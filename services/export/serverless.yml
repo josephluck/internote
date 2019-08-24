@@ -18,6 +18,7 @@ custom:
     stage: "${self:custom.stage}"
     createRoute53Record: true
     endpointType: "regional"
+  bucketName: internote-${self:custom.stage}-services-export-files
 
 provider:
   name: aws
@@ -26,6 +27,8 @@ provider:
   region: eu-west-1
   environment:
     REGION: eu-west-1
+    EXPORT_BUCKET:
+      Ref: ExportFilesBucket
   memorySize: 256
   timeout: 30
   apiGateway:
@@ -34,6 +37,17 @@ provider:
       "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiId
     restApiRootResourceId:
       "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiRootResourceId
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+        - "s3:PutObjectAcl"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - Ref: ExportFilesBucket
+            - "/*"
 
 plugins:
   - serverless-plugin-monorepo
@@ -49,3 +63,11 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+
+resources:
+  Resources:
+    ExportFilesBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketName}
+        AccessControl: PublicRead

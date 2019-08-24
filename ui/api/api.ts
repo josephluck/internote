@@ -7,6 +7,7 @@ import { speech } from "./speech";
 import { dictionary } from "./dictionary";
 import { notes } from "./notes";
 import { tags } from "./tags";
+import { exportNote } from "./export";
 import { Err, Ok } from "space-lift";
 
 export type MakeSignedRequest = (options: AwsSignedRequest) => any;
@@ -74,7 +75,8 @@ export function makeApi({ host, region }: { host: string; region: string }) {
     speech: speech(makeSignedRequest),
     dictionary: dictionary(makeSignedRequest),
     notes: notes(makeSignedRequest),
-    tags: tags(makeSignedRequest)
+    tags: tags(makeSignedRequest),
+    exportNote: exportNote(makeSignedRequest)
   };
 }
 
