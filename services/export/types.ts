@@ -19,6 +19,7 @@ export type SchemaBlock =
 export type SchemaBlockType = Pick<SchemaBlock, "type">["type"];
 
 export type SchemaInline = TextInline | EmojiInline | TagInline;
+export type SchemaNoneTextInline = EmojiInline | TagInline;
 
 export type SchemaInlineType = Pick<SchemaInline, "type">["type"];
 
@@ -92,7 +93,7 @@ export interface IdeBlock {
     // TODO: add language
     content: string;
   };
-  // TODO: IDE blocks have an empty text node that they should not have
+  nodes: SchemaInline[]; // TODO: IDE blocks have an empty text node that they should not have
 }
 
 /** Inlines */
