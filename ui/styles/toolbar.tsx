@@ -172,11 +172,11 @@ export function Toolbar({
               onClick={() => setIsEmojiButtonPressed(!isEmojiButtonPressed)}
             />
           </ButtonSpacer>
-        </Flex>
-        <Flex alignItems="center">
           <ButtonSpacer small>
             <SnippetsMenu />
           </ButtonSpacer>
+        </Flex>
+        <Flex alignItems="center">
           <ButtonSpacer small>
             <DictionaryButton
               isShowing={isDictionaryShowing}
