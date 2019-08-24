@@ -2,11 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "es2017",
-      "webworker"
-    ],
+    "lib": ["dom", "es2017", "webworker"],
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
@@ -14,11 +10,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": [
-    "../**/*",
-    "**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["../**/*", "**/*"],
+  "exclude": ["node_modules", "static"]
 }

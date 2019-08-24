@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Box } from "@rebass/grid";
 import ReactHighlight from "react-highlight-words";
 import { DropdownMenuItem } from "./dropdown-menu";
@@ -6,7 +5,6 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { spacing, font } from "../theming/symbols";
-import { GetNoteDTO } from "@internote/notes-service/types";
 
 const DeleteIcon = styled.div`
   margin-left: ${spacing._1_5};
@@ -17,7 +15,7 @@ const DeleteIcon = styled.div`
   opacity: 0;
 `;
 
-const NoteMenuItemWrapper = styled(DropdownMenuItem)`
+const SearchMenuItemWrapper = styled(DropdownMenuItem)`
   &:hover {
     ${DeleteIcon} {
       transform: scale(1, 1);
@@ -42,24 +40,23 @@ const Highlighter = styled(ReactHighlight)<{ hasSearch: boolean }>`
   }
 `;
 
-export function NoteMenuItem({
+export function SearchMenuItem({
   isLoading,
   isSelected,
-  note,
+  content,
   onDelete,
   onSelect,
   searchText
 }: {
-  isLoading: boolean;
-  isSelected: boolean;
-  note: GetNoteDTO;
+  isLoading?: boolean;
+  isSelected?: boolean;
+  content: string;
   onDelete: () => void;
   onSelect: () => void;
   searchText: string;
 }) {
   return (
-    <NoteMenuItemWrapper
-      key={note.noteId}
+    <SearchMenuItemWrapper
       icon={
         isLoading ? (
           <FontAwesomeIcon icon={faSpinner} spin />
@@ -76,20 +73,16 @@ export function NoteMenuItem({
         }}
         onClick={onSelect}
       >
-        <Link href={`?id=${note.noteId}`} passHref>
-          <a>
-            <Highlighter
-              searchWords={searchText.split("")}
-              autoEscape={true}
-              textToHighlight={note.title}
-              hasSearch={searchText.length > 0}
-            />
-          </a>
-        </Link>
+        <Highlighter
+          searchWords={searchText.split("")}
+          autoEscape={true}
+          textToHighlight={content}
+          hasSearch={searchText.length > 0}
+        />
       </Box>
       <DeleteIcon onClick={onDelete}>
         <FontAwesomeIcon icon={faTrash} />
       </DeleteIcon>
-    </NoteMenuItemWrapper>
+    </SearchMenuItemWrapper>
   );
 }

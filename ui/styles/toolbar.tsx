@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   ToolbarWrapper,
   ToolbarInner,
@@ -40,6 +40,7 @@ import {
   SchemaMarkType,
   SchemaBlockType
 } from "@internote/export-service/types";
+import { SnippetsMenu } from "./snippets-menu";
 
 export function Toolbar({
   createNewTag,
@@ -47,11 +48,9 @@ export function Toolbar({
   id,
   insertEmoji,
   insertTag,
-  isDictionaryLoading,
   isDictionaryShowing,
   onClickBlock,
   onClickMark,
-  onToggleDictionary,
   requestDictionary,
   requestSpeech,
   selectedText,
@@ -63,11 +62,9 @@ export function Toolbar({
   id: string;
   insertEmoji: (emoji: Emoji, searchText: string) => any;
   insertTag: (tag: string, searchText: string) => any;
-  isDictionaryLoading: boolean;
   isDictionaryShowing: boolean;
   onClickBlock: (type: any) => any;
   onClickMark: (type: any) => any;
-  onToggleDictionary: () => any;
   requestDictionary: () => any;
   requestSpeech: () => any;
   selectedText: Option<string>;
@@ -80,19 +77,23 @@ export function Toolbar({
   const isSpeechLoading = useTwineState(
     state => state.speech.loading.requestSpeech
   );
-  const dictionaryResults = useTwineState(
-    state => state.dictionary.dictionaryResults
-  );
   const newTagSaving = useTwineState(state => state.tags.loading.saveNewTag);
 
-  const { onDelete, onDiscardSpeech } = useTwineActions(
+  const { onDelete, onDiscardSpeech, onCloseDictionary } = useTwineActions(
     actions => ({
       onDelete: () => actions.notes.deleteNoteConfirmation({ noteId: id }),
+      onCloseDictionary: () => actions.dictionary.setDictionaryShowing(false),
       onDiscardSpeech: () => actions.speech.setSpeechSrc(null)
     }),
     [id]
   );
 
+  const isDictionaryLoading = useTwineState(
+    state => state.dictionary.loading.lookup
+  );
+  const dictionaryResults = useTwineState(
+    state => state.dictionary.dictionaryResults
+  );
   const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
   const [
     isShortcutsReferenceShowing,
@@ -112,6 +113,14 @@ export function Toolbar({
     isShortcutsReferenceShowing;
   const isToolbarShowing =
     hasSelection(value) || !!speechSrc || toolbarIsExpanded;
+
+  const onToggleDictionary = useCallback(() => {
+    if (isDictionaryShowing) {
+      onCloseDictionary();
+    } else {
+      requestDictionary();
+    }
+  }, [isDictionaryShowing, onCloseDictionary, requestDictionary]);
 
   const renderMarkButton = (type: SchemaMarkType, shortcutNumber: number) => {
     return (
@@ -166,8 +175,10 @@ export function Toolbar({
         </Flex>
         <Flex alignItems="center">
           <ButtonSpacer small>
+            <SnippetsMenu />
+          </ButtonSpacer>
+          <ButtonSpacer small>
             <DictionaryButton
-              isLoading={isDictionaryLoading}
               isShowing={isDictionaryShowing}
               onClick={onToggleDictionary}
             />

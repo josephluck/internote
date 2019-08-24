@@ -90,7 +90,7 @@ export function SettingsMenu({
       menuName="Settings menu"
       disableCloseShortcut={subMenuOpen}
       menu={menu => (
-        <SettingsMenuWrap showing={menu.menuShowing} position="right">
+        <SettingsMenuWrap showing={menu.menuShowing} horizontalPosition="right">
           {!menu.menuShowing ? (
             <Shortcut
               id="open-settings-menu"

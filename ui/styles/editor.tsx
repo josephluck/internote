@@ -101,9 +101,6 @@ export function InternoteEditor({
   const outlineShowing = useTwineState(
     state => state.preferences.outlineShowing
   );
-  const isDictionaryLoading = useTwineState(
-    state => state.dictionary.loading.lookup
-  );
   const isDictionaryShowing = useTwineState(
     state => state.dictionary.dictionaryShowing
   );
@@ -114,14 +111,12 @@ export function InternoteEditor({
   const {
     onChange,
     onRequestDictionary,
-    onCloseDictionary,
     onRequestSpeech
   } = useTwineActions(
     actions => ({
       onChange: (value: OnChange) =>
         actions.notes.updateNote({ ...value, noteId: id }),
       onRequestDictionary: actions.dictionary.lookup,
-      onCloseDictionary: () => actions.dictionary.setDictionaryShowing(false),
       onRequestSpeech: (words: string) =>
         actions.speech.requestSpeech({ words, id }),
       onCreateNewTag: (value: OnChange) =>
@@ -491,13 +486,6 @@ export function InternoteEditor({
   const requestDictionary = useCallback(() => {
     selectedText.flatMap(getFirstWordFromString).map(onRequestDictionary);
   }, [selectedText, onRequestDictionary]);
-  const onToggleDictionary = useCallback(() => {
-    if (isDictionaryShowing) {
-      onCloseDictionary();
-    } else {
-      requestDictionary();
-    }
-  }, [isDictionaryShowing, onCloseDictionary, requestDictionary]);
 
   /**
    * Emojis
@@ -687,11 +675,9 @@ export function InternoteEditor({
         id={id}
         insertEmoji={insertEmoji}
         insertTag={insertTag}
-        isDictionaryLoading={isDictionaryLoading}
         isDictionaryShowing={isDictionaryShowing}
         onClickBlock={onClickBlock}
         onClickMark={onClickMark}
-        onToggleDictionary={onToggleDictionary}
         requestDictionary={requestDictionary}
         requestSpeech={requestSpeech}
         selectedText={selectedText}

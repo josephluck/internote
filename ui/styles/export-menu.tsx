@@ -46,7 +46,7 @@ export function ExportMenu({
       menuName="Export menu"
       disableCloseShortcut={subMenuOpen}
       menu={menu => (
-        <ExportMenuWrap showing={menu.menuShowing} position="right">
+        <ExportMenuWrap showing={menu.menuShowing} horizontalPosition="right">
           {!menu.menuShowing ? (
             <Shortcut
               id="open-export-menu"

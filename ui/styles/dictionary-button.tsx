@@ -8,16 +8,16 @@ import {
 } from "./toolbar-expanding-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faBook } from "@fortawesome/free-solid-svg-icons";
+import { useTwineState } from "../store";
 
 export function DictionaryButton({
-  isLoading,
   onClick,
   isShowing
 }: {
-  isLoading: boolean;
   onClick: () => any;
   isShowing: boolean;
 }) {
+  const isLoading = useTwineState(state => state.dictionary.loading.lookup);
   return (
     <CollapseWidthOnHover
       onClick={onClick}
