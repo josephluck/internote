@@ -1,10 +1,10 @@
 import { Value, Node, Range, Point, Block } from "slate";
 import isKeyHotkey from "is-hotkey";
 import { Option, Some, None } from "space-lift";
-import { BlockType, BlockName } from "./serializer";
 import { hasLength } from "./string";
 import { defaultNote } from "@internote/notes-service/db/default-note";
 import { Editor } from "slate-react";
+import { SchemaBlockType } from "@internote/services/export-service/types";
 
 /**
  * Returns the full combined text of a block
@@ -237,12 +237,12 @@ export function isListNavigationShortcut(event: Event): boolean {
 interface OutlineItem {
   name: string;
   key: string;
-  type: BlockType;
+  type: SchemaBlockType;
   node: Node;
 }
 
 // TODO: single line bold
-const blocksInOutline: BlockType[] = ["heading-one", "heading-two"];
+const blocksInOutline: SchemaBlockType[] = ["heading-one", "heading-two"];
 
 export function getOutlineHeadingsFromEditorValue(value: Value): OutlineItem[] {
   return value.document
@@ -355,9 +355,7 @@ export function handleMarkdownBackspaceShortcut(
  * Maps markdown formatting options to slate formatting
  * options.
  */
-export function convertMarkdownToBlockOrMarkType(
-  str: string
-): BlockType | BlockName {
+export function convertMarkdownToBlockOrMarkType(str: string): SchemaBlockType {
   switch (str) {
     case "*":
     case "-":

@@ -1,6 +1,5 @@
 import React, { useCallback, useRef } from "react";
 import zenscroll from "zenscroll";
-import { MarkType, BlockType, BlockName } from "../utilities/serializer";
 import {
   Editor as SlateEditor,
   RenderBlockProps,
@@ -46,6 +45,10 @@ import {
   InternoteSlateEditorPropsWithRef,
   InternoteSlateEditorProps
 } from "./slate";
+import {
+  SchemaMarkType,
+  SchemaBlockType
+} from "@internote/services/export-service/types";
 
 const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
   import("./slate").then(mod => mod.Editor),
@@ -273,8 +276,8 @@ export function InternoteEditor({
     // Handle enter key
     const isEnterKey = isEnterHotKey(event) && !event.shiftKey;
     if (isEnterKey) {
-      const previousBlockType = valueRef.current.focusBlock.type;
-      const isListItem = previousBlockType === "list-item";
+      const previousSchemaBlockType = valueRef.current.focusBlock.type;
+      const isListItem = previousSchemaBlockType === "list-item";
       if (!isListItem) {
         // NB: Allow enter key to progress to add new paragraph
         // it's important that next() is called before
@@ -325,7 +328,7 @@ export function InternoteEditor({
   );
 
   const focusPreviousBlock = useCallback(
-    (_: Block) => {
+    (_?: Block) => {
       // TODO: would be good to preserve cursor column too
       const previousBlock = valueRef.current.previousBlock;
       focusBlock(previousBlock, true);
@@ -334,24 +337,28 @@ export function InternoteEditor({
   );
 
   const focusNextBlock = useCallback(
-    (_: Block) => {
+    (_?: Block) => {
       // TODO: would be good to preserve cursor column too
       const nextBlock = valueRef.current.nextBlock;
-      focusBlock(nextBlock);
+      if (nextBlock) {
+        focusBlock(nextBlock);
+      } else {
+        addNewBlockAndFocus();
+      }
     },
     [editor.current]
   );
 
   const addNewBlockAndFocus = useCallback(
-    (_currentBlock: Block) => {
+    (_?: Block) => {
       editor.current.insertBlock("paragraph");
-      focusNextBlock(_currentBlock);
+      focusNextBlock();
     },
     [editor.current]
   );
 
   const destroyCurrentBlock = useCallback(
-    (_currentBlock: Block) => {
+    (_?: Block) => {
       editor.current.deleteCharBackward();
       editor.current.focus();
     },
@@ -427,7 +434,7 @@ export function InternoteEditor({
    * Mark and block handling
    */
   const onClickMark = useCallback(
-    (type: MarkType) => (event: Event) => {
+    (type: SchemaMarkType) => (event: Event) => {
       event.preventDefault();
       editor.current.toggleMark(type);
     },
@@ -435,7 +442,7 @@ export function InternoteEditor({
   );
 
   const onClickBlock = useCallback(
-    (type: BlockType) => (event: Event) => {
+    (type: SchemaBlockType) => (event: Event) => {
       event.preventDefault();
       // Handle everything but list buttons.
       const isList = currentFocusHasBlock("list-item", value);
@@ -533,21 +540,21 @@ export function InternoteEditor({
    */
   const renderBlock = (props: RenderBlockProps) => {
     const fadeClassName = props.isSelected ? "node-focused" : "node-unfocused";
-    const preventForBlocks: BlockName[] = [
+    const preventForBlocks: SchemaBlockType[] = [
       "list-item",
       "bulleted-list",
       "numbered-list"
     ];
     const shouldFocusNode =
       !hasSelection(value) &&
-      !preventForBlocks.includes(props.node.type as BlockName) &&
+      !preventForBlocks.includes(props.node.type as SchemaBlockType) &&
       props.isSelected &&
       props.key !== focusedNodeKey.current;
     if (shouldFocusNode) {
       focusedNodeKey.current = props.key;
       handleFocusModeScroll();
     }
-    switch (props.node.type as BlockName) {
+    switch (props.node.type as SchemaBlockType) {
       case "paragraph":
         return (
           <p {...props.attributes} className={fadeClassName}>
@@ -602,7 +609,7 @@ export function InternoteEditor({
     _editor: any,
     next: () => any
   ) => {
-    switch (props.mark.type as MarkType) {
+    switch (props.mark.type as SchemaMarkType) {
       case "bold":
         return <strong {...props.attributes}>{props.children}</strong>;
       case "code":

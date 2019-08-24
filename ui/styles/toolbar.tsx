@@ -24,7 +24,6 @@ import { TagsList } from "./tags-list";
 import { EmojiList } from "./emoji-list";
 import { Dictionary } from "./dictionary";
 import { ShortcutsReference } from "./shortcuts-reference";
-import { MarkType, BlockType } from "../utilities/serializer";
 import {
   currentFocusHasMark,
   currentFocusHasBlock,
@@ -37,6 +36,10 @@ import { Option } from "space-lift";
 import { Value } from "slate";
 import { Emoji } from "../utilities/emojis";
 import { useTwineState, useTwineActions } from "../store";
+import {
+  SchemaMarkType,
+  SchemaBlockType
+} from "@internote/services/export-service/types";
 
 export function Toolbar({
   createNewTag,
@@ -110,7 +113,7 @@ export function Toolbar({
   const isToolbarShowing =
     hasSelection(value) || !!speechSrc || toolbarIsExpanded;
 
-  const renderMarkButton = (type: MarkType, shortcutNumber: number) => {
+  const renderMarkButton = (type: SchemaMarkType, shortcutNumber: number) => {
     return (
       <ToolbarButton
         onClick={onClickMark(type) as any}
@@ -122,7 +125,7 @@ export function Toolbar({
       </ToolbarButton>
     );
   };
-  const renderBlockButton = (type: BlockType, shortcutNumber: number) => {
+  const renderBlockButton = (type: SchemaBlockType, shortcutNumber: number) => {
     const isActive =
       currentFocusHasBlock(type, value) ||
       currentFocusIsWithinList(type, value);

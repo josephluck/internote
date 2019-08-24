@@ -26,6 +26,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@internote/api": "*",
     "@internote/dictionary-service": "*",
+    "@internote/export-service": "*",
     "@internote/health-service": "*",
     "@internote/lib": "*",
     "@internote/preferences-service": "*",

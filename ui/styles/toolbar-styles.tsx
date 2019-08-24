@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { font, spacing, size } from "../theming/symbols";
 import { Wrapper } from "./wrapper";
-import { MarkType, BlockType } from "../utilities/serializer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
@@ -14,6 +13,10 @@ import {
   faListOl,
   faEye
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  SchemaMarkType,
+  SchemaBlockType
+} from "@internote/services/export-service/types";
 
 export const ToolbarWrapper = styled.div<{
   distractionFree: boolean;
@@ -66,7 +69,9 @@ export const ToolbarExpandedInner = styled.div`
   max-height: ${size.toolbarExpandedMaxHeight};
 `;
 
-export function renderToolbarIcon(type: MarkType | BlockType): React.ReactNode {
+export function renderToolbarIcon(
+  type: SchemaMarkType | SchemaBlockType
+): React.ReactNode {
   if (type === "bold") {
     return <FontAwesomeIcon icon={faBold} />;
   } else if (type === "italic") {
