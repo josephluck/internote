@@ -57,6 +57,9 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
   const createNoteLoading = useTwineState(
     state => state.notes.loading.createNote
   );
+  const exportNoteLoading = useTwineState(
+    state => state.exportNote.loading.markdown
+  );
   const distractionFree = useTwineState(
     state => state.preferences.distractionFree
   );
@@ -100,10 +103,16 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
         </ButtonSpacer>
         <ButtonSpacer>
           <ExpandingIconButton
-            forceShow={isFullscreen}
+            forceShow={exportNoteLoading}
             text="Export note"
             onClick={() => exportMarkdown({ noteId: note.noteId })}
-            icon={<FontAwesomeIcon icon={faDownload} />}
+            icon={
+              exportNoteLoading ? (
+                <FontAwesomeIcon icon={faDownload} spin />
+              ) : (
+                <FontAwesomeIcon icon={faPlus} />
+              )
+            }
           />
         </ButtonSpacer>
         <ButtonSpacer>
