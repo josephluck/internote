@@ -23,7 +23,7 @@ function getBlockTag(block: SchemaBlock): string {
     case "list-item":
       return "li";
     case "ide":
-      return "code";
+      return "pre";
     default:
       return "p";
   }

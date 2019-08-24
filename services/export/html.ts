@@ -8,7 +8,7 @@ import {
 import { success } from "@internote/lib/responses";
 import { CreateHandler } from "@internote/lib/types";
 import { CreateExportDTO, ExportResponseDTO } from "./types";
-import { serialize } from "./serializers/markdown";
+import { serialize } from "./serializers/html";
 import { required, isString } from "@internote/lib/validator";
 import AWS from "aws-sdk";
 import md5 from "md5";
