@@ -49,11 +49,11 @@ import {
   SchemaMarkType,
   SchemaBlockType
 } from "@internote/export-service/types";
-import { Snippet } from "../store/snippets";
 import { isServer } from "../utilities/window";
 import styled, { keyframes } from "styled-components";
 import { SnippetsContext } from "./snippets-context";
 import { CreateSnippetModal } from "./create-snippet-modal";
+import { GetSnippetDTO } from "@internote/snippets-service/types";
 
 const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
   import("./slate").then(mod => mod.Editor),
@@ -559,7 +559,7 @@ export function InternoteEditor({
   );
 
   const insertSnippet = useCallback(
-    (snippet: Snippet) => {
+    (snippet: GetSnippetDTO) => {
       const doc = Document.fromJSON(snippet.content);
       editor.current.focus();
       // NB: wait for focus to happen

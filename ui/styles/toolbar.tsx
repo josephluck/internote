@@ -41,7 +41,7 @@ import {
   SchemaBlockType
 } from "@internote/export-service/types";
 import { SnippetsMenu } from "./snippets-menu";
-import { Snippet } from "../store/snippets";
+import { GetSnippetDTO } from "@internote/snippets-service/types";
 
 export function Toolbar({
   createNewTag,
@@ -72,7 +72,7 @@ export function Toolbar({
   selectedText: Option<string>;
   shortcutSearch: Option<string>;
   value: Value;
-  onSnippetSelected: (snippet: Snippet) => void;
+  onSnippetSelected: (snippet: GetSnippetDTO) => void;
 }) {
   const tags = useTwineState(state => state.tags.tags);
   const saving = useTwineState(state => state.notes.loading.updateNote);
@@ -119,7 +119,10 @@ export function Toolbar({
 
   // TODO: for some reason this is true on auto focus...
   const hasHighlighted =
-    value.selection && value.selection.start.path !== value.selection.end.path;
+    value.selection &&
+    value.selection.start.path &&
+    value.selection.end.path &&
+    value.selection.start.path !== value.selection.end.path;
 
   const onToggleDictionary = useCallback(() => {
     if (isDictionaryShowing) {

@@ -1,11 +1,11 @@
 import React from "react";
-import { Snippet } from "../store/snippets";
+import { GetSnippetDTO } from "@internote/snippets-service/types";
 
 interface Context {
   createSnippetModalOpen: boolean;
-  snippetToInsert: null | Snippet;
+  snippetToInsert: null | GetSnippetDTO;
   snippetsMenuShowing: boolean;
-  setSnippetToInsert: (snippetToInsert: Snippet) => void;
+  setSnippetToInsert: (snippetToInsert: GetSnippetDTO) => void;
   setSnippetsMenuShowing: (showing: boolean) => void;
   setCreateSnippetModalOpen: (showing: boolean) => void;
 }
@@ -27,7 +27,7 @@ export const SnippetsContext = React.createContext<Context>({
  * snippets functionality
  */
 export function SnippetsProvider({ children }: { children: React.ReactNode }) {
-  function setSnippetToInsert(snippetToInsert: Snippet) {
+  function setSnippetToInsert(snippetToInsert: GetSnippetDTO) {
     setCtx(prevState => ({
       ...prevState,
       snippetToInsert

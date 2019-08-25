@@ -48,7 +48,8 @@ export function SearchMenuItem({
   onSelect,
   onMouseIn,
   onMouseOut,
-  searchText
+  searchText,
+  deleteLoading = false
 }: {
   isLoading?: boolean;
   isSelected?: boolean;
@@ -58,6 +59,7 @@ export function SearchMenuItem({
   onMouseIn?: () => void;
   onMouseOut?: () => void;
   searchText: string;
+  deleteLoading?: boolean;
 }) {
   return (
     <SearchMenuItemWrapper
@@ -87,7 +89,10 @@ export function SearchMenuItem({
         />
       </Box>
       <DeleteIcon onClick={onDelete}>
-        <FontAwesomeIcon icon={faTrash} />
+        <FontAwesomeIcon
+          icon={deleteLoading ? faSpinner : faTrash}
+          spin={deleteLoading}
+        />
       </DeleteIcon>
     </SearchMenuItemWrapper>
   );

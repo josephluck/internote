@@ -2,25 +2,21 @@ import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { InternoteEffect, InternoteEffect0 } from ".";
 import { Api } from "../api/api";
-import { Schema } from "@internote/export-service/types";
-
-export interface Snippet {
-  title: string;
-  content: Schema;
-}
+import { CreateSnippetDTO, GetSnippetDTO } from "@internote/snippets-service/types";
 
 interface OwnState {
-  snippets: Snippet[];
+  snippets: GetSnippetDTO[];
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
-  setSnippets: Twine.Reducer<OwnState, Snippet[]>;
+  setSnippets: Twine.Reducer<OwnState, GetSnippetDTO[]>;
 }
 
 interface OwnEffects {
-  createSnippet: InternoteEffect<Snippet>;
+  createSnippet: InternoteEffect<CreateSnippetDTO>;
   fetchSnippets: InternoteEffect0;
+  deleteSnippet: InternoteEffect<string>;
 }
 
 function defaultState(): OwnState {
@@ -39,28 +35,7 @@ export interface Namespace {
   snippets: Twine.ModelApi<State, Actions>;
 }
 
-const snip = {
-  object: "document",
-  data: {},
-  nodes: [
-    {
-      object: "block",
-      type: "heading-one",
-      data: {
-        className: null
-      },
-      nodes: [
-        {
-          object: "text",
-          text: "Welcome to Internote!",
-          marks: []
-        }
-      ]
-    }
-  ]
-};
-
-export function model(_api: Api): Model {
+export function model(api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
@@ -72,34 +47,16 @@ export function model(_api: Api): Model {
     },
     effects: {
       async createSnippet(state, actions, snippet) {
-        return new Promise(resolve => {
-          setTimeout(() => {
-            actions.snippets.setSnippets([snippet, ...state.snippets.snippets]);
-            resolve();
-          }, 2000);
-        });
+        const response = await api.snippets.create(state.auth.session, snippet)
+        response.map(s => actions.snippets.setSnippets([s, ...state.snippets.snippets]))
       },
-      async fetchSnippets(_state, actions) {
-        // TODO
-        return new Promise(resolve => {
-          setTimeout(() => {
-            actions.snippets.setSnippets([
-              {
-                title: "Snippet 1",
-                content: snip as any
-              },
-              {
-                title: "Snippet 2",
-                content: snip as any
-              },
-              {
-                title: "Snippet 3",
-                content: snip as any
-              }
-            ]);
-            resolve();
-          }, 1000);
-        });
+      async fetchSnippets(state, actions) {
+        const response = await api.snippets.list(state.auth.session)
+        response.map(actions.snippets.setSnippets)
+      },
+      async deleteSnippet(state, actions, snippetId) {
+        const response = await api.snippets.delete(state.auth.session, snippetId)
+        response.map(() => actions.snippets.setSnippets(state.snippets.snippets.filter(s => s.snippetId !== snippetId)))
       }
     }
   };

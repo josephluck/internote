@@ -7,6 +7,7 @@ import { speech } from "./speech";
 import { dictionary } from "./dictionary";
 import { notes } from "./notes";
 import { tags } from "./tags";
+import { snippets } from "./snippets";
 import { exportNote } from "./export";
 import { Err, Ok } from "space-lift";
 
@@ -76,6 +77,7 @@ export function makeApi({ host, region }: { host: string; region: string }) {
     dictionary: dictionary(makeSignedRequest),
     notes: notes(makeSignedRequest),
     tags: tags(makeSignedRequest),
+    snippets: snippets(makeSignedRequest),
     exportNote: exportNote(makeSignedRequest)
   };
 }

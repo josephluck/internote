@@ -1,6 +1,6 @@
 import { NoResults } from "./no-results";
-import { useTwineState } from "../store";
-import { useState, useRef, useEffect, useContext } from "react";
+import { useTwineState, useTwineActions } from "../store";
+import { useState, useRef, useEffect, useContext, useCallback } from "react";
 import { MenuControl } from "./menu-control";
 import Fuse from "fuse.js";
 import { InputWithIcons } from "./input-with-icons";
@@ -18,9 +18,9 @@ import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SearchMenuItem } from "./search-menu-item";
 import styled from "styled-components";
-import { Snippet } from "../store/snippets";
 import { SnippetsContext } from "./snippets-context";
 import { Button } from "./button";
+import { GetSnippetDTO } from "@internote/snippets-service/types";
 
 const SnippetsDropdownMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
   padding-top: 0;
@@ -61,7 +61,7 @@ export function SnippetsMenu({
   onSnippetSelected,
   hasHighlighted
 }: {
-  onSnippetSelected: (snippet: Snippet) => void;
+  onSnippetSelected: (snippet: GetSnippetDTO) => void;
   hasHighlighted: boolean;
 }) {
   const {
@@ -77,8 +77,15 @@ export function SnippetsMenu({
     setCreateNewSnippetInstructionsShowing
   ] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
-  const [filteredSnippets, setFilteredSnippets] = useState<Snippet[]>([]);
+  const [filteredSnippets, setFilteredSnippets] = useState<GetSnippetDTO[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [snippetBeingDeleted, setSnippetBeingDeleted] = useState("");
+  const deleteSnippet = useTwineActions(
+    actions => actions.snippets.deleteSnippet
+  );
+  const deleteSnippetLoading = useTwineState(
+    state => state.snippets.loading.deleteSnippet
+  );
 
   function focusInput() {
     if (inputRef.current) {
@@ -103,6 +110,12 @@ export function SnippetsMenu({
     });
     setFilteredSnippets(value.length ? fuzzy.search(value) : snippets);
   }
+
+  const onDeleteSnippet = useCallback(async (snippetId: string) => {
+    setSnippetBeingDeleted(snippetId);
+    await deleteSnippet(snippetId);
+    setSnippetBeingDeleted("");
+  }, []);
 
   return (
     <>
@@ -182,8 +195,12 @@ export function SnippetsMenu({
                             onSnippetSelected(snippet);
                           }}
                           onDelete={() => {
-                            console.log("TODO: delete snippet from DB");
+                            onDeleteSnippet(snippet.snippetId);
                           }}
+                          deleteLoading={
+                            deleteSnippetLoading &&
+                            snippet.snippetId === snippetBeingDeleted
+                          }
                           searchText={inputText}
                         />
                       ))
