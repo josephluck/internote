@@ -14,7 +14,6 @@ import {
   ToolbarExpandingButton,
   ToolbarExpandingButtonIconWrap
 } from "./toolbar-expanding-button";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SearchMenuItem } from "./search-menu-item";
@@ -47,15 +46,13 @@ const MaxHeight = styled.div`
   border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
 `;
 
-export function SnippetsMenu({onSnippetSelected}: {onSnippetSelected: (snippet: Snippet) => void}) {
-  const isLoading = useTwineState(
-    state => state.snippets.loading.fetchSnippets
-  );
+export function SnippetsMenu({
+  onSnippetSelected
+}: {
+  onSnippetSelected: (snippet: Snippet) => void;
+}) {
   const saveSnippet = useTwineActions(
     actions => actions.snippets.createSnippet
-  );
-  const fetchSnippets = useTwineActions(
-    actions => actions.snippets.fetchSnippets
   );
   const snippets = useTwineState(state => state.snippets.snippets);
   const [inputText, setInputText] = useState("");
@@ -72,12 +69,6 @@ export function SnippetsMenu({onSnippetSelected}: {onSnippetSelected: (snippet: 
   useEffect(() => {
     searchSnippets(inputText);
   }, [inputText, snippets.length]);
-
-  const onMenuToggled = useCallback((isShowing: boolean) => {
-    if (isShowing) {
-      fetchSnippets();
-    }
-  }, []);
 
   const saveNewSnippet = useCallback(() => {
     saveSnippet({ title: inputText, content: {} } as any);
@@ -100,7 +91,6 @@ export function SnippetsMenu({onSnippetSelected}: {onSnippetSelected: (snippet: 
   return (
     <MenuControl
       menuName="Snippets menu"
-      onMenuToggled={onMenuToggled}
       menu={menu => (
         <SnippetsDropdownMenu
           showing={menu.menuShowing}
@@ -142,7 +132,7 @@ export function SnippetsMenu({onSnippetSelected}: {onSnippetSelected: (snippet: 
                   content={snippet.title}
                   onSelect={() => {
                     menu.toggleMenuShowing(false);
-                    onSnippetSelected(snippet)
+                    onSnippetSelected(snippet);
                   }}
                   onDelete={() => {
                     console.log("TODO: delete snippet from DB");
@@ -164,11 +154,7 @@ export function SnippetsMenu({onSnippetSelected}: {onSnippetSelected: (snippet: 
           {collapse => (
             <ToolbarExpandingButton forceShow={menu.menuShowing}>
               <ToolbarExpandingButtonIconWrap>
-                {isLoading ? (
-                  <FontAwesomeIcon icon={faSpinner} spin />
-                ) : (
-                  <FontAwesomeIcon icon={faCut} />
-                )}
+                <FontAwesomeIcon icon={faCut} />
               </ToolbarExpandingButtonIconWrap>
               {collapse.renderCollapsedContent()}
             </ToolbarExpandingButton>

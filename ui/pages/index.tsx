@@ -38,12 +38,14 @@ Page.getInitialProps = async ({ store, query }) => {
   if (store.state.notes.notes.length === 0) {
     await Promise.all([
       store.actions.notes.fetchNotes(),
-      store.actions.tags.fetchTags()
+      store.actions.tags.fetchTags(),
+      store.actions.snippets.fetchSnippets()
     ]);
   } else {
     // No need to wait if notes are already fetched - just update in background
     store.actions.notes.fetchNotes();
     store.actions.tags.fetchTags();
+    store.actions.snippets.fetchSnippets();
   }
   return {
     id: query.id
