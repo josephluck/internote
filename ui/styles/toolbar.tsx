@@ -41,6 +41,7 @@ import {
   SchemaBlockType
 } from "@internote/export-service/types";
 import { SnippetsMenu } from "./snippets-menu";
+import { Snippet } from "../store/snippets";
 
 export function Toolbar({
   createNewTag,
@@ -55,7 +56,8 @@ export function Toolbar({
   requestSpeech,
   selectedText,
   shortcutSearch,
-  value
+  value,
+  onSnippetSelected
 }: {
   createNewTag: (searchText: string) => any;
   distractionFree: boolean;
@@ -70,6 +72,7 @@ export function Toolbar({
   selectedText: Option<string>;
   shortcutSearch: Option<string>;
   value: Value;
+  onSnippetSelected: (snippet: Snippet) => void
 }) {
   const tags = useTwineState(state => state.tags.tags);
   const saving = useTwineState(state => state.notes.loading.updateNote);
@@ -173,7 +176,7 @@ export function Toolbar({
             />
           </ButtonSpacer>
           <ButtonSpacer small>
-            <SnippetsMenu />
+            <SnippetsMenu onSnippetSelected={onSnippetSelected} />
           </ButtonSpacer>
         </Flex>
         <Flex alignItems="center">

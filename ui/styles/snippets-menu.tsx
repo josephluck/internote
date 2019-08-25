@@ -47,7 +47,7 @@ const MaxHeight = styled.div`
   border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
 `;
 
-export function SnippetsMenu() {
+export function SnippetsMenu({onSnippetSelected}: {onSnippetSelected: (snippet: Snippet) => void}) {
   const isLoading = useTwineState(
     state => state.snippets.loading.fetchSnippets
   );
@@ -141,10 +141,10 @@ export function SnippetsMenu() {
                 <SearchMenuItem
                   content={snippet.title}
                   onSelect={() => {
-                    console.log("TODO: insert this snippet");
+                    menu.toggleMenuShowing(false);
+                    onSnippetSelected(snippet)
                   }}
                   onDelete={() => {
-                    menu.toggleMenuShowing(false);
                     console.log("TODO: delete snippet from DB");
                   }}
                   searchText={inputText}

@@ -5,7 +5,7 @@ import {
   RenderBlockProps,
   RenderMarkProps
 } from "slate-react";
-import { SchemaProperties, Block } from "slate";
+import { SchemaProperties, Block, Document } from "slate";
 import {
   getValueOrDefault,
   isBoldHotkey,
@@ -49,6 +49,7 @@ import {
   SchemaMarkType,
   SchemaBlockType
 } from "@internote/export-service/types";
+import { Snippet } from "../store/snippets";
 
 const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
   import("./slate").then(mod => mod.Editor),
@@ -108,11 +109,7 @@ export function InternoteEditor({
     state => state.preferences.distractionFree
   );
 
-  const {
-    onChange,
-    onRequestDictionary,
-    onRequestSpeech
-  } = useTwineActions(
+  const { onChange, onRequestDictionary, onRequestSpeech } = useTwineActions(
     actions => ({
       onChange: (value: OnChange) =>
         actions.notes.updateNote({ ...value, noteId: id }),
@@ -356,6 +353,14 @@ export function InternoteEditor({
     (_?: Block) => {
       editor.current.deleteCharBackward();
       editor.current.focus();
+    },
+    [editor.current]
+  );
+
+  const insertSnippet = useCallback(
+    (snippet: Snippet) => {
+      const doc = Document.fromJSON(snippet.content);
+      editor.current.insertFragment(doc);
     },
     [editor.current]
   );
@@ -683,6 +688,7 @@ export function InternoteEditor({
         selectedText={selectedText}
         shortcutSearch={shortcutSearch}
         value={value}
+        onSnippetSelected={insertSnippet}
       />
     </Wrap>
   );
