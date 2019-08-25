@@ -72,7 +72,7 @@ export function Toolbar({
   selectedText: Option<string>;
   shortcutSearch: Option<string>;
   value: Value;
-  onSnippetSelected: (snippet: Snippet) => void
+  onSnippetSelected: (snippet: Snippet) => void;
 }) {
   const tags = useTwineState(state => state.tags.tags);
   const saving = useTwineState(state => state.notes.loading.updateNote);
@@ -116,6 +116,10 @@ export function Toolbar({
     isShortcutsReferenceShowing;
   const isToolbarShowing =
     hasSelection(value) || !!speechSrc || toolbarIsExpanded;
+
+  const hasHighlighted =
+    value.selection && value.selection.start.path !== value.selection.end.path;
+  // const fragment = value.fragment.toJSON()
 
   const onToggleDictionary = useCallback(() => {
     if (isDictionaryShowing) {
@@ -176,7 +180,10 @@ export function Toolbar({
             />
           </ButtonSpacer>
           <ButtonSpacer small>
-            <SnippetsMenu onSnippetSelected={onSnippetSelected} />
+            <SnippetsMenu
+              onSnippetSelected={onSnippetSelected}
+              hasHighlighted={hasHighlighted}
+            />
           </ButtonSpacer>
         </Flex>
         <Flex alignItems="center">

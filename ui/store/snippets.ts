@@ -3,7 +3,6 @@ import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { InternoteEffect, InternoteEffect0 } from ".";
 import { Api } from "../api/api";
 import { Schema } from "@internote/export-service/types";
-import schema from "@internote/export-service/serializers/schema-example";
 
 export interface Snippet {
   title: string;
@@ -40,6 +39,27 @@ export interface Namespace {
   snippets: Twine.ModelApi<State, Actions>;
 }
 
+const snip = {
+  object: "document",
+  data: {},
+  nodes: [
+    {
+      object: "block",
+      type: "heading-one",
+      data: {
+        className: null
+      },
+      nodes: [
+        {
+          object: "text",
+          text: "Welcome to Internote!",
+          marks: []
+        }
+      ]
+    }
+  ]
+};
+
 export function model(_api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
@@ -61,15 +81,15 @@ export function model(_api: Api): Model {
             actions.snippets.setSnippets([
               {
                 title: "Snippet 1",
-                content: schema as any
+                content: snip as any
               },
               {
                 title: "Snippet 2",
-                content: schema as any
+                content: snip as any
               },
               {
                 title: "Snippet 3",
-                content: schema as any
+                content: snip as any
               }
             ]);
             resolve();
