@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const ModalOuter = styled.div<{ open: boolean }>`
+const ModalOuter = styled.div<{ open: boolean; withBackground: boolean }>`
   position: fixed;
   z-index: 10;
   top: 0;
@@ -16,6 +16,8 @@ const ModalOuter = styled.div<{ open: boolean }>`
   align-items: center;
   pointer-events: ${props => (props.open ? "normal" : "none")};
   opacity: ${props => (props.open ? "1" : "0")};
+  background: ${props =>
+    props.withBackground ? props.theme.modalBackdropBackground : "transparent"};
 `;
 
 const ModalWrapper = styled.div<{ open: boolean }>`
@@ -47,15 +49,17 @@ export function Modal({
   open,
   onClose,
   children,
-  showCloseIcon = true
+  showCloseIcon = true,
+  withOverlay = false
 }: {
   open: boolean;
   onClose: () => void;
   children: React.ReactNode;
   showCloseIcon?: boolean;
+  withOverlay?: boolean;
 }) {
   return (
-    <ModalOuter open={open}>
+    <ModalOuter open={open} withBackground={withOverlay}>
       <ModalWrapper open={open}>
         {showCloseIcon ? (
           <ModalCloseWrapper onClick={onClose}>

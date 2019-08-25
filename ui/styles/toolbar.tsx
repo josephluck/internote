@@ -117,9 +117,9 @@ export function Toolbar({
   const isToolbarShowing =
     hasSelection(value) || !!speechSrc || toolbarIsExpanded;
 
+  // TODO: for some reason this is true on auto focus...
   const hasHighlighted =
     value.selection && value.selection.start.path !== value.selection.end.path;
-  // const fragment = value.fragment.toJSON()
 
   const onToggleDictionary = useCallback(() => {
     if (isDictionaryShowing) {

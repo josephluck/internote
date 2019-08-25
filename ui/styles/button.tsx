@@ -37,7 +37,11 @@ const ButtonWrap = styled.button<ButtonProps>`
   line-height: ${props =>
     props.small ? font._12.lineHeight : font._18.lineHeight};
   cursor: ${props =>
-    props.onClick || props.type === "submit" ? "pointer" : "inherit"};
+    props.disabled
+      ? "not-allowed"
+      : props.onClick || props.type === "submit"
+      ? "pointer"
+      : "inherit"};
 `;
 
 const SpinnerIcon = styled.div<{ primary?: boolean; small?: boolean }>`
@@ -55,7 +59,7 @@ export function Button(
   props: ButtonProps & React.HTMLProps<HTMLButtonElement>
 ) {
   return (
-    <ButtonWrap {...props as any}>
+    <ButtonWrap {...(props as any)}>
       {props.loading ? (
         <SpinnerIcon primary={props.primary} small={props.small}>
           <FontAwesomeIcon icon={faSpinner} spin />

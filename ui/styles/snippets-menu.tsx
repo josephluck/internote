@@ -1,6 +1,6 @@
 import { NoResults } from "./no-results";
 import { useTwineState } from "../store";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { MenuControl } from "./menu-control";
 import Fuse from "fuse.js";
 import { InputWithIcons } from "./input-with-icons";
@@ -64,9 +64,12 @@ export function SnippetsMenu({
   onSnippetSelected: (snippet: Snippet) => void;
   hasHighlighted: boolean;
 }) {
-  const { setSnippetToInsert, setSnippetsMenuShowing } = React.useContext(
-    SnippetsContext
-  );
+  const {
+    snippetsMenuShowing,
+    setSnippetToInsert,
+    setSnippetsMenuShowing,
+    setCreateSnippetModalOpen
+  } = useContext(SnippetsContext);
   const snippets = useTwineState(state => state.snippets.snippets);
   const [inputText, setInputText] = useState("");
   const [
@@ -102,118 +105,123 @@ export function SnippetsMenu({
   }
 
   return (
-    <MenuControl
-      menuName="Snippets menu"
-      onMenuToggled={setSnippetsMenuShowing}
-      menu={menu => (
-        <SnippetsDropdownMenu
-          showing={menu.menuShowing}
-          horizontalPosition="center"
-          verticalPosition="top"
-          isExpanded={searchFocused || inputText.length > 0}
-        >
-          <>
-            {createNewSnippetInstructionsShowing ? (
-              <InstructionsWrapper>
-                <Instructions>
-                  To create a new snippet, highlight the selection you would
-                  like to save, and press the "Create snippet" button in the
-                  toolbar.
-                </Instructions>
-                <Button
-                  fullWidth
-                  onClick={() => setCreateNewSnippetInstructionsShowing(false)}
-                >
-                  Got it
-                </Button>
-              </InstructionsWrapper>
-            ) : (
-              <>
-                {menu.menuShowing && !searchFocused ? (
-                  <OnKeyboardShortcut keyCombo="s" cb={focusInput} />
-                ) : null}
-                <HeadingWrapper>
-                  <InputWithIcons
-                    value={inputText}
-                    placeholder="Search for snippets"
-                    onClear={() => {
-                      setInputText("");
-                      focusInput();
-                    }}
-                    onInput={(e: any) => {
-                      setInputText(e.target.value);
-                    }}
-                    onFocus={() => setSearchFocused(true)}
-                    onBlur={() => setSearchFocused(false)}
-                    isFocused={inputText.length > 0}
-                  />
-                </HeadingWrapper>
-                <DropdownMenuItem
-                  icon={<FontAwesomeIcon icon={faPlus} />}
-                  onClick={() => setCreateNewSnippetInstructionsShowing(true)}
-                >
-                  <span>Create a new snippet</span>
-                </DropdownMenuItem>
+    <>
+      <MenuControl
+        menuName="Snippets menu"
+        onMenuToggled={setSnippetsMenuShowing}
+        forceShow={snippetsMenuShowing}
+        menu={menu => (
+          <SnippetsDropdownMenu
+            showing={menu.menuShowing}
+            horizontalPosition="center"
+            verticalPosition="top"
+            isExpanded={searchFocused || inputText.length > 0}
+          >
+            <>
+              {createNewSnippetInstructionsShowing ? (
+                <InstructionsWrapper>
+                  <Instructions>
+                    To create a new snippet, highlight the selection you would
+                    like to save, and press the "Create snippet" button in the
+                    toolbar.
+                  </Instructions>
+                  <Button
+                    fullWidth
+                    onClick={() =>
+                      setCreateNewSnippetInstructionsShowing(false)
+                    }
+                  >
+                    Got it
+                  </Button>
+                </InstructionsWrapper>
+              ) : (
+                <>
+                  {menu.menuShowing && !searchFocused ? (
+                    <OnKeyboardShortcut keyCombo="s" cb={focusInput} />
+                  ) : null}
+                  <HeadingWrapper>
+                    <InputWithIcons
+                      value={inputText}
+                      placeholder="Search for snippets"
+                      onClear={() => {
+                        setInputText("");
+                        focusInput();
+                      }}
+                      onInput={(e: any) => {
+                        setInputText(e.target.value);
+                      }}
+                      onFocus={() => setSearchFocused(true)}
+                      onBlur={() => setSearchFocused(false)}
+                      isFocused={inputText.length > 0}
+                    />
+                  </HeadingWrapper>
+                  <DropdownMenuItem
+                    icon={<FontAwesomeIcon icon={faPlus} />}
+                    onClick={() => setCreateNewSnippetInstructionsShowing(true)}
+                  >
+                    <span>Create a new snippet</span>
+                  </DropdownMenuItem>
 
-                <MaxHeight
-                  onMouseOut={() => {
-                    setSnippetToInsert(null);
-                  }}
-                >
-                  {filteredSnippets.length === 0 ? (
-                    <NoResults emojis="🔎 🙄" message="No snippets found" />
-                  ) : (
-                    filteredSnippets.map(snippet => (
-                      <SearchMenuItem
-                        content={snippet.title}
-                        onMouseIn={() => {
-                          setSnippetToInsert(snippet);
-                        }}
-                        onSelect={() => {
-                          menu.toggleMenuShowing(false);
-                          setSnippetToInsert(null);
-                          onSnippetSelected(snippet);
-                        }}
-                        onDelete={() => {
-                          console.log("TODO: delete snippet from DB");
-                        }}
-                        searchText={inputText}
-                      />
-                    ))
-                  )}
-                </MaxHeight>
-              </>
-            )}
-          </>
-        </SnippetsDropdownMenu>
-      )}
-    >
-      {menu => (
-        <CollapseWidthOnHover
-          onClick={() => {
-            if (hasHighlighted) {
-              console.log("TODO: show create snippet modal");
-            } else {
-              menu.toggleMenuShowing(!menu.menuShowing);
+                  <MaxHeight
+                    onMouseOut={() => {
+                      setSnippetToInsert(null);
+                    }}
+                  >
+                    {filteredSnippets.length === 0 ? (
+                      <NoResults emojis="🔎 🙄" message="No snippets found" />
+                    ) : (
+                      filteredSnippets.map(snippet => (
+                        <SearchMenuItem
+                          content={snippet.title}
+                          onMouseIn={() => {
+                            setSnippetToInsert(snippet);
+                          }}
+                          onSelect={() => {
+                            menu.toggleMenuShowing(false);
+                            setSnippetToInsert(null);
+                            onSnippetSelected(snippet);
+                          }}
+                          onDelete={() => {
+                            console.log("TODO: delete snippet from DB");
+                          }}
+                          searchText={inputText}
+                        />
+                      ))
+                    )}
+                  </MaxHeight>
+                </>
+              )}
+            </>
+          </SnippetsDropdownMenu>
+        )}
+      >
+        {menu => (
+          <CollapseWidthOnHover
+            onClick={() => {
+              if (hasHighlighted) {
+                setCreateSnippetModalOpen(true);
+              } else {
+                menu.toggleMenuShowing(!menu.menuShowing);
+              }
+            }}
+            forceShow={menu.menuShowing}
+            collapsedContent={
+              <Flex pl={spacing._0_25} style={{ whiteSpace: "nowrap" }}>
+                {hasHighlighted ? "Create snippet" : "Snippets"}
+              </Flex>
             }
-          }}
-          forceShow={menu.menuShowing || hasHighlighted}
-          collapsedContent={
-            <Flex pl={spacing._0_25} style={{ whiteSpace: "nowrap" }}>
-              {hasHighlighted ? "Create snippet" : "Snippets"}
-            </Flex>
-          }
-        >
-          {collapse => (
-            <ToolbarExpandingButton forceShow={menu.menuShowing}>
-              <ToolbarExpandingButtonIconWrap>
-                <FontAwesomeIcon icon={faCut} />
-              </ToolbarExpandingButtonIconWrap>
-              {collapse.renderCollapsedContent()}
-            </ToolbarExpandingButton>
-          )}
-        </CollapseWidthOnHover>
-      )}
-    </MenuControl>
+          >
+            {collapse => (
+              <ToolbarExpandingButton forceShow={menu.menuShowing}>
+                <ToolbarExpandingButtonIconWrap>
+                  <FontAwesomeIcon icon={faCut} />
+                </ToolbarExpandingButtonIconWrap>
+                {collapse.renderCollapsedContent()}
+              </ToolbarExpandingButton>
+            )}
+          </CollapseWidthOnHover>
+        )}
+      </MenuControl>
+    </>
   );
 }

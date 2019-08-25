@@ -53,6 +53,7 @@ import { Snippet } from "../store/snippets";
 import { isServer } from "../utilities/window";
 import styled, { keyframes } from "styled-components";
 import { SnippetsContext } from "./snippets-context";
+import { CreateSnippetModal } from "./create-snippet-modal";
 
 const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
   import("./slate").then(mod => mod.Editor),
@@ -136,7 +137,12 @@ export function InternoteEditor({
     state => state.preferences.distractionFree
   );
 
-  const { onChange, onRequestDictionary, onRequestSpeech } = useTwineActions(
+  const {
+    onChange,
+    onRequestDictionary,
+    onRequestSpeech,
+    createSnippet
+  } = useTwineActions(
     actions => ({
       onChange: (value: OnChange) =>
         actions.notes.updateNote({ ...value, noteId: id }),
@@ -144,7 +150,8 @@ export function InternoteEditor({
       onRequestSpeech: (words: string) =>
         actions.speech.requestSpeech({ words, id }),
       onCreateNewTag: (value: OnChange) =>
-        actions.tags.saveNewTag({ ...value, noteId: id })
+        actions.tags.saveNewTag({ ...value, noteId: id }),
+      createSnippet: actions.snippets.createSnippet
     }),
     [id]
   );
@@ -600,6 +607,14 @@ export function InternoteEditor({
     updateSnippetInsertionIndicator();
   }, [value, snippetsMenuShowing, snippetToInsert]);
 
+  const onCreateSnippet = useCallback(async (title: string) => {
+    const fragment = valueRef.current.fragment.toJSON();
+    await createSnippet({
+      title,
+      content: fragment as any
+    });
+  }, []);
+
   /**
    * Rendering
    */
@@ -766,6 +781,7 @@ export function InternoteEditor({
       <SnippetInsertionIndicator ref={snippetInsertionIndicatorRef}>
         👇
       </SnippetInsertionIndicator>
+      <CreateSnippetModal onCreateSnippet={onCreateSnippet} />
     </Wrap>
   );
 }

@@ -15,7 +15,7 @@ const DarkOverlay = styled.div<{ showing: boolean }>`
   width: 100%;
   background: ${props => props.theme.modalBackdropBackground};
   transition: all 300ms ease;
-  opacity: ${props => (props.showing ? "0.9" : "0")};
+  opacity: ${props => (props.showing ? "1" : "0")};
   pointer-events: none;
 `;
 

@@ -71,8 +71,13 @@ export function model(_api: Api): Model {
       })
     },
     effects: {
-      async createSnippet(_state, _actions, _snippet) {
-        // TODO
+      async createSnippet(state, actions, snippet) {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            actions.snippets.setSnippets([snippet, ...state.snippets.snippets]);
+            resolve();
+          }, 2000);
+        });
       },
       async fetchSnippets(_state, actions) {
         // TODO
