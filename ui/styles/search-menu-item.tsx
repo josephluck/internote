@@ -46,6 +46,8 @@ export function SearchMenuItem({
   content,
   onDelete,
   onSelect,
+  onMouseIn,
+  onMouseOut,
   searchText
 }: {
   isLoading?: boolean;
@@ -53,6 +55,8 @@ export function SearchMenuItem({
   content: string;
   onDelete: () => void;
   onSelect: () => void;
+  onMouseIn?: () => void;
+  onMouseOut?: () => void;
   searchText: string;
 }) {
   return (
@@ -72,6 +76,8 @@ export function SearchMenuItem({
           textOverflow: "ellipsis"
         }}
         onClick={onSelect}
+        onMouseEnter={onMouseIn}
+        onMouseLeave={onMouseOut}
       >
         <Highlighter
           searchWords={searchText.split("")}

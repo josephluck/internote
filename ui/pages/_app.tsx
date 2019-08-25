@@ -7,6 +7,7 @@ import Head from "next/head";
 import { sansSerif } from "../theming/themes";
 import { ShortcutsProvider } from "../styles/shortcuts";
 import { InternoteThemes } from "../styles/theme-provider";
+import { SnippetsProvider } from "../styles/snippets-context";
 
 const GlobalStyles = createGlobalStyle`
   @import url("https://rsms.me/inter/inter-ui.css");
@@ -75,7 +76,9 @@ export class Application extends App {
             </Head>
             <GlobalStyles />
             <ShortcutsProvider>
-              <Component {...pageProps} store={store} />
+              <SnippetsProvider>
+                <Component {...pageProps} store={store} />
+              </SnippetsProvider>
             </ShortcutsProvider>
           </>
         </InternoteThemes>

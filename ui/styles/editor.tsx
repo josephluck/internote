@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useEffect } from "react";
 import zenscroll from "zenscroll";
 import {
   Editor as SlateEditor,
@@ -50,6 +50,9 @@ import {
   SchemaBlockType
 } from "@internote/export-service/types";
 import { Snippet } from "../store/snippets";
+import { isServer } from "../utilities/window";
+import styled, { keyframes } from "styled-components";
+import { SnippetsContext } from "./snippets-context";
 
 const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
   import("./slate").then(mod => mod.Editor),
@@ -65,6 +68,30 @@ const Editor = React.forwardRef<unknown, InternoteSlateEditorProps>(
 const Ide = dynamic(import("./ide").then(module => module.Ide), { ssr: false });
 
 const DEFAULT_NODE = "paragraph";
+
+const bouncy = keyframes`
+  from {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+
+  to {
+    transform: translateY(0px);
+  }
+`;
+
+const SnippetInsertionIndicator = styled.div`
+  position: absolute;
+  z-index: 1;
+  top: -10000px;
+  left: -10000px;
+  opacity: 0;
+  transition: opacity 0.75s;
+  animation: ${bouncy} 1s ease-in-out infinite;
+`;
 
 const schema: SchemaProperties = {
   inlines: {
@@ -134,6 +161,9 @@ export function InternoteEditor({
   const debouncedValue = useDebounce(value, 1000);
   const throttledValue = useThrottle(value, 100);
   const [userScrolled, setUserScrolled] = React.useState(false);
+  const { snippetsMenuShowing, snippetToInsert } = React.useContext(
+    SnippetsContext
+  );
 
   /**
    * Derived state
@@ -153,6 +183,7 @@ export function InternoteEditor({
   const preventScrollListener = React.useRef<boolean>(false);
   const focusedNodeKey = React.useRef<any>();
   const isMouseDown = React.useRef(false);
+  const snippetInsertionIndicatorRef = React.useRef<HTMLDivElement>();
 
   /**
    * Replace value state in response to props
@@ -357,14 +388,6 @@ export function InternoteEditor({
     [editor.current]
   );
 
-  const insertSnippet = useCallback(
-    (snippet: Snippet) => {
-      const doc = Document.fromJSON(snippet.content);
-      editor.current.insertFragment(doc);
-    },
-    [editor.current]
-  );
-
   /**
    * Mouse down - should prevent focus mode scroll so that user
    * can drag to select text without the scroll going whacky.
@@ -528,6 +551,55 @@ export function InternoteEditor({
     [insertTag]
   );
 
+  const insertSnippet = useCallback(
+    (snippet: Snippet) => {
+      const doc = Document.fromJSON(snippet.content);
+      editor.current.focus();
+      // NB: wait for focus to happen
+      requestAnimationFrame(() => {
+        editor.current.insertFragment(doc);
+      });
+    },
+    [editor.current]
+  );
+
+  /** Positions the snippet insertion indicator to where the user's cursor would be (and where the snippet would end up) */
+  const updateSnippetInsertionIndicator = () => {
+    const snippetInsertionIndicator = snippetInsertionIndicatorRef.current;
+    const selection = valueRef.current.selection;
+    if (
+      isServer() ||
+      !snippetInsertionIndicator ||
+      !selection ||
+      !snippetsMenuShowing ||
+      !snippetToInsert
+    ) {
+      if (!isServer()) {
+        snippetInsertionIndicator.removeAttribute("style");
+      }
+      return;
+    }
+
+    /** NB: important to focus the editor so that the window.getSelection() works */
+    editor.current.focus();
+
+    const native = window.getSelection();
+    const range = native.getRangeAt(0);
+    const rect = range.getBoundingClientRect();
+    snippetInsertionIndicator.style.opacity = "1";
+    snippetInsertionIndicator.style.top = `${rect.top +
+      window.pageYOffset -
+      snippetInsertionIndicator.offsetHeight}px`;
+    snippetInsertionIndicator.style.left = `${rect.left +
+      window.pageXOffset -
+      snippetInsertionIndicator.offsetWidth / 2 +
+      rect.width / 2}px`;
+  };
+
+  useEffect(() => {
+    updateSnippetInsertionIndicator();
+  }, [value, snippetsMenuShowing, snippetToInsert]);
+
   /**
    * Rendering
    */
@@ -690,6 +762,10 @@ export function InternoteEditor({
         value={value}
         onSnippetSelected={insertSnippet}
       />
+
+      <SnippetInsertionIndicator ref={snippetInsertionIndicatorRef}>
+        👇
+      </SnippetInsertionIndicator>
     </Wrap>
   );
 }

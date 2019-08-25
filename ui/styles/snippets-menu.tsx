@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SearchMenuItem } from "./search-menu-item";
 import styled from "styled-components";
 import { Snippet } from "../store/snippets";
+import { SnippetsContext } from "./snippets-context";
 
 const SnippetsDropdownMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
   padding-top: 0;
@@ -51,6 +52,9 @@ export function SnippetsMenu({
 }: {
   onSnippetSelected: (snippet: Snippet) => void;
 }) {
+  const { setSnippetToInsert, setSnippetsMenuShowing } = React.useContext(
+    SnippetsContext
+  );
   const saveSnippet = useTwineActions(
     actions => actions.snippets.createSnippet
   );
@@ -91,6 +95,7 @@ export function SnippetsMenu({
   return (
     <MenuControl
       menuName="Snippets menu"
+      onMenuToggled={setSnippetsMenuShowing}
       menu={menu => (
         <SnippetsDropdownMenu
           showing={menu.menuShowing}
@@ -130,8 +135,15 @@ export function SnippetsMenu({
               filteredSnippets.map(snippet => (
                 <SearchMenuItem
                   content={snippet.title}
+                  onMouseIn={() => {
+                    setSnippetToInsert(snippet);
+                  }}
+                  onMouseOut={() => {
+                    setSnippetToInsert(null);
+                  }}
                   onSelect={() => {
                     menu.toggleMenuShowing(false);
+                    setSnippetToInsert(null);
                     onSnippetSelected(snippet);
                   }}
                   onDelete={() => {
