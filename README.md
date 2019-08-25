@@ -55,7 +55,7 @@ Tag notes using a simple #tag system. Easily search for notes by tag.
 
 **Dictionary**
 
-Can't find the perfect word or want to check that your use of a word is correct? Just highlight a word and you're a single click away to the full power of Oxford's English Dictionary and thesaurus.
+Can't find the perfect word or want to check that your use of a word is correct? Just highlight a word and you're a single click away to the full power of Oxford's English dictionary and thesaurus.
 
 **Speech**
 
@@ -64,6 +64,14 @@ Just highlight a sentence or paragraph and press the speech button to hear it. C
 **Snippets**
 
 Create snippets of content that can be saved and reused whenever needed.
+
+**Export**
+
+Need to take your notes elsewhere? Export as markdown, or as HTML.
+
+**Code editor**
+
+Integrated code editor based on Visual Studio Code's Monaco editor. Embed multiple code editors in a single document. Full syntax highlighting, IntelliSense, you name it.
 
 **Full-screen mode**
 
