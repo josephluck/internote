@@ -61,6 +61,10 @@ Can't find the perfect word or want to check that your use of a word is correct?
 
 Just highlight a sentence or paragraph and press the speech button to hear it. Choose from multiple voices, male or female.
 
+**Snippets**
+
+Create snippets of content that can be saved and reused whenever needed.
+
 **Full-screen mode**
 
 Go completely distraction free by entering full-screen mode.
