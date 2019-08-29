@@ -2,6 +2,7 @@ import { Err, Ok } from "space-lift";
 import "isomorphic-fetch";
 import aws4 from "aws4";
 import { Session } from "../auth/storage";
+import { decodeIdToken } from "../auth/decode";
 
 export type MakeSignedRequest = (options: AwsSignedRequest) => any;
 
@@ -66,10 +67,11 @@ export function makeAttachmentsApi({
   };
 
   async function uploadFile(session: Session, file: File): Promise<void> {
+    const { sub } = decodeIdToken(session.idToken);
     const response = await makeSignedRequest({
       session,
       body: file,
-      path: `/${Date.now()}`,
+      path: `/private/${sub}/${Date.now()}`,
       method: "POST"
     });
     console.log(response);
