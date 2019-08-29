@@ -1,0 +1,45 @@
+service: internote-attachments-service
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  bucketName: internote-${self:custom.stage}-services-attachments
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: eu-west-1
+
+resources:
+  Resources:
+    AttachmentsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketName}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+  Outputs:
+    AttachmentsBucketArn:
+      Value:
+        Fn::GetAtt:
+          - AttachmentsBucket
+          - Arn
+      Export:
+        Name: ${self:custom.stage}-AttachmentsBucketArn
+
+    AttachmentsBucketName:
+      Value:
+        Ref: AttachmentsBucket
+      Export:
+        Name: ${self:custom.stage}-AttachmentsBucket

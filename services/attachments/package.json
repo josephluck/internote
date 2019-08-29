@@ -1,0 +1,21 @@
+{
+  "name": "@internote/attachments-service",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "*"
+  ],
+  "scripts": {
+    "deploy": "yarn deploy:dev",
+    "deploy:dev": "yarn deploy:dev:services",
+    "deploy:dev:services": "NODE_ENV=development sls deploy --stage dev -v",
+    "deploy:prod": "yarn deploy:prod:services",
+    "deploy:prod:services": "NODE_ENV=production sls deploy --stage prod"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "serverless": "^1.44.1"
+  }
+}

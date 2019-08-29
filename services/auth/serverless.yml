@@ -127,18 +127,17 @@ resources:
                         - "Fn::ImportValue": ${self:custom.stage}-ApiGatewayRestApiId
                         - "/*"
 
-                # Allow users to upload attachments to their
-                # folder inside our S3 bucket
-                # - Effect: "Allow"
-                #   Action:
-                #     - "s3:*"
-                #   Resource:
-                #     - Fn::Join:
-                #         - ""
-                #         - - "Fn::ImportValue": ${self:custom.stage}-AttachmentsBucketArn
-                #           - "/private/"
-                #           - "$"
-                #           - "{cognito-identity.amazonaws.com:sub}/*"
+                # Allow users to upload attachments to their folder inside the attachments bucket
+                - Effect: "Allow"
+                  Action:
+                    - "s3:*"
+                  Resource:
+                    - Fn::Join:
+                        - ""
+                        - - "Fn::ImportValue": ${self:custom.stage}-AttachmentsBucketArn
+                          - "/private/"
+                          - "$"
+                          - "{cognito-identity.amazonaws.com:sub}/*"
 
     # The federated identity for our user pool to auth with
     CognitoIdentityPool:
