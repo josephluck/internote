@@ -53,6 +53,10 @@ Emoji support because Internote is down with the kids :tada:
 
 Tag notes using a simple #tag system. Easily search for notes by tag.
 
+**Media attachments**
+
+Embed images, videos, audios and attach any other files to your notes. Your files are stored securely, only you can access them.
+
 **Dictionary**
 
 Can't find the perfect word or want to check that your use of a word is correct? Just highlight a word and you're a single click away to the full power of Oxford's English dictionary and thesaurus.
