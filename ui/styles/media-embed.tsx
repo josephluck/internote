@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { uploadSignal } from "./file-upload";
+import { uploadSignal, FileType } from "./file-upload";
 import { RenderBlockProps } from "slate-react";
 import { makeAttachmentsApi } from "../api/attachments";
 import { env } from "../env";
@@ -18,11 +18,12 @@ const Img = styled.img`
   border-radius: ${borderRadius._4};
 `;
 
-export function InternoteImage({ node, editor }: RenderBlockProps) {
+export function MediaEmbed({ node, editor }: RenderBlockProps) {
   const initialUploaded = node.data.get("uploaded");
-  const fileName = node.data.get("name");
-  const fileKey = node.data.get("key");
+  const name = node.data.get("name");
+  const key = node.data.get("key");
   const src = node.data.get("src");
+  const type = node.get("type") as FileType;
 
   const session = useTwineState(state => state.auth.session);
   const [uploaded, setUploaded] = useState(initialUploaded);
@@ -33,16 +34,16 @@ export function InternoteImage({ node, editor }: RenderBlockProps) {
 
   useEffect(() => {
     const binding = uploadSignal.add(e => {
-      if (e.src === src && e.fileKey === fileKey && e.fileName === fileName) {
+      if (e.src === src && e.key === key && e.name === name) {
         setUploaded(e.uploaded);
         setUploadProgress(e.progress);
         if (e.uploaded) {
           editor.setNodeByKey(node.key, {
-            type: "image",
+            type,
             data: {
               src,
-              key: fileKey,
-              name: fileName,
+              key,
+              name,
               uploaded: true
             }
           });
@@ -52,12 +53,12 @@ export function InternoteImage({ node, editor }: RenderBlockProps) {
     return () => {
       binding.detach();
     };
-  }, [src, fileKey, fileName]);
+  }, [src, key, name]);
 
   useEffect(() => {
     async function doEffect() {
       if (uploaded) {
-        const url = await attachments.makePresignedUrl(session, fileKey);
+        const url = await attachments.makePresignedUrl(session, key);
         setPresignedUrl(url);
       }
     }
@@ -65,7 +66,16 @@ export function InternoteImage({ node, editor }: RenderBlockProps) {
   }, [uploaded, session]);
 
   if (uploaded && presignedUrl) {
-    return <Img src={presignedUrl} />;
+    if (type === "image") {
+      return <Img src={presignedUrl} />;
+    }
+    if (type === "video") {
+      return <video src={presignedUrl} controls />;
+    }
+    if (type === "audio") {
+      return <audio src={presignedUrl} controls />;
+    }
+    return <div>Unknown file: {name}</div>;
   }
 
   return (

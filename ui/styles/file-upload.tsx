@@ -1,18 +1,70 @@
 import { Signal } from "signals";
-import { useCallback, FormEvent } from "react";
+import { useCallback, FormEvent, useRef, useState } from "react";
 import { makeAttachmentsApi } from "../api/attachments";
 import { env } from "../env";
 import { useTwineState } from "../store";
+import styled from "styled-components";
+import { CollapseWidthOnHover } from "./collapse-width-on-hover";
+import { Flex } from "@rebass/grid";
+import { spacing } from "../theming/symbols";
+import {
+  ToolbarExpandingButton,
+  ToolbarExpandingButtonIconWrap
+} from "./toolbar-expanding-button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner, faUpload } from "@fortawesome/free-solid-svg-icons";
+
+const HiddenFileInput = styled.input`
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  white-space: nowrap;
+  width: 1px;
+`;
+
+const FileInputLabel = styled.label`
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`;
+
+const Container = styled(CollapseWidthOnHover)`
+  position: relative;
+`;
 
 const attachments = makeAttachmentsApi({
   region: env.SERVICES_REGION,
   bucketName: env.ATTACHMENTS_BUCKET_NAME
 });
 
+export type FileType = "image" | "video" | "audio" | "unknown";
+
+export function getFileTypeFromFile(file: File): FileType {
+  switch (file.type) {
+    case "audio/mp3":
+      return "audio";
+    case "video/mp4":
+      return "video";
+    case "image/png":
+    case "image/jpg":
+    case "image/jpeg":
+      return "image";
+    default:
+      return "unknown";
+  }
+}
+
 export interface InternoteUploadEvent {
   src: string;
-  fileKey: string;
-  fileName: string;
+  type: FileType;
+  key: string;
+  name: string;
   progress: number;
   uploaded: boolean;
 }
@@ -32,59 +84,96 @@ export const FileUpload = ({
   onUploadProgress?: (e: InternoteUploadEvent) => void;
   onUploadFinished?: (e: InternoteUploadEvent) => void;
 }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const session = useTwineState(state => state.auth.session);
-  const onSubmit = useCallback(async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const fileInput: HTMLFormElement = document.querySelector(".files");
-    const file: File =
-      fileInput.files && fileInput.files.length > 0
-        ? fileInput.files[0]
-        : undefined;
-    if (file) {
-      const src = attachments.getUploadLocation(session, noteId, file);
-      const fileKey = attachments.getUploadKey(session, noteId, file);
-      const uploadStartEvent = {
-        src,
-        fileKey,
-        fileName: file.name,
-        progress: 0,
-        uploaded: false
-      };
-      onUploadStarted(uploadStartEvent);
-      uploadSignal.dispatch(uploadStartEvent);
-      await attachments.upload(session, noteId, file, progress => {
-        const percentage = (progress.loaded / progress.total) * 100;
-        const uploadProgressEvent = {
+  const onSubmit = useCallback(
+    async (e: FormEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      const file: File =
+        fileInputRef.current &&
+        fileInputRef.current.files &&
+        fileInputRef.current.files.length > 0
+          ? fileInputRef.current.files[0]
+          : undefined;
+      if (file) {
+        setIsUploading(true);
+        const type = getFileTypeFromFile(file);
+        const src = attachments.getUploadLocation(session, noteId, file);
+        const key = attachments.getUploadKey(session, noteId, file);
+        const uploadStartEvent = {
           src,
-          fileKey,
-          fileName: file.name,
-          progress: percentage,
+          key,
+          type,
+          name: file.name,
+          progress: 0,
           uploaded: false
         };
-        uploadSignal.dispatch(uploadProgressEvent);
-        if (onUploadProgress) {
-          onUploadProgress(uploadProgressEvent);
+        onUploadStarted(uploadStartEvent);
+        uploadSignal.dispatch(uploadStartEvent);
+        await attachments.upload(session, noteId, file, progress => {
+          const percentage = (progress.loaded / progress.total) * 100;
+          const uploadProgressEvent = {
+            src,
+            key,
+            type,
+            name: file.name,
+            progress: percentage,
+            uploaded: false
+          };
+          uploadSignal.dispatch(uploadProgressEvent);
+          if (onUploadProgress) {
+            onUploadProgress(uploadProgressEvent);
+          }
+        });
+        const uploadFinishedEvent = {
+          src,
+          key,
+          type,
+          name: file.name,
+          progress: 100,
+          uploaded: true
+        };
+        if (onUploadFinished) {
+          onUploadFinished(uploadFinishedEvent);
         }
-      });
-      const uploadFinishedEvent = {
-        src,
-        fileKey,
-        fileName: file.name,
-        progress: 100,
-        uploaded: true
-      };
-      if (onUploadFinished) {
-        onUploadFinished(uploadFinishedEvent);
+        uploadSignal.dispatch(uploadFinishedEvent);
+        setIsUploading(false);
       }
-      uploadSignal.dispatch(uploadFinishedEvent);
-    }
-  }, []);
+    },
+    [fileInputRef.current]
+  );
   return (
     <>
-      <form onSubmit={onSubmit}>
-        <input type="file" className="files" />
-        <button type="submit">Submit</button>
-      </form>
+      <Container
+        forceShow={isUploading}
+        collapsedContent={
+          <Flex pl={spacing._0_25} style={{ whiteSpace: "nowrap" }}>
+            Upload file
+          </Flex>
+        }
+      >
+        {collapse => (
+          <ToolbarExpandingButton forceShow={isUploading}>
+            <ToolbarExpandingButtonIconWrap>
+              {isUploading ? (
+                <FontAwesomeIcon icon={faSpinner} spin />
+              ) : (
+                <FontAwesomeIcon icon={faUpload} />
+              )}
+            </ToolbarExpandingButtonIconWrap>
+            {collapse.renderCollapsedContent()}
+
+            <HiddenFileInput
+              type="file"
+              ref={fileInputRef}
+              onChange={onSubmit}
+              id="upload-file"
+            />
+            <FileInputLabel htmlFor="upload-file"></FileInputLabel>
+          </ToolbarExpandingButton>
+        )}
+      </Container>
     </>
   );
 };

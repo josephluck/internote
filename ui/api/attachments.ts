@@ -45,7 +45,6 @@ export function makeAttachmentsApi({
         if (err) {
           reject(err);
         } else {
-          console.log({ data });
           resolve(data as any);
         }
       });

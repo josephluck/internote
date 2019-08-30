@@ -1,3 +1,5 @@
+import { FileType } from "../../ui/styles/file-upload";
+
 export type CreateExportDTO = {
   title: string;
   content: {
@@ -29,7 +31,7 @@ export type SchemaBlock =
   | ListItemBlock
   | BlockQuoteBlock
   | IdeBlock
-  | ImageBlock;
+  | MediaBlock;
 
 export type SchemaBlockType = Pick<SchemaBlock, "type">["type"];
 
@@ -111,9 +113,14 @@ export interface IdeBlock {
   nodes: SchemaInline[]; // TODO: IDE blocks have an empty text node that they should not have
 }
 
-export interface ImageBlock {
+/**
+ * NOTE THAT THE BLOCK BELOW IS A MEDIA UPLOAD.
+ * The types here refer to strings defined in FileType.
+ */
+
+export interface MediaBlock {
   object: "block";
-  type: "image";
+  type: FileType;
   data: {
     /** The file name */
     name: string;
@@ -124,7 +131,7 @@ export interface ImageBlock {
     /** Whether the file has finished uploading or not */
     uploaded: boolean;
   };
-  nodes: SchemaInline[]; // TODO: Image blocks should not have child nodes
+  nodes: SchemaInline[]; // TODO: Media blocks should not have child nodes
 }
 
 /** Inlines */

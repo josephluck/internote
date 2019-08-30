@@ -53,7 +53,7 @@ import { isServer } from "../utilities/window";
 import styled, { keyframes } from "styled-components";
 import { SnippetsContext } from "./snippets-context";
 import { CreateSnippetModal } from "./create-snippet-modal";
-import { InternoteImage } from "./image";
+import { MediaEmbed } from "./media-embed";
 import { GetSnippetDTO } from "@internote/snippets-service/types";
 import { InternoteUploadEvent } from "./file-upload";
 
@@ -96,6 +96,16 @@ const SnippetInsertionIndicator = styled.div`
   animation: ${bouncy} 1s ease-in-out infinite;
 `;
 
+const mediaSchema = {
+  isVoid: true,
+  data: {
+    src: _src => true,
+    key: _key => true,
+    name: _name => true,
+    uploaded: _uploaded => true
+  }
+};
+
 const schema: SchemaProperties = {
   inlines: {
     emoji: {
@@ -118,15 +128,10 @@ const schema: SchemaProperties = {
         content: _content => true
       }
     },
-    image: {
-      isVoid: true,
-      data: {
-        src: _src => true,
-        key: _key => true,
-        name: _name => true,
-        uploaded: _uploaded => true
-      }
-    }
+    image: mediaSchema,
+    video: mediaSchema,
+    audio: mediaSchema,
+    unknown: mediaSchema
   }
 };
 
@@ -617,8 +622,8 @@ export function InternoteEditor({
   const onFileUploadStarted = useCallback(
     (e: InternoteUploadEvent) => {
       editor.current.insertBlock({
-        type: "image",
-        data: { src: e.src, key: e.fileKey, name: e.fileName, uploaded: e.uploaded }
+        type: e.type, // NB: Generic media type. See schema for more information
+        data: { src: e.src, key: e.key, name: e.name, uploaded: e.uploaded }
       });
       editor.current.focus();
       editor.current.moveToStartOfNextText();
@@ -705,7 +710,10 @@ export function InternoteEditor({
           />
         );
       case "image":
-        return <InternoteImage {...props} />;
+      case "video":
+      case "audio":
+      case "unknown":
+        return <MediaEmbed {...props} />;
     }
   };
 
