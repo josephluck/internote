@@ -28,7 +28,8 @@ export type SchemaBlock =
   | NumberedListBlock
   | ListItemBlock
   | BlockQuoteBlock
-  | IdeBlock;
+  | IdeBlock
+  | ImageBlock;
 
 export type SchemaBlockType = Pick<SchemaBlock, "type">["type"];
 
@@ -108,6 +109,22 @@ export interface IdeBlock {
     content: string;
   };
   nodes: SchemaInline[]; // TODO: IDE blocks have an empty text node that they should not have
+}
+
+export interface ImageBlock {
+  object: "block";
+  type: "image";
+  data: {
+    /** The file name */
+    name: string;
+    /** The file key (relative to the root of the service that hosts it) */
+    key: string;
+    /** The source of the file (full path of the URL to view the file) */
+    src: string;
+    /** Whether the file has finished uploading or not */
+    uploaded: boolean;
+  };
+  nodes: SchemaInline[]; // TODO: Image blocks should not have child nodes
 }
 
 /** Inlines */

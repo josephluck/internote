@@ -53,7 +53,9 @@ import { isServer } from "../utilities/window";
 import styled, { keyframes } from "styled-components";
 import { SnippetsContext } from "./snippets-context";
 import { CreateSnippetModal } from "./create-snippet-modal";
+import { InternoteImage } from "./image";
 import { GetSnippetDTO } from "@internote/snippets-service/types";
+import { InternoteUploadEvent } from "./file-upload";
 
 const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
   import("./slate").then(mod => mod.Editor),
@@ -114,6 +116,15 @@ const schema: SchemaProperties = {
       isVoid: true,
       data: {
         content: _content => true
+      }
+    },
+    image: {
+      isVoid: true,
+      data: {
+        src: _src => true,
+        key: _key => true,
+        name: _name => true,
+        uploaded: _uploaded => true
       }
     }
   }
@@ -603,6 +614,18 @@ export function InternoteEditor({
       rect.width / 2}px`;
   };
 
+  const onFileUploadStarted = useCallback(
+    (e: InternoteUploadEvent) => {
+      editor.current.insertBlock({
+        type: "image",
+        data: { src: e.src, key: e.fileKey, name: e.fileName, uploaded: e.uploaded }
+      });
+      editor.current.focus();
+      editor.current.moveToStartOfNextText();
+    },
+    [editor.current]
+  );
+
   useEffect(() => {
     updateSnippetInsertionIndicator();
   }, [value, snippetsMenuShowing, snippetToInsert]);
@@ -681,6 +704,8 @@ export function InternoteEditor({
             onClick={focusBlock}
           />
         );
+      case "image":
+        return <InternoteImage {...props} />;
     }
   };
 
@@ -776,6 +801,7 @@ export function InternoteEditor({
         shortcutSearch={shortcutSearch}
         value={value}
         onSnippetSelected={insertSnippet}
+        onFileUploadStarted={onFileUploadStarted}
       />
 
       <SnippetInsertionIndicator ref={snippetInsertionIndicatorRef}>

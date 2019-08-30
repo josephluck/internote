@@ -7,7 +7,6 @@ import { Global } from "../styles/global";
 import { Note } from "../styles/note";
 import { OnMount } from "../styles/on-mount";
 import styled from "styled-components";
-import { FileUpload } from "../styles/file-upload";
 
 const PageWrapper = styled.div`
   min-height: 100%;
@@ -28,11 +27,6 @@ const Page: NextTwineSFC<Store, { id: string | string[] }> = ({ id }) => {
     <>
       <Heading note={note} />
       <PageWrapper>
-        <br />
-        <br />
-        <br />
-        <br />
-        <FileUpload />
         {note ? <Note note={note} /> : <OnMount cb={navigateToFirstNote} />}
       </PageWrapper>
       <Global />

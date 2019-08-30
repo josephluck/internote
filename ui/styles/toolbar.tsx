@@ -42,6 +42,7 @@ import {
 } from "@internote/export-service/types";
 import { SnippetsMenu } from "./snippets-menu";
 import { GetSnippetDTO } from "@internote/snippets-service/types";
+import { FileUpload, InternoteUploadEvent } from "./file-upload";
 
 export function Toolbar({
   createNewTag,
@@ -57,7 +58,8 @@ export function Toolbar({
   selectedText,
   shortcutSearch,
   value,
-  onSnippetSelected
+  onSnippetSelected,
+  onFileUploadStarted,
 }: {
   createNewTag: (searchText: string) => any;
   distractionFree: boolean;
@@ -73,6 +75,7 @@ export function Toolbar({
   shortcutSearch: Option<string>;
   value: Value;
   onSnippetSelected: (snippet: GetSnippetDTO) => void;
+  onFileUploadStarted: (e: InternoteUploadEvent) => void;
 }) {
   const tags = useTwineState(state => state.tags.tags);
   const saving = useTwineState(state => state.notes.loading.updateNote);
@@ -186,6 +189,12 @@ export function Toolbar({
             <SnippetsMenu
               onSnippetSelected={onSnippetSelected}
               hasHighlighted={hasHighlighted}
+            />
+          </ButtonSpacer>
+          <ButtonSpacer small>
+            <FileUpload
+              noteId={id}
+              onUploadStarted={onFileUploadStarted}
             />
           </ButtonSpacer>
         </Flex>
