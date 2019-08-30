@@ -2,6 +2,11 @@ service: internote-auth-service
 
 custom:
   stage: ${opt:stage, self:provider.stage}
+  webpack:
+    config: "webpack.config.js"
+    includeModules:
+      forceExclude:
+        - aws-sdk
 
 provider:
   name: aws
@@ -25,7 +30,7 @@ provider:
 
 plugins:
   - serverless-plugin-monorepo
-  - serverless-plugin-typescript
+  - serverless-webpack
 
 functions:
   authPreSignUp:

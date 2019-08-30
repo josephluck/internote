@@ -1,8 +1,6 @@
-import { Err, Ok } from "space-lift";
 import "isomorphic-fetch";
-import aws4 from "aws4";
 import { Session } from "../auth/storage";
-import { decodeIdToken } from "../auth/decode";
+import AWS, { S3 } from "aws-sdk";
 
 export type MakeSignedRequest = (options: AwsSignedRequest) => any;
 
@@ -15,66 +13,42 @@ export interface AwsSignedRequest {
 
 export function makeAttachmentsApi({
   region,
-  host
+  bucketName
 }: {
   /** AWS region for services */
   region: string;
-  /** Host path for S3 bucket (see env.reference ATTACHMENTS_S3_HOST) */
-  host: string;
+  /** Name of the bucket */
+  bucketName: string;
 }) {
-  const makeSignedRequest: MakeSignedRequest = async ({
-    path,
-    session,
-    method,
-    body
-  }) => {
-    const request = aws4.sign(
-      {
-        host,
-        path,
-        url: `${host}${path}`,
-        method,
-        region,
-        service: "s3",
-        data: body,
-        body
-      },
-      {
-        accessKeyId: session.accessKeyId,
-        secretAccessKey: session.secretKey,
-        sessionToken: session.sessionToken
-      }
-    );
-    const response = await fetch(request.url, {
-      method,
-      headers: request.headers,
-      body
+  async function uploadFile(session: Session, file: File): Promise<any> {
+    AWS.config.update({
+      region,
+      accessKeyId: session.accessKeyId,
+      secretAccessKey: session.secretKey,
+      sessionToken: session.sessionToken
     });
-    if (!response.ok) {
-      try {
-        const json = await response.json();
-        return Err(json);
-      } catch (err) {
-        return Err("Response error was not JSON");
+    const s3 = new S3({
+      region,
+      params: {
+        Bucket: bucketName
       }
-    }
-    try {
-      const json = await response.json();
-      return Ok(json);
-    } catch (err) {
-      return Err("Response error was not JSON");
-    }
-  };
+    });
+    const upload = s3.upload({
+      Key: `private/${session.identityId}/${Date.now()}.html`,
+      Bucket: bucketName,
+      Body: file,
+      ContentType: file.type
+    });
 
-  async function uploadFile(session: Session, file: File): Promise<void> {
-    const { sub } = decodeIdToken(session.idToken);
-    const response = await makeSignedRequest({
-      session,
-      body: file,
-      path: `/private/${sub}/${Date.now()}`,
-      method: "POST"
+    upload.send((err, data) => {
+      if (err) {
+        console.log({ err });
+      } else {
+        console.log({ data });
+      }
     });
-    console.log(response);
+
+    return Promise.resolve();
   }
   return {
     uploadFile

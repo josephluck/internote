@@ -12,8 +12,8 @@ export interface Env {
    */
   SERVICES_REGION: string;
   COGNITO_IDENTITY_POOL_ID: string;
-  /** The S3 host path for the attachments S3 bucket. See env.reference for the format */
-  ATTACHMENTS_S3_HOST: string;
+  /** The name of the attachments bucket */
+  ATTACHMENTS_BUCKET_NAME: string;
 }
 
 export const env: Env = {
@@ -22,5 +22,5 @@ export const env: Env = {
   SERVICES_HOST: process.env.SERVICES_HOST,
   SERVICES_REGION: process.env.SERVICES_REGION,
   COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
-  ATTACHMENTS_S3_HOST: process.env.ATTACHMENTS_S3_HOST
+  ATTACHMENTS_BUCKET_NAME: process.env.ATTACHMENTS_BUCKET_NAME
 };

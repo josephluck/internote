@@ -5,7 +5,7 @@ import { useTwineState } from "../store";
 
 const attachmentsApi = makeAttachmentsApi({
   region: env.SERVICES_REGION,
-  host: env.ATTACHMENTS_S3_HOST
+  bucketName: env.ATTACHMENTS_BUCKET_NAME
 });
 
 export const FileUpload = () => {

@@ -15,7 +15,8 @@ const defaultSession: Session = {
   accessKeyId: "",
   expiration: 0,
   secretKey: "",
-  sessionToken: ""
+  sessionToken: "",
+  identityId: ""
 };
 
 export function cookieOptions(): CookieSetOptions {
@@ -119,4 +120,8 @@ export interface Session {
    * See https://docs.aws.amazon.com/cognitoidentity/latest/APIReference/API_Credentials.html
    */
   sessionToken: string;
+  /**
+   * The Cognito Federated Identity Pool ID that the user belongs to.
+   */
+  identityId: string;
 }

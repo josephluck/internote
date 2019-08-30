@@ -67,8 +67,8 @@ export function model(_api: Api, auth: AuthApi): Model {
         return defaultState();
       },
       setNeedsVerify: (state, needsVerify) => ({ ...state, needsVerify }),
-      setSession: (state, authSession) => {
-        const latestSession = { ...state.session, ...authSession };
+      setSession: (state, session) => {
+        const latestSession = { ...state.session, ...session };
         authStorage.storeSession(latestSession);
         return {
           ...state,
@@ -121,6 +121,7 @@ export function model(_api: Api, auth: AuthApi): Model {
         );
         const session: Session = {
           ...state.auth.session,
+          identityId: response.IdentityId,
           accessKeyId: credentials.Credentials.AccessKeyId,
           expiration: credentials.Credentials.Expiration,
           secretKey: credentials.Credentials.SecretKey,
