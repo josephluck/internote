@@ -32,3 +32,9 @@ const amazing = (content: string) => {
 
 
 
+[some-image.png](https://some-bucket.s3.eu-west-1.amazonaws.com/some-image.png)
+
+[some-video.mp4](https://some-bucket.s3.eu-west-1.amazonaws.com/some-video.mp4)
+
+[some-audio.mp3](https://some-bucket.s3.eu-west-1.amazonaws.com/some-audio.mp3)
+

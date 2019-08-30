@@ -1,4 +1,4 @@
-import { FileType } from "../../ui/styles/file-upload";
+export type FileType = "image" | "video" | "audio" | "unknown";
 
 export type CreateExportDTO = {
   title: string;

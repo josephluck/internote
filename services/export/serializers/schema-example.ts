@@ -507,6 +507,57 @@ export default {
           marks: []
         }
       ]
+    },
+    {
+      object: "block",
+      type: "image",
+      data: {
+        src: "https://some-bucket.s3.eu-west-1.amazonaws.com/some-image.png",
+        key: "some-image.png",
+        name: "some-image.png",
+        uploaded: true
+      },
+      nodes: [
+        {
+          object: "text",
+          text: "",
+          marks: []
+        }
+      ]
+    },
+    {
+      object: "block",
+      type: "video",
+      data: {
+        src: "https://some-bucket.s3.eu-west-1.amazonaws.com/some-video.mp4",
+        key: "some-video.mp4",
+        name: "some-video.mp4",
+        uploaded: true
+      },
+      nodes: [
+        {
+          object: "text",
+          text: "",
+          marks: []
+        }
+      ]
+    },
+    {
+      object: "block",
+      type: "audio",
+      data: {
+        src: "https://some-bucket.s3.eu-west-1.amazonaws.com/some-audio.mp3",
+        key: "some-audio.mp3",
+        name: "some-audio.mp3",
+        uploaded: true
+      },
+      nodes: [
+        {
+          object: "text",
+          text: "",
+          marks: []
+        }
+      ]
     }
   ]
 };

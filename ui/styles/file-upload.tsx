@@ -13,6 +13,7 @@ import {
 } from "./toolbar-expanding-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { FileType } from "@internote/export-service/types";
 
 const HiddenFileInput = styled.input`
   border: 0;
@@ -42,8 +43,6 @@ const attachments = makeAttachmentsApi({
   region: env.SERVICES_REGION,
   bucketName: env.ATTACHMENTS_BUCKET_NAME
 });
-
-export type FileType = "image" | "video" | "audio" | "unknown";
 
 export function getFileTypeFromFile(file: File): FileType {
   switch (file.type) {

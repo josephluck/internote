@@ -24,15 +24,33 @@ function getBlockTag(block: SchemaBlock): string {
       return "li";
     case "ide":
       return "pre";
+    case "video":
+      return "video";
+    case "image":
+      return "img";
+    case "audio":
+      return "audio";
     default:
       return "p";
+  }
+}
+
+function getBlockAttributes(block: SchemaBlock): string {
+  switch (block.type) {
+    case "video":
+    case "image":
+    case "audio":
+      return `src="${block.data.src}"`;
+    default:
+      return "";
   }
 }
 
 function serializeBlock(block: SchemaBlock): string {
   const tag = getBlockTag(block);
   const content = serializeBlockContent(block);
-  return `<${tag}>${content}</${tag}>`;
+  const attributes = getBlockAttributes(block);
+  return `<${tag}${attributes ? ` ${attributes}` : ""}>${content}</${tag}>`;
 }
 
 function serializeBlockContent(block: SchemaBlock): string {

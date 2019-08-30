@@ -45,17 +45,23 @@ function serializeBlock(block: SchemaBlock): string {
 function serializeBlockContent(block: SchemaBlock): string {
   if (block.type === "ide") {
     return block.data.content;
-  } else {
-    const nodes = block.nodes as (ListItemBlock | SchemaInline)[];
-    return nodes.reduce((str, node: ListItemBlock | SchemaInline, index) => {
-      if (node.type === "list-item") {
-        const newLine = index < nodes.length - 1 ? "\n" : "";
-        return `${str}${serializeListItem(node)}${newLine}`;
-      } else {
-        return `${str}${serializeInline(node)}`;
-      }
-    }, "");
   }
+  if (
+    block.type === "image" ||
+    block.type === "audio" ||
+    block.type === "video"
+  ) {
+    return `[${block.data.name}](${block.data.src})`;
+  }
+  const nodes = block.nodes as (ListItemBlock | SchemaInline)[];
+  return nodes.reduce((str, node: ListItemBlock | SchemaInline, index) => {
+    if (node.type === "list-item") {
+      const newLine = index < nodes.length - 1 ? "\n" : "";
+      return `${str}${serializeListItem(node)}${newLine}`;
+    } else {
+      return `${str}${serializeInline(node)}`;
+    }
+  }, "");
 }
 
 function serializeListItem(node: ListItemBlock): string {

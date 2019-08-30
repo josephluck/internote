@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { uploadSignal, FileType } from "./file-upload";
+import { uploadSignal } from "./file-upload";
 import { RenderBlockProps } from "slate-react";
 import { makeAttachmentsApi } from "../api/attachments";
 import { env } from "../env";
@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { borderRadius, spacing, font } from "../theming/symbols";
 import { BaseGhostElement } from "./typography";
 import { sansSerif } from "../theming/themes";
+import { FileType } from "@internote/export-service/types";
 
 const attachments = makeAttachmentsApi({
   region: env.SERVICES_REGION,
