@@ -51,12 +51,12 @@ export function makeAttachmentsApi({
     });
   }
 
-  async function makePresignedUrl (session: Session, fileKey: string) {
-    return await getS3(session).getSignedUrlPromise('getObject', {
+  async function makePresignedUrl(session: Session, fileKey: string) {
+    return await getS3(session).getSignedUrlPromise("getObject", {
       Bucket: bucketName,
       Key: fileKey,
       Expires: 1000
-    })
+    });
   }
 
   return {
@@ -93,6 +93,15 @@ function getS3Factory(region: string, bucketName: string) {
       }
     });
   };
+}
+
+export function getExtensionFromFileSrc(src: string): string {
+  const withoutQuery = src.split("?")[0];
+  const parts = withoutQuery.split(".");
+  if (parts.length) {
+    return parts[parts.length - 1];
+  }
+  return "";
 }
 
 export type AttachmentsApi = ReturnType<typeof makeAttachmentsApi>;
