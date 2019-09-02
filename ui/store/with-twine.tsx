@@ -153,7 +153,8 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
   return {
     useTwineState,
     useTwineActions,
-    injectTwine
+    injectTwine,
+    TwineContext
   };
 }
 
