@@ -4,15 +4,22 @@ plugins:
   - serverless-plugin-monorepo
   - serverless-plugin-include-dependencies
   - serverless-nextjs-plugin
+  - serverless-s3-sync
 
 custom:
   stage: ${opt:stage, self:provider.stage}
   domains:
     prod: internote.app
     dev: dev.internote.app
+  storybookDomains:
+    prod: storybook.internote.app
+    dev: dev-storybook.internote.app
   assetsBucketNames:
     prod: internote-prod-ui-static
     dev: internote-dev-ui-static
+  storybookBucketNames:
+    prod: internote-prod-storybook
+    dev: internote-dev-storybook
   serverless-nextjs:
     createAssetBucket: true
     assetsBucketName: ${self:custom.assetsBucketNames.${self:custom.stage}}
@@ -24,6 +31,9 @@ custom:
           ViewerCertificate:
             AcmCertificateArn: arn:aws:acm:us-east-1:822567739604:certificate/cba4ce61-ca15-4d6b-8eac-3569e4eae88b
             SslSupportMethod: sni-only
+  s3Sync:
+    - bucketName: ${self:custom.storybookBucketNames.${self:custom.stage}}
+      localDir: storybook-static
 
 provider:
   name: aws
@@ -36,26 +46,38 @@ provider:
     minimumCompressionSize: 1024
   environment:
     STAGE: ${self:custom.stage}
-# resources:
-#   Resources:
-# InternoteUiStaticBucket:
-#   Type: AWS::S3::Bucket
-#   Properties:
-#     BucketName: "internote-${self:custom.stage}-ui-static"
-#     AccessControl: PublicRead
-# InternoteUiStaticBucketPolicy:
-#   Type: AWS::S3::BucketPolicy
-#   Properties:
-#     Bucket:
-#       Ref: InternoteUiStaticBucket
-#     PolicyDocument:
-#       Statement:
-#         - Sid: PublicReadGetObject
-#           Effect: Allow
-#           Principal: "*"
-#           Action:
-#             - s3:GetObject
-#           Resource: arn:aws:s3:::internote-${self:custom.stage}-ui-static/*
+
+resources:
+  Resources:
+    Storybook:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${self:custom.storybookBucketNames.${self:custom.stage}}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+    StorybookS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: Storybook
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+              - s3:GetObject
+              Resource:
+                Fn::Join: [
+                  "", [
+                    "arn:aws:s3:::",
+                    {
+                      "Ref": "Storybook"
+                    },
+                    "/*"
+                  ]
+                ]
 
 package:
   exclude:
