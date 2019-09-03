@@ -4,7 +4,7 @@ plugins:
   - serverless-plugin-monorepo
   - serverless-plugin-include-dependencies
   - serverless-nextjs-plugin
-  - serverless-s3-sync
+  - serverless-finch
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -31,9 +31,9 @@ custom:
           ViewerCertificate:
             AcmCertificateArn: arn:aws:acm:us-east-1:822567739604:certificate/cba4ce61-ca15-4d6b-8eac-3569e4eae88b
             SslSupportMethod: sni-only
-  s3Sync:
-    - bucketName: ${self:custom.storybookBucketNames.${self:custom.stage}}
-      localDir: storybook-static
+  client:
+    bucketName: ${self:custom.storybookBucketNames.${self:custom.stage}}
+    distributionFolder: storybook-static
 
 provider:
   name: aws
@@ -46,38 +46,6 @@ provider:
     minimumCompressionSize: 1024
   environment:
     STAGE: ${self:custom.stage}
-
-resources:
-  Resources:
-    Storybook:
-      Type: AWS::S3::Bucket
-      Properties:
-        AccessControl: PublicRead
-        BucketName: ${self:custom.storybookBucketNames.${self:custom.stage}}
-        WebsiteConfiguration:
-          IndexDocument: index.html
-    StorybookS3BucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        Bucket:
-          Ref: Storybook
-        PolicyDocument:
-          Statement:
-            - Sid: PublicReadGetObject
-              Effect: Allow
-              Principal: "*"
-              Action:
-              - s3:GetObject
-              Resource:
-                Fn::Join: [
-                  "", [
-                    "arn:aws:s3:::",
-                    {
-                      "Ref": "Storybook"
-                    },
-                    "/*"
-                  ]
-                ]
 
 package:
   exclude:
