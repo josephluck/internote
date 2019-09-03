@@ -14,7 +14,8 @@
     "deploy:dev:app": "rm -rf ./.next && NODE_ENV=production STAGE=dev serverless deploy --stage dev",
     "deploy:prod": "yarn deploy:prod:create-service-worker && yarn deploy:prod:app",
     "deploy:prod:create-service-worker": "STAGE=prod webpack --config service-worker-webpack.config.js",
-    "deploy:prod:app": "rm -rf ./.next && NODE_ENV=production STAGE=prod serverless deploy --stage prod"
+    "deploy:prod:app": "rm -rf ./.next && NODE_ENV=production STAGE=prod serverless deploy --stage prod",
+    "storybook": "start-storybook --quiet -p 6006 -s ./"
   },
   "dependencies": {
     "serverless-nextjs-plugin": "^2.3.2"

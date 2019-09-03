@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { ReactNode, useState, useRef, useEffect } from "react";
 
 interface RenderMethods {
   requestPlay: () => void;
@@ -27,14 +27,14 @@ export function AudioPlayer({
 }: {
   src?: string | null;
   autoPlay: boolean;
-  children: (renderProps: AudioRenderProps) => React.ReactNode;
+  children: (renderProps: AudioRenderProps) => ReactNode;
   onFinished: () => void;
 }) {
-  const [currentTime, setCurrentTime] = React.useState(-1);
-  const [duration, setDuration] = React.useState(-1);
-  const [status, setStatus] = React.useState<AudioStatus>("stopped");
-  const audioRef = React.useRef<HTMLMediaElement>();
-  const timerInterval = React.useRef(-1);
+  const [currentTime, setCurrentTime] = useState(-1);
+  const [duration, setDuration] = useState(-1);
+  const [status, setStatus] = useState<AudioStatus>("stopped");
+  const audioRef = useRef<HTMLMediaElement>();
+  const timerInterval = useRef(-1);
 
   function storeDuration() {
     const audio = audioRef.current;
@@ -71,7 +71,7 @@ export function AudioPlayer({
     clearInterval();
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const audio = audioRef.current;
 
     const setStatusLoading = () => setStatus("loading");

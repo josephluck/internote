@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { OnClickOutside } from "./on-click-outside";
 import styled from "styled-components";
 import { Shortcut } from "./shortcuts";
@@ -23,7 +23,7 @@ export function MenuControl({
   onClose,
   onMenuToggled,
   disableCloseShortcut = false,
-  forceShow = false,
+  forceShow = false
 }: {
   children: (state: RenderProps) => React.ReactNode;
   menu: (state: RenderProps) => React.ReactNode;

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import App, { Container } from "next/app";
 import { font, borderRadius } from "../theming/symbols";
 import { injectTwine } from "../store";

@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { spacing, size, font, media } from "../theming/symbols";
 import {

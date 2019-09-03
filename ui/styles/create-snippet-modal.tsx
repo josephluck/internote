@@ -1,4 +1,4 @@
-import { useContext, useState, useCallback } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import { SnippetsContext } from "./snippets-context";
 import { Modal } from "./modal";
 import { Input } from "./input";

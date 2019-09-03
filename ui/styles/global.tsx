@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { spacing } from "../theming/symbols";
 import styled from "styled-components";
 import { useTwineState, useTwineActions } from "../store";

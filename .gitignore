@@ -12,3 +12,4 @@ env.json
 sls-next-build
 *.worker.js
 *.worker.js.map
+.awcache

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { NextTwineSFC } from "../store/with-twine";
 import { Store, useTwineState, useTwineActions } from "../store";
 import { withAuth } from "../auth/with-auth";

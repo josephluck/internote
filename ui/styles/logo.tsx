@@ -15,6 +15,7 @@ export const Logo = styled.div<{ large?: boolean }>`
     ${color.blueRibbon} 100%
   );
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-transform: uppercase;
 `;

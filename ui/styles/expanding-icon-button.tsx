@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { ReactNode } from "react";
 import { spacing, font, borderRadius } from "../theming/symbols";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 import styled from "styled-components";
@@ -46,9 +46,9 @@ export function ExpandingIconButton({
 }: {
   forceShow: boolean;
   onClick?: () => any;
-  icon: React.ReactNode;
+  icon: ReactNode;
   text?: string;
-  collapsedContent?: React.ReactNode;
+  collapsedContent?: ReactNode;
 }) {
   return (
     <CollapseWidthOnHover

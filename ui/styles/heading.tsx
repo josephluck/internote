@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { spacing } from "../theming/symbols";
 import { Logo } from "../styles/logo";
 import { BlockLink } from "../styles/link";
@@ -67,9 +67,9 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
     createNote: actions.notes.createNote
   }));
 
-  const [noteMenuShowing, setNoteMenuShowing] = React.useState(false);
-  const [settingsMenuShowing, setSettingsMenuShowing] = React.useState(false);
-  const [exportMenuShowing, setExportMenuShowing] = React.useState(false);
+  const [noteMenuShowing, setNoteMenuShowing] = useState(false);
+  const [settingsMenuShowing, setSettingsMenuShowing] = useState(false);
+  const [exportMenuShowing, setExportMenuShowing] = useState(false);
 
   const forceShow =
     noteMenuShowing ||

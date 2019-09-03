@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { HeadingTwo, GhostHeadingTwo, BaseGhostElement } from "./typography";
 import { spacing, font } from "../theming/symbols";

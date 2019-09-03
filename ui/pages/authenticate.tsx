@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { spacing, font } from "../theming/symbols";
 import { Box, Flex } from "@rebass/grid";
 import { NextTwineSFC } from "../store/with-twine";

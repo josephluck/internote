@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { uploadSignal } from "./file-upload";
 import { RenderBlockProps } from "slate-react";
 import {

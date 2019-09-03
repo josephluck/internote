@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { borderRadius, spacing, font } from "../theming/symbols";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { ReactNode, useState, useRef, useEffect } from "react";
 import { Motion, spring } from "react-motion";
 import styled from "styled-components";
 
@@ -14,7 +14,7 @@ const CollapsedContent = styled.div`
 `;
 
 interface RenderProps {
-  renderCollapsedContent: () => React.ReactNode;
+  renderCollapsedContent: () => ReactNode;
 }
 
 export function CollapseWidthOnHover({
@@ -24,18 +24,18 @@ export function CollapseWidthOnHover({
   collapsedContent,
   forceShow
 }: {
-  children: (renderProps: RenderProps) => React.ReactNode;
-  collapsedContent: React.ReactNode;
+  children: (renderProps: RenderProps) => ReactNode;
+  collapsedContent: ReactNode;
   forceShow?: boolean;
   className?: string;
   onClick?: () => void;
 }) {
-  const [width, setWidth] = React.useState(0);
-  const [opacity, setOpacity] = React.useState(0);
-  const [isHovering, setIsHovering] = React.useState(false);
-  const collapsedContentRef = React.useRef<HTMLDivElement>();
+  const [width, setWidth] = useState(0);
+  const [opacity, setOpacity] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const collapsedContentRef = useRef<HTMLDivElement>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     function handleWidth() {
       const refsExist = collapsedContentRef.current;
       if (refsExist) {

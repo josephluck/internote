@@ -2,7 +2,7 @@ const path = require("path");
 const { TsConfigPathsPlugin } = require("awesome-typescript-loader");
 const withTM = require("next-plugin-transpile-modules");
 
-module.exports = function(_, _, config) {
+module.exports = function({ config }) {
   config.node = {
     ...config.node,
     fs: "empty"
@@ -33,11 +33,14 @@ module.exports = function(_, _, config) {
     ],
     include: path.resolve(__dirname, "../")
   });
+
+  config.resolve.extensions.push(".ts", ".tsx");
+
   config.resolve.plugins = config.resolve.plugins || [];
   config.resolve.plugins.push(
     new TsConfigPathsPlugin({ configFileName: "tsconfig.storybook.json" })
   );
-  config.resolve.extensions.push(".ts", ".tsx");
+
   config.externals = config.externals || [];
 
   return withTM({}).webpack(config, {

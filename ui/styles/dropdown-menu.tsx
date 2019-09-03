@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
 import { spacing, borderRadius, font } from "../theming/symbols";
 import { Box } from "@rebass/grid";
@@ -14,8 +14,8 @@ export const DropdownMenuContainer = styled.div<{
   position: absolute;
   left: ${props => (props.horizontalPosition === "center" ? "50%" : "auto")};
   right: ${props => (props.horizontalPosition === "right" ? "0" : "auto")};
-  top: ${props => props.verticalPosition === 'bottom' ? '100%' : 'auto'};
-  bottom: ${props => props.verticalPosition === 'top' ? '100%' : 'auto'};
+  top: ${props => (props.verticalPosition === "bottom" ? "100%" : "auto")};
+  bottom: ${props => (props.verticalPosition === "top" ? "100%" : "auto")};
   z-index: 10;
   margin-top: ${spacing._0_5};
   background-color: ${props => props.theme.dropdownMenuBackground};
@@ -24,7 +24,9 @@ export const DropdownMenuContainer = styled.div<{
   transition: all 300ms ease;
   pointer-events: ${props => (props.showing ? "unset" : "none")};
   transform: translateY(${props => (props.showing ? `0` : "-10px")})
-    translateX(${props => (props.horizontalPosition === "center" ? "-50%" : "0")});
+    translateX(
+      ${props => (props.horizontalPosition === "center" ? "-50%" : "0")}
+    );
   padding: ${spacing._0_5} 0;
   a {
     text-decoration: none;
@@ -36,8 +38,8 @@ export function DropdownMenu({
   className = "",
   children,
   showing,
-  horizontalPosition = 'center',
-  verticalPosition = 'bottom',
+  horizontalPosition = "center",
+  verticalPosition = "bottom"
 }: {
   className?: string;
   children: React.ReactNode;

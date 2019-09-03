@@ -68,7 +68,9 @@ const Editor = React.forwardRef<unknown, InternoteSlateEditorProps>(
   (props, ref) => <DynamicEditor {...props} forwardedRef={ref} />
 );
 
-const Ide = dynamic(import("./ide").then(module => module.Ide), { ssr: false });
+const Ide = dynamic(import("./ide").then(module => module.Ide) as any, {
+  ssr: false
+}) as any; // TODO: correct types
 
 const DEFAULT_NODE = "paragraph";
 

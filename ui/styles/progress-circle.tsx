@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import { sansSerif } from "../theming/themes";
 

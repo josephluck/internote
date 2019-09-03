@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../",
+    "rootDir": "..",
+    "lib": ["dom", "es7", "webworker"],
+    "jsx": "react"
+  },
+  "include": ["**/*", "../services/**/*"]
+}

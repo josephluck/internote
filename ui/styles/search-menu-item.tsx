@@ -1,3 +1,4 @@
+import React from "react";
 import { Box } from "@rebass/grid";
 import ReactHighlight from "react-highlight-words";
 import { DropdownMenuItem } from "./dropdown-menu";

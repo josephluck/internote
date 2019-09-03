@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { borderRadius, spacing, font } from "../theming/symbols";
 import { sansSerif } from "../theming/themes";

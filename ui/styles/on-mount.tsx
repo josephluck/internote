@@ -1,7 +1,7 @@
-import * as React from "react";
+import { useEffect } from "react";
 
 export function OnMount({ cb }: { cb: () => any }) {
-  React.useEffect(() => {
+  useEffect(() => {
     cb();
   }, []);
   return null;

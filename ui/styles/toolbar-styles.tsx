@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { font, spacing, size } from "../theming/symbols";
 import { Wrapper } from "./wrapper";

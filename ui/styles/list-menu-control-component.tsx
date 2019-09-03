@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Collapse } from "react-collapse";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";

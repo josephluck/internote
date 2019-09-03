@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Head from "next/head";
 import { InternoteEditor } from "./editor";
 import { GetNoteDTO } from "@internote/notes-service/types";

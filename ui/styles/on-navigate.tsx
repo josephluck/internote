@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect } from "react";
 import routerEvents from "next-router-events";
 
 export function OnNavigate({
@@ -8,7 +8,7 @@ export function OnNavigate({
   onComplete?: () => void;
   onStart?: () => void;
 }) {
-  React.useEffect(() => {
+  useEffect(() => {
     if (onComplete) {
       routerEvents.on("routeChangeComplete", onComplete);
     }
