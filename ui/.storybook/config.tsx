@@ -8,6 +8,7 @@ import { GlobalStyles } from "../pages/_app";
 import { makeStore } from "../store";
 import { makeTwineHooks } from "../store/with-twine";
 import { InternoteThemes } from "../styles/theme-provider";
+import { SnippetsProvider } from "../styles/snippets-context";
 
 // import {dark, light} from '../theming/themes'
 
@@ -20,10 +21,12 @@ function Wrapper({ children }: { children: any }) {
   return (
     <TwineContext.Provider value={store}>
       <InternoteThemes>
-        <>
-          <GlobalStyles />
-          {children}
-        </>
+        <SnippetsProvider>
+          <>
+            <GlobalStyles />
+            {children}
+          </>
+        </SnippetsProvider>
       </InternoteThemes>
     </TwineContext.Provider>
   );
