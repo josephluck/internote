@@ -1,5 +1,5 @@
 import React from "react";
-import * as Fuse from "fuse.js";
+import Fuse from "fuse.js";
 import { MenuControl } from "./menu-control";
 import { faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import {

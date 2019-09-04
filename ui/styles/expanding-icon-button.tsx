@@ -37,6 +37,10 @@ const ExpandingText = styled.div`
   font-weight: 600;
 `;
 
+const Collapse = styled(CollapseWidthOnHover)`
+  display: inline-block;
+`;
+
 export function ExpandingIconButton({
   forceShow,
   onClick,
@@ -51,7 +55,7 @@ export function ExpandingIconButton({
   collapsedContent?: ReactNode;
 }) {
   return (
-    <CollapseWidthOnHover
+    <Collapse
       forceShow={forceShow}
       collapsedContent={
         collapsedContent ? (
@@ -67,6 +71,6 @@ export function ExpandingIconButton({
           {collapse.renderCollapsedContent()}
         </ExpandingButton>
       )}
-    </CollapseWidthOnHover>
+    </Collapse>
   );
 }
