@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { spacing, font } from "../theming/symbols";
 
-const DeleteIcon = styled.div`
+const DeleteIcon = styled.div<{ forceShow: boolean }>`
   margin-left: ${spacing._1_5};
   font-size: ${font._12.size};
   cursor: pointer;
   transition: all 300ms ease;
   transform: scale(0.8, 0.8);
-  opacity: 0;
+  opacity: ${props => (props.forceShow ? `1 !important` : 0)};
 `;
 
 const SearchMenuItemWrapper = styled(DropdownMenuItem)`
@@ -89,7 +89,7 @@ export function SearchMenuItem({
           hasSearch={searchText.length > 0}
         />
       </Box>
-      <DeleteIcon onClick={onDelete}>
+      <DeleteIcon onClick={onDelete} forceShow={deleteLoading}>
         <FontAwesomeIcon
           icon={deleteLoading ? faSpinner : faTrash}
           spin={deleteLoading}
