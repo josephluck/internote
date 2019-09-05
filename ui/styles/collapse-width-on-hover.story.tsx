@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StoriesOf } from "../types";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 import { Flex } from "@rebass/grid";
@@ -29,5 +29,29 @@ export default function(s: StoriesOf) {
           )}
         </Collapse>
       );
-    });
+    })
+    .add("With changing inner content width", () => (
+      <ChangingInnerContentWidth />
+    ));
+}
+
+function ChangingInnerContentWidth() {
+  const [bool, setBool] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setBool(!bool);
+    }, 2000);
+  }, [bool]);
+
+  return (
+    <Collapse
+      collapsedContent={<Flex>{bool ? "Small" : "Laaaaaaaaaarge"}</Flex>}
+      forceShow
+    >
+      {collapse => (
+        <Flex>Outer content {collapse.renderCollapsedContent()}</Flex>
+      )}
+    </Collapse>
+  );
 }

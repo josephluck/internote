@@ -27,6 +27,7 @@ export const InputLabel = styled.label<{ isFocused?: boolean }>`
   line-height: ${font._12.lineHeight};
   margin-bottom: ${spacing._0_25};
   letter-spacing: 1px;
+  transition: color 100ms ease;
 `;
 
 const InputWithLabelContainer = styled.div``;

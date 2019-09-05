@@ -58,7 +58,6 @@ const ProgressIndication = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  background: rgba(0, 89, 255, 0.1);
   padding-bottom: ${spacing._2};
   transition: width 100ms ease;
 `;
