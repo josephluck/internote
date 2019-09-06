@@ -9,7 +9,7 @@ const ProgressSvgCircle = styled.circle`
 `;
 
 const ProgressCircleWrapper = styled.div`
-  display: inline-block;
+  display: inline-flex;
   position: relative;
 `;
 
