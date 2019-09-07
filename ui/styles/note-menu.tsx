@@ -175,7 +175,7 @@ export function NoteMenu({
                   content={note.title}
                   onSelect={() => {
                     setNoteLoading(note.noteId);
-                    Router.push(`?id=${note.noteId}`);
+                    Router.push(`/?id=${note.noteId}`);
                   }}
                   onDelete={() => {
                     menu.toggleMenuShowing(false);
