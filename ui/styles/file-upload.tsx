@@ -55,7 +55,7 @@ export function getFileTypeFromFile(file: File): FileType {
     case "image/jpeg":
       return "image";
     default:
-      return "unknown";
+      return "unknown-file";
   }
 }
 

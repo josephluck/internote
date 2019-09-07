@@ -714,7 +714,7 @@ export function InternoteEditor({
       case "image":
       case "video":
       case "audio":
-      case "unknown":
+      case "unknown-file":
         return <MediaEmbed {...props} />;
     }
   };
