@@ -133,7 +133,7 @@ const schema: SchemaProperties = {
     image: mediaSchema,
     video: mediaSchema,
     audio: mediaSchema,
-    unknown: mediaSchema
+    "unknown-file": mediaSchema
   }
 };
 
@@ -220,7 +220,13 @@ export function InternoteEditor({
   /**
    * Emit changes to parent when value changes
    */
+  const isFirst = React.useRef(true);
   React.useEffect(() => {
+    // NB: skip onChange on first render
+    if (isFirst.current) {
+      isFirst.current = false;
+      return;
+    }
     onChange(getChanges(debouncedValue));
   }, [debouncedValue.document]);
 
