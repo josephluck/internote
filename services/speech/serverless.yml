@@ -11,13 +11,13 @@ custom:
       forceExclude:
         - aws-sdk
     packager: "yarn"
-  customDomain:
-    basePath: ""
-    domainName: ${self:custom.domains.${self:custom.stage}}
-    certificateName: "internote.app"
-    stage: "${self:custom.stage}"
-    createRoute53Record: true
-    endpointType: "regional"
+  # customDomain:
+  #   basePath: ""
+  #   domainName: ${self:custom.domains.${self:custom.stage}}
+  #   certificateName: "internote.app"
+  #   stage: "${self:custom.stage}"
+  #   createRoute53Record: true
+  #   endpointType: "regional"
   bucketName: internote-${self:custom.stage}-services-speech-audio-files
 
 provider:
@@ -40,8 +40,7 @@ provider:
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - "s3:PutObject"
-        - "s3:PutObjectAcl"
+        - "s3:*"
       Resource:
         Fn::Join:
           - ""
@@ -56,7 +55,7 @@ provider:
 plugins:
   - serverless-plugin-monorepo
   - serverless-webpack
-  - serverless-domain-manager
+  # - serverless-domain-manager
 
 functions:
   speech:
@@ -74,4 +73,30 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.bucketName}
-        AccessControl: PublicRead
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+  Outputs:
+    SpeechAudioFilesBucketArn:
+      Value:
+        Fn::GetAtt:
+          - SpeechAudioFilesBucket
+          - Arn
+      Export:
+        Name: ${self:custom.stage}-SpeechAudioFilesBucketArn
+
+    SpeechAudioFilesBucketName:
+      Value:
+        Ref: SpeechAudioFilesBucket
+      Export:
+        Name: ${self:custom.stage}-SpeechAudioFilesBucket

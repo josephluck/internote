@@ -12,6 +12,7 @@ import { required, inArray, isString } from "@internote/lib/validator";
 import AWS from "aws-sdk";
 import md5 from "md5";
 import { availableVoices } from "./available-voices";
+import { getUserIdentityId } from "@internote/lib/user";
 
 const validator = validateRequestBody<SpeechRequestBody>({
   id: [required],
@@ -25,6 +26,9 @@ const speech: CreateHandler<SpeechRequestBody> = async (
   callback
 ) => {
   try {
+    console.log("[DEBUG]", "Started");
+    const userId = getUserIdentityId(event);
+    console.log("[DEBUG]", { userId });
     const chosenVoice: AvailableVoice = event.body.voice || "Male";
     const voiceId = chosenVoice === "Male" ? "Joey" : "Joanna";
     const Polly = new AWS.Polly();
@@ -37,23 +41,28 @@ const speech: CreateHandler<SpeechRequestBody> = async (
       VoiceId: voiceId
     }).promise();
 
-    const hash = md5(event.body.words);
-    const S3UploadPath = `${event.body.id}-${hash}-${voiceId}.mp3`;
+    console.log("[DEBUG]", "Speech made");
 
+    const hash = md5(event.body.words);
+    console.log("[DEBUG]", { hash });
+    const S3UploadKey = `private/${userId}/${event.body.id}/${hash}-${voiceId}.mp3`;
+    console.log("[DEBUG]", { S3UploadKey });
     await S3.upload({
       Bucket: process.env.SPEECH_BUCKET,
-      Key: S3UploadPath,
-      Body: speech.AudioStream,
-      ACL: "public-read"
+      Key: S3UploadKey,
+      Body: speech.AudioStream
     }).promise();
 
-    const src = `https://s3-${process.env.REGION}.amazonaws.com/${
-      process.env.SPEECH_BUCKET
-    }/${S3UploadPath}`;
+    console.log("[DEBUG]", "Upload done");
 
-    const response: SpeechResponseBody = { src };
+    const response: SpeechResponseBody = {
+      src: `https://s3-${process.env.REGION}.amazonaws.com/${process.env.SPEECH_BUCKET}/${S3UploadKey}`,
+      key: S3UploadKey
+    };
+    console.log("[DEBUG]", { response });
     return callback(null, success(response));
   } catch (err) {
+    console.log("[DEBUG", err.toString(), { err });
     throw exception(err);
   }
 };

@@ -14,6 +14,8 @@ export interface Env {
   COGNITO_IDENTITY_POOL_ID: string;
   /** The name of the attachments bucket */
   ATTACHMENTS_BUCKET_NAME: string;
+  /** The name of the attachments bucket */
+  SPEECH_BUCKET_NAME: string;
 }
 
 export const env: Env = {
@@ -22,5 +24,6 @@ export const env: Env = {
   SERVICES_HOST: process.env.SERVICES_HOST,
   SERVICES_REGION: process.env.SERVICES_REGION,
   COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
-  ATTACHMENTS_BUCKET_NAME: process.env.ATTACHMENTS_BUCKET_NAME
+  ATTACHMENTS_BUCKET_NAME: process.env.ATTACHMENTS_BUCKET_NAME,
+  SPEECH_BUCKET_NAME: process.env.SPEECH_BUCKET_NAME
 };

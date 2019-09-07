@@ -2,6 +2,8 @@ import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
 import { InternoteEffect } from ".";
 import { Api } from "../api/api";
+import { env } from "../env";
+import { makeAttachmentsApi } from "../api/attachments";
 
 interface OwnState {
   speechSrc: string | null;
@@ -33,6 +35,11 @@ export interface Namespace {
 }
 
 export function model(api: Api): Model {
+  const attachments = makeAttachmentsApi({
+    region: env.SERVICES_REGION,
+    bucketName: env.SPEECH_BUCKET_NAME
+  });
+
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
@@ -49,7 +56,13 @@ export function model(api: Api): Model {
           words,
           voice: state.preferences.voice || "Male"
         });
-        result.map(response => actions.speech.setSpeechSrc(response.src));
+        result.map(async response => {
+          const src = await attachments.makePresignedUrl(
+            state.auth.session,
+            response.key
+          );
+          actions.speech.setSpeechSrc(src);
+        });
       }
     }
   };

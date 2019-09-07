@@ -11,5 +11,13 @@
     "isolatedModules": true
   },
   "include": ["../**/*", "**/*"],
-  "exclude": ["node_modules", "static"]
+  "exclude": [
+    "node_modules",
+    "static",
+    ".next",
+    ".storybook",
+    ".awcache",
+    "public",
+    "storybook-statics"
+  ]
 }

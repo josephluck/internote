@@ -369,7 +369,7 @@ export function InternoteEditor({
 
   const focusBlock = useCallback(
     (node: Block, end: boolean = false) => {
-      editor.current.moveToRangeOfNode(node);
+      editor.current.moveToRangeOfNode(node as any); // TODO
       if (end) {
         editor.current.moveStartToEndOfBlock();
         editor.current.moveFocusToEndOfNode(node);

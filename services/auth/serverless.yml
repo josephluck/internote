@@ -144,6 +144,18 @@ resources:
                           - "$"
                           - "{cognito-identity.amazonaws.com:sub}/*"
 
+                # Allow users to upload attachments to their folder inside the speech files bucket
+                - Effect: "Allow"
+                  Action:
+                    - "s3:*"
+                  Resource:
+                    - Fn::Join:
+                        - ""
+                        - - "Fn::ImportValue": ${self:custom.stage}-SpeechAudioFilesBucketArn
+                          - "/private/"
+                          - "$"
+                          - "{cognito-identity.amazonaws.com:sub}/*"
+
     # The federated identity for our user pool to auth with
     CognitoIdentityPool:
       Type: AWS::Cognito::IdentityPool

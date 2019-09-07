@@ -15,10 +15,13 @@ export interface SpeechRequestBody {
 
 export interface SpeechResponseBody {
   /**
-   * A public-read URL pointing to the audio file
-   * that has been made
+   * A full URL pointing to the audio file that has been made
    */
   src: string;
+  /**
+   * The S3 key that the speech file resides in
+   */
+  key: string;
 }
 
 /**

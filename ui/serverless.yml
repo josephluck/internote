@@ -4,7 +4,7 @@ plugins:
   - serverless-plugin-monorepo
   - serverless-plugin-include-dependencies
   - serverless-nextjs-plugin
-  - serverless-finch
+  # - serverless-finch
 
 custom:
   stage: ${opt:stage, self:provider.stage}
