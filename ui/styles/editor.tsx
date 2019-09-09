@@ -372,9 +372,9 @@ export function InternoteEditor({
       editor.current.moveToRangeOfNode(node as any); // TODO
       if (end) {
         editor.current.moveStartToEndOfBlock();
-        editor.current.moveFocusToEndOfNode(node);
+        editor.current.moveFocusToEndOfNode(node as any);
       } else {
-        editor.current.moveFocusToStartOfNode(node);
+        editor.current.moveFocusToStartOfNode(node as any);
       }
       editor.current.focus();
     },
@@ -588,7 +588,7 @@ export function InternoteEditor({
       editor.current.focus();
       // NB: wait for focus to happen
       requestAnimationFrame(() => {
-        editor.current.insertFragment(doc);
+        editor.current.insertFragment(doc as any);
       });
     },
     [editor.current]
@@ -791,7 +791,7 @@ export function InternoteEditor({
             renderMark={renderMark}
             renderInline={renderInline}
             autoFocus
-            schema={schema}
+            schema={schema as any}
             distractionFree={distractionFree}
           />
           <Outline

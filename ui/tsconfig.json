@@ -18,6 +18,9 @@
     ".storybook",
     ".awcache",
     "public",
-    "storybook-statics"
+    "monaco-editor",
+    "node_modules/monaco-editor",
+    "node_modules/react-monaco-editor",
+    "storybook-static"
   ]
 }

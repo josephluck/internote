@@ -56,27 +56,27 @@ export function Ide({
         }
         if (isShiftEnterHotKey(e.browserEvent)) {
           e.browserEvent.preventDefault();
-          onBreakToNewLine(node);
+          onBreakToNewLine(node as any);
           return;
         }
         if (isBackspaceHotKey(e.browserEvent)) {
           if (monaco.current.getModel().getValueLength() === 0) {
             e.browserEvent.preventDefault();
-            onDestroy(node);
+            onDestroy(node as any);
           }
           return;
         }
         if (isUpHotKey(e.browserEvent)) {
           if (position.lineNumber === 1) {
             e.browserEvent.preventDefault();
-            onFocusPrevious(node);
+            onFocusPrevious(node as any);
           }
           return;
         }
         if (isLeftHotKey(e.browserEvent)) {
           if (position.lineNumber === 1 && position.column === 1) {
             e.browserEvent.preventDefault();
-            onFocusPrevious(node);
+            onFocusPrevious(node as any);
           }
           return;
         }
@@ -84,7 +84,7 @@ export function Ide({
           const lastLine = monaco.current.getModel().getLinesContent().length;
           if (position.lineNumber === lastLine) {
             e.browserEvent.preventDefault();
-            onFocusNext(node);
+            onFocusNext(node as any);
           }
           return;
         }
@@ -99,7 +99,7 @@ export function Ide({
             (lastColumn === 0 && position.column === 1);
           if (atLastLine && atLastColumn) {
             e.browserEvent.preventDefault();
-            onFocusNext(node);
+            onFocusNext(node as any);
           }
           return;
         }
@@ -151,7 +151,7 @@ export function Ide({
   }, [monaco.current]);
 
   return (
-    <div className={className} onClick={() => onClick(node)}>
+    <div className={className} onClick={() => onClick(node as any)}>
       <MonacoEditor
         onChange={onChange}
         value={code}

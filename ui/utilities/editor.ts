@@ -323,7 +323,7 @@ export function handleMarkdownFormatShortcut(
   }
   event.preventDefault();
   // TODO: the three ``` are still around...
-  editor.moveFocusToStartOfNode(startBlock).delete();
+  editor.moveFocusToStartOfNode(startBlock as any).delete();
   editor.setBlocks(type);
   if (type === "list-item") {
     editor.wrapBlock("bulleted-list");

@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@internote/lib": "*",
-    "aws-sdk": "^2.520.0",
+    "aws-sdk": "^2.524.0",
     "http-errors": "^1.7.3",
     "middy": "^0.29.0",
     "type-dynamo": "^0.1.6"
@@ -34,7 +34,7 @@
     "serverless-plugin-typescript": "^1.1.9",
     "serverless-webpack": "^5.3.1",
     "ts-loader": "^6.0.4",
-    "typescript": "^3.6.2"
+    "typescript": "^3.5.3"
   },
   "jest": {
     "roots": [
