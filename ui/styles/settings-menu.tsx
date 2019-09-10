@@ -324,7 +324,6 @@ export function SettingsMenu({
                         }
                       >
                         {v}
-                        {/* TODO: add keyboard shortcuts to voices */}
                       </DropdownMenuItem>
                     ))}
                   </>

@@ -51,7 +51,7 @@ module.exports = withExternals(
           withCss({
             transpileModules: [
               "@internote",
-              // "monaco-editor",
+              "monaco-editor",
               "react-monaco-editor"
             ],
             babelConfigFile: path.resolve("./babel.config.js"),

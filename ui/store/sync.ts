@@ -65,7 +65,7 @@ export function model(_api: Api): Model {
     effects: {
       async register(_state, actions) {
         return new Promise(async resolve => {
-          if (!isServer() && navigator.serviceWorker) {
+          if (!isServer() && navigator && navigator.serviceWorker) {
             try {
               await navigator.serviceWorker.register("/service-worker.js", {
                 scope: "/"
@@ -84,12 +84,14 @@ export function model(_api: Api): Model {
         });
       },
       async unregister(_state, actions) {
-        const registrations = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(
-          registrations.map(registration => registration.unregister())
-        );
-        actions.sync.setRegistration(null);
-        console.log("[SW] [APP] Unregistered");
+        if (!isServer() && navigator && navigator.serviceWorker) {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(
+            registrations.map(registration => registration.unregister())
+          );
+          actions.sync.setRegistration(null);
+          console.log("[SW] [APP] Unregistered");
+        }
       },
       async setOfflineSync(_state, actions, on) {
         actions.preferences.setOfflineSync(on);

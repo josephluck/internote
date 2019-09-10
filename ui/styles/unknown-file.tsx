@@ -72,7 +72,6 @@ export function UnknownFile({
           <UnknownFileExtensionWrap>
             <FileIcon>
               <FontAwesomeIcon icon={faFile} />{" "}
-              {/* TODO: would be nice to map unknown file types to specific icons */}
             </FileIcon>
             <UnknownFileExtension>.{extension}</UnknownFileExtension>
           </UnknownFileExtensionWrap>
