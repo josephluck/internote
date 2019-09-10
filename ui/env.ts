@@ -14,7 +14,7 @@ export interface Env {
   COGNITO_IDENTITY_POOL_ID: string;
   /** The name of the attachments bucket */
   ATTACHMENTS_BUCKET_NAME: string;
-  /** The name of the attachments bucket */
+  /** The name of the speech bucket */
   SPEECH_BUCKET_NAME: string;
 }
 
