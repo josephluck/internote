@@ -1,4 +1,4 @@
-import { Session } from "./types";
+import { Session } from "../auth/storage";
 import { MakeSignedRequest } from "./api";
 import {
   CreateSnippetDTO,

@@ -1,4 +1,4 @@
-import { Session } from "./types";
+import { Session } from "../auth/storage";
 import { MakeSignedRequest } from "./api";
 import { Preferences } from "@internote/preferences-service/db/models";
 import { ApiResponse } from "@internote/lib/types";

@@ -2,7 +2,7 @@ import "isomorphic-fetch";
 import aws4 from "aws4";
 import { health } from "./health";
 import { preferences } from "./preferences";
-import { Session } from "./types";
+import { Session } from "../auth/storage";
 import { speech } from "./speech";
 import { dictionary } from "./dictionary";
 import { notes } from "./notes";
@@ -10,6 +10,8 @@ import { tags } from "./tags";
 import { snippets } from "./snippets";
 import { exportNote } from "./export";
 import { Err, Ok } from "space-lift";
+import { Store } from "../store";
+import { isNearExpiry } from "../auth/api";
 
 export type MakeSignedRequest = (options: AwsSignedRequest) => any;
 
@@ -21,12 +23,22 @@ export interface AwsSignedRequest {
 }
 
 export function makeApi({ host, region }: { host: string; region: string }) {
+  let store: Store = null;
+
   const makeSignedRequest: MakeSignedRequest = async ({
     path,
-    session,
     method,
-    body
+    body,
+    session
   }) => {
+    // NB: refresh token if needed
+    if (store && isNearExpiry(session.expires)) {
+      console.log("[LOG]: Refreshing token");
+      await store.actions.auth.refreshToken(session.refreshToken);
+      const state = store.getState();
+      session = state.auth.session;
+      console.log("[LOG]: Refreshed token");
+    }
     const request = aws4.sign(
       {
         host,
@@ -78,7 +90,8 @@ export function makeApi({ host, region }: { host: string; region: string }) {
     notes: notes(makeSignedRequest),
     tags: tags(makeSignedRequest),
     snippets: snippets(makeSignedRequest),
-    exportNote: exportNote(makeSignedRequest)
+    exportNote: exportNote(makeSignedRequest),
+    setStore: (s: Store) => (store = s)
   };
 }
 
