@@ -167,6 +167,10 @@ There is a CloudFormation stack set up to manage iAM roles etc that seed.run nee
 
 The dashboards are available [here](https://console.seed.run/josephluck/internote).
 
+There are some specific things for Internote that need to be done to get the CI/CD workflow working.
+
+- Add the font awesome NPM token from `~/.npmrc` to [seed environment variables](https://seed.run/docs/storing-secrets). This will pick up the token for authentication during the installation phase.
+
 ## Logs
 
 #### CloudWatch

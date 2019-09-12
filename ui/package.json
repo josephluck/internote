@@ -89,7 +89,6 @@
     "rimraf": "^2.6.3",
     "serverless": "^1.49.0",
     "serverless-aws-static-file-handler": "^2.0.2",
-    "serverless-domain-manager": "^3.2.7",
     "serverless-finch": "^2.4.3",
     "serverless-plugin-include-dependencies": "^3.2.1",
     "serverless-plugin-monorepo": "^0.7.0",

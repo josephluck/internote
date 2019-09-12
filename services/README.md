@@ -55,13 +55,13 @@ There are two domains available for Internote services:
 - https://dev-services.internote.app
 - https://services.internote.app
 
-Each service is responsible for defining it's routing via the Serverless framework and the serverless-domain-manager plugin.
+Each service is responsible for defining it's routing via it's `serverless.yml` definition. Deployment of the API gateway and domain name is done in the `services/health/serverless.yml`[/services/health/serverless.yml] service via `serverless-domain-manager`.
 
 #### API Gateway
 
 An API Gateway is created by the Serverless framework to route traffic from the internet through to the lambdas that power the Internote services. Each service references this API Gateway in it's Serverless set up as to use the same API Gateway.
 
-Since the Internote services are designed to be called by a 3rd party client application (such as the front-end that powers the Internote editor), CORS is enabled for each lambda.
+Since the Internote services are designed to be called by a 3rd party client application (such as the front-end that powers the Internote editor), CORS is enabled for every lambda that the front-end hits directly.
 
 #### SSL
 

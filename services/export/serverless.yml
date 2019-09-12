@@ -52,7 +52,6 @@ provider:
 plugins:
   - serverless-plugin-monorepo
   - serverless-webpack
-  - serverless-domain-manager
 
 functions:
   markdown:
