@@ -20,6 +20,10 @@
       "api",
       "ui",
       "services/*"
+    ],
+    "nohoist": [
+      "**/serverless",
+      "**/serverless/**"
     ]
   }
 }

@@ -31,16 +31,7 @@ custom:
           ViewerCertificate:
             AcmCertificateArn: arn:aws:acm:us-east-1:822567739604:certificate/cba4ce61-ca15-4d6b-8eac-3569e4eae88b
             SslSupportMethod: sni-only
-  environment:
-    dev:
-      ATTACHMENTS_BUCKET_NAME: ${ssm:internote/dev/ATTACHMENTS_BUCKET_NAME}
-      COGNITO_IDENTITY_POOL_ID: ${ssm:internote/dev/COGNITO_IDENTITY_POOL_ID}
-      COGNITO_USER_POOL_CLIENT_ID: ${ssm:internote/dev/COGNITO_USER_POOL_CLIENT_ID}
-      COGNITO_USER_POOL_ID: ${ssm:internote/dev/COGNITO_USER_POOL_ID}
-      SERVICES_HOST: ${ssm:internote/dev/SERVICES_HOST}
-      SERVICES_REGION: ${ssm:internote/dev/SERVICES_REGION}
-      SPEECH_BUCKET_NAME: ${ssm:internote/dev/SPEECH_BUCKET_NAME}
-  # NB: this is for storybook;
+  # NB: this is for storybook deployment:
   client:
     bucketName: ${self:custom.storybookBucketNames.${self:custom.stage}}
     distributionFolder: storybook-static

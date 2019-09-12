@@ -5,7 +5,8 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev": "eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env) && next -p 3000",
+    "dev": "eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv) && next -p 3000",
+    "build-monaco": "webpack --config monaco-webpack.config.js",
     "build": "next build",
     "test": "jest",
     "test:tsc": "tsc --noEmit",

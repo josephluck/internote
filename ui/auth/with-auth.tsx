@@ -65,9 +65,9 @@ export function withAuth<C extends typeof React.Component>(
         }
       });
 
-      const latestSession = !!context.store.getState().auth.session;
+      const hasSession = !!context.store.getState().auth.session.accessToken;
 
-      if (latestSession) {
+      if (hasSession) {
         await context.store.actions.preferences.get();
         const getInitialProps: any = (Child as any).getInitialProps;
         return getInitialProps ? getInitialProps(context) : {};
@@ -78,7 +78,7 @@ export function withAuth<C extends typeof React.Component>(
     }
 
     render() {
-      return <Child {...this.props as any} />;
+      return <Child {...(this.props as any)} />;
     }
   };
 }

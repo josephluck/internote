@@ -73,6 +73,10 @@ export class Application extends App {
           <>
             <Head>
               <title>Internote</title>
+              <script
+                src="/static/monaco/monaco-expose.js"
+                type="text/javascript"
+              />
             </Head>
             <GlobalStyles />
             <ShortcutsProvider>

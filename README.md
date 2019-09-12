@@ -177,15 +177,15 @@ In general, secrets stored in SSM are prefixed with the "stage". For example `/i
 
 #### Variable explanations
 
-- OXFORD_API_ID: The Oxford Dictionary application ID used for looking up words. Can be in the Oxford Dictionary admin panel [here](https://developer.oxforddictionaries.com/)
-- OXFORD_API_KEY: The Oxford Dictionary application key used for looking up words. Can be in the Oxford Dictionary admin panel [here](https://developer.oxforddictionaries.com/)
-- COGNITO_USER_POOL_ID: The Cognito user pool ID for authentication. Can be found in the Cognito user pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito).
-- COGNITO_USER_POOL_CLIENT_ID: The Cognito user pool client ID for authentication. Can be found in the Cognito user pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito) (head to App client settings and look for "id").
-- SERVICES_HOST: The domain name that the back-end services are deployed under. Can be found in the "domains" section [here](services/health/serverless.yml)
-- SERVICES_REGION: The AWS region that the app is deployed in. This is eu`-west-1`.
-- COGNITO_IDENTITY_POOL_ID: The Cognito identity pool ID for authentication. Can be found in the Cognito identity pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito).
-- ATTACHMENTS_BUCKET_NAME: The name of the bucket where note attachments reside. Can be found [here](services/attachments/serverless.yml).
-- SPEECH_BUCKET_NAME: The name of the bucket where generated speech files reside. Can be found [here](services/speech/serverless.yml).
+- `OXFORD_API_ID`: The Oxford Dictionary application ID used for looking up words. Can be in the Oxford Dictionary admin panel [here](https://developer.oxforddictionaries.com/)
+- `OXFORD_API_KEY`: The Oxford Dictionary application key used for looking up words. Can be in the Oxford Dictionary admin panel [here](https://developer.oxforddictionaries.com/)
+- `COGNITO_USER_POOL_ID`: The Cognito user pool ID for authentication. Can be found in the Cognito user pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito).
+- `COGNITO_USER_POOL_CLIENT_ID`: The Cognito user pool client ID for authentication. Can be found in the Cognito user pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito) (head to App client settings and look for "id").
+- `SERVICES_HOST`: The domain name that the back-end services are deployed under. Can be found in the "domains" section [here](services/health/serverless.yml)
+- `SERVICES_REGION`: The AWS region that the app is deployed in. This is eu`-west-1`.
+- `COGNITO_IDENTITY_POOL_ID`: The Cognito identity pool ID for authentication. Can be found in the Cognito identity pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito).
+- `ATTACHMENTS_BUCKET_NAME`: The name of the bucket where note attachments reside. Can be found [here](services/attachments/serverless.yml).
+- `SPEECH_BUCKET_NAME`: The name of the bucket where generated speech files reside. Can be found [here](services/speech/serverless.yml).
 
 ## CI / CD
 

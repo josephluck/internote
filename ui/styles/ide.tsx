@@ -1,9 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { RenderBlockProps } from "slate-react";
 import { useState, useCallback } from "react";
-import { EditorDidMount } from "react-monaco-editor";
-import MonacoEditor from "react-monaco-editor/src/editor";
-import * as MonacoEditorApi from "monaco-editor/esm/vs/editor/editor.api";
 import {
   isUpHotKey,
   isDownHotKey,
@@ -14,8 +11,11 @@ import {
 } from "../utilities/editor";
 import { Block } from "slate";
 import { throttle } from "lodash";
+import { isServer } from "../utilities/window";
 
 const LINE_HEIGHT = 30;
+
+const MonacoEditor = (window as any).reactMonacoEditor;
 
 export function Ide({
   className,
@@ -41,9 +41,9 @@ export function Ide({
     constrainToMaxHeight(content.split("\n").length * LINE_HEIGHT)
   );
 
-  const monaco = useRef<MonacoEditorApi.editor.IStandaloneCodeEditor>(null);
+  const monaco = useRef(null);
 
-  const editorDidMount: EditorDidMount = editor => {
+  const editorDidMount = (editor: any) => {
     monaco.current = editor;
   };
 
@@ -150,6 +150,10 @@ export function Ide({
     };
   }, [monaco.current]);
 
+  if (isServer()) {
+    return null;
+  }
+
   return (
     <div className={className} onClick={() => onClick(node as any)}>
       <MonacoEditor
@@ -185,17 +189,19 @@ export function Ide({
   );
 }
 
-(window as any).MonacoEnvironment = {
-  getWorkerUrl(_workerId: string, label: string) {
-    switch (label) {
-      case "javascript":
-      case "typescript":
-        return "/static/typescript.worker.js";
-      default:
-        return "/static/editor.worker.js";
+if (!isServer()) {
+  (window as any).MonacoEnvironment = {
+    getWorkerUrl(_workerId: string, label: string) {
+      switch (label) {
+        case "javascript":
+        case "typescript":
+          return "/static/monaco/ts.worker.js";
+        default:
+          return "/static/monaco/editor.worker.js";
+      }
     }
-  }
-};
+  };
+}
 
 const MAX_HEIGHT = 300;
 

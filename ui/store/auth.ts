@@ -129,7 +129,7 @@ export function model(_api: Api, auth: AuthApi): Model {
         };
         actions.auth.setSession(session);
         await actions.sync.storeSession();
-        await actions.preferences.get();
+        actions.preferences.get();
         actions.auth.scheduleRefresh();
       },
       scheduleRefresh(state, actions) {

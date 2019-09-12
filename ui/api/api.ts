@@ -17,6 +17,8 @@ export type MakeSignedRequest = (options: AwsSignedRequest) => any;
 
 export interface AwsSignedRequest {
   path: string;
+  // TODO: session could be renamed to 'authenticated: boolean' since
+  // makeSignedRequest pulls out the session from the store automatically
   session: Session;
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: any;
@@ -28,57 +30,64 @@ export function makeApi({ host, region }: { host: string; region: string }) {
   const makeSignedRequest: MakeSignedRequest = async ({
     path,
     method,
-    body,
-    session
+    body
   }) => {
-    // NB: refresh token if needed
-    if (store && isNearExpiry(session.expires)) {
-      console.log("[LOG]: Refreshing token");
-      await store.actions.auth.refreshToken(session.refreshToken);
-      const state = store.getState();
-      session = state.auth.session;
-      console.log("[LOG]: Refreshed token");
-    }
-    const request = aws4.sign(
-      {
-        host,
-        path,
-        url: `https://${host}${path}`,
-        method,
-        region,
-        service: "execute-api",
-        data: body,
-        body: body ? JSON.stringify(body) : undefined,
-        headers: body
-          ? {
-              "Content-Type": "application/json"
-            }
-          : undefined
-      },
-      {
-        accessKeyId: session.accessKeyId,
-        secretAccessKey: session.secretKey,
-        sessionToken: session.sessionToken
+    if (store) {
+      // NB: refresh token if needed
+      let session = store.getState().auth.session;
+      if (
+        session &&
+        session.expiration &&
+        session.refreshToken &&
+        isNearExpiry(session.expiration * 1000) // NB: expiration is in seconds not ms
+      ) {
+        await store.actions.auth.refreshToken(session.refreshToken);
+        const state = store.getState();
+        session = state.auth.session;
       }
-    );
-    const response = await fetch(request.url, {
-      method,
-      headers: request.headers,
-      body: body ? JSON.stringify(body) : undefined
-    });
-    if (!response.ok) {
+      const request = aws4.sign(
+        {
+          host,
+          path,
+          url: `https://${host}${path}`,
+          method,
+          region,
+          service: "execute-api",
+          data: body,
+          body: body ? JSON.stringify(body) : undefined,
+          headers: body
+            ? {
+                "Content-Type": "application/json"
+              }
+            : undefined
+        },
+        {
+          accessKeyId: session.accessKeyId,
+          secretAccessKey: session.secretKey,
+          sessionToken: session.sessionToken
+        }
+      );
+      const response = await fetch(request.url, {
+        method,
+        headers: request.headers,
+        body: body ? JSON.stringify(body) : undefined
+      });
+      if (!response.ok) {
+        try {
+          const json = await response.json();
+          return Err(json);
+        } catch (err) {
+          return Err("Response error was not JSON");
+        }
+      }
       try {
         const json = await response.json();
-        return Err(json);
+        return Ok(json);
       } catch (err) {
         return Err("Response error was not JSON");
       }
-    }
-    try {
-      const json = await response.json();
-      return Ok(json);
-    } catch (err) {
-      return Err("Response error was not JSON");
+    } else {
+      throw new Error("Store is not configured");
     }
   };
 

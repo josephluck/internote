@@ -31,7 +31,7 @@ interface OwnReducers {
 }
 
 interface OwnEffects {
-  get: InternoteEffect0;
+  get: InternoteEffect0<Promise<void>>;
 }
 
 function defaultState(): OwnState {
