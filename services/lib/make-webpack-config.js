@@ -41,7 +41,11 @@ module.exports = function(config) {
           test: /\.ts$/,
           use: [
             {
-              loader: "ts-loader"
+              loader: "ts-loader",
+              options: {
+                happyPackMode: true,
+                transpileOnly: true
+              }
             }
           ]
         }
