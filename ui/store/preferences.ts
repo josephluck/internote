@@ -1,5 +1,5 @@
 import { Twine } from "twine-js";
-import { InternoteEffect0 } from ".";
+import { InternoteEffect0, makeSetter } from ".";
 import {
   colorThemes,
   fontThemes,
@@ -7,17 +7,16 @@ import {
   FontThemeWithName
 } from "../theming/themes";
 import { Api } from "../api/api";
+import { Preferences } from "@internote/preferences-service/db/models";
 import { AvailableVoice } from "@internote/speech-service/types";
 
-interface OwnState {
+interface OwnState
+  extends Omit<Preferences, "id" | "colorTheme" | "fontTheme" | "voice"> {
   colorTheme: ColorThemeWithName | null;
   colorThemes: ColorThemeWithName[];
   fontTheme: FontThemeWithName | null;
   fontThemes: FontThemeWithName[];
-  distractionFree: boolean;
   voice: AvailableVoice;
-  outlineShowing: boolean;
-  offlineSync: boolean;
 }
 
 interface OwnReducers {
@@ -56,30 +55,20 @@ export interface Namespace {
   preferences: Twine.ModelApi<State, Actions>;
 }
 
+const setter = makeSetter<OwnState>();
+
 export function model(api: Api): Model {
   return {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
       setPreferences: (state, preferences) => ({ ...state, ...preferences }),
-      setColorTheme: (state, colorTheme) => ({ ...state, colorTheme }),
-      setFontTheme: (state, fontTheme) => ({ ...state, fontTheme }),
-      setDistractionFree: (state, distractionFree) => ({
-        ...state,
-        distractionFree
-      }),
-      setVoice: (state, voice) => ({
-        ...state,
-        voice
-      }),
-      setOutlineShowing: (state, outlineShowing) => ({
-        ...state,
-        outlineShowing
-      }),
-      setOfflineSync: (state, offlineSync) => ({
-        ...state,
-        offlineSync
-      })
+      setColorTheme: setter("colorTheme"),
+      setFontTheme: setter("fontTheme"),
+      setDistractionFree: setter("distractionFree"),
+      setVoice: setter("voice"),
+      setOutlineShowing: setter("outlineShowing"),
+      setOfflineSync: setter("offlineSync")
     },
     effects: {
       async get(state, actions) {
@@ -88,19 +77,26 @@ export function model(api: Api): Model {
           if (preferences.offlineSync) {
             actions.sync.register();
           }
-          actions.preferences.setPreferences({
-            ...preferences,
-            colorTheme:
-              colorThemes.find(
-                theme => theme.name === preferences.colorTheme
-              ) || colorThemes[0],
-            fontTheme:
-              fontThemes.find(theme => theme.name === preferences.fontTheme) ||
-              fontThemes[0],
-            voice: preferences.voice as AvailableVoice
-          });
+          actions.preferences.setPreferences(
+            deserializePreferences(preferences)
+          );
         });
       }
     }
+  };
+}
+
+function deserializePreferences(preferences: Preferences): OwnState {
+  return {
+    ...preferences,
+    colorThemes,
+    colorTheme:
+      colorThemes.find(theme => theme.name === preferences.colorTheme) ||
+      colorThemes[0],
+    fontThemes,
+    fontTheme:
+      fontThemes.find(theme => theme.name === preferences.fontTheme) ||
+      fontThemes[0],
+    voice: preferences.voice as AvailableVoice
   };
 }

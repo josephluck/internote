@@ -47,6 +47,23 @@ export type InternoteEffect0<Return = void> = Twine.Effect0<
   Return
 >;
 
+/**
+ * Returns a strongly typed setter function that can be used to
+ * create simple setter reducers for single keys quickly
+ */
+export function makeSetter<T>() {
+  return function(
+    key: keyof T
+  ): Twine.Reducer<T, T[typeof key]>["implementation"] {
+    return function(state, value) {
+      return {
+        ...state,
+        [key]: value
+      };
+    };
+  };
+}
+
 function makeModel(api: Api, auth: AuthApi) {
   return {
     state: {},

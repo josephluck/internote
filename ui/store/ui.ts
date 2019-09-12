@@ -1,6 +1,6 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect, InternoteEffect0 } from ".";
+import { InternoteEffect, InternoteEffect0, makeSetter } from ".";
 import { requestFullScreen, exitFullscreen } from "../utilities/fullscreen";
 import { isServer } from "../utilities/window";
 import Router from "next/router";
@@ -38,15 +38,14 @@ export interface Namespace {
   ui: Twine.ModelApi<State, Actions>;
 }
 
+const setter = makeSetter<OwnState>();
+
 export function model(_api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      setFullscreen: (state, isFullscreen) => ({
-        ...state,
-        isFullscreen
-      })
+      setFullscreen: setter("isFullscreen")
     },
     effects: {
       async navigateToFirstNote(_state, actions) {

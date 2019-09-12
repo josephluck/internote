@@ -1,5 +1,6 @@
 import { Twine } from "twine-js";
 import { Api } from "../api/api";
+import { makeSetter } from ".";
 
 interface Confirmation {
   message?: string;
@@ -38,15 +39,14 @@ export interface Namespace {
   confirmation: Twine.ModelApi<State, Actions>;
 }
 
+const setter = makeSetter<OwnState>();
+
 export function model(_api: Api): Model {
   return {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      setConfirmation: (state, confirmation) => ({
-        ...state,
-        confirmation
-      }),
+      setConfirmation: setter("confirmation"),
       setConfirmationConfirmLoading: (state, confirmLoading) => ({
         ...state,
         confirmation: {

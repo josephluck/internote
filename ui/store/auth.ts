@@ -1,6 +1,6 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect, InternoteEffect0 } from ".";
+import { InternoteEffect, InternoteEffect0, makeSetter } from ".";
 import { isServer } from "../utilities/window";
 import Router from "next/router";
 import { AuthApi } from "../auth/api";
@@ -56,6 +56,8 @@ export interface Namespace {
   auth: Twine.ModelApi<State, Actions>;
 }
 
+const setter = makeSetter<OwnState>();
+
 export function model(_api: Api, auth: AuthApi): Model {
   let authInterval: number = null;
   const authStorage = makeAuthStorage();
@@ -63,10 +65,8 @@ export function model(_api: Api, auth: AuthApi): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
-      resetState: () => {
-        return defaultState();
-      },
-      setNeedsVerify: (state, needsVerify) => ({ ...state, needsVerify }),
+      resetState: () => defaultState(),
+      setNeedsVerify: setter("needsVerify"),
       setSession: (state, session) => {
         const latestSession = { ...state.session, ...session };
         authStorage.storeSession(latestSession);
@@ -75,7 +75,7 @@ export function model(_api: Api, auth: AuthApi): Model {
           session: latestSession
         };
       },
-      setSignInSession: (state, signInSession) => ({ ...state, signInSession })
+      setSignInSession: setter("signInSession")
     },
     effects: {
       async signUp(_state, actions, payload) {

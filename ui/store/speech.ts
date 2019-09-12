@@ -1,6 +1,6 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect } from ".";
+import { InternoteEffect, makeSetter } from ".";
 import { Api } from "../api/api";
 import { env } from "../env";
 import { makeAttachmentsApi } from "../api/attachments";
@@ -34,6 +34,8 @@ export interface Namespace {
   speech: Twine.ModelApi<State, Actions>;
 }
 
+const setter = makeSetter<OwnState>();
+
 export function model(api: Api): Model {
   const attachments = makeAttachmentsApi({
     region: env.SERVICES_REGION,
@@ -44,10 +46,7 @@ export function model(api: Api): Model {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      setSpeechSrc: (state, speechSrc) => ({
-        ...state,
-        speechSrc
-      })
+      setSpeechSrc: setter("speechSrc")
     },
     effects: {
       async requestSpeech(state, actions, { words, id }) {

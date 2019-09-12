@@ -1,6 +1,6 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect0, InternoteEffect } from ".";
+import { InternoteEffect0, InternoteEffect, makeSetter } from ".";
 import { Api } from "../api/api";
 import { makeAuthDbInterface } from "../service-worker/db";
 import { isServer } from "../utilities/window";
@@ -46,21 +46,17 @@ export interface Namespace {
   sync: Twine.ModelApi<State, Actions>;
 }
 
+const setter = makeSetter<OwnState>();
+
 export function model(_api: Api): Model {
   const authDb = makeAuthDbInterface();
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      setIsPolling: (state, isPolling) => ({ ...state, isPolling }),
-      setRegistration: (state, registration) => ({
-        ...state,
-        registration
-      }),
-      setInterval: (state, timer) => ({
-        ...state,
-        interval: timer
-      })
+      setIsPolling: setter("isPolling"),
+      setRegistration: setter("registration"),
+      setInterval: setter("interval")
     },
     effects: {
       async register(_state, actions) {

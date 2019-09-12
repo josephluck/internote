@@ -1,6 +1,6 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect } from ".";
+import { InternoteEffect, makeSetter } from ".";
 import { Api } from "../api/api";
 import { DictionaryResult } from "@internote/dictionary-service/types";
 
@@ -36,6 +36,8 @@ export interface Namespace {
   dictionary: Twine.ModelApi<State, Actions>;
 }
 
+const setter = makeSetter<OwnState>();
+
 export function model(api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
@@ -46,10 +48,7 @@ export function model(api: Api): Model {
         dictionaryShowing,
         dictionaryResults: dictionaryShowing ? state.dictionaryResults : []
       }),
-      setDictionaryResults: (state, dictionaryResults) => ({
-        ...state,
-        dictionaryResults
-      })
+      setDictionaryResults: setter("dictionaryResults")
     },
     effects: {
       async lookup(state, actions, word) {

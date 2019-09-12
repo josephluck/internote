@@ -1,6 +1,6 @@
 import { Twine } from "twine-js";
 import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect, InternoteEffect0 } from ".";
+import { InternoteEffect, InternoteEffect0, makeSetter } from ".";
 import { UpdateNotePayload } from "./notes";
 import { Api } from "../api/api";
 
@@ -34,15 +34,14 @@ export interface Namespace {
   tags: Twine.ModelApi<State, Actions>;
 }
 
+const setter = makeSetter<OwnState>();
+
 export function model(api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      setTags: (state, tags) => ({
-        ...state,
-        tags
-      })
+      setTags: setter("tags")
     },
     effects: {
       async fetchTags(state, actions) {
