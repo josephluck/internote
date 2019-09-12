@@ -173,7 +173,7 @@ Sensitive variables (such as private API keys) are stored in [AWS Parameter Stor
 
 **Important** - Since the Serverless framework does not have SSM permissions in IAM by default, they need to be added. [More reading](https://github.com/serverless/serverless/issues/5781). See below for more info.
 
-In general, secrets stored in SSM are prefixed with the "stage". For example `DEV_OXFORD_API_ID` / `PROD_OXFORD_API_ID`. These are then referenced in the relevant `serverless.yml` files.
+In general, secrets stored in SSM are prefixed with the "stage". For example `/internote/dev/OXFORD_API_ID` / `/internote/prod/OXFORD_API_ID`. These are then referenced in the relevant `serverless.yml` files using string substitution on the `stage` of the deployment.
 
 #### Variable explanations
 

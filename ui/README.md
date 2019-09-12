@@ -23,9 +23,13 @@
 
 ## Environment
 
-`dotenv` is used to inject environment variables in to the app at compile-time. `.env.development` is used for deployed dev environments, `.env.local` is used for localhost environments and `.env` is used for deployed production environments.
+Environment varaibles are stored [in AWS SSM](https://eu-west-1.console.aws.amazon.com/systems-manager/parameters/?region=eu-west-1). Please see the top-level [README.md](../README.md) for more information.
 
-See `env.ts` for descriptions of what each environment variable is for.
+In terms of Next.js, the environment varaibles are substituted at build-time using Next.js's `env` [config option](https://github.com/zeit/next.js/#build-time-configuration).
+
+When running `yarn dev` locally, the environment variables are loaded using [`aws-env`](https://github.com/Droplr/aws-env#usage) (you will have to `chmod +x aws-env` once it has installed).
+
+When building in serverless, the environment variables are loaded using [serverless SSM variables](https://serverless.com/framework/docs/providers/aws/guide/variables/#reference-variables-using-the-ssm-parameter-store).
 
 ## Development
 

@@ -7,6 +7,8 @@ const withCss = require("@zeit/next-css");
 
 const isProd = process.env.NODE_ENV === "production";
 
+console.log(process.env.ATTACHMENTS_BUCKET_NAME);
+
 function withExternals(nextConfig) {
   return Object.assign({}, nextConfig, {
     webpack(config, options) {
@@ -56,7 +58,17 @@ module.exports = withExternals(
             ],
             babelConfigFile: path.resolve("./babel.config.js"),
             target: "serverless",
-            experimental: { publicDirectory: true }
+            experimental: { publicDirectory: true },
+            env: {
+              ATTACHMENTS_BUCKET_NAME: process.env.ATTACHMENTS_BUCKET_NAME,
+              COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
+              COGNITO_USER_POOL_CLIENT_ID:
+                process.env.COGNITO_USER_POOL_CLIENT_ID,
+              COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+              SERVICES_HOST: process.env.SERVICES_HOST,
+              SERVICES_REGION: process.env.SERVICES_REGION,
+              SPEECH_BUCKET_NAME: process.env.SPEECH_BUCKET_NAME
+            }
           })
         )
       )

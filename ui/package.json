@@ -5,7 +5,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev": "next -p 3000",
+    "dev": "eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env) && next -p 3000",
     "build": "next build",
     "test": "jest",
     "test:tsc": "tsc --noEmit",

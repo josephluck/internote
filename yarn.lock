@@ -12675,7 +12675,7 @@ serverless-aws-static-file-handler@^2.0.2:
     mime-types "^2.1.21"
     mustache "^2.3.0"
 
-serverless-domain-manager@^3.2.7, serverless-domain-manager@^3.3.0:
+serverless-domain-manager@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/serverless-domain-manager/-/serverless-domain-manager-3.3.0.tgz#758b928f5a146b3e925e5cd9d6e0043879805eee"
   integrity sha512-oGZDNzI/Y15QusC/E+Zm6VaXoAwnbQnm6e6wyXPFDi1Sqoeo8xarKNj0fZODhEf4DKggAqxVfkiXjhuC8yZu0Q==
