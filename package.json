@@ -23,9 +23,7 @@
     ],
     "nohoist": [
       "**/serverless",
-      "**/serverless/**",
-      "**/typescript",
-      "**/typescript/**"
+      "**/serverless/**"
     ]
   }
 }
