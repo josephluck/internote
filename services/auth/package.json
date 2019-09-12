@@ -20,7 +20,6 @@
   "devDependencies": {
     "serverless": "^1.51.0",
     "serverless-plugin-monorepo": "^0.7.0",
-    "serverless-plugin-typescript": "^1.1.9",
     "serverless-webpack": "^5.3.1",
     "ts-loader": "^6.0.4",
     "typescript": "^3.6.3"

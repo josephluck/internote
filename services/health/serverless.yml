@@ -2,6 +2,12 @@ service: internote-health-service
 
 custom:
   stage: ${opt:stage, self:provider.stage}
+  webpack:
+    config: "webpack.config.js"
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: "yarn"
   domains:
     prod: services.internote.app
     dev: dev-services.internote.app
@@ -25,7 +31,7 @@ provider:
 
 plugins:
   - serverless-plugin-monorepo
-  - serverless-plugin-typescript
+  - serverless-webpack
   - serverless-domain-manager
 
 functions:
