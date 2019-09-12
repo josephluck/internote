@@ -9,11 +9,9 @@
   ],
   "scripts": {
     "deploy": "yarn deploy:dev",
-    "deploy:dev": "yarn deploy:dev:domain && yarn deploy:dev:services",
-    "deploy:dev:domain": "serverless create_domain --stage dev",
+    "deploy:dev": "yarn deploy:dev:services",
     "deploy:dev:services": "NODE_ENV=development sls deploy --stage dev",
-    "deploy:prod": "yarn deploy:prod:domain && yarn deploy:prod:services",
-    "deploy:prod:domain": "serverless create_domain --stage prod",
+    "deploy:prod": "yarn deploy:prod:services",
     "deploy:prod:services": "NODE_ENV=production sls deploy --stage prod",
     "test": "jest"
   },
