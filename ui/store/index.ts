@@ -104,7 +104,7 @@ export function makeStore() {
       // loggingMiddleware,
       {
         onStateChange: (state, prevState) => {
-          const { session: session } = state.auth;
+          const { session } = state.auth;
           const token = session ? session.accessToken : "";
 
           if (session && token) {

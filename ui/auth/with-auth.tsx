@@ -65,7 +65,9 @@ export function withAuth<C extends typeof React.Component>(
         }
       });
 
-      const hasSession = !!context.store.getState().auth.session.accessToken;
+      const session = context.store.getState().auth.session;
+      const hasSession =
+        session && session.accessToken && session.accessToken.length > 0;
 
       if (hasSession) {
         await context.store.actions.preferences.get();
