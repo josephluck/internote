@@ -38,7 +38,7 @@ const ExpandingText = styled.div`
 `;
 
 const Collapse = styled(CollapseWidthOnHover)`
-  display: inline-block;
+  display: inline-flex;
 `;
 
 export function ExpandingIconButton({

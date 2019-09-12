@@ -12,13 +12,14 @@
   },
   "include": ["../**/*", "**/*"],
   "exclude": [
-    "node_modules",
-    "static",
-    "*.worker.js",
-    ".next",
-    ".storybook",
     ".awcache",
+    ".next",
+    ".serverless",
+    ".storybook",
+    "node_modules",
     "public",
+    "*.worker.js",
+    "static",
     "storybook-static",
     "sls-next-build"
   ]

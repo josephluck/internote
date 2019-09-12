@@ -50,6 +50,7 @@ const HeadingInner = styled(Wrapper)`
 `;
 
 const ButtonSpacer = styled.div`
+  display: inline-flex;
   margin-right: ${spacing._0_25};
 `;
 
