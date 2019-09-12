@@ -159,6 +159,34 @@ The domain names for deployment are managed manually through Route53 and AWS Cer
 - Grab the SSL certificate ARN from AWS Certificate Manager and enter it in to the `cloudFront` configuration in `ui/serverless.yml`
 - Once deployed, link up the CloudFront distribution with the custom domain name in Route53 by ensuring there's an A record who's "Alias Target" points to the CloudFront "Domain Name"
 
+## Environment variables
+
+There are multiple ways that environment varaibles are injected in to the Internote services.
+
+#### Non sensitive variables
+
+Non-sensitive environment variables such as the "stage" (production or development), the AWS region etc are stored as environment variables in the Serverless framework configuration files in the codebase. These are commited to source control.
+
+#### Sensitive variables
+
+Sensitive variables (such as private API keys) are stored in [AWS Parameter Store](https://eu-west-1.console.aws.amazon.com/systems-manager/parameters/?region=eu-west-1) and are referenced inside the Serverless framework configuration files in the codebase. These variables are not commited to source control.
+
+**Important** - Since the Serverless framework does not have SSM permissions in IAM by default, they need to be added. [More reading](https://github.com/serverless/serverless/issues/5781). See below for more info.
+
+In general, secrets stored in SSM are prefixed with the "stage". For example `DEV_OXFORD_API_ID` / `PROD_OXFORD_API_ID`. These are then referenced in the relevant `serverless.yml` files.
+
+#### Variable explanations
+
+- OXFORD_API_ID: The Oxford Dictionary application ID used for looking up words. Can be in the Oxford Dictionary admin panel [here](https://developer.oxforddictionaries.com/)
+- OXFORD_API_KEY: The Oxford Dictionary application key used for looking up words. Can be in the Oxford Dictionary admin panel [here](https://developer.oxforddictionaries.com/)
+- COGNITO_USER_POOL_ID: The Cognito user pool ID for authentication. Can be found in the Cognito user pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito).
+- COGNITO_USER_POOL_CLIENT_ID: The Cognito user pool client ID for authentication. Can be found in the Cognito user pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito) (head to App client settings and look for "id").
+- SERVICES_HOST: The domain name that the back-end services are deployed under. Can be found in the "domains" section [here](services/health/serverless.yml)
+- SERVICES_REGION: The AWS region that the app is deployed in. This is eu`-west-1`.
+- COGNITO_IDENTITY_POOL_ID: The Cognito identity pool ID for authentication. Can be found in the Cognito identity pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito).
+- ATTACHMENTS_BUCKET_NAME: The name of the bucket where note attachments reside. Can be found [here](services/attachments/serverless.yml).
+- SPEECH_BUCKET_NAME: The name of the bucket where generated speech files reside. Can be found [here](services/speech/serverless.yml).
+
 ## CI / CD
 
 Continuous integration & delivery is managed by [seed.run](https://seed.run/).
@@ -191,8 +219,6 @@ There is a CloudFormation stack set up to manage iAM roles etc that Dashbird nee
 
 The serverless policy needs the following additional permissions to deploy the app:
 
-> These should eventually be put in to serverless.yml, rather than manually managed
-
 - "s3:PutBucketAcl",
 - "acm:ListCertificates",
 - "apigateway:GET",
@@ -205,3 +231,4 @@ The serverless policy needs the following additional permissions to deploy the a
 - "route53:GetHostedZone",
 - "route53:ListResourceRecordSets",
 - "iam:CreateServiceLinkedRole"
+- "ssm:\*"

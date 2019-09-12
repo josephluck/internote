@@ -82,15 +82,3 @@ The Internote service's lambdas are set up to send from "no-reply@internote.app"
 #### Receiving email
 
 Although Internote does not support replies on emails sent to users, an S3 bucket is set up to receive e-mails.
-
-## Environment variables
-
-There are multiple ways that environment varaibles are injected in to the Internote services.
-
-#### Non sensitive variables
-
-Non-sensitive environment variables such as the "stage" (production or development), the AWS region etc are stored as environment variables in the Serverless framework configuration files in the codebase. These are commited to source control.
-
-#### Sensitive variables
-
-Sensitive variables (such as private API keys) are stored in AWS Parameter Store and are referenced inside the Serverless framework configuration files in the codebase. These variables are not commited to source control.
