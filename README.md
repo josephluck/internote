@@ -159,6 +159,14 @@ The domain names for deployment are managed manually through Route53 and AWS Cer
 - Grab the SSL certificate ARN from AWS Certificate Manager and enter it in to the `cloudFront` configuration in `ui/serverless.yml`
 - Once deployed, link up the CloudFront distribution with the custom domain name in Route53 by ensuring there's an A record who's "Alias Target" points to the CloudFront "Domain Name"
 
+## CI / CD
+
+Continuous integration & delivery is managed by [seed.run](https://seed.run/).
+
+There is a CloudFormation stack set up to manage iAM roles etc that seed.run needs.
+
+The dashboards are available [here](https://console.seed.run/josephluck/internote).
+
 ## Logs
 
 #### CloudWatch
@@ -170,6 +178,8 @@ Logging is available in CloudWatch.
 #### Dashbird
 
 Logging and metrics are also available in Dashbird.
+
+There is a CloudFormation stack set up to manage iAM roles etc that Dashbird needs.
 
 > Follow [these instructions](https://dashbird.io/docs/get-started/quick-start/) to enable Dashbird
 
