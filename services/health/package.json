@@ -24,5 +24,10 @@
     "serverless-plugin-monorepo": "^0.7.0",
     "serverless-plugin-typescript": "^1.1.9",
     "typescript": "^3.6.3"
+  },
+  "workspaces": {
+    "nohoist": [
+      "typescript"
+    ]
   }
 }
