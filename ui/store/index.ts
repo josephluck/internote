@@ -63,7 +63,7 @@ function makeModel(api: Api, auth: AuthApi) {
       notes: Notes.model(api),
       sync: Sync.model(api),
       exportNote: ExportNote.model(api),
-      snippets: Snippets.model(api),
+      snippets: Snippets.model(api)
     }
   };
 }
@@ -139,6 +139,9 @@ export function makeStore() {
       }
     ]
   );
+
+  /** NB: required to refresh tokens if they are near expiry before API requests */
+  api.setStore(store);
 
   if (!isServer()) {
     document.addEventListener("fullscreenchange", () => {
