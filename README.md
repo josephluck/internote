@@ -23,212 +23,227 @@
   <br />
 </div>
 
-## Features
+# Features
 
-**Rich editor**
+## Rich editor
 
 All the standard formatting options you'd expect from a modern editor.
 
-**Beautiful design**
+## Beautiful design
 
 Internote has been designed with simplicity and beauty in mind for effortless note taking.
 
-**Focus mode**
+## Focus mode
 
 Go full zen by entering focus mode. All distracting user interface disappears and the current section highlighted so you can focus on writing completely distraction-free.
 
-**Outline**
+## Outline
 
 See the overview of your document and quickly navigate to headings and subheadings using a handy outline view.
 
-**Themes**
+## Themes
 
 Multiple colour and typography themes. Serif's your jam? What about dark mode? No problems.
 
-**Emojis**
+## Emojis
 
-Emoji support because Internote is down with the kids :tada:
+Emoji support because Internote is down with the kids 🎉
 
-**Tags**
+## Tags
 
 Tag notes using a simple #tag system. Easily search for notes by tag.
 
-**Media attachments**
+## Media attachments
 
 Embed images, videos, audios and attach any other files to your notes. Your files are stored securely, only you can access them.
 
-**Dictionary**
+## Dictionary
 
 Can't find the perfect word or want to check that your use of a word is correct? Just highlight a word and you're a single click away to the full power of Oxford's English dictionary and thesaurus.
 
-**Speech**
+## Speech
 
 Just highlight a sentence or paragraph and press the speech button to hear it. Choose from multiple voices, male or female.
 
-**Snippets**
+## Snippets
 
 Create snippets of content that can be saved and reused whenever needed.
 
-**Export**
+## Export
 
 Need to take your notes elsewhere? Export as markdown, or as HTML.
 
-**Code editor**
+## Code editor
 
 Integrated code editor based on Visual Studio Code's Monaco editor. Embed multiple code editors in a single document. Full syntax highlighting, IntelliSense, you name it.
 
-**Full-screen mode**
+## Full-screen mode
 
 Go completely distraction free by entering full-screen mode.
 
-**Keyboard shortcuts**
+## Keyboard shortcuts
 
 Rich keyboard shortcuts system for power use.
 
-**Markdown shortcuts**
+## Markdown shortcuts
 
-Familiar with markdown? Use markdown shortcuts like `## Heading two` and `> Block quote` and `- List item` for quick formatting.
+Familiar with markdown? Use markdown shortcuts like ## Heading two and > Block quote and - List item for quick formatting.
 
-**Auto save**
+## Auto save
 
 No need to press save. Notes and settings are automatically saved to the cloud. Log in on many devices using the same account.
 
-**Offline sync**
+## Offline sync
 
 Don't worry about dropping off the WiFi or accidentally closing Internote, notes are saved offline and synced periodically to the server in the background, even when Internote is closed.
 
-**Conflict detection**
+## Conflict detection
 
 No messy overwrites, Internote will let you know if you're about to overwrite your note.
 
-**Password-less login**
+## Password-less login
 
 Always forget your password? Just enter your e-mail and receive a one-time-passcode to sign up or sign in.
 
-**More**
+## More
 
-Many more features are [planned](https://github.com/josephluck/internote/issues) and if you feel like lending a hand, feel free to contribute to any of the open issues.
+Many more features are planned and if you feel like lending a hand, feel free to contribute to any of the open issues.
 
 Feel free to request new features too, but please bear in mind that this is a personal side project with a very specific purpose, so I might not agree with and/or build everything!
 
-## Application stack
+# Application stack
 
-#### Front-end
+## Architecture
+
+Internote is architected as a fully serverless application. This means that both the front-end and the back-end services are stateless, with persistence handled by external file storage and database storage.
+
+Internote's front-end and back-end services are written in Typescript and the project is structured as a yarn monorepository to make use of efficient code-sharing where useful. For example, API DTOs are written in Typescript and are shared across the front-end and the back-end.
+
+## Local development
+
+Since Internote runs on a serverless stack, it isn't possible (without significant set-up) to run the whole stack locally. Instead, it is advised to rely on unit / integration testing to develop individual services (mocking out any dependent services where necessary). Alternatively, the `dev` stage can be deployed to during development, providing that the risk of data corruption is kept to a minimum.
+
+The front-end application can be run locally and is set up to run against the `dev` stage back-end services. Bear in mind that running locally is not the same as a built version of the front-end so it's advised to deploy and test against the `dev` stage before promoting the build to production.
+
+## Front-end stack
 
 - TypeScript
 - React
-- Next
+- Next.js
 - Twine
-- Styled components
+- Styled Components
+- Storybook
 - Slate
+- Monaco Editor
 - Service workers
+- AWS API Gateway
+- AWS Lambda
+- AWS S3
+- AWS CloudWatch
+- AWS CloudFront
+- AWS Route53
 
-#### Back-end
+## Back-end stack
 
-- Typescript
-- Koa
-- PostgreSQL
-- TypeORM
-- A variety of AWS services
-- Oxford dictionary API
-
-#### Ops / architecture
-
-- Serverless (AWS)
-- Lambda
+- Middy
+- DynamoDB
+- Type Dynamo
+- AWS Lambda
+- AWS S3
+- AWS Cognito User Pools
+- AWS Cognito Federated Identities
 - API Gateway
-- CloudWatch
-- Route 53
-- S3
-- Dashbird
+- AWS CloudWatch
+- AWS CloudFront
+- AWS Polly
+- Oxford Dictionary API
 
-## Deployment
+# Deployment
 
-- Create an AWS account
-- Follow [these](https://serverless.com/framework/docs/providers/aws/guide/installation/) and [these](https://serverless.com/framework/docs/providers/aws/guide/credentials/) instructions
-- Use the `serverless config credentials --provider aws --key EXAMPLE --secret EXAMPLEKEY` method of authenticating serverless with AWS
-- Follow instructions in each package in this repo for individual service deployment
+## Set up
 
-#### Domains & SSL certificates
+Deployment is managed by the Serverless Framework deploying to AWS. To set up Serverless, follow the official documentation ensuring that Serverless is set up with the correct AWS credentials.
 
-The domain names for deployment are managed manually through Route53 and AWS Certificate Manager.
+## Domains & SSL certificates
+
+The domain names for deployment are managed manually through a combination of Route53, CloudFront and AWS Certificate Manager. To set the domain names up, head to the AWS console and do the following:
 
 - Create a custom domain name in Route53
-- Create a SSL certificate in AWS Certificate Manager. The certificate has to be in the _es-east-1_ AWS region for it to work with CloudFront.
-- Link up the SSL certificate with the domain name in [API Gateway](https://eu-west-1.console.aws.amazon.com/apigateway/home?region=eu-west-1#/custom-domain-names)
-- Grab the SSL certificate ARN from AWS Certificate Manager and enter it in to the `cloudFront` configuration in `ui/serverless.yml`
+- Create a SSL certificate in AWS Certificate Manager. The certificate has to be in the es-east-1 AWS region for it to work with CloudFront.
+- Link up the SSL certificate with the domain name in API Gateway
+- Grab the SSL certificate ARN from AWS Certificate Manager and enter it in to the cloudFront configuration in ui/serverless.yml
 - Once deployed, link up the CloudFront distribution with the custom domain name in Route53 by ensuring there's an A record who's "Alias Target" points to the CloudFront "Domain Name"
 
-## Environment variables
+## Stages
 
-There are multiple ways that environment varaibles are injected in to the Internote services.
+There are two stages set up for Internote (both front-end and back-end). The first is the `dev` stage that can be broken (if needed). The second is production that should be as stable as possible.
 
-#### Non sensitive variables
+# Environment variables
+
+There are multiple ways that environment varaibles are handled in Internote.
+
+## Non sensitive variables
 
 Non-sensitive environment variables such as the "stage" (production or development), the AWS region etc are stored as environment variables in the Serverless framework configuration files in the codebase. These are commited to source control.
 
-#### Sensitive variables
+## Sensitive variables
 
-Sensitive variables (such as private API keys) are stored in [AWS Parameter Store](https://eu-west-1.console.aws.amazon.com/systems-manager/parameters/?region=eu-west-1) and are referenced inside the Serverless framework configuration files in the codebase. These variables are not commited to source control.
+Sensitive variables (such as private API keys) are stored in AWS Parameter Store and are referenced inside the Serverless framework configuration files in the codebase. These variables are not committed to source control.
 
-**Important** - Since the Serverless framework does not have SSM permissions in IAM by default, they need to be added. [More reading](https://github.com/serverless/serverless/issues/5781). See below for more info.
+**Important: **Since the Serverless framework does not have SSM permissions by default they need to be added to the Serverless user in IAM. See below for more info.
 
-In general, secrets stored in SSM are prefixed with the "stage". For example `/internote/dev/OXFORD_API_ID` / `/internote/prod/OXFORD_API_ID`. These are then referenced in the relevant `serverless.yml` files using string substitution on the `stage` of the deployment.
+In general, secrets stored in SSM are prefixed with the "stage". For example `/internote/dev/OXFORD_API_ID` / `/internote/prod/OXFORD_API_ID`. These are then referenced in the relevant `serverless.yml` files using string substitution on the stage of the deployment.
 
-#### Variable explanations
+## Variable explanations
 
-- `OXFORD_API_ID`: The Oxford Dictionary application ID used for looking up words. Can be in the Oxford Dictionary admin panel [here](https://developer.oxforddictionaries.com/)
-- `OXFORD_API_KEY`: The Oxford Dictionary application key used for looking up words. Can be in the Oxford Dictionary admin panel [here](https://developer.oxforddictionaries.com/)
-- `COGNITO_USER_POOL_ID`: The Cognito user pool ID for authentication. Can be found in the Cognito user pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito).
-- `COGNITO_USER_POOL_CLIENT_ID`: The Cognito user pool client ID for authentication. Can be found in the Cognito user pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito) (head to App client settings and look for "id").
-- `SERVICES_HOST`: The domain name that the back-end services are deployed under. Can be found in the "domains" section [here](services/health/serverless.yml)
-- `SERVICES_REGION`: The AWS region that the app is deployed in. This is eu`-west-1`.
-- `COGNITO_IDENTITY_POOL_ID`: The Cognito identity pool ID for authentication. Can be found in the Cognito identity pool settings [here](https://eu-west-1.console.aws.amazon.com/cognito).
-- `ATTACHMENTS_BUCKET_NAME`: The name of the bucket where note attachments reside. Can be found [here](services/attachments/serverless.yml).
-- `SPEECH_BUCKET_NAME`: The name of the bucket where generated speech files reside. Can be found [here](services/speech/serverless.yml).
+- **`OXFORD_API_ID`**: The Oxford Dictionary application ID used for looking up words. Can be in the Oxford Dictionary admin panel here
+- **`OXFORD_API_KEY`**: The Oxford Dictionary application key used for looking up words. Can be in the Oxford Dictionary admin panel here
+- **`COGNITO_USER_POOL_ID`**: The Cognito user pool ID for authentication. Can be found in the Cognito user pool settings here.
+- **`COGNITO_USER_POOL_CLIENT_ID`**: The Cognito user pool client ID for authentication. Can be found in the Cognito user pool settings here (head to App client settings and look for "id").
+- **`SERVICES_HOST`**: The domain name that the back-end services are deployed under. Can be found in the "domains" section here
+- **`SERVICES_REGION`**: The AWS region that the app is deployed in. This is eu-west-1.
+- **`COGNITO_IDENTITY_POOL_ID`**: The Cognito identity pool ID for authentication. Can be found in the Cognito identity pool settings here.
+- **`ATTACHMENTS_BUCKET_NAME`**: The name of the bucket where note attachments reside. Can be found here.
+- **`SPEECH_BUCKET_NAME`**: The name of the bucket where generated speech files reside. Can be found here.
 
-## CI / CD
+# CI / CD
 
-Continuous integration & delivery is managed by [seed.run](https://seed.run/).
+Continuous integration & delivery is managed by seed.run and is set up to automatically deploy the application upon pushes to master.
 
-There is a CloudFormation stack set up to manage iAM roles etc that seed.run needs.
+## Automatic deployment
 
-The dashboards are available [here](https://console.seed.run/josephluck/internote).
+Since the application is running on seed.run's free tier, it's important to keep commits to master to a minimum in order to not run out of deployment minutes. For this reason, it's advised to open branches and pull requests, so that only merges are deployed.
 
-There are some specific things for Internote that need to be done to get the CI/CD workflow working.
+## Seed.run IAM
 
-- Add the font awesome NPM token from `~/.npmrc` to [seed environment variables](https://seed.run/docs/storing-secrets). This will pick up the token for authentication during the installation phase.
+There is a CloudFormation stack set up to manage iAM roles etc that seed.run needs, which was set up by seed.run when the project was set up. However, since Internote uses font-awesome, the npm token needs to be added as an environment variable to seed.run. Please see `seed.yml` and the official documentation for more info.
 
-## Logs
+# Logs
 
-#### CloudWatch
+## CloudWatch
 
-Logging is available in CloudWatch.
+Logging is available in CloudWatch inside the AWS console.
 
-> Follow [these instructions](https://serverless-stack.com/chapters/api-gateway-and-lambda-logs.html#enable-api-gateway-cloudwatch-logs) to enable API Gateway logs in CloudWatch.
-
-#### Dashbird
+## Dashbird
 
 Logging and metrics are also available in Dashbird.
 
-There is a CloudFormation stack set up to manage iAM roles etc that Dashbird needs.
+There is a CloudFormation stack set up to manage iAM roles etc that Dashbird needs. These were provisioned by Dashbird when the project was set up.
 
-> Follow [these instructions](https://dashbird.io/docs/get-started/quick-start/) to enable Dashbird
-
-## Additional serverless AWS permissions
+# Additional IAM permissions
 
 The serverless policy needs the following additional permissions to deploy the app:
 
-- "s3:PutBucketAcl",
-- "acm:ListCertificates",
-- "apigateway:GET",
-- "apigateway:DELETE",
-- "apigateway:POST",
-- "apigateway:POST",
-- "cloudfront:UpdateDistribution",
-- "route53:ListHostedZones",
-- "route53:ChangeResourceRecordSets",
-- "route53:GetHostedZone",
-- "route53:ListResourceRecordSets",
+- "s3:PutBucketAcl"
+- "acm:ListCertificates"
+- "apigateway:GET"
+- "apigateway:DELETE"
+- "apigateway:POST"
+- "apigateway:POST"
+- "cloudfront:UpdateDistribution"
+- "route53:ListHostedZones"
+- "route53:ChangeResourceRecordSets"
+- "route53:GetHostedZone"
+- "route53:ListResourceRecordSets"
 - "iam:CreateServiceLinkedRole"
 - "ssm:\*"
