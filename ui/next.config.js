@@ -18,8 +18,6 @@ function withExternals(nextConfig) {
   });
 }
 
-console.log(process.env);
-
 module.exports = withExternals(
   withCustomBabelConfig(
     withDotenv(
