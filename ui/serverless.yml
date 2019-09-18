@@ -1,8 +1,24 @@
-name: internote-storybook
+name: internote-ui
 
-website:
+app:
+  component: serverless-next.js
+  inputs:
+    domain: ["dev", "internote.app"]
+  env:
+    ATTACHMENTS_BUCKET_NAME: ${ssm:/internote/dev/ATTACHMENTS_BUCKET_NAME}
+    COGNITO_IDENTITY_POOL_ID: ${ssm:/internote/dev/COGNITO_IDENTITY_POOL_ID}
+    COGNITO_USER_POOL_CLIENT_ID: ${ssm:/internote/dev/COGNITO_USER_POOL_CLIENT_ID}
+    COGNITO_USER_POOL_ID: ${ssm:/internote/dev/COGNITO_USER_POOL_ID}
+    SERVICES_HOST: ${ssm:/internote/dev/SERVICES_HOST}
+    SERVICES_REGION: ${ssm:/internote/dev/SERVICES_REGION}
+    SPEECH_BUCKET_NAME: ${ssm:/internote/dev/SPEECH_BUCKET_NAME}
+    STAGE: dev
+
+storybook:
   component: "@serverless/website"
   inputs:
     code:
       src: storybook-static
     domain: storybook.internote.app
+    region: eu-west-1
+    bucketName: internote-storybook

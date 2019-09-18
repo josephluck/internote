@@ -10,6 +10,7 @@ node_modules
 ui/public/service-worker.js
 env.json
 sls-next-build
+.serverless_nextjs
 .awcache
 storybook-static
 aws-env

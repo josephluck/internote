@@ -103,7 +103,7 @@ No messy overwrites, Internote will let you know if you're about to overwrite yo
 
 ## Password-less login
 
-Always forget your password? Just enter your e-mail and receive a one-time-passcode to sign up or sign in.
+Always forget your password? Just enter your e-mail and receive a one-time pass-code to sign up or sign in.
 
 ## More
 
@@ -117,7 +117,7 @@ Feel free to request new features too, but please bear in mind that this is a pe
 
 Internote is architected as a fully serverless application. This means that both the front-end and the back-end services are stateless, with persistence handled by external file storage and database storage.
 
-Internote's front-end and back-end services are written in Typescript and the project is structured as a yarn monorepository to make use of efficient code-sharing where useful. For example, API DTOs are written in Typescript and are shared across the front-end and the back-end.
+Internote's front-end and back-end services are written in Typescript and the project is structured as a yarn mono-repository to make use of efficient code-sharing where useful. For example, API DTOs are written in Typescript and are shared across the front-end and the back-end.
 
 ## Local development
 
@@ -160,13 +160,13 @@ The front-end application can be run locally and is set up to run against the `d
 
 ## Back-end services
 
-There are several independent microservices, each responsible for a portion of the overall back-end. Each service is deployed using the Serverless framework and there's a shared library of utilities that are used in multiple services.
+There are several independent micro-services, each responsible for a portion of the overall back-end. Each service is deployed using the Serverless framework and there's a shared library of utilities that are used in multiple services.
 
-The Internote services are organised using a yarn workspaces monorepository, though maintain autonomy and isolation from one another in terms of deployment and resources.
+The Internote services are organised using a yarn workspaces mono-repository, though maintain autonomy and isolation from one another in terms of deployment and resources.
 
 **Auth**
 
-Authentication in Internote is powered by AWS Cognito and follows a passwordless experience whereby the user does not set their own password, but instead, receives a one-time passcode for signing up or signing in via email (SES is used for e-mail sending).
+Authentication in Internote is powered by AWS Cognito and follows a password-less experience whereby the user does not set their own password, but instead, receives a one-time pass-code for signing up or signing in via email (SES is used for e-mail sending).
 
 The authentication credentials are used to sign requests to other services using AWS Signing Key Signatures. These include requests to API Gateway or S3 for example using a Cognito Federated Identity. Other services are authorized using API Gateway's IAM authorization (this means that authorization is handled prior to lambdas that require authorization being invoked).
 
@@ -250,7 +250,7 @@ Deployment is managed by the Serverless Framework deploying to AWS. To set up Se
 The domain names for deployment are managed manually through a combination of Route53, CloudFront and AWS Certificate Manager. To set the domain names up, head to the AWS console and do the following:
 
 - Create a custom domain name in Route53
-- Create a SSL certificate in AWS Certificate Manager. The certificate has to be in the es-east-1 AWS region for it to work with CloudFront.
+- Create a SSL certificate in AWS Certificate Manager. The certificate has to be in the `us-east-1` AWS region for it to work with CloudFront.
 - Link up the SSL certificate with the domain name in API Gateway
 - Grab the SSL certificate ARN from AWS Certificate Manager and enter it in to the cloudFront configuration in ui/serverless.yml
 - Once deployed, link up the CloudFront distribution with the custom domain name in Route53 by ensuring there's an A record who's "Alias Target" points to the CloudFront "Domain Name"
@@ -259,13 +259,21 @@ The domain names for deployment are managed manually through a combination of Ro
 
 There are two stages set up for Internote (both front-end and back-end). The first is the `dev` stage that can be broken (if needed). The second is production that should be as stable as possible.
 
+## Regions
+
+By default, all AWS services are created in the `eu-west-1` (Ireland) region.
+
+Some AWS services global are not tied to regions, such as AWS S3, AWS CloudFront, AWS Route53 etc.
+
+There is a special mention for the front-end SSR Lambdas, which are deployed as Lambda@Edge functions. These are deployed in the `us-east-1` region. See the `ui/serverless.yml` for more information.
+
 # Environment variables
 
-There are multiple ways that environment varaibles are handled in Internote.
+There are multiple ways that environment variables are handled in Internote.
 
 ## Non sensitive variables
 
-Non-sensitive environment variables such as the "stage" (production or development), the AWS region etc are stored as environment variables in the Serverless framework configuration files in the codebase. These are commited to source control.
+Non-sensitive environment variables such as the "stage" (production or development), the AWS region etc are stored as environment variables in the Serverless framework configuration files in the codebase. These are committed to source control.
 
 ## Sensitive variables
 
@@ -282,14 +290,14 @@ In general, secrets stored in SSM are prefixed with the "stage". For example `/i
 - **`COGNITO_USER_POOL_ID`**: The Cognito user pool ID for authentication. Can be found in the Cognito user pool settings here.
 - **`COGNITO_USER_POOL_CLIENT_ID`**: The Cognito user pool client ID for authentication. Can be found in the Cognito user pool settings here (head to App client settings and look for "id").
 - **`SERVICES_HOST`**: The domain name that the back-end services are deployed under. Can be found in the "domains" section here
-- **`SERVICES_REGION`**: The AWS region that the app is deployed in. This is eu-west-1.
+- **`SERVICES_REGION`**: The AWS region that the back-end services are deployed in. This is eu-west-1.
 - **`COGNITO_IDENTITY_POOL_ID`**: The Cognito identity pool ID for authentication. Can be found in the Cognito identity pool settings here.
 - **`ATTACHMENTS_BUCKET_NAME`**: The name of the bucket where note attachments reside. Can be found here.
 - **`SPEECH_BUCKET_NAME`**: The name of the bucket where generated speech files reside. Can be found here.
 
 ## Next.js environment variables set-up
 
-In terms of Next.js, the environment varaibles are substituted at build-time using Next.js's `env` config option.
+In terms of Next.js, the environment variables are substituted at build-time using Next.js's `env` config option.
 
 When running `yarn dev` locally, the environment variables are loaded using `aws-env` (you will have to `chmod +x aws-env` once it has installed).
 
@@ -343,3 +351,7 @@ The serverless policy needs the following additional permissions to deploy the a
 - "iam:CreateServiceLinkedRole"
 - "ssm:\*"
 - "logs:PutSubscriptionFilter"
+- "route53:ListHostedZonesByName"
+- "acm:RequestCertificate"
+- "acm:DescribeCertificate"
+- "iam:AttachRolePolicy"
