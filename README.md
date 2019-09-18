@@ -265,7 +265,7 @@ By default, all AWS services are created in the `eu-west-1` (Ireland) region.
 
 Some AWS services global are not tied to regions, such as AWS S3, AWS CloudFront, AWS Route53 etc.
 
-There is a special mention for the front-end SSR Lambdas, which are deployed as Lambda@Edge functions. These are deployed in the `us-east-1` region. See the `ui/serverless.yml` for more information.
+There is a special mention for the front-end Next.js SSR Lambdas, which are deployed as Lambda@Edge functions. These are deployed in the `us-east-1` region for [reasons specified here](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-requirements-limits.html). See the `ui/serverless.yml` for more information.
 
 # Environment variables
 
