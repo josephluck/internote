@@ -1,60 +1,8 @@
-service: internote-ui
+name: internote-storybook
 
-plugins:
-  - serverless-plugin-monorepo
-  - serverless-plugin-include-dependencies
-  - serverless-nextjs-plugin
-  - serverless-finch
-
-custom:
-  stage: ${opt:stage, self:provider.stage}
-  domains:
-    prod: internote.app
-    dev: dev.internote.app
-  storybookDomains:
-    prod: storybook.internote.app
-    dev: dev-storybook.internote.app
-  assetsBucketNames:
-    prod: internote-prod-ui-static
-    dev: internote-dev-ui-static
-  storybookBucketNames:
-    prod: internote-prod-storybook
-    dev: internote-dev-storybook
-  serverless-nextjs:
-    createAssetBucket: true
-    assetsBucketName: ${self:custom.assetsBucketNames.${self:custom.stage}}
-    cloudFront:
-      Properties:
-        DistributionConfig:
-          Aliases:
-            - ${self:custom.domains.${self:custom.stage}}
-          ViewerCertificate:
-            AcmCertificateArn: arn:aws:acm:us-east-1:822567739604:certificate/cba4ce61-ca15-4d6b-8eac-3569e4eae88b
-            SslSupportMethod: sni-only
-  # NB: this is for storybook deployment:
-  client:
-    bucketName: ${self:custom.storybookBucketNames.${self:custom.stage}}
-    distributionFolder: storybook-static
-
-provider:
-  name: aws
-  runtime: nodejs8.10
-  stage: dev
-  region: eu-west-1
-  memorySize: 256
-  timeout: 30
-  apiGateway:
-    minimumCompressionSize: 1024
-  environment:
-    ATTACHMENTS_BUCKET_NAME: ${ssm:/internote/${self:custom.stage}/ATTACHMENTS_BUCKET_NAME}
-    COGNITO_IDENTITY_POOL_ID: ${ssm:/internote/${self:custom.stage}/COGNITO_IDENTITY_POOL_ID}
-    COGNITO_USER_POOL_CLIENT_ID: ${ssm:/internote/${self:custom.stage}/COGNITO_USER_POOL_CLIENT_ID}
-    COGNITO_USER_POOL_ID: ${ssm:/internote/${self:custom.stage}/COGNITO_USER_POOL_ID}
-    SERVICES_HOST: ${ssm:/internote/${self:custom.stage}/SERVICES_HOST}
-    SERVICES_REGION: ${ssm:/internote/${self:custom.stage}/SERVICES_REGION}
-    SPEECH_BUCKET_NAME: ${ssm:/internote/${self:custom.stage}/SPEECH_BUCKET_NAME}
-    STAGE: ${self:custom.stage}
-
-package:
-  exclude:
-    - ./**
+website:
+  component: "@serverless/website"
+  inputs:
+    code:
+      src: storybook-static
+    domain: storybook.internote.app

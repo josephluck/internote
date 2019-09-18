@@ -309,6 +309,12 @@ There is a CloudFormation stack set up to manage iAM roles etc that seed.run nee
 
 # Logs
 
+## Serverless
+
+Serverless dashboard is available: https://dashboard.serverless.com.
+
+In order to set it up, run `serverless` in your terminal and run through the registration / login process and redeploy the services. After this, they will automatically appear in the serverless dashboard.
+
 ## CloudWatch
 
 Logging is available in CloudWatch inside the AWS console.
@@ -336,3 +342,4 @@ The serverless policy needs the following additional permissions to deploy the a
 - "route53:ListResourceRecordSets"
 - "iam:CreateServiceLinkedRole"
 - "ssm:\*"
+- "logs:PutSubscriptionFilter"
