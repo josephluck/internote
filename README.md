@@ -283,6 +283,10 @@ Sensitive variables (such as private API keys) are stored in AWS Parameter Store
 
 In general, secrets stored in SSM are prefixed with the "stage". For example `/internote/dev/OXFORD_API_ID` / `/internote/prod/OXFORD_API_ID`. These are then referenced in the relevant `serverless.yml` files using string substitution on the stage of the deployment.
 
+## Front-end environment variables
+
+Since Serverless components has not figured out a good way to deal with secret environment variables properly (with respect to KMS), the [`aws-env`](https://github.com/Droplr/aws-env) executable is used to generate a `.env` file in the root of the `ui` project from AWS SSM variables. Serverless components then picks up the keys in the `.env` file and loads them in to the app. The `.env` file is in `.gitignore`.
+
 ## Variable explanations
 
 - **`OXFORD_API_ID`**: The Oxford Dictionary application ID used for looking up words. Can be in the Oxford Dictionary admin panel here
