@@ -5,10 +5,11 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dev": "eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv) && next -p 3000",
+    "dev": "eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv) next -p 3000",
     "dev:storybook": "start-storybook --quiet -p 6006 -s ./",
+    "build:local:next": "rm -rf ./.next && eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv) next build",
+    "start:local:next": "eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv) next start",
     "build:monaco": "webpack --config monaco-webpack.config.js",
-    "build:next": "next build",
     "build:storybook": "rm -rf ./storybook-static && yarn build-storybook",
     "build:dev:create-service-worker": "STAGE=dev webpack --config service-worker-webpack.config.js",
     "deploy:dev:prepare": "rm -rf ./.next && yarn deploy:dev:environment-variables",
