@@ -15,7 +15,7 @@ import { isServer } from "../utilities/window";
 
 const LINE_HEIGHT = 30;
 
-const MonacoEditor = (window as any).reactMonacoEditor;
+const MonacoEditor = !isServer() ? (window as any).reactMonacoEditor : null as any;
 
 export function Ide({
   className,
