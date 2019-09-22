@@ -1,0 +1,6 @@
+{
+  "bucketName": "internote-storybook",
+  "region": "eu-west-1",
+  "url": "http://internote-storybook.s3-website-eu-west-1.amazonaws.com",
+  "domain": "https://storybook.internote.app"
+}

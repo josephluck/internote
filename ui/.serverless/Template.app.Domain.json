@@ -1,0 +1,13 @@
+{
+  "region": "us-east-1",
+  "privateZone": false,
+  "domain": "internote.app",
+  "subdomains": [
+    {
+      "domain": "dev.internote.app",
+      "distributionId": "EPDDVBQFCC4XA",
+      "url": "https://d18t7gjv4fgzzr.cloudfront.net",
+      "type": "awsCloudFront"
+    }
+  ]
+}

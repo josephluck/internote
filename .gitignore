@@ -4,7 +4,6 @@ node_modules
 .env
 .env.development
 .env.local
-.serverless
 .build
 .webpack
 ui/public/service-worker.js
@@ -14,3 +13,4 @@ sls-next-build
 .awcache
 storybook-static
 aws-env
+*.zip

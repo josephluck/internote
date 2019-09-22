@@ -1,0 +1,12 @@
+{
+  "name": "3y3sw8f-km9diiq",
+  "arn": "arn:aws:iam::822567739604:role/3y3sw8f-km9diiq",
+  "service": [
+    "edgelambda.amazonaws.com",
+    "lambda.amazonaws.com"
+  ],
+  "policy": {
+    "arn": "arn:aws:iam::aws:policy/AdministratorAccess"
+  },
+  "region": "us-east-1"
+}
