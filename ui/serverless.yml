@@ -4,6 +4,7 @@ app:
   component: serverless-next.js
   inputs:
     domain: ["dev", "internote.app"]
+    bucketName: internote-ui
 
 storybook:
   component: "@serverless/website"

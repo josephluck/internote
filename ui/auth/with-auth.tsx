@@ -16,7 +16,13 @@ export function withAuth<C extends typeof React.Component>(
   options: Options = { restricted: true }
 ) {
   return class WrappedComponent extends React.PureComponent<any, any> {
-    static async getInitialProps(context: NextPageContext & { store: Store }) {
+    static async getInitialProps(
+      context: NextPageContext & {
+        store: Store;
+        getHeader: (header: string) => any;
+        getHeaders: () => any;
+      }
+    ) {
       function redirectToLogin() {
         if (context.res) {
           context.res.writeHead(302, {
@@ -28,11 +34,19 @@ export function withAuth<C extends typeof React.Component>(
         }
       }
 
+      function getCookie() {
+        if (isServer() && context.req && context.req.headers) {
+          return context.req.headers.cookie || "";
+        }
+        if (!isServer()) {
+          return document.cookie || "";
+        }
+        return "";
+      }
+
       async function initAuthRequest(): Promise<any> {
-        const cookie =
-          isServer() && context.req && context.req.headers
-            ? (context.req.headers.cookie as string) || ""
-            : "";
+        const cookie = getCookie();
+        console.log({ cookie });
         const authStorage = makeAuthStorage(cookie);
 
         const session = authStorage.getSession();

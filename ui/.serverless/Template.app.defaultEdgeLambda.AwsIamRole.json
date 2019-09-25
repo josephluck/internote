@@ -1,6 +1,6 @@
 {
-  "name": "3y3sw8f-km9diiq",
-  "arn": "arn:aws:iam::822567739604:role/3y3sw8f-km9diiq",
+  "name": "yjkcvpc-yztgxhb",
+  "arn": "arn:aws:iam::822567739604:role/yjkcvpc-yztgxhb",
   "service": [
     "edgelambda.amazonaws.com",
     "lambda.amazonaws.com"

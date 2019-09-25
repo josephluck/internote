@@ -5,8 +5,8 @@
   "subdomains": [
     {
       "domain": "dev.internote.app",
-      "distributionId": "EPDDVBQFCC4XA",
-      "url": "https://d18t7gjv4fgzzr.cloudfront.net",
+      "distributionId": "E27SZYKCPDDV91",
+      "url": "https://d1ni6wjeboud3l.cloudfront.net",
       "type": "awsCloudFront"
     }
   ]
