@@ -18,8 +18,6 @@ function getBlockPrefix(block: SchemaBlock): string {
       return "> ";
     case "list-item":
       return "- ";
-    case "ide":
-      return "```\n"; // TODO: support language
     default:
       return "";
   }
@@ -28,8 +26,6 @@ function getBlockPrefix(block: SchemaBlock): string {
 /** Given a type of block, get the Markdown formatting suffix */
 function getBlockSuffix(block: SchemaBlock): string {
   switch (block.type) {
-    case "ide":
-      return "\n```";
     default:
       return "";
   }
@@ -43,9 +39,6 @@ function serializeBlock(block: SchemaBlock): string {
 }
 
 function serializeBlockContent(block: SchemaBlock): string {
-  if (block.type === "ide") {
-    return block.data.content;
-  }
   if (
     block.type === "image" ||
     block.type === "audio" ||

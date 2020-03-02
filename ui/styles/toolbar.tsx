@@ -59,7 +59,7 @@ export function Toolbar({
   shortcutSearch,
   value,
   onSnippetSelected,
-  onFileUploadStarted,
+  onFileUploadStarted
 }: {
   createNewTag: (searchText: string) => any;
   distractionFree: boolean;
@@ -173,12 +173,11 @@ export function Toolbar({
           {renderBlockButton("heading-two", 2)}
           {renderBlockButton("numbered-list", 3)}
           {renderBlockButton("bulleted-list", 4)}
-          {renderBlockButton("ide", 5)}
-          {renderBlockButton("block-quote", 6)}
-          {renderMarkButton("code", 7)}
-          {renderMarkButton("bold", 8)}
-          {renderMarkButton("italic", 9)}
-          {renderMarkButton("underlined", 0)}
+          {renderBlockButton("block-quote", 5)}
+          {renderMarkButton("code", 6)}
+          {renderMarkButton("bold", 7)}
+          {renderMarkButton("italic", 8)}
+          {renderMarkButton("underlined", 9)}
           <ButtonSpacer small>
             <EmojiToggle
               isActive={isEmojiShortcut || isEmojiButtonPressed}
@@ -192,10 +191,7 @@ export function Toolbar({
             />
           </ButtonSpacer>
           <ButtonSpacer small>
-            <FileUpload
-              noteId={id}
-              onUploadStarted={onFileUploadStarted}
-            />
+            <FileUpload noteId={id} onUploadStarted={onFileUploadStarted} />
           </ButtonSpacer>
         </Flex>
         <Flex alignItems="center">

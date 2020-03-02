@@ -68,10 +68,6 @@ const Editor = React.forwardRef<unknown, InternoteSlateEditorProps>(
   (props, ref) => <DynamicEditor {...props} forwardedRef={ref} />
 );
 
-const Ide = dynamic(import("./ide").then(module => module.Ide) as any, {
-  ssr: false
-}) as any; // TODO: correct types
-
 const DEFAULT_NODE = "paragraph";
 
 const bouncy = keyframes`
@@ -124,12 +120,6 @@ const schema: SchemaProperties = {
     }
   },
   blocks: {
-    ide: {
-      isVoid: true,
-      data: {
-        content: _content => true
-      }
-    },
     image: mediaSchema,
     video: mediaSchema,
     audio: mediaSchema,
@@ -381,15 +371,6 @@ export function InternoteEditor({
     [editor.current]
   );
 
-  const focusPreviousBlock = useCallback(
-    (_?: Block) => {
-      // TODO: would be good to preserve cursor column too
-      const previousBlock = valueRef.current.previousBlock;
-      focusBlock(previousBlock, true);
-    },
-    [editor.current]
-  );
-
   const focusNextBlock = useCallback(
     (_?: Block) => {
       // TODO: would be good to preserve cursor column too
@@ -407,14 +388,6 @@ export function InternoteEditor({
     (_?: Block) => {
       editor.current.insertBlock("paragraph");
       focusNextBlock();
-    },
-    [editor.current]
-  );
-
-  const destroyCurrentBlock = useCallback(
-    (_?: Block) => {
-      editor.current.deleteCharBackward();
-      editor.current.focus();
     },
     [editor.current]
   );
@@ -704,18 +677,6 @@ export function InternoteEditor({
           <li {...props.attributes} className={fadeClassName}>
             {props.children}
           </li>
-        );
-      case "ide":
-        return (
-          <Ide
-            {...props}
-            onFocusPrevious={focusPreviousBlock}
-            onFocusNext={focusNextBlock}
-            onBreakToNewLine={addNewBlockAndFocus}
-            onDestroy={destroyCurrentBlock}
-            className={fadeClassName}
-            onClick={focusBlock}
-          />
         );
       case "image":
       case "video":

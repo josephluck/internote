@@ -22,8 +22,6 @@ function getBlockTag(block: SchemaBlock): string {
       return "ul";
     case "list-item":
       return "li";
-    case "ide":
-      return "pre";
     case "video":
       return "video";
     case "image":
@@ -54,19 +52,15 @@ function serializeBlock(block: SchemaBlock): string {
 }
 
 function serializeBlockContent(block: SchemaBlock): string {
-  if (block.type === "ide") {
-    return block.data.content;
-  } else {
-    const nodes = block.nodes as (ListItemBlock | SchemaInline)[];
-    return nodes.reduce((str, node: ListItemBlock | SchemaInline, index) => {
-      if (node.type === "list-item") {
-        const newLine = index < nodes.length - 1 ? "\n" : "";
-        return `${str}${serializeListItem(node)}${newLine}`;
-      } else {
-        return `${str}${serializeInline(node)}`;
-      }
-    }, "");
-  }
+  const nodes = block.nodes as (ListItemBlock | SchemaInline)[];
+  return nodes.reduce((str, node: ListItemBlock | SchemaInline, index) => {
+    if (node.type === "list-item") {
+      const newLine = index < nodes.length - 1 ? "\n" : "";
+      return `${str}${serializeListItem(node)}${newLine}`;
+    } else {
+      return `${str}${serializeInline(node)}`;
+    }
+  }, "");
 }
 
 function serializeListItem(node: ListItemBlock): string {

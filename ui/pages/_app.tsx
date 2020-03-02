@@ -48,23 +48,6 @@ export const GlobalStyles = createGlobalStyle`
   select:-webkit-autofill:focus {
     background: inherit;
   }
-
-  .monaco-editor {
-    overflow: hidden;
-    border-radius: ${borderRadius._4};
-  }
-  .monaco-editor-background, .monaco-editor .margin {
-    background: ${props => props.theme.codeBlockBackground} !important;
-  }
-  .monaco-editor .scroll-decoration {
-    display: none;
-  }
-  .monaco-editor .margin-view-overlays .current-line-margin {
-    border: 0 !important;
-  }
-  .monaco-editor .decorationsOverviewRuler {
-    opacity: 0;
-  }
 `;
 
 export class Application extends App {
@@ -80,10 +63,6 @@ export class Application extends App {
           <>
             <Head>
               <title>Internote</title>
-              <script
-                src="/static/monaco/monaco-expose.js"
-                type="text/javascript"
-              />
             </Head>
             <GlobalStyles />
             <ShortcutsProvider>

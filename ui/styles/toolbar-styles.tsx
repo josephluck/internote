@@ -81,8 +81,6 @@ export function renderToolbarIcon(
     return <FontAwesomeIcon icon={faUnderline} />;
   } else if (type === "code") {
     return <FontAwesomeIcon icon={faCode} />;
-  } else if (type === "ide") {
-    return <FontAwesomeIcon icon={faCode} />;
   } else if (type === "heading-one") {
     return <FontAwesomeIcon icon={faHeading} />;
   } else if (type === "heading-two") {

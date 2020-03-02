@@ -367,8 +367,6 @@ export function convertMarkdownToBlockOrMarkType(str: string): SchemaBlockType {
       return "heading-one";
     case "##":
       return "heading-two";
-    case "```":
-      return "ide";
     default:
       return null;
   }

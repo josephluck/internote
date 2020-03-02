@@ -30,7 +30,6 @@ export type SchemaBlock =
   | NumberedListBlock
   | ListItemBlock
   | BlockQuoteBlock
-  | IdeBlock
   | MediaBlock;
 
 export type SchemaBlockType = Pick<SchemaBlock, "type">["type"];
@@ -101,16 +100,6 @@ export interface BlockQuoteBlock {
     className: null;
   };
   nodes: SchemaInline[];
-}
-
-export interface IdeBlock {
-  object: "block";
-  type: "ide";
-  data: {
-    // TODO: add language
-    content: string;
-  };
-  nodes: SchemaInline[]; // TODO: IDE blocks have an empty text node that they should not have
 }
 
 /**
