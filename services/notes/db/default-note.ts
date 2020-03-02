@@ -262,31 +262,10 @@ export const defaultNote: GetNoteDTO = {
               marks: []
             }
           ]
-        },
-        {
-          object: "block",
-          type: "ide",
-          data: {
-            content:
-              "const Internote = (content: string) => {\r\n    return amazing(content)\r\n}\r\nconst amazing = (content: string) => {\r\n    // ... magic!\r\n}"
-          },
-          nodes: [{ object: "text", text: "", marks: [] }]
-        },
-        {
-          object: "block",
-          type: "paragraph",
-          data: { className: null },
-          nodes: [{ object: "text", text: "", marks: [] }]
-        },
-        {
-          object: "block",
-          type: "paragraph",
-          data: { className: null },
-          nodes: [{ object: "text", text: "", marks: [] }]
         }
       ]
     }
   },
-  title: "New note",
+  title: "Welcome 👋",
   tags: []
 };
