@@ -186,7 +186,7 @@ export interface FontTheme {
   fontFamily: string;
 }
 
-export const googleFontsFamilies = ["Work+Sans", "EB+Garamond", "Fira+Code"];
+export const googleFontsFamilies = ["Work+Sans", "Caladea", "IBM+Plex+Mono"];
 export const googleFontsWeights = [400, 500, 700, 800];
 
 export const sansSerif: FontTheme = {
@@ -194,11 +194,11 @@ export const sansSerif: FontTheme = {
 };
 
 export const serif: FontTheme = {
-  fontFamily: "'EB Garamond', serif"
+  fontFamily: "'Caladea', serif"
 };
 
 export const monospace: FontTheme = {
-  fontFamily: "'Fira Code', monospace"
+  fontFamily: "'IBM Plex Mono', monospace"
 };
 
 export const fontThemes: FontThemeWithName[] = [
