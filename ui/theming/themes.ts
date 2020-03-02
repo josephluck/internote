@@ -186,8 +186,11 @@ export interface FontTheme {
   fontFamily: string;
 }
 
+export const googleFontsFamilies = ["Work+Sans", "EB+Garamond", "Fira+Code"];
+export const googleFontsWeights = [400, 500, 700, 800];
+
 export const sansSerif: FontTheme = {
-  fontFamily: "'Inter UI', Helvetica, Arial, sans-serif"
+  fontFamily: "'Work Sans', Helvetica, Arial, sans-serif"
 };
 
 export const serif: FontTheme = {
@@ -195,7 +198,7 @@ export const serif: FontTheme = {
 };
 
 export const monospace: FontTheme = {
-  fontFamily: "'Overpass Mono', monospace"
+  fontFamily: "'Fira Code', monospace"
 };
 
 export const fontThemes: FontThemeWithName[] = [
