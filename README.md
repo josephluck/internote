@@ -16,7 +16,7 @@
     Beautiful web-based note editor with a focus on distraction-free content creation.
   </p>
   <br />
-  <pre><a href="https://internote.app">https://dev.internote.app</a></pre>
+  <pre><a href="https://dev.internote.app">https://dev.internote.app</a></pre>
   <br />
   <br />
   <br />
