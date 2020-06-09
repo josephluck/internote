@@ -15,6 +15,8 @@ import { useEditorShortcut } from "./hotkeys";
 import { useLiveSave } from "./save";
 import { Toolbar } from "./toolbar";
 import { InternoteSlateEditor } from "./types";
+import { useScrollFocus } from "./scroll";
+import { useNodeFocus, SLATE_BLOCK_CLASS_NAME } from "./focus";
 
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: Node[];
@@ -29,9 +31,25 @@ export const InternoteEditor: React.FunctionComponent<{
 
   useLiveSave(value, noteId);
 
+  useNodeFocus(editor);
+
   const scrollRef = useRef<HTMLDivElement>();
 
   const handleKeyboardShortcut = useEditorShortcut(editor);
+  const { scrollToFocusedNode } = useScrollFocus(editor, scrollRef);
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      handleKeyboardShortcut(event);
+    },
+    [handleKeyboardShortcut]
+  );
+
+  const handleKeyUp = useCallback(() => {
+    if (distractionFree) {
+      requestAnimationFrame(scrollToFocusedNode);
+    }
+  }, [scrollToFocusedNode, distractionFree]);
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
 
@@ -48,7 +66,8 @@ export const InternoteEditor: React.FunctionComponent<{
             renderLeaf={renderLeaf}
             spellCheck
             autoFocus
-            onKeyDown={handleKeyboardShortcut}
+            onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyUp}
           />
         </InnerPadding>
       </FullHeight>
@@ -62,21 +81,25 @@ const Element: React.FunctionComponent<RenderElementProps> = ({
   children,
   element,
 }) => {
+  const attrs = {
+    ...attributes,
+    className: SLATE_BLOCK_CLASS_NAME,
+  };
   switch (element.type) {
     case "block-quote":
-      return <blockquote {...attributes}>{children}</blockquote>;
+      return <blockquote {...attrs}>{children}</blockquote>;
     case "bulleted-list":
-      return <ul {...attributes}>{children}</ul>;
+      return <ul {...attrs}>{children}</ul>;
     case "heading-one":
-      return <h1 {...attributes}>{children}</h1>;
+      return <h1 {...attrs}>{children}</h1>;
     case "heading-two":
-      return <h2 {...attributes}>{children}</h2>;
+      return <h2 {...attrs}>{children}</h2>;
     case "list-item":
-      return <li {...attributes}>{children}</li>;
+      return <li {...attrs}>{children}</li>;
     case "numbered-list":
-      return <ol {...attributes}>{children}</ol>;
+      return <ol {...attrs}>{children}</ol>;
     default:
-      return <p {...attributes}>{children}</p>;
+      return <p {...attrs}>{children}</p>;
   }
 };
 

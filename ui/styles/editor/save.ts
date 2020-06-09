@@ -7,7 +7,7 @@ import { extractTitleFromValue } from "./utils";
 export const useLiveSave = (value: Node[], noteId: string) => {
   const isFirst = useRef(true);
 
-  console.log(value);
+  // console.log(value);
 
   const save = useTwineActions(
     (actions) => (content: Node[]) =>
