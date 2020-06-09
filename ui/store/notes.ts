@@ -38,7 +38,7 @@ interface OwnEffects {
 function defaultState(): OwnState {
   return {
     overwriteCount: 0,
-    notes: []
+    notes: [],
   };
 }
 
@@ -57,21 +57,21 @@ export function model(api: Api): Model {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      incrementOverwriteCount: state => ({
+      incrementOverwriteCount: (state) => ({
         ...state,
-        overwriteCount: state.overwriteCount + 1
+        overwriteCount: state.overwriteCount + 1,
       }),
       setNotes: (state, notes) => ({
         ...state,
-        notes: notes.sort((a, b) => (a.dateUpdated > b.dateUpdated ? -1 : 1))
-      })
+        notes: notes.sort((a, b) => (a.dateUpdated > b.dateUpdated ? -1 : 1)),
+      }),
     },
     effects: {
       async fetchNotes(state, actions) {
         const response = await api.notes.list(state.auth.session);
         return response.fold(
           () => [],
-          notes => {
+          (notes) => {
             actions.notes.setNotes(notes);
             return notes;
           }
@@ -91,9 +91,9 @@ export function model(api: Api): Model {
          * synced, we force the user to reload...?
          */
         const result = await api.notes.create(state.auth.session, {
-          title: `New note - ${new Date().toDateString()}`
+          title: `New note - ${new Date().toDateString()}`,
         });
-        result.map(note => {
+        result.map((note) => {
           actions.notes.setNotes([note, ...state.notes.notes]);
           if (!isServer()) {
             Router.push(`/?id=${note.noteId}`);
@@ -106,10 +106,10 @@ export function model(api: Api): Model {
         { noteId, content, title, tags, overwrite = false }
       ) {
         return Option(
-          state.notes.notes.find(note => note.noteId === noteId)
+          state.notes.notes.find((note) => note.noteId === noteId)
         ).fold(
           () => Promise.resolve(),
-          async existingNote => {
+          async (existingNote) => {
             const savedNote = await api.notes.update(
               state.auth.session,
               noteId,
@@ -118,25 +118,25 @@ export function model(api: Api): Model {
                 title,
                 dateUpdated: existingNote.dateUpdated,
                 tags,
-                overwrite
+                overwrite,
               }
             );
             await savedNote.fold(
-              err => {
+              (err) => {
                 if (err.type === "Conflict") {
                   actions.notes.overwriteNoteConfirmation({
                     noteId,
                     content,
                     tags,
-                    title
+                    title,
                   });
                 }
               },
-              async updatedNote => {
+              async (updatedNote) => {
                 // NB: update dateUpdated in list so that
                 // overwrite confirmation works correctly
                 actions.notes.setNotes(
-                  state.notes.notes.map(n =>
+                  state.notes.notes.map((n) =>
                     n.noteId === updatedNote.noteId ? updatedNote : n
                   )
                 );
@@ -148,9 +148,7 @@ export function model(api: Api): Model {
       },
       overwriteNoteConfirmation(_state, actions, details) {
         actions.confirmation.setConfirmation({
-          message: `There's a more recent version of ${
-            details.title
-          }. What do you want to do?`,
+          message: `There's a more recent version of ${details.title}. What do you want to do?`,
           confirmButtonText: "Overwrite",
           cancelButtonText: "Discard",
           async onConfirm() {
@@ -165,12 +163,12 @@ export function model(api: Api): Model {
             await actions.notes.fetchNotes(); // NB: important to get the latest dateUpdated from the server to avoid prompt again
             actions.notes.incrementOverwriteCount(); // HACK: Force the editor to re-render
             actions.confirmation.setConfirmation(null);
-          }
+          },
         });
       },
       deleteNoteConfirmation(state, actions, { noteId }) {
         const noteToDelete = state.notes.notes.find(
-          note => note.noteId === noteId
+          (note) => note.noteId === noteId
         );
         actions.confirmation.setConfirmation({
           message: `Are you sure you wish to delete ${noteToDelete.title}?`,
@@ -179,16 +177,16 @@ export function model(api: Api): Model {
             actions.confirmation.setConfirmationConfirmLoading(true);
             await actions.notes.deleteNote({ noteId });
             actions.confirmation.setConfirmation(null);
-          }
+          },
         });
       },
       async deleteNote(state, actions, { noteId }) {
         await api.notes.delete(state.auth.session, noteId);
         actions.notes.setNotes(
-          state.notes.notes.filter(note => note.noteId !== noteId)
+          state.notes.notes.filter((note) => note.noteId !== noteId)
         );
-      }
-    }
+      },
+    },
   };
   return withAsyncLoading(ownModel, "notes");
 }

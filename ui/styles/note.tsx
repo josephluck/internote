@@ -18,7 +18,10 @@ export const Note: React.FunctionComponent<{ note: GetNoteDTO }> = ({
     <Head>
       <title>{note.title} - Internote</title>
     </Head>
-    <Editor initialValue={initialValue} />
+    <Editor
+      initialValue={Array.isArray(note.content) ? note.content : initialValue}
+      noteId={note.noteId}
+    />
   </>
 );
 

@@ -10,26 +10,32 @@ import { useCreateInternoteEditor } from "./hooks";
 import { useEditorShortcut } from "./hotkeys";
 import { InternoteSlateEditor } from "./types";
 import { Toolbar } from "./toolbar";
+import { useLiveSave } from "./save";
 
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: Node[];
-}> = ({ initialValue }) => {
+  noteId: string;
+}> = ({ initialValue, noteId }) => {
   const editor: InternoteSlateEditor = useCreateInternoteEditor();
+
   const [value, setValue] = useState(initialValue);
 
-  const handleKeyDown = useEditorShortcut(editor);
+  useLiveSave(value, noteId);
+
+  const handleKeyboardShortcut = useEditorShortcut(editor);
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
+
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 
   return (
-    <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
+    <Slate editor={editor} value={value} onChange={setValue}>
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         spellCheck
         autoFocus
-        onKeyDown={handleKeyDown}
+        onKeyDown={handleKeyboardShortcut}
       />
       <Toolbar />
     </Slate>
