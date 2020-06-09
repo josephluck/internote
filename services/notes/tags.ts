@@ -9,11 +9,11 @@ import { listNotesByUserId } from "./db/queries";
 const list: GetHandler = async (event, _ctx, callback) => {
   const userId = getUserIdentityId(event);
   const notes = await listNotesByUserId(userId);
-  const allTags = notes.reduce(
-    (ts, note) => [...ts, ...note.tags],
-    [] as string[]
-  );
-  const dedupedTags = [...new Set(allTags)];
+  const allTags = notes
+    .filter((note) => Boolean(note.tags) && note.tags.length > 0)
+    .reduce((ts, note) => [...ts, ...note.tags], [] as string[])
+    .filter(Boolean);
+  const dedupedTags = allTags.length ? [...new Set(allTags)] : [];
   return callback(null, success(dedupedTags));
 };
 

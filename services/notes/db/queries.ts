@@ -24,7 +24,7 @@ export const findNoteById = async (
   try {
     const result = await NotesRepository.find({
       noteId,
-      userId
+      userId,
     }).execute();
     return await unmarshallNote(result.data);
   } catch (err) {
@@ -39,16 +39,16 @@ export const findNoteById = async (
 export const updateNoteById = async (
   noteId: string,
   userId: string,
-  body: Partial<UpdateNoteDTO>
+  { title, tags, content }: Partial<UpdateNoteDTO>
 ): Promise<GetNoteDTO> => {
   try {
     const result = await NotesRepository.update({
       noteId,
       userId,
-      title: body.title,
-      content: await compress(JSON.stringify(body.content)),
-      tags: [...new Set(body.tags)],
-      dateUpdated: Date.now()
+      title,
+      content: await compress(JSON.stringify(content)),
+      tags: tags.length ? [...new Set(tags)] : [],
+      dateUpdated: Date.now(),
     }).execute();
     return await unmarshallNote(result.data);
   } catch (err) {
@@ -75,7 +75,7 @@ export const createNote = async (
     tags: body.tags || [],
     noteId,
     userId,
-    dateCreated: Date.now()
+    dateCreated: Date.now(),
   }).execute();
   return await unmarshallNote(result.data);
 };
@@ -87,7 +87,7 @@ export const deleteNoteById = async (
   try {
     await NotesRepository.delete({
       noteId,
-      userId
+      userId,
     }).execute();
   } catch (err) {
     if (isDbError(err, "ItemNotFound")) {
@@ -108,5 +108,5 @@ export const deleteNoteById = async (
 const unmarshallNote = async (note: Note): Promise<GetNoteDTO> => ({
   ...note,
   content: JSON.parse(await decompress(note.content)),
-  tags: note.tags && note.tags.values ? (note.tags as any).values : []
+  tags: note.tags && note.tags.values ? (note.tags as any).values : [],
 });
