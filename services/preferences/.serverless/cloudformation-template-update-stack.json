@@ -37,13 +37,9 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
+                "Service": ["lambda.amazonaws.com"]
               },
-              "Action": [
-                "sts:AssumeRole"
-              ]
+              "Action": ["sts:AssumeRole"]
             }
           ]
         },
@@ -52,11 +48,7 @@
             "PolicyName": {
               "Fn::Join": [
                 "-",
-                [
-                  "dev",
-                  "internote-preferences-service",
-                  "lambda"
-                ]
+                ["dev", "internote-preferences-service", "lambda"]
               ]
             },
             "PolicyDocument": {
@@ -64,9 +56,7 @@
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream"
-                  ],
+                  "Action": ["logs:CreateLogStream"],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-preferences-service-dev*:*"
@@ -75,9 +65,7 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
+                  "Action": ["logs:PutLogEvents"],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-preferences-service-dev*:*:*"
@@ -97,10 +85,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::GetAtt": [
-                        "PreferencesTable",
-                        "Arn"
-                      ]
+                      "Fn::GetAtt": ["PreferencesTable", "Arn"]
                     }
                   ]
                 }
@@ -137,10 +122,7 @@
         "Handler": "get.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
         },
         "Runtime": "nodejs8.10",
         "Timeout": 30,
@@ -152,10 +134,7 @@
           }
         }
       },
-      "DependsOn": [
-        "GetLogGroup",
-        "IamRoleLambdaExecution"
-      ]
+      "DependsOn": ["GetLogGroup", "IamRoleLambdaExecution"]
     },
     "GetLambdaVersionGVl4kSSmmcXj25G2axCsWx0FAF5y4XWLAj8tHJjE0": {
       "Type": "AWS::Lambda::Version",
@@ -180,10 +159,7 @@
         "Handler": "update.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
         },
         "Runtime": "nodejs8.10",
         "Timeout": 30,
@@ -195,10 +171,7 @@
           }
         }
       },
-      "DependsOn": [
-        "UpdateLogGroup",
-        "IamRoleLambdaExecution"
-      ]
+      "DependsOn": ["UpdateLogGroup", "IamRoleLambdaExecution"]
     },
     "UpdateLambdaVersion96niDGqZ872xd5VFbVMVJHMGuqbP4ZiUFaHscqAaPCk": {
       "Type": "AWS::Lambda::Version",
@@ -299,10 +272,7 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": [
-                    "GetLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["GetLambdaFunction", "Arn"]
                 },
                 "/invocations"
               ]
@@ -342,10 +312,7 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": [
-                    "UpdateLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["UpdateLambdaFunction", "Arn"]
                 },
                 "/invocations"
               ]
@@ -373,10 +340,7 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": [
-            "GetLambdaFunction",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["GetLambdaFunction", "Arn"]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",
@@ -410,10 +374,7 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": [
-            "UpdateLambdaFunction",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["UpdateLambdaFunction", "Arn"]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",

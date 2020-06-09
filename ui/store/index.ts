@@ -52,13 +52,13 @@ export type InternoteEffect0<Return = void> = Twine.Effect0<
  * create simple setter reducers for single keys quickly
  */
 export function makeSetter<T>() {
-  return function(
+  return function (
     key: keyof T
   ): Twine.Reducer<T, T[typeof key]>["implementation"] {
-    return function(state, value) {
+    return function (state, value) {
       return {
         ...state,
-        [key]: value
+        [key]: value,
       };
     };
   };
@@ -80,21 +80,21 @@ function makeModel(api: Api, auth: AuthApi) {
       notes: Notes.model(api),
       sync: Sync.model(api),
       exportNote: ExportNote.model(api),
-      snippets: Snippets.model(api)
-    }
+      snippets: Snippets.model(api),
+    },
   };
 }
 
 export function makeStore() {
   const api = makeApi({
     host: env.SERVICES_HOST,
-    region: env.SERVICES_REGION
+    region: env.SERVICES_REGION,
   });
   const auth = makeAuthApi({
     region: env.SERVICES_REGION,
     userPoolId: env.COGNITO_USER_POOL_ID,
     userPoolClientId: env.COGNITO_USER_POOL_CLIENT_ID,
-    identityPoolId: env.COGNITO_IDENTITY_POOL_ID
+    identityPoolId: env.COGNITO_IDENTITY_POOL_ID,
   });
   // const loggingMiddleware =
   //   !isServer() && process.env.NODE_ENV !== "production" ? logger : undefined;
@@ -112,14 +112,14 @@ export function makeStore() {
               state.preferences.colorTheme !== prevState.preferences.colorTheme
             ) {
               api.preferences.update(state.auth.session, {
-                colorTheme: state.preferences.colorTheme.name
+                colorTheme: state.preferences.colorTheme.name,
               });
             }
             if (
               state.preferences.fontTheme !== prevState.preferences.fontTheme
             ) {
               api.preferences.update(state.auth.session, {
-                fontTheme: state.preferences.fontTheme.name
+                fontTheme: state.preferences.fontTheme.name,
               });
             }
             if (
@@ -127,12 +127,12 @@ export function makeStore() {
               prevState.preferences.distractionFree
             ) {
               api.preferences.update(state.auth.session, {
-                distractionFree: state.preferences.distractionFree
+                distractionFree: state.preferences.distractionFree,
               });
             }
             if (state.preferences.voice !== prevState.preferences.voice) {
               api.preferences.update(state.auth.session, {
-                voice: state.preferences.voice
+                voice: state.preferences.voice,
               });
             }
             if (
@@ -140,7 +140,7 @@ export function makeStore() {
               prevState.preferences.outlineShowing
             ) {
               api.preferences.update(state.auth.session, {
-                outlineShowing: state.preferences.outlineShowing
+                outlineShowing: state.preferences.outlineShowing,
               });
             }
             if (
@@ -148,12 +148,12 @@ export function makeStore() {
               prevState.preferences.offlineSync
             ) {
               api.preferences.update(state.auth.session, {
-                offlineSync: state.preferences.offlineSync
+                offlineSync: state.preferences.offlineSync,
               });
             }
           }
-        }
-      }
+        },
+      },
     ]
   );
 

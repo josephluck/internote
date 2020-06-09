@@ -24,7 +24,7 @@ interface OwnEffects {
 
 function defaultState(): OwnState {
   return {
-    isFullscreen: false
+    isFullscreen: false,
   };
 }
 
@@ -45,7 +45,7 @@ export function model(_api: Api): Model {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      setFullscreen: setter("isFullscreen")
+      setFullscreen: setter("isFullscreen"),
     },
     effects: {
       async navigateToFirstNote(_state, actions) {
@@ -69,8 +69,8 @@ export function model(_api: Api): Model {
         } else {
           exitFullscreen();
         }
-      }
-    }
+      },
+    },
   };
   return withAsyncLoading(ownModel, "ui");
 }

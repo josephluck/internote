@@ -8,7 +8,7 @@ const authDbInterface: AuthDbInterface = {
   },
   set(_session) {
     return Promise.resolve();
-  }
+  },
 };
 
 describe("SW / api", () => {
@@ -17,9 +17,9 @@ describe("SW / api", () => {
       getAll() {
         return Promise.resolve([
           { ...defaultNote, noteId: "a" },
-          { ...defaultNote, noteId: "b" }
+          { ...defaultNote, noteId: "b" },
         ]);
-      }
+      },
     } as Partial<NotesDbInterface>;
     const api = {} as any;
     const service = makeServiceWorkerApi(
@@ -37,7 +37,7 @@ describe("SW / api", () => {
     const db = (() => {
       let notes = {
         a: { ...defaultNote, noteId: "a" },
-        b: { ...defaultNote, noteId: "b" }
+        b: { ...defaultNote, noteId: "b" },
       };
       return {
         add(body: NoteIndex) {
@@ -49,7 +49,7 @@ describe("SW / api", () => {
         },
         get(id: string) {
           return Promise.resolve(notes[id]);
-        }
+        },
       };
     })() as Partial<NotesDbInterface>;
     const api = {} as any;
@@ -61,7 +61,7 @@ describe("SW / api", () => {
     const note = await service.createNewNoteInIndex({
       ...defaultNote,
       noteId: "c",
-      title: "Internote"
+      title: "Internote",
     });
     const notes = await service.listNotesFromIndex();
     expect(note).toHaveProperty("noteId", "c");
@@ -74,7 +74,7 @@ describe("SW / api", () => {
     const db = (() => {
       let notes = {
         a: { ...defaultNote, noteId: "a" },
-        b: { ...defaultNote, noteId: "b", synced: true } // NB: simulate updating a note that has already been synced on the server
+        b: { ...defaultNote, noteId: "b", synced: true }, // NB: simulate updating a note that has already been synced on the server
       };
       return {
         update(id: string, body: NoteIndex) {
@@ -86,7 +86,7 @@ describe("SW / api", () => {
         },
         get(id: string) {
           return Promise.resolve(notes[id]);
-        }
+        },
       };
     })() as Partial<NotesDbInterface>;
     const api = {} as any;
@@ -97,7 +97,7 @@ describe("SW / api", () => {
     );
     const note = await service.updateNoteInIndex("b", {
       noteId: "b",
-      title: "Updated title"
+      title: "Updated title",
     } as any);
     const notes = await service.listNotesFromIndex();
     expect(note).toHaveProperty("noteId", "b");
@@ -112,7 +112,7 @@ describe("SW / api", () => {
     const db = (() => {
       let notes = {
         a: { ...defaultNote, noteId: "a" },
-        b: { ...defaultNote, noteId: "b" }
+        b: { ...defaultNote, noteId: "b" },
       };
       return {
         add(body: NoteIndex) {
@@ -128,7 +128,7 @@ describe("SW / api", () => {
         },
         get(id: string) {
           return Promise.resolve(notes[id]);
-        }
+        },
       };
     })() as Partial<NotesDbInterface>;
     const api = {} as any;
@@ -139,7 +139,7 @@ describe("SW / api", () => {
     );
     const note = await service.updateNoteInIndex("c", {
       noteId: "c",
-      title: "Updated title"
+      title: "Updated title",
     } as any);
     const notes = await service.listNotesFromIndex();
     expect(note).toHaveProperty("noteId", "c");
@@ -154,7 +154,7 @@ describe("SW / api", () => {
     const db = (() => {
       let notes = {
         a: { ...defaultNote, noteId: "a" },
-        b: { ...defaultNote, noteId: "b" }
+        b: { ...defaultNote, noteId: "b" },
       };
       return {
         update(id: string, body: NoteIndex) {
@@ -166,7 +166,7 @@ describe("SW / api", () => {
         },
         get(id: string) {
           return Promise.resolve(notes[id]);
-        }
+        },
       };
     })() as Partial<NotesDbInterface>;
     const api = {} as any;

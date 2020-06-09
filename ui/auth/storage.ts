@@ -16,13 +16,13 @@ const defaultSession: Session = {
   expiration: 0,
   secretKey: "",
   sessionToken: "",
-  identityId: ""
+  identityId: "",
 };
 
 export function cookieOptions(): CookieSetOptions {
   return {
     path: "/",
-    expires: makeExpiryDate(days30InMs)
+    expires: makeExpiryDate(days30InMs),
   };
 }
 
@@ -51,13 +51,13 @@ export function makeAuthStorage(
   }
 
   function storeSession(session: Partial<Session>) {
-    return Object.keys(session).map(key => {
+    return Object.keys(session).map((key) => {
       storeItem(key as keyof Session, session[key]);
     });
   }
 
   function removeSession() {
-    return Object.keys(defaultSession).map(key => {
+    return Object.keys(defaultSession).map((key) => {
       removeItem(key as keyof Session);
     });
   }
@@ -66,7 +66,7 @@ export function makeAuthStorage(
     return Object.keys(defaultSession).reduce(
       (prev, key) => ({
         ...prev,
-        [key]: cookies.get(key) || defaultSession[key]
+        [key]: cookies.get(key) || defaultSession[key],
       }),
       {} as Session
     );
@@ -78,7 +78,7 @@ export function makeAuthStorage(
     removeItem,
     storeSession,
     getSession,
-    removeSession
+    removeSession,
   };
 }
 

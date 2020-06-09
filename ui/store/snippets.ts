@@ -4,7 +4,7 @@ import { InternoteEffect, InternoteEffect0, makeSetter } from ".";
 import { Api } from "../api/api";
 import {
   CreateSnippetDTO,
-  GetSnippetDTO
+  GetSnippetDTO,
 } from "@internote/snippets-service/types";
 
 interface OwnState {
@@ -24,7 +24,7 @@ interface OwnEffects {
 
 function defaultState(): OwnState {
   return {
-    snippets: []
+    snippets: [],
   };
 }
 
@@ -45,12 +45,12 @@ export function model(api: Api): Model {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      setSnippets: setter("snippets")
+      setSnippets: setter("snippets"),
     },
     effects: {
       async createSnippet(state, actions, snippet) {
         const response = await api.snippets.create(state.auth.session, snippet);
-        response.map(s =>
+        response.map((s) =>
           actions.snippets.setSnippets([s, ...state.snippets.snippets])
         );
       },
@@ -65,11 +65,11 @@ export function model(api: Api): Model {
         );
         response.map(() =>
           actions.snippets.setSnippets(
-            state.snippets.snippets.filter(s => s.snippetId !== snippetId)
+            state.snippets.snippets.filter((s) => s.snippetId !== snippetId)
           )
         );
-      }
-    }
+      },
+    },
   };
   return withAsyncLoading(ownModel, "snippets");
 }

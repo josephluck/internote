@@ -3,7 +3,7 @@ import {
   NotesDbInterface,
   NoteIndex,
   NoteIndexState,
-  AuthDbInterface
+  AuthDbInterface,
 } from "./db";
 import { defaultNote } from "@internote/notes-service/db/default-note";
 import { Api } from "../api/api";
@@ -17,7 +17,7 @@ const authDbInterface: AuthDbInterface = {
   },
   set(_session) {
     return Promise.resolve();
-  }
+  },
 };
 
 function makeMockedApi(initialNotes: GetNoteDTO[]): Api {
@@ -28,14 +28,14 @@ function makeMockedApi(initialNotes: GetNoteDTO[]): Api {
         return Promise.resolve(Ok(notes));
       }),
       get: jest.fn((_session, noteId) => {
-        return Promise.resolve(Ok(notes.find(n => n.noteId === noteId)));
+        return Promise.resolve(Ok(notes.find((n) => n.noteId === noteId)));
       }),
       create: jest.fn((_session, body) => {
         const note = {
           ...defaultNote,
           ...body,
           noteId: uuid(),
-          userId: uuid()
+          userId: uuid(),
         };
         notes = [...notes, note];
         return Promise.resolve(Ok(note));
@@ -44,16 +44,16 @@ function makeMockedApi(initialNotes: GetNoteDTO[]): Api {
         const note = {
           ...defaultNote,
           ...body,
-          noteId
+          noteId,
         };
-        notes = notes.map(n => (n.noteId === noteId ? note : n));
+        notes = notes.map((n) => (n.noteId === noteId ? note : n));
         return Promise.resolve(Ok(note));
       }),
       delete: jest.fn((_session, noteId) => {
-        notes = notes.filter(n => n.noteId !== noteId);
+        notes = notes.filter((n) => n.noteId !== noteId);
         return Promise.resolve(Ok({} as any));
-      })
-    }
+      }),
+    },
   };
 
   return (api as any) as Api;
@@ -68,23 +68,23 @@ function makeMockedNotesDbInterface(
       return Promise.resolve(notes);
     },
     getUnsynced() {
-      return Promise.resolve(notes.filter(n => !n.synced));
+      return Promise.resolve(notes.filter((n) => !n.synced));
     },
     get(id: string) {
-      return Promise.resolve(notes.find(n => n.noteId === id));
+      return Promise.resolve(notes.find((n) => n.noteId === id));
     },
     add(note: NoteIndex) {
       notes = [...notes, note];
       return Promise.resolve(note.noteId);
     },
     update(id: string, note: NoteIndex) {
-      notes = notes.map(n => (n.noteId === id ? { ...n, ...note } : n));
+      notes = notes.map((n) => (n.noteId === id ? { ...n, ...note } : n));
       return Promise.resolve(1); // TODO: this seems odd that the return is a number and not a string
     },
     remove(id: string) {
-      notes = notes.filter(n => n.noteId !== id);
+      notes = notes.filter((n) => n.noteId !== id);
       return Promise.resolve();
-    }
+    },
   };
   return db as Partial<NotesDbInterface>;
 }
@@ -93,7 +93,7 @@ describe("SW / api sync", () => {
   it("Syncs a new note with the server", async () => {
     const api = makeMockedApi([
       { ...defaultNote, noteId: "a" },
-      { ...defaultNote, noteId: "b" }
+      { ...defaultNote, noteId: "b" },
     ]);
     const notesDbInterface = makeMockedNotesDbInterface([
       {
@@ -101,22 +101,22 @@ describe("SW / api sync", () => {
         noteId: "a",
         synced: true,
         createOnServer: false,
-        state: "UPDATE" as NoteIndexState
+        state: "UPDATE" as NoteIndexState,
       },
       {
         ...defaultNote,
         noteId: "b",
         synced: true,
         createOnServer: false,
-        state: "UPDATE" as NoteIndexState
+        state: "UPDATE" as NoteIndexState,
       },
       {
         ...defaultNote,
         noteId: "c",
         synced: false,
         createOnServer: true,
-        state: "UPDATE" as NoteIndexState
-      }
+        state: "UPDATE" as NoteIndexState,
+      },
     ]);
     const service = makeServiceWorkerApi(
       authDbInterface,
@@ -140,7 +140,7 @@ describe("SW / api sync", () => {
   it("Syncs an existing note with the server", async () => {
     const api = makeMockedApi([
       { ...defaultNote, noteId: "a" },
-      { ...defaultNote, noteId: "b" }
+      { ...defaultNote, noteId: "b" },
     ]);
     const notesDbInterface = makeMockedNotesDbInterface([
       {
@@ -148,7 +148,7 @@ describe("SW / api sync", () => {
         noteId: "a",
         synced: true,
         createOnServer: false,
-        state: "UPDATE" as NoteIndexState
+        state: "UPDATE" as NoteIndexState,
       },
       {
         ...defaultNote,
@@ -156,8 +156,8 @@ describe("SW / api sync", () => {
         synced: false,
         createOnServer: false,
         state: "UPDATE" as NoteIndexState,
-        title: "Updated"
-      }
+        title: "Updated",
+      },
     ]);
     const service = makeServiceWorkerApi(
       authDbInterface,
@@ -179,7 +179,7 @@ describe("SW / api sync", () => {
   it("Syncs a deleted note with the server", async () => {
     const api = makeMockedApi([
       { ...defaultNote, noteId: "a" },
-      { ...defaultNote, noteId: "b" }
+      { ...defaultNote, noteId: "b" },
     ]);
     const notesDbInterface = makeMockedNotesDbInterface([
       {
@@ -187,15 +187,15 @@ describe("SW / api sync", () => {
         noteId: "a",
         synced: true,
         createOnServer: false,
-        state: "UPDATE" as NoteIndexState
+        state: "UPDATE" as NoteIndexState,
       },
       {
         ...defaultNote,
         noteId: "b",
         synced: false,
         createOnServer: false,
-        state: "DELETE" as NoteIndexState
-      }
+        state: "DELETE" as NoteIndexState,
+      },
     ]);
     const service = makeServiceWorkerApi(
       authDbInterface,
@@ -216,7 +216,7 @@ describe("SW / api sync", () => {
       { ...defaultNote, noteId: "a" },
       { ...defaultNote, noteId: "b" },
       { ...defaultNote, noteId: "y" },
-      { ...defaultNote, noteId: "z" }
+      { ...defaultNote, noteId: "z" },
     ]);
     const notesDbInterface = makeMockedNotesDbInterface([
       {
@@ -224,15 +224,15 @@ describe("SW / api sync", () => {
         noteId: "a",
         synced: true,
         createOnServer: false,
-        state: "UPDATE" as NoteIndexState
+        state: "UPDATE" as NoteIndexState,
       },
       {
         ...defaultNote,
         noteId: "b",
         synced: true,
         createOnServer: false,
-        state: "UPDATE" as NoteIndexState
-      }
+        state: "UPDATE" as NoteIndexState,
+      },
     ]);
     const service = makeServiceWorkerApi(
       authDbInterface,
@@ -263,7 +263,7 @@ describe("SW / api sync", () => {
       { ...defaultNote, noteId: "b" },
       { ...defaultNote, noteId: "c" },
       { ...defaultNote, noteId: "y" },
-      { ...defaultNote, noteId: "z" }
+      { ...defaultNote, noteId: "z" },
     ]);
     const notesDbInterface = makeMockedNotesDbInterface([
       {
@@ -271,14 +271,14 @@ describe("SW / api sync", () => {
         noteId: "a",
         synced: true,
         createOnServer: false,
-        state: "UPDATE" as NoteIndexState
+        state: "UPDATE" as NoteIndexState,
       },
       {
         ...defaultNote,
         noteId: "b",
         synced: false,
         createOnServer: false,
-        state: "DELETE" as NoteIndexState
+        state: "DELETE" as NoteIndexState,
       },
       {
         ...defaultNote,
@@ -286,7 +286,7 @@ describe("SW / api sync", () => {
         synced: false,
         createOnServer: false,
         state: "UPDATE" as NoteIndexState,
-        title: "Updated"
+        title: "Updated",
       },
       {
         ...defaultNote,
@@ -294,8 +294,8 @@ describe("SW / api sync", () => {
         synced: false,
         createOnServer: true,
         state: "UPDATE" as NoteIndexState,
-        title: "New"
-      }
+        title: "New",
+      },
     ]);
     const service = makeServiceWorkerApi(
       authDbInterface,

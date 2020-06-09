@@ -1,10 +1,10 @@
 export interface Emoji {
-  no: number
-  codes: string
-  char: string
-  name:  string
-  keywords: string
-  category: string
+  no: number;
+  codes: string;
+  char: string;
+  name: string;
+  keywords: string;
+  category: string;
 }
 
 export const emojis: Emoji[] = [
@@ -14,7 +14,7 @@ export const emojis: Emoji[] = [
     char: "😀",
     name: "grinning face",
     keywords: "face | grin | grinning face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 2,
@@ -22,7 +22,7 @@ export const emojis: Emoji[] = [
     char: "😃",
     name: "grinning face with big eyes",
     keywords: "face | grinning face with big eyes | mouth | open | smile",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 3,
@@ -31,7 +31,7 @@ export const emojis: Emoji[] = [
     name: "grinning face with smiling eyes",
     keywords:
       "eye | face | grinning face with smiling eyes | mouth | open | smile",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 4,
@@ -39,7 +39,7 @@ export const emojis: Emoji[] = [
     char: "😁",
     name: "beaming face with smiling eyes",
     keywords: "beaming face with smiling eyes | eye | face | grin | smile",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 5,
@@ -48,7 +48,7 @@ export const emojis: Emoji[] = [
     name: "grinning squinting face",
     keywords:
       "face | grinning squinting face | laugh | mouth | satisfied | smile",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 6,
@@ -56,7 +56,7 @@ export const emojis: Emoji[] = [
     char: "😅",
     name: "grinning face with sweat",
     keywords: "cold | face | grinning face with sweat | open | smile | sweat",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   // {
   //   no: 7,
@@ -72,7 +72,7 @@ export const emojis: Emoji[] = [
     char: "😂",
     name: "face with tears of joy",
     keywords: "face | face with tears of joy | joy | laugh | tear",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   // {
   //   no: 9,
@@ -88,7 +88,7 @@ export const emojis: Emoji[] = [
     char: "🙃",
     name: "upside-down face",
     keywords: "face | upside-down",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 11,
@@ -96,7 +96,7 @@ export const emojis: Emoji[] = [
     char: "😉",
     name: "winking face",
     keywords: "face | wink | winking face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 12,
@@ -104,7 +104,7 @@ export const emojis: Emoji[] = [
     char: "😊",
     name: "smiling face with smiling eyes",
     keywords: "blush | eye | face | smile | smiling face with smiling eyes",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 13,
@@ -113,7 +113,7 @@ export const emojis: Emoji[] = [
     name: "smiling face with halo",
     keywords:
       "angel | face | fantasy | halo | innocent | smiling face with halo",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   // {
   //   no: 14,
@@ -129,7 +129,7 @@ export const emojis: Emoji[] = [
     char: "😍",
     name: "smiling face with heart-eyes",
     keywords: "eye | face | love | smile | smiling face with heart-eyes",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   // {
   //   no: 16,
@@ -145,7 +145,7 @@ export const emojis: Emoji[] = [
     char: "😘",
     name: "face blowing a kiss",
     keywords: "face | face blowing a kiss | kiss",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 18,
@@ -153,7 +153,7 @@ export const emojis: Emoji[] = [
     char: "😗",
     name: "kissing face",
     keywords: "face | kiss | kissing face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   // {
   //   no: 19,
@@ -169,7 +169,7 @@ export const emojis: Emoji[] = [
     char: "😚",
     name: "kissing face with closed eyes",
     keywords: "closed | eye | face | kiss | kissing face with closed eyes",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 21,
@@ -177,7 +177,7 @@ export const emojis: Emoji[] = [
     char: "😙",
     name: "kissing face with smiling eyes",
     keywords: "eye | face | kiss | kissing face with smiling eyes | smile",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 22,
@@ -185,7 +185,7 @@ export const emojis: Emoji[] = [
     char: "😋",
     name: "face savoring food",
     keywords: "delicious | face | face savoring food | savouring | smile | yum",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 23,
@@ -193,7 +193,7 @@ export const emojis: Emoji[] = [
     char: "😛",
     name: "face with tongue",
     keywords: "face | face with tongue | tongue",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 24,
@@ -201,7 +201,7 @@ export const emojis: Emoji[] = [
     char: "😜",
     name: "winking face with tongue",
     keywords: "eye | face | joke | tongue | wink | winking face with tongue",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   // {
   //   no: 25,
@@ -218,7 +218,7 @@ export const emojis: Emoji[] = [
     name: "squinting face with tongue",
     keywords:
       "eye | face | horrible | squinting face with tongue | taste | tongue",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 27,
@@ -226,7 +226,7 @@ export const emojis: Emoji[] = [
     char: "🤑",
     name: "money-mouth face",
     keywords: "face | money | money-mouth face | mouth",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 28,
@@ -234,7 +234,7 @@ export const emojis: Emoji[] = [
     char: "🤗",
     name: "hugging face",
     keywords: "face | hug | hugging",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 29,
@@ -243,7 +243,7 @@ export const emojis: Emoji[] = [
     name: "face with hand over mouth",
     keywords:
       "face with hand over mouth | whoops | shock | sudden realization | surprise",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 30,
@@ -251,7 +251,7 @@ export const emojis: Emoji[] = [
     char: "🤫",
     name: "shushing face",
     keywords: "quiet | shush | shushing face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 31,
@@ -259,7 +259,7 @@ export const emojis: Emoji[] = [
     char: "🤔",
     name: "thinking face",
     keywords: "face | thinking",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 32,
@@ -267,7 +267,7 @@ export const emojis: Emoji[] = [
     char: "🤐",
     name: "zipper-mouth face",
     keywords: "face | mouth | zipper | zipper-mouth face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 33,
@@ -276,7 +276,7 @@ export const emojis: Emoji[] = [
     name: "face with raised eyebrow",
     keywords:
       "distrust | face with raised eyebrow | skeptic | disapproval | disbelief | mild surprise | scepticism",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 34,
@@ -284,7 +284,7 @@ export const emojis: Emoji[] = [
     char: "😐",
     name: "neutral face",
     keywords: "deadpan | face | meh | neutral",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 35,
@@ -292,7 +292,7 @@ export const emojis: Emoji[] = [
     char: "😑",
     name: "expressionless face",
     keywords: "expressionless | face | inexpressive | meh | unexpressive",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 36,
@@ -300,7 +300,7 @@ export const emojis: Emoji[] = [
     char: "😶",
     name: "face without mouth",
     keywords: "face | face without mouth | mouth | quiet | silent",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 37,
@@ -308,7 +308,7 @@ export const emojis: Emoji[] = [
     char: "😏",
     name: "smirking face",
     keywords: "face | smirk | smirking face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 38,
@@ -316,7 +316,7 @@ export const emojis: Emoji[] = [
     char: "😒",
     name: "unamused face",
     keywords: "face | unamused | unhappy",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 39,
@@ -324,7 +324,7 @@ export const emojis: Emoji[] = [
     char: "🙄",
     name: "face with rolling eyes",
     keywords: "eyeroll | eyes | face | face with rolling eyes | rolling",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 40,
@@ -332,7 +332,7 @@ export const emojis: Emoji[] = [
     char: "😬",
     name: "grimacing face",
     keywords: "face | grimace | grimacing face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 41,
@@ -340,7 +340,7 @@ export const emojis: Emoji[] = [
     char: "🤥",
     name: "lying face",
     keywords: "face | lie | lying face | pinocchio",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 42,
@@ -348,7 +348,7 @@ export const emojis: Emoji[] = [
     char: "😌",
     name: "relieved face",
     keywords: "face | relieved",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 43,
@@ -356,7 +356,7 @@ export const emojis: Emoji[] = [
     char: "😔",
     name: "pensive face",
     keywords: "dejected | face | pensive",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 44,
@@ -364,7 +364,7 @@ export const emojis: Emoji[] = [
     char: "😪",
     name: "sleepy face",
     keywords: "face | sleep | sleepy face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 45,
@@ -372,7 +372,7 @@ export const emojis: Emoji[] = [
     char: "🤤",
     name: "drooling face",
     keywords: "drooling | face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 46,
@@ -380,7 +380,7 @@ export const emojis: Emoji[] = [
     char: "😴",
     name: "sleeping face",
     keywords: "face | sleep | sleeping face | zzz",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 47,
@@ -388,7 +388,7 @@ export const emojis: Emoji[] = [
     char: "😷",
     name: "face with medical mask",
     keywords: "cold | doctor | face | face with medical mask | mask | sick",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 48,
@@ -396,7 +396,7 @@ export const emojis: Emoji[] = [
     char: "🤒",
     name: "face with thermometer",
     keywords: "face | face with thermometer | ill | sick | thermometer",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 49,
@@ -404,7 +404,7 @@ export const emojis: Emoji[] = [
     char: "🤕",
     name: "face with head-bandage",
     keywords: "bandage | face | face with head-bandage | hurt | injury",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 50,
@@ -412,7 +412,7 @@ export const emojis: Emoji[] = [
     char: "🤢",
     name: "nauseated face",
     keywords: "face | nauseated | vomit",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 51,
@@ -420,7 +420,7 @@ export const emojis: Emoji[] = [
     char: "🤮",
     name: "face vomiting",
     keywords: "face vomiting | sick | vomit",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 52,
@@ -428,7 +428,7 @@ export const emojis: Emoji[] = [
     char: "🤧",
     name: "sneezing face",
     keywords: "face | gesundheit | sneeze | sneezing face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 53,
@@ -436,7 +436,7 @@ export const emojis: Emoji[] = [
     char: "🥵",
     name: "hot face",
     keywords: "feverish | heat stroke | hot | hot face | red-faced | sweating",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 54,
@@ -444,7 +444,7 @@ export const emojis: Emoji[] = [
     char: "🥶",
     name: "cold face",
     keywords: "blue-faced | cold | cold face | freezing | frostbite | icicles",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 55,
@@ -453,7 +453,7 @@ export const emojis: Emoji[] = [
     name: "woozy face",
     keywords:
       "dizzy | intoxicated | tipsy | uneven eyes | wavy mouth | woozy face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 56,
@@ -461,7 +461,7 @@ export const emojis: Emoji[] = [
     char: "😵",
     name: "dizzy face",
     keywords: "dizzy | face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 57,
@@ -469,7 +469,7 @@ export const emojis: Emoji[] = [
     char: "🤯",
     name: "exploding head",
     keywords: "exploding head | shocked",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 58,
@@ -477,7 +477,7 @@ export const emojis: Emoji[] = [
     char: "🤠",
     name: "cowboy hat face",
     keywords: "cowboy | cowgirl | face | hat",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 59,
@@ -485,7 +485,7 @@ export const emojis: Emoji[] = [
     char: "🥳",
     name: "partying face",
     keywords: "celebration | hat | horn | party | partying face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 60,
@@ -494,7 +494,7 @@ export const emojis: Emoji[] = [
     name: "smiling face with sunglasses",
     keywords:
       "bright | cool | face | smiling face with sunglasses | sun | sunglasses",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 61,
@@ -502,7 +502,7 @@ export const emojis: Emoji[] = [
     char: "🤓",
     name: "nerd face",
     keywords: "face | geek | nerd",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 62,
@@ -510,7 +510,7 @@ export const emojis: Emoji[] = [
     char: "🧐",
     name: "face with monocle",
     keywords: "face with monocle | stuffy | wealthy",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 63,
@@ -518,7 +518,7 @@ export const emojis: Emoji[] = [
     char: "😕",
     name: "confused face",
     keywords: "confused | face | meh",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 64,
@@ -526,7 +526,7 @@ export const emojis: Emoji[] = [
     char: "😟",
     name: "worried face",
     keywords: "face | worried",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 65,
@@ -534,7 +534,7 @@ export const emojis: Emoji[] = [
     char: "🙁",
     name: "slightly frowning face",
     keywords: "face | frown | slightly frowning face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 66,
@@ -542,7 +542,7 @@ export const emojis: Emoji[] = [
     char: "☹",
     name: "frowning face",
     keywords: "face | frown | frowning face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 67,
@@ -550,7 +550,7 @@ export const emojis: Emoji[] = [
     char: "😮",
     name: "face with open mouth",
     keywords: "face | face with open mouth | mouth | open | sympathy",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 68,
@@ -558,7 +558,7 @@ export const emojis: Emoji[] = [
     char: "😯",
     name: "hushed face",
     keywords: "face | hushed | stunned | surprised",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 69,
@@ -566,7 +566,7 @@ export const emojis: Emoji[] = [
     char: "😲",
     name: "astonished face",
     keywords: "astonished | face | shocked | totally",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 70,
@@ -574,7 +574,7 @@ export const emojis: Emoji[] = [
     char: "😳",
     name: "flushed face",
     keywords: "dazed | face | flushed",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 71,
@@ -582,7 +582,7 @@ export const emojis: Emoji[] = [
     char: "🥺",
     name: "pleading face",
     keywords: "begging | mercy | pleading face | puppy eyes",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 72,
@@ -590,7 +590,7 @@ export const emojis: Emoji[] = [
     char: "😦",
     name: "frowning face with open mouth",
     keywords: "face | frown | frowning face with open mouth | mouth | open",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 73,
@@ -598,7 +598,7 @@ export const emojis: Emoji[] = [
     char: "😧",
     name: "anguished face",
     keywords: "anguished | face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 74,
@@ -606,7 +606,7 @@ export const emojis: Emoji[] = [
     char: "😨",
     name: "fearful face",
     keywords: "face | fear | fearful | scared",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 75,
@@ -614,7 +614,7 @@ export const emojis: Emoji[] = [
     char: "😰",
     name: "anxious face with sweat",
     keywords: "anxious face with sweat | blue | cold | face | rushed | sweat",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 76,
@@ -622,7 +622,7 @@ export const emojis: Emoji[] = [
     char: "😥",
     name: "sad but relieved face",
     keywords: "disappointed | face | relieved | sad but relieved face | whew",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 77,
@@ -630,7 +630,7 @@ export const emojis: Emoji[] = [
     char: "😢",
     name: "crying face",
     keywords: "cry | crying face | face | sad | tear",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 78,
@@ -638,7 +638,7 @@ export const emojis: Emoji[] = [
     char: "😭",
     name: "loudly crying face",
     keywords: "cry | face | loudly crying face | sad | sob | tear",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 79,
@@ -646,7 +646,7 @@ export const emojis: Emoji[] = [
     char: "😱",
     name: "face screaming in fear",
     keywords: "face | face screaming in fear | fear | munch | scared | scream",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 80,
@@ -654,7 +654,7 @@ export const emojis: Emoji[] = [
     char: "😖",
     name: "confounded face",
     keywords: "confounded | face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 81,
@@ -662,7 +662,7 @@ export const emojis: Emoji[] = [
     char: "😣",
     name: "persevering face",
     keywords: "face | persevere | persevering face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 82,
@@ -670,7 +670,7 @@ export const emojis: Emoji[] = [
     char: "😞",
     name: "disappointed face",
     keywords: "disappointed | face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 83,
@@ -678,7 +678,7 @@ export const emojis: Emoji[] = [
     char: "😓",
     name: "downcast face with sweat",
     keywords: "cold | downcast face with sweat | face | sweat",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 84,
@@ -686,7 +686,7 @@ export const emojis: Emoji[] = [
     char: "😩",
     name: "weary face",
     keywords: "face | tired | weary",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 85,
@@ -694,7 +694,7 @@ export const emojis: Emoji[] = [
     char: "😫",
     name: "tired face",
     keywords: "face | tired",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 86,
@@ -702,7 +702,7 @@ export const emojis: Emoji[] = [
     char: "🥱",
     name: "⊛ yawning face",
     keywords: "bored | tired | yawn | yawning face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 87,
@@ -710,7 +710,7 @@ export const emojis: Emoji[] = [
     char: "😤",
     name: "face with steam from nose",
     keywords: "face | face with steam from nose | triumph | won",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 88,
@@ -718,7 +718,7 @@ export const emojis: Emoji[] = [
     char: "😡",
     name: "pouting face",
     keywords: "angry | face | mad | pouting | rage | red",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 89,
@@ -726,7 +726,7 @@ export const emojis: Emoji[] = [
     char: "😠",
     name: "angry face",
     keywords: "angry | face | mad",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 90,
@@ -734,7 +734,7 @@ export const emojis: Emoji[] = [
     char: "🤬",
     name: "face with symbols on mouth",
     keywords: "face with symbols on mouth | swearing | cursing",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 91,
@@ -743,7 +743,7 @@ export const emojis: Emoji[] = [
     name: "smiling face with horns",
     keywords:
       "face | fairy tale | fantasy | horns | smile | smiling face with horns",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 92,
@@ -751,7 +751,7 @@ export const emojis: Emoji[] = [
     char: "👿",
     name: "angry face with horns",
     keywords: "angry face with horns | demon | devil | face | fantasy | imp",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 93,
@@ -759,7 +759,7 @@ export const emojis: Emoji[] = [
     char: "💀",
     name: "skull",
     keywords: "death | face | fairy tale | monster | skull",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 94,
@@ -768,7 +768,7 @@ export const emojis: Emoji[] = [
     name: "skull and crossbones",
     keywords:
       "crossbones | death | face | monster | skull | skull and crossbones",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 95,
@@ -776,7 +776,7 @@ export const emojis: Emoji[] = [
     char: "💩",
     name: "pile of poo",
     keywords: "dung | face | monster | pile of poo | poo | poop",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 96,
@@ -784,7 +784,7 @@ export const emojis: Emoji[] = [
     char: "🤡",
     name: "clown face",
     keywords: "clown | face",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 97,
@@ -792,7 +792,7 @@ export const emojis: Emoji[] = [
     char: "👹",
     name: "ogre",
     keywords: "creature | face | fairy tale | fantasy | monster | ogre | troll",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 98,
@@ -800,7 +800,7 @@ export const emojis: Emoji[] = [
     char: "👺",
     name: "goblin",
     keywords: "creature | face | fairy tale | fantasy | goblin | monster",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 99,
@@ -808,7 +808,7 @@ export const emojis: Emoji[] = [
     char: "👻",
     name: "ghost",
     keywords: "creature | face | fairy tale | fantasy | ghost | monster",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 100,
@@ -816,7 +816,7 @@ export const emojis: Emoji[] = [
     char: "👽",
     name: "alien",
     keywords: "alien | creature | extraterrestrial | face | fantasy | ufo",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 101,
@@ -824,7 +824,7 @@ export const emojis: Emoji[] = [
     char: "👾",
     name: "alien monster",
     keywords: "alien | creature | extraterrestrial | face | monster | ufo",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 102,
@@ -832,7 +832,7 @@ export const emojis: Emoji[] = [
     char: "🤖",
     name: "robot",
     keywords: "face | monster | robot",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 103,
@@ -840,7 +840,7 @@ export const emojis: Emoji[] = [
     char: "😺",
     name: "grinning cat",
     keywords: "cat | face | grinning | mouth | open | smile",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 104,
@@ -849,7 +849,7 @@ export const emojis: Emoji[] = [
     name: "grinning cat with smiling eyes",
     keywords:
       "cat | eye | face | grin | grinning cat with smiling eyes | smile",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 105,
@@ -857,7 +857,7 @@ export const emojis: Emoji[] = [
     char: "😹",
     name: "cat with tears of joy",
     keywords: "cat | cat with tears of joy | face | joy | tear",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 106,
@@ -866,7 +866,7 @@ export const emojis: Emoji[] = [
     name: "smiling cat with heart-eyes",
     keywords:
       "cat | eye | face | heart | love | smile | smiling cat with heart-eyes",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 107,
@@ -874,7 +874,7 @@ export const emojis: Emoji[] = [
     char: "😼",
     name: "cat with wry smile",
     keywords: "cat | cat with wry smile | face | ironic | smile | wry",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 108,
@@ -882,7 +882,7 @@ export const emojis: Emoji[] = [
     char: "😽",
     name: "kissing cat",
     keywords: "cat | eye | face | kiss | kissing cat",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 109,
@@ -890,7 +890,7 @@ export const emojis: Emoji[] = [
     char: "🙀",
     name: "weary cat",
     keywords: "cat | face | oh | surprised | weary",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 110,
@@ -898,7 +898,7 @@ export const emojis: Emoji[] = [
     char: "😿",
     name: "crying cat",
     keywords: "cat | cry | crying cat | face | sad | tear",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 111,
@@ -906,7 +906,7 @@ export const emojis: Emoji[] = [
     char: "😾",
     name: "pouting cat",
     keywords: "cat | face | pouting",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 112,
@@ -914,7 +914,7 @@ export const emojis: Emoji[] = [
     char: "🙈",
     name: "see-no-evil monkey",
     keywords: "evil | face | forbidden | monkey | see | see-no-evil monkey",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 113,
@@ -922,7 +922,7 @@ export const emojis: Emoji[] = [
     char: "🙉",
     name: "hear-no-evil monkey",
     keywords: "evil | face | forbidden | hear | hear-no-evil monkey | monkey",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 114,
@@ -930,7 +930,7 @@ export const emojis: Emoji[] = [
     char: "🙊",
     name: "speak-no-evil monkey",
     keywords: "evil | face | forbidden | monkey | speak | speak-no-evil monkey",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 115,
@@ -938,7 +938,7 @@ export const emojis: Emoji[] = [
     char: "💋",
     name: "kiss mark",
     keywords: "kiss | kiss mark | lips",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 116,
@@ -946,7 +946,7 @@ export const emojis: Emoji[] = [
     char: "💌",
     name: "love letter",
     keywords: "heart | letter | love | mail",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 117,
@@ -954,7 +954,7 @@ export const emojis: Emoji[] = [
     char: "💘",
     name: "heart with arrow",
     keywords: "arrow | cupid | heart with arrow",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 118,
@@ -962,7 +962,7 @@ export const emojis: Emoji[] = [
     char: "💝",
     name: "heart with ribbon",
     keywords: "heart with ribbon | ribbon | valentine",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 119,
@@ -970,7 +970,7 @@ export const emojis: Emoji[] = [
     char: "💖",
     name: "sparkling heart",
     keywords: "excited | sparkle | sparkling heart",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 120,
@@ -978,7 +978,7 @@ export const emojis: Emoji[] = [
     char: "💗",
     name: "growing heart",
     keywords: "excited | growing | growing heart | nervous | pulse",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 121,
@@ -986,7 +986,7 @@ export const emojis: Emoji[] = [
     char: "💓",
     name: "beating heart",
     keywords: "beating | beating heart | heartbeat | pulsating",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 122,
@@ -994,7 +994,7 @@ export const emojis: Emoji[] = [
     char: "💞",
     name: "revolving hearts",
     keywords: "revolving | revolving hearts",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 123,
@@ -1002,7 +1002,7 @@ export const emojis: Emoji[] = [
     char: "💕",
     name: "two hearts",
     keywords: "love | two hearts",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 124,
@@ -1010,7 +1010,7 @@ export const emojis: Emoji[] = [
     char: "💟",
     name: "heart decoration",
     keywords: "heart | heart decoration",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 125,
@@ -1018,7 +1018,7 @@ export const emojis: Emoji[] = [
     char: "❣",
     name: "heart exclamation",
     keywords: "exclamation | heart exclamation | mark | punctuation",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 126,
@@ -1026,7 +1026,7 @@ export const emojis: Emoji[] = [
     char: "💔",
     name: "broken heart",
     keywords: "break | broken | broken heart",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 127,
@@ -1034,7 +1034,7 @@ export const emojis: Emoji[] = [
     char: "❤",
     name: "red heart",
     keywords: "heart | red heart",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 128,
@@ -1042,7 +1042,7 @@ export const emojis: Emoji[] = [
     char: "🧡",
     name: "orange heart",
     keywords: "orange | orange heart",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 129,
@@ -1050,7 +1050,7 @@ export const emojis: Emoji[] = [
     char: "💛",
     name: "yellow heart",
     keywords: "yellow | yellow heart",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 130,
@@ -1058,7 +1058,7 @@ export const emojis: Emoji[] = [
     char: "💚",
     name: "green heart",
     keywords: "green | green heart",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 131,
@@ -1066,7 +1066,7 @@ export const emojis: Emoji[] = [
     char: "💙",
     name: "blue heart",
     keywords: "blue | blue heart",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 132,
@@ -1074,7 +1074,7 @@ export const emojis: Emoji[] = [
     char: "💜",
     name: "purple heart",
     keywords: "purple | purple heart",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 133,
@@ -1082,7 +1082,7 @@ export const emojis: Emoji[] = [
     char: "🤎",
     name: "⊛ brown heart",
     keywords: "brown | heart",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 134,
@@ -1090,7 +1090,7 @@ export const emojis: Emoji[] = [
     char: "🖤",
     name: "black heart",
     keywords: "black | black heart | evil | wicked",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 135,
@@ -1098,7 +1098,7 @@ export const emojis: Emoji[] = [
     char: "🤍",
     name: "⊛ white heart",
     keywords: "heart | white",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 136,
@@ -1106,7 +1106,7 @@ export const emojis: Emoji[] = [
     char: "💯",
     name: "hundred points",
     keywords: "100 | full | hundred | hundred points | score",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 137,
@@ -1114,7 +1114,7 @@ export const emojis: Emoji[] = [
     char: "💢",
     name: "anger symbol",
     keywords: "anger symbol | angry | comic | mad",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 138,
@@ -1122,7 +1122,7 @@ export const emojis: Emoji[] = [
     char: "💥",
     name: "collision",
     keywords: "boom | collision | comic",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 139,
@@ -1130,7 +1130,7 @@ export const emojis: Emoji[] = [
     char: "💫",
     name: "dizzy",
     keywords: "comic | dizzy | star",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 140,
@@ -1138,7 +1138,7 @@ export const emojis: Emoji[] = [
     char: "💦",
     name: "sweat droplets",
     keywords: "comic | splashing | sweat | sweat droplets",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 141,
@@ -1146,7 +1146,7 @@ export const emojis: Emoji[] = [
     char: "💨",
     name: "dashing away",
     keywords: "comic | dash | dashing away | running",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 142,
@@ -1154,7 +1154,7 @@ export const emojis: Emoji[] = [
     char: "🕳",
     name: "hole",
     keywords: "hole",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 143,
@@ -1162,7 +1162,7 @@ export const emojis: Emoji[] = [
     char: "💣",
     name: "bomb",
     keywords: "bomb | comic",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 144,
@@ -1170,7 +1170,7 @@ export const emojis: Emoji[] = [
     char: "💬",
     name: "speech balloon",
     keywords: "balloon | bubble | comic | dialog | speech",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 145,
@@ -1178,7 +1178,7 @@ export const emojis: Emoji[] = [
     char: "👁️‍🗨️",
     name: "eye in speech bubble",
     keywords: "eye | eye in speech bubble | speech bubble | witness",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 146,
@@ -1186,7 +1186,7 @@ export const emojis: Emoji[] = [
     char: "🗨",
     name: "left speech bubble",
     keywords: "dialog | left speech bubble | speech",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 147,
@@ -1194,7 +1194,7 @@ export const emojis: Emoji[] = [
     char: "🗯",
     name: "right anger bubble",
     keywords: "angry | balloon | bubble | mad | right anger bubble",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 148,
@@ -1202,7 +1202,7 @@ export const emojis: Emoji[] = [
     char: "💭",
     name: "thought balloon",
     keywords: "balloon | bubble | comic | thought",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 149,
@@ -1210,7 +1210,7 @@ export const emojis: Emoji[] = [
     char: "💤",
     name: "zzz",
     keywords: "comic | sleep | zzz",
-    category: "Smileys & Emotion"
+    category: "Smileys & Emotion",
   },
   {
     no: 150,
@@ -1218,7 +1218,7 @@ export const emojis: Emoji[] = [
     char: "👋",
     name: "waving hand",
     keywords: "hand | wave | waving",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 151,
@@ -1226,7 +1226,7 @@ export const emojis: Emoji[] = [
     char: "🤚",
     name: "raised back of hand",
     keywords: "backhand | raised | raised back of hand",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 152,
@@ -1234,7 +1234,7 @@ export const emojis: Emoji[] = [
     char: "🖐",
     name: "hand with fingers splayed",
     keywords: "finger | hand | hand with fingers splayed | splayed",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 153,
@@ -1242,7 +1242,7 @@ export const emojis: Emoji[] = [
     char: "✋",
     name: "raised hand",
     keywords: "hand | raised hand",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 154,
@@ -1250,7 +1250,7 @@ export const emojis: Emoji[] = [
     char: "🖖",
     name: "vulcan salute",
     keywords: "finger | hand | spock | vulcan | vulcan salute",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 155,
@@ -1258,7 +1258,7 @@ export const emojis: Emoji[] = [
     char: "👌",
     name: "OK hand",
     keywords: "hand | OK",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 156,
@@ -1266,7 +1266,7 @@ export const emojis: Emoji[] = [
     char: "🤏",
     name: "⊛ pinching hand",
     keywords: "pinching hand | small amount",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 157,
@@ -1274,7 +1274,7 @@ export const emojis: Emoji[] = [
     char: "✌",
     name: "victory hand",
     keywords: "hand | v | victory",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 158,
@@ -1282,7 +1282,7 @@ export const emojis: Emoji[] = [
     char: "🤞",
     name: "crossed fingers",
     keywords: "cross | crossed fingers | finger | hand | luck",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 159,
@@ -1290,7 +1290,7 @@ export const emojis: Emoji[] = [
     char: "🤟",
     name: "love-you gesture",
     keywords: "hand | ILY | love-you gesture",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 160,
@@ -1298,7 +1298,7 @@ export const emojis: Emoji[] = [
     char: "🤘",
     name: "sign of the horns",
     keywords: "finger | hand | horns | rock-on | sign of the horns",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 161,
@@ -1306,7 +1306,7 @@ export const emojis: Emoji[] = [
     char: "🤙",
     name: "call me hand",
     keywords: "call | call me hand | hand",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 162,
@@ -1315,7 +1315,7 @@ export const emojis: Emoji[] = [
     name: "backhand index pointing left",
     keywords:
       "backhand | backhand index pointing left | finger | hand | index | point",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 163,
@@ -1324,7 +1324,7 @@ export const emojis: Emoji[] = [
     name: "backhand index pointing right",
     keywords:
       "backhand | backhand index pointing right | finger | hand | index | point",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 164,
@@ -1333,7 +1333,7 @@ export const emojis: Emoji[] = [
     name: "backhand index pointing up",
     keywords:
       "backhand | backhand index pointing up | finger | hand | point | up",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 165,
@@ -1341,7 +1341,7 @@ export const emojis: Emoji[] = [
     char: "🖕",
     name: "middle finger",
     keywords: "finger | hand | middle finger",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 166,
@@ -1350,7 +1350,7 @@ export const emojis: Emoji[] = [
     name: "backhand index pointing down",
     keywords:
       "backhand | backhand index pointing down | down | finger | hand | point",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 167,
@@ -1358,7 +1358,7 @@ export const emojis: Emoji[] = [
     char: "☝",
     name: "index pointing up",
     keywords: "finger | hand | index | index pointing up | point | up",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 168,
@@ -1366,7 +1366,7 @@ export const emojis: Emoji[] = [
     char: "👍",
     name: "thumbs up",
     keywords: "+1 | hand | thumb | thumbs up | up",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 169,
@@ -1374,7 +1374,7 @@ export const emojis: Emoji[] = [
     char: "👎",
     name: "thumbs down",
     keywords: "-1 | down | hand | thumb | thumbs down",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 170,
@@ -1382,7 +1382,7 @@ export const emojis: Emoji[] = [
     char: "✊",
     name: "raised fist",
     keywords: "clenched | fist | hand | punch | raised fist",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 171,
@@ -1390,7 +1390,7 @@ export const emojis: Emoji[] = [
     char: "👊",
     name: "oncoming fist",
     keywords: "clenched | fist | hand | oncoming fist | punch",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 172,
@@ -1398,7 +1398,7 @@ export const emojis: Emoji[] = [
     char: "🤛",
     name: "left-facing fist",
     keywords: "fist | left-facing fist | leftwards",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 173,
@@ -1406,7 +1406,7 @@ export const emojis: Emoji[] = [
     char: "🤜",
     name: "right-facing fist",
     keywords: "fist | right-facing fist | rightwards",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 174,
@@ -1414,7 +1414,7 @@ export const emojis: Emoji[] = [
     char: "👏",
     name: "clapping hands",
     keywords: "clap | clapping hands | hand",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 175,
@@ -1422,7 +1422,7 @@ export const emojis: Emoji[] = [
     char: "🙌",
     name: "raising hands",
     keywords: "celebration | gesture | hand | hooray | raised | raising hands",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 176,
@@ -1430,7 +1430,7 @@ export const emojis: Emoji[] = [
     char: "👐",
     name: "open hands",
     keywords: "hand | open | open hands",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 177,
@@ -1438,7 +1438,7 @@ export const emojis: Emoji[] = [
     char: "🤲",
     name: "palms up together",
     keywords: "palms up together | prayer | cupped hands",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 178,
@@ -1446,7 +1446,7 @@ export const emojis: Emoji[] = [
     char: "🤝",
     name: "handshake",
     keywords: "agreement | hand | handshake | meeting | shake",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 179,
@@ -1454,7 +1454,7 @@ export const emojis: Emoji[] = [
     char: "🙏",
     name: "folded hands",
     keywords: "ask | folded hands | hand | please | pray | thanks",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 180,
@@ -1462,7 +1462,7 @@ export const emojis: Emoji[] = [
     char: "✍",
     name: "writing hand",
     keywords: "hand | write | writing hand",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 181,
@@ -1470,7 +1470,7 @@ export const emojis: Emoji[] = [
     char: "💅",
     name: "nail polish",
     keywords: "care | cosmetics | manicure | nail | polish",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 182,
@@ -1478,7 +1478,7 @@ export const emojis: Emoji[] = [
     char: "🤳",
     name: "selfie",
     keywords: "camera | phone | selfie",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 183,
@@ -1486,7 +1486,7 @@ export const emojis: Emoji[] = [
     char: "💪",
     name: "flexed biceps",
     keywords: "biceps | comic | flex | flexed biceps | muscle",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 184,
@@ -1494,7 +1494,7 @@ export const emojis: Emoji[] = [
     char: "🦾",
     name: "⊛ mechanical arm",
     keywords: "accessibility | mechanical arm | prosthetic",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 185,
@@ -1502,7 +1502,7 @@ export const emojis: Emoji[] = [
     char: "🦿",
     name: "⊛ mechanical leg",
     keywords: "accessibility | mechanical leg | prosthetic",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 186,
@@ -1510,7 +1510,7 @@ export const emojis: Emoji[] = [
     char: "🦵",
     name: "leg",
     keywords: "kick | leg | limb",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 187,
@@ -1518,7 +1518,7 @@ export const emojis: Emoji[] = [
     char: "🦶",
     name: "foot",
     keywords: "foot | kick | stomp",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 188,
@@ -1526,7 +1526,7 @@ export const emojis: Emoji[] = [
     char: "👂",
     name: "ear",
     keywords: "body | ear",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 189,
@@ -1534,7 +1534,7 @@ export const emojis: Emoji[] = [
     char: "🦻",
     name: "⊛ ear with hearing aid",
     keywords: "accessibility | ear with hearing aid | hard of hearing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 190,
@@ -1542,7 +1542,7 @@ export const emojis: Emoji[] = [
     char: "👃",
     name: "nose",
     keywords: "body | nose",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 191,
@@ -1550,7 +1550,7 @@ export const emojis: Emoji[] = [
     char: "🧠",
     name: "brain",
     keywords: "brain | intelligent",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 192,
@@ -1558,7 +1558,7 @@ export const emojis: Emoji[] = [
     char: "🦷",
     name: "tooth",
     keywords: "dentist | tooth",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 193,
@@ -1566,7 +1566,7 @@ export const emojis: Emoji[] = [
     char: "🦴",
     name: "bone",
     keywords: "bone | skeleton",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 194,
@@ -1574,7 +1574,7 @@ export const emojis: Emoji[] = [
     char: "👀",
     name: "eyes",
     keywords: "eye | eyes | face",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 195,
@@ -1582,7 +1582,7 @@ export const emojis: Emoji[] = [
     char: "👁",
     name: "eye",
     keywords: "body | eye",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 196,
@@ -1590,7 +1590,7 @@ export const emojis: Emoji[] = [
     char: "👅",
     name: "tongue",
     keywords: "body | tongue",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 197,
@@ -1598,7 +1598,7 @@ export const emojis: Emoji[] = [
     char: "👄",
     name: "mouth",
     keywords: "lips | mouth",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 198,
@@ -1606,7 +1606,7 @@ export const emojis: Emoji[] = [
     char: "👶",
     name: "baby",
     keywords: "baby | young",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 199,
@@ -1614,7 +1614,7 @@ export const emojis: Emoji[] = [
     char: "🧒",
     name: "child",
     keywords: "child | gender-neutral | unspecified gender | young",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 200,
@@ -1622,7 +1622,7 @@ export const emojis: Emoji[] = [
     char: "👦",
     name: "boy",
     keywords: "boy | young",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 201,
@@ -1630,7 +1630,7 @@ export const emojis: Emoji[] = [
     char: "👧",
     name: "girl",
     keywords: "girl | Virgo | young | zodiac",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 202,
@@ -1638,7 +1638,7 @@ export const emojis: Emoji[] = [
     char: "🧑",
     name: "person",
     keywords: "adult | gender-neutral | person | unspecified gender",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 203,
@@ -1646,7 +1646,7 @@ export const emojis: Emoji[] = [
     char: "👱",
     name: "person: blond hair",
     keywords: "blond | blond-haired person | hair | person: blond hair",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 204,
@@ -1654,7 +1654,7 @@ export const emojis: Emoji[] = [
     char: "👨",
     name: "man",
     keywords: "adult | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 205,
@@ -1662,7 +1662,7 @@ export const emojis: Emoji[] = [
     char: "🧔",
     name: "man: beard",
     keywords: "beard | man | man: beard | person | bewhiskered",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 206,
@@ -1670,7 +1670,7 @@ export const emojis: Emoji[] = [
     char: "👱‍♂️",
     name: "man: blond hair",
     keywords: "blond | blond-haired man | hair | man | man: blond hair",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 207,
@@ -1678,7 +1678,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🦰",
     name: "man: red hair",
     keywords: "adult | man | red hair",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 208,
@@ -1686,7 +1686,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🦱",
     name: "man: curly hair",
     keywords: "adult | curly hair | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 209,
@@ -1694,7 +1694,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🦳",
     name: "man: white hair",
     keywords: "adult | man | white hair",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 210,
@@ -1702,7 +1702,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🦲",
     name: "man: bald",
     keywords: "adult | bald | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 211,
@@ -1710,7 +1710,7 @@ export const emojis: Emoji[] = [
     char: "👩",
     name: "woman",
     keywords: "adult | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 212,
@@ -1718,7 +1718,7 @@ export const emojis: Emoji[] = [
     char: "👱‍♀️",
     name: "woman: blond hair",
     keywords: "blond-haired woman | blonde | hair | woman | woman: blond hair",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 213,
@@ -1726,7 +1726,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🦰",
     name: "woman: red hair",
     keywords: "adult | red hair | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 214,
@@ -1734,7 +1734,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🦱",
     name: "woman: curly hair",
     keywords: "adult | curly hair | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 215,
@@ -1742,7 +1742,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🦳",
     name: "woman: white hair",
     keywords: "adult | white hair | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 216,
@@ -1750,7 +1750,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🦲",
     name: "woman: bald",
     keywords: "adult | bald | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 217,
@@ -1759,7 +1759,7 @@ export const emojis: Emoji[] = [
     name: "older person",
     keywords:
       "adult | gender-neutral | old | older person | unspecified gender",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 218,
@@ -1767,7 +1767,7 @@ export const emojis: Emoji[] = [
     char: "👴",
     name: "old man",
     keywords: "adult | man | old",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 219,
@@ -1775,7 +1775,7 @@ export const emojis: Emoji[] = [
     char: "👵",
     name: "old woman",
     keywords: "adult | old | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 220,
@@ -1783,7 +1783,7 @@ export const emojis: Emoji[] = [
     char: "🙍",
     name: "person frowning",
     keywords: "frown | gesture | person frowning",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 221,
@@ -1791,7 +1791,7 @@ export const emojis: Emoji[] = [
     char: "🙍‍♂️",
     name: "man frowning",
     keywords: "frowning | gesture | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 222,
@@ -1799,7 +1799,7 @@ export const emojis: Emoji[] = [
     char: "🙍‍♀️",
     name: "woman frowning",
     keywords: "frowning | gesture | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 223,
@@ -1807,7 +1807,7 @@ export const emojis: Emoji[] = [
     char: "🙎",
     name: "person pouting",
     keywords: "gesture | person pouting | pouting",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 224,
@@ -1815,7 +1815,7 @@ export const emojis: Emoji[] = [
     char: "🙎‍♂️",
     name: "man pouting",
     keywords: "gesture | man | pouting",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 225,
@@ -1823,7 +1823,7 @@ export const emojis: Emoji[] = [
     char: "🙎‍♀️",
     name: "woman pouting",
     keywords: "gesture | pouting | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 226,
@@ -1831,7 +1831,7 @@ export const emojis: Emoji[] = [
     char: "🙅",
     name: "person gesturing NO",
     keywords: "forbidden | gesture | hand | person gesturing NO | prohibited",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 227,
@@ -1840,7 +1840,7 @@ export const emojis: Emoji[] = [
     name: "man gesturing NO",
     keywords:
       "forbidden | gesture | hand | man | man gesturing NO | prohibited",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 228,
@@ -1849,7 +1849,7 @@ export const emojis: Emoji[] = [
     name: "woman gesturing NO",
     keywords:
       "forbidden | gesture | hand | prohibited | woman | woman gesturing NO",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 229,
@@ -1857,7 +1857,7 @@ export const emojis: Emoji[] = [
     char: "🙆",
     name: "person gesturing OK",
     keywords: "gesture | hand | OK | person gesturing OK",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 230,
@@ -1865,7 +1865,7 @@ export const emojis: Emoji[] = [
     char: "🙆‍♂️",
     name: "man gesturing OK",
     keywords: "gesture | hand | man | man gesturing OK | OK",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 231,
@@ -1873,7 +1873,7 @@ export const emojis: Emoji[] = [
     char: "🙆‍♀️",
     name: "woman gesturing OK",
     keywords: "gesture | hand | OK | woman | woman gesturing OK",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 232,
@@ -1882,7 +1882,7 @@ export const emojis: Emoji[] = [
     name: "person tipping hand",
     keywords:
       "hand | help | information | person tipping hand | sassy | tipping",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 233,
@@ -1890,7 +1890,7 @@ export const emojis: Emoji[] = [
     char: "💁‍♂️",
     name: "man tipping hand",
     keywords: "man | man tipping hand | sassy | tipping hand",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 234,
@@ -1898,7 +1898,7 @@ export const emojis: Emoji[] = [
     char: "💁‍♀️",
     name: "woman tipping hand",
     keywords: "sassy | tipping hand | woman | woman tipping hand",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 235,
@@ -1906,7 +1906,7 @@ export const emojis: Emoji[] = [
     char: "🙋",
     name: "person raising hand",
     keywords: "gesture | hand | happy | person raising hand | raised",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 236,
@@ -1914,7 +1914,7 @@ export const emojis: Emoji[] = [
     char: "🙋‍♂️",
     name: "man raising hand",
     keywords: "gesture | man | man raising hand | raising hand",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 237,
@@ -1922,7 +1922,7 @@ export const emojis: Emoji[] = [
     char: "🙋‍♀️",
     name: "woman raising hand",
     keywords: "gesture | raising hand | woman | woman raising hand",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 238,
@@ -1930,7 +1930,7 @@ export const emojis: Emoji[] = [
     char: "🧏",
     name: "⊛ deaf person",
     keywords: "accessibility | deaf | deaf person | ear | hear",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 239,
@@ -1938,7 +1938,7 @@ export const emojis: Emoji[] = [
     char: "🧏‍♂️",
     name: "⊛ deaf man",
     keywords: "deaf | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 240,
@@ -1946,7 +1946,7 @@ export const emojis: Emoji[] = [
     char: "🧏‍♀️",
     name: "⊛ deaf woman",
     keywords: "deaf | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 241,
@@ -1954,7 +1954,7 @@ export const emojis: Emoji[] = [
     char: "🙇",
     name: "person bowing",
     keywords: "apology | bow | gesture | person bowing | sorry",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 242,
@@ -1962,7 +1962,7 @@ export const emojis: Emoji[] = [
     char: "🙇‍♂️",
     name: "man bowing",
     keywords: "apology | bowing | favor | gesture | man | sorry",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 243,
@@ -1970,7 +1970,7 @@ export const emojis: Emoji[] = [
     char: "🙇‍♀️",
     name: "woman bowing",
     keywords: "apology | bowing | favor | gesture | sorry | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 244,
@@ -1978,7 +1978,7 @@ export const emojis: Emoji[] = [
     char: "🤦",
     name: "person facepalming",
     keywords: "disbelief | exasperation | face | palm | person facepalming",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 245,
@@ -1986,7 +1986,7 @@ export const emojis: Emoji[] = [
     char: "🤦‍♂️",
     name: "man facepalming",
     keywords: "disbelief | exasperation | facepalm | man | man facepalming",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 246,
@@ -1994,7 +1994,7 @@ export const emojis: Emoji[] = [
     char: "🤦‍♀️",
     name: "woman facepalming",
     keywords: "disbelief | exasperation | facepalm | woman | woman facepalming",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 247,
@@ -2002,7 +2002,7 @@ export const emojis: Emoji[] = [
     char: "🤷",
     name: "person shrugging",
     keywords: "doubt | ignorance | indifference | person shrugging | shrug",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 248,
@@ -2010,7 +2010,7 @@ export const emojis: Emoji[] = [
     char: "🤷‍♂️",
     name: "man shrugging",
     keywords: "doubt | ignorance | indifference | man | man shrugging | shrug",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 249,
@@ -2019,7 +2019,7 @@ export const emojis: Emoji[] = [
     name: "woman shrugging",
     keywords:
       "doubt | ignorance | indifference | shrug | woman | woman shrugging",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 250,
@@ -2028,7 +2028,7 @@ export const emojis: Emoji[] = [
     name: "man health worker",
     keywords:
       "doctor | healthcare | man | man health worker | nurse | therapist",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 251,
@@ -2037,7 +2037,7 @@ export const emojis: Emoji[] = [
     name: "woman health worker",
     keywords:
       "doctor | healthcare | nurse | therapist | woman | woman health worker",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 252,
@@ -2045,7 +2045,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🎓",
     name: "man student",
     keywords: "graduate | man | student",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 253,
@@ -2053,7 +2053,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🎓",
     name: "woman student",
     keywords: "graduate | student | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 254,
@@ -2061,7 +2061,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🏫",
     name: "man teacher",
     keywords: "instructor | man | professor | teacher",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 255,
@@ -2069,7 +2069,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🏫",
     name: "woman teacher",
     keywords: "instructor | professor | teacher | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 256,
@@ -2077,7 +2077,7 @@ export const emojis: Emoji[] = [
     char: "👨‍⚖️",
     name: "man judge",
     keywords: "justice | man | man judge | scales",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 257,
@@ -2085,7 +2085,7 @@ export const emojis: Emoji[] = [
     char: "👩‍⚖️",
     name: "woman judge",
     keywords: "judge | scales | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 258,
@@ -2093,7 +2093,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🌾",
     name: "man farmer",
     keywords: "farmer | gardener | man | rancher",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 259,
@@ -2101,7 +2101,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🌾",
     name: "woman farmer",
     keywords: "farmer | gardener | rancher | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 260,
@@ -2109,7 +2109,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🍳",
     name: "man cook",
     keywords: "chef | cook | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 261,
@@ -2117,7 +2117,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🍳",
     name: "woman cook",
     keywords: "chef | cook | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 262,
@@ -2125,7 +2125,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🔧",
     name: "man mechanic",
     keywords: "electrician | man | mechanic | plumber | tradesperson",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 263,
@@ -2133,7 +2133,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🔧",
     name: "woman mechanic",
     keywords: "electrician | mechanic | plumber | tradesperson | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 264,
@@ -2141,7 +2141,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🏭",
     name: "man factory worker",
     keywords: "assembly | factory | industrial | man | worker",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 265,
@@ -2149,7 +2149,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🏭",
     name: "woman factory worker",
     keywords: "assembly | factory | industrial | woman | worker",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 266,
@@ -2158,7 +2158,7 @@ export const emojis: Emoji[] = [
     name: "man office worker",
     keywords:
       "architect | business | man | man office worker | manager | white-collar",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 267,
@@ -2167,7 +2167,7 @@ export const emojis: Emoji[] = [
     name: "woman office worker",
     keywords:
       "architect | business | manager | white-collar | woman | woman office worker",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 268,
@@ -2175,7 +2175,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🔬",
     name: "man scientist",
     keywords: "biologist | chemist | engineer | man | physicist | scientist",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 269,
@@ -2183,7 +2183,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🔬",
     name: "woman scientist",
     keywords: "biologist | chemist | engineer | physicist | scientist | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 270,
@@ -2191,7 +2191,7 @@ export const emojis: Emoji[] = [
     char: "👨‍💻",
     name: "man technologist",
     keywords: "coder | developer | inventor | man | software | technologist",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 271,
@@ -2199,7 +2199,7 @@ export const emojis: Emoji[] = [
     char: "👩‍💻",
     name: "woman technologist",
     keywords: "coder | developer | inventor | software | technologist | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 272,
@@ -2207,7 +2207,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🎤",
     name: "man singer",
     keywords: "actor | entertainer | man | rock | singer | star",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 273,
@@ -2215,7 +2215,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🎤",
     name: "woman singer",
     keywords: "actor | entertainer | rock | singer | star | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 274,
@@ -2223,7 +2223,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🎨",
     name: "man artist",
     keywords: "artist | man | palette",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 275,
@@ -2231,7 +2231,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🎨",
     name: "woman artist",
     keywords: "artist | palette | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 276,
@@ -2239,7 +2239,7 @@ export const emojis: Emoji[] = [
     char: "👨‍✈️",
     name: "man pilot",
     keywords: "man | pilot | plane",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 277,
@@ -2247,7 +2247,7 @@ export const emojis: Emoji[] = [
     char: "👩‍✈️",
     name: "woman pilot",
     keywords: "pilot | plane | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 278,
@@ -2255,7 +2255,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🚀",
     name: "man astronaut",
     keywords: "astronaut | man | rocket",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 279,
@@ -2263,7 +2263,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🚀",
     name: "woman astronaut",
     keywords: "astronaut | rocket | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 280,
@@ -2271,7 +2271,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🚒",
     name: "man firefighter",
     keywords: "firefighter | firetruck | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 281,
@@ -2279,7 +2279,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🚒",
     name: "woman firefighter",
     keywords: "firefighter | firetruck | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 282,
@@ -2287,7 +2287,7 @@ export const emojis: Emoji[] = [
     char: "👮",
     name: "police officer",
     keywords: "cop | officer | police",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 283,
@@ -2295,7 +2295,7 @@ export const emojis: Emoji[] = [
     char: "👮‍♂️",
     name: "man police officer",
     keywords: "cop | man | officer | police",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 284,
@@ -2303,7 +2303,7 @@ export const emojis: Emoji[] = [
     char: "👮‍♀️",
     name: "woman police officer",
     keywords: "cop | officer | police | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 285,
@@ -2311,7 +2311,7 @@ export const emojis: Emoji[] = [
     char: "🕵",
     name: "detective",
     keywords: "detective | sleuth | spy",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 286,
@@ -2319,7 +2319,7 @@ export const emojis: Emoji[] = [
     char: "🕵️‍♂️",
     name: "man detective",
     keywords: "detective | man | sleuth | spy",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 287,
@@ -2327,7 +2327,7 @@ export const emojis: Emoji[] = [
     char: "🕵️‍♀️",
     name: "woman detective",
     keywords: "detective | sleuth | spy | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 288,
@@ -2335,7 +2335,7 @@ export const emojis: Emoji[] = [
     char: "💂",
     name: "guard",
     keywords: "guard",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 289,
@@ -2343,7 +2343,7 @@ export const emojis: Emoji[] = [
     char: "💂‍♂️",
     name: "man guard",
     keywords: "guard | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 290,
@@ -2351,7 +2351,7 @@ export const emojis: Emoji[] = [
     char: "💂‍♀️",
     name: "woman guard",
     keywords: "guard | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 291,
@@ -2359,7 +2359,7 @@ export const emojis: Emoji[] = [
     char: "👷",
     name: "construction worker",
     keywords: "construction | hat | worker",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 292,
@@ -2367,7 +2367,7 @@ export const emojis: Emoji[] = [
     char: "👷‍♂️",
     name: "man construction worker",
     keywords: "construction | man | worker",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 293,
@@ -2375,7 +2375,7 @@ export const emojis: Emoji[] = [
     char: "👷‍♀️",
     name: "woman construction worker",
     keywords: "construction | woman | worker",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 294,
@@ -2383,7 +2383,7 @@ export const emojis: Emoji[] = [
     char: "🤴",
     name: "prince",
     keywords: "prince",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 295,
@@ -2391,7 +2391,7 @@ export const emojis: Emoji[] = [
     char: "👸",
     name: "princess",
     keywords: "fairy tale | fantasy | princess",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 296,
@@ -2399,7 +2399,7 @@ export const emojis: Emoji[] = [
     char: "👳",
     name: "person wearing turban",
     keywords: "person wearing turban | turban",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 297,
@@ -2407,7 +2407,7 @@ export const emojis: Emoji[] = [
     char: "👳‍♂️",
     name: "man wearing turban",
     keywords: "man | man wearing turban | turban",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 298,
@@ -2415,7 +2415,7 @@ export const emojis: Emoji[] = [
     char: "👳‍♀️",
     name: "woman wearing turban",
     keywords: "turban | woman | woman wearing turban",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 299,
@@ -2423,7 +2423,7 @@ export const emojis: Emoji[] = [
     char: "👲",
     name: "man with Chinese cap",
     keywords: "gua pi mao | hat | man | man with Chinese cap",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 300,
@@ -2432,7 +2432,7 @@ export const emojis: Emoji[] = [
     name: "woman with headscarf",
     keywords:
       "headscarf | hijab | mantilla | tichel | woman with headscarf | bandana | head kerchief",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 301,
@@ -2440,7 +2440,7 @@ export const emojis: Emoji[] = [
     char: "🤵",
     name: "man in tuxedo",
     keywords: "groom | man | man in tuxedo | tuxedo",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 302,
@@ -2448,7 +2448,7 @@ export const emojis: Emoji[] = [
     char: "👰",
     name: "bride with veil",
     keywords: "bride | bride with veil | veil | wedding",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 303,
@@ -2456,7 +2456,7 @@ export const emojis: Emoji[] = [
     char: "🤰",
     name: "pregnant woman",
     keywords: "pregnant | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 304,
@@ -2464,7 +2464,7 @@ export const emojis: Emoji[] = [
     char: "🤱",
     name: "breast-feeding",
     keywords: "baby | breast | breast-feeding | nursing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 305,
@@ -2472,7 +2472,7 @@ export const emojis: Emoji[] = [
     char: "👼",
     name: "baby angel",
     keywords: "angel | baby | face | fairy tale | fantasy",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 306,
@@ -2480,7 +2480,7 @@ export const emojis: Emoji[] = [
     char: "🎅",
     name: "Santa Claus",
     keywords: "celebration | Christmas | claus | father | santa | Santa Claus",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 307,
@@ -2488,7 +2488,7 @@ export const emojis: Emoji[] = [
     char: "🤶",
     name: "Mrs. Claus",
     keywords: "celebration | Christmas | claus | mother | Mrs. | Mrs. Claus",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 308,
@@ -2496,7 +2496,7 @@ export const emojis: Emoji[] = [
     char: "🦸",
     name: "superhero",
     keywords: "good | hero | heroine | superhero | superpower | superpowers",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 309,
@@ -2504,7 +2504,7 @@ export const emojis: Emoji[] = [
     char: "🦸‍♂️",
     name: "man superhero",
     keywords: "good | hero | man | man superhero | superpower",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 310,
@@ -2512,7 +2512,7 @@ export const emojis: Emoji[] = [
     char: "🦸‍♀️",
     name: "woman superhero",
     keywords: "good | hero | heroine | superpower | woman | woman superhero",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 311,
@@ -2521,7 +2521,7 @@ export const emojis: Emoji[] = [
     name: "supervillain",
     keywords:
       "criminal | evil | superpower | supervillain | villain | bad | superpowers",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 312,
@@ -2529,7 +2529,7 @@ export const emojis: Emoji[] = [
     char: "🦹‍♂️",
     name: "man supervillain",
     keywords: "criminal | evil | man | man supervillain | superpower | villain",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 313,
@@ -2538,7 +2538,7 @@ export const emojis: Emoji[] = [
     name: "woman supervillain",
     keywords:
       "criminal | evil | superpower | villain | woman | woman supervillain",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 314,
@@ -2546,7 +2546,7 @@ export const emojis: Emoji[] = [
     char: "🧙",
     name: "mage",
     keywords: "mage | sorcerer | sorceress | witch | wizard",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 315,
@@ -2554,7 +2554,7 @@ export const emojis: Emoji[] = [
     char: "🧙‍♂️",
     name: "man mage",
     keywords: "man mage | sorcerer | wizard",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 316,
@@ -2562,7 +2562,7 @@ export const emojis: Emoji[] = [
     char: "🧙‍♀️",
     name: "woman mage",
     keywords: "sorceress | witch | woman mage",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 317,
@@ -2570,7 +2570,7 @@ export const emojis: Emoji[] = [
     char: "🧚",
     name: "fairy",
     keywords: "fairy | Oberon | Puck | Titania",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 318,
@@ -2578,7 +2578,7 @@ export const emojis: Emoji[] = [
     char: "🧚‍♂️",
     name: "man fairy",
     keywords: "man fairy | Oberon | Puck",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 319,
@@ -2586,7 +2586,7 @@ export const emojis: Emoji[] = [
     char: "🧚‍♀️",
     name: "woman fairy",
     keywords: "Titania | woman fairy",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 320,
@@ -2594,7 +2594,7 @@ export const emojis: Emoji[] = [
     char: "🧛",
     name: "vampire",
     keywords: "Dracula | undead | vampire",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 321,
@@ -2602,7 +2602,7 @@ export const emojis: Emoji[] = [
     char: "🧛‍♂️",
     name: "man vampire",
     keywords: "Dracula | man vampire | undead",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 322,
@@ -2610,7 +2610,7 @@ export const emojis: Emoji[] = [
     char: "🧛‍♀️",
     name: "woman vampire",
     keywords: "undead | woman vampire",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 323,
@@ -2618,7 +2618,7 @@ export const emojis: Emoji[] = [
     char: "🧜",
     name: "merperson",
     keywords: "mermaid | merman | merperson | merwoman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 324,
@@ -2626,7 +2626,7 @@ export const emojis: Emoji[] = [
     char: "🧜‍♂️",
     name: "merman",
     keywords: "merman | Triton",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 325,
@@ -2634,7 +2634,7 @@ export const emojis: Emoji[] = [
     char: "🧜‍♀️",
     name: "mermaid",
     keywords: "mermaid | merwoman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 326,
@@ -2642,7 +2642,7 @@ export const emojis: Emoji[] = [
     char: "🧝",
     name: "elf",
     keywords: "elf | magical | LOTR style",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 327,
@@ -2650,7 +2650,7 @@ export const emojis: Emoji[] = [
     char: "🧝‍♂️",
     name: "man elf",
     keywords: "magical | man elf",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 328,
@@ -2658,7 +2658,7 @@ export const emojis: Emoji[] = [
     char: "🧝‍♀️",
     name: "woman elf",
     keywords: "magical | woman elf",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 329,
@@ -2666,7 +2666,7 @@ export const emojis: Emoji[] = [
     char: "🧞",
     name: "genie",
     keywords: "djinn | genie | (non-human color)",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 330,
@@ -2674,7 +2674,7 @@ export const emojis: Emoji[] = [
     char: "🧞‍♂️",
     name: "man genie",
     keywords: "djinn | man genie",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 331,
@@ -2682,7 +2682,7 @@ export const emojis: Emoji[] = [
     char: "🧞‍♀️",
     name: "woman genie",
     keywords: "djinn | woman genie",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 332,
@@ -2690,7 +2690,7 @@ export const emojis: Emoji[] = [
     char: "🧟",
     name: "zombie",
     keywords: "undead | walking dead | zombie | (non-human color)",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 333,
@@ -2698,7 +2698,7 @@ export const emojis: Emoji[] = [
     char: "🧟‍♂️",
     name: "man zombie",
     keywords: "man zombie | undead | walking dead",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 334,
@@ -2706,7 +2706,7 @@ export const emojis: Emoji[] = [
     char: "🧟‍♀️",
     name: "woman zombie",
     keywords: "undead | walking dead | woman zombie",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 335,
@@ -2714,7 +2714,7 @@ export const emojis: Emoji[] = [
     char: "💆",
     name: "person getting massage",
     keywords: "face | massage | person getting massage | salon",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 336,
@@ -2722,7 +2722,7 @@ export const emojis: Emoji[] = [
     char: "💆‍♂️",
     name: "man getting massage",
     keywords: "face | man | man getting massage | massage",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 337,
@@ -2730,7 +2730,7 @@ export const emojis: Emoji[] = [
     char: "💆‍♀️",
     name: "woman getting massage",
     keywords: "face | massage | woman | woman getting massage",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 338,
@@ -2738,7 +2738,7 @@ export const emojis: Emoji[] = [
     char: "💇",
     name: "person getting haircut",
     keywords: "barber | beauty | haircut | parlor | person getting haircut",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 339,
@@ -2746,7 +2746,7 @@ export const emojis: Emoji[] = [
     char: "💇‍♂️",
     name: "man getting haircut",
     keywords: "haircut | man | man getting haircut",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 340,
@@ -2754,7 +2754,7 @@ export const emojis: Emoji[] = [
     char: "💇‍♀️",
     name: "woman getting haircut",
     keywords: "haircut | woman | woman getting haircut",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 341,
@@ -2762,7 +2762,7 @@ export const emojis: Emoji[] = [
     char: "🚶",
     name: "person walking",
     keywords: "hike | person walking | walk | walking",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 342,
@@ -2770,7 +2770,7 @@ export const emojis: Emoji[] = [
     char: "🚶‍♂️",
     name: "man walking",
     keywords: "hike | man | man walking | walk",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 343,
@@ -2778,7 +2778,7 @@ export const emojis: Emoji[] = [
     char: "🚶‍♀️",
     name: "woman walking",
     keywords: "hike | walk | woman | woman walking",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 344,
@@ -2786,7 +2786,7 @@ export const emojis: Emoji[] = [
     char: "🧍",
     name: "⊛ person standing",
     keywords: "person standing | stand | standing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 345,
@@ -2794,7 +2794,7 @@ export const emojis: Emoji[] = [
     char: "🧍‍♂️",
     name: "⊛ man standing",
     keywords: "man | standing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 346,
@@ -2802,7 +2802,7 @@ export const emojis: Emoji[] = [
     char: "🧍‍♀️",
     name: "⊛ woman standing",
     keywords: "standing | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 347,
@@ -2810,7 +2810,7 @@ export const emojis: Emoji[] = [
     char: "🧎",
     name: "⊛ person kneeling",
     keywords: "kneel | kneeling | person kneeling",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 348,
@@ -2818,7 +2818,7 @@ export const emojis: Emoji[] = [
     char: "🧎‍♂️",
     name: "⊛ man kneeling",
     keywords: "kneeling | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 349,
@@ -2826,7 +2826,7 @@ export const emojis: Emoji[] = [
     char: "🧎‍♀️",
     name: "⊛ woman kneeling",
     keywords: "kneeling | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 350,
@@ -2834,7 +2834,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🦯",
     name: "⊛ man with probing cane",
     keywords: "accessibility | blind | man | man with probing cane",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 351,
@@ -2842,7 +2842,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🦯",
     name: "⊛ woman with probing cane",
     keywords: "accessibility | blind | woman | woman with probing cane",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 352,
@@ -2850,7 +2850,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🦼",
     name: "⊛ man in motorized wheelchair",
     keywords: "accessibility | man | man in motorized wheelchair | wheelchair",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 353,
@@ -2859,7 +2859,7 @@ export const emojis: Emoji[] = [
     name: "⊛ woman in motorized wheelchair",
     keywords:
       "accessibility | wheelchair | woman | woman in motorized wheelchair",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 354,
@@ -2867,7 +2867,7 @@ export const emojis: Emoji[] = [
     char: "👨‍🦽",
     name: "⊛ man in manual wheelchair",
     keywords: "accessibility | man | man in manual wheelchair | wheelchair",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 355,
@@ -2875,7 +2875,7 @@ export const emojis: Emoji[] = [
     char: "👩‍🦽",
     name: "⊛ woman in manual wheelchair",
     keywords: "accessibility | wheelchair | woman | woman in manual wheelchair",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 356,
@@ -2883,7 +2883,7 @@ export const emojis: Emoji[] = [
     char: "🏃",
     name: "person running",
     keywords: "marathon | person running | running",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 357,
@@ -2891,7 +2891,7 @@ export const emojis: Emoji[] = [
     char: "🏃‍♂️",
     name: "man running",
     keywords: "man | marathon | racing | running",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 358,
@@ -2899,7 +2899,7 @@ export const emojis: Emoji[] = [
     char: "🏃‍♀️",
     name: "woman running",
     keywords: "marathon | racing | running | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 359,
@@ -2907,7 +2907,7 @@ export const emojis: Emoji[] = [
     char: "💃",
     name: "woman dancing",
     keywords: "dancing | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 360,
@@ -2915,7 +2915,7 @@ export const emojis: Emoji[] = [
     char: "🕺",
     name: "man dancing",
     keywords: "dance | man | man dancing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 361,
@@ -2923,7 +2923,7 @@ export const emojis: Emoji[] = [
     char: "🕴",
     name: "man in suit levitating",
     keywords: "business | man | man in suit levitating | suit",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 362,
@@ -2931,7 +2931,7 @@ export const emojis: Emoji[] = [
     char: "👯",
     name: "people with bunny ears",
     keywords: "bunny ear | dancer | partying | people with bunny ears",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 363,
@@ -2939,7 +2939,7 @@ export const emojis: Emoji[] = [
     char: "👯‍♂️",
     name: "men with bunny ears",
     keywords: "bunny ear | dancer | men | men with bunny ears | partying",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 364,
@@ -2947,7 +2947,7 @@ export const emojis: Emoji[] = [
     char: "👯‍♀️",
     name: "women with bunny ears",
     keywords: "bunny ear | dancer | partying | women | women with bunny ears",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 365,
@@ -2955,7 +2955,7 @@ export const emojis: Emoji[] = [
     char: "🧖",
     name: "person in steamy room",
     keywords: "person in steamy room | sauna | steam room | hamam | steambath",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 366,
@@ -2963,7 +2963,7 @@ export const emojis: Emoji[] = [
     char: "🧖‍♂️",
     name: "man in steamy room",
     keywords: "man in steamy room | sauna | steam room",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 367,
@@ -2971,7 +2971,7 @@ export const emojis: Emoji[] = [
     char: "🧖‍♀️",
     name: "woman in steamy room",
     keywords: "sauna | steam room | woman in steamy room",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 368,
@@ -2979,7 +2979,7 @@ export const emojis: Emoji[] = [
     char: "🧗",
     name: "person climbing",
     keywords: "climber | person climbing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 369,
@@ -2987,7 +2987,7 @@ export const emojis: Emoji[] = [
     char: "🧗‍♂️",
     name: "man climbing",
     keywords: "climber | man climbing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 370,
@@ -2995,7 +2995,7 @@ export const emojis: Emoji[] = [
     char: "🧗‍♀️",
     name: "woman climbing",
     keywords: "climber | woman climbing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 371,
@@ -3003,7 +3003,7 @@ export const emojis: Emoji[] = [
     char: "🤺",
     name: "person fencing",
     keywords: "fencer | fencing | person fencing | sword",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 372,
@@ -3011,7 +3011,7 @@ export const emojis: Emoji[] = [
     char: "🏇",
     name: "horse racing",
     keywords: "horse | jockey | racehorse | racing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 373,
@@ -3019,7 +3019,7 @@ export const emojis: Emoji[] = [
     char: "⛷",
     name: "skier",
     keywords: "ski | skier | snow",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 374,
@@ -3027,7 +3027,7 @@ export const emojis: Emoji[] = [
     char: "🏂",
     name: "snowboarder",
     keywords: "ski | snow | snowboard | snowboarder",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 375,
@@ -3035,7 +3035,7 @@ export const emojis: Emoji[] = [
     char: "🏌",
     name: "person golfing",
     keywords: "ball | golf | person golfing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 376,
@@ -3043,7 +3043,7 @@ export const emojis: Emoji[] = [
     char: "🏌️‍♂️",
     name: "man golfing",
     keywords: "golf | man | man golfing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 377,
@@ -3051,7 +3051,7 @@ export const emojis: Emoji[] = [
     char: "🏌️‍♀️",
     name: "woman golfing",
     keywords: "golf | woman | woman golfing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 378,
@@ -3059,7 +3059,7 @@ export const emojis: Emoji[] = [
     char: "🏄",
     name: "person surfing",
     keywords: "person surfing | surfing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 379,
@@ -3067,7 +3067,7 @@ export const emojis: Emoji[] = [
     char: "🏄‍♂️",
     name: "man surfing",
     keywords: "man | surfing",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 380,
@@ -3075,7 +3075,7 @@ export const emojis: Emoji[] = [
     char: "🏄‍♀️",
     name: "woman surfing",
     keywords: "surfing | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 381,
@@ -3083,7 +3083,7 @@ export const emojis: Emoji[] = [
     char: "🚣",
     name: "person rowing boat",
     keywords: "boat | person rowing boat | rowboat",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 382,
@@ -3091,7 +3091,7 @@ export const emojis: Emoji[] = [
     char: "🚣‍♂️",
     name: "man rowing boat",
     keywords: "boat | man | man rowing boat | rowboat",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 383,
@@ -3099,7 +3099,7 @@ export const emojis: Emoji[] = [
     char: "🚣‍♀️",
     name: "woman rowing boat",
     keywords: "boat | rowboat | woman | woman rowing boat",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 384,
@@ -3107,7 +3107,7 @@ export const emojis: Emoji[] = [
     char: "🏊",
     name: "person swimming",
     keywords: "person swimming | swim",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 385,
@@ -3115,7 +3115,7 @@ export const emojis: Emoji[] = [
     char: "🏊‍♂️",
     name: "man swimming",
     keywords: "man | man swimming | swim",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 386,
@@ -3123,7 +3123,7 @@ export const emojis: Emoji[] = [
     char: "🏊‍♀️",
     name: "woman swimming",
     keywords: "swim | woman | woman swimming",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 387,
@@ -3131,7 +3131,7 @@ export const emojis: Emoji[] = [
     char: "⛹",
     name: "person bouncing ball",
     keywords: "ball | person bouncing ball",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 388,
@@ -3139,7 +3139,7 @@ export const emojis: Emoji[] = [
     char: "⛹️‍♂️",
     name: "man bouncing ball",
     keywords: "ball | man | man bouncing ball",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 389,
@@ -3147,7 +3147,7 @@ export const emojis: Emoji[] = [
     char: "⛹️‍♀️",
     name: "woman bouncing ball",
     keywords: "ball | woman | woman bouncing ball",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 390,
@@ -3155,7 +3155,7 @@ export const emojis: Emoji[] = [
     char: "🏋",
     name: "person lifting weights",
     keywords: "lifter | person lifting weights | weight",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 391,
@@ -3163,7 +3163,7 @@ export const emojis: Emoji[] = [
     char: "🏋️‍♂️",
     name: "man lifting weights",
     keywords: "man | man lifting weights | weight lifter",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 392,
@@ -3171,7 +3171,7 @@ export const emojis: Emoji[] = [
     char: "🏋️‍♀️",
     name: "woman lifting weights",
     keywords: "weight lifter | woman | woman lifting weights",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 393,
@@ -3179,7 +3179,7 @@ export const emojis: Emoji[] = [
     char: "🚴",
     name: "person biking",
     keywords: "bicycle | biking | cyclist | person biking",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 394,
@@ -3187,7 +3187,7 @@ export const emojis: Emoji[] = [
     char: "🚴‍♂️",
     name: "man biking",
     keywords: "bicycle | biking | cyclist | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 395,
@@ -3195,7 +3195,7 @@ export const emojis: Emoji[] = [
     char: "🚴‍♀️",
     name: "woman biking",
     keywords: "bicycle | biking | cyclist | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 396,
@@ -3204,7 +3204,7 @@ export const emojis: Emoji[] = [
     name: "person mountain biking",
     keywords:
       "bicycle | bicyclist | bike | cyclist | mountain | person mountain biking",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 397,
@@ -3212,7 +3212,7 @@ export const emojis: Emoji[] = [
     char: "🚵‍♂️",
     name: "man mountain biking",
     keywords: "bicycle | bike | cyclist | man | man mountain biking | mountain",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 398,
@@ -3220,7 +3220,7 @@ export const emojis: Emoji[] = [
     char: "🚵‍♀️",
     name: "woman mountain biking",
     keywords: "bicycle | bike | biking | cyclist | mountain | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 399,
@@ -3228,7 +3228,7 @@ export const emojis: Emoji[] = [
     char: "🤸",
     name: "person cartwheeling",
     keywords: "cartwheel | gymnastics | person cartwheeling",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 400,
@@ -3236,7 +3236,7 @@ export const emojis: Emoji[] = [
     char: "🤸‍♂️",
     name: "man cartwheeling",
     keywords: "cartwheel | gymnastics | man | man cartwheeling",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 401,
@@ -3244,7 +3244,7 @@ export const emojis: Emoji[] = [
     char: "🤸‍♀️",
     name: "woman cartwheeling",
     keywords: "cartwheel | gymnastics | woman | woman cartwheeling",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 402,
@@ -3252,7 +3252,7 @@ export const emojis: Emoji[] = [
     char: "🤼",
     name: "people wrestling",
     keywords: "people wrestling | wrestle | wrestler",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 403,
@@ -3260,7 +3260,7 @@ export const emojis: Emoji[] = [
     char: "🤼‍♂️",
     name: "men wrestling",
     keywords: "men | men wrestling | wrestle",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 404,
@@ -3268,7 +3268,7 @@ export const emojis: Emoji[] = [
     char: "🤼‍♀️",
     name: "women wrestling",
     keywords: "women | women wrestling | wrestle",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 405,
@@ -3276,7 +3276,7 @@ export const emojis: Emoji[] = [
     char: "🤽",
     name: "person playing water polo",
     keywords: "person playing water polo | polo | water",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 406,
@@ -3284,7 +3284,7 @@ export const emojis: Emoji[] = [
     char: "🤽‍♂️",
     name: "man playing water polo",
     keywords: "man | man playing water polo | water polo",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 407,
@@ -3292,7 +3292,7 @@ export const emojis: Emoji[] = [
     char: "🤽‍♀️",
     name: "woman playing water polo",
     keywords: "water polo | woman | woman playing water polo",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 408,
@@ -3300,7 +3300,7 @@ export const emojis: Emoji[] = [
     char: "🤾",
     name: "person playing handball",
     keywords: "ball | handball | person playing handball",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 409,
@@ -3308,7 +3308,7 @@ export const emojis: Emoji[] = [
     char: "🤾‍♂️",
     name: "man playing handball",
     keywords: "handball | man | man playing handball",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 410,
@@ -3316,7 +3316,7 @@ export const emojis: Emoji[] = [
     char: "🤾‍♀️",
     name: "woman playing handball",
     keywords: "handball | woman | woman playing handball",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 411,
@@ -3324,7 +3324,7 @@ export const emojis: Emoji[] = [
     char: "🤹",
     name: "person juggling",
     keywords: "balance | juggle | multitask | person juggling | skill",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 412,
@@ -3332,7 +3332,7 @@ export const emojis: Emoji[] = [
     char: "🤹‍♂️",
     name: "man juggling",
     keywords: "juggling | man | multitask",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 413,
@@ -3340,7 +3340,7 @@ export const emojis: Emoji[] = [
     char: "🤹‍♀️",
     name: "woman juggling",
     keywords: "juggling | multitask | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 414,
@@ -3348,7 +3348,7 @@ export const emojis: Emoji[] = [
     char: "🧘",
     name: "person in lotus position",
     keywords: "meditation | person in lotus position | yoga | serenity",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 415,
@@ -3356,7 +3356,7 @@ export const emojis: Emoji[] = [
     char: "🧘‍♂️",
     name: "man in lotus position",
     keywords: "man in lotus position | meditation | yoga",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 416,
@@ -3364,7 +3364,7 @@ export const emojis: Emoji[] = [
     char: "🧘‍♀️",
     name: "woman in lotus position",
     keywords: "meditation | woman in lotus position | yoga",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 417,
@@ -3372,7 +3372,7 @@ export const emojis: Emoji[] = [
     char: "🛀",
     name: "person taking bath",
     keywords: "bath | bathtub | person taking bath",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 418,
@@ -3380,7 +3380,7 @@ export const emojis: Emoji[] = [
     char: "🛌",
     name: "person in bed",
     keywords: "hotel | person in bed | sleep",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 419,
@@ -3389,7 +3389,7 @@ export const emojis: Emoji[] = [
     name: "⊛ people holding hands",
     keywords:
       "couple | hand | hold | holding hands | people holding hands | person",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 420,
@@ -3397,7 +3397,7 @@ export const emojis: Emoji[] = [
     char: "👭",
     name: "women holding hands",
     keywords: "couple | hand | holding hands | women | women holding hands",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 421,
@@ -3406,7 +3406,7 @@ export const emojis: Emoji[] = [
     name: "woman and man holding hands",
     keywords:
       "couple | hand | hold | holding hands | man | woman | woman and man holding hands",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 422,
@@ -3415,7 +3415,7 @@ export const emojis: Emoji[] = [
     name: "men holding hands",
     keywords:
       "couple | Gemini | holding hands | man | men | men holding hands | twins | zodiac",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 423,
@@ -3423,7 +3423,7 @@ export const emojis: Emoji[] = [
     char: "💏",
     name: "kiss",
     keywords: "couple | kiss",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 424,
@@ -3431,7 +3431,7 @@ export const emojis: Emoji[] = [
     char: "👩‍❤️‍💋‍👨",
     name: "kiss: woman, man",
     keywords: "couple | kiss | man | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 425,
@@ -3439,7 +3439,7 @@ export const emojis: Emoji[] = [
     char: "👨‍❤️‍💋‍👨",
     name: "kiss: man, man",
     keywords: "couple | kiss | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 426,
@@ -3447,7 +3447,7 @@ export const emojis: Emoji[] = [
     char: "👩‍❤️‍💋‍👩",
     name: "kiss: woman, woman",
     keywords: "couple | kiss | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 427,
@@ -3455,7 +3455,7 @@ export const emojis: Emoji[] = [
     char: "💑",
     name: "couple with heart",
     keywords: "couple | couple with heart | love",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 428,
@@ -3463,7 +3463,7 @@ export const emojis: Emoji[] = [
     char: "👩‍❤️‍👨",
     name: "couple with heart: woman, man",
     keywords: "couple | couple with heart | love | man | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 429,
@@ -3471,7 +3471,7 @@ export const emojis: Emoji[] = [
     char: "👨‍❤️‍👨",
     name: "couple with heart: man, man",
     keywords: "couple | couple with heart | love | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 430,
@@ -3479,7 +3479,7 @@ export const emojis: Emoji[] = [
     char: "👩‍❤️‍👩",
     name: "couple with heart: woman, woman",
     keywords: "couple | couple with heart | love | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 431,
@@ -3487,7 +3487,7 @@ export const emojis: Emoji[] = [
     char: "👪",
     name: "family",
     keywords: "family",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 432,
@@ -3495,7 +3495,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👩‍👦",
     name: "family: man, woman, boy",
     keywords: "boy | family | man | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 433,
@@ -3503,7 +3503,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👩‍👧",
     name: "family: man, woman, girl",
     keywords: "family | girl | man | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 434,
@@ -3511,7 +3511,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👩‍👧‍👦",
     name: "family: man, woman, girl, boy",
     keywords: "boy | family | girl | man | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 435,
@@ -3519,7 +3519,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👩‍👦‍👦",
     name: "family: man, woman, boy, boy",
     keywords: "boy | family | man | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 436,
@@ -3527,7 +3527,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👩‍👧‍👧",
     name: "family: man, woman, girl, girl",
     keywords: "family | girl | man | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 437,
@@ -3535,7 +3535,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👨‍👦",
     name: "family: man, man, boy",
     keywords: "boy | family | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 438,
@@ -3543,7 +3543,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👨‍👧",
     name: "family: man, man, girl",
     keywords: "family | girl | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 439,
@@ -3551,7 +3551,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👨‍👧‍👦",
     name: "family: man, man, girl, boy",
     keywords: "boy | family | girl | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 440,
@@ -3559,7 +3559,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👨‍👦‍👦",
     name: "family: man, man, boy, boy",
     keywords: "boy | family | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 441,
@@ -3567,7 +3567,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👨‍👧‍👧",
     name: "family: man, man, girl, girl",
     keywords: "family | girl | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 442,
@@ -3575,7 +3575,7 @@ export const emojis: Emoji[] = [
     char: "👩‍👩‍👦",
     name: "family: woman, woman, boy",
     keywords: "boy | family | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 443,
@@ -3583,7 +3583,7 @@ export const emojis: Emoji[] = [
     char: "👩‍👩‍👧",
     name: "family: woman, woman, girl",
     keywords: "family | girl | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 444,
@@ -3591,7 +3591,7 @@ export const emojis: Emoji[] = [
     char: "👩‍👩‍👧‍👦",
     name: "family: woman, woman, girl, boy",
     keywords: "boy | family | girl | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 445,
@@ -3599,7 +3599,7 @@ export const emojis: Emoji[] = [
     char: "👩‍👩‍👦‍👦",
     name: "family: woman, woman, boy, boy",
     keywords: "boy | family | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 446,
@@ -3607,7 +3607,7 @@ export const emojis: Emoji[] = [
     char: "👩‍👩‍👧‍👧",
     name: "family: woman, woman, girl, girl",
     keywords: "family | girl | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 447,
@@ -3615,7 +3615,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👦",
     name: "family: man, boy",
     keywords: "boy | family | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 448,
@@ -3623,7 +3623,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👦‍👦",
     name: "family: man, boy, boy",
     keywords: "boy | family | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 449,
@@ -3631,7 +3631,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👧",
     name: "family: man, girl",
     keywords: "family | girl | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 450,
@@ -3639,7 +3639,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👧‍👦",
     name: "family: man, girl, boy",
     keywords: "boy | family | girl | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 451,
@@ -3647,7 +3647,7 @@ export const emojis: Emoji[] = [
     char: "👨‍👧‍👧",
     name: "family: man, girl, girl",
     keywords: "family | girl | man",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 452,
@@ -3655,7 +3655,7 @@ export const emojis: Emoji[] = [
     char: "👩‍👦",
     name: "family: woman, boy",
     keywords: "boy | family | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 453,
@@ -3663,7 +3663,7 @@ export const emojis: Emoji[] = [
     char: "👩‍👦‍👦",
     name: "family: woman, boy, boy",
     keywords: "boy | family | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 454,
@@ -3671,7 +3671,7 @@ export const emojis: Emoji[] = [
     char: "👩‍👧",
     name: "family: woman, girl",
     keywords: "family | girl | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 455,
@@ -3679,7 +3679,7 @@ export const emojis: Emoji[] = [
     char: "👩‍👧‍👦",
     name: "family: woman, girl, boy",
     keywords: "boy | family | girl | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 456,
@@ -3687,7 +3687,7 @@ export const emojis: Emoji[] = [
     char: "👩‍👧‍👧",
     name: "family: woman, girl, girl",
     keywords: "family | girl | woman",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 457,
@@ -3695,7 +3695,7 @@ export const emojis: Emoji[] = [
     char: "🗣",
     name: "speaking head",
     keywords: "face | head | silhouette | speak | speaking",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 458,
@@ -3703,7 +3703,7 @@ export const emojis: Emoji[] = [
     char: "👤",
     name: "bust in silhouette",
     keywords: "bust | bust in silhouette | silhouette",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 459,
@@ -3711,7 +3711,7 @@ export const emojis: Emoji[] = [
     char: "👥",
     name: "busts in silhouette",
     keywords: "bust | busts in silhouette | silhouette",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 460,
@@ -3719,7 +3719,7 @@ export const emojis: Emoji[] = [
     char: "👣",
     name: "footprints",
     keywords: "clothing | footprint | footprints | print",
-    category: "People & Body"
+    category: "People & Body",
   },
   {
     no: 461,
@@ -3728,7 +3728,7 @@ export const emojis: Emoji[] = [
     name: "red hair",
     keywords:
       "ginger | red hair | redhead\n➯ Component for use in RGI sequences. Isolated images should have dotted borders.",
-    category: "Component"
+    category: "Component",
   },
   {
     no: 462,
@@ -3737,7 +3737,7 @@ export const emojis: Emoji[] = [
     name: "curly hair",
     keywords:
       "afro | curly | curly hair | ringlets\n➯ Component for use in RGI sequences. Isolated images should have dotted borders.",
-    category: "Component"
+    category: "Component",
   },
   {
     no: 463,
@@ -3746,7 +3746,7 @@ export const emojis: Emoji[] = [
     name: "white hair",
     keywords:
       "gray | hair | old | white\n➯ Component for use in RGI sequences. Isolated images should have dotted borders.",
-    category: "Component"
+    category: "Component",
   },
   {
     no: 464,
@@ -3755,7 +3755,7 @@ export const emojis: Emoji[] = [
     name: "bald",
     keywords:
       "bald | chemotherapy | hairless | no hair | shaven\n➯ Component for use in RGI sequences. Isolated images should have dotted borders.",
-    category: "Component"
+    category: "Component",
   },
   {
     no: 465,
@@ -3763,7 +3763,7 @@ export const emojis: Emoji[] = [
     char: "🐵",
     name: "monkey face",
     keywords: "face | monkey",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 466,
@@ -3771,7 +3771,7 @@ export const emojis: Emoji[] = [
     char: "🐒",
     name: "monkey",
     keywords: "monkey",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 467,
@@ -3779,7 +3779,7 @@ export const emojis: Emoji[] = [
     char: "🦍",
     name: "gorilla",
     keywords: "gorilla",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 468,
@@ -3787,7 +3787,7 @@ export const emojis: Emoji[] = [
     char: "🦧",
     name: "⊛ orangutan",
     keywords: "ape | orangutan",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 469,
@@ -3795,7 +3795,7 @@ export const emojis: Emoji[] = [
     char: "🐶",
     name: "dog face",
     keywords: "dog | face | pet",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 470,
@@ -3803,7 +3803,7 @@ export const emojis: Emoji[] = [
     char: "🐕",
     name: "dog",
     keywords: "dog | pet",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 471,
@@ -3811,7 +3811,7 @@ export const emojis: Emoji[] = [
     char: "🦮",
     name: "⊛ guide dog",
     keywords: "accessibility | blind | guide | guide dog",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 472,
@@ -3819,7 +3819,7 @@ export const emojis: Emoji[] = [
     char: "🐕‍🦺",
     name: "⊛ service dog",
     keywords: "accessibility | assistance | dog | service",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 473,
@@ -3827,7 +3827,7 @@ export const emojis: Emoji[] = [
     char: "🐩",
     name: "poodle",
     keywords: "dog | poodle",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 474,
@@ -3835,7 +3835,7 @@ export const emojis: Emoji[] = [
     char: "🐺",
     name: "wolf",
     keywords: "face | wolf",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 475,
@@ -3843,7 +3843,7 @@ export const emojis: Emoji[] = [
     char: "🦊",
     name: "fox",
     keywords: "face | fox",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 476,
@@ -3851,7 +3851,7 @@ export const emojis: Emoji[] = [
     char: "🦝",
     name: "raccoon",
     keywords: "curious | raccoon | sly",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 477,
@@ -3859,7 +3859,7 @@ export const emojis: Emoji[] = [
     char: "🐱",
     name: "cat face",
     keywords: "cat | face | pet",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 478,
@@ -3867,7 +3867,7 @@ export const emojis: Emoji[] = [
     char: "🐈",
     name: "cat",
     keywords: "cat | pet",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 479,
@@ -3875,7 +3875,7 @@ export const emojis: Emoji[] = [
     char: "🦁",
     name: "lion",
     keywords: "face | Leo | lion | zodiac",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 480,
@@ -3883,7 +3883,7 @@ export const emojis: Emoji[] = [
     char: "🐯",
     name: "tiger face",
     keywords: "face | tiger",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 481,
@@ -3891,7 +3891,7 @@ export const emojis: Emoji[] = [
     char: "🐅",
     name: "tiger",
     keywords: "tiger",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 482,
@@ -3899,7 +3899,7 @@ export const emojis: Emoji[] = [
     char: "🐆",
     name: "leopard",
     keywords: "leopard",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 483,
@@ -3907,7 +3907,7 @@ export const emojis: Emoji[] = [
     char: "🐴",
     name: "horse face",
     keywords: "face | horse",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 484,
@@ -3915,7 +3915,7 @@ export const emojis: Emoji[] = [
     char: "🐎",
     name: "horse",
     keywords: "equestrian | horse | racehorse | racing",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 485,
@@ -3923,7 +3923,7 @@ export const emojis: Emoji[] = [
     char: "🦄",
     name: "unicorn",
     keywords: "face | unicorn",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 486,
@@ -3931,7 +3931,7 @@ export const emojis: Emoji[] = [
     char: "🦓",
     name: "zebra",
     keywords: "stripe | zebra",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 487,
@@ -3939,7 +3939,7 @@ export const emojis: Emoji[] = [
     char: "🦌",
     name: "deer",
     keywords: "deer",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 488,
@@ -3947,7 +3947,7 @@ export const emojis: Emoji[] = [
     char: "🐮",
     name: "cow face",
     keywords: "cow | face",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 489,
@@ -3955,7 +3955,7 @@ export const emojis: Emoji[] = [
     char: "🐂",
     name: "ox",
     keywords: "bull | ox | Taurus | zodiac",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 490,
@@ -3963,7 +3963,7 @@ export const emojis: Emoji[] = [
     char: "🐃",
     name: "water buffalo",
     keywords: "buffalo | water",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 491,
@@ -3971,7 +3971,7 @@ export const emojis: Emoji[] = [
     char: "🐄",
     name: "cow",
     keywords: "cow",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 492,
@@ -3979,7 +3979,7 @@ export const emojis: Emoji[] = [
     char: "🐷",
     name: "pig face",
     keywords: "face | pig",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 493,
@@ -3987,7 +3987,7 @@ export const emojis: Emoji[] = [
     char: "🐖",
     name: "pig",
     keywords: "pig | sow",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 494,
@@ -3995,7 +3995,7 @@ export const emojis: Emoji[] = [
     char: "🐗",
     name: "boar",
     keywords: "boar | pig",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 495,
@@ -4003,7 +4003,7 @@ export const emojis: Emoji[] = [
     char: "🐽",
     name: "pig nose",
     keywords: "face | nose | pig",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 496,
@@ -4011,7 +4011,7 @@ export const emojis: Emoji[] = [
     char: "🐏",
     name: "ram",
     keywords: "Aries | male | ram | sheep | zodiac",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 497,
@@ -4019,7 +4019,7 @@ export const emojis: Emoji[] = [
     char: "🐑",
     name: "ewe",
     keywords: "ewe | female | sheep",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 498,
@@ -4027,7 +4027,7 @@ export const emojis: Emoji[] = [
     char: "🐐",
     name: "goat",
     keywords: "Capricorn | goat | zodiac",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 499,
@@ -4035,7 +4035,7 @@ export const emojis: Emoji[] = [
     char: "🐪",
     name: "camel",
     keywords: "camel | dromedary | hump",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 500,
@@ -4043,7 +4043,7 @@ export const emojis: Emoji[] = [
     char: "🐫",
     name: "two-hump camel",
     keywords: "bactrian | camel | hump | two-hump camel",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 501,
@@ -4051,7 +4051,7 @@ export const emojis: Emoji[] = [
     char: "🦙",
     name: "llama",
     keywords: "alpaca | guanaco | llama | vicuña | wool",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 502,
@@ -4059,7 +4059,7 @@ export const emojis: Emoji[] = [
     char: "🦒",
     name: "giraffe",
     keywords: "giraffe | spots",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 503,
@@ -4067,7 +4067,7 @@ export const emojis: Emoji[] = [
     char: "🐘",
     name: "elephant",
     keywords: "elephant",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 504,
@@ -4075,7 +4075,7 @@ export const emojis: Emoji[] = [
     char: "🦏",
     name: "rhinoceros",
     keywords: "rhinoceros",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 505,
@@ -4083,7 +4083,7 @@ export const emojis: Emoji[] = [
     char: "🦛",
     name: "hippopotamus",
     keywords: "hippo | hippopotamus",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 506,
@@ -4091,7 +4091,7 @@ export const emojis: Emoji[] = [
     char: "🐭",
     name: "mouse face",
     keywords: "face | mouse",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 507,
@@ -4099,7 +4099,7 @@ export const emojis: Emoji[] = [
     char: "🐁",
     name: "mouse",
     keywords: "mouse",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 508,
@@ -4107,7 +4107,7 @@ export const emojis: Emoji[] = [
     char: "🐀",
     name: "rat",
     keywords: "rat",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 509,
@@ -4115,7 +4115,7 @@ export const emojis: Emoji[] = [
     char: "🐹",
     name: "hamster",
     keywords: "face | hamster | pet",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 510,
@@ -4123,7 +4123,7 @@ export const emojis: Emoji[] = [
     char: "🐰",
     name: "rabbit face",
     keywords: "bunny | face | pet | rabbit",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 511,
@@ -4131,7 +4131,7 @@ export const emojis: Emoji[] = [
     char: "🐇",
     name: "rabbit",
     keywords: "bunny | pet | rabbit",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 512,
@@ -4139,7 +4139,7 @@ export const emojis: Emoji[] = [
     char: "🐿",
     name: "chipmunk",
     keywords: "chipmunk | squirrel",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 513,
@@ -4147,7 +4147,7 @@ export const emojis: Emoji[] = [
     char: "🦔",
     name: "hedgehog",
     keywords: "hedgehog | spiny",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 514,
@@ -4155,7 +4155,7 @@ export const emojis: Emoji[] = [
     char: "🦇",
     name: "bat",
     keywords: "bat | vampire",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 515,
@@ -4163,7 +4163,7 @@ export const emojis: Emoji[] = [
     char: "🐻",
     name: "bear",
     keywords: "bear | face",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 516,
@@ -4171,7 +4171,7 @@ export const emojis: Emoji[] = [
     char: "🐨",
     name: "koala",
     keywords: "bear | koala",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 517,
@@ -4179,7 +4179,7 @@ export const emojis: Emoji[] = [
     char: "🐼",
     name: "panda",
     keywords: "face | panda",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 518,
@@ -4187,7 +4187,7 @@ export const emojis: Emoji[] = [
     char: "🦥",
     name: "⊛ sloth",
     keywords: "lazy | sloth | slow",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 519,
@@ -4195,7 +4195,7 @@ export const emojis: Emoji[] = [
     char: "🦦",
     name: "⊛ otter",
     keywords: "fishing | otter | playful",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 520,
@@ -4203,7 +4203,7 @@ export const emojis: Emoji[] = [
     char: "🦨",
     name: "⊛ skunk",
     keywords: "skunk | stink",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 521,
@@ -4211,7 +4211,7 @@ export const emojis: Emoji[] = [
     char: "🦘",
     name: "kangaroo",
     keywords: "Australia | joey | jump | kangaroo | marsupial",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 522,
@@ -4219,7 +4219,7 @@ export const emojis: Emoji[] = [
     char: "🦡",
     name: "badger",
     keywords: "badger | honey badger | pester",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 523,
@@ -4227,7 +4227,7 @@ export const emojis: Emoji[] = [
     char: "🐾",
     name: "paw prints",
     keywords: "feet | paw | paw prints | print",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 524,
@@ -4235,7 +4235,7 @@ export const emojis: Emoji[] = [
     char: "🦃",
     name: "turkey",
     keywords: "bird | turkey",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 525,
@@ -4243,7 +4243,7 @@ export const emojis: Emoji[] = [
     char: "🐔",
     name: "chicken",
     keywords: "bird | chicken",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 526,
@@ -4251,7 +4251,7 @@ export const emojis: Emoji[] = [
     char: "🐓",
     name: "rooster",
     keywords: "bird | rooster",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 527,
@@ -4259,7 +4259,7 @@ export const emojis: Emoji[] = [
     char: "🐣",
     name: "hatching chick",
     keywords: "baby | bird | chick | hatching",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 528,
@@ -4267,7 +4267,7 @@ export const emojis: Emoji[] = [
     char: "🐤",
     name: "baby chick",
     keywords: "baby | bird | chick",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 529,
@@ -4275,7 +4275,7 @@ export const emojis: Emoji[] = [
     char: "🐥",
     name: "front-facing baby chick",
     keywords: "baby | bird | chick | front-facing baby chick",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 530,
@@ -4283,7 +4283,7 @@ export const emojis: Emoji[] = [
     char: "🐦",
     name: "bird",
     keywords: "bird",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 531,
@@ -4291,7 +4291,7 @@ export const emojis: Emoji[] = [
     char: "🐧",
     name: "penguin",
     keywords: "bird | penguin",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 532,
@@ -4299,7 +4299,7 @@ export const emojis: Emoji[] = [
     char: "🕊",
     name: "dove",
     keywords: "bird | dove | fly | peace",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 533,
@@ -4307,7 +4307,7 @@ export const emojis: Emoji[] = [
     char: "🦅",
     name: "eagle",
     keywords: "bird | eagle",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 534,
@@ -4315,7 +4315,7 @@ export const emojis: Emoji[] = [
     char: "🦆",
     name: "duck",
     keywords: "bird | duck",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 535,
@@ -4323,7 +4323,7 @@ export const emojis: Emoji[] = [
     char: "🦢",
     name: "swan",
     keywords: "bird | cygnet | swan | ugly duckling",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 536,
@@ -4331,7 +4331,7 @@ export const emojis: Emoji[] = [
     char: "🦉",
     name: "owl",
     keywords: "bird | owl | wise",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 537,
@@ -4339,7 +4339,7 @@ export const emojis: Emoji[] = [
     char: "🦩",
     name: "⊛ flamingo",
     keywords: "flamboyant | flamingo | tropical",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 538,
@@ -4347,7 +4347,7 @@ export const emojis: Emoji[] = [
     char: "🦚",
     name: "peacock",
     keywords: "bird | ostentatious | peacock | peahen | proud",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 539,
@@ -4355,7 +4355,7 @@ export const emojis: Emoji[] = [
     char: "🦜",
     name: "parrot",
     keywords: "bird | parrot | pirate | talk",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 540,
@@ -4363,7 +4363,7 @@ export const emojis: Emoji[] = [
     char: "🐸",
     name: "frog",
     keywords: "face | frog",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 541,
@@ -4371,7 +4371,7 @@ export const emojis: Emoji[] = [
     char: "🐊",
     name: "crocodile",
     keywords: "crocodile",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 542,
@@ -4379,7 +4379,7 @@ export const emojis: Emoji[] = [
     char: "🐢",
     name: "turtle",
     keywords: "terrapin | tortoise | turtle",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 543,
@@ -4387,7 +4387,7 @@ export const emojis: Emoji[] = [
     char: "🦎",
     name: "lizard",
     keywords: "lizard | reptile",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 544,
@@ -4395,7 +4395,7 @@ export const emojis: Emoji[] = [
     char: "🐍",
     name: "snake",
     keywords: "bearer | Ophiuchus | serpent | snake | zodiac",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 545,
@@ -4403,7 +4403,7 @@ export const emojis: Emoji[] = [
     char: "🐲",
     name: "dragon face",
     keywords: "dragon | face | fairy tale",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 546,
@@ -4411,7 +4411,7 @@ export const emojis: Emoji[] = [
     char: "🐉",
     name: "dragon",
     keywords: "dragon | fairy tale",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 547,
@@ -4419,7 +4419,7 @@ export const emojis: Emoji[] = [
     char: "🦕",
     name: "sauropod",
     keywords: "brachiosaurus | brontosaurus | diplodocus | sauropod",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 548,
@@ -4427,7 +4427,7 @@ export const emojis: Emoji[] = [
     char: "🦖",
     name: "T-Rex",
     keywords: "T-Rex | Tyrannosaurus Rex",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 549,
@@ -4435,7 +4435,7 @@ export const emojis: Emoji[] = [
     char: "🐳",
     name: "spouting whale",
     keywords: "face | spouting | whale",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 550,
@@ -4443,7 +4443,7 @@ export const emojis: Emoji[] = [
     char: "🐋",
     name: "whale",
     keywords: "whale",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 551,
@@ -4451,7 +4451,7 @@ export const emojis: Emoji[] = [
     char: "🐬",
     name: "dolphin",
     keywords: "dolphin | flipper",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 552,
@@ -4459,7 +4459,7 @@ export const emojis: Emoji[] = [
     char: "🐟",
     name: "fish",
     keywords: "fish | Pisces | zodiac",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 553,
@@ -4467,7 +4467,7 @@ export const emojis: Emoji[] = [
     char: "🐠",
     name: "tropical fish",
     keywords: "fish | tropical",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 554,
@@ -4475,7 +4475,7 @@ export const emojis: Emoji[] = [
     char: "🐡",
     name: "blowfish",
     keywords: "blowfish | fish",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 555,
@@ -4483,7 +4483,7 @@ export const emojis: Emoji[] = [
     char: "🦈",
     name: "shark",
     keywords: "fish | shark",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 556,
@@ -4491,7 +4491,7 @@ export const emojis: Emoji[] = [
     char: "🐙",
     name: "octopus",
     keywords: "octopus",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 557,
@@ -4499,7 +4499,7 @@ export const emojis: Emoji[] = [
     char: "🐚",
     name: "spiral shell",
     keywords: "shell | spiral",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 558,
@@ -4507,7 +4507,7 @@ export const emojis: Emoji[] = [
     char: "🐌",
     name: "snail",
     keywords: "snail",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 559,
@@ -4515,7 +4515,7 @@ export const emojis: Emoji[] = [
     char: "🦋",
     name: "butterfly",
     keywords: "butterfly | insect | pretty",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 560,
@@ -4523,7 +4523,7 @@ export const emojis: Emoji[] = [
     char: "🐛",
     name: "bug",
     keywords: "bug | insect",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 561,
@@ -4531,7 +4531,7 @@ export const emojis: Emoji[] = [
     char: "🐜",
     name: "ant",
     keywords: "ant | insect",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 562,
@@ -4539,7 +4539,7 @@ export const emojis: Emoji[] = [
     char: "🐝",
     name: "honeybee",
     keywords: "bee | honeybee | insect",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 563,
@@ -4547,7 +4547,7 @@ export const emojis: Emoji[] = [
     char: "🐞",
     name: "lady beetle",
     keywords: "beetle | insect | lady beetle | ladybird | ladybug",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 564,
@@ -4555,7 +4555,7 @@ export const emojis: Emoji[] = [
     char: "🦗",
     name: "cricket",
     keywords: "cricket | grasshopper | Orthoptera",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 565,
@@ -4563,7 +4563,7 @@ export const emojis: Emoji[] = [
     char: "🕷",
     name: "spider",
     keywords: "insect | spider",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 566,
@@ -4571,7 +4571,7 @@ export const emojis: Emoji[] = [
     char: "🕸",
     name: "spider web",
     keywords: "spider | web",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 567,
@@ -4579,7 +4579,7 @@ export const emojis: Emoji[] = [
     char: "🦂",
     name: "scorpion",
     keywords: "scorpio | Scorpio | scorpion | zodiac",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 568,
@@ -4587,7 +4587,7 @@ export const emojis: Emoji[] = [
     char: "🦟",
     name: "mosquito",
     keywords: "disease | fever | insect | malaria | mosquito | virus",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 569,
@@ -4595,7 +4595,7 @@ export const emojis: Emoji[] = [
     char: "🦠",
     name: "microbe",
     keywords: "amoeba | bacteria | microbe | virus",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 570,
@@ -4603,7 +4603,7 @@ export const emojis: Emoji[] = [
     char: "💐",
     name: "bouquet",
     keywords: "bouquet | flower",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 571,
@@ -4611,7 +4611,7 @@ export const emojis: Emoji[] = [
     char: "🌸",
     name: "cherry blossom",
     keywords: "blossom | cherry | flower",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 572,
@@ -4619,7 +4619,7 @@ export const emojis: Emoji[] = [
     char: "💮",
     name: "white flower",
     keywords: "flower | white flower",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 573,
@@ -4627,7 +4627,7 @@ export const emojis: Emoji[] = [
     char: "🏵",
     name: "rosette",
     keywords: "plant | rosette",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 574,
@@ -4635,7 +4635,7 @@ export const emojis: Emoji[] = [
     char: "🌹",
     name: "rose",
     keywords: "flower | rose",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 575,
@@ -4643,7 +4643,7 @@ export const emojis: Emoji[] = [
     char: "🥀",
     name: "wilted flower",
     keywords: "flower | wilted",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 576,
@@ -4651,7 +4651,7 @@ export const emojis: Emoji[] = [
     char: "🌺",
     name: "hibiscus",
     keywords: "flower | hibiscus",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 577,
@@ -4659,7 +4659,7 @@ export const emojis: Emoji[] = [
     char: "🌻",
     name: "sunflower",
     keywords: "flower | sun | sunflower",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 578,
@@ -4667,7 +4667,7 @@ export const emojis: Emoji[] = [
     char: "🌼",
     name: "blossom",
     keywords: "blossom | flower",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 579,
@@ -4675,7 +4675,7 @@ export const emojis: Emoji[] = [
     char: "🌷",
     name: "tulip",
     keywords: "flower | tulip",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 580,
@@ -4683,7 +4683,7 @@ export const emojis: Emoji[] = [
     char: "🌱",
     name: "seedling",
     keywords: "seedling | young",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 581,
@@ -4691,7 +4691,7 @@ export const emojis: Emoji[] = [
     char: "🌲",
     name: "evergreen tree",
     keywords: "evergreen tree | tree",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 582,
@@ -4699,7 +4699,7 @@ export const emojis: Emoji[] = [
     char: "🌳",
     name: "deciduous tree",
     keywords: "deciduous | shedding | tree",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 583,
@@ -4707,7 +4707,7 @@ export const emojis: Emoji[] = [
     char: "🌴",
     name: "palm tree",
     keywords: "palm | tree",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 584,
@@ -4715,7 +4715,7 @@ export const emojis: Emoji[] = [
     char: "🌵",
     name: "cactus",
     keywords: "cactus | plant",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 585,
@@ -4723,7 +4723,7 @@ export const emojis: Emoji[] = [
     char: "🌾",
     name: "sheaf of rice",
     keywords: "ear | grain | rice | sheaf of rice",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 586,
@@ -4731,7 +4731,7 @@ export const emojis: Emoji[] = [
     char: "🌿",
     name: "herb",
     keywords: "herb | leaf",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 587,
@@ -4739,7 +4739,7 @@ export const emojis: Emoji[] = [
     char: "☘",
     name: "shamrock",
     keywords: "plant | shamrock",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 588,
@@ -4747,7 +4747,7 @@ export const emojis: Emoji[] = [
     char: "🍀",
     name: "four leaf clover",
     keywords: "4 | clover | four | four-leaf clover | leaf",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 589,
@@ -4755,7 +4755,7 @@ export const emojis: Emoji[] = [
     char: "🍁",
     name: "maple leaf",
     keywords: "falling | leaf | maple",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 590,
@@ -4763,7 +4763,7 @@ export const emojis: Emoji[] = [
     char: "🍂",
     name: "fallen leaf",
     keywords: "fallen leaf | falling | leaf",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 591,
@@ -4771,7 +4771,7 @@ export const emojis: Emoji[] = [
     char: "🍃",
     name: "leaf fluttering in wind",
     keywords: "blow | flutter | leaf | leaf fluttering in wind | wind",
-    category: "Animals & Nature"
+    category: "Animals & Nature",
   },
   {
     no: 592,
@@ -4779,7 +4779,7 @@ export const emojis: Emoji[] = [
     char: "🍇",
     name: "grapes",
     keywords: "fruit | grape | grapes",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 593,
@@ -4787,7 +4787,7 @@ export const emojis: Emoji[] = [
     char: "🍈",
     name: "melon",
     keywords: "fruit | melon",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 594,
@@ -4795,7 +4795,7 @@ export const emojis: Emoji[] = [
     char: "🍉",
     name: "watermelon",
     keywords: "fruit | watermelon",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 595,
@@ -4803,7 +4803,7 @@ export const emojis: Emoji[] = [
     char: "🍊",
     name: "tangerine",
     keywords: "fruit | orange | tangerine",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 596,
@@ -4811,7 +4811,7 @@ export const emojis: Emoji[] = [
     char: "🍋",
     name: "lemon",
     keywords: "citrus | fruit | lemon",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 597,
@@ -4819,7 +4819,7 @@ export const emojis: Emoji[] = [
     char: "🍌",
     name: "banana",
     keywords: "banana | fruit",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 598,
@@ -4827,7 +4827,7 @@ export const emojis: Emoji[] = [
     char: "🍍",
     name: "pineapple",
     keywords: "fruit | pineapple",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 599,
@@ -4835,7 +4835,7 @@ export const emojis: Emoji[] = [
     char: "🥭",
     name: "mango",
     keywords: "fruit | mango | tropical | shaker",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 600,
@@ -4843,7 +4843,7 @@ export const emojis: Emoji[] = [
     char: "🍎",
     name: "red apple",
     keywords: "apple | fruit | red",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 601,
@@ -4851,7 +4851,7 @@ export const emojis: Emoji[] = [
     char: "🍏",
     name: "green apple",
     keywords: "apple | fruit | green",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 602,
@@ -4859,7 +4859,7 @@ export const emojis: Emoji[] = [
     char: "🍐",
     name: "pear",
     keywords: "fruit | pear",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 603,
@@ -4867,7 +4867,7 @@ export const emojis: Emoji[] = [
     char: "🍑",
     name: "peach",
     keywords: "fruit | peach",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 604,
@@ -4875,7 +4875,7 @@ export const emojis: Emoji[] = [
     char: "🍒",
     name: "cherries",
     keywords: "berries | cherries | cherry | fruit | red",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 605,
@@ -4883,7 +4883,7 @@ export const emojis: Emoji[] = [
     char: "🍓",
     name: "strawberry",
     keywords: "berry | fruit | strawberry",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 606,
@@ -4891,7 +4891,7 @@ export const emojis: Emoji[] = [
     char: "🥝",
     name: "kiwi fruit",
     keywords: "food | fruit | kiwi",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 607,
@@ -4899,7 +4899,7 @@ export const emojis: Emoji[] = [
     char: "🍅",
     name: "tomato",
     keywords: "fruit | tomato | vegetable",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 608,
@@ -4907,7 +4907,7 @@ export const emojis: Emoji[] = [
     char: "🥥",
     name: "coconut",
     keywords: "coconut | palm | piña colada",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 609,
@@ -4915,7 +4915,7 @@ export const emojis: Emoji[] = [
     char: "🥑",
     name: "avocado",
     keywords: "avocado | food | fruit",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 610,
@@ -4923,7 +4923,7 @@ export const emojis: Emoji[] = [
     char: "🍆",
     name: "eggplant",
     keywords: "aubergine | eggplant | vegetable",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 611,
@@ -4931,7 +4931,7 @@ export const emojis: Emoji[] = [
     char: "🥔",
     name: "potato",
     keywords: "food | potato | vegetable",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 612,
@@ -4939,7 +4939,7 @@ export const emojis: Emoji[] = [
     char: "🥕",
     name: "carrot",
     keywords: "carrot | food | vegetable",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 613,
@@ -4947,7 +4947,7 @@ export const emojis: Emoji[] = [
     char: "🌽",
     name: "ear of corn",
     keywords: "corn | ear | ear of corn | maize | maze",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 614,
@@ -4955,7 +4955,7 @@ export const emojis: Emoji[] = [
     char: "🌶",
     name: "hot pepper",
     keywords: "hot | pepper",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 615,
@@ -4963,7 +4963,7 @@ export const emojis: Emoji[] = [
     char: "🥒",
     name: "cucumber",
     keywords: "cucumber | food | pickle | vegetable",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 616,
@@ -4971,7 +4971,7 @@ export const emojis: Emoji[] = [
     char: "🥬",
     name: "leafy green",
     keywords: "bok choy | cabbage | kale | leafy green | lettuce",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 617,
@@ -4979,7 +4979,7 @@ export const emojis: Emoji[] = [
     char: "🥦",
     name: "broccoli",
     keywords: "broccoli | wild cabbage",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 618,
@@ -4987,7 +4987,7 @@ export const emojis: Emoji[] = [
     char: "🧄",
     name: "⊛ garlic",
     keywords: "flavoring | garlic",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 619,
@@ -4995,7 +4995,7 @@ export const emojis: Emoji[] = [
     char: "🧅",
     name: "⊛ onion",
     keywords: "flavoring | onion",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 620,
@@ -5003,7 +5003,7 @@ export const emojis: Emoji[] = [
     char: "🍄",
     name: "mushroom",
     keywords: "mushroom | toadstool",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 621,
@@ -5011,7 +5011,7 @@ export const emojis: Emoji[] = [
     char: "🥜",
     name: "peanuts",
     keywords: "food | nut | peanut | peanuts | vegetable",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 622,
@@ -5019,7 +5019,7 @@ export const emojis: Emoji[] = [
     char: "🌰",
     name: "chestnut",
     keywords: "chestnut | plant",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 623,
@@ -5027,7 +5027,7 @@ export const emojis: Emoji[] = [
     char: "🍞",
     name: "bread",
     keywords: "bread | loaf",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 624,
@@ -5035,7 +5035,7 @@ export const emojis: Emoji[] = [
     char: "🥐",
     name: "croissant",
     keywords: "bread | crescent roll | croissant | food | french",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 625,
@@ -5043,7 +5043,7 @@ export const emojis: Emoji[] = [
     char: "🥖",
     name: "baguette bread",
     keywords: "baguette | bread | food | french",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 626,
@@ -5051,7 +5051,7 @@ export const emojis: Emoji[] = [
     char: "🥨",
     name: "pretzel",
     keywords: "pretzel | twisted | convoluted",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 627,
@@ -5059,7 +5059,7 @@ export const emojis: Emoji[] = [
     char: "🥯",
     name: "bagel",
     keywords: "bagel | bakery | schmear",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 628,
@@ -5067,7 +5067,7 @@ export const emojis: Emoji[] = [
     char: "🥞",
     name: "pancakes",
     keywords: "crêpe | food | hotcake | pancake | pancakes",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 629,
@@ -5075,7 +5075,7 @@ export const emojis: Emoji[] = [
     char: "🧇",
     name: "⊛ waffle",
     keywords: "indecisive | iron | waffle",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 630,
@@ -5083,7 +5083,7 @@ export const emojis: Emoji[] = [
     char: "🧀",
     name: "cheese wedge",
     keywords: "cheese | cheese wedge",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 631,
@@ -5091,7 +5091,7 @@ export const emojis: Emoji[] = [
     char: "🍖",
     name: "meat on bone",
     keywords: "bone | meat | meat on bone",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 632,
@@ -5099,7 +5099,7 @@ export const emojis: Emoji[] = [
     char: "🍗",
     name: "poultry leg",
     keywords: "bone | chicken | drumstick | leg | poultry",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 633,
@@ -5107,7 +5107,7 @@ export const emojis: Emoji[] = [
     char: "🥩",
     name: "cut of meat",
     keywords: "chop | cut of meat | lambchop | porkchop | steak",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 634,
@@ -5115,7 +5115,7 @@ export const emojis: Emoji[] = [
     char: "🥓",
     name: "bacon",
     keywords: "bacon | food | meat",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 635,
@@ -5123,7 +5123,7 @@ export const emojis: Emoji[] = [
     char: "🍔",
     name: "hamburger",
     keywords: "burger | hamburger",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 636,
@@ -5131,7 +5131,7 @@ export const emojis: Emoji[] = [
     char: "🍟",
     name: "french fries",
     keywords: "french | fries",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 637,
@@ -5139,7 +5139,7 @@ export const emojis: Emoji[] = [
     char: "🍕",
     name: "pizza",
     keywords: "cheese | pizza | slice",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 638,
@@ -5147,7 +5147,7 @@ export const emojis: Emoji[] = [
     char: "🌭",
     name: "hot dog",
     keywords: "frankfurter | hot dog | hotdog | sausage",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 639,
@@ -5155,7 +5155,7 @@ export const emojis: Emoji[] = [
     char: "🥪",
     name: "sandwich",
     keywords: "bread | sandwich",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 640,
@@ -5163,7 +5163,7 @@ export const emojis: Emoji[] = [
     char: "🌮",
     name: "taco",
     keywords: "mexican | taco",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 641,
@@ -5171,7 +5171,7 @@ export const emojis: Emoji[] = [
     char: "🌯",
     name: "burrito",
     keywords: "burrito | mexican | wrap",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 642,
@@ -5179,7 +5179,7 @@ export const emojis: Emoji[] = [
     char: "🥙",
     name: "stuffed flatbread",
     keywords: "falafel | flatbread | food | gyro | kebab | stuffed",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 643,
@@ -5187,7 +5187,7 @@ export const emojis: Emoji[] = [
     char: "🧆",
     name: "⊛ falafel",
     keywords: "chickpea | falafel | meatball",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 644,
@@ -5195,7 +5195,7 @@ export const emojis: Emoji[] = [
     char: "🥚",
     name: "egg",
     keywords: "egg | food",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 645,
@@ -5203,7 +5203,7 @@ export const emojis: Emoji[] = [
     char: "🍳",
     name: "cooking",
     keywords: "cooking | egg | frying | pan",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 646,
@@ -5211,7 +5211,7 @@ export const emojis: Emoji[] = [
     char: "🥘",
     name: "shallow pan of food",
     keywords: "casserole | food | paella | pan | shallow | shallow pan of food",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 647,
@@ -5219,7 +5219,7 @@ export const emojis: Emoji[] = [
     char: "🍲",
     name: "pot of food",
     keywords: "pot | pot of food | stew",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 648,
@@ -5228,7 +5228,7 @@ export const emojis: Emoji[] = [
     name: "bowl with spoon",
     keywords:
       "bowl with spoon | breakfast | cereal | congee | oatmeal | porridge",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 649,
@@ -5236,7 +5236,7 @@ export const emojis: Emoji[] = [
     char: "🥗",
     name: "green salad",
     keywords: "food | green | salad",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 650,
@@ -5244,7 +5244,7 @@ export const emojis: Emoji[] = [
     char: "🍿",
     name: "popcorn",
     keywords: "popcorn",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 651,
@@ -5252,7 +5252,7 @@ export const emojis: Emoji[] = [
     char: "🧈",
     name: "⊛ butter",
     keywords: "butter | dairy",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 652,
@@ -5260,7 +5260,7 @@ export const emojis: Emoji[] = [
     char: "🧂",
     name: "salt",
     keywords: "condiment | salt | shaker",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 653,
@@ -5268,7 +5268,7 @@ export const emojis: Emoji[] = [
     char: "🥫",
     name: "canned food",
     keywords: "can | canned food",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 654,
@@ -5276,7 +5276,7 @@ export const emojis: Emoji[] = [
     char: "🍱",
     name: "bento box",
     keywords: "bento | box",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 655,
@@ -5284,7 +5284,7 @@ export const emojis: Emoji[] = [
     char: "🍘",
     name: "rice cracker",
     keywords: "cracker | rice",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 656,
@@ -5292,7 +5292,7 @@ export const emojis: Emoji[] = [
     char: "🍙",
     name: "rice ball",
     keywords: "ball | Japanese | rice",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 657,
@@ -5300,7 +5300,7 @@ export const emojis: Emoji[] = [
     char: "🍚",
     name: "cooked rice",
     keywords: "cooked | rice",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 658,
@@ -5308,7 +5308,7 @@ export const emojis: Emoji[] = [
     char: "🍛",
     name: "curry rice",
     keywords: "curry | rice",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 659,
@@ -5316,7 +5316,7 @@ export const emojis: Emoji[] = [
     char: "🍜",
     name: "steaming bowl",
     keywords: "bowl | noodle | ramen | steaming",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 660,
@@ -5324,7 +5324,7 @@ export const emojis: Emoji[] = [
     char: "🍝",
     name: "spaghetti",
     keywords: "pasta | spaghetti",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 661,
@@ -5332,7 +5332,7 @@ export const emojis: Emoji[] = [
     char: "🍠",
     name: "roasted sweet potato",
     keywords: "potato | roasted | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 662,
@@ -5340,7 +5340,7 @@ export const emojis: Emoji[] = [
     char: "🍢",
     name: "oden",
     keywords: "kebab | oden | seafood | skewer | stick",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 663,
@@ -5348,7 +5348,7 @@ export const emojis: Emoji[] = [
     char: "🍣",
     name: "sushi",
     keywords: "sushi",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 664,
@@ -5356,7 +5356,7 @@ export const emojis: Emoji[] = [
     char: "🍤",
     name: "fried shrimp",
     keywords: "fried | prawn | shrimp | tempura",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 665,
@@ -5364,7 +5364,7 @@ export const emojis: Emoji[] = [
     char: "🍥",
     name: "fish cake with swirl",
     keywords: "cake | fish | fish cake with swirl | pastry | swirl",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 666,
@@ -5372,7 +5372,7 @@ export const emojis: Emoji[] = [
     char: "🥮",
     name: "moon cake",
     keywords: "autumn | festival | moon cake | yuèbǐng",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 667,
@@ -5380,7 +5380,7 @@ export const emojis: Emoji[] = [
     char: "🍡",
     name: "dango",
     keywords: "dango | dessert | Japanese | skewer | stick | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 668,
@@ -5388,7 +5388,7 @@ export const emojis: Emoji[] = [
     char: "🥟",
     name: "dumpling",
     keywords: "dumpling | empanada | gyōza | jiaozi | pierogi | potsticker",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 669,
@@ -5396,7 +5396,7 @@ export const emojis: Emoji[] = [
     char: "🥠",
     name: "fortune cookie",
     keywords: "fortune cookie | prophecy",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 670,
@@ -5404,7 +5404,7 @@ export const emojis: Emoji[] = [
     char: "🥡",
     name: "takeout box",
     keywords: "oyster pail | takeout box",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 671,
@@ -5412,7 +5412,7 @@ export const emojis: Emoji[] = [
     char: "🦀",
     name: "crab",
     keywords: "Cancer | crab | zodiac",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 672,
@@ -5420,7 +5420,7 @@ export const emojis: Emoji[] = [
     char: "🦞",
     name: "lobster",
     keywords: "bisque | claws | lobster | seafood",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 673,
@@ -5428,7 +5428,7 @@ export const emojis: Emoji[] = [
     char: "🦐",
     name: "shrimp",
     keywords: "food | shellfish | shrimp | small",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 674,
@@ -5436,7 +5436,7 @@ export const emojis: Emoji[] = [
     char: "🦑",
     name: "squid",
     keywords: "food | molusc | squid",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 675,
@@ -5444,7 +5444,7 @@ export const emojis: Emoji[] = [
     char: "🦪",
     name: "⊛ oyster",
     keywords: "diving | oyster | pearl",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 676,
@@ -5452,7 +5452,7 @@ export const emojis: Emoji[] = [
     char: "🍦",
     name: "soft ice cream",
     keywords: "cream | dessert | ice | icecream | soft | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 677,
@@ -5460,7 +5460,7 @@ export const emojis: Emoji[] = [
     char: "🍧",
     name: "shaved ice",
     keywords: "dessert | ice | shaved | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 678,
@@ -5468,7 +5468,7 @@ export const emojis: Emoji[] = [
     char: "🍨",
     name: "ice cream",
     keywords: "cream | dessert | ice | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 679,
@@ -5476,7 +5476,7 @@ export const emojis: Emoji[] = [
     char: "🍩",
     name: "doughnut",
     keywords: "dessert | donut | doughnut | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 680,
@@ -5484,7 +5484,7 @@ export const emojis: Emoji[] = [
     char: "🍪",
     name: "cookie",
     keywords: "cookie | dessert | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 681,
@@ -5492,7 +5492,7 @@ export const emojis: Emoji[] = [
     char: "🎂",
     name: "birthday cake",
     keywords: "birthday | cake | celebration | dessert | pastry | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 682,
@@ -5500,7 +5500,7 @@ export const emojis: Emoji[] = [
     char: "🍰",
     name: "shortcake",
     keywords: "cake | dessert | pastry | shortcake | slice | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 683,
@@ -5508,7 +5508,7 @@ export const emojis: Emoji[] = [
     char: "🧁",
     name: "cupcake",
     keywords: "bakery | cupcake | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 684,
@@ -5516,7 +5516,7 @@ export const emojis: Emoji[] = [
     char: "🥧",
     name: "pie",
     keywords: "filling | pastry | pie | fruit | meat",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 685,
@@ -5524,7 +5524,7 @@ export const emojis: Emoji[] = [
     char: "🍫",
     name: "chocolate bar",
     keywords: "bar | chocolate | dessert | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 686,
@@ -5532,7 +5532,7 @@ export const emojis: Emoji[] = [
     char: "🍬",
     name: "candy",
     keywords: "candy | dessert | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 687,
@@ -5540,7 +5540,7 @@ export const emojis: Emoji[] = [
     char: "🍭",
     name: "lollipop",
     keywords: "candy | dessert | lollipop | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 688,
@@ -5548,7 +5548,7 @@ export const emojis: Emoji[] = [
     char: "🍮",
     name: "custard",
     keywords: "custard | dessert | pudding | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 689,
@@ -5556,7 +5556,7 @@ export const emojis: Emoji[] = [
     char: "🍯",
     name: "honey pot",
     keywords: "honey | honeypot | pot | sweet",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 690,
@@ -5564,7 +5564,7 @@ export const emojis: Emoji[] = [
     char: "🍼",
     name: "baby bottle",
     keywords: "baby | bottle | drink | milk",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 691,
@@ -5572,7 +5572,7 @@ export const emojis: Emoji[] = [
     char: "🥛",
     name: "glass of milk",
     keywords: "drink | glass | glass of milk | milk",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 692,
@@ -5580,7 +5580,7 @@ export const emojis: Emoji[] = [
     char: "☕",
     name: "hot beverage",
     keywords: "beverage | coffee | drink | hot | steaming | tea",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 693,
@@ -5588,7 +5588,7 @@ export const emojis: Emoji[] = [
     char: "🍵",
     name: "teacup without handle",
     keywords: "beverage | cup | drink | tea | teacup | teacup without handle",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 694,
@@ -5596,7 +5596,7 @@ export const emojis: Emoji[] = [
     char: "🍶",
     name: "sake",
     keywords: "bar | beverage | bottle | cup | drink | sake",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 695,
@@ -5605,7 +5605,7 @@ export const emojis: Emoji[] = [
     name: "bottle with popping cork",
     keywords:
       "bar | bottle | bottle with popping cork | cork | drink | popping",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 696,
@@ -5613,7 +5613,7 @@ export const emojis: Emoji[] = [
     char: "🍷",
     name: "wine glass",
     keywords: "bar | beverage | drink | glass | wine",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 697,
@@ -5621,7 +5621,7 @@ export const emojis: Emoji[] = [
     char: "🍸",
     name: "cocktail glass",
     keywords: "bar | cocktail | drink | glass",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 698,
@@ -5629,7 +5629,7 @@ export const emojis: Emoji[] = [
     char: "🍹",
     name: "tropical drink",
     keywords: "bar | drink | tropical",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 699,
@@ -5637,7 +5637,7 @@ export const emojis: Emoji[] = [
     char: "🍺",
     name: "beer mug",
     keywords: "bar | beer | drink | mug",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 700,
@@ -5645,7 +5645,7 @@ export const emojis: Emoji[] = [
     char: "🍻",
     name: "clinking beer mugs",
     keywords: "bar | beer | clink | clinking beer mugs | drink | mug",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 701,
@@ -5653,7 +5653,7 @@ export const emojis: Emoji[] = [
     char: "🥂",
     name: "clinking glasses",
     keywords: "celebrate | clink | clinking glasses | drink | glass",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 702,
@@ -5661,7 +5661,7 @@ export const emojis: Emoji[] = [
     char: "🥃",
     name: "tumbler glass",
     keywords: "glass | liquor | shot | tumbler | whisky",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 703,
@@ -5669,7 +5669,7 @@ export const emojis: Emoji[] = [
     char: "🥤",
     name: "cup with straw",
     keywords: "cup with straw | juice | soda | malt | soft drink | water",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 704,
@@ -5677,7 +5677,7 @@ export const emojis: Emoji[] = [
     char: "🧃",
     name: "⊛ beverage box",
     keywords: "beverage box | juice box",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 705,
@@ -5685,7 +5685,7 @@ export const emojis: Emoji[] = [
     char: "🧉",
     name: "⊛ mate",
     keywords: "drink | mate",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 706,
@@ -5693,7 +5693,7 @@ export const emojis: Emoji[] = [
     char: "🧊",
     name: "⊛ ice",
     keywords: "cold | ice | ice cube | iceberg",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 707,
@@ -5701,7 +5701,7 @@ export const emojis: Emoji[] = [
     char: "🥢",
     name: "chopsticks",
     keywords: "chopsticks | hashi | jeotgarak | kuaizi",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 708,
@@ -5709,7 +5709,7 @@ export const emojis: Emoji[] = [
     char: "🍽",
     name: "fork and knife with plate",
     keywords: "cooking | fork | fork and knife with plate | knife | plate",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 709,
@@ -5717,7 +5717,7 @@ export const emojis: Emoji[] = [
     char: "🍴",
     name: "fork and knife",
     keywords: "cooking | cutlery | fork | fork and knife | knife",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 710,
@@ -5725,7 +5725,7 @@ export const emojis: Emoji[] = [
     char: "🥄",
     name: "spoon",
     keywords: "spoon | tableware",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 711,
@@ -5733,7 +5733,7 @@ export const emojis: Emoji[] = [
     char: "🔪",
     name: "kitchen knife",
     keywords: "cooking | hocho | kitchen knife | knife | tool | weapon",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 712,
@@ -5741,7 +5741,7 @@ export const emojis: Emoji[] = [
     char: "🏺",
     name: "amphora",
     keywords: "amphora | Aquarius | cooking | drink | jug | zodiac",
-    category: "Food & Drink"
+    category: "Food & Drink",
   },
   {
     no: 713,
@@ -5750,7 +5750,7 @@ export const emojis: Emoji[] = [
     name: "globe showing Europe-Africa",
     keywords:
       "Africa | earth | Europe | globe | globe showing Europe-Africa | world",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 714,
@@ -5758,7 +5758,7 @@ export const emojis: Emoji[] = [
     char: "🌎",
     name: "globe showing Americas",
     keywords: "Americas | earth | globe | globe showing Americas | world",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 715,
@@ -5767,7 +5767,7 @@ export const emojis: Emoji[] = [
     name: "globe showing Asia-Australia",
     keywords:
       "Asia | Australia | earth | globe | globe showing Asia-Australia | world",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 716,
@@ -5775,7 +5775,7 @@ export const emojis: Emoji[] = [
     char: "🌐",
     name: "globe with meridians",
     keywords: "earth | globe | globe with meridians | meridians | world",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 717,
@@ -5783,7 +5783,7 @@ export const emojis: Emoji[] = [
     char: "🗺",
     name: "world map",
     keywords: "map | world",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 718,
@@ -5791,7 +5791,7 @@ export const emojis: Emoji[] = [
     char: "🗾",
     name: "map of Japan",
     keywords: "Japan | map | map of Japan",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 719,
@@ -5799,7 +5799,7 @@ export const emojis: Emoji[] = [
     char: "🧭",
     name: "compass",
     keywords: "compass | magnetic | navigation | orienteering",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 720,
@@ -5807,7 +5807,7 @@ export const emojis: Emoji[] = [
     char: "🏔",
     name: "snow-capped mountain",
     keywords: "cold | mountain | snow | snow-capped mountain",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 721,
@@ -5815,7 +5815,7 @@ export const emojis: Emoji[] = [
     char: "⛰",
     name: "mountain",
     keywords: "mountain",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 722,
@@ -5823,7 +5823,7 @@ export const emojis: Emoji[] = [
     char: "🌋",
     name: "volcano",
     keywords: "eruption | mountain | volcano",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 723,
@@ -5831,7 +5831,7 @@ export const emojis: Emoji[] = [
     char: "🗻",
     name: "mount fuji",
     keywords: "fuji | mount fuji | mountain",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 724,
@@ -5839,7 +5839,7 @@ export const emojis: Emoji[] = [
     char: "🏕",
     name: "camping",
     keywords: "camping",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 725,
@@ -5847,7 +5847,7 @@ export const emojis: Emoji[] = [
     char: "🏖",
     name: "beach with umbrella",
     keywords: "beach | beach with umbrella | umbrella",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 726,
@@ -5855,7 +5855,7 @@ export const emojis: Emoji[] = [
     char: "🏜",
     name: "desert",
     keywords: "desert",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 727,
@@ -5863,7 +5863,7 @@ export const emojis: Emoji[] = [
     char: "🏝",
     name: "desert island",
     keywords: "desert | island",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 728,
@@ -5871,7 +5871,7 @@ export const emojis: Emoji[] = [
     char: "🏞",
     name: "national park",
     keywords: "national park | park",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 729,
@@ -5879,7 +5879,7 @@ export const emojis: Emoji[] = [
     char: "🏟",
     name: "stadium",
     keywords: "stadium",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 730,
@@ -5887,7 +5887,7 @@ export const emojis: Emoji[] = [
     char: "🏛",
     name: "classical building",
     keywords: "classical | classical building",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 731,
@@ -5895,7 +5895,7 @@ export const emojis: Emoji[] = [
     char: "🏗",
     name: "building construction",
     keywords: "building construction | construction",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 732,
@@ -5903,7 +5903,7 @@ export const emojis: Emoji[] = [
     char: "🧱",
     name: "brick",
     keywords: "brick | bricks | clay | mortar | wall",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 733,
@@ -5911,7 +5911,7 @@ export const emojis: Emoji[] = [
     char: "🏘",
     name: "houses",
     keywords: "houses",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 734,
@@ -5919,7 +5919,7 @@ export const emojis: Emoji[] = [
     char: "🏚",
     name: "derelict house",
     keywords: "derelict | house",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 735,
@@ -5927,7 +5927,7 @@ export const emojis: Emoji[] = [
     char: "🏠",
     name: "house",
     keywords: "home | house",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 736,
@@ -5935,7 +5935,7 @@ export const emojis: Emoji[] = [
     char: "🏡",
     name: "house with garden",
     keywords: "garden | home | house | house with garden",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 737,
@@ -5943,7 +5943,7 @@ export const emojis: Emoji[] = [
     char: "🏢",
     name: "office building",
     keywords: "building | office building",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 738,
@@ -5951,7 +5951,7 @@ export const emojis: Emoji[] = [
     char: "🏣",
     name: "Japanese post office",
     keywords: "Japanese | Japanese post office | post",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 739,
@@ -5959,7 +5959,7 @@ export const emojis: Emoji[] = [
     char: "🏤",
     name: "post office",
     keywords: "European | post | post office",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 740,
@@ -5967,7 +5967,7 @@ export const emojis: Emoji[] = [
     char: "🏥",
     name: "hospital",
     keywords: "doctor | hospital | medicine",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 741,
@@ -5975,7 +5975,7 @@ export const emojis: Emoji[] = [
     char: "🏦",
     name: "bank",
     keywords: "bank | building",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 742,
@@ -5983,7 +5983,7 @@ export const emojis: Emoji[] = [
     char: "🏨",
     name: "hotel",
     keywords: "building | hotel",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 743,
@@ -5991,7 +5991,7 @@ export const emojis: Emoji[] = [
     char: "🏩",
     name: "love hotel",
     keywords: "hotel | love",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 744,
@@ -5999,7 +5999,7 @@ export const emojis: Emoji[] = [
     char: "🏪",
     name: "convenience store",
     keywords: "convenience | store",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 745,
@@ -6007,7 +6007,7 @@ export const emojis: Emoji[] = [
     char: "🏫",
     name: "school",
     keywords: "building | school",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 746,
@@ -6015,7 +6015,7 @@ export const emojis: Emoji[] = [
     char: "🏬",
     name: "department store",
     keywords: "department | store",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 747,
@@ -6023,7 +6023,7 @@ export const emojis: Emoji[] = [
     char: "🏭",
     name: "factory",
     keywords: "building | factory",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 748,
@@ -6031,7 +6031,7 @@ export const emojis: Emoji[] = [
     char: "🏯",
     name: "Japanese castle",
     keywords: "castle | Japanese",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 749,
@@ -6039,7 +6039,7 @@ export const emojis: Emoji[] = [
     char: "🏰",
     name: "castle",
     keywords: "castle | European",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 750,
@@ -6047,7 +6047,7 @@ export const emojis: Emoji[] = [
     char: "💒",
     name: "wedding",
     keywords: "chapel | romance | wedding",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 751,
@@ -6055,7 +6055,7 @@ export const emojis: Emoji[] = [
     char: "🗼",
     name: "Tokyo tower",
     keywords: "Tokyo | tower",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 752,
@@ -6063,7 +6063,7 @@ export const emojis: Emoji[] = [
     char: "🗽",
     name: "Statue of Liberty",
     keywords: "liberty | statue | Statue of Liberty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 753,
@@ -6071,7 +6071,7 @@ export const emojis: Emoji[] = [
     char: "⛪",
     name: "church",
     keywords: "Christian | church | cross | religion",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 754,
@@ -6079,7 +6079,7 @@ export const emojis: Emoji[] = [
     char: "🕌",
     name: "mosque",
     keywords: "islam | mosque | Muslim | religion",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 755,
@@ -6087,7 +6087,7 @@ export const emojis: Emoji[] = [
     char: "🛕",
     name: "⊛ hindu temple",
     keywords: "hindu | temple",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 756,
@@ -6095,7 +6095,7 @@ export const emojis: Emoji[] = [
     char: "🕍",
     name: "synagogue",
     keywords: "Jew | Jewish | religion | synagogue | temple",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 757,
@@ -6103,7 +6103,7 @@ export const emojis: Emoji[] = [
     char: "⛩",
     name: "shinto shrine",
     keywords: "religion | shinto | shrine",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 758,
@@ -6111,7 +6111,7 @@ export const emojis: Emoji[] = [
     char: "🕋",
     name: "kaaba",
     keywords: "islam | kaaba | Muslim | religion",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 759,
@@ -6119,7 +6119,7 @@ export const emojis: Emoji[] = [
     char: "⛲",
     name: "fountain",
     keywords: "fountain",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 760,
@@ -6127,7 +6127,7 @@ export const emojis: Emoji[] = [
     char: "⛺",
     name: "tent",
     keywords: "camping | tent",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 761,
@@ -6135,7 +6135,7 @@ export const emojis: Emoji[] = [
     char: "🌁",
     name: "foggy",
     keywords: "fog | foggy",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 762,
@@ -6143,7 +6143,7 @@ export const emojis: Emoji[] = [
     char: "🌃",
     name: "night with stars",
     keywords: "night | night with stars | star",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 763,
@@ -6151,7 +6151,7 @@ export const emojis: Emoji[] = [
     char: "🏙",
     name: "cityscape",
     keywords: "city | cityscape",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 764,
@@ -6159,7 +6159,7 @@ export const emojis: Emoji[] = [
     char: "🌄",
     name: "sunrise over mountains",
     keywords: "morning | mountain | sun | sunrise | sunrise over mountains",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 765,
@@ -6167,7 +6167,7 @@ export const emojis: Emoji[] = [
     char: "🌅",
     name: "sunrise",
     keywords: "morning | sun | sunrise",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 766,
@@ -6175,7 +6175,7 @@ export const emojis: Emoji[] = [
     char: "🌆",
     name: "cityscape at dusk",
     keywords: "city | cityscape at dusk | dusk | evening | landscape | sunset",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 767,
@@ -6183,7 +6183,7 @@ export const emojis: Emoji[] = [
     char: "🌇",
     name: "sunset",
     keywords: "dusk | sun | sunset",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 768,
@@ -6191,7 +6191,7 @@ export const emojis: Emoji[] = [
     char: "🌉",
     name: "bridge at night",
     keywords: "bridge | bridge at night | night",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 769,
@@ -6199,7 +6199,7 @@ export const emojis: Emoji[] = [
     char: "♨",
     name: "hot springs",
     keywords: "hot | hotsprings | springs | steaming",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 770,
@@ -6207,7 +6207,7 @@ export const emojis: Emoji[] = [
     char: "🎠",
     name: "carousel horse",
     keywords: "carousel | horse",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 771,
@@ -6215,7 +6215,7 @@ export const emojis: Emoji[] = [
     char: "🎡",
     name: "ferris wheel",
     keywords: "amusement park | ferris | wheel",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 772,
@@ -6223,7 +6223,7 @@ export const emojis: Emoji[] = [
     char: "🎢",
     name: "roller coaster",
     keywords: "amusement park | coaster | roller",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 773,
@@ -6231,7 +6231,7 @@ export const emojis: Emoji[] = [
     char: "💈",
     name: "barber pole",
     keywords: "barber | haircut | pole",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 774,
@@ -6239,7 +6239,7 @@ export const emojis: Emoji[] = [
     char: "🎪",
     name: "circus tent",
     keywords: "circus | tent",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 775,
@@ -6247,7 +6247,7 @@ export const emojis: Emoji[] = [
     char: "🚂",
     name: "locomotive",
     keywords: "engine | locomotive | railway | steam | train",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 776,
@@ -6255,7 +6255,7 @@ export const emojis: Emoji[] = [
     char: "🚃",
     name: "railway car",
     keywords: "car | electric | railway | train | tram | trolleybus",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 777,
@@ -6263,7 +6263,7 @@ export const emojis: Emoji[] = [
     char: "🚄",
     name: "high-speed train",
     keywords: "high-speed train | railway | shinkansen | speed | train",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 778,
@@ -6271,7 +6271,7 @@ export const emojis: Emoji[] = [
     char: "🚅",
     name: "bullet train",
     keywords: "bullet | railway | shinkansen | speed | train",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 779,
@@ -6279,7 +6279,7 @@ export const emojis: Emoji[] = [
     char: "🚆",
     name: "train",
     keywords: "railway | train",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 780,
@@ -6287,7 +6287,7 @@ export const emojis: Emoji[] = [
     char: "🚇",
     name: "metro",
     keywords: "metro | subway",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 781,
@@ -6295,7 +6295,7 @@ export const emojis: Emoji[] = [
     char: "🚈",
     name: "light rail",
     keywords: "light rail | railway",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 782,
@@ -6303,7 +6303,7 @@ export const emojis: Emoji[] = [
     char: "🚉",
     name: "station",
     keywords: "railway | station | train",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 783,
@@ -6311,7 +6311,7 @@ export const emojis: Emoji[] = [
     char: "🚊",
     name: "tram",
     keywords: "tram | trolleybus",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 784,
@@ -6319,7 +6319,7 @@ export const emojis: Emoji[] = [
     char: "🚝",
     name: "monorail",
     keywords: "monorail | vehicle",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 785,
@@ -6327,7 +6327,7 @@ export const emojis: Emoji[] = [
     char: "🚞",
     name: "mountain railway",
     keywords: "car | mountain | railway",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 786,
@@ -6335,7 +6335,7 @@ export const emojis: Emoji[] = [
     char: "🚋",
     name: "tram car",
     keywords: "car | tram | trolleybus",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 787,
@@ -6343,7 +6343,7 @@ export const emojis: Emoji[] = [
     char: "🚌",
     name: "bus",
     keywords: "bus | vehicle",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 788,
@@ -6351,7 +6351,7 @@ export const emojis: Emoji[] = [
     char: "🚍",
     name: "oncoming bus",
     keywords: "bus | oncoming",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 789,
@@ -6359,7 +6359,7 @@ export const emojis: Emoji[] = [
     char: "🚎",
     name: "trolleybus",
     keywords: "bus | tram | trolley | trolleybus",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 790,
@@ -6367,7 +6367,7 @@ export const emojis: Emoji[] = [
     char: "🚐",
     name: "minibus",
     keywords: "bus | minibus",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 791,
@@ -6375,7 +6375,7 @@ export const emojis: Emoji[] = [
     char: "🚑",
     name: "ambulance",
     keywords: "ambulance | vehicle",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 792,
@@ -6383,7 +6383,7 @@ export const emojis: Emoji[] = [
     char: "🚒",
     name: "fire engine",
     keywords: "engine | fire | truck",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 793,
@@ -6391,7 +6391,7 @@ export const emojis: Emoji[] = [
     char: "🚓",
     name: "police car",
     keywords: "car | patrol | police",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 794,
@@ -6399,7 +6399,7 @@ export const emojis: Emoji[] = [
     char: "🚔",
     name: "oncoming police car",
     keywords: "car | oncoming | police",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 795,
@@ -6407,7 +6407,7 @@ export const emojis: Emoji[] = [
     char: "🚕",
     name: "taxi",
     keywords: "taxi | vehicle",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 796,
@@ -6415,7 +6415,7 @@ export const emojis: Emoji[] = [
     char: "🚖",
     name: "oncoming taxi",
     keywords: "oncoming | taxi",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 797,
@@ -6423,7 +6423,7 @@ export const emojis: Emoji[] = [
     char: "🚗",
     name: "automobile",
     keywords: "automobile | car",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 798,
@@ -6431,7 +6431,7 @@ export const emojis: Emoji[] = [
     char: "🚘",
     name: "oncoming automobile",
     keywords: "automobile | car | oncoming",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 799,
@@ -6439,7 +6439,7 @@ export const emojis: Emoji[] = [
     char: "🚙",
     name: "sport utility vehicle",
     keywords: "recreational | sport utility | sport utility vehicle",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 800,
@@ -6447,7 +6447,7 @@ export const emojis: Emoji[] = [
     char: "🚚",
     name: "delivery truck",
     keywords: "delivery | truck",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 801,
@@ -6455,7 +6455,7 @@ export const emojis: Emoji[] = [
     char: "🚛",
     name: "articulated lorry",
     keywords: "articulated lorry | lorry | semi | truck",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 802,
@@ -6463,7 +6463,7 @@ export const emojis: Emoji[] = [
     char: "🚜",
     name: "tractor",
     keywords: "tractor | vehicle",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 803,
@@ -6471,7 +6471,7 @@ export const emojis: Emoji[] = [
     char: "🏎",
     name: "racing car",
     keywords: "car | racing",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 804,
@@ -6479,7 +6479,7 @@ export const emojis: Emoji[] = [
     char: "🏍",
     name: "motorcycle",
     keywords: "motorcycle | racing",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 805,
@@ -6487,7 +6487,7 @@ export const emojis: Emoji[] = [
     char: "🛵",
     name: "motor scooter",
     keywords: "motor | scooter",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 806,
@@ -6495,7 +6495,7 @@ export const emojis: Emoji[] = [
     char: "🦽",
     name: "⊛ manual wheelchair",
     keywords: "accessibility | manual wheelchair",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 807,
@@ -6503,7 +6503,7 @@ export const emojis: Emoji[] = [
     char: "🦼",
     name: "⊛ motorized wheelchair",
     keywords: "accessibility | motorized wheelchair",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 808,
@@ -6511,7 +6511,7 @@ export const emojis: Emoji[] = [
     char: "🛺",
     name: "⊛ auto rickshaw",
     keywords: "auto rickshaw | tuk tuk",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 809,
@@ -6519,7 +6519,7 @@ export const emojis: Emoji[] = [
     char: "🚲",
     name: "bicycle",
     keywords: "bicycle | bike",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 810,
@@ -6527,7 +6527,7 @@ export const emojis: Emoji[] = [
     char: "🛴",
     name: "kick scooter",
     keywords: "kick | scooter",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 811,
@@ -6535,7 +6535,7 @@ export const emojis: Emoji[] = [
     char: "🛹",
     name: "skateboard",
     keywords: "board | skateboard",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 812,
@@ -6543,7 +6543,7 @@ export const emojis: Emoji[] = [
     char: "🚏",
     name: "bus stop",
     keywords: "bus | busstop | stop",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 813,
@@ -6551,7 +6551,7 @@ export const emojis: Emoji[] = [
     char: "🛣",
     name: "motorway",
     keywords: "highway | motorway | road",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 814,
@@ -6559,7 +6559,7 @@ export const emojis: Emoji[] = [
     char: "🛤",
     name: "railway track",
     keywords: "railway | railway track | train",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 815,
@@ -6567,7 +6567,7 @@ export const emojis: Emoji[] = [
     char: "🛢",
     name: "oil drum",
     keywords: "drum | oil",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 816,
@@ -6575,7 +6575,7 @@ export const emojis: Emoji[] = [
     char: "⛽",
     name: "fuel pump",
     keywords: "diesel | fuel | fuelpump | gas | pump | station",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 817,
@@ -6583,7 +6583,7 @@ export const emojis: Emoji[] = [
     char: "🚨",
     name: "police car light",
     keywords: "beacon | car | light | police | revolving",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 818,
@@ -6591,7 +6591,7 @@ export const emojis: Emoji[] = [
     char: "🚥",
     name: "horizontal traffic light",
     keywords: "horizontal traffic light | light | signal | traffic",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 819,
@@ -6599,7 +6599,7 @@ export const emojis: Emoji[] = [
     char: "🚦",
     name: "vertical traffic light",
     keywords: "light | signal | traffic | vertical traffic light",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 820,
@@ -6607,7 +6607,7 @@ export const emojis: Emoji[] = [
     char: "🛑",
     name: "stop sign",
     keywords: "octagonal | sign | stop",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 821,
@@ -6615,7 +6615,7 @@ export const emojis: Emoji[] = [
     char: "🚧",
     name: "construction",
     keywords: "barrier | construction",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 822,
@@ -6623,7 +6623,7 @@ export const emojis: Emoji[] = [
     char: "⚓",
     name: "anchor",
     keywords: "anchor | ship | tool",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 823,
@@ -6631,7 +6631,7 @@ export const emojis: Emoji[] = [
     char: "⛵",
     name: "sailboat",
     keywords: "boat | resort | sailboat | sea | yacht",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 824,
@@ -6639,7 +6639,7 @@ export const emojis: Emoji[] = [
     char: "🛶",
     name: "canoe",
     keywords: "boat | canoe",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 825,
@@ -6647,7 +6647,7 @@ export const emojis: Emoji[] = [
     char: "🚤",
     name: "speedboat",
     keywords: "boat | speedboat",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 826,
@@ -6655,7 +6655,7 @@ export const emojis: Emoji[] = [
     char: "🛳",
     name: "passenger ship",
     keywords: "passenger | ship",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 827,
@@ -6663,7 +6663,7 @@ export const emojis: Emoji[] = [
     char: "⛴",
     name: "ferry",
     keywords: "boat | ferry | passenger",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 828,
@@ -6671,7 +6671,7 @@ export const emojis: Emoji[] = [
     char: "🛥",
     name: "motor boat",
     keywords: "boat | motor boat | motorboat",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 829,
@@ -6679,7 +6679,7 @@ export const emojis: Emoji[] = [
     char: "🚢",
     name: "ship",
     keywords: "boat | passenger | ship",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 830,
@@ -6687,7 +6687,7 @@ export const emojis: Emoji[] = [
     char: "✈",
     name: "airplane",
     keywords: "aeroplane | airplane",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 831,
@@ -6695,7 +6695,7 @@ export const emojis: Emoji[] = [
     char: "🛩",
     name: "small airplane",
     keywords: "aeroplane | airplane | small airplane",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 832,
@@ -6703,7 +6703,7 @@ export const emojis: Emoji[] = [
     char: "🛫",
     name: "airplane departure",
     keywords: "aeroplane | airplane | check-in | departure | departures",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 833,
@@ -6712,7 +6712,7 @@ export const emojis: Emoji[] = [
     name: "airplane arrival",
     keywords:
       "aeroplane | airplane | airplane arrival | arrivals | arriving | landing",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 834,
@@ -6720,7 +6720,7 @@ export const emojis: Emoji[] = [
     char: "🪂",
     name: "⊛ parachute",
     keywords: "hang-glide | parachute | parasail | skydive",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 835,
@@ -6728,7 +6728,7 @@ export const emojis: Emoji[] = [
     char: "💺",
     name: "seat",
     keywords: "chair | seat",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 836,
@@ -6736,7 +6736,7 @@ export const emojis: Emoji[] = [
     char: "🚁",
     name: "helicopter",
     keywords: "helicopter | vehicle",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 837,
@@ -6744,7 +6744,7 @@ export const emojis: Emoji[] = [
     char: "🚟",
     name: "suspension railway",
     keywords: "railway | suspension",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 838,
@@ -6752,7 +6752,7 @@ export const emojis: Emoji[] = [
     char: "🚠",
     name: "mountain cableway",
     keywords: "cable | gondola | mountain | mountain cableway",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 839,
@@ -6760,7 +6760,7 @@ export const emojis: Emoji[] = [
     char: "🚡",
     name: "aerial tramway",
     keywords: "aerial | cable | car | gondola | tramway",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 840,
@@ -6768,7 +6768,7 @@ export const emojis: Emoji[] = [
     char: "🛰",
     name: "satellite",
     keywords: "satellite | space",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 841,
@@ -6776,7 +6776,7 @@ export const emojis: Emoji[] = [
     char: "🚀",
     name: "rocket",
     keywords: "rocket | space",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 842,
@@ -6784,7 +6784,7 @@ export const emojis: Emoji[] = [
     char: "🛸",
     name: "flying saucer",
     keywords: "flying saucer | UFO",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 843,
@@ -6792,7 +6792,7 @@ export const emojis: Emoji[] = [
     char: "🛎",
     name: "bellhop bell",
     keywords: "bell | bellhop | hotel",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 844,
@@ -6800,7 +6800,7 @@ export const emojis: Emoji[] = [
     char: "🧳",
     name: "luggage",
     keywords: "luggage | packing | travel",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 845,
@@ -6808,7 +6808,7 @@ export const emojis: Emoji[] = [
     char: "⌛",
     name: "hourglass done",
     keywords: "hourglass done | sand | timer",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 846,
@@ -6816,7 +6816,7 @@ export const emojis: Emoji[] = [
     char: "⏳",
     name: "hourglass not done",
     keywords: "hourglass | hourglass not done | sand | timer",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 847,
@@ -6824,7 +6824,7 @@ export const emojis: Emoji[] = [
     char: "⌚",
     name: "watch",
     keywords: "clock | watch",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 848,
@@ -6832,7 +6832,7 @@ export const emojis: Emoji[] = [
     char: "⏰",
     name: "alarm clock",
     keywords: "alarm | clock",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 849,
@@ -6840,7 +6840,7 @@ export const emojis: Emoji[] = [
     char: "⏱",
     name: "stopwatch",
     keywords: "clock | stopwatch",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 850,
@@ -6848,7 +6848,7 @@ export const emojis: Emoji[] = [
     char: "⏲",
     name: "timer clock",
     keywords: "clock | timer",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 851,
@@ -6856,7 +6856,7 @@ export const emojis: Emoji[] = [
     char: "🕰",
     name: "mantelpiece clock",
     keywords: "clock | mantelpiece clock",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 852,
@@ -6864,7 +6864,7 @@ export const emojis: Emoji[] = [
     char: "🕛",
     name: "twelve o’clock",
     keywords: "00 | 12 | 12:00 | clock | o’clock | twelve",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 853,
@@ -6872,7 +6872,7 @@ export const emojis: Emoji[] = [
     char: "🕧",
     name: "twelve-thirty",
     keywords: "12 | 12:30 | clock | thirty | twelve | twelve-thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 854,
@@ -6880,7 +6880,7 @@ export const emojis: Emoji[] = [
     char: "🕐",
     name: "one o’clock",
     keywords: "00 | 1 | 1:00 | clock | o’clock | one",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 855,
@@ -6888,7 +6888,7 @@ export const emojis: Emoji[] = [
     char: "🕜",
     name: "one-thirty",
     keywords: "1 | 1:30 | clock | one | one-thirty | thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 856,
@@ -6896,7 +6896,7 @@ export const emojis: Emoji[] = [
     char: "🕑",
     name: "two o’clock",
     keywords: "00 | 2 | 2:00 | clock | o’clock | two",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 857,
@@ -6904,7 +6904,7 @@ export const emojis: Emoji[] = [
     char: "🕝",
     name: "two-thirty",
     keywords: "2 | 2:30 | clock | thirty | two | two-thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 858,
@@ -6912,7 +6912,7 @@ export const emojis: Emoji[] = [
     char: "🕒",
     name: "three o’clock",
     keywords: "00 | 3 | 3:00 | clock | o’clock | three",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 859,
@@ -6920,7 +6920,7 @@ export const emojis: Emoji[] = [
     char: "🕞",
     name: "three-thirty",
     keywords: "3 | 3:30 | clock | thirty | three | three-thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 860,
@@ -6928,7 +6928,7 @@ export const emojis: Emoji[] = [
     char: "🕓",
     name: "four o’clock",
     keywords: "00 | 4 | 4:00 | clock | four | o’clock",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 861,
@@ -6936,7 +6936,7 @@ export const emojis: Emoji[] = [
     char: "🕟",
     name: "four-thirty",
     keywords: "4 | 4:30 | clock | four | four-thirty | thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 862,
@@ -6944,7 +6944,7 @@ export const emojis: Emoji[] = [
     char: "🕔",
     name: "five o’clock",
     keywords: "00 | 5 | 5:00 | clock | five | o’clock",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 863,
@@ -6952,7 +6952,7 @@ export const emojis: Emoji[] = [
     char: "🕠",
     name: "five-thirty",
     keywords: "5 | 5:30 | clock | five | five-thirty | thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 864,
@@ -6960,7 +6960,7 @@ export const emojis: Emoji[] = [
     char: "🕕",
     name: "six o’clock",
     keywords: "00 | 6 | 6:00 | clock | o’clock | six",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 865,
@@ -6968,7 +6968,7 @@ export const emojis: Emoji[] = [
     char: "🕡",
     name: "six-thirty",
     keywords: "6 | 6:30 | clock | six | six-thirty | thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 866,
@@ -6976,7 +6976,7 @@ export const emojis: Emoji[] = [
     char: "🕖",
     name: "seven o’clock",
     keywords: "00 | 7 | 7:00 | clock | o’clock | seven",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 867,
@@ -6984,7 +6984,7 @@ export const emojis: Emoji[] = [
     char: "🕢",
     name: "seven-thirty",
     keywords: "7 | 7:30 | clock | seven | seven-thirty | thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 868,
@@ -6992,7 +6992,7 @@ export const emojis: Emoji[] = [
     char: "🕗",
     name: "eight o’clock",
     keywords: "00 | 8 | 8:00 | clock | eight | o’clock",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 869,
@@ -7000,7 +7000,7 @@ export const emojis: Emoji[] = [
     char: "🕣",
     name: "eight-thirty",
     keywords: "8 | 8:30 | clock | eight | eight-thirty | thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 870,
@@ -7008,7 +7008,7 @@ export const emojis: Emoji[] = [
     char: "🕘",
     name: "nine o’clock",
     keywords: "00 | 9 | 9:00 | clock | nine | o’clock",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 871,
@@ -7016,7 +7016,7 @@ export const emojis: Emoji[] = [
     char: "🕤",
     name: "nine-thirty",
     keywords: "9 | 9:30 | clock | nine | nine-thirty | thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 872,
@@ -7024,7 +7024,7 @@ export const emojis: Emoji[] = [
     char: "🕙",
     name: "ten o’clock",
     keywords: "00 | 10 | 10:00 | clock | o’clock | ten",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 873,
@@ -7032,7 +7032,7 @@ export const emojis: Emoji[] = [
     char: "🕥",
     name: "ten-thirty",
     keywords: "10 | 10:30 | clock | ten | ten-thirty | thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 874,
@@ -7040,7 +7040,7 @@ export const emojis: Emoji[] = [
     char: "🕚",
     name: "eleven o’clock",
     keywords: "00 | 11 | 11:00 | clock | eleven | o’clock",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 875,
@@ -7048,7 +7048,7 @@ export const emojis: Emoji[] = [
     char: "🕦",
     name: "eleven-thirty",
     keywords: "11 | 11:30 | clock | eleven | eleven-thirty | thirty",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 876,
@@ -7056,7 +7056,7 @@ export const emojis: Emoji[] = [
     char: "🌑",
     name: "new moon",
     keywords: "dark | moon | new moon",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 877,
@@ -7064,7 +7064,7 @@ export const emojis: Emoji[] = [
     char: "🌒",
     name: "waxing crescent moon",
     keywords: "crescent | moon | waxing",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 878,
@@ -7072,7 +7072,7 @@ export const emojis: Emoji[] = [
     char: "🌓",
     name: "first quarter moon",
     keywords: "first quarter moon | moon | quarter",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 879,
@@ -7080,7 +7080,7 @@ export const emojis: Emoji[] = [
     char: "🌔",
     name: "waxing gibbous moon",
     keywords: "gibbous | moon | waxing",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 880,
@@ -7088,7 +7088,7 @@ export const emojis: Emoji[] = [
     char: "🌕",
     name: "full moon",
     keywords: "full | moon",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 881,
@@ -7096,7 +7096,7 @@ export const emojis: Emoji[] = [
     char: "🌖",
     name: "waning gibbous moon",
     keywords: "gibbous | moon | waning",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 882,
@@ -7104,7 +7104,7 @@ export const emojis: Emoji[] = [
     char: "🌗",
     name: "last quarter moon",
     keywords: "last quarter moon | moon | quarter",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 883,
@@ -7112,7 +7112,7 @@ export const emojis: Emoji[] = [
     char: "🌘",
     name: "waning crescent moon",
     keywords: "crescent | moon | waning",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 884,
@@ -7120,7 +7120,7 @@ export const emojis: Emoji[] = [
     char: "🌙",
     name: "crescent moon",
     keywords: "crescent | moon",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 885,
@@ -7128,7 +7128,7 @@ export const emojis: Emoji[] = [
     char: "🌚",
     name: "new moon face",
     keywords: "face | moon | new moon face",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 886,
@@ -7136,7 +7136,7 @@ export const emojis: Emoji[] = [
     char: "🌛",
     name: "first quarter moon face",
     keywords: "face | first quarter moon face | moon | quarter",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 887,
@@ -7144,7 +7144,7 @@ export const emojis: Emoji[] = [
     char: "🌜",
     name: "last quarter moon face",
     keywords: "face | last quarter moon face | moon | quarter",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 888,
@@ -7152,7 +7152,7 @@ export const emojis: Emoji[] = [
     char: "🌡",
     name: "thermometer",
     keywords: "thermometer | weather",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 889,
@@ -7160,7 +7160,7 @@ export const emojis: Emoji[] = [
     char: "☀",
     name: "sun",
     keywords: "bright | rays | sun | sunny",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 890,
@@ -7168,7 +7168,7 @@ export const emojis: Emoji[] = [
     char: "🌝",
     name: "full moon face",
     keywords: "bright | face | full | moon",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 891,
@@ -7176,7 +7176,7 @@ export const emojis: Emoji[] = [
     char: "🌞",
     name: "sun with face",
     keywords: "bright | face | sun | sun with face",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 892,
@@ -7184,7 +7184,7 @@ export const emojis: Emoji[] = [
     char: "🪐",
     name: "⊛ ringed planet",
     keywords: "ringed planet | saturn | saturnine",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 893,
@@ -7192,7 +7192,7 @@ export const emojis: Emoji[] = [
     char: "⭐",
     name: "star",
     keywords: "star",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 894,
@@ -7200,7 +7200,7 @@ export const emojis: Emoji[] = [
     char: "🌟",
     name: "glowing star",
     keywords: "glittery | glow | glowing star | shining | sparkle | star",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 895,
@@ -7208,7 +7208,7 @@ export const emojis: Emoji[] = [
     char: "🌠",
     name: "shooting star",
     keywords: "falling | shooting | star",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 896,
@@ -7216,7 +7216,7 @@ export const emojis: Emoji[] = [
     char: "🌌",
     name: "milky way",
     keywords: "milky way | space",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 897,
@@ -7224,7 +7224,7 @@ export const emojis: Emoji[] = [
     char: "☁",
     name: "cloud",
     keywords: "cloud | weather",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 898,
@@ -7232,7 +7232,7 @@ export const emojis: Emoji[] = [
     char: "⛅",
     name: "sun behind cloud",
     keywords: "cloud | sun | sun behind cloud",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 899,
@@ -7240,7 +7240,7 @@ export const emojis: Emoji[] = [
     char: "⛈",
     name: "cloud with lightning and rain",
     keywords: "cloud | cloud with lightning and rain | rain | thunder",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 900,
@@ -7248,7 +7248,7 @@ export const emojis: Emoji[] = [
     char: "🌤",
     name: "sun behind small cloud",
     keywords: "cloud | sun | sun behind small cloud",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 901,
@@ -7256,7 +7256,7 @@ export const emojis: Emoji[] = [
     char: "🌥",
     name: "sun behind large cloud",
     keywords: "cloud | sun | sun behind large cloud",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 902,
@@ -7264,7 +7264,7 @@ export const emojis: Emoji[] = [
     char: "🌦",
     name: "sun behind rain cloud",
     keywords: "cloud | rain | sun | sun behind rain cloud",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 903,
@@ -7272,7 +7272,7 @@ export const emojis: Emoji[] = [
     char: "🌧",
     name: "cloud with rain",
     keywords: "cloud | cloud with rain | rain",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 904,
@@ -7280,7 +7280,7 @@ export const emojis: Emoji[] = [
     char: "🌨",
     name: "cloud with snow",
     keywords: "cloud | cloud with snow | cold | snow",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 905,
@@ -7288,7 +7288,7 @@ export const emojis: Emoji[] = [
     char: "🌩",
     name: "cloud with lightning",
     keywords: "cloud | cloud with lightning | lightning",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 906,
@@ -7296,7 +7296,7 @@ export const emojis: Emoji[] = [
     char: "🌪",
     name: "tornado",
     keywords: "cloud | tornado | whirlwind",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 907,
@@ -7304,7 +7304,7 @@ export const emojis: Emoji[] = [
     char: "🌫",
     name: "fog",
     keywords: "cloud | fog",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 908,
@@ -7312,7 +7312,7 @@ export const emojis: Emoji[] = [
     char: "🌬",
     name: "wind face",
     keywords: "blow | cloud | face | wind",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 909,
@@ -7320,7 +7320,7 @@ export const emojis: Emoji[] = [
     char: "🌀",
     name: "cyclone",
     keywords: "cyclone | dizzy | hurricane | twister | typhoon",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 910,
@@ -7328,7 +7328,7 @@ export const emojis: Emoji[] = [
     char: "🌈",
     name: "rainbow",
     keywords: "rain | rainbow",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 911,
@@ -7336,7 +7336,7 @@ export const emojis: Emoji[] = [
     char: "🌂",
     name: "closed umbrella",
     keywords: "closed umbrella | clothing | rain | umbrella",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 912,
@@ -7344,7 +7344,7 @@ export const emojis: Emoji[] = [
     char: "☂",
     name: "umbrella",
     keywords: "clothing | rain | umbrella",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 913,
@@ -7352,7 +7352,7 @@ export const emojis: Emoji[] = [
     char: "☔",
     name: "umbrella with rain drops",
     keywords: "clothing | drop | rain | umbrella | umbrella with rain drops",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 914,
@@ -7360,7 +7360,7 @@ export const emojis: Emoji[] = [
     char: "⛱",
     name: "umbrella on ground",
     keywords: "rain | sun | umbrella | umbrella on ground",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 915,
@@ -7368,7 +7368,7 @@ export const emojis: Emoji[] = [
     char: "⚡",
     name: "high voltage",
     keywords: "danger | electric | high voltage | lightning | voltage | zap",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 916,
@@ -7376,7 +7376,7 @@ export const emojis: Emoji[] = [
     char: "❄",
     name: "snowflake",
     keywords: "cold | snow | snowflake",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 917,
@@ -7384,7 +7384,7 @@ export const emojis: Emoji[] = [
     char: "☃",
     name: "snowman",
     keywords: "cold | snow | snowman",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 918,
@@ -7392,7 +7392,7 @@ export const emojis: Emoji[] = [
     char: "⛄",
     name: "snowman without snow",
     keywords: "cold | snow | snowman | snowman without snow",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 919,
@@ -7400,7 +7400,7 @@ export const emojis: Emoji[] = [
     char: "☄",
     name: "comet",
     keywords: "comet | space",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 920,
@@ -7408,7 +7408,7 @@ export const emojis: Emoji[] = [
     char: "🔥",
     name: "fire",
     keywords: "fire | flame | tool",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 921,
@@ -7416,7 +7416,7 @@ export const emojis: Emoji[] = [
     char: "💧",
     name: "droplet",
     keywords: "cold | comic | drop | droplet | sweat",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 922,
@@ -7424,7 +7424,7 @@ export const emojis: Emoji[] = [
     char: "🌊",
     name: "water wave",
     keywords: "ocean | water | wave",
-    category: "Travel & Places"
+    category: "Travel & Places",
   },
   {
     no: 923,
@@ -7432,7 +7432,7 @@ export const emojis: Emoji[] = [
     char: "🎃",
     name: "jack-o-lantern",
     keywords: "celebration | halloween | jack | jack-o-lantern | lantern",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 924,
@@ -7440,7 +7440,7 @@ export const emojis: Emoji[] = [
     char: "🎄",
     name: "Christmas tree",
     keywords: "celebration | Christmas | tree",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 925,
@@ -7448,7 +7448,7 @@ export const emojis: Emoji[] = [
     char: "🎆",
     name: "fireworks",
     keywords: "celebration | fireworks",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 926,
@@ -7456,7 +7456,7 @@ export const emojis: Emoji[] = [
     char: "🎇",
     name: "sparkler",
     keywords: "celebration | fireworks | sparkle | sparkler",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 927,
@@ -7464,7 +7464,7 @@ export const emojis: Emoji[] = [
     char: "🧨",
     name: "firecracker",
     keywords: "dynamite | explosive | firecracker | fireworks",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 928,
@@ -7472,7 +7472,7 @@ export const emojis: Emoji[] = [
     char: "✨",
     name: "sparkles",
     keywords: "* | sparkle | sparkles | star",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 929,
@@ -7480,7 +7480,7 @@ export const emojis: Emoji[] = [
     char: "🎈",
     name: "balloon",
     keywords: "balloon | celebration",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 930,
@@ -7488,7 +7488,7 @@ export const emojis: Emoji[] = [
     char: "🎉",
     name: "party popper",
     keywords: "celebration | party | popper | tada",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 931,
@@ -7496,7 +7496,7 @@ export const emojis: Emoji[] = [
     char: "🎊",
     name: "confetti ball",
     keywords: "ball | celebration | confetti",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 932,
@@ -7504,7 +7504,7 @@ export const emojis: Emoji[] = [
     char: "🎋",
     name: "tanabata tree",
     keywords: "banner | celebration | Japanese | tanabata tree | tree",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 933,
@@ -7512,7 +7512,7 @@ export const emojis: Emoji[] = [
     char: "🎍",
     name: "pine decoration",
     keywords: "bamboo | celebration | Japanese | pine | pine decoration",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 934,
@@ -7520,7 +7520,7 @@ export const emojis: Emoji[] = [
     char: "🎎",
     name: "Japanese dolls",
     keywords: "celebration | doll | festival | Japanese | Japanese dolls",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 935,
@@ -7528,7 +7528,7 @@ export const emojis: Emoji[] = [
     char: "🎏",
     name: "carp streamer",
     keywords: "carp | celebration | streamer",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 936,
@@ -7536,7 +7536,7 @@ export const emojis: Emoji[] = [
     char: "🎐",
     name: "wind chime",
     keywords: "bell | celebration | chime | wind",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 937,
@@ -7544,7 +7544,7 @@ export const emojis: Emoji[] = [
     char: "🎑",
     name: "moon viewing ceremony",
     keywords: "celebration | ceremony | moon | moon viewing ceremony",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 938,
@@ -7552,7 +7552,7 @@ export const emojis: Emoji[] = [
     char: "🧧",
     name: "red envelope",
     keywords: "gift | good luck | hóngbāo | lai see | money | red envelope",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 939,
@@ -7560,7 +7560,7 @@ export const emojis: Emoji[] = [
     char: "🎀",
     name: "ribbon",
     keywords: "celebration | ribbon",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 940,
@@ -7568,7 +7568,7 @@ export const emojis: Emoji[] = [
     char: "🎁",
     name: "wrapped gift",
     keywords: "box | celebration | gift | present | wrapped",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 941,
@@ -7576,7 +7576,7 @@ export const emojis: Emoji[] = [
     char: "🎗",
     name: "reminder ribbon",
     keywords: "celebration | reminder | ribbon",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 942,
@@ -7584,7 +7584,7 @@ export const emojis: Emoji[] = [
     char: "🎟",
     name: "admission tickets",
     keywords: "admission | admission tickets | ticket",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 943,
@@ -7592,7 +7592,7 @@ export const emojis: Emoji[] = [
     char: "🎫",
     name: "ticket",
     keywords: "admission | ticket",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 944,
@@ -7600,7 +7600,7 @@ export const emojis: Emoji[] = [
     char: "🎖",
     name: "military medal",
     keywords: "celebration | medal | military",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 945,
@@ -7608,7 +7608,7 @@ export const emojis: Emoji[] = [
     char: "🏆",
     name: "trophy",
     keywords: "prize | trophy",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 946,
@@ -7616,7 +7616,7 @@ export const emojis: Emoji[] = [
     char: "🏅",
     name: "sports medal",
     keywords: "medal | sports medal",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 947,
@@ -7624,7 +7624,7 @@ export const emojis: Emoji[] = [
     char: "🥇",
     name: "1st place medal",
     keywords: "1st place medal | first | gold | medal",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 948,
@@ -7632,7 +7632,7 @@ export const emojis: Emoji[] = [
     char: "🥈",
     name: "2nd place medal",
     keywords: "2nd place medal | medal | second | silver",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 949,
@@ -7640,7 +7640,7 @@ export const emojis: Emoji[] = [
     char: "🥉",
     name: "3rd place medal",
     keywords: "3rd place medal | bronze | medal | third",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 950,
@@ -7648,7 +7648,7 @@ export const emojis: Emoji[] = [
     char: "⚽",
     name: "soccer ball",
     keywords: "ball | football | soccer",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 951,
@@ -7656,7 +7656,7 @@ export const emojis: Emoji[] = [
     char: "⚾",
     name: "baseball",
     keywords: "ball | baseball",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 952,
@@ -7664,7 +7664,7 @@ export const emojis: Emoji[] = [
     char: "🥎",
     name: "softball",
     keywords: "ball | glove | softball | underarm",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 953,
@@ -7672,7 +7672,7 @@ export const emojis: Emoji[] = [
     char: "🏀",
     name: "basketball",
     keywords: "ball | basketball | hoop",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 954,
@@ -7680,7 +7680,7 @@ export const emojis: Emoji[] = [
     char: "🏐",
     name: "volleyball",
     keywords: "ball | game | volleyball",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 955,
@@ -7688,7 +7688,7 @@ export const emojis: Emoji[] = [
     char: "🏈",
     name: "american football",
     keywords: "american | ball | football",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 956,
@@ -7696,7 +7696,7 @@ export const emojis: Emoji[] = [
     char: "🏉",
     name: "rugby football",
     keywords: "ball | football | rugby",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 957,
@@ -7704,7 +7704,7 @@ export const emojis: Emoji[] = [
     char: "🎾",
     name: "tennis",
     keywords: "ball | racquet | tennis",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 958,
@@ -7712,7 +7712,7 @@ export const emojis: Emoji[] = [
     char: "🥏",
     name: "flying disc",
     keywords: "flying disc | ultimate",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 959,
@@ -7720,7 +7720,7 @@ export const emojis: Emoji[] = [
     char: "🎳",
     name: "bowling",
     keywords: "ball | bowling | game",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 960,
@@ -7728,7 +7728,7 @@ export const emojis: Emoji[] = [
     char: "🏏",
     name: "cricket game",
     keywords: "ball | bat | cricket game | game",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 961,
@@ -7736,7 +7736,7 @@ export const emojis: Emoji[] = [
     char: "🏑",
     name: "field hockey",
     keywords: "ball | field | game | hockey | stick",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 962,
@@ -7744,7 +7744,7 @@ export const emojis: Emoji[] = [
     char: "🏒",
     name: "ice hockey",
     keywords: "game | hockey | ice | puck | stick",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 963,
@@ -7752,7 +7752,7 @@ export const emojis: Emoji[] = [
     char: "🥍",
     name: "lacrosse",
     keywords: "ball | goal | lacrosse | stick",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 964,
@@ -7760,7 +7760,7 @@ export const emojis: Emoji[] = [
     char: "🏓",
     name: "ping pong",
     keywords: "ball | bat | game | paddle | ping pong | table tennis",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 965,
@@ -7768,7 +7768,7 @@ export const emojis: Emoji[] = [
     char: "🏸",
     name: "badminton",
     keywords: "badminton | birdie | game | racquet | shuttlecock",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 966,
@@ -7776,7 +7776,7 @@ export const emojis: Emoji[] = [
     char: "🥊",
     name: "boxing glove",
     keywords: "boxing | glove",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 967,
@@ -7785,7 +7785,7 @@ export const emojis: Emoji[] = [
     name: "martial arts uniform",
     keywords:
       "judo | karate | martial arts | martial arts uniform | taekwondo | uniform",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 968,
@@ -7793,7 +7793,7 @@ export const emojis: Emoji[] = [
     char: "🥅",
     name: "goal net",
     keywords: "goal | net",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 969,
@@ -7801,7 +7801,7 @@ export const emojis: Emoji[] = [
     char: "⛳",
     name: "flag in hole",
     keywords: "flag in hole | golf | hole",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 970,
@@ -7809,7 +7809,7 @@ export const emojis: Emoji[] = [
     char: "⛸",
     name: "ice skate",
     keywords: "ice | skate",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 971,
@@ -7817,7 +7817,7 @@ export const emojis: Emoji[] = [
     char: "🎣",
     name: "fishing pole",
     keywords: "fish | fishing pole | pole",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 972,
@@ -7825,7 +7825,7 @@ export const emojis: Emoji[] = [
     char: "🤿",
     name: "⊛ diving mask",
     keywords: "diving | diving mask | scuba | snorkeling",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 973,
@@ -7833,7 +7833,7 @@ export const emojis: Emoji[] = [
     char: "🎽",
     name: "running shirt",
     keywords: "athletics | running | sash | shirt",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 974,
@@ -7841,7 +7841,7 @@ export const emojis: Emoji[] = [
     char: "🎿",
     name: "skis",
     keywords: "ski | skis | snow",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 975,
@@ -7849,7 +7849,7 @@ export const emojis: Emoji[] = [
     char: "🛷",
     name: "sled",
     keywords: "sled | sledge | sleigh | luge | toboggan",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 976,
@@ -7857,7 +7857,7 @@ export const emojis: Emoji[] = [
     char: "🥌",
     name: "curling stone",
     keywords: "curling stone | game | rock",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 977,
@@ -7865,7 +7865,7 @@ export const emojis: Emoji[] = [
     char: "🎯",
     name: "direct hit",
     keywords: "bullseye | dart | direct hit | game | hit | target",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 978,
@@ -7873,7 +7873,7 @@ export const emojis: Emoji[] = [
     char: "🪀",
     name: "⊛ yo-yo",
     keywords: "fluctuate | toy | yo-yo",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 979,
@@ -7881,7 +7881,7 @@ export const emojis: Emoji[] = [
     char: "🪁",
     name: "⊛ kite",
     keywords: "fly | kite | soar",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 980,
@@ -7889,7 +7889,7 @@ export const emojis: Emoji[] = [
     char: "🎱",
     name: "pool 8 ball",
     keywords: "8 | ball | billiard | eight | game | pool 8 ball",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 981,
@@ -7897,7 +7897,7 @@ export const emojis: Emoji[] = [
     char: "🔮",
     name: "crystal ball",
     keywords: "ball | crystal | fairy tale | fantasy | fortune | tool",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 982,
@@ -7905,7 +7905,7 @@ export const emojis: Emoji[] = [
     char: "🧿",
     name: "nazar amulet",
     keywords: "bead | charm | evil-eye | nazar | nazar amulet | talisman",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 983,
@@ -7913,7 +7913,7 @@ export const emojis: Emoji[] = [
     char: "🎮",
     name: "video game",
     keywords: "controller | game | video game",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 984,
@@ -7921,7 +7921,7 @@ export const emojis: Emoji[] = [
     char: "🕹",
     name: "joystick",
     keywords: "game | joystick | video game",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 985,
@@ -7929,7 +7929,7 @@ export const emojis: Emoji[] = [
     char: "🎰",
     name: "slot machine",
     keywords: "game | slot | slot machine",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 986,
@@ -7937,7 +7937,7 @@ export const emojis: Emoji[] = [
     char: "🎲",
     name: "game die",
     keywords: "dice | die | game",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 987,
@@ -7945,7 +7945,7 @@ export const emojis: Emoji[] = [
     char: "🧩",
     name: "puzzle piece",
     keywords: "clue | interlocking | jigsaw | piece | puzzle",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 988,
@@ -7953,7 +7953,7 @@ export const emojis: Emoji[] = [
     char: "🧸",
     name: "teddy bear",
     keywords: "plaything | plush | stuffed | teddy bear | toy",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 989,
@@ -7961,7 +7961,7 @@ export const emojis: Emoji[] = [
     char: "♠",
     name: "spade suit",
     keywords: "card | game | spade suit",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 990,
@@ -7969,7 +7969,7 @@ export const emojis: Emoji[] = [
     char: "♥",
     name: "heart suit",
     keywords: "card | game | heart suit",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 991,
@@ -7977,7 +7977,7 @@ export const emojis: Emoji[] = [
     char: "♦",
     name: "diamond suit",
     keywords: "card | diamond suit | game",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 992,
@@ -7985,7 +7985,7 @@ export const emojis: Emoji[] = [
     char: "♣",
     name: "club suit",
     keywords: "card | club suit | game",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 993,
@@ -7994,7 +7994,7 @@ export const emojis: Emoji[] = [
     name: "chess pawn",
     keywords:
       "chess | chess pawn | dupe | expendable | red shirt\n➯ emojification of pre-existing character",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 994,
@@ -8002,7 +8002,7 @@ export const emojis: Emoji[] = [
     char: "🃏",
     name: "joker",
     keywords: "card | game | joker | wildcard",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 995,
@@ -8010,7 +8010,7 @@ export const emojis: Emoji[] = [
     char: "🀄",
     name: "mahjong red dragon",
     keywords: "game | mahjong | mahjong red dragon | red",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 996,
@@ -8019,7 +8019,7 @@ export const emojis: Emoji[] = [
     name: "flower playing cards",
     keywords:
       "card | flower | flower playing cards | game | Japanese | playing",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 997,
@@ -8027,7 +8027,7 @@ export const emojis: Emoji[] = [
     char: "🎭",
     name: "performing arts",
     keywords: "art | mask | performing | performing arts | theater | theatre",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 998,
@@ -8035,7 +8035,7 @@ export const emojis: Emoji[] = [
     char: "🖼",
     name: "framed picture",
     keywords: "art | frame | framed picture | museum | painting | picture",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 999,
@@ -8043,7 +8043,7 @@ export const emojis: Emoji[] = [
     char: "🎨",
     name: "artist palette",
     keywords: "art | artist palette | museum | painting | palette",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 1000,
@@ -8051,7 +8051,7 @@ export const emojis: Emoji[] = [
     char: "🧵",
     name: "thread",
     keywords: "needle | sewing | spool | string | thread",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 1001,
@@ -8059,7 +8059,7 @@ export const emojis: Emoji[] = [
     char: "🧶",
     name: "yarn",
     keywords: "ball | crochet | knit | yarn",
-    category: "Activities"
+    category: "Activities",
   },
   {
     no: 1002,
@@ -8067,7 +8067,7 @@ export const emojis: Emoji[] = [
     char: "👓",
     name: "glasses",
     keywords: "clothing | eye | eyeglasses | eyewear | glasses",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1003,
@@ -8075,7 +8075,7 @@ export const emojis: Emoji[] = [
     char: "🕶",
     name: "sunglasses",
     keywords: "dark | eye | eyewear | glasses | sunglasses",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1004,
@@ -8083,7 +8083,7 @@ export const emojis: Emoji[] = [
     char: "🥽",
     name: "goggles",
     keywords: "eye protection | goggles | swimming | welding",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1005,
@@ -8091,7 +8091,7 @@ export const emojis: Emoji[] = [
     char: "🥼",
     name: "lab coat",
     keywords: "doctor | experiment | lab coat | scientist",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1006,
@@ -8100,7 +8100,7 @@ export const emojis: Emoji[] = [
     name: "⊛ safety vest",
     keywords:
       "emergency | safety | vest\n➯ Used in a ZWJ sequence for service dog",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1007,
@@ -8108,7 +8108,7 @@ export const emojis: Emoji[] = [
     char: "👔",
     name: "necktie",
     keywords: "clothing | necktie | tie",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1008,
@@ -8116,7 +8116,7 @@ export const emojis: Emoji[] = [
     char: "👕",
     name: "t-shirt",
     keywords: "clothing | shirt | t-shirt | tshirt",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1009,
@@ -8124,7 +8124,7 @@ export const emojis: Emoji[] = [
     char: "👖",
     name: "jeans",
     keywords: "clothing | jeans | pants | trousers",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1010,
@@ -8132,7 +8132,7 @@ export const emojis: Emoji[] = [
     char: "🧣",
     name: "scarf",
     keywords: "neck | scarf",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1011,
@@ -8140,7 +8140,7 @@ export const emojis: Emoji[] = [
     char: "🧤",
     name: "gloves",
     keywords: "gloves | hand",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1012,
@@ -8148,7 +8148,7 @@ export const emojis: Emoji[] = [
     char: "🧥",
     name: "coat",
     keywords: "coat | jacket",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1013,
@@ -8156,7 +8156,7 @@ export const emojis: Emoji[] = [
     char: "🧦",
     name: "socks",
     keywords: "socks | stocking",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1014,
@@ -8164,7 +8164,7 @@ export const emojis: Emoji[] = [
     char: "👗",
     name: "dress",
     keywords: "clothing | dress",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1015,
@@ -8172,7 +8172,7 @@ export const emojis: Emoji[] = [
     char: "👘",
     name: "kimono",
     keywords: "clothing | kimono",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1016,
@@ -8180,7 +8180,7 @@ export const emojis: Emoji[] = [
     char: "🥻",
     name: "⊛ sari",
     keywords: "clothing | dress | sari",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1017,
@@ -8188,7 +8188,7 @@ export const emojis: Emoji[] = [
     char: "🩱",
     name: "⊛ one-piece swimsuit",
     keywords: "bathing suit | one-piece swimsuit | swimsuit",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1018,
@@ -8196,7 +8196,7 @@ export const emojis: Emoji[] = [
     char: "🩲",
     name: "⊛ briefs",
     keywords: "bathing suit | briefs | one-piece | swimsuit | underwear",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1019,
@@ -8204,7 +8204,7 @@ export const emojis: Emoji[] = [
     char: "🩳",
     name: "⊛ shorts",
     keywords: "bathing suit | pants | shorts | underwear | swimsuit",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1020,
@@ -8212,7 +8212,7 @@ export const emojis: Emoji[] = [
     char: "👙",
     name: "bikini",
     keywords: "bikini | clothing | swim",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1021,
@@ -8220,7 +8220,7 @@ export const emojis: Emoji[] = [
     char: "👚",
     name: "woman’s clothes",
     keywords: "clothing | woman | woman’s clothes",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1022,
@@ -8228,7 +8228,7 @@ export const emojis: Emoji[] = [
     char: "👛",
     name: "purse",
     keywords: "clothing | coin | purse",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1023,
@@ -8236,7 +8236,7 @@ export const emojis: Emoji[] = [
     char: "👜",
     name: "handbag",
     keywords: "bag | clothing | handbag | purse",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1024,
@@ -8244,7 +8244,7 @@ export const emojis: Emoji[] = [
     char: "👝",
     name: "clutch bag",
     keywords: "bag | clothing | clutch bag | pouch",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1025,
@@ -8252,7 +8252,7 @@ export const emojis: Emoji[] = [
     char: "🛍",
     name: "shopping bags",
     keywords: "bag | hotel | shopping | shopping bags",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1026,
@@ -8260,7 +8260,7 @@ export const emojis: Emoji[] = [
     char: "🎒",
     name: "backpack",
     keywords: "backpack | bag | rucksack | satchel | school",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1027,
@@ -8268,7 +8268,7 @@ export const emojis: Emoji[] = [
     char: "👞",
     name: "man’s shoe",
     keywords: "clothing | man | man’s shoe | shoe",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1028,
@@ -8276,7 +8276,7 @@ export const emojis: Emoji[] = [
     char: "👟",
     name: "running shoe",
     keywords: "athletic | clothing | running shoe | shoe | sneaker",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1029,
@@ -8284,7 +8284,7 @@ export const emojis: Emoji[] = [
     char: "🥾",
     name: "hiking boot",
     keywords: "backpacking | boot | camping | hiking",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1030,
@@ -8292,7 +8292,7 @@ export const emojis: Emoji[] = [
     char: "🥿",
     name: "flat shoe",
     keywords: "ballet flat | flat shoe | slip-on | slipper",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1031,
@@ -8300,7 +8300,7 @@ export const emojis: Emoji[] = [
     char: "👠",
     name: "high-heeled shoe",
     keywords: "clothing | heel | high-heeled shoe | shoe | woman",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1032,
@@ -8308,7 +8308,7 @@ export const emojis: Emoji[] = [
     char: "👡",
     name: "woman’s sandal",
     keywords: "clothing | sandal | shoe | woman | woman’s sandal",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1033,
@@ -8316,7 +8316,7 @@ export const emojis: Emoji[] = [
     char: "🩰",
     name: "⊛ ballet shoes",
     keywords: "ballet | ballet shoes | dance",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1034,
@@ -8324,7 +8324,7 @@ export const emojis: Emoji[] = [
     char: "👢",
     name: "woman’s boot",
     keywords: "boot | clothing | shoe | woman | woman’s boot",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1035,
@@ -8332,7 +8332,7 @@ export const emojis: Emoji[] = [
     char: "👑",
     name: "crown",
     keywords: "clothing | crown | king | queen",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1036,
@@ -8340,7 +8340,7 @@ export const emojis: Emoji[] = [
     char: "👒",
     name: "woman’s hat",
     keywords: "clothing | hat | woman | woman’s hat",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1037,
@@ -8348,7 +8348,7 @@ export const emojis: Emoji[] = [
     char: "🎩",
     name: "top hat",
     keywords: "clothing | hat | top | tophat",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1038,
@@ -8356,7 +8356,7 @@ export const emojis: Emoji[] = [
     char: "🎓",
     name: "graduation cap",
     keywords: "cap | celebration | clothing | graduation | hat",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1039,
@@ -8364,7 +8364,7 @@ export const emojis: Emoji[] = [
     char: "🧢",
     name: "billed cap",
     keywords: "baseball cap | billed cap",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1040,
@@ -8372,7 +8372,7 @@ export const emojis: Emoji[] = [
     char: "⛑",
     name: "rescue worker’s helmet",
     keywords: "aid | cross | face | hat | helmet | rescue worker’s helmet",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1041,
@@ -8380,7 +8380,7 @@ export const emojis: Emoji[] = [
     char: "📿",
     name: "prayer beads",
     keywords: "beads | clothing | necklace | prayer | religion",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1042,
@@ -8388,7 +8388,7 @@ export const emojis: Emoji[] = [
     char: "💄",
     name: "lipstick",
     keywords: "cosmetics | lipstick | makeup",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1043,
@@ -8396,7 +8396,7 @@ export const emojis: Emoji[] = [
     char: "💍",
     name: "ring",
     keywords: "diamond | ring",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1044,
@@ -8404,7 +8404,7 @@ export const emojis: Emoji[] = [
     char: "💎",
     name: "gem stone",
     keywords: "diamond | gem | gem stone | jewel",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1045,
@@ -8412,7 +8412,7 @@ export const emojis: Emoji[] = [
     char: "🔇",
     name: "muted speaker",
     keywords: "mute | muted speaker | quiet | silent | speaker",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1046,
@@ -8420,7 +8420,7 @@ export const emojis: Emoji[] = [
     char: "🔈",
     name: "speaker low volume",
     keywords: "soft | speaker low volume",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1047,
@@ -8428,7 +8428,7 @@ export const emojis: Emoji[] = [
     char: "🔉",
     name: "speaker medium volume",
     keywords: "medium | speaker medium volume",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1048,
@@ -8436,7 +8436,7 @@ export const emojis: Emoji[] = [
     char: "🔊",
     name: "speaker high volume",
     keywords: "loud | speaker high volume",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1049,
@@ -8444,7 +8444,7 @@ export const emojis: Emoji[] = [
     char: "📢",
     name: "loudspeaker",
     keywords: "loud | loudspeaker | public address",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1050,
@@ -8452,7 +8452,7 @@ export const emojis: Emoji[] = [
     char: "📣",
     name: "megaphone",
     keywords: "cheering | megaphone",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1051,
@@ -8460,7 +8460,7 @@ export const emojis: Emoji[] = [
     char: "📯",
     name: "postal horn",
     keywords: "horn | post | postal",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1052,
@@ -8468,7 +8468,7 @@ export const emojis: Emoji[] = [
     char: "🔔",
     name: "bell",
     keywords: "bell",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1053,
@@ -8476,7 +8476,7 @@ export const emojis: Emoji[] = [
     char: "🔕",
     name: "bell with slash",
     keywords: "bell | bell with slash | forbidden | mute | quiet | silent",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1054,
@@ -8484,7 +8484,7 @@ export const emojis: Emoji[] = [
     char: "🎼",
     name: "musical score",
     keywords: "music | musical score | score",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1055,
@@ -8492,7 +8492,7 @@ export const emojis: Emoji[] = [
     char: "🎵",
     name: "musical note",
     keywords: "music | musical note | note",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1056,
@@ -8500,7 +8500,7 @@ export const emojis: Emoji[] = [
     char: "🎶",
     name: "musical notes",
     keywords: "music | musical notes | note | notes",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1057,
@@ -8508,7 +8508,7 @@ export const emojis: Emoji[] = [
     char: "🎙",
     name: "studio microphone",
     keywords: "mic | microphone | music | studio",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1058,
@@ -8516,7 +8516,7 @@ export const emojis: Emoji[] = [
     char: "🎚",
     name: "level slider",
     keywords: "level | music | slider",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1059,
@@ -8524,7 +8524,7 @@ export const emojis: Emoji[] = [
     char: "🎛",
     name: "control knobs",
     keywords: "control | knobs | music",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1060,
@@ -8532,7 +8532,7 @@ export const emojis: Emoji[] = [
     char: "🎤",
     name: "microphone",
     keywords: "karaoke | mic | microphone",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1061,
@@ -8540,7 +8540,7 @@ export const emojis: Emoji[] = [
     char: "🎧",
     name: "headphone",
     keywords: "earbud | headphone",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1062,
@@ -8548,7 +8548,7 @@ export const emojis: Emoji[] = [
     char: "📻",
     name: "radio",
     keywords: "radio | video",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1063,
@@ -8556,7 +8556,7 @@ export const emojis: Emoji[] = [
     char: "🎷",
     name: "saxophone",
     keywords: "instrument | music | sax | saxophone",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1064,
@@ -8564,7 +8564,7 @@ export const emojis: Emoji[] = [
     char: "🎸",
     name: "guitar",
     keywords: "guitar | instrument | music",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1065,
@@ -8572,7 +8572,7 @@ export const emojis: Emoji[] = [
     char: "🎹",
     name: "musical keyboard",
     keywords: "instrument | keyboard | music | musical keyboard | piano",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1066,
@@ -8580,7 +8580,7 @@ export const emojis: Emoji[] = [
     char: "🎺",
     name: "trumpet",
     keywords: "instrument | music | trumpet",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1067,
@@ -8588,7 +8588,7 @@ export const emojis: Emoji[] = [
     char: "🎻",
     name: "violin",
     keywords: "instrument | music | violin",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1068,
@@ -8596,7 +8596,7 @@ export const emojis: Emoji[] = [
     char: "🪕",
     name: "⊛ banjo",
     keywords: "banjo | music | stringed",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1069,
@@ -8604,7 +8604,7 @@ export const emojis: Emoji[] = [
     char: "🥁",
     name: "drum",
     keywords: "drum | drumsticks | music",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1070,
@@ -8612,7 +8612,7 @@ export const emojis: Emoji[] = [
     char: "📱",
     name: "mobile phone",
     keywords: "cell | mobile | phone | telephone",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1071,
@@ -8621,7 +8621,7 @@ export const emojis: Emoji[] = [
     name: "mobile phone with arrow",
     keywords:
       "arrow | cell | mobile | mobile phone with arrow | phone | receive",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1072,
@@ -8629,7 +8629,7 @@ export const emojis: Emoji[] = [
     char: "☎",
     name: "telephone",
     keywords: "phone | telephone",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1073,
@@ -8637,7 +8637,7 @@ export const emojis: Emoji[] = [
     char: "📞",
     name: "telephone receiver",
     keywords: "phone | receiver | telephone",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1074,
@@ -8645,7 +8645,7 @@ export const emojis: Emoji[] = [
     char: "📟",
     name: "pager",
     keywords: "pager",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1075,
@@ -8653,7 +8653,7 @@ export const emojis: Emoji[] = [
     char: "📠",
     name: "fax machine",
     keywords: "fax | fax machine",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1076,
@@ -8661,7 +8661,7 @@ export const emojis: Emoji[] = [
     char: "🔋",
     name: "battery",
     keywords: "battery",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1077,
@@ -8669,7 +8669,7 @@ export const emojis: Emoji[] = [
     char: "🔌",
     name: "electric plug",
     keywords: "electric | electricity | plug",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1078,
@@ -8677,7 +8677,7 @@ export const emojis: Emoji[] = [
     char: "💻",
     name: "laptop computer",
     keywords: "computer | laptop computer | pc | personal",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1079,
@@ -8685,7 +8685,7 @@ export const emojis: Emoji[] = [
     char: "🖥",
     name: "desktop computer",
     keywords: "computer | desktop",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1080,
@@ -8693,7 +8693,7 @@ export const emojis: Emoji[] = [
     char: "🖨",
     name: "printer",
     keywords: "computer | printer",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1081,
@@ -8701,7 +8701,7 @@ export const emojis: Emoji[] = [
     char: "⌨",
     name: "keyboard",
     keywords: "computer | keyboard",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1082,
@@ -8709,7 +8709,7 @@ export const emojis: Emoji[] = [
     char: "🖱",
     name: "computer mouse",
     keywords: "computer | computer mouse",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1083,
@@ -8717,7 +8717,7 @@ export const emojis: Emoji[] = [
     char: "🖲",
     name: "trackball",
     keywords: "computer | trackball",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1084,
@@ -8725,7 +8725,7 @@ export const emojis: Emoji[] = [
     char: "💽",
     name: "computer disk",
     keywords: "computer | disk | minidisk | optical",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1085,
@@ -8733,7 +8733,7 @@ export const emojis: Emoji[] = [
     char: "💾",
     name: "floppy disk",
     keywords: "computer | disk | floppy",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1086,
@@ -8741,7 +8741,7 @@ export const emojis: Emoji[] = [
     char: "💿",
     name: "optical disk",
     keywords: "cd | computer | disk | optical",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1087,
@@ -8749,7 +8749,7 @@ export const emojis: Emoji[] = [
     char: "📀",
     name: "dvd",
     keywords: "blu-ray | computer | disk | dvd | optical",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1088,
@@ -8757,7 +8757,7 @@ export const emojis: Emoji[] = [
     char: "🧮",
     name: "abacus",
     keywords: "abacus | calculation",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1089,
@@ -8765,7 +8765,7 @@ export const emojis: Emoji[] = [
     char: "🎥",
     name: "movie camera",
     keywords: "camera | cinema | movie",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1090,
@@ -8773,7 +8773,7 @@ export const emojis: Emoji[] = [
     char: "🎞",
     name: "film frames",
     keywords: "cinema | film | frames | movie",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1091,
@@ -8781,7 +8781,7 @@ export const emojis: Emoji[] = [
     char: "📽",
     name: "film projector",
     keywords: "cinema | film | movie | projector | video",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1092,
@@ -8789,7 +8789,7 @@ export const emojis: Emoji[] = [
     char: "🎬",
     name: "clapper board",
     keywords: "clapper | clapper board | movie",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1093,
@@ -8797,7 +8797,7 @@ export const emojis: Emoji[] = [
     char: "📺",
     name: "television",
     keywords: "television | tv | video",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1094,
@@ -8805,7 +8805,7 @@ export const emojis: Emoji[] = [
     char: "📷",
     name: "camera",
     keywords: "camera | video",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1095,
@@ -8813,7 +8813,7 @@ export const emojis: Emoji[] = [
     char: "📸",
     name: "camera with flash",
     keywords: "camera | camera with flash | flash | video",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1096,
@@ -8821,7 +8821,7 @@ export const emojis: Emoji[] = [
     char: "📹",
     name: "video camera",
     keywords: "camera | video",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1097,
@@ -8829,7 +8829,7 @@ export const emojis: Emoji[] = [
     char: "📼",
     name: "videocassette",
     keywords: "tape | vhs | video | videocassette",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1098,
@@ -8838,7 +8838,7 @@ export const emojis: Emoji[] = [
     name: "magnifying glass tilted left",
     keywords:
       "glass | magnifying | magnifying glass tilted left | search | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1099,
@@ -8847,7 +8847,7 @@ export const emojis: Emoji[] = [
     name: "magnifying glass tilted right",
     keywords:
       "glass | magnifying | magnifying glass tilted right | search | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1100,
@@ -8855,7 +8855,7 @@ export const emojis: Emoji[] = [
     char: "🕯",
     name: "candle",
     keywords: "candle | light",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1101,
@@ -8863,7 +8863,7 @@ export const emojis: Emoji[] = [
     char: "💡",
     name: "light bulb",
     keywords: "bulb | comic | electric | idea | light",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1102,
@@ -8871,7 +8871,7 @@ export const emojis: Emoji[] = [
     char: "🔦",
     name: "flashlight",
     keywords: "electric | flashlight | light | tool | torch",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1103,
@@ -8879,7 +8879,7 @@ export const emojis: Emoji[] = [
     char: "🏮",
     name: "red paper lantern",
     keywords: "bar | lantern | light | red | red paper lantern",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1104,
@@ -8887,7 +8887,7 @@ export const emojis: Emoji[] = [
     char: "🪔",
     name: "⊛ diya lamp",
     keywords: "diya | lamp | oil",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1105,
@@ -8896,7 +8896,7 @@ export const emojis: Emoji[] = [
     name: "notebook with decorative cover",
     keywords:
       "book | cover | decorated | notebook | notebook with decorative cover",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1106,
@@ -8904,7 +8904,7 @@ export const emojis: Emoji[] = [
     char: "📕",
     name: "closed book",
     keywords: "book | closed",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1107,
@@ -8912,7 +8912,7 @@ export const emojis: Emoji[] = [
     char: "📖",
     name: "open book",
     keywords: "book | open",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1108,
@@ -8920,7 +8920,7 @@ export const emojis: Emoji[] = [
     char: "📗",
     name: "green book",
     keywords: "book | green",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1109,
@@ -8928,7 +8928,7 @@ export const emojis: Emoji[] = [
     char: "📘",
     name: "blue book",
     keywords: "blue | book",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1110,
@@ -8936,7 +8936,7 @@ export const emojis: Emoji[] = [
     char: "📙",
     name: "orange book",
     keywords: "book | orange",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1111,
@@ -8944,7 +8944,7 @@ export const emojis: Emoji[] = [
     char: "📚",
     name: "books",
     keywords: "book | books",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1112,
@@ -8952,7 +8952,7 @@ export const emojis: Emoji[] = [
     char: "📓",
     name: "notebook",
     keywords: "notebook",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1113,
@@ -8960,7 +8960,7 @@ export const emojis: Emoji[] = [
     char: "📒",
     name: "ledger",
     keywords: "ledger | notebook",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1114,
@@ -8968,7 +8968,7 @@ export const emojis: Emoji[] = [
     char: "📃",
     name: "page with curl",
     keywords: "curl | document | page | page with curl",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1115,
@@ -8976,7 +8976,7 @@ export const emojis: Emoji[] = [
     char: "📜",
     name: "scroll",
     keywords: "paper | scroll",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1116,
@@ -8984,7 +8984,7 @@ export const emojis: Emoji[] = [
     char: "📄",
     name: "page facing up",
     keywords: "document | page | page facing up",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1117,
@@ -8992,7 +8992,7 @@ export const emojis: Emoji[] = [
     char: "📰",
     name: "newspaper",
     keywords: "news | newspaper | paper",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1118,
@@ -9000,7 +9000,7 @@ export const emojis: Emoji[] = [
     char: "🗞",
     name: "rolled-up newspaper",
     keywords: "news | newspaper | paper | rolled | rolled-up newspaper",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1119,
@@ -9008,7 +9008,7 @@ export const emojis: Emoji[] = [
     char: "📑",
     name: "bookmark tabs",
     keywords: "bookmark | mark | marker | tabs",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1120,
@@ -9016,7 +9016,7 @@ export const emojis: Emoji[] = [
     char: "🔖",
     name: "bookmark",
     keywords: "bookmark | mark",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1121,
@@ -9024,7 +9024,7 @@ export const emojis: Emoji[] = [
     char: "🏷",
     name: "label",
     keywords: "label",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1122,
@@ -9032,7 +9032,7 @@ export const emojis: Emoji[] = [
     char: "💰",
     name: "money bag",
     keywords: "bag | dollar | money | moneybag",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1123,
@@ -9040,7 +9040,7 @@ export const emojis: Emoji[] = [
     char: "💴",
     name: "yen banknote",
     keywords: "banknote | bill | currency | money | note | yen",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1124,
@@ -9048,7 +9048,7 @@ export const emojis: Emoji[] = [
     char: "💵",
     name: "dollar banknote",
     keywords: "banknote | bill | currency | dollar | money | note",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1125,
@@ -9056,7 +9056,7 @@ export const emojis: Emoji[] = [
     char: "💶",
     name: "euro banknote",
     keywords: "banknote | bill | currency | euro | money | note",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1126,
@@ -9064,7 +9064,7 @@ export const emojis: Emoji[] = [
     char: "💷",
     name: "pound banknote",
     keywords: "banknote | bill | currency | money | note | pound",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1127,
@@ -9072,7 +9072,7 @@ export const emojis: Emoji[] = [
     char: "💸",
     name: "money with wings",
     keywords: "banknote | bill | fly | money | money with wings | wings",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1128,
@@ -9080,7 +9080,7 @@ export const emojis: Emoji[] = [
     char: "💳",
     name: "credit card",
     keywords: "card | credit | money",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1129,
@@ -9088,7 +9088,7 @@ export const emojis: Emoji[] = [
     char: "🧾",
     name: "receipt",
     keywords: "accounting | bookkeeping | evidence | proof | receipt",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1130,
@@ -9097,7 +9097,7 @@ export const emojis: Emoji[] = [
     name: "chart increasing with yen",
     keywords:
       "chart | chart increasing with yen | graph | growth | money | yen",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1131,
@@ -9105,7 +9105,7 @@ export const emojis: Emoji[] = [
     char: "💱",
     name: "currency exchange",
     keywords: "bank | currency | exchange | money",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1132,
@@ -9113,7 +9113,7 @@ export const emojis: Emoji[] = [
     char: "💲",
     name: "heavy dollar sign",
     keywords: "currency | dollar | heavy dollar sign | money",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1133,
@@ -9121,7 +9121,7 @@ export const emojis: Emoji[] = [
     char: "✉",
     name: "envelope",
     keywords: "email | envelope | letter",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1134,
@@ -9129,7 +9129,7 @@ export const emojis: Emoji[] = [
     char: "📧",
     name: "e-mail",
     keywords: "e-mail | email | letter | mail",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1135,
@@ -9137,7 +9137,7 @@ export const emojis: Emoji[] = [
     char: "📨",
     name: "incoming envelope",
     keywords: "e-mail | email | envelope | incoming | letter | receive",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1136,
@@ -9146,7 +9146,7 @@ export const emojis: Emoji[] = [
     name: "envelope with arrow",
     keywords:
       "arrow | e-mail | email | envelope | envelope with arrow | outgoing",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1137,
@@ -9154,7 +9154,7 @@ export const emojis: Emoji[] = [
     char: "📤",
     name: "outbox tray",
     keywords: "box | letter | mail | outbox | sent | tray",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1138,
@@ -9162,7 +9162,7 @@ export const emojis: Emoji[] = [
     char: "📥",
     name: "inbox tray",
     keywords: "box | inbox | letter | mail | receive | tray",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1139,
@@ -9170,7 +9170,7 @@ export const emojis: Emoji[] = [
     char: "📦",
     name: "package",
     keywords: "box | package | parcel",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1140,
@@ -9179,7 +9179,7 @@ export const emojis: Emoji[] = [
     name: "closed mailbox with raised flag",
     keywords:
       "closed | closed mailbox with raised flag | mail | mailbox | postbox",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1141,
@@ -9188,7 +9188,7 @@ export const emojis: Emoji[] = [
     name: "closed mailbox with lowered flag",
     keywords:
       "closed | closed mailbox with lowered flag | lowered | mail | mailbox | postbox",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1142,
@@ -9196,7 +9196,7 @@ export const emojis: Emoji[] = [
     char: "📬",
     name: "open mailbox with raised flag",
     keywords: "mail | mailbox | open | open mailbox with raised flag | postbox",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1143,
@@ -9205,7 +9205,7 @@ export const emojis: Emoji[] = [
     name: "open mailbox with lowered flag",
     keywords:
       "lowered | mail | mailbox | open | open mailbox with lowered flag | postbox",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1144,
@@ -9213,7 +9213,7 @@ export const emojis: Emoji[] = [
     char: "📮",
     name: "postbox",
     keywords: "mail | mailbox | postbox",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1145,
@@ -9221,7 +9221,7 @@ export const emojis: Emoji[] = [
     char: "🗳",
     name: "ballot box with ballot",
     keywords: "ballot | ballot box with ballot | box",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1146,
@@ -9229,7 +9229,7 @@ export const emojis: Emoji[] = [
     char: "✏",
     name: "pencil",
     keywords: "pencil",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1147,
@@ -9237,7 +9237,7 @@ export const emojis: Emoji[] = [
     char: "✒",
     name: "black nib",
     keywords: "black nib | nib | pen",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1148,
@@ -9245,7 +9245,7 @@ export const emojis: Emoji[] = [
     char: "🖋",
     name: "fountain pen",
     keywords: "fountain | pen",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1149,
@@ -9253,7 +9253,7 @@ export const emojis: Emoji[] = [
     char: "🖊",
     name: "pen",
     keywords: "ballpoint | pen",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1150,
@@ -9261,7 +9261,7 @@ export const emojis: Emoji[] = [
     char: "🖌",
     name: "paintbrush",
     keywords: "paintbrush | painting",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1151,
@@ -9269,7 +9269,7 @@ export const emojis: Emoji[] = [
     char: "🖍",
     name: "crayon",
     keywords: "crayon",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1152,
@@ -9277,7 +9277,7 @@ export const emojis: Emoji[] = [
     char: "📝",
     name: "memo",
     keywords: "memo | pencil",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1153,
@@ -9285,7 +9285,7 @@ export const emojis: Emoji[] = [
     char: "💼",
     name: "briefcase",
     keywords: "briefcase",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1154,
@@ -9293,7 +9293,7 @@ export const emojis: Emoji[] = [
     char: "📁",
     name: "file folder",
     keywords: "file | folder",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1155,
@@ -9301,7 +9301,7 @@ export const emojis: Emoji[] = [
     char: "📂",
     name: "open file folder",
     keywords: "file | folder | open",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1156,
@@ -9309,7 +9309,7 @@ export const emojis: Emoji[] = [
     char: "🗂",
     name: "card index dividers",
     keywords: "card | dividers | index",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1157,
@@ -9317,7 +9317,7 @@ export const emojis: Emoji[] = [
     char: "📅",
     name: "calendar",
     keywords: "calendar | date",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1158,
@@ -9325,7 +9325,7 @@ export const emojis: Emoji[] = [
     char: "📆",
     name: "tear-off calendar",
     keywords: "calendar | tear-off calendar",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1159,
@@ -9333,7 +9333,7 @@ export const emojis: Emoji[] = [
     char: "🗒",
     name: "spiral notepad",
     keywords: "note | pad | spiral | spiral notepad",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1160,
@@ -9341,7 +9341,7 @@ export const emojis: Emoji[] = [
     char: "🗓",
     name: "spiral calendar",
     keywords: "calendar | pad | spiral",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1161,
@@ -9349,7 +9349,7 @@ export const emojis: Emoji[] = [
     char: "📇",
     name: "card index",
     keywords: "card | index | rolodex",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1162,
@@ -9357,7 +9357,7 @@ export const emojis: Emoji[] = [
     char: "📈",
     name: "chart increasing",
     keywords: "chart | chart increasing | graph | growth | trend | upward",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1163,
@@ -9365,7 +9365,7 @@ export const emojis: Emoji[] = [
     char: "📉",
     name: "chart decreasing",
     keywords: "chart | chart decreasing | down | graph | trend",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1164,
@@ -9373,7 +9373,7 @@ export const emojis: Emoji[] = [
     char: "📊",
     name: "bar chart",
     keywords: "bar | chart | graph",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1165,
@@ -9381,7 +9381,7 @@ export const emojis: Emoji[] = [
     char: "📋",
     name: "clipboard",
     keywords: "clipboard",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1166,
@@ -9389,7 +9389,7 @@ export const emojis: Emoji[] = [
     char: "📌",
     name: "pushpin",
     keywords: "pin | pushpin",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1167,
@@ -9397,7 +9397,7 @@ export const emojis: Emoji[] = [
     char: "📍",
     name: "round pushpin",
     keywords: "pin | pushpin | round pushpin",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1168,
@@ -9405,7 +9405,7 @@ export const emojis: Emoji[] = [
     char: "📎",
     name: "paperclip",
     keywords: "paperclip",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1169,
@@ -9413,7 +9413,7 @@ export const emojis: Emoji[] = [
     char: "🖇",
     name: "linked paperclips",
     keywords: "link | linked paperclips | paperclip",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1170,
@@ -9421,7 +9421,7 @@ export const emojis: Emoji[] = [
     char: "📏",
     name: "straight ruler",
     keywords: "ruler | straight edge | straight ruler",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1171,
@@ -9429,7 +9429,7 @@ export const emojis: Emoji[] = [
     char: "📐",
     name: "triangular ruler",
     keywords: "ruler | set | triangle | triangular ruler",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1172,
@@ -9437,7 +9437,7 @@ export const emojis: Emoji[] = [
     char: "✂",
     name: "scissors",
     keywords: "cutting | scissors | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1173,
@@ -9445,7 +9445,7 @@ export const emojis: Emoji[] = [
     char: "🗃",
     name: "card file box",
     keywords: "box | card | file",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1174,
@@ -9453,7 +9453,7 @@ export const emojis: Emoji[] = [
     char: "🗄",
     name: "file cabinet",
     keywords: "cabinet | file | filing",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1175,
@@ -9461,7 +9461,7 @@ export const emojis: Emoji[] = [
     char: "🗑",
     name: "wastebasket",
     keywords: "wastebasket",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1176,
@@ -9469,7 +9469,7 @@ export const emojis: Emoji[] = [
     char: "🔒",
     name: "locked",
     keywords: "closed | locked",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1177,
@@ -9477,7 +9477,7 @@ export const emojis: Emoji[] = [
     char: "🔓",
     name: "unlocked",
     keywords: "lock | open | unlock | unlocked",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1178,
@@ -9485,7 +9485,7 @@ export const emojis: Emoji[] = [
     char: "🔏",
     name: "locked with pen",
     keywords: "ink | lock | locked with pen | nib | pen | privacy",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1179,
@@ -9493,7 +9493,7 @@ export const emojis: Emoji[] = [
     char: "🔐",
     name: "locked with key",
     keywords: "closed | key | lock | locked with key | secure",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1180,
@@ -9501,7 +9501,7 @@ export const emojis: Emoji[] = [
     char: "🔑",
     name: "key",
     keywords: "key | lock | password",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1181,
@@ -9509,7 +9509,7 @@ export const emojis: Emoji[] = [
     char: "🗝",
     name: "old key",
     keywords: "clue | key | lock | old",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1182,
@@ -9517,7 +9517,7 @@ export const emojis: Emoji[] = [
     char: "🔨",
     name: "hammer",
     keywords: "hammer | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1183,
@@ -9525,7 +9525,7 @@ export const emojis: Emoji[] = [
     char: "🪓",
     name: "⊛ axe",
     keywords: "axe | chop | hatchet | split | wood",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1184,
@@ -9533,7 +9533,7 @@ export const emojis: Emoji[] = [
     char: "⛏",
     name: "pick",
     keywords: "mining | pick | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1185,
@@ -9541,7 +9541,7 @@ export const emojis: Emoji[] = [
     char: "⚒",
     name: "hammer and pick",
     keywords: "hammer | hammer and pick | pick | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1186,
@@ -9549,7 +9549,7 @@ export const emojis: Emoji[] = [
     char: "🛠",
     name: "hammer and wrench",
     keywords: "hammer | hammer and wrench | spanner | tool | wrench",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1187,
@@ -9557,7 +9557,7 @@ export const emojis: Emoji[] = [
     char: "🗡",
     name: "dagger",
     keywords: "dagger | knife | weapon",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1188,
@@ -9565,7 +9565,7 @@ export const emojis: Emoji[] = [
     char: "⚔",
     name: "crossed swords",
     keywords: "crossed | swords | weapon",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1189,
@@ -9573,7 +9573,7 @@ export const emojis: Emoji[] = [
     char: "🔫",
     name: "pistol",
     keywords: "gun | handgun | pistol | revolver | tool | weapon",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1190,
@@ -9581,7 +9581,7 @@ export const emojis: Emoji[] = [
     char: "🏹",
     name: "bow and arrow",
     keywords: "archer | arrow | bow | bow and arrow | Sagittarius | zodiac",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1191,
@@ -9589,7 +9589,7 @@ export const emojis: Emoji[] = [
     char: "🛡",
     name: "shield",
     keywords: "shield | weapon",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1192,
@@ -9597,7 +9597,7 @@ export const emojis: Emoji[] = [
     char: "🔧",
     name: "wrench",
     keywords: "spanner | tool | wrench",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1193,
@@ -9605,7 +9605,7 @@ export const emojis: Emoji[] = [
     char: "🔩",
     name: "nut and bolt",
     keywords: "bolt | nut | nut and bolt | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1194,
@@ -9613,7 +9613,7 @@ export const emojis: Emoji[] = [
     char: "⚙",
     name: "gear",
     keywords: "cog | cogwheel | gear | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1195,
@@ -9621,7 +9621,7 @@ export const emojis: Emoji[] = [
     char: "🗜",
     name: "clamp",
     keywords: "clamp | compress | tool | vice",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1196,
@@ -9629,7 +9629,7 @@ export const emojis: Emoji[] = [
     char: "⚖",
     name: "balance scale",
     keywords: "balance | justice | Libra | scale | zodiac",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1197,
@@ -9637,7 +9637,7 @@ export const emojis: Emoji[] = [
     char: "🦯",
     name: "⊛ probing cane",
     keywords: "accessibility | blind | probing cane",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1198,
@@ -9645,7 +9645,7 @@ export const emojis: Emoji[] = [
     char: "🔗",
     name: "link",
     keywords: "link",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1199,
@@ -9653,7 +9653,7 @@ export const emojis: Emoji[] = [
     char: "⛓",
     name: "chains",
     keywords: "chain | chains",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1200,
@@ -9661,7 +9661,7 @@ export const emojis: Emoji[] = [
     char: "🧰",
     name: "toolbox",
     keywords: "chest | mechanic | tool | toolbox",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1201,
@@ -9669,7 +9669,7 @@ export const emojis: Emoji[] = [
     char: "🧲",
     name: "magnet",
     keywords: "attraction | horseshoe | magnet | magnetic",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1202,
@@ -9677,7 +9677,7 @@ export const emojis: Emoji[] = [
     char: "⚗",
     name: "alembic",
     keywords: "alembic | chemistry | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1203,
@@ -9685,7 +9685,7 @@ export const emojis: Emoji[] = [
     char: "🧪",
     name: "test tube",
     keywords: "chemist | chemistry | experiment | lab | science | test tube",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1204,
@@ -9693,7 +9693,7 @@ export const emojis: Emoji[] = [
     char: "🧫",
     name: "petri dish",
     keywords: "bacteria | biologist | biology | culture | lab | petri dish",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1205,
@@ -9701,7 +9701,7 @@ export const emojis: Emoji[] = [
     char: "🧬",
     name: "dna",
     keywords: "biologist | dna | evolution | gene | genetics | life",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1206,
@@ -9709,7 +9709,7 @@ export const emojis: Emoji[] = [
     char: "🔬",
     name: "microscope",
     keywords: "microscope | science | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1207,
@@ -9717,7 +9717,7 @@ export const emojis: Emoji[] = [
     char: "🔭",
     name: "telescope",
     keywords: "science | telescope | tool",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1208,
@@ -9725,7 +9725,7 @@ export const emojis: Emoji[] = [
     char: "📡",
     name: "satellite antenna",
     keywords: "antenna | dish | satellite",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1209,
@@ -9733,7 +9733,7 @@ export const emojis: Emoji[] = [
     char: "💉",
     name: "syringe",
     keywords: "medicine | needle | shot | sick | syringe",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1210,
@@ -9742,7 +9742,7 @@ export const emojis: Emoji[] = [
     name: "⊛ drop of blood",
     keywords:
       "bleed | blood donation | drop of blood | injury | medicine | menstruation",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1211,
@@ -9750,7 +9750,7 @@ export const emojis: Emoji[] = [
     char: "💊",
     name: "pill",
     keywords: "doctor | medicine | pill | sick",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1212,
@@ -9758,7 +9758,7 @@ export const emojis: Emoji[] = [
     char: "🩹",
     name: "⊛ adhesive bandage",
     keywords: "adhesive bandage | bandage",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1213,
@@ -9766,7 +9766,7 @@ export const emojis: Emoji[] = [
     char: "🩺",
     name: "⊛ stethoscope",
     keywords: "doctor | heart | medicine | stethoscope",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1214,
@@ -9774,7 +9774,7 @@ export const emojis: Emoji[] = [
     char: "🚪",
     name: "door",
     keywords: "door",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1215,
@@ -9782,7 +9782,7 @@ export const emojis: Emoji[] = [
     char: "🛏",
     name: "bed",
     keywords: "bed | hotel | sleep",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1216,
@@ -9790,7 +9790,7 @@ export const emojis: Emoji[] = [
     char: "🛋",
     name: "couch and lamp",
     keywords: "couch | couch and lamp | hotel | lamp",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1217,
@@ -9798,7 +9798,7 @@ export const emojis: Emoji[] = [
     char: "🪑",
     name: "⊛ chair",
     keywords: "chair | seat | sit",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1218,
@@ -9806,7 +9806,7 @@ export const emojis: Emoji[] = [
     char: "🚽",
     name: "toilet",
     keywords: "toilet",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1219,
@@ -9814,7 +9814,7 @@ export const emojis: Emoji[] = [
     char: "🚿",
     name: "shower",
     keywords: "shower | water",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1220,
@@ -9822,7 +9822,7 @@ export const emojis: Emoji[] = [
     char: "🛁",
     name: "bathtub",
     keywords: "bath | bathtub",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1221,
@@ -9830,7 +9830,7 @@ export const emojis: Emoji[] = [
     char: "🪒",
     name: "⊛ razor",
     keywords: "razor | sharp | shave",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1222,
@@ -9838,7 +9838,7 @@ export const emojis: Emoji[] = [
     char: "🧴",
     name: "lotion bottle",
     keywords: "lotion | lotion bottle | moisturizer | shampoo | sunscreen",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1223,
@@ -9846,7 +9846,7 @@ export const emojis: Emoji[] = [
     char: "🧷",
     name: "safety pin",
     keywords: "diaper | punk rock | safety pin",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1224,
@@ -9854,7 +9854,7 @@ export const emojis: Emoji[] = [
     char: "🧹",
     name: "broom",
     keywords: "broom | cleaning | sweeping | witch",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1225,
@@ -9862,7 +9862,7 @@ export const emojis: Emoji[] = [
     char: "🧺",
     name: "basket",
     keywords: "basket | farming | laundry | picnic",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1226,
@@ -9870,7 +9870,7 @@ export const emojis: Emoji[] = [
     char: "🧻",
     name: "roll of paper",
     keywords: "paper towels | roll of paper | toilet paper",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1227,
@@ -9878,7 +9878,7 @@ export const emojis: Emoji[] = [
     char: "🧼",
     name: "soap",
     keywords: "bar | bathing | cleaning | lather | soap | soapdish",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1228,
@@ -9886,7 +9886,7 @@ export const emojis: Emoji[] = [
     char: "🧽",
     name: "sponge",
     keywords: "absorbing | cleaning | porous | sponge",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1229,
@@ -9894,7 +9894,7 @@ export const emojis: Emoji[] = [
     char: "🧯",
     name: "fire extinguisher",
     keywords: "extinguish | fire | fire extinguisher | quench",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1230,
@@ -9902,7 +9902,7 @@ export const emojis: Emoji[] = [
     char: "🛒",
     name: "shopping cart",
     keywords: "cart | shopping | trolley",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1231,
@@ -9910,7 +9910,7 @@ export const emojis: Emoji[] = [
     char: "🚬",
     name: "cigarette",
     keywords: "cigarette | smoking",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1232,
@@ -9918,7 +9918,7 @@ export const emojis: Emoji[] = [
     char: "⚰",
     name: "coffin",
     keywords: "coffin | death",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1233,
@@ -9926,7 +9926,7 @@ export const emojis: Emoji[] = [
     char: "⚱",
     name: "funeral urn",
     keywords: "ashes | death | funeral | urn",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1234,
@@ -9934,7 +9934,7 @@ export const emojis: Emoji[] = [
     char: "🗿",
     name: "moai",
     keywords: "face | moai | moyai | statue",
-    category: "Objects"
+    category: "Objects",
   },
   {
     no: 1235,
@@ -9942,7 +9942,7 @@ export const emojis: Emoji[] = [
     char: "🏧",
     name: "ATM sign",
     keywords: "atm | ATM sign | automated | bank | teller",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1236,
@@ -9950,7 +9950,7 @@ export const emojis: Emoji[] = [
     char: "🚮",
     name: "litter in bin sign",
     keywords: "litter | litter bin | litter in bin sign",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1237,
@@ -9958,7 +9958,7 @@ export const emojis: Emoji[] = [
     char: "🚰",
     name: "potable water",
     keywords: "drinking | potable | water",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1238,
@@ -9966,7 +9966,7 @@ export const emojis: Emoji[] = [
     char: "♿",
     name: "wheelchair symbol",
     keywords: "access | wheelchair symbol",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1239,
@@ -9974,7 +9974,7 @@ export const emojis: Emoji[] = [
     char: "🚹",
     name: "men’s room",
     keywords: "lavatory | man | men’s room | restroom | wc",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1240,
@@ -9982,7 +9982,7 @@ export const emojis: Emoji[] = [
     char: "🚺",
     name: "women’s room",
     keywords: "lavatory | restroom | wc | woman | women’s room",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1241,
@@ -9990,7 +9990,7 @@ export const emojis: Emoji[] = [
     char: "🚻",
     name: "restroom",
     keywords: "lavatory | restroom | WC",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1242,
@@ -9998,7 +9998,7 @@ export const emojis: Emoji[] = [
     char: "🚼",
     name: "baby symbol",
     keywords: "baby | baby symbol | changing",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1243,
@@ -10006,7 +10006,7 @@ export const emojis: Emoji[] = [
     char: "🚾",
     name: "water closet",
     keywords: "closet | lavatory | restroom | water | wc",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1244,
@@ -10014,7 +10014,7 @@ export const emojis: Emoji[] = [
     char: "🛂",
     name: "passport control",
     keywords: "control | passport",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1245,
@@ -10022,7 +10022,7 @@ export const emojis: Emoji[] = [
     char: "🛃",
     name: "customs",
     keywords: "customs",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1246,
@@ -10030,7 +10030,7 @@ export const emojis: Emoji[] = [
     char: "🛄",
     name: "baggage claim",
     keywords: "baggage | claim",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1247,
@@ -10038,7 +10038,7 @@ export const emojis: Emoji[] = [
     char: "🛅",
     name: "left luggage",
     keywords: "baggage | left luggage | locker | luggage",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1248,
@@ -10046,7 +10046,7 @@ export const emojis: Emoji[] = [
     char: "⚠",
     name: "warning",
     keywords: "warning",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1249,
@@ -10054,7 +10054,7 @@ export const emojis: Emoji[] = [
     char: "🚸",
     name: "children crossing",
     keywords: "child | children crossing | crossing | pedestrian | traffic",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1250,
@@ -10062,7 +10062,7 @@ export const emojis: Emoji[] = [
     char: "⛔",
     name: "no entry",
     keywords: "entry | forbidden | no | not | prohibited | traffic",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1251,
@@ -10070,7 +10070,7 @@ export const emojis: Emoji[] = [
     char: "🚫",
     name: "prohibited",
     keywords: "entry | forbidden | no | not | prohibited",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1252,
@@ -10078,7 +10078,7 @@ export const emojis: Emoji[] = [
     char: "🚳",
     name: "no bicycles",
     keywords: "bicycle | bike | forbidden | no | no bicycles | prohibited",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1253,
@@ -10086,7 +10086,7 @@ export const emojis: Emoji[] = [
     char: "🚭",
     name: "no smoking",
     keywords: "forbidden | no | not | prohibited | smoking",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1254,
@@ -10094,7 +10094,7 @@ export const emojis: Emoji[] = [
     char: "🚯",
     name: "no littering",
     keywords: "forbidden | litter | no | no littering | not | prohibited",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1255,
@@ -10102,7 +10102,7 @@ export const emojis: Emoji[] = [
     char: "🚱",
     name: "non-potable water",
     keywords: "non-drinking | non-potable | water",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1256,
@@ -10110,7 +10110,7 @@ export const emojis: Emoji[] = [
     char: "🚷",
     name: "no pedestrians",
     keywords: "forbidden | no | no pedestrians | not | pedestrian | prohibited",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1257,
@@ -10118,7 +10118,7 @@ export const emojis: Emoji[] = [
     char: "📵",
     name: "no mobile phones",
     keywords: "cell | forbidden | mobile | no | no mobile phones | phone",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1258,
@@ -10127,7 +10127,7 @@ export const emojis: Emoji[] = [
     name: "no one under eighteen",
     keywords:
       "18 | age restriction | eighteen | no one under eighteen | prohibited | underage",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1259,
@@ -10135,7 +10135,7 @@ export const emojis: Emoji[] = [
     char: "☢",
     name: "radioactive",
     keywords: "radioactive | sign",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1260,
@@ -10143,7 +10143,7 @@ export const emojis: Emoji[] = [
     char: "☣",
     name: "biohazard",
     keywords: "biohazard | sign",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1261,
@@ -10151,7 +10151,7 @@ export const emojis: Emoji[] = [
     char: "⬆",
     name: "up arrow",
     keywords: "arrow | cardinal | direction | north | up arrow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1262,
@@ -10159,7 +10159,7 @@ export const emojis: Emoji[] = [
     char: "↗",
     name: "up-right arrow",
     keywords: "arrow | direction | intercardinal | northeast | up-right arrow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1263,
@@ -10167,7 +10167,7 @@ export const emojis: Emoji[] = [
     char: "➡",
     name: "right arrow",
     keywords: "arrow | cardinal | direction | east | right arrow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1264,
@@ -10176,7 +10176,7 @@ export const emojis: Emoji[] = [
     name: "down-right arrow",
     keywords:
       "arrow | direction | down-right arrow | intercardinal | southeast",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1265,
@@ -10184,7 +10184,7 @@ export const emojis: Emoji[] = [
     char: "⬇",
     name: "down arrow",
     keywords: "arrow | cardinal | direction | down | south",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1266,
@@ -10192,7 +10192,7 @@ export const emojis: Emoji[] = [
     char: "↙",
     name: "down-left arrow",
     keywords: "arrow | direction | down-left arrow | intercardinal | southwest",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1267,
@@ -10200,7 +10200,7 @@ export const emojis: Emoji[] = [
     char: "⬅",
     name: "left arrow",
     keywords: "arrow | cardinal | direction | left arrow | west",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1268,
@@ -10208,7 +10208,7 @@ export const emojis: Emoji[] = [
     char: "↖",
     name: "up-left arrow",
     keywords: "arrow | direction | intercardinal | northwest | up-left arrow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1269,
@@ -10216,7 +10216,7 @@ export const emojis: Emoji[] = [
     char: "↕",
     name: "up-down arrow",
     keywords: "arrow | up-down arrow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1270,
@@ -10224,7 +10224,7 @@ export const emojis: Emoji[] = [
     char: "↔",
     name: "left-right arrow",
     keywords: "arrow | left-right arrow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1271,
@@ -10232,7 +10232,7 @@ export const emojis: Emoji[] = [
     char: "↩",
     name: "right arrow curving left",
     keywords: "arrow | right arrow curving left",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1272,
@@ -10240,7 +10240,7 @@ export const emojis: Emoji[] = [
     char: "↪",
     name: "left arrow curving right",
     keywords: "arrow | left arrow curving right",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1273,
@@ -10248,7 +10248,7 @@ export const emojis: Emoji[] = [
     char: "⤴",
     name: "right arrow curving up",
     keywords: "arrow | right arrow curving up",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1274,
@@ -10256,7 +10256,7 @@ export const emojis: Emoji[] = [
     char: "⤵",
     name: "right arrow curving down",
     keywords: "arrow | down | right arrow curving down",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1275,
@@ -10264,7 +10264,7 @@ export const emojis: Emoji[] = [
     char: "🔃",
     name: "clockwise vertical arrows",
     keywords: "arrow | clockwise | clockwise vertical arrows | reload",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1276,
@@ -10273,7 +10273,7 @@ export const emojis: Emoji[] = [
     name: "counterclockwise arrows button",
     keywords:
       "anticlockwise | arrow | counterclockwise | counterclockwise arrows button | withershins",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1277,
@@ -10281,7 +10281,7 @@ export const emojis: Emoji[] = [
     char: "🔙",
     name: "BACK arrow",
     keywords: "arrow | back | BACK arrow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1278,
@@ -10289,7 +10289,7 @@ export const emojis: Emoji[] = [
     char: "🔚",
     name: "END arrow",
     keywords: "arrow | end | END arrow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1279,
@@ -10297,7 +10297,7 @@ export const emojis: Emoji[] = [
     char: "🔛",
     name: "ON! arrow",
     keywords: "arrow | mark | on | ON! arrow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1280,
@@ -10305,7 +10305,7 @@ export const emojis: Emoji[] = [
     char: "🔜",
     name: "SOON arrow",
     keywords: "arrow | soon | SOON arrow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1281,
@@ -10313,7 +10313,7 @@ export const emojis: Emoji[] = [
     char: "🔝",
     name: "TOP arrow",
     keywords: "arrow | top | TOP arrow | up",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1282,
@@ -10321,7 +10321,7 @@ export const emojis: Emoji[] = [
     char: "🛐",
     name: "place of worship",
     keywords: "place of worship | religion | worship",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1283,
@@ -10329,7 +10329,7 @@ export const emojis: Emoji[] = [
     char: "⚛",
     name: "atom symbol",
     keywords: "atheist | atom | atom symbol",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1284,
@@ -10337,7 +10337,7 @@ export const emojis: Emoji[] = [
     char: "🕉",
     name: "om",
     keywords: "Hindu | om | religion",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1285,
@@ -10345,7 +10345,7 @@ export const emojis: Emoji[] = [
     char: "✡",
     name: "star of David",
     keywords: "David | Jew | Jewish | religion | star | star of David",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1286,
@@ -10353,7 +10353,7 @@ export const emojis: Emoji[] = [
     char: "☸",
     name: "wheel of dharma",
     keywords: "Buddhist | dharma | religion | wheel | wheel of dharma",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1287,
@@ -10361,7 +10361,7 @@ export const emojis: Emoji[] = [
     char: "☯",
     name: "yin yang",
     keywords: "religion | tao | taoist | yang | yin",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1288,
@@ -10369,7 +10369,7 @@ export const emojis: Emoji[] = [
     char: "✝",
     name: "latin cross",
     keywords: "Christian | cross | latin cross | religion",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1289,
@@ -10377,7 +10377,7 @@ export const emojis: Emoji[] = [
     char: "☦",
     name: "orthodox cross",
     keywords: "Christian | cross | orthodox cross | religion",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1290,
@@ -10385,7 +10385,7 @@ export const emojis: Emoji[] = [
     char: "☪",
     name: "star and crescent",
     keywords: "islam | Muslim | religion | star and crescent",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1291,
@@ -10393,7 +10393,7 @@ export const emojis: Emoji[] = [
     char: "☮",
     name: "peace symbol",
     keywords: "peace | peace symbol",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1292,
@@ -10401,7 +10401,7 @@ export const emojis: Emoji[] = [
     char: "🕎",
     name: "menorah",
     keywords: "candelabrum | candlestick | menorah | religion",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1293,
@@ -10409,7 +10409,7 @@ export const emojis: Emoji[] = [
     char: "🔯",
     name: "dotted six-pointed star",
     keywords: "dotted six-pointed star | fortune | star",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1294,
@@ -10417,7 +10417,7 @@ export const emojis: Emoji[] = [
     char: "♈",
     name: "Aries",
     keywords: "Aries | ram | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1295,
@@ -10425,7 +10425,7 @@ export const emojis: Emoji[] = [
     char: "♉",
     name: "Taurus",
     keywords: "bull | ox | Taurus | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1296,
@@ -10433,7 +10433,7 @@ export const emojis: Emoji[] = [
     char: "♊",
     name: "Gemini",
     keywords: "Gemini | twins | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1297,
@@ -10441,7 +10441,7 @@ export const emojis: Emoji[] = [
     char: "♋",
     name: "Cancer",
     keywords: "Cancer | crab | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1298,
@@ -10449,7 +10449,7 @@ export const emojis: Emoji[] = [
     char: "♌",
     name: "Leo",
     keywords: "Leo | lion | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1299,
@@ -10457,7 +10457,7 @@ export const emojis: Emoji[] = [
     char: "♍",
     name: "Virgo",
     keywords: "Virgo | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1300,
@@ -10465,7 +10465,7 @@ export const emojis: Emoji[] = [
     char: "♎",
     name: "Libra",
     keywords: "balance | justice | Libra | scales | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1301,
@@ -10473,7 +10473,7 @@ export const emojis: Emoji[] = [
     char: "♏",
     name: "Scorpio",
     keywords: "Scorpio | scorpion | scorpius | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1302,
@@ -10481,7 +10481,7 @@ export const emojis: Emoji[] = [
     char: "♐",
     name: "Sagittarius",
     keywords: "archer | Sagittarius | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1303,
@@ -10489,7 +10489,7 @@ export const emojis: Emoji[] = [
     char: "♑",
     name: "Capricorn",
     keywords: "Capricorn | goat | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1304,
@@ -10497,7 +10497,7 @@ export const emojis: Emoji[] = [
     char: "♒",
     name: "Aquarius",
     keywords: "Aquarius | bearer | water | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1305,
@@ -10505,7 +10505,7 @@ export const emojis: Emoji[] = [
     char: "♓",
     name: "Pisces",
     keywords: "fish | Pisces | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1306,
@@ -10513,7 +10513,7 @@ export const emojis: Emoji[] = [
     char: "⛎",
     name: "Ophiuchus",
     keywords: "bearer | Ophiuchus | serpent | snake | zodiac",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1307,
@@ -10521,7 +10521,7 @@ export const emojis: Emoji[] = [
     char: "🔀",
     name: "shuffle tracks button",
     keywords: "arrow | crossed | shuffle tracks button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1308,
@@ -10529,7 +10529,7 @@ export const emojis: Emoji[] = [
     char: "🔁",
     name: "repeat button",
     keywords: "arrow | clockwise | repeat | repeat button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1309,
@@ -10537,7 +10537,7 @@ export const emojis: Emoji[] = [
     char: "🔂",
     name: "repeat single button",
     keywords: "arrow | clockwise | once | repeat single button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1310,
@@ -10545,7 +10545,7 @@ export const emojis: Emoji[] = [
     char: "▶",
     name: "play button",
     keywords: "arrow | play | play button | right | triangle",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1311,
@@ -10553,7 +10553,7 @@ export const emojis: Emoji[] = [
     char: "⏩",
     name: "fast-forward button",
     keywords: "arrow | double | fast | fast-forward button | forward",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1312,
@@ -10561,7 +10561,7 @@ export const emojis: Emoji[] = [
     char: "⏭",
     name: "next track button",
     keywords: "arrow | next scene | next track | next track button | triangle",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1313,
@@ -10569,7 +10569,7 @@ export const emojis: Emoji[] = [
     char: "⏯",
     name: "play or pause button",
     keywords: "arrow | pause | play | play or pause button | right | triangle",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1314,
@@ -10577,7 +10577,7 @@ export const emojis: Emoji[] = [
     char: "◀",
     name: "reverse button",
     keywords: "arrow | left | reverse | reverse button | triangle",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1315,
@@ -10585,7 +10585,7 @@ export const emojis: Emoji[] = [
     char: "⏪",
     name: "fast reverse button",
     keywords: "arrow | double | fast reverse button | rewind",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1316,
@@ -10594,7 +10594,7 @@ export const emojis: Emoji[] = [
     name: "last track button",
     keywords:
       "arrow | last track button | previous scene | previous track | triangle",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1317,
@@ -10602,7 +10602,7 @@ export const emojis: Emoji[] = [
     char: "🔼",
     name: "upwards button",
     keywords: "arrow | button | red | upwards button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1318,
@@ -10610,7 +10610,7 @@ export const emojis: Emoji[] = [
     char: "⏫",
     name: "fast up button",
     keywords: "arrow | double | fast up button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1319,
@@ -10618,7 +10618,7 @@ export const emojis: Emoji[] = [
     char: "🔽",
     name: "downwards button",
     keywords: "arrow | button | down | downwards button | red",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1320,
@@ -10626,7 +10626,7 @@ export const emojis: Emoji[] = [
     char: "⏬",
     name: "fast down button",
     keywords: "arrow | double | down | fast down button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1321,
@@ -10634,7 +10634,7 @@ export const emojis: Emoji[] = [
     char: "⏸",
     name: "pause button",
     keywords: "bar | double | pause | pause button | vertical",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1322,
@@ -10642,7 +10642,7 @@ export const emojis: Emoji[] = [
     char: "⏹",
     name: "stop button",
     keywords: "square | stop | stop button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1323,
@@ -10650,7 +10650,7 @@ export const emojis: Emoji[] = [
     char: "⏺",
     name: "record button",
     keywords: "circle | record | record button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1324,
@@ -10658,7 +10658,7 @@ export const emojis: Emoji[] = [
     char: "⏏",
     name: "eject button",
     keywords: "eject | eject button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1325,
@@ -10666,7 +10666,7 @@ export const emojis: Emoji[] = [
     char: "🎦",
     name: "cinema",
     keywords: "camera | cinema | film | movie",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1326,
@@ -10674,7 +10674,7 @@ export const emojis: Emoji[] = [
     char: "🔅",
     name: "dim button",
     keywords: "brightness | dim | dim button | low",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1327,
@@ -10682,7 +10682,7 @@ export const emojis: Emoji[] = [
     char: "🔆",
     name: "bright button",
     keywords: "bright | bright button | brightness",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1328,
@@ -10690,7 +10690,7 @@ export const emojis: Emoji[] = [
     char: "📶",
     name: "antenna bars",
     keywords: "antenna | antenna bars | bar | cell | mobile | phone",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1329,
@@ -10698,7 +10698,7 @@ export const emojis: Emoji[] = [
     char: "📳",
     name: "vibration mode",
     keywords: "cell | mobile | mode | phone | telephone | vibration",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1330,
@@ -10706,7 +10706,7 @@ export const emojis: Emoji[] = [
     char: "📴",
     name: "mobile phone off",
     keywords: "cell | mobile | off | phone | telephone",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1331,
@@ -10714,7 +10714,7 @@ export const emojis: Emoji[] = [
     char: "♀",
     name: "female sign",
     keywords: "female sign | woman",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1332,
@@ -10722,7 +10722,7 @@ export const emojis: Emoji[] = [
     char: "♂",
     name: "male sign",
     keywords: "male sign | man",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1333,
@@ -10730,7 +10730,7 @@ export const emojis: Emoji[] = [
     char: "⚕",
     name: "medical symbol",
     keywords: "aesculapius | medical symbol | medicine | staff",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1334,
@@ -10739,7 +10739,7 @@ export const emojis: Emoji[] = [
     name: "infinity",
     keywords:
       "forever | infinity | unbounded | universal\n➯ emojification of pre-existing character",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1335,
@@ -10747,7 +10747,7 @@ export const emojis: Emoji[] = [
     char: "♻",
     name: "recycling symbol",
     keywords: "recycle | recycling symbol",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1336,
@@ -10755,7 +10755,7 @@ export const emojis: Emoji[] = [
     char: "⚜",
     name: "fleur-de-lis",
     keywords: "fleur-de-lis",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1337,
@@ -10763,7 +10763,7 @@ export const emojis: Emoji[] = [
     char: "🔱",
     name: "trident emblem",
     keywords: "anchor | emblem | ship | tool | trident",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1338,
@@ -10771,7 +10771,7 @@ export const emojis: Emoji[] = [
     char: "📛",
     name: "name badge",
     keywords: "badge | name",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1339,
@@ -10780,7 +10780,7 @@ export const emojis: Emoji[] = [
     name: "Japanese symbol for beginner",
     keywords:
       "beginner | chevron | Japanese | Japanese symbol for beginner | leaf",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1340,
@@ -10788,7 +10788,7 @@ export const emojis: Emoji[] = [
     char: "⭕",
     name: "hollow red circle",
     keywords: "circle | hollow red circle | large | o | red",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1341,
@@ -10796,7 +10796,7 @@ export const emojis: Emoji[] = [
     char: "✅",
     name: "check mark button",
     keywords: "✓ | button | check | mark",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1342,
@@ -10804,7 +10804,7 @@ export const emojis: Emoji[] = [
     char: "☑",
     name: "check box with check",
     keywords: "✓ | box | check | check box with check",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1343,
@@ -10812,7 +10812,7 @@ export const emojis: Emoji[] = [
     char: "✔",
     name: "check mark",
     keywords: "✓ | check | mark",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1344,
@@ -10820,7 +10820,7 @@ export const emojis: Emoji[] = [
     char: "✖",
     name: "multiplication sign",
     keywords: "× | cancel | multiplication | multiply | sign | x",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1345,
@@ -10828,7 +10828,7 @@ export const emojis: Emoji[] = [
     char: "❌",
     name: "cross mark",
     keywords: "× | cancel | cross | mark | multiplication | multiply | x",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1346,
@@ -10836,7 +10836,7 @@ export const emojis: Emoji[] = [
     char: "❎",
     name: "cross mark button",
     keywords: "× | cross mark button | mark | square | x",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1347,
@@ -10844,7 +10844,7 @@ export const emojis: Emoji[] = [
     char: "➕",
     name: "plus sign",
     keywords: "+ | math | plus | sign",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1348,
@@ -10852,7 +10852,7 @@ export const emojis: Emoji[] = [
     char: "➖",
     name: "minus sign",
     keywords: "- | − | math | minus | sign",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1349,
@@ -10860,7 +10860,7 @@ export const emojis: Emoji[] = [
     char: "➗",
     name: "division sign",
     keywords: "÷ | division | math | sign",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1350,
@@ -10868,7 +10868,7 @@ export const emojis: Emoji[] = [
     char: "➰",
     name: "curly loop",
     keywords: "curl | curly loop | loop",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1351,
@@ -10876,7 +10876,7 @@ export const emojis: Emoji[] = [
     char: "➿",
     name: "double curly loop",
     keywords: "curl | double | double curly loop | loop",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1352,
@@ -10884,7 +10884,7 @@ export const emojis: Emoji[] = [
     char: "〽",
     name: "part alternation mark",
     keywords: "mark | part | part alternation mark",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1353,
@@ -10892,7 +10892,7 @@ export const emojis: Emoji[] = [
     char: "✳",
     name: "eight-spoked asterisk",
     keywords: "* | asterisk | eight-spoked asterisk",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1354,
@@ -10900,7 +10900,7 @@ export const emojis: Emoji[] = [
     char: "✴",
     name: "eight-pointed star",
     keywords: "* | eight-pointed star | star",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1355,
@@ -10908,7 +10908,7 @@ export const emojis: Emoji[] = [
     char: "❇",
     name: "sparkle",
     keywords: "* | sparkle",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1356,
@@ -10917,7 +10917,7 @@ export const emojis: Emoji[] = [
     name: "double exclamation mark",
     keywords:
       "! | !! | bangbang | double exclamation mark | exclamation | mark",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1357,
@@ -10926,7 +10926,7 @@ export const emojis: Emoji[] = [
     name: "exclamation question mark",
     keywords:
       "! | !? | ? | exclamation | interrobang | mark | punctuation | question",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1358,
@@ -10934,7 +10934,7 @@ export const emojis: Emoji[] = [
     char: "❓",
     name: "question mark",
     keywords: "? | mark | punctuation | question",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1359,
@@ -10943,7 +10943,7 @@ export const emojis: Emoji[] = [
     name: "white question mark",
     keywords:
       "? | mark | outlined | punctuation | question | white question mark",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1360,
@@ -10952,7 +10952,7 @@ export const emojis: Emoji[] = [
     name: "white exclamation mark",
     keywords:
       "! | exclamation | mark | outlined | punctuation | white exclamation mark",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1361,
@@ -10960,7 +10960,7 @@ export const emojis: Emoji[] = [
     char: "❗",
     name: "exclamation mark",
     keywords: "! | exclamation | mark | punctuation",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1362,
@@ -10968,7 +10968,7 @@ export const emojis: Emoji[] = [
     char: "〰",
     name: "wavy dash",
     keywords: "dash | punctuation | wavy",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1363,
@@ -10976,7 +10976,7 @@ export const emojis: Emoji[] = [
     char: "©",
     name: "copyright",
     keywords: "c | copyright",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1364,
@@ -10984,7 +10984,7 @@ export const emojis: Emoji[] = [
     char: "®",
     name: "registered",
     keywords: "r | registered",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1365,
@@ -10992,7 +10992,7 @@ export const emojis: Emoji[] = [
     char: "™",
     name: "trade mark",
     keywords: "mark | tm | trade mark | trademark",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1366,
@@ -11000,7 +11000,7 @@ export const emojis: Emoji[] = [
     char: "#️⃣",
     name: "keycap: #",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1367,
@@ -11008,7 +11008,7 @@ export const emojis: Emoji[] = [
     char: "*️⃣",
     name: "keycap: *",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1368,
@@ -11016,7 +11016,7 @@ export const emojis: Emoji[] = [
     char: "0️⃣",
     name: "keycap: 0",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1369,
@@ -11024,7 +11024,7 @@ export const emojis: Emoji[] = [
     char: "1️⃣",
     name: "keycap: 1",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1370,
@@ -11032,7 +11032,7 @@ export const emojis: Emoji[] = [
     char: "2️⃣",
     name: "keycap: 2",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1371,
@@ -11040,7 +11040,7 @@ export const emojis: Emoji[] = [
     char: "3️⃣",
     name: "keycap: 3",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1372,
@@ -11048,7 +11048,7 @@ export const emojis: Emoji[] = [
     char: "4️⃣",
     name: "keycap: 4",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1373,
@@ -11056,7 +11056,7 @@ export const emojis: Emoji[] = [
     char: "5️⃣",
     name: "keycap: 5",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1374,
@@ -11064,7 +11064,7 @@ export const emojis: Emoji[] = [
     char: "6️⃣",
     name: "keycap: 6",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1375,
@@ -11072,7 +11072,7 @@ export const emojis: Emoji[] = [
     char: "7️⃣",
     name: "keycap: 7",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1376,
@@ -11080,7 +11080,7 @@ export const emojis: Emoji[] = [
     char: "8️⃣",
     name: "keycap: 8",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1377,
@@ -11088,7 +11088,7 @@ export const emojis: Emoji[] = [
     char: "9️⃣",
     name: "keycap: 9",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1378,
@@ -11096,7 +11096,7 @@ export const emojis: Emoji[] = [
     char: "🔟",
     name: "keycap: 10",
     keywords: "keycap",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1379,
@@ -11104,7 +11104,7 @@ export const emojis: Emoji[] = [
     char: "🔠",
     name: "input latin uppercase",
     keywords: "ABCD | input | latin | letters | uppercase",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1380,
@@ -11112,7 +11112,7 @@ export const emojis: Emoji[] = [
     char: "🔡",
     name: "input latin lowercase",
     keywords: "abcd | input | latin | letters | lowercase",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1381,
@@ -11120,7 +11120,7 @@ export const emojis: Emoji[] = [
     char: "🔢",
     name: "input numbers",
     keywords: "1234 | input | numbers",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1382,
@@ -11128,7 +11128,7 @@ export const emojis: Emoji[] = [
     char: "🔣",
     name: "input symbols",
     keywords: "〒♪&% | input | input symbols",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1383,
@@ -11136,7 +11136,7 @@ export const emojis: Emoji[] = [
     char: "🔤",
     name: "input latin letters",
     keywords: "abc | alphabet | input | latin | letters",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1384,
@@ -11144,7 +11144,7 @@ export const emojis: Emoji[] = [
     char: "🅰",
     name: "A button (blood type)",
     keywords: "a | A button (blood type) | blood type",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1385,
@@ -11152,7 +11152,7 @@ export const emojis: Emoji[] = [
     char: "🆎",
     name: "AB button (blood type)",
     keywords: "ab | AB button (blood type) | blood type",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1386,
@@ -11160,7 +11160,7 @@ export const emojis: Emoji[] = [
     char: "🅱",
     name: "B button (blood type)",
     keywords: "b | B button (blood type) | blood type",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1387,
@@ -11168,7 +11168,7 @@ export const emojis: Emoji[] = [
     char: "🆑",
     name: "CL button",
     keywords: "cl | CL button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1388,
@@ -11176,7 +11176,7 @@ export const emojis: Emoji[] = [
     char: "🆒",
     name: "COOL button",
     keywords: "cool | COOL button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1389,
@@ -11184,7 +11184,7 @@ export const emojis: Emoji[] = [
     char: "🆓",
     name: "FREE button",
     keywords: "free | FREE button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1390,
@@ -11192,7 +11192,7 @@ export const emojis: Emoji[] = [
     char: "ℹ",
     name: "information",
     keywords: "i | information",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1391,
@@ -11200,7 +11200,7 @@ export const emojis: Emoji[] = [
     char: "🆔",
     name: "ID button",
     keywords: "id | ID button | identity",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1392,
@@ -11208,7 +11208,7 @@ export const emojis: Emoji[] = [
     char: "Ⓜ",
     name: "circled M",
     keywords: "circle | circled M | m",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1393,
@@ -11216,7 +11216,7 @@ export const emojis: Emoji[] = [
     char: "🆕",
     name: "NEW button",
     keywords: "new | NEW button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1394,
@@ -11224,7 +11224,7 @@ export const emojis: Emoji[] = [
     char: "🆖",
     name: "NG button",
     keywords: "ng | NG button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1395,
@@ -11232,7 +11232,7 @@ export const emojis: Emoji[] = [
     char: "🅾",
     name: "O button (blood type)",
     keywords: "blood type | o | O button (blood type)",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1396,
@@ -11240,7 +11240,7 @@ export const emojis: Emoji[] = [
     char: "🆗",
     name: "OK button",
     keywords: "OK | OK button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1397,
@@ -11248,7 +11248,7 @@ export const emojis: Emoji[] = [
     char: "🅿",
     name: "P button",
     keywords: "P button | parking",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1398,
@@ -11256,7 +11256,7 @@ export const emojis: Emoji[] = [
     char: "🆘",
     name: "SOS button",
     keywords: "help | sos | SOS button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1399,
@@ -11264,7 +11264,7 @@ export const emojis: Emoji[] = [
     char: "🆙",
     name: "UP! button",
     keywords: "mark | up | UP! button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1400,
@@ -11272,7 +11272,7 @@ export const emojis: Emoji[] = [
     char: "🆚",
     name: "VS button",
     keywords: "versus | vs | VS button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1401,
@@ -11280,7 +11280,7 @@ export const emojis: Emoji[] = [
     char: "🈁",
     name: "Japanese “here” button",
     keywords: "“here” | Japanese | Japanese “here” button | katakana | ココ",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1402,
@@ -11289,7 +11289,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “service charge” button",
     keywords:
       "“service charge” | Japanese | Japanese “service charge” button | katakana | サ",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1403,
@@ -11298,7 +11298,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “monthly amount” button",
     keywords:
       "“monthly amount” | ideograph | Japanese | Japanese “monthly amount” button | 月",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1404,
@@ -11307,7 +11307,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “not free of charge” button",
     keywords:
       "“not free of charge” | ideograph | Japanese | Japanese “not free of charge” button | 有",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1405,
@@ -11316,7 +11316,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “reserved” button",
     keywords:
       "“reserved” | ideograph | Japanese | Japanese “reserved” button | 指",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1406,
@@ -11325,7 +11325,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “bargain” button",
     keywords:
       "“bargain” | ideograph | Japanese | Japanese “bargain” button | 得",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1407,
@@ -11334,7 +11334,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “discount” button",
     keywords:
       "“discount” | ideograph | Japanese | Japanese “discount” button | 割",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1408,
@@ -11343,7 +11343,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “free of charge” button",
     keywords:
       "“free of charge” | ideograph | Japanese | Japanese “free of charge” button | 無",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1409,
@@ -11352,7 +11352,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “prohibited” button",
     keywords:
       "“prohibited” | ideograph | Japanese | Japanese “prohibited” button | 禁",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1410,
@@ -11361,7 +11361,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “acceptable” button",
     keywords:
       "“acceptable” | ideograph | Japanese | Japanese “acceptable” button | 可",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1411,
@@ -11370,7 +11370,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “application” button",
     keywords:
       "“application” | ideograph | Japanese | Japanese “application” button | 申",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1412,
@@ -11379,7 +11379,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “passing grade” button",
     keywords:
       "“passing grade” | ideograph | Japanese | Japanese “passing grade” button | 合",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1413,
@@ -11388,7 +11388,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “vacancy” button",
     keywords:
       "“vacancy” | ideograph | Japanese | Japanese “vacancy” button | 空",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1414,
@@ -11397,7 +11397,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “congratulations” button",
     keywords:
       "“congratulations” | ideograph | Japanese | Japanese “congratulations” button | 祝",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1415,
@@ -11405,7 +11405,7 @@ export const emojis: Emoji[] = [
     char: "㊙",
     name: "Japanese “secret” button",
     keywords: "“secret” | ideograph | Japanese | Japanese “secret” button | 秘",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1416,
@@ -11414,7 +11414,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “open for business” button",
     keywords:
       "“open for business” | ideograph | Japanese | Japanese “open for business” button | 営",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1417,
@@ -11423,7 +11423,7 @@ export const emojis: Emoji[] = [
     name: "Japanese “no vacancy” button",
     keywords:
       "“no vacancy” | ideograph | Japanese | Japanese “no vacancy” button | 満",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1418,
@@ -11431,7 +11431,7 @@ export const emojis: Emoji[] = [
     char: "🔴",
     name: "red circle",
     keywords: "circle | geometric | red",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1419,
@@ -11439,7 +11439,7 @@ export const emojis: Emoji[] = [
     char: "🟠",
     name: "⊛ orange circle",
     keywords: "circle | orange",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1420,
@@ -11447,7 +11447,7 @@ export const emojis: Emoji[] = [
     char: "🟡",
     name: "⊛ yellow circle",
     keywords: "circle | yellow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1421,
@@ -11455,7 +11455,7 @@ export const emojis: Emoji[] = [
     char: "🟢",
     name: "⊛ green circle",
     keywords: "circle | green",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1422,
@@ -11463,7 +11463,7 @@ export const emojis: Emoji[] = [
     char: "🔵",
     name: "blue circle",
     keywords: "blue | circle | geometric",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1423,
@@ -11471,7 +11471,7 @@ export const emojis: Emoji[] = [
     char: "🟣",
     name: "⊛ purple circle",
     keywords: "circle | purple",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1424,
@@ -11479,7 +11479,7 @@ export const emojis: Emoji[] = [
     char: "🟤",
     name: "⊛ brown circle",
     keywords: "brown | circle",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1425,
@@ -11487,7 +11487,7 @@ export const emojis: Emoji[] = [
     char: "⚫",
     name: "black circle",
     keywords: "black circle | circle | geometric",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1426,
@@ -11495,7 +11495,7 @@ export const emojis: Emoji[] = [
     char: "⚪",
     name: "white circle",
     keywords: "circle | geometric | white circle",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1427,
@@ -11503,7 +11503,7 @@ export const emojis: Emoji[] = [
     char: "🟥",
     name: "⊛ red square",
     keywords: "red | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1428,
@@ -11511,7 +11511,7 @@ export const emojis: Emoji[] = [
     char: "🟧",
     name: "⊛ orange square",
     keywords: "orange | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1429,
@@ -11519,7 +11519,7 @@ export const emojis: Emoji[] = [
     char: "🟨",
     name: "⊛ yellow square",
     keywords: "square | yellow",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1430,
@@ -11527,7 +11527,7 @@ export const emojis: Emoji[] = [
     char: "🟩",
     name: "⊛ green square",
     keywords: "green | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1431,
@@ -11535,7 +11535,7 @@ export const emojis: Emoji[] = [
     char: "🟦",
     name: "⊛ blue square",
     keywords: "blue | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1432,
@@ -11543,7 +11543,7 @@ export const emojis: Emoji[] = [
     char: "🟪",
     name: "⊛ purple square",
     keywords: "purple | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1433,
@@ -11551,7 +11551,7 @@ export const emojis: Emoji[] = [
     char: "🟫",
     name: "⊛ brown square",
     keywords: "brown | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1434,
@@ -11559,7 +11559,7 @@ export const emojis: Emoji[] = [
     char: "⬛",
     name: "black large square",
     keywords: "black large square | geometric | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1435,
@@ -11567,7 +11567,7 @@ export const emojis: Emoji[] = [
     char: "⬜",
     name: "white large square",
     keywords: "geometric | square | white large square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1436,
@@ -11575,7 +11575,7 @@ export const emojis: Emoji[] = [
     char: "◼",
     name: "black medium square",
     keywords: "black medium square | geometric | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1437,
@@ -11583,7 +11583,7 @@ export const emojis: Emoji[] = [
     char: "◻",
     name: "white medium square",
     keywords: "geometric | square | white medium square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1438,
@@ -11591,7 +11591,7 @@ export const emojis: Emoji[] = [
     char: "◾",
     name: "black medium-small square",
     keywords: "black medium-small square | geometric | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1439,
@@ -11599,7 +11599,7 @@ export const emojis: Emoji[] = [
     char: "◽",
     name: "white medium-small square",
     keywords: "geometric | square | white medium-small square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1440,
@@ -11607,7 +11607,7 @@ export const emojis: Emoji[] = [
     char: "▪",
     name: "black small square",
     keywords: "black small square | geometric | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1441,
@@ -11615,7 +11615,7 @@ export const emojis: Emoji[] = [
     char: "▫",
     name: "white small square",
     keywords: "geometric | square | white small square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1442,
@@ -11623,7 +11623,7 @@ export const emojis: Emoji[] = [
     char: "🔶",
     name: "large orange diamond",
     keywords: "diamond | geometric | large orange diamond | orange",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1443,
@@ -11631,7 +11631,7 @@ export const emojis: Emoji[] = [
     char: "🔷",
     name: "large blue diamond",
     keywords: "blue | diamond | geometric | large blue diamond",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1444,
@@ -11639,7 +11639,7 @@ export const emojis: Emoji[] = [
     char: "🔸",
     name: "small orange diamond",
     keywords: "diamond | geometric | orange | small orange diamond",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1445,
@@ -11647,7 +11647,7 @@ export const emojis: Emoji[] = [
     char: "🔹",
     name: "small blue diamond",
     keywords: "blue | diamond | geometric | small blue diamond",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1446,
@@ -11655,7 +11655,7 @@ export const emojis: Emoji[] = [
     char: "🔺",
     name: "red triangle pointed up",
     keywords: "geometric | red | red triangle pointed up",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1447,
@@ -11663,7 +11663,7 @@ export const emojis: Emoji[] = [
     char: "🔻",
     name: "red triangle pointed down",
     keywords: "down | geometric | red | red triangle pointed down",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1448,
@@ -11671,7 +11671,7 @@ export const emojis: Emoji[] = [
     char: "💠",
     name: "diamond with a dot",
     keywords: "comic | diamond | diamond with a dot | geometric | inside",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1449,
@@ -11679,7 +11679,7 @@ export const emojis: Emoji[] = [
     char: "🔘",
     name: "radio button",
     keywords: "button | geometric | radio",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1450,
@@ -11687,7 +11687,7 @@ export const emojis: Emoji[] = [
     char: "🔳",
     name: "white square button",
     keywords: "button | geometric | outlined | square | white square button",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1451,
@@ -11695,7 +11695,7 @@ export const emojis: Emoji[] = [
     char: "🔲",
     name: "black square button",
     keywords: "black square button | button | geometric | square",
-    category: "Symbols"
+    category: "Symbols",
   },
   {
     no: 1452,
@@ -11703,7 +11703,7 @@ export const emojis: Emoji[] = [
     char: "🏁",
     name: "chequered flag",
     keywords: "checkered | chequered | chequered flag | racing",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1453,
@@ -11711,7 +11711,7 @@ export const emojis: Emoji[] = [
     char: "🚩",
     name: "triangular flag",
     keywords: "post | triangular flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1454,
@@ -11719,7 +11719,7 @@ export const emojis: Emoji[] = [
     char: "🎌",
     name: "crossed flags",
     keywords: "celebration | cross | crossed | crossed flags | Japanese",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1455,
@@ -11727,7 +11727,7 @@ export const emojis: Emoji[] = [
     char: "🏴",
     name: "black flag",
     keywords: "black flag | waving",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1456,
@@ -11735,7 +11735,7 @@ export const emojis: Emoji[] = [
     char: "🏳",
     name: "white flag",
     keywords: "waving | white flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1457,
@@ -11743,7 +11743,7 @@ export const emojis: Emoji[] = [
     char: "🏳️‍🌈",
     name: "rainbow flag",
     keywords: "rainbow | rainbow flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1458,
@@ -11751,7 +11751,7 @@ export const emojis: Emoji[] = [
     char: "🏴‍☠️",
     name: "pirate flag",
     keywords: "Jolly Roger | pirate | pirate flag | plunder | treasure",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1459,
@@ -11759,7 +11759,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇨",
     name: "flag: Ascension Island",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1460,
@@ -11767,7 +11767,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇩",
     name: "flag: Andorra",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1461,
@@ -11775,7 +11775,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇪",
     name: "flag: United Arab Emirates",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1462,
@@ -11783,7 +11783,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇫",
     name: "flag: Afghanistan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1463,
@@ -11791,7 +11791,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇬",
     name: "flag: Antigua & Barbuda",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1464,
@@ -11799,7 +11799,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇮",
     name: "flag: Anguilla",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1465,
@@ -11807,7 +11807,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇱",
     name: "flag: Albania",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1466,
@@ -11815,7 +11815,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇲",
     name: "flag: Armenia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1467,
@@ -11823,7 +11823,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇴",
     name: "flag: Angola",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1468,
@@ -11831,7 +11831,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇶",
     name: "flag: Antarctica",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1469,
@@ -11839,7 +11839,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇷",
     name: "flag: Argentina",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1470,
@@ -11847,7 +11847,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇸",
     name: "flag: American Samoa",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1471,
@@ -11855,7 +11855,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇹",
     name: "flag: Austria",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1472,
@@ -11863,7 +11863,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇺",
     name: "flag: Australia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1473,
@@ -11871,7 +11871,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇼",
     name: "flag: Aruba",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1474,
@@ -11879,7 +11879,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇽",
     name: "flag: Åland Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1475,
@@ -11887,7 +11887,7 @@ export const emojis: Emoji[] = [
     char: "🇦🇿",
     name: "flag: Azerbaijan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1476,
@@ -11895,7 +11895,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇦",
     name: "flag: Bosnia & Herzegovina",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1477,
@@ -11903,7 +11903,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇧",
     name: "flag: Barbados",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1478,
@@ -11911,7 +11911,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇩",
     name: "flag: Bangladesh",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1479,
@@ -11919,7 +11919,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇪",
     name: "flag: Belgium",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1480,
@@ -11927,7 +11927,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇫",
     name: "flag: Burkina Faso",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1481,
@@ -11935,7 +11935,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇬",
     name: "flag: Bulgaria",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1482,
@@ -11943,7 +11943,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇭",
     name: "flag: Bahrain",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1483,
@@ -11951,7 +11951,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇮",
     name: "flag: Burundi",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1484,
@@ -11959,7 +11959,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇯",
     name: "flag: Benin",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1485,
@@ -11967,7 +11967,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇱",
     name: "flag: St. Barthélemy",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1486,
@@ -11975,7 +11975,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇲",
     name: "flag: Bermuda",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1487,
@@ -11983,7 +11983,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇳",
     name: "flag: Brunei",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1488,
@@ -11991,7 +11991,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇴",
     name: "flag: Bolivia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1489,
@@ -11999,7 +11999,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇶",
     name: "flag: Caribbean Netherlands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1490,
@@ -12007,7 +12007,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇷",
     name: "flag: Brazil",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1491,
@@ -12015,7 +12015,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇸",
     name: "flag: Bahamas",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1492,
@@ -12023,7 +12023,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇹",
     name: "flag: Bhutan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1493,
@@ -12031,7 +12031,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇻",
     name: "flag: Bouvet Island",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1494,
@@ -12039,7 +12039,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇼",
     name: "flag: Botswana",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1495,
@@ -12047,7 +12047,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇾",
     name: "flag: Belarus",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1496,
@@ -12055,7 +12055,7 @@ export const emojis: Emoji[] = [
     char: "🇧🇿",
     name: "flag: Belize",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1497,
@@ -12063,7 +12063,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇦",
     name: "flag: Canada",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1498,
@@ -12071,7 +12071,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇨",
     name: "flag: Cocos (Keeling) Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1499,
@@ -12079,7 +12079,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇩",
     name: "flag: Congo - Kinshasa",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1500,
@@ -12087,7 +12087,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇫",
     name: "flag: Central African Republic",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1501,
@@ -12095,7 +12095,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇬",
     name: "flag: Congo - Brazzaville",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1502,
@@ -12103,7 +12103,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇭",
     name: "flag: Switzerland",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1503,
@@ -12111,7 +12111,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇮",
     name: "flag: Côte d’Ivoire",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1504,
@@ -12119,7 +12119,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇰",
     name: "flag: Cook Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1505,
@@ -12127,7 +12127,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇱",
     name: "flag: Chile",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1506,
@@ -12135,7 +12135,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇲",
     name: "flag: Cameroon",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1507,
@@ -12143,7 +12143,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇳",
     name: "flag: China",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1508,
@@ -12151,7 +12151,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇴",
     name: "flag: Colombia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1509,
@@ -12159,7 +12159,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇵",
     name: "flag: Clipperton Island",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1510,
@@ -12167,7 +12167,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇷",
     name: "flag: Costa Rica",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1511,
@@ -12175,7 +12175,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇺",
     name: "flag: Cuba",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1512,
@@ -12183,7 +12183,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇻",
     name: "flag: Cape Verde",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1513,
@@ -12191,7 +12191,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇼",
     name: "flag: Curaçao",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1514,
@@ -12199,7 +12199,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇽",
     name: "flag: Christmas Island",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1515,
@@ -12207,7 +12207,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇾",
     name: "flag: Cyprus",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1516,
@@ -12215,7 +12215,7 @@ export const emojis: Emoji[] = [
     char: "🇨🇿",
     name: "flag: Czechia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1517,
@@ -12223,7 +12223,7 @@ export const emojis: Emoji[] = [
     char: "🇩🇪",
     name: "flag: Germany",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1518,
@@ -12231,7 +12231,7 @@ export const emojis: Emoji[] = [
     char: "🇩🇬",
     name: "flag: Diego Garcia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1519,
@@ -12239,7 +12239,7 @@ export const emojis: Emoji[] = [
     char: "🇩🇯",
     name: "flag: Djibouti",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1520,
@@ -12247,7 +12247,7 @@ export const emojis: Emoji[] = [
     char: "🇩🇰",
     name: "flag: Denmark",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1521,
@@ -12255,7 +12255,7 @@ export const emojis: Emoji[] = [
     char: "🇩🇲",
     name: "flag: Dominica",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1522,
@@ -12263,7 +12263,7 @@ export const emojis: Emoji[] = [
     char: "🇩🇴",
     name: "flag: Dominican Republic",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1523,
@@ -12271,7 +12271,7 @@ export const emojis: Emoji[] = [
     char: "🇩🇿",
     name: "flag: Algeria",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1524,
@@ -12279,7 +12279,7 @@ export const emojis: Emoji[] = [
     char: "🇪🇦",
     name: "flag: Ceuta & Melilla",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1525,
@@ -12287,7 +12287,7 @@ export const emojis: Emoji[] = [
     char: "🇪🇨",
     name: "flag: Ecuador",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1526,
@@ -12295,7 +12295,7 @@ export const emojis: Emoji[] = [
     char: "🇪🇪",
     name: "flag: Estonia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1527,
@@ -12303,7 +12303,7 @@ export const emojis: Emoji[] = [
     char: "🇪🇬",
     name: "flag: Egypt",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1528,
@@ -12311,7 +12311,7 @@ export const emojis: Emoji[] = [
     char: "🇪🇭",
     name: "flag: Western Sahara",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1529,
@@ -12319,7 +12319,7 @@ export const emojis: Emoji[] = [
     char: "🇪🇷",
     name: "flag: Eritrea",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1530,
@@ -12327,7 +12327,7 @@ export const emojis: Emoji[] = [
     char: "🇪🇸",
     name: "flag: Spain",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1531,
@@ -12335,7 +12335,7 @@ export const emojis: Emoji[] = [
     char: "🇪🇹",
     name: "flag: Ethiopia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1532,
@@ -12343,7 +12343,7 @@ export const emojis: Emoji[] = [
     char: "🇪🇺",
     name: "flag: European Union",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1533,
@@ -12351,7 +12351,7 @@ export const emojis: Emoji[] = [
     char: "🇫🇮",
     name: "flag: Finland",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1534,
@@ -12359,7 +12359,7 @@ export const emojis: Emoji[] = [
     char: "🇫🇯",
     name: "flag: Fiji",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1535,
@@ -12367,7 +12367,7 @@ export const emojis: Emoji[] = [
     char: "🇫🇰",
     name: "flag: Falkland Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1536,
@@ -12375,7 +12375,7 @@ export const emojis: Emoji[] = [
     char: "🇫🇲",
     name: "flag: Micronesia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1537,
@@ -12383,7 +12383,7 @@ export const emojis: Emoji[] = [
     char: "🇫🇴",
     name: "flag: Faroe Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1538,
@@ -12391,7 +12391,7 @@ export const emojis: Emoji[] = [
     char: "🇫🇷",
     name: "flag: France",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1539,
@@ -12399,7 +12399,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇦",
     name: "flag: Gabon",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1540,
@@ -12407,7 +12407,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇧",
     name: "flag: United Kingdom",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1541,
@@ -12415,7 +12415,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇩",
     name: "flag: Grenada",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1542,
@@ -12423,7 +12423,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇪",
     name: "flag: Georgia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1543,
@@ -12431,7 +12431,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇫",
     name: "flag: French Guiana",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1544,
@@ -12439,7 +12439,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇬",
     name: "flag: Guernsey",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1545,
@@ -12447,7 +12447,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇭",
     name: "flag: Ghana",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1546,
@@ -12455,7 +12455,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇮",
     name: "flag: Gibraltar",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1547,
@@ -12463,7 +12463,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇱",
     name: "flag: Greenland",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1548,
@@ -12471,7 +12471,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇲",
     name: "flag: Gambia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1549,
@@ -12479,7 +12479,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇳",
     name: "flag: Guinea",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1550,
@@ -12487,7 +12487,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇵",
     name: "flag: Guadeloupe",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1551,
@@ -12495,7 +12495,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇶",
     name: "flag: Equatorial Guinea",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1552,
@@ -12503,7 +12503,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇷",
     name: "flag: Greece",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1553,
@@ -12511,7 +12511,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇸",
     name: "flag: South Georgia & South Sandwich Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1554,
@@ -12519,7 +12519,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇹",
     name: "flag: Guatemala",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1555,
@@ -12527,7 +12527,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇺",
     name: "flag: Guam",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1556,
@@ -12535,7 +12535,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇼",
     name: "flag: Guinea-Bissau",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1557,
@@ -12543,7 +12543,7 @@ export const emojis: Emoji[] = [
     char: "🇬🇾",
     name: "flag: Guyana",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1558,
@@ -12551,7 +12551,7 @@ export const emojis: Emoji[] = [
     char: "🇭🇰",
     name: "flag: Hong Kong SAR China",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1559,
@@ -12559,7 +12559,7 @@ export const emojis: Emoji[] = [
     char: "🇭🇲",
     name: "flag: Heard & McDonald Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1560,
@@ -12567,7 +12567,7 @@ export const emojis: Emoji[] = [
     char: "🇭🇳",
     name: "flag: Honduras",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1561,
@@ -12575,7 +12575,7 @@ export const emojis: Emoji[] = [
     char: "🇭🇷",
     name: "flag: Croatia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1562,
@@ -12583,7 +12583,7 @@ export const emojis: Emoji[] = [
     char: "🇭🇹",
     name: "flag: Haiti",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1563,
@@ -12591,7 +12591,7 @@ export const emojis: Emoji[] = [
     char: "🇭🇺",
     name: "flag: Hungary",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1564,
@@ -12599,7 +12599,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇨",
     name: "flag: Canary Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1565,
@@ -12607,7 +12607,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇩",
     name: "flag: Indonesia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1566,
@@ -12615,7 +12615,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇪",
     name: "flag: Ireland",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1567,
@@ -12623,7 +12623,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇱",
     name: "flag: Israel",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1568,
@@ -12631,7 +12631,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇲",
     name: "flag: Isle of Man",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1569,
@@ -12639,7 +12639,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇳",
     name: "flag: India",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1570,
@@ -12647,7 +12647,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇴",
     name: "flag: British Indian Ocean Territory",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1571,
@@ -12655,7 +12655,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇶",
     name: "flag: Iraq",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1572,
@@ -12663,7 +12663,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇷",
     name: "flag: Iran",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1573,
@@ -12671,7 +12671,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇸",
     name: "flag: Iceland",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1574,
@@ -12679,7 +12679,7 @@ export const emojis: Emoji[] = [
     char: "🇮🇹",
     name: "flag: Italy",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1575,
@@ -12687,7 +12687,7 @@ export const emojis: Emoji[] = [
     char: "🇯🇪",
     name: "flag: Jersey",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1576,
@@ -12695,7 +12695,7 @@ export const emojis: Emoji[] = [
     char: "🇯🇲",
     name: "flag: Jamaica",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1577,
@@ -12703,7 +12703,7 @@ export const emojis: Emoji[] = [
     char: "🇯🇴",
     name: "flag: Jordan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1578,
@@ -12711,7 +12711,7 @@ export const emojis: Emoji[] = [
     char: "🇯🇵",
     name: "flag: Japan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1579,
@@ -12719,7 +12719,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇪",
     name: "flag: Kenya",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1580,
@@ -12727,7 +12727,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇬",
     name: "flag: Kyrgyzstan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1581,
@@ -12735,7 +12735,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇭",
     name: "flag: Cambodia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1582,
@@ -12743,7 +12743,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇮",
     name: "flag: Kiribati",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1583,
@@ -12751,7 +12751,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇲",
     name: "flag: Comoros",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1584,
@@ -12759,7 +12759,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇳",
     name: "flag: St. Kitts & Nevis",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1585,
@@ -12767,7 +12767,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇵",
     name: "flag: North Korea",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1586,
@@ -12775,7 +12775,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇷",
     name: "flag: South Korea",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1587,
@@ -12783,7 +12783,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇼",
     name: "flag: Kuwait",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1588,
@@ -12791,7 +12791,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇾",
     name: "flag: Cayman Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1589,
@@ -12799,7 +12799,7 @@ export const emojis: Emoji[] = [
     char: "🇰🇿",
     name: "flag: Kazakhstan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1590,
@@ -12807,7 +12807,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇦",
     name: "flag: Laos",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1591,
@@ -12815,7 +12815,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇧",
     name: "flag: Lebanon",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1592,
@@ -12823,7 +12823,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇨",
     name: "flag: St. Lucia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1593,
@@ -12831,7 +12831,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇮",
     name: "flag: Liechtenstein",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1594,
@@ -12839,7 +12839,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇰",
     name: "flag: Sri Lanka",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1595,
@@ -12847,7 +12847,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇷",
     name: "flag: Liberia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1596,
@@ -12855,7 +12855,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇸",
     name: "flag: Lesotho",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1597,
@@ -12863,7 +12863,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇹",
     name: "flag: Lithuania",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1598,
@@ -12871,7 +12871,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇺",
     name: "flag: Luxembourg",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1599,
@@ -12879,7 +12879,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇻",
     name: "flag: Latvia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1600,
@@ -12887,7 +12887,7 @@ export const emojis: Emoji[] = [
     char: "🇱🇾",
     name: "flag: Libya",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1601,
@@ -12895,7 +12895,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇦",
     name: "flag: Morocco",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1602,
@@ -12903,7 +12903,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇨",
     name: "flag: Monaco",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1603,
@@ -12911,7 +12911,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇩",
     name: "flag: Moldova",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1604,
@@ -12919,7 +12919,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇪",
     name: "flag: Montenegro",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1605,
@@ -12927,7 +12927,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇫",
     name: "flag: St. Martin",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1606,
@@ -12935,7 +12935,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇬",
     name: "flag: Madagascar",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1607,
@@ -12943,7 +12943,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇭",
     name: "flag: Marshall Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1608,
@@ -12951,7 +12951,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇰",
     name: "flag: North Macedonia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1609,
@@ -12959,7 +12959,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇱",
     name: "flag: Mali",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1610,
@@ -12967,7 +12967,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇲",
     name: "flag: Myanmar (Burma)",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1611,
@@ -12975,7 +12975,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇳",
     name: "flag: Mongolia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1612,
@@ -12983,7 +12983,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇴",
     name: "flag: Macao SAR China",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1613,
@@ -12991,7 +12991,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇵",
     name: "flag: Northern Mariana Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1614,
@@ -12999,7 +12999,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇶",
     name: "flag: Martinique",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1615,
@@ -13007,7 +13007,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇷",
     name: "flag: Mauritania",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1616,
@@ -13015,7 +13015,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇸",
     name: "flag: Montserrat",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1617,
@@ -13023,7 +13023,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇹",
     name: "flag: Malta",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1618,
@@ -13031,7 +13031,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇺",
     name: "flag: Mauritius",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1619,
@@ -13039,7 +13039,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇻",
     name: "flag: Maldives",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1620,
@@ -13047,7 +13047,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇼",
     name: "flag: Malawi",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1621,
@@ -13055,7 +13055,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇽",
     name: "flag: Mexico",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1622,
@@ -13063,7 +13063,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇾",
     name: "flag: Malaysia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1623,
@@ -13071,7 +13071,7 @@ export const emojis: Emoji[] = [
     char: "🇲🇿",
     name: "flag: Mozambique",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1624,
@@ -13079,7 +13079,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇦",
     name: "flag: Namibia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1625,
@@ -13087,7 +13087,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇨",
     name: "flag: New Caledonia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1626,
@@ -13095,7 +13095,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇪",
     name: "flag: Niger",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1627,
@@ -13103,7 +13103,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇫",
     name: "flag: Norfolk Island",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1628,
@@ -13111,7 +13111,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇬",
     name: "flag: Nigeria",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1629,
@@ -13119,7 +13119,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇮",
     name: "flag: Nicaragua",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1630,
@@ -13127,7 +13127,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇱",
     name: "flag: Netherlands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1631,
@@ -13135,7 +13135,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇴",
     name: "flag: Norway",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1632,
@@ -13143,7 +13143,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇵",
     name: "flag: Nepal",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1633,
@@ -13151,7 +13151,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇷",
     name: "flag: Nauru",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1634,
@@ -13159,7 +13159,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇺",
     name: "flag: Niue",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1635,
@@ -13167,7 +13167,7 @@ export const emojis: Emoji[] = [
     char: "🇳🇿",
     name: "flag: New Zealand",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1636,
@@ -13175,7 +13175,7 @@ export const emojis: Emoji[] = [
     char: "🇴🇲",
     name: "flag: Oman",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1637,
@@ -13183,7 +13183,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇦",
     name: "flag: Panama",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1638,
@@ -13191,7 +13191,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇪",
     name: "flag: Peru",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1639,
@@ -13199,7 +13199,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇫",
     name: "flag: French Polynesia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1640,
@@ -13207,7 +13207,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇬",
     name: "flag: Papua New Guinea",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1641,
@@ -13215,7 +13215,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇭",
     name: "flag: Philippines",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1642,
@@ -13223,7 +13223,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇰",
     name: "flag: Pakistan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1643,
@@ -13231,7 +13231,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇱",
     name: "flag: Poland",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1644,
@@ -13239,7 +13239,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇲",
     name: "flag: St. Pierre & Miquelon",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1645,
@@ -13247,7 +13247,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇳",
     name: "flag: Pitcairn Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1646,
@@ -13255,7 +13255,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇷",
     name: "flag: Puerto Rico",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1647,
@@ -13263,7 +13263,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇸",
     name: "flag: Palestinian Territories",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1648,
@@ -13271,7 +13271,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇹",
     name: "flag: Portugal",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1649,
@@ -13279,7 +13279,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇼",
     name: "flag: Palau",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1650,
@@ -13287,7 +13287,7 @@ export const emojis: Emoji[] = [
     char: "🇵🇾",
     name: "flag: Paraguay",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1651,
@@ -13295,7 +13295,7 @@ export const emojis: Emoji[] = [
     char: "🇶🇦",
     name: "flag: Qatar",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1652,
@@ -13303,7 +13303,7 @@ export const emojis: Emoji[] = [
     char: "🇷🇪",
     name: "flag: Réunion",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1653,
@@ -13311,7 +13311,7 @@ export const emojis: Emoji[] = [
     char: "🇷🇴",
     name: "flag: Romania",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1654,
@@ -13319,7 +13319,7 @@ export const emojis: Emoji[] = [
     char: "🇷🇸",
     name: "flag: Serbia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1655,
@@ -13327,7 +13327,7 @@ export const emojis: Emoji[] = [
     char: "🇷🇺",
     name: "flag: Russia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1656,
@@ -13335,7 +13335,7 @@ export const emojis: Emoji[] = [
     char: "🇷🇼",
     name: "flag: Rwanda",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1657,
@@ -13343,7 +13343,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇦",
     name: "flag: Saudi Arabia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1658,
@@ -13351,7 +13351,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇧",
     name: "flag: Solomon Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1659,
@@ -13359,7 +13359,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇨",
     name: "flag: Seychelles",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1660,
@@ -13367,7 +13367,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇩",
     name: "flag: Sudan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1661,
@@ -13375,7 +13375,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇪",
     name: "flag: Sweden",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1662,
@@ -13383,7 +13383,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇬",
     name: "flag: Singapore",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1663,
@@ -13391,7 +13391,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇭",
     name: "flag: St. Helena",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1664,
@@ -13399,7 +13399,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇮",
     name: "flag: Slovenia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1665,
@@ -13407,7 +13407,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇯",
     name: "flag: Svalbard & Jan Mayen",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1666,
@@ -13415,7 +13415,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇰",
     name: "flag: Slovakia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1667,
@@ -13423,7 +13423,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇱",
     name: "flag: Sierra Leone",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1668,
@@ -13431,7 +13431,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇲",
     name: "flag: San Marino",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1669,
@@ -13439,7 +13439,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇳",
     name: "flag: Senegal",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1670,
@@ -13447,7 +13447,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇴",
     name: "flag: Somalia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1671,
@@ -13455,7 +13455,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇷",
     name: "flag: Suriname",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1672,
@@ -13463,7 +13463,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇸",
     name: "flag: South Sudan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1673,
@@ -13471,7 +13471,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇹",
     name: "flag: São Tomé & Príncipe",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1674,
@@ -13479,7 +13479,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇻",
     name: "flag: El Salvador",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1675,
@@ -13487,7 +13487,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇽",
     name: "flag: Sint Maarten",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1676,
@@ -13495,7 +13495,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇾",
     name: "flag: Syria",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1677,
@@ -13503,7 +13503,7 @@ export const emojis: Emoji[] = [
     char: "🇸🇿",
     name: "flag: Eswatini",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1678,
@@ -13511,7 +13511,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇦",
     name: "flag: Tristan da Cunha",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1679,
@@ -13519,7 +13519,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇨",
     name: "flag: Turks & Caicos Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1680,
@@ -13527,7 +13527,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇩",
     name: "flag: Chad",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1681,
@@ -13535,7 +13535,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇫",
     name: "flag: French Southern Territories",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1682,
@@ -13543,7 +13543,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇬",
     name: "flag: Togo",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1683,
@@ -13551,7 +13551,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇭",
     name: "flag: Thailand",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1684,
@@ -13559,7 +13559,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇯",
     name: "flag: Tajikistan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1685,
@@ -13567,7 +13567,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇰",
     name: "flag: Tokelau",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1686,
@@ -13575,7 +13575,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇱",
     name: "flag: Timor-Leste",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1687,
@@ -13583,7 +13583,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇲",
     name: "flag: Turkmenistan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1688,
@@ -13591,7 +13591,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇳",
     name: "flag: Tunisia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1689,
@@ -13599,7 +13599,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇴",
     name: "flag: Tonga",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1690,
@@ -13607,7 +13607,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇷",
     name: "flag: Turkey",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1691,
@@ -13615,7 +13615,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇹",
     name: "flag: Trinidad & Tobago",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1692,
@@ -13623,7 +13623,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇻",
     name: "flag: Tuvalu",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1693,
@@ -13631,7 +13631,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇼",
     name: "flag: Taiwan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1694,
@@ -13639,7 +13639,7 @@ export const emojis: Emoji[] = [
     char: "🇹🇿",
     name: "flag: Tanzania",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1695,
@@ -13647,7 +13647,7 @@ export const emojis: Emoji[] = [
     char: "🇺🇦",
     name: "flag: Ukraine",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1696,
@@ -13655,7 +13655,7 @@ export const emojis: Emoji[] = [
     char: "🇺🇬",
     name: "flag: Uganda",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1697,
@@ -13663,7 +13663,7 @@ export const emojis: Emoji[] = [
     char: "🇺🇲",
     name: "flag: U.S. Outlying Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1698,
@@ -13671,7 +13671,7 @@ export const emojis: Emoji[] = [
     char: "🇺🇳",
     name: "flag: United Nations",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1699,
@@ -13679,7 +13679,7 @@ export const emojis: Emoji[] = [
     char: "🇺🇸",
     name: "flag: United States",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1700,
@@ -13687,7 +13687,7 @@ export const emojis: Emoji[] = [
     char: "🇺🇾",
     name: "flag: Uruguay",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1701,
@@ -13695,7 +13695,7 @@ export const emojis: Emoji[] = [
     char: "🇺🇿",
     name: "flag: Uzbekistan",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1702,
@@ -13703,7 +13703,7 @@ export const emojis: Emoji[] = [
     char: "🇻🇦",
     name: "flag: Vatican City",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1703,
@@ -13711,7 +13711,7 @@ export const emojis: Emoji[] = [
     char: "🇻🇨",
     name: "flag: St. Vincent & Grenadines",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1704,
@@ -13719,7 +13719,7 @@ export const emojis: Emoji[] = [
     char: "🇻🇪",
     name: "flag: Venezuela",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1705,
@@ -13727,7 +13727,7 @@ export const emojis: Emoji[] = [
     char: "🇻🇬",
     name: "flag: British Virgin Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1706,
@@ -13735,7 +13735,7 @@ export const emojis: Emoji[] = [
     char: "🇻🇮",
     name: "flag: U.S. Virgin Islands",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1707,
@@ -13743,7 +13743,7 @@ export const emojis: Emoji[] = [
     char: "🇻🇳",
     name: "flag: Vietnam",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1708,
@@ -13751,7 +13751,7 @@ export const emojis: Emoji[] = [
     char: "🇻🇺",
     name: "flag: Vanuatu",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1709,
@@ -13759,7 +13759,7 @@ export const emojis: Emoji[] = [
     char: "🇼🇫",
     name: "flag: Wallis & Futuna",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1710,
@@ -13767,7 +13767,7 @@ export const emojis: Emoji[] = [
     char: "🇼🇸",
     name: "flag: Samoa",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1711,
@@ -13775,7 +13775,7 @@ export const emojis: Emoji[] = [
     char: "🇽🇰",
     name: "flag: Kosovo",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1712,
@@ -13783,7 +13783,7 @@ export const emojis: Emoji[] = [
     char: "🇾🇪",
     name: "flag: Yemen",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1713,
@@ -13791,7 +13791,7 @@ export const emojis: Emoji[] = [
     char: "🇾🇹",
     name: "flag: Mayotte",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1714,
@@ -13799,7 +13799,7 @@ export const emojis: Emoji[] = [
     char: "🇿🇦",
     name: "flag: South Africa",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1715,
@@ -13807,7 +13807,7 @@ export const emojis: Emoji[] = [
     char: "🇿🇲",
     name: "flag: Zambia",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1716,
@@ -13815,7 +13815,7 @@ export const emojis: Emoji[] = [
     char: "🇿🇼",
     name: "flag: Zimbabwe",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1717,
@@ -13823,7 +13823,7 @@ export const emojis: Emoji[] = [
     char: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     name: "flag: England",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1718,
@@ -13831,7 +13831,7 @@ export const emojis: Emoji[] = [
     char: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
     name: "flag: Scotland",
     keywords: "flag",
-    category: "Flags"
+    category: "Flags",
   },
   {
     no: 1719,
@@ -13839,6 +13839,6 @@ export const emojis: Emoji[] = [
     char: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
     name: "flag: Wales",
     keywords: "flag",
-    category: "Flags"
-  }
+    category: "Flags",
+  },
 ];

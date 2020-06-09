@@ -22,7 +22,7 @@ const GhostWordHeading = styled(GhostHeadingTwo)`
 `;
 
 const DictionaryType = styled.p`
-  color: ${props => props.theme.dictionaryDescriptionText};
+  color: ${(props) => props.theme.dictionaryDescriptionText};
   font-size: ${font._12.size};
   line-height: ${font._12.size};
   margin: 0;
@@ -30,7 +30,7 @@ const DictionaryType = styled.p`
 `;
 
 const DictionaryDescription = styled.p`
-  color: ${props => props.theme.dictionaryDescriptionText};
+  color: ${(props) => props.theme.dictionaryDescriptionText};
   margin: ${spacing._0_5} 0;
 `;
 
@@ -79,7 +79,7 @@ function DictionaryEntry({ result }: { result: DictionaryResult }) {
       <DictionaryDescription>{result.definition}</DictionaryDescription>
       {result.synonyms.length ? (
         <ThesaurusWrapper>
-          {result.synonyms.map(synonym => (
+          {result.synonyms.map((synonym) => (
             <Tag key={synonym} isFocused>
               {synonym}
             </Tag>
@@ -93,7 +93,7 @@ function DictionaryEntry({ result }: { result: DictionaryResult }) {
 export function Dictionary({
   isLoading = false,
   results,
-  requestedWord
+  requestedWord,
 }: {
   isLoading?: boolean;
   results: DictionaryResult[];
@@ -123,7 +123,7 @@ export function Dictionary({
   return (
     <div style={{ width: "100%" }}>
       {results.length > 0 ? (
-        results.map(result => {
+        results.map((result) => {
           return <DictionaryEntry result={result} key={result.word} />;
         })
       ) : (

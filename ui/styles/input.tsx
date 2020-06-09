@@ -4,13 +4,13 @@ import { borderRadius, spacing, font } from "../theming/symbols";
 import { InputHTMLAttributes, useState, useCallback } from "react";
 
 export const Input = styled.input`
-  background: ${props => props.theme.inputBackground};
+  background: ${(props) => props.theme.inputBackground};
   width: 100%;
   border-radius: ${borderRadius._6};
   outline: none;
   border: 0;
   padding: ${spacing._0_25} ${spacing._0_5};
-  color: ${props => props.theme.inputText};
+  color: ${(props) => props.theme.inputText};
   font-size: ${font._18.size};
   line-height: ${font._18.lineHeight};
 `;
@@ -19,7 +19,7 @@ export const InputLabel = styled.label<{ isFocused?: boolean }>`
   display: inline-block;
   text-transform: uppercase;
   font-weight: bold;
-  color: ${props =>
+  color: ${(props) =>
     props.isFocused
       ? props.theme.inputLabelTextFocused
       : props.theme.inputLabelText};

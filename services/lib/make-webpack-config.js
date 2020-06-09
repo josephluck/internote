@@ -9,18 +9,18 @@ const nodeExternals = require("webpack-node-externals");
  *    relativeRoot: is the path to the root of the monorepo (that contains the top level package.json file)
  * }
  */
-module.exports = function(config) {
+module.exports = function (config) {
   return {
     resolve: {
-      extensions: [".json", ".ts"]
+      extensions: [".json", ".ts"],
     },
     output: {
       libraryTarget: "commonjs",
       path: path.join(config.dirname, ".webpack"),
-      filename: "[name].js"
+      filename: "[name].js",
     },
     optimization: {
-      minimize: false
+      minimize: false,
     },
     target: "node",
     devtool: "source-map",
@@ -32,8 +32,8 @@ module.exports = function(config) {
           config.relativeRoot,
           "node_modules"
         ),
-        whitelist: [/^@internote/]
-      })
+        whitelist: [/^@internote/],
+      }),
     ],
     module: {
       rules: [
@@ -44,12 +44,12 @@ module.exports = function(config) {
               loader: "ts-loader",
               options: {
                 happyPackMode: true,
-                transpileOnly: true
-              }
-            }
-          ]
-        }
-      ]
-    }
+                transpileOnly: true,
+              },
+            },
+          ],
+        },
+      ],
+    },
   };
 };

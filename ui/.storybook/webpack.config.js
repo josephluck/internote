@@ -2,10 +2,10 @@ const path = require("path");
 const { TsConfigPathsPlugin } = require("awesome-typescript-loader");
 const withTM = require("next-plugin-transpile-modules");
 
-module.exports = function({ config }) {
+module.exports = function ({ config }) {
   config.node = {
     ...config.node,
-    fs: "empty"
+    fs: "empty",
   };
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
@@ -14,24 +14,24 @@ module.exports = function({ config }) {
         loader: "awesome-typescript-loader",
         options: {
           configFileName: "tsconfig.storybook.json",
-          useCache: true
-        }
-      }
-    ]
+          useCache: true,
+        },
+      },
+    ],
   });
   config.module.rules.push({
     test: /\.scss$/,
-    use: ["style-loader", "css-loader"]
+    use: ["style-loader", "css-loader"],
   });
   config.module.rules.push({
     test: /\.(png|jpg|jpeg)$/,
     use: [
       {
         loader: "file-loader",
-        options: {}
-      }
+        options: {},
+      },
     ],
-    include: path.resolve(__dirname, "../")
+    include: path.resolve(__dirname, "../"),
   });
 
   config.resolve.extensions.push(".ts", ".tsx");
@@ -46,7 +46,7 @@ module.exports = function({ config }) {
   return withTM({}).webpack(config, {
     transpileModules: ["@internote"],
     defaultLoaders: {
-      babel: "babel-loader"
-    }
+      babel: "babel-loader",
+    },
   });
 };

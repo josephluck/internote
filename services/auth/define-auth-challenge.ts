@@ -1,6 +1,6 @@
 import { CognitoUserPoolTriggerHandler } from "aws-lambda";
 
-export const handler: CognitoUserPoolTriggerHandler = async event => {
+export const handler: CognitoUserPoolTriggerHandler = async (event) => {
   if (
     event.request.session &&
     event.request.session.length >= 3 &&

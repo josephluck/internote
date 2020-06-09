@@ -16,7 +16,7 @@ export function OnClickOutside({
   children,
   onClickOutside,
   disabled,
-  className
+  className,
 }: {
   children: React.ReactNode;
   onClickOutside?: (e: MouseEvent) => any;
@@ -52,7 +52,7 @@ export function OnClickOutside({
       }
     }
     window.addEventListener("click", onClick);
-    return function() {
+    return function () {
       window.removeEventListener("click", onClick);
     };
   }, [disabled]);

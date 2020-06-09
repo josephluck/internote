@@ -34,11 +34,11 @@ export function anyOverlappingStrOccurrences(
   strB: string | string[]
 ): boolean {
   if (typeof strA === "object" && typeof strB === "object") {
-    return strA.some(a => strB.some(b => b === a));
+    return strA.some((a) => strB.some((b) => b === a));
   } else if (typeof strA === "object") {
-    return strA.some(a => a === strB);
+    return strA.some((a) => a === strB);
   } else if (typeof strB === "object") {
-    return strB.some(b => b === strA);
+    return strB.some((b) => b === strA);
   } else {
     return strA === strB;
   }

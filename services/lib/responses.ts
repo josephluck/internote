@@ -4,7 +4,7 @@
 export function success<J>(json: J) {
   return {
     statusCode: 200,
-    body: json
+    body: json,
   };
 }
 
@@ -14,7 +14,7 @@ export function success<J>(json: J) {
 export function badRequest<J>(json: J) {
   return {
     statusCode: 400,
-    message: json
+    message: json,
   };
 }
 
@@ -24,7 +24,7 @@ export function badRequest<J>(json: J) {
 export function notFound<M extends string>(message: M) {
   return {
     statusCode: 400,
-    message: message
+    message: message,
   };
 }
 
@@ -34,6 +34,6 @@ export function notFound<M extends string>(message: M) {
 export function exception<E extends string | Error>(err: E) {
   return {
     statusCode: 500,
-    message: err
+    message: err,
   };
 }

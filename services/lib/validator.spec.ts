@@ -4,15 +4,15 @@ describe("validator", () => {
   it("Returns the valid fields when valid", () => {
     const input = {
       a: "a",
-      b: "b"
+      b: "b",
     };
     const constraints = {
       a: [required],
-      b: [required]
+      b: [required],
     };
     const result = validate(constraints, input);
     expect(result.type).toEqual("ok");
-    result.map(err => {
+    result.map((err) => {
       expect(err).toEqual({ a: "a", b: "b" });
     });
   });
@@ -20,15 +20,15 @@ describe("validator", () => {
   it("Returns errors for required fields", () => {
     const input = {
       a: "a",
-      b: undefined
+      b: undefined,
     };
     const constraints = {
       a: [required],
-      b: [required]
+      b: [required],
     };
     const result = validate(constraints, input);
     expect(result.type).toEqual("err");
-    result.mapError(err => {
+    result.mapError((err) => {
       expect(Object.keys(err)).toEqual(["b"]);
     });
   });
@@ -36,18 +36,18 @@ describe("validator", () => {
   it("Allows for multiple validation rules per field", () => {
     const input = {
       a: "a",
-      b: "c"
+      b: "c",
     };
     const constraints = {
       a: [required],
       b: [
         required,
-        (val: string) => (val === "b" ? undefined : "Should equal b")
-      ]
+        (val: string) => (val === "b" ? undefined : "Should equal b"),
+      ],
     };
     const result = validate(constraints, input);
     expect(result.type).toEqual("err");
-    result.mapError(err => {
+    result.mapError((err) => {
       expect(Object.keys(err)).toEqual(["b"]);
       expect(err.b).toEqual("Should equal b");
     });
@@ -56,14 +56,14 @@ describe("validator", () => {
   it("Throws an error when extra fields are present by default", () => {
     const input = {
       a: "a",
-      b: "b"
+      b: "b",
     };
     const constraints = {
-      a: [required]
+      a: [required],
     };
     const result = validate(constraints, input);
     expect(result.type).toEqual("err");
-    result.mapError(err => {
+    result.mapError((err) => {
       expect(Object.keys(err)).toEqual(["b"]);
     });
   });
@@ -71,10 +71,10 @@ describe("validator", () => {
   it("Ignores extra fields when not in strict mode", () => {
     const input = {
       a: "a",
-      b: "b"
+      b: "b",
     };
     const constraints = {
-      a: [required]
+      a: [required],
     };
     const result = validate(constraints, input, false);
     expect(result.type).toEqual("ok");
@@ -83,14 +83,14 @@ describe("validator", () => {
   it("Ignores extra fields when not in strict mode but still validates fields with constraints", () => {
     const input = {
       a: undefined,
-      b: "b"
+      b: "b",
     };
     const constraints = {
-      a: [required]
+      a: [required],
     };
     const result = validate(constraints, input, false);
     expect(result.type).toEqual("err");
-    result.mapError(err => {
+    result.mapError((err) => {
       expect(Object.keys(err)).toEqual(["a"]);
     });
   });
@@ -98,20 +98,20 @@ describe("validator", () => {
   it("Allows validating arrays of objects", () => {
     const input = {
       a: "a",
-      b: [{ c: "c" }, { c: "c" }, { c: "d" }]
+      b: [{ c: "c" }, { c: "c" }, { c: "d" }],
     };
     const constraints = {
       a: [required],
       b: [
         required,
         validateArrayItems({
-          c: [required, val => (val === "c" ? undefined : "Value must be c")]
-        })
-      ]
+          c: [required, (val) => (val === "c" ? undefined : "Value must be c")],
+        }),
+      ],
     };
     const result = validate(constraints, input);
     expect(result.type).toEqual("err");
-    result.mapError(err => {
+    result.mapError((err) => {
       expect(Object.keys(err)).toEqual(["b"]);
       expect(err.b).toEqual(`Item 2 is invalid: {"c":"Value must be c"}`);
     });
@@ -120,16 +120,16 @@ describe("validator", () => {
   it("Allows valid arrays of objects", () => {
     const input = {
       a: "a",
-      b: [{ c: "c" }, { c: "c" }, { c: "c" }]
+      b: [{ c: "c" }, { c: "c" }, { c: "c" }],
     };
     const constraints = {
       a: [required],
       b: [
         required,
         validateArrayItems({
-          c: [required, val => (val === "c" ? undefined : "Value must be c")]
-        })
-      ]
+          c: [required, (val) => (val === "c" ? undefined : "Value must be c")],
+        }),
+      ],
     };
     const result = validate(constraints, input);
     expect(result.type).toEqual("ok");

@@ -31,13 +31,9 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
+                "Service": ["lambda.amazonaws.com"]
               },
-              "Action": [
-                "sts:AssumeRole"
-              ]
+              "Action": ["sts:AssumeRole"]
             }
           ]
         },
@@ -46,11 +42,7 @@
             "PolicyName": {
               "Fn::Join": [
                 "-",
-                [
-                  "dev",
-                  "internote-dictionary-service",
-                  "lambda"
-                ]
+                ["dev", "internote-dictionary-service", "lambda"]
               ]
             },
             "PolicyDocument": {
@@ -58,9 +50,7 @@
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream"
-                  ],
+                  "Action": ["logs:CreateLogStream"],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-dictionary-service-dev*:*"
@@ -69,9 +59,7 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
+                  "Action": ["logs:PutLogEvents"],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-dictionary-service-dev*:*:*"
@@ -111,10 +99,7 @@
         "Handler": "lookup.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
         },
         "Runtime": "nodejs8.10",
         "Timeout": 30,
@@ -126,10 +111,7 @@
           }
         }
       },
-      "DependsOn": [
-        "LookupLogGroup",
-        "IamRoleLambdaExecution"
-      ]
+      "DependsOn": ["LookupLogGroup", "IamRoleLambdaExecution"]
     },
     "LookupLambdaVersionvEzZWAGYYOnHEgievvKKAc4eC7QPSTNBvSodD5mLDz0": {
       "Type": "AWS::Lambda::Version",
@@ -242,10 +224,7 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": [
-                    "LookupLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["LookupLambdaFunction", "Arn"]
                 },
                 "/invocations"
               ]
@@ -272,10 +251,7 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": [
-            "LookupLambdaFunction",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["LookupLambdaFunction", "Arn"]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",

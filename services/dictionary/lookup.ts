@@ -4,7 +4,7 @@ import { jsonBodyParser, cors } from "middy/middlewares";
 import {
   encodeResponse,
   validateRequestBody,
-  jsonErrorHandler
+  jsonErrorHandler,
 } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
 import { CreateHandler } from "@internote/lib/types";
@@ -12,7 +12,7 @@ import {
   LookupRequestBody,
   LookupResponseBody,
   Oxford,
-  DictionaryResult
+  DictionaryResult,
 } from "./types";
 import { required, isString, isSingleWord } from "@internote/lib/validator";
 import Axios from "axios";
@@ -22,12 +22,12 @@ const api = Axios.create({
   baseURL: "https://od-api.oxforddictionaries.com:443/api/v2",
   headers: {
     app_id: process.env.OXFORD_API_ID,
-    app_key: process.env.OXFORD_API_KEY
-  }
+    app_key: process.env.OXFORD_API_KEY,
+  },
 });
 
 const validator = validateRequestBody<LookupRequestBody>({
-  word: [required, isString, isSingleWord]
+  word: [required, isString, isSingleWord],
 });
 
 const lookup: CreateHandler<LookupRequestBody> = async (
@@ -47,7 +47,7 @@ const lookup: CreateHandler<LookupRequestBody> = async (
       () => {
         throw new HttpError.NotFound("Lemmas request failed");
       },
-      async wordId => {
+      async (wordId) => {
         const entriesResponse = await api
           .get(`/entries/en-gb/${wordId}?strictMatch=false`)
           .catch(() => {
@@ -58,7 +58,7 @@ const lookup: CreateHandler<LookupRequestBody> = async (
 
         function returnOnlyDictionaryEntries() {
           const response: LookupResponseBody = {
-            results: entries.map(({ thesaurusSenseIds, ...rest }) => rest)
+            results: entries.map(({ thesaurusSenseIds, ...rest }) => rest),
           };
           return callback(null, success(response));
         }
@@ -75,7 +75,7 @@ const lookup: CreateHandler<LookupRequestBody> = async (
               thesaurusResponse.data
             );
             const response: LookupResponseBody = {
-              results
+              results,
             };
             return callback(null, success(response));
           } else {
@@ -119,16 +119,16 @@ function convertOxfordEntriesResponse(
               subsenses
             );
             const example = getFirstItemFromArray(examples)
-              .map(e => e.text)
+              .map((e) => e.text)
               .getOrElse("");
-            (definitions || []).forEach(definition => {
+            (definitions || []).forEach((definition) => {
               mappedResult.push({
                 word,
                 lexicalCategory: lexicalCategory.text,
                 definition,
                 synonyms: [],
                 example,
-                thesaurusSenseIds
+                thesaurusSenseIds,
               });
             });
           }
@@ -150,10 +150,10 @@ function mapEntriesToSynonyms(
     (response.results || []).forEach(({ lexicalEntries }) => {
       (lexicalEntries || []).forEach(({ entries }) => {
         (entries || []).forEach(({ senses }) => {
-          (thesaurusSenseIds || []).forEach(thesaurusId => {
+          (thesaurusSenseIds || []).forEach((thesaurusId) => {
             const sense = senses.find(({ id }) => id === thesaurusId);
             if (sense && sense.synonyms) {
-              synonyms = [...synonyms, ...sense.synonyms.map(s => s.text)];
+              synonyms = [...synonyms, ...sense.synonyms.map((s) => s.text)];
             }
           });
         });
@@ -179,9 +179,9 @@ function getWordIdFromLemmasResponse(
   response: Oxford.LemmasResponse
 ): Option<string> {
   return getFirstItemFromArray(response.results)
-    .flatMap(lemma => getFirstItemFromArray(lemma.lexicalEntries))
-    .flatMap(entry => getFirstItemFromArray(entry.inflectionOf))
-    .map(inflection => inflection.id);
+    .flatMap((lemma) => getFirstItemFromArray(lemma.lexicalEntries))
+    .flatMap((entry) => getFirstItemFromArray(entry.inflectionOf))
+    .map((inflection) => inflection.id);
 }
 
 function getLinkId(link: Oxford.EntryThesaurusLink) {

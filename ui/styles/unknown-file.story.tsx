@@ -2,7 +2,7 @@ import React from "react";
 import { StoriesOf } from "../types";
 import { UnknownFile } from "./unknown-file";
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("UnknownFile", module)
     .add("Markdown file", () => (
       <UnknownFile

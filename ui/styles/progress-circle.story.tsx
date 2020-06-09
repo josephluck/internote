@@ -2,7 +2,7 @@ import React from "react";
 import { StoriesOf } from "../types";
 import { ProgressCircle } from "./progress-circle";
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("ProgressCircle", module)
     .add("No progress", () => <ProgressCircle progress={0} />)
     .add("Some progress", () => <ProgressCircle progress={30} />)

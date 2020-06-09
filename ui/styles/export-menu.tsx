@@ -21,21 +21,21 @@ const Menu = styled(MenuControl)`
 
 export function ExportMenu({
   onMenuToggled,
-  noteId
+  noteId,
 }: {
   onMenuToggled: (menuShowing: boolean) => void;
   noteId: string;
 }) {
   const exportMarkdownLoading = useTwineState(
-    state => state.exportNote.loading.markdown
+    (state) => state.exportNote.loading.markdown
   );
   const exportHtmlLoading = useTwineState(
-    state => state.exportNote.loading.html
+    (state) => state.exportNote.loading.html
   );
 
-  const { exportMarkdown, exportHtml } = useTwineActions(actions => ({
+  const { exportMarkdown, exportHtml } = useTwineActions((actions) => ({
     exportMarkdown: actions.exportNote.markdown,
-    exportHtml: actions.exportNote.html
+    exportHtml: actions.exportNote.html,
   }));
 
   const [subMenuOpen, setSubMenuOpen] = React.useState<boolean>(false);
@@ -45,7 +45,7 @@ export function ExportMenu({
       onMenuToggled={onMenuToggled}
       menuName="Export menu"
       disableCloseShortcut={subMenuOpen}
-      menu={menu => (
+      menu={(menu) => (
         <ExportMenuWrap showing={menu.menuShowing} horizontalPosition="right">
           {!menu.menuShowing ? (
             <Shortcut
@@ -78,7 +78,7 @@ export function ExportMenu({
                   >
                     Export Markdown
                   </DropdownMenuItem>
-                )
+                ),
               },
               {
                 title: "Export HTML",
@@ -98,14 +98,14 @@ export function ExportMenu({
                   >
                     Export HTML
                   </DropdownMenuItem>
-                )
-              }
+                ),
+              },
             ]}
           />
         </ExportMenuWrap>
       )}
     >
-      {menu => (
+      {(menu) => (
         <ExpandingIconButton
           forceShow={menu.menuShowing}
           text="Export note"

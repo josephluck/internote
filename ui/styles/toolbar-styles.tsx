@@ -12,11 +12,11 @@ import {
   faQuoteLeft,
   faListUl,
   faListOl,
-  faEye
+  faEye,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   SchemaMarkType,
-  SchemaBlockType
+  SchemaBlockType,
 } from "@internote/export-service/types";
 
 export const ToolbarWrapper = styled.div<{
@@ -26,7 +26,7 @@ export const ToolbarWrapper = styled.div<{
   flex: 0 0 auto;
   font-size: ${font._18.size};
   line-height: ${font._18.lineHeight};
-  background: ${props => props.theme.toolbarBackground};
+  background: ${(props) => props.theme.toolbarBackground};
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -37,8 +37,8 @@ export const ToolbarWrapper = styled.div<{
   right: 0;
   bottom: 0;
   transition: all 500ms ease;
-  opacity: ${props => (props.distractionFree && !props.forceShow ? 0 : 1)};
-  transform: ${props =>
+  opacity: ${(props) => (props.distractionFree && !props.forceShow ? 0 : 1)};
+  transform: ${(props) =>
     props.distractionFree && !props.forceShow
       ? "translateY(5px)"
       : "translateY(0px)"};
@@ -64,7 +64,7 @@ export const ToolbarExpandedWrapper = styled.div`
 `;
 
 export const ToolbarExpandedInner = styled.div`
-  border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
+  border-top: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
   padding-top: ${spacing._0_25};
   overflow: auto;
   max-height: ${size.toolbarExpandedMaxHeight};

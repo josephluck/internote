@@ -19,7 +19,7 @@ export const SnippetsContext = React.createContext<Context>({
   snippetsMenuShowing: false,
   setSnippetToInsert: () => {},
   setSnippetsMenuShowing: () => {},
-  setCreateSnippetModalOpen: () => {}
+  setCreateSnippetModalOpen: () => {},
 });
 
 /**
@@ -28,23 +28,23 @@ export const SnippetsContext = React.createContext<Context>({
  */
 export function SnippetsProvider({ children }: { children: React.ReactNode }) {
   function setSnippetToInsert(snippetToInsert: GetSnippetDTO) {
-    setCtx(prevState => ({
+    setCtx((prevState) => ({
       ...prevState,
-      snippetToInsert
+      snippetToInsert,
     }));
   }
 
   function setSnippetsMenuShowing(snippetsMenuShowing: boolean) {
-    setCtx(prevState => ({
+    setCtx((prevState) => ({
       ...prevState,
-      snippetsMenuShowing
+      snippetsMenuShowing,
     }));
   }
 
   function setCreateSnippetModalOpen(createSnippetModalOpen: boolean) {
-    setCtx(prevState => ({
+    setCtx((prevState) => ({
       ...prevState,
-      createSnippetModalOpen
+      createSnippetModalOpen,
     }));
   }
 
@@ -57,7 +57,7 @@ export function SnippetsProvider({ children }: { children: React.ReactNode }) {
     createSnippetModalOpen: false,
     setSnippetsMenuShowing,
     setSnippetToInsert,
-    setCreateSnippetModalOpen
+    setCreateSnippetModalOpen,
   });
 
   return (

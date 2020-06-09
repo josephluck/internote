@@ -3,7 +3,7 @@ import { MakeSignedRequest } from "./api";
 import { ApiResponse } from "@internote/lib/types";
 import {
   CreateExportDTO,
-  ExportResponseDTO
+  ExportResponseDTO,
 } from "@internote/export-service/types";
 
 export function exportNote(makeRequest: MakeSignedRequest) {
@@ -16,7 +16,7 @@ export function exportNote(makeRequest: MakeSignedRequest) {
         path: `/export/markdown`,
         method: "POST",
         session,
-        body: request
+        body: request,
       });
     },
     async html(
@@ -27,8 +27,8 @@ export function exportNote(makeRequest: MakeSignedRequest) {
         path: `/export/html`,
         method: "POST",
         session,
-        body: request
+        body: request,
       });
-    }
+    },
   };
 }

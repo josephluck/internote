@@ -37,9 +37,9 @@ export const validator = validateRequestBody<UpdateNoteDTO>({
   userId: [],
   content: [required], // TODO: validate slate schema
   title: [required, isString],
-  tags: [required, isArray(v => typeof v === "string")],
+  tags: [required, isArray((v) => typeof v === "string")],
   dateUpdated: [],
-  overwrite: []
+  overwrite: [],
 });
 
 export const handler = middy(update)

@@ -1,6 +1,6 @@
 import { CognitoUserPoolTriggerHandler } from "aws-lambda";
 
-export const handler: CognitoUserPoolTriggerHandler = async event => {
+export const handler: CognitoUserPoolTriggerHandler = async (event) => {
   const expectedAnswer = event.request.privateChallengeParameters!
     .secretLoginCode;
   if (event.request.challengeAnswer === expectedAnswer) {

@@ -4,7 +4,7 @@ import { jsonBodyParser, cors } from "middy/middlewares";
 import {
   encodeResponse,
   validateRequestBody,
-  jsonErrorHandler
+  jsonErrorHandler,
 } from "@internote/lib/middlewares";
 import { success, exception, notFound } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
@@ -19,7 +19,7 @@ const validator = validateRequestBody<Preferences>({
   distractionFree: [],
   voice: [],
   outlineShowing: [],
-  offlineSync: []
+  offlineSync: [],
 });
 
 const update: UpdateHandler<Preferences> = async (event, _ctx, callback) => {

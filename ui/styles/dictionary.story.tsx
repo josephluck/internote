@@ -3,7 +3,7 @@ import { StoriesOf } from "../types";
 import { Dictionary } from "./dictionary";
 import { DictionaryResult } from "@internote/dictionary-service/types";
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("Dictionary", module)
     .add("With results", () => (
       <Dictionary results={results} requestedWord="Design" />
@@ -58,16 +58,16 @@ const results: DictionaryResult[] = [
       "scheme",
       "model",
       "prototype",
-      "proposal"
+      "proposal",
     ],
-    example: "he has just unveiled his design for the new museum"
+    example: "he has just unveiled his design for the new museum",
   },
   {
     word: "design",
     lexicalCategory: "Noun",
     definition: "a decorative pattern",
     synonyms: ["pattern", "motif", "device"],
-    example: "pottery with a lovely blue and white design"
+    example: "pottery with a lovely blue and white design",
   },
   {
     word: "design",
@@ -92,9 +92,9 @@ const results: DictionaryResult[] = [
       "dream",
       "aspiration",
       "ambition",
-      "idea"
+      "idea",
     ],
-    example: "the appearance of design in the universe"
+    example: "the appearance of design in the universe",
   },
   {
     word: "design",
@@ -123,8 +123,8 @@ const results: DictionaryResult[] = [
       "formulate",
       "conceive",
       "intend",
-      "aim"
+      "aim",
     ],
-    example: "a number of architectural students were designing a factory"
-  }
+    example: "a number of architectural students were designing a factory",
+  },
 ];

@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { spacing } from "../theming/symbols";
 
 const StyledEditor = styled(SlateEditor)<{ distractionFree: boolean }>`
-  padding-top: ${props => (props.distractionFree ? "50vh" : 0)};
-  padding-bottom: ${props => (props.distractionFree ? "50vh" : spacing._1)};
+  padding-top: ${(props) => (props.distractionFree ? "50vh" : 0)};
+  padding-bottom: ${(props) => (props.distractionFree ? "50vh" : spacing._1)};
   flex: 1;
 `;
 

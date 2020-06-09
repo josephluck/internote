@@ -1,10 +1,7 @@
 {
   "name": "yjkcvpc-yztgxhb",
   "arn": "arn:aws:iam::822567739604:role/yjkcvpc-yztgxhb",
-  "service": [
-    "edgelambda.amazonaws.com",
-    "lambda.amazonaws.com"
-  ],
+  "service": ["edgelambda.amazonaws.com", "lambda.amazonaws.com"],
   "policy": {
     "arn": "arn:aws:iam::aws:policy/AdministratorAccess"
   },

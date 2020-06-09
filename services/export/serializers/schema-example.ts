@@ -6,128 +6,128 @@ export default {
       object: "block",
       type: "heading-one",
       data: {
-        className: null
+        className: null,
       },
       nodes: [
         {
           object: "text",
           text: "Welcome to Internote!",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
       type: "paragraph",
       data: {
-        className: null
+        className: null,
       },
       nodes: [
         {
           object: "text",
           text: "",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
       type: "heading-two",
       data: {
-        className: null
+        className: null,
       },
       nodes: [
         {
           object: "text",
           text: "",
-          marks: []
+          marks: [],
         },
         {
           object: "inline",
           type: "emoji",
           data: {
-            code: "❤"
+            code: "❤",
           },
           nodes: [
             {
               object: "text",
               text: "",
-              marks: []
-            }
-          ]
+              marks: [],
+            },
+          ],
         },
         {
           object: "text",
           text: " Internote",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
       type: "paragraph",
       data: {
-        className: null
+        className: null,
       },
       nodes: [
         {
           object: "text",
           text:
             "Internote is a rich text editor designed for distraction-free content creation ",
-          marks: []
+          marks: [],
         },
         {
           object: "inline",
           type: "emoji",
           data: {
-            code: "✏"
+            code: "✏",
           },
           nodes: [
             {
               object: "text",
               text: "",
-              marks: []
-            }
-          ]
+              marks: [],
+            },
+          ],
         },
         {
           object: "text",
           text: "",
-          marks: []
+          marks: [],
         },
         {
           object: "inline",
           type: "emoji",
           data: {
-            code: "📜"
+            code: "📜",
           },
           nodes: [
             {
               object: "text",
               text: "",
-              marks: []
-            }
-          ]
+              marks: [],
+            },
+          ],
         },
         {
           object: "text",
           text: ".",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
       type: "paragraph",
       data: {
-        className: null
+        className: null,
       },
       nodes: [
         {
           object: "text",
           text:
             "Internote supports a wide variety of different formatting options including ",
-          marks: []
+          marks: [],
         },
         {
           object: "text",
@@ -136,9 +136,9 @@ export default {
             {
               object: "mark",
               type: "bold",
-              data: {}
-            }
-          ]
+              data: {},
+            },
+          ],
         },
         {
           object: "text",
@@ -147,14 +147,14 @@ export default {
             {
               object: "mark",
               type: "italic",
-              data: {}
-            }
-          ]
+              data: {},
+            },
+          ],
         },
         {
           object: "text",
           text: "and ",
-          marks: []
+          marks: [],
         },
         {
           object: "text",
@@ -163,14 +163,14 @@ export default {
             {
               object: "mark",
               type: "underlined",
-              data: {}
-            }
-          ]
+              data: {},
+            },
+          ],
         },
         {
           object: "text",
           text: " including ",
-          marks: []
+          marks: [],
         },
         {
           object: "text",
@@ -179,14 +179,14 @@ export default {
             {
               object: "mark",
               type: "bold",
-              data: {}
+              data: {},
             },
             {
               object: "mark",
               type: "italic",
-              data: {}
-            }
-          ]
+              data: {},
+            },
+          ],
         },
         {
           object: "text",
@@ -195,19 +195,19 @@ export default {
             {
               object: "mark",
               type: "italic",
-              data: {}
+              data: {},
             },
             {
               object: "mark",
               type: "underlined",
-              data: {}
-            }
-          ]
+              data: {},
+            },
+          ],
         },
         {
           object: "text",
           text: " ",
-          marks: []
+          marks: [],
         },
         {
           object: "text",
@@ -216,19 +216,19 @@ export default {
             {
               object: "mark",
               type: "underlined",
-              data: {}
+              data: {},
             },
             {
               object: "mark",
               type: "bold",
-              data: {}
-            }
-          ]
+              data: {},
+            },
+          ],
         },
         {
           object: "text",
           text: " ",
-          marks: []
+          marks: [],
         },
         {
           object: "text",
@@ -237,24 +237,24 @@ export default {
             {
               object: "mark",
               type: "italic",
-              data: {}
+              data: {},
             },
             {
               object: "mark",
               type: "bold",
-              data: {}
+              data: {},
             },
             {
               object: "mark",
               type: "underlined",
-              data: {}
-            }
-          ]
+              data: {},
+            },
+          ],
         },
         {
           object: "text",
           text: " as well as lists, ",
-          marks: []
+          marks: [],
         },
         {
           object: "text",
@@ -263,17 +263,17 @@ export default {
             {
               object: "mark",
               type: "code",
-              data: {}
-            }
-          ]
+              data: {},
+            },
+          ],
         },
         {
           object: "text",
           text:
             ", headings and quotes. There are also other useful features such as:",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
@@ -284,137 +284,137 @@ export default {
           object: "block",
           type: "list-item",
           data: {
-            className: null
+            className: null,
           },
           nodes: [
             {
               object: "text",
               text: "Integrated code editor",
-              marks: []
-            }
-          ]
+              marks: [],
+            },
+          ],
         },
         {
           object: "block",
           type: "list-item",
           data: {
-            className: null
+            className: null,
           },
           nodes: [
             {
               object: "text",
               text: "In-built Oxford dictionary",
-              marks: []
-            }
-          ]
+              marks: [],
+            },
+          ],
         },
         {
           object: "block",
           type: "list-item",
           data: {
-            className: null
+            className: null,
           },
           nodes: [
             {
               object: "text",
               text: "Text-to-speech at the press of a button",
-              marks: []
-            }
-          ]
+              marks: [],
+            },
+          ],
         },
         {
           object: "block",
           type: "list-item",
           data: {
-            className: null
+            className: null,
           },
           nodes: [
             {
               object: "text",
               text: "Focus mode for distraction-free writing",
-              marks: []
-            }
-          ]
+              marks: [],
+            },
+          ],
         },
         {
           object: "block",
           type: "list-item",
           data: {
-            className: null
+            className: null,
           },
           nodes: [
             {
               object: "text",
               text: "Multiple colour and font themes",
-              marks: []
-            }
-          ]
+              marks: [],
+            },
+          ],
         },
         {
           object: "block",
           type: "list-item",
           data: {
-            className: null
+            className: null,
           },
           nodes: [
             {
               object: "text",
               text: "Emojis ",
-              marks: []
+              marks: [],
             },
             {
               object: "inline",
               type: "emoji",
               data: {
-                code: "🚀"
+                code: "🚀",
               },
               nodes: [
                 {
                   object: "text",
                   text: "",
-                  marks: []
-                }
-              ]
+                  marks: [],
+                },
+              ],
             },
             {
               object: "text",
               text: " and ",
-              marks: []
+              marks: [],
             },
             {
               object: "inline",
               type: "tag",
               data: {
-                tag: "#hashtag"
+                tag: "#hashtag",
               },
               nodes: [
                 {
                   object: "text",
                   text: "",
-                  marks: []
-                }
-              ]
+                  marks: [],
+                },
+              ],
             },
             {
               object: "text",
               text: "s ",
-              marks: []
-            }
-          ]
-        }
-      ]
+              marks: [],
+            },
+          ],
+        },
+      ],
     },
     {
       object: "block",
       type: "paragraph",
       data: {
-        className: null
+        className: null,
       },
       nodes: [
         {
           object: "text",
           text: "Internote automatically saves your notes in the cloud and is ",
-          marks: []
+          marks: [],
         },
         {
           object: "text",
@@ -423,28 +423,28 @@ export default {
             {
               object: "mark",
               type: "italic",
-              data: {}
-            }
-          ]
+              data: {},
+            },
+          ],
         },
         {
           object: "text",
           text: " free.",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
       type: "block-quote",
       data: {
-        className: null
+        className: null,
       },
       nodes: [
         {
           object: "text",
           text: "I built ",
-          marks: []
+          marks: [],
         },
         {
           object: "text",
@@ -453,60 +453,60 @@ export default {
             {
               object: "mark",
               type: "bold",
-              data: {}
-            }
-          ]
+              data: {},
+            },
+          ],
         },
         {
           object: "text",
           text:
             "to be an effortless writing app. It's inspired by iA Writer and the amazing sans-serif font, Inter.",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
       type: "ide",
       data: {
         content:
-          "const Internote = (content: string) => {\r\n    return amazing(content)\r\n}\r\nconst amazing = (content: string) => {\r\n    // ... magic!\r\n}"
+          "const Internote = (content: string) => {\r\n    return amazing(content)\r\n}\r\nconst amazing = (content: string) => {\r\n    // ... magic!\r\n}",
       },
       nodes: [
         {
           object: "text",
           text: "",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
       type: "paragraph",
       data: {
-        className: null
+        className: null,
       },
       nodes: [
         {
           object: "text",
           text: "",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
       type: "paragraph",
       data: {
-        className: null
+        className: null,
       },
       nodes: [
         {
           object: "text",
           text: "",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
@@ -515,15 +515,15 @@ export default {
         src: "https://some-bucket.s3.eu-west-1.amazonaws.com/some-image.png",
         key: "some-image.png",
         name: "some-image.png",
-        uploaded: true
+        uploaded: true,
       },
       nodes: [
         {
           object: "text",
           text: "",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
@@ -532,15 +532,15 @@ export default {
         src: "https://some-bucket.s3.eu-west-1.amazonaws.com/some-video.mp4",
         key: "some-video.mp4",
         name: "some-video.mp4",
-        uploaded: true
+        uploaded: true,
       },
       nodes: [
         {
           object: "text",
           text: "",
-          marks: []
-        }
-      ]
+          marks: [],
+        },
+      ],
     },
     {
       object: "block",
@@ -549,15 +549,15 @@ export default {
         src: "https://some-bucket.s3.eu-west-1.amazonaws.com/some-audio.mp3",
         key: "some-audio.mp3",
         name: "some-audio.mp3",
-        uploaded: true
+        uploaded: true,
       },
       nodes: [
         {
           object: "text",
           text: "",
-          marks: []
-        }
-      ]
-    }
-  ]
+          marks: [],
+        },
+      ],
+    },
+  ],
 };

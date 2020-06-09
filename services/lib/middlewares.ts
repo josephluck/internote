@@ -8,7 +8,7 @@ export const validateRequestBody = <M extends Record<string, any>>(
 ): MiddlewareObject<any, any> => ({
   before: (handler, next) => {
     return validate(constraints, handler.event.body).fold(
-      err => {
+      (err) => {
         const error = new HttpError.BadRequest("Invalid request");
         error.detail = err;
         throw error;
@@ -17,7 +17,7 @@ export const validateRequestBody = <M extends Record<string, any>>(
         return next();
       }
     );
-  }
+  },
 });
 
 /**
@@ -35,7 +35,7 @@ export const encodeResponse: middy.Middleware<{}> = () => {
       }
 
       return next();
-    }
+    },
   };
 };
 
@@ -51,16 +51,16 @@ export const jsonErrorHandler: middy.Middleware<{}> = () => ({
         status: error.statusCode,
         type: mapStatusCodeToErrorType(error.status),
         message: error.message,
-        detail: error.detail
+        detail: error.detail,
       };
       handler.response = {
         ...handler.response,
         statusCode: error.status,
-        body: JSON.stringify(errorBody)
+        body: JSON.stringify(errorBody),
       };
       return next();
     }
 
     return next(error);
-  }
+  },
 });

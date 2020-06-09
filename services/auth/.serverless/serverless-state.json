@@ -22,12 +22,8 @@
       "iamRoleStatements": [
         {
           "Effect": "Allow",
-          "Action": [
-            "ses:SendEmail"
-          ],
-          "Resource": [
-            "arn:aws:ses:eu-west-1:*:*"
-          ]
+          "Action": ["ses:SendEmail"],
+          "Resource": ["arn:aws:ses:eu-west-1:*:*"]
         }
       ],
       "environment": {
@@ -86,13 +82,9 @@
                   {
                     "Effect": "Allow",
                     "Principal": {
-                      "Service": [
-                        "lambda.amazonaws.com"
-                      ]
+                      "Service": ["lambda.amazonaws.com"]
                     },
-                    "Action": [
-                      "sts:AssumeRole"
-                    ]
+                    "Action": ["sts:AssumeRole"]
                   }
                 ]
               },
@@ -101,11 +93,7 @@
                   "PolicyName": {
                     "Fn::Join": [
                       "-",
-                      [
-                        "dev",
-                        "internote-auth-service",
-                        "lambda"
-                      ]
+                      ["dev", "internote-auth-service", "lambda"]
                     ]
                   },
                   "PolicyDocument": {
@@ -113,9 +101,7 @@
                     "Statement": [
                       {
                         "Effect": "Allow",
-                        "Action": [
-                          "logs:CreateLogStream"
-                        ],
+                        "Action": ["logs:CreateLogStream"],
                         "Resource": [
                           {
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-auth-service-dev*:*"
@@ -124,9 +110,7 @@
                       },
                       {
                         "Effect": "Allow",
-                        "Action": [
-                          "logs:PutLogEvents"
-                        ],
+                        "Action": ["logs:PutLogEvents"],
                         "Resource": [
                           {
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-auth-service-dev*:*:*"
@@ -169,10 +153,7 @@
               "Handler": "pre-sign-up.handler",
               "MemorySize": 1024,
               "Role": {
-                "Fn::GetAtt": [
-                  "IamRoleLambdaExecution",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
               },
               "Runtime": "nodejs8.10",
               "Timeout": 6,
@@ -182,10 +163,7 @@
                 }
               }
             },
-            "DependsOn": [
-              "AuthPreSignUpLogGroup",
-              "IamRoleLambdaExecution"
-            ]
+            "DependsOn": ["AuthPreSignUpLogGroup", "IamRoleLambdaExecution"]
           },
           "AuthPreSignUpLambdaVersionifv70Osfbf4cC4t0JIYPNYJyi7sy4zFZqS0wFAQaO0": {
             "Type": "AWS::Lambda::Version",
@@ -210,10 +188,7 @@
               "Handler": "define-auth-challenge.handler",
               "MemorySize": 1024,
               "Role": {
-                "Fn::GetAtt": [
-                  "IamRoleLambdaExecution",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
               },
               "Runtime": "nodejs8.10",
               "Timeout": 6,
@@ -251,10 +226,7 @@
               "Handler": "create-auth-challenge.handler",
               "MemorySize": 1024,
               "Role": {
-                "Fn::GetAtt": [
-                  "IamRoleLambdaExecution",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
               },
               "Runtime": "nodejs8.10",
               "Timeout": 6,
@@ -292,10 +264,7 @@
               "Handler": "verify-auth-challenge-response.handler",
               "MemorySize": 1024,
               "Role": {
-                "Fn::GetAtt": [
-                  "IamRoleLambdaExecution",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
               },
               "Runtime": "nodejs8.10",
               "Timeout": 6,
@@ -326,22 +295,13 @@
               "UserPoolName": "dev-internote-user-pool",
               "LambdaConfig": {
                 "PreSignUp": {
-                  "Fn::GetAtt": [
-                    "AuthPreSignUpLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["AuthPreSignUpLambdaFunction", "Arn"]
                 },
                 "DefineAuthChallenge": {
-                  "Fn::GetAtt": [
-                    "DefineAuthChallengeLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["DefineAuthChallengeLambdaFunction", "Arn"]
                 },
                 "CreateAuthChallenge": {
-                  "Fn::GetAtt": [
-                    "CreateAuthChallengeLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["CreateAuthChallengeLambdaFunction", "Arn"]
                 },
                 "VerifyAuthChallengeResponse": {
                   "Fn::GetAtt": [
@@ -359,9 +319,7 @@
                   "RequireUppercase": false
                 }
               },
-              "UsernameAttributes": [
-                "email"
-              ],
+              "UsernameAttributes": ["email"],
               "MfaConfiguration": "OFF"
             },
             "DependsOn": [
@@ -375,18 +333,12 @@
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
-                "Fn::GetAtt": [
-                  "AuthPreSignUpLambdaFunction",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["AuthPreSignUpLambdaFunction", "Arn"]
               },
               "Action": "lambda:InvokeFunction",
               "Principal": "cognito-idp.amazonaws.com",
               "SourceArn": {
-                "Fn::GetAtt": [
-                  "CognitoUserPoolCognitoUserPool",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["CognitoUserPoolCognitoUserPool", "Arn"]
               }
             }
           },
@@ -394,18 +346,12 @@
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
-                "Fn::GetAtt": [
-                  "DefineAuthChallengeLambdaFunction",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["DefineAuthChallengeLambdaFunction", "Arn"]
               },
               "Action": "lambda:InvokeFunction",
               "Principal": "cognito-idp.amazonaws.com",
               "SourceArn": {
-                "Fn::GetAtt": [
-                  "CognitoUserPoolCognitoUserPool",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["CognitoUserPoolCognitoUserPool", "Arn"]
               }
             }
           },
@@ -413,18 +359,12 @@
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
-                "Fn::GetAtt": [
-                  "CreateAuthChallengeLambdaFunction",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["CreateAuthChallengeLambdaFunction", "Arn"]
               },
               "Action": "lambda:InvokeFunction",
               "Principal": "cognito-idp.amazonaws.com",
               "SourceArn": {
-                "Fn::GetAtt": [
-                  "CognitoUserPoolCognitoUserPool",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["CognitoUserPoolCognitoUserPool", "Arn"]
               }
             }
           },
@@ -440,10 +380,7 @@
               "Action": "lambda:InvokeFunction",
               "Principal": "cognito-idp.amazonaws.com",
               "SourceArn": {
-                "Fn::GetAtt": [
-                  "CognitoUserPoolCognitoUserPool",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["CognitoUserPoolCognitoUserPool", "Arn"]
               }
             }
           },
@@ -454,9 +391,7 @@
               "UserPoolId": {
                 "Ref": "CognitoUserPoolCognitoUserPool"
               },
-              "ExplicitAuthFlows": [
-                "CUSTOM_AUTH_FLOW_ONLY"
-              ],
+              "ExplicitAuthFlows": ["CUSTOM_AUTH_FLOW_ONLY"],
               "GenerateSecret": false
             }
           },
@@ -472,9 +407,7 @@
                     "Principal": {
                       "Federated": "cognito-identity.amazonaws.com"
                     },
-                    "Action": [
-                      "sts:AssumeRoleWithWebIdentity"
-                    ],
+                    "Action": ["sts:AssumeRoleWithWebIdentity"],
                     "Condition": {
                       "StringEquals": {
                         "cognito-identity.amazonaws.com:aud": {
@@ -505,9 +438,7 @@
                       },
                       {
                         "Effect": "Allow",
-                        "Action": [
-                          "execute-api:Invoke"
-                        ],
+                        "Action": ["execute-api:Invoke"],
                         "Resource": {
                           "Fn::Join": [
                             "",
@@ -531,9 +462,7 @@
                       },
                       {
                         "Effect": "Allow",
-                        "Action": [
-                          "s3:*"
-                        ],
+                        "Action": ["s3:*"],
                         "Resource": [
                           {
                             "Fn::Join": [
@@ -552,9 +481,7 @@
                       },
                       {
                         "Effect": "Allow",
-                        "Action": [
-                          "s3:*"
-                        ],
+                        "Action": ["s3:*"],
                         "Resource": [
                           {
                             "Fn::Join": [
@@ -605,10 +532,7 @@
               },
               "Roles": {
                 "authenticated": {
-                  "Fn::GetAtt": [
-                    "CognitoAuthRole",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["CognitoAuthRole", "Arn"]
                 }
               }
             }
@@ -695,16 +619,11 @@
       "webpack": {
         "config": "webpack.config.js",
         "includeModules": {
-          "forceExclude": [
-            "aws-sdk"
-          ]
+          "forceExclude": ["aws-sdk"]
         }
       }
     },
-    "plugins": [
-      "serverless-plugin-monorepo",
-      "serverless-webpack"
-    ],
+    "plugins": ["serverless-plugin-monorepo", "serverless-webpack"],
     "pluginsData": {},
     "functions": {
       "authPreSignUp": {
@@ -799,9 +718,7 @@
                 "RequireUppercase": false
               }
             },
-            "UsernameAttributes": [
-              "email"
-            ],
+            "UsernameAttributes": ["email"],
             "MfaConfiguration": "OFF"
           }
         },
@@ -812,9 +729,7 @@
             "UserPoolId": {
               "Ref": "CognitoUserPoolCognitoUserPool"
             },
-            "ExplicitAuthFlows": [
-              "CUSTOM_AUTH_FLOW_ONLY"
-            ],
+            "ExplicitAuthFlows": ["CUSTOM_AUTH_FLOW_ONLY"],
             "GenerateSecret": false
           }
         },
@@ -830,9 +745,7 @@
                   "Principal": {
                     "Federated": "cognito-identity.amazonaws.com"
                   },
-                  "Action": [
-                    "sts:AssumeRoleWithWebIdentity"
-                  ],
+                  "Action": ["sts:AssumeRoleWithWebIdentity"],
                   "Condition": {
                     "StringEquals": {
                       "cognito-identity.amazonaws.com:aud": {
@@ -863,9 +776,7 @@
                     },
                     {
                       "Effect": "Allow",
-                      "Action": [
-                        "execute-api:Invoke"
-                      ],
+                      "Action": ["execute-api:Invoke"],
                       "Resource": {
                         "Fn::Join": [
                           "",
@@ -889,9 +800,7 @@
                     },
                     {
                       "Effect": "Allow",
-                      "Action": [
-                        "s3:*"
-                      ],
+                      "Action": ["s3:*"],
                       "Resource": [
                         {
                           "Fn::Join": [
@@ -910,9 +819,7 @@
                     },
                     {
                       "Effect": "Allow",
-                      "Action": [
-                        "s3:*"
-                      ],
+                      "Action": ["s3:*"],
                       "Resource": [
                         {
                           "Fn::Join": [
@@ -963,10 +870,7 @@
             },
             "Roles": {
               "authenticated": {
-                "Fn::GetAtt": [
-                  "CognitoAuthRole",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["CognitoAuthRole", "Arn"]
               }
             }
           }

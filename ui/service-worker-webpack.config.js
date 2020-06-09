@@ -15,18 +15,18 @@ function getEnvPath() {
 }
 
 const { parsed: localEnv } = dotenv.config({
-  path: getEnvPath()
+  path: getEnvPath(),
 });
 
 module.exports = {
   entry: "./service-worker/index.ts",
   output: {
     filename: "service-worker.js",
-    path: path.resolve(__dirname, "public")
+    path: path.resolve(__dirname, "public"),
   },
   devtool: "inline-source-map",
   resolve: {
-    extensions: [".ts", ".js"]
+    extensions: [".ts", ".js"],
   },
   module: {
     rules: [
@@ -37,11 +37,11 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["env", { modules: false }]
-          }
-        }
-      }
-    ]
+            presets: ["env", { modules: false }],
+          },
+        },
+      },
+    ],
   },
-  plugins: [new CheckerPlugin(), new webpack.EnvironmentPlugin(localEnv)]
+  plugins: [new CheckerPlugin(), new webpack.EnvironmentPlugin(localEnv)],
 };

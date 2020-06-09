@@ -5,7 +5,7 @@ import Fuse from "fuse.js";
 import {
   isRightHotKey,
   isLeftHotKey,
-  isEnterHotKey
+  isEnterHotKey,
 } from "../utilities/editor";
 import { Tag, NewTag } from "./tag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,7 +30,7 @@ export function TagsList({
   tags,
   onTagSelected,
   onCreateNewTag,
-  newTagSaving
+  newTagSaving,
 }: {
   search: string;
   tags: string[];
@@ -48,12 +48,14 @@ export function TagsList({
       location: 0,
       distance: 2,
       maxPatternLength: 32,
-      minMatchCharLength: 1
+      minMatchCharLength: 1,
     });
     // NB: for hashtags, need to include the #
     const searchCriteria = `#${search}`;
     const newFilteredTags =
-      search.length > 0 ? fuzzy.search(searchCriteria).map(i => tags[i]) : tags;
+      search.length > 0
+        ? fuzzy.search(searchCriteria).map((i) => tags[i])
+        : tags;
     setFocusedIndex(newFilteredTags.length > 0 ? 1 : 0);
     setFilteredTags(newFilteredTags);
   }, [search, tags.length]);
@@ -99,7 +101,7 @@ export function TagsList({
         <NewTag
           isFocused={focusedIndex === 0}
           onMouseEnter={() => setFocusedIndex(0)}
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault();
             onCreateNewTag(`#${search}`);
           }}
@@ -117,7 +119,7 @@ export function TagsList({
             key={tag}
             isFocused={search.length === 0 || focusedIndex === i + 1}
             onMouseEnter={() => setFocusedIndex(i + 1)}
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault();
               onTagSelected(tag, search);
             }}

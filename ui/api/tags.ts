@@ -8,8 +8,8 @@ export function tags(makeRequest: MakeSignedRequest) {
       return makeRequest({
         path: "/tags",
         method: "GET",
-        session
+        session,
       });
-    }
+    },
   };
 }

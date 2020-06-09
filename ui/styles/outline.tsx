@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { spacing, size, font, media } from "../theming/symbols";
 import {
   getOutlineHeadingsFromEditorValue,
-  getOutlineTagsFromEditorValue
+  getOutlineTagsFromEditorValue,
 } from "../utilities/editor";
 import { Value, Node } from "slate";
 import { Tag } from "./tag";
@@ -19,9 +19,9 @@ const Wrap = styled.div<{ showing: boolean }>`
   transition: all 333ms ease;
   text-align: right;
   padding-bottom: ${spacing._5};
-  opacity: ${props => (props.showing ? 0.2 : 0)};
-  margin-right: ${props => (props.showing ? 0 : `-${size.outlineWidth}`)};
-  pointer-events: ${props => (props.showing ? "normal" : "none")};
+  opacity: ${(props) => (props.showing ? 0.2 : 0)};
+  margin-right: ${(props) => (props.showing ? 0 : `-${size.outlineWidth}`)};
+  pointer-events: ${(props) => (props.showing ? "normal" : "none")};
   @media (min-width: ${media.tablet}) {
     padding-left: ${spacing._2};
   }
@@ -69,7 +69,7 @@ const TagsWrapper = styled.div`
 export function Outline({
   value,
   onHeadingClick,
-  showing
+  showing,
 }: {
   value: Value;
   onHeadingClick: (node: Node) => any;
@@ -80,7 +80,7 @@ export function Outline({
 
   return (
     <Wrap showing={showing}>
-      {headings.map(block => (
+      {headings.map((block) => (
         <OutlineItemWrapper
           key={block.key}
           onClick={() => onHeadingClick(block.node)}
@@ -94,7 +94,7 @@ export function Outline({
       ))}
       <Spacer />
       <TagsWrapper>
-        {hashtags.map(tag => (
+        {hashtags.map((tag) => (
           <Tag key={tag} isFocused={false}>
             {tag}
           </Tag>

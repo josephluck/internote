@@ -21,7 +21,7 @@ function makeValidator<C extends Record<string, any>>(
    */
   strictInput = true
 ) {
-  const defaultConstraint: Constraint = val =>
+  const defaultConstraint: Constraint = (val) =>
     strictInput ? `Unexpected field ${val}` : undefined;
 
   return function validate<F extends Record<string, any>>(
@@ -42,7 +42,7 @@ function makeValidator<C extends Record<string, any>>(
       return err
         ? {
             ...errors,
-            [key]: err
+            [key]: err,
           }
         : errors;
     }, {});
@@ -69,8 +69,8 @@ export function validate<C extends Record<string, any>, F extends any>(
 export const validateArrayItems = (
   constraints: Record<string, Constraint[]>
 ): Constraint => (val: any[]) => {
-  const results = val.map(fields => validate(constraints, fields));
-  const invalidIndex = results.findIndex(result => !result.isOk());
+  const results = val.map((fields) => validate(constraints, fields));
+  const invalidIndex = results.findIndex((result) => !result.isOk());
   if (invalidIndex >= 0) {
     return `Item ${invalidIndex} is invalid: ${JSON.stringify(
       results[invalidIndex].get()
@@ -104,5 +104,5 @@ export const isArray = (
     : `${key} must be an array`;
 
 export const rules = {
-  required
+  required,
 };

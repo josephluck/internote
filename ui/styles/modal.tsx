@@ -14,9 +14,9 @@ const ModalOuter = styled.div<{ open: boolean; withBackground: boolean }>`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  pointer-events: ${props => (props.open ? "normal" : "none")};
-  opacity: ${props => (props.open ? "1" : "0")};
-  background: ${props =>
+  pointer-events: ${(props) => (props.open ? "normal" : "none")};
+  opacity: ${(props) => (props.open ? "1" : "0")};
+  background: ${(props) =>
     props.withBackground ? props.theme.modalBackdropBackground : "transparent"};
 `;
 
@@ -25,10 +25,10 @@ const ModalWrapper = styled.div<{ open: boolean }>`
   max-width: 400px;
   min-width: 100px;
   width: 80%;
-  background: ${props => props.theme.modalBackground};
+  background: ${(props) => props.theme.modalBackground};
   transition: all 300ms ease;
-  transform: translateY(${props => (props.open ? "0px" : "-10px")});
-  opacity: ${props => (props.open ? "1" : "0")};
+  transform: translateY(${(props) => (props.open ? "0px" : "-10px")});
+  opacity: ${(props) => (props.open ? "1" : "0")};
   border-radius: ${borderRadius._6};
   font-size: ${font._28.size};
 `;
@@ -42,7 +42,7 @@ const ModalCloseWrapper = styled.div`
   left: 100%;
   margin-bottom: ${spacing._0_5};
   margin-left: ${spacing._0_5};
-  color: ${props => props.theme.modalCloseIconColor};
+  color: ${(props) => props.theme.modalCloseIconColor};
 `;
 
 export function Modal({
@@ -50,7 +50,7 @@ export function Modal({
   onClose,
   children,
   showCloseIcon = true,
-  withOverlay = false
+  withOverlay = false,
 }: {
   open: boolean;
   onClose: () => void;

@@ -4,7 +4,7 @@ import { jsonBodyParser, cors } from "middy/middlewares";
 import {
   encodeResponse,
   jsonErrorHandler,
-  validateRequestBody
+  validateRequestBody,
 } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
@@ -15,7 +15,7 @@ import { required, isString } from "@internote/lib/validator";
 
 const validator = validateRequestBody<CreateSnippetDTO>({
   title: [required, isString],
-  content: [required]
+  content: [required],
 });
 
 const create: CreateHandler<CreateSnippetDTO> = async (

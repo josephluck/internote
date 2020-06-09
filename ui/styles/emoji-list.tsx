@@ -6,7 +6,7 @@ import Fuse from "fuse.js";
 import {
   isRightHotKey,
   isLeftHotKey,
-  isEnterHotKey
+  isEnterHotKey,
 } from "../utilities/editor";
 import { NoResults } from "./no-results";
 
@@ -23,8 +23,9 @@ const EmojiItem = styled.div<{ isFocused: boolean }>`
   display: inline-block;
   margin: ${spacing._0_125};
   cursor: pointer;
-  opacity: ${props => (props.isFocused ? 1 : 0.5)};
-  transform: ${props => (props.isFocused ? "scale(1, 1)" : "scale(0.8, 0.8)")};
+  opacity: ${(props) => (props.isFocused ? 1 : 0.5)};
+  transform: ${(props) =>
+    props.isFocused ? "scale(1, 1)" : "scale(0.8, 0.8)"};
   transition: all 200ms ease;
   font-size: ${font._24.size};
   line-height: ${font._24.lineHeight};
@@ -37,12 +38,12 @@ const fuzzy = new Fuse(emojis, {
   distance: 2,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: ["name", "keywords"]
+  keys: ["name", "keywords"],
 });
 
 export function EmojiList({
   search,
-  onEmojiSelected
+  onEmojiSelected,
 }: {
   onEmojiSelected: (emoji: Emoji, searchText: string) => any;
   search: string;
@@ -70,7 +71,7 @@ export function EmojiList({
       }
     }
     window.addEventListener("keydown", onKeyDown);
-    return function() {
+    return function () {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [filteredEmojis, focusedIndex, onEmojiSelected, search]);
@@ -84,7 +85,7 @@ export function EmojiList({
               key={emoji.codes}
               isFocused={search.length === 0 || focusedIndex === i}
               onMouseEnter={() => setFocusedIndex(i)}
-              onClick={e => {
+              onClick={(e) => {
                 e.preventDefault();
                 onEmojiSelected(emoji, `:${search}`);
               }}

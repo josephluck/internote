@@ -11,12 +11,12 @@ import {
   faEye,
   faMicrophone,
   faSearch,
-  faSync
+  faSync,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   DropdownMenu,
   DropdownMenuItem,
-  DropdownMenuSpacer
+  DropdownMenuSpacer,
 } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
@@ -38,30 +38,30 @@ const Menu = styled(MenuControl)`
 const Description = styled.p`
   font-size: ${font._12.size};
   line-height: ${font._16.lineHeight};
-  color: ${props => props.theme.settingsMenuDescriptionText};
+  color: ${(props) => props.theme.settingsMenuDescriptionText};
   padding: 0 ${spacing._1} ${spacing._0_25};
 `;
 
 export function SettingsMenu({
-  onMenuToggled
+  onMenuToggled,
 }: {
   onMenuToggled: (menuShowing: boolean) => void;
 }) {
-  const colorThemes = useTwineState(state => state.preferences.colorThemes);
-  const colorTheme = useTwineState(state => state.preferences.colorTheme);
-  const fontThemes = useTwineState(state => state.preferences.fontThemes);
-  const fontTheme = useTwineState(state => state.preferences.fontTheme);
+  const colorThemes = useTwineState((state) => state.preferences.colorThemes);
+  const colorTheme = useTwineState((state) => state.preferences.colorTheme);
+  const fontThemes = useTwineState((state) => state.preferences.fontThemes);
+  const fontTheme = useTwineState((state) => state.preferences.fontTheme);
   const distractionFree = useTwineState(
-    state => state.preferences.distractionFree
+    (state) => state.preferences.distractionFree
   );
   const outlineShowing = useTwineState(
-    state => state.preferences.outlineShowing
+    (state) => state.preferences.outlineShowing
   );
-  const offlineSync = useTwineState(state => state.preferences.offlineSync);
+  const offlineSync = useTwineState((state) => state.preferences.offlineSync);
   const offlineSyncPreferenceSaving = useTwineState(
-    state => state.sync.loading.setOfflineSync
+    (state) => state.sync.loading.setOfflineSync
   );
-  const voice = useTwineState(state => state.preferences.voice);
+  const voice = useTwineState((state) => state.preferences.voice);
   const {
     setColorTheme,
     setFontTheme,
@@ -70,8 +70,8 @@ export function SettingsMenu({
     setOfflineSync,
     setVoice,
     signOutConfirmation,
-    deleteAccountConfirmation
-  } = useTwineActions(actions => ({
+    deleteAccountConfirmation,
+  } = useTwineActions((actions) => ({
     setColorTheme: actions.preferences.setColorTheme,
     setFontTheme: actions.preferences.setFontTheme,
     setDistractionFree: actions.preferences.setDistractionFree,
@@ -79,7 +79,7 @@ export function SettingsMenu({
     setOfflineSync: actions.sync.setOfflineSync,
     setVoice: actions.preferences.setVoice,
     signOutConfirmation: actions.auth.signOutConfirmation,
-    deleteAccountConfirmation: actions.auth.deleteAccountConfirmation
+    deleteAccountConfirmation: actions.auth.deleteAccountConfirmation,
   }));
 
   const [subMenuOpen, setSubMenuOpen] = React.useState<boolean>(false);
@@ -89,7 +89,7 @@ export function SettingsMenu({
       onMenuToggled={onMenuToggled}
       menuName="Settings menu"
       disableCloseShortcut={subMenuOpen}
-      menu={menu => (
+      menu={(menu) => (
         <SettingsMenuWrap showing={menu.menuShowing} horizontalPosition="right">
           {!menu.menuShowing ? (
             <Shortcut
@@ -107,7 +107,7 @@ export function SettingsMenu({
               {
                 title: "Colours",
                 shortcut: "c",
-                item: list => (
+                item: (list) => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faPalette} />}
                     onClick={() => {
@@ -119,7 +119,7 @@ export function SettingsMenu({
                 ),
                 subMenu: () => (
                   <>
-                    {colorThemes.map(theme => (
+                    {colorThemes.map((theme) => (
                       <DropdownMenuItem
                         onClick={() => setColorTheme(theme)}
                         icon={
@@ -142,12 +142,12 @@ export function SettingsMenu({
                       </DropdownMenuItem>
                     ))}
                   </>
-                )
+                ),
               },
               {
                 title: "Typography",
                 shortcut: "t",
-                item: list => (
+                item: (list) => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faFont} />}
                     onClick={() => {
@@ -159,7 +159,7 @@ export function SettingsMenu({
                 ),
                 subMenu: () => (
                   <>
-                    {fontThemes.map(theme => (
+                    {fontThemes.map((theme) => (
                       <DropdownMenuItem
                         onClick={() => setFontTheme(theme)}
                         icon={
@@ -184,12 +184,12 @@ export function SettingsMenu({
                       </DropdownMenuItem>
                     ))}
                   </>
-                )
+                ),
               },
               {
                 title: "Focus mode",
                 shortcut: "f",
-                item: list => (
+                item: (list) => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faEye} />}
                     onClick={() => {
@@ -240,12 +240,12 @@ export function SettingsMenu({
                       />
                     </DropdownMenuItem>
                   </>
-                )
+                ),
               },
               {
                 title: "Outline view",
                 shortcut: "o",
-                item: list => (
+                item: (list) => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faSearch} />}
                     onClick={() => {
@@ -296,12 +296,12 @@ export function SettingsMenu({
                       />
                     </DropdownMenuItem>
                   </>
-                )
+                ),
               },
               {
                 title: "Voice",
                 shortcut: "v",
-                item: list => (
+                item: (list) => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faMicrophone} />}
                     onClick={() => {
@@ -313,7 +313,7 @@ export function SettingsMenu({
                 ),
                 subMenu: () => (
                   <>
-                    {availableVoices.map(v => (
+                    {availableVoices.map((v) => (
                       <DropdownMenuItem
                         key={v}
                         onClick={() => setVoice(v)}
@@ -328,12 +328,12 @@ export function SettingsMenu({
                     ))}
                   </>
                 ),
-                spacerAfter: false
+                spacerAfter: false,
               },
               {
                 title: "Offline sync",
                 shortcut: "s",
-                item: list => (
+                item: (list) => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faSync} />}
                     onClick={() => {
@@ -402,7 +402,7 @@ export function SettingsMenu({
                     </DropdownMenuItem>
                   </div>
                 ),
-                spacerAfter: true
+                spacerAfter: true,
               },
               {
                 title: "Sign out",
@@ -416,7 +416,7 @@ export function SettingsMenu({
                   >
                     Sign out
                   </DropdownMenuItem>
-                )
+                ),
               },
               {
                 title: "Delete account",
@@ -430,14 +430,14 @@ export function SettingsMenu({
                   >
                     Delete account
                   </DropdownMenuItem>
-                )
-              }
+                ),
+              },
             ]}
           />
         </SettingsMenuWrap>
       )}
     >
-      {menu => (
+      {(menu) => (
         <ExpandingIconButton
           forceShow={menu.menuShowing}
           text="Settings"

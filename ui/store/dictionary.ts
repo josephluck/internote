@@ -22,7 +22,7 @@ interface OwnEffects {
 function defaultState(): OwnState {
   return {
     dictionaryShowing: false,
-    dictionaryResults: []
+    dictionaryResults: [],
   };
 }
 
@@ -46,21 +46,21 @@ export function model(api: Api): Model {
       setDictionaryShowing: (state, dictionaryShowing) => ({
         ...state,
         dictionaryShowing,
-        dictionaryResults: dictionaryShowing ? state.dictionaryResults : []
+        dictionaryResults: dictionaryShowing ? state.dictionaryResults : [],
       }),
-      setDictionaryResults: setter("dictionaryResults")
+      setDictionaryResults: setter("dictionaryResults"),
     },
     effects: {
       async lookup(state, actions, word) {
         actions.dictionary.setDictionaryShowing(true);
         const response = await api.dictionary.lookup(state.auth.session, {
-          word
+          word,
         });
         response.map(({ results }) =>
           actions.dictionary.setDictionaryResults(results)
         );
-      }
-    }
+      },
+    },
   };
   return withAsyncLoading(ownModel, "dictionary");
 }

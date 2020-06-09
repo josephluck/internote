@@ -9,7 +9,7 @@ import { Flex } from "@rebass/grid";
 import { spacing } from "../theming/symbols";
 import {
   ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap
+  ToolbarExpandingButtonIconWrap,
 } from "./toolbar-expanding-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faUpload } from "@fortawesome/free-solid-svg-icons";
@@ -41,7 +41,7 @@ const Container = styled(CollapseWidthOnHover)`
 
 const attachments = makeAttachmentsApi({
   region: env.SERVICES_REGION,
-  bucketName: env.ATTACHMENTS_BUCKET_NAME
+  bucketName: env.ATTACHMENTS_BUCKET_NAME,
 });
 
 export function getFileTypeFromFile(file: File): FileType {
@@ -76,7 +76,7 @@ export const FileUpload = ({
   noteId,
   onUploadStarted,
   onUploadProgress,
-  onUploadFinished
+  onUploadFinished,
 }: {
   noteId: string;
   onUploadStarted: (e: InternoteUploadEvent) => void;
@@ -85,7 +85,7 @@ export const FileUpload = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const session = useTwineState(state => state.auth.session);
+  const session = useTwineState((state) => state.auth.session);
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLInputElement>) => {
       e.preventDefault();
@@ -106,11 +106,11 @@ export const FileUpload = ({
           type,
           name: file.name,
           progress: 0,
-          uploaded: false
+          uploaded: false,
         };
         onUploadStarted(uploadStartEvent);
         uploadSignal.dispatch(uploadStartEvent);
-        await attachments.upload(session, noteId, file, progress => {
+        await attachments.upload(session, noteId, file, (progress) => {
           const percentage = (progress.loaded / progress.total) * 100;
           const uploadProgressEvent = {
             src,
@@ -118,7 +118,7 @@ export const FileUpload = ({
             type,
             name: file.name,
             progress: percentage,
-            uploaded: false
+            uploaded: false,
           };
           uploadSignal.dispatch(uploadProgressEvent);
           if (onUploadProgress) {
@@ -131,7 +131,7 @@ export const FileUpload = ({
           type,
           name: file.name,
           progress: 100,
-          uploaded: true
+          uploaded: true,
         };
         if (onUploadFinished) {
           onUploadFinished(uploadFinishedEvent);
@@ -152,7 +152,7 @@ export const FileUpload = ({
           </Flex>
         }
       >
-        {collapse => (
+        {(collapse) => (
           <ToolbarExpandingButton forceShow={isUploading}>
             <ToolbarExpandingButtonIconWrap>
               {isUploading ? (

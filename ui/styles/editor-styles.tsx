@@ -19,7 +19,7 @@ export const EditorInnerWrap = styled(Wrapper)<{
   userScrolled: boolean;
 }>`
   display: flex;
-  font-family: ${props => props.theme.fontFamily};
+  font-family: ${(props) => props.theme.fontFamily};
   strong {
     font-weight: bold;
   }
@@ -32,7 +32,7 @@ export const EditorInnerWrap = styled(Wrapper)<{
   }
   code {
     font-family: monospace;
-    background: ${props => props.theme.codeBlockBackground};
+    background: ${(props) => props.theme.codeBlockBackground};
     padding: ${spacing._0_125} ${spacing._0_25};
     border-radius: ${borderRadius._6};
     padding-bottom: 0;
@@ -67,15 +67,15 @@ export const EditorInnerWrap = styled(Wrapper)<{
     }
   }
   blockquote {
-    border-left: solid 4px ${props => props.theme.blockQuoteBorder};
-    color: ${props => props.theme.blockQuoteText};
+    border-left: solid 4px ${(props) => props.theme.blockQuoteBorder};
+    color: ${(props) => props.theme.blockQuoteText};
     padding-left: ${spacing._0_5};
     margin-left: 0;
     font-size: ${font._18.size};
     line-height: ${font._18.lineHeight};
   }
   .node-unfocused {
-    opacity: ${props =>
+    opacity: ${(props) =>
       props.distractionFree && !props.userScrolled ? 0.2 : 1};
     transition: all 300ms ease;
   }

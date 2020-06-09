@@ -12,20 +12,20 @@ export const DropdownMenuContainer = styled.div<{
   verticalPosition?: "top" | "bottom";
 }>`
   position: absolute;
-  left: ${props => (props.horizontalPosition === "center" ? "50%" : "auto")};
-  right: ${props => (props.horizontalPosition === "right" ? "0" : "auto")};
-  top: ${props => (props.verticalPosition === "bottom" ? "100%" : "auto")};
-  bottom: ${props => (props.verticalPosition === "top" ? "100%" : "auto")};
+  left: ${(props) => (props.horizontalPosition === "center" ? "50%" : "auto")};
+  right: ${(props) => (props.horizontalPosition === "right" ? "0" : "auto")};
+  top: ${(props) => (props.verticalPosition === "bottom" ? "100%" : "auto")};
+  bottom: ${(props) => (props.verticalPosition === "top" ? "100%" : "auto")};
   z-index: 10;
   margin-top: ${spacing._0_5};
-  background-color: ${props => props.theme.dropdownMenuBackground};
+  background-color: ${(props) => props.theme.dropdownMenuBackground};
   border-radius: ${borderRadius._6};
-  opacity: ${props => (props.showing ? 1 : 0)};
+  opacity: ${(props) => (props.showing ? 1 : 0)};
   transition: all 300ms ease;
-  pointer-events: ${props => (props.showing ? "unset" : "none")};
-  transform: translateY(${props => (props.showing ? `0` : "-10px")})
+  pointer-events: ${(props) => (props.showing ? "unset" : "none")};
+  transform: translateY(${(props) => (props.showing ? `0` : "-10px")})
     translateX(
-      ${props => (props.horizontalPosition === "center" ? "-50%" : "0")}
+      ${(props) => (props.horizontalPosition === "center" ? "-50%" : "0")}
     );
   padding: ${spacing._0_5} 0;
   a {
@@ -39,7 +39,7 @@ export function DropdownMenu({
   children,
   showing,
   horizontalPosition = "center",
-  verticalPosition = "bottom"
+  verticalPosition = "bottom",
 }: {
   className?: string;
   children: React.ReactNode;
@@ -76,7 +76,7 @@ export const DropdownMenuItemWrap = styled.div`
   line-height: ${font._12.lineHeight};
   font-weight: 600;
   white-space: nowrap;
-  color: ${props => props.theme.dropdownMenuItemText};
+  color: ${(props) => props.theme.dropdownMenuItemText};
   cursor: pointer;
   &:hover {
     ${DropdownMenuItemIcon} {
@@ -89,7 +89,7 @@ export function DropdownMenuItem({
   children,
   icon,
   onClick,
-  className = ""
+  className = "",
 }: {
   children: React.ReactNode;
   icon: React.ReactNode;
@@ -105,8 +105,8 @@ export function DropdownMenuItem({
 }
 
 export const DropdownMenuSpacer = styled.div<{ withoutMargin?: boolean }>`
-  border-bottom: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
-  margin: ${props => (props.withoutMargin ? "0" : spacing._0_5)} 0;
+  border-bottom: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
+  margin: ${(props) => (props.withoutMargin ? "0" : spacing._0_5)} 0;
 `;
 
 const DropdownChevronWrap = styled.div`
@@ -115,7 +115,7 @@ const DropdownChevronWrap = styled.div`
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
   font-weight: 600;
-  cursor: ${props => (props.onClick ? "pointer" : "inherit")};
+  cursor: ${(props) => (props.onClick ? "pointer" : "inherit")};
 `;
 
 const ChevronIcon = styled.div`
@@ -124,7 +124,7 @@ const ChevronIcon = styled.div`
 
 export function DropdownChevron({
   children,
-  onClick
+  onClick,
 }: {
   children: React.ReactNode;
   onClick: () => any;

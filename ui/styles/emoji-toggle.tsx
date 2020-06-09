@@ -4,7 +4,7 @@ import { Flex } from "@rebass/grid";
 import { spacing, font } from "../theming/symbols";
 import {
   ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap
+  ToolbarExpandingButtonIconWrap,
 } from "./toolbar-expanding-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGrinAlt } from "@fortawesome/free-solid-svg-icons";
@@ -16,7 +16,7 @@ const IconWrap = styled(ToolbarExpandingButtonIconWrap)`
 
 export function EmojiToggle({
   isActive,
-  onClick
+  onClick,
 }: {
   isActive: boolean;
   onClick: () => any;
@@ -27,7 +27,7 @@ export function EmojiToggle({
       forceShow={isActive}
       collapsedContent={<Flex pl={spacing._0_25}>Emojis</Flex>}
     >
-      {collapse => (
+      {(collapse) => (
         <ToolbarExpandingButton forceShow={isActive}>
           <IconWrap>
             <FontAwesomeIcon icon={faGrinAlt} />

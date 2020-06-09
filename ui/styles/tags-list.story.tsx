@@ -2,7 +2,7 @@ import React from "react";
 import { StoriesOf } from "../types";
 import { TagsList } from "./tags-list";
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("TagsList", module)
     .add("Without search", () => (
       <TagsList
@@ -57,5 +57,5 @@ const tags = [
   "#react",
   "#lambda",
   "#serverless",
-  "#aws"
+  "#aws",
 ];

@@ -14,24 +14,24 @@ export const ToolbarExpandingButton = styled.div<{
   padding: ${spacing._0_25};
   height: ${spacing._1};
   font-weight: 600;
-  color: ${props =>
+  color: ${(props) =>
     props.isActive
       ? props.theme.toolbarButtonActiveText
       : props.forceShow
       ? props.theme.expandingIconButtonActiveText
       : props.theme.expandingIconButtonInactiveText};
-  background: ${props =>
+  background: ${(props) =>
     props.isActive
       ? props.theme.toolbarButtonActiveBackground
       : props.forceShow
       ? props.theme.expandingIconButtonBackground
       : "transparent"};
   &:hover {
-    color: ${props =>
+    color: ${(props) =>
       props.isActive
         ? props.theme.toolbarButtonActiveText
         : props.theme.expandingIconButtonActiveText};
-    background: ${props =>
+    background: ${(props) =>
       props.isActive
         ? props.theme.toolbarButtonActiveBackground
         : props.theme.expandingIconButtonBackground};

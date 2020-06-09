@@ -37,36 +37,23 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
+                "Service": ["lambda.amazonaws.com"]
               },
-              "Action": [
-                "sts:AssumeRole"
-              ]
+              "Action": ["sts:AssumeRole"]
             }
           ]
         },
         "Policies": [
           {
             "PolicyName": {
-              "Fn::Join": [
-                "-",
-                [
-                  "dev",
-                  "internote-export-service",
-                  "lambda"
-                ]
-              ]
+              "Fn::Join": ["-", ["dev", "internote-export-service", "lambda"]]
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream"
-                  ],
+                  "Action": ["logs:CreateLogStream"],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-export-service-dev*:*"
@@ -75,9 +62,7 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
+                  "Action": ["logs:PutLogEvents"],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-export-service-dev*:*:*"
@@ -86,10 +71,7 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": [
-                    "s3:PutObject",
-                    "s3:PutObjectAcl"
-                  ],
+                  "Action": ["s3:PutObject", "s3:PutObjectAcl"],
                   "Resource": {
                     "Fn::Join": [
                       "",
@@ -136,10 +118,7 @@
         "Handler": "markdown.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
         },
         "Runtime": "nodejs8.10",
         "Timeout": 30,
@@ -152,10 +131,7 @@
           }
         }
       },
-      "DependsOn": [
-        "MarkdownLogGroup",
-        "IamRoleLambdaExecution"
-      ]
+      "DependsOn": ["MarkdownLogGroup", "IamRoleLambdaExecution"]
     },
     "MarkdownLambdaVersionnJeLxdpL7hwsMlEmHoOVj39pFdIC9chtxEbqEGlXM": {
       "Type": "AWS::Lambda::Version",
@@ -180,10 +156,7 @@
         "Handler": "html.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
         },
         "Runtime": "nodejs8.10",
         "Timeout": 30,
@@ -196,10 +169,7 @@
           }
         }
       },
-      "DependsOn": [
-        "HtmlLogGroup",
-        "IamRoleLambdaExecution"
-      ]
+      "DependsOn": ["HtmlLogGroup", "IamRoleLambdaExecution"]
     },
     "HtmlLambdaVersionlLz8l6BK8AFA3vsKdi2GXEepZZ2EOCY0QZ8r4WO8A0": {
       "Type": "AWS::Lambda::Version",
@@ -371,10 +341,7 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": [
-                    "MarkdownLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["MarkdownLambdaFunction", "Arn"]
                 },
                 "/invocations"
               ]
@@ -414,10 +381,7 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": [
-                    "HtmlLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["HtmlLambdaFunction", "Arn"]
                 },
                 "/invocations"
               ]
@@ -446,10 +410,7 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": [
-            "MarkdownLambdaFunction",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["MarkdownLambdaFunction", "Arn"]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",
@@ -483,10 +444,7 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": [
-            "HtmlLambdaFunction",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["HtmlLambdaFunction", "Arn"]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",

@@ -3,7 +3,7 @@ import isKeyHotkey from "is-hotkey";
 
 export function OnKeyboardShortcut({
   keyCombo,
-  cb
+  cb,
 }: {
   keyCombo: string;
   cb: () => void;
@@ -17,7 +17,7 @@ export function OnKeyboardShortcut({
       }
     }
     document.addEventListener("keydown", onKeyDown);
-    return function() {
+    return function () {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [keyCombo]);

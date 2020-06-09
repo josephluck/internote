@@ -2,7 +2,7 @@ import React from "react";
 import { StoriesOf } from "../types";
 import { Tag, NewTag } from "./tag";
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("Tag", module)
     .add("Not focused", () => <Tag isFocused={false}>#internote</Tag>)
     .add("Focused", () => <Tag isFocused>#internote</Tag>)

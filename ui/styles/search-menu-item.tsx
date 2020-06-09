@@ -13,7 +13,7 @@ const DeleteIcon = styled.div<{ forceShow: boolean }>`
   cursor: pointer;
   transition: all 300ms ease;
   transform: scale(0.8, 0.8);
-  opacity: ${props => (props.forceShow ? `1 !important` : 0)};
+  opacity: ${(props) => (props.forceShow ? `1 !important` : 0)};
 `;
 
 const SearchMenuItemWrapper = styled(DropdownMenuItem)`
@@ -29,15 +29,15 @@ const SearchMenuItemWrapper = styled(DropdownMenuItem)`
 `;
 
 const Highlighter = styled(ReactHighlight)<{ hasSearch: boolean }>`
-  font-weight: ${props => (props.hasSearch ? 500 : 600)};
-  color: ${props =>
+  font-weight: ${(props) => (props.hasSearch ? 500 : 600)};
+  color: ${(props) =>
     props.hasSearch
       ? props.theme.notesMenuItemTextInactive
       : props.theme.dropdownMenuItemText};
   mark {
     font-weight: 900;
     background: inherit;
-    color: ${props => props.theme.dropdownMenuItemText};
+    color: ${(props) => props.theme.dropdownMenuItemText};
   }
 `;
 
@@ -50,7 +50,7 @@ export function SearchMenuItem({
   onMouseIn,
   onMouseOut,
   searchText,
-  deleteLoading = false
+  deleteLoading = false,
 }: {
   isLoading?: boolean;
   isSelected?: boolean;
@@ -76,7 +76,7 @@ export function SearchMenuItem({
         flex="1"
         style={{
           overflow: "hidden",
-          textOverflow: "ellipsis"
+          textOverflow: "ellipsis",
         }}
         onClick={onSelect}
         onMouseEnter={onMouseIn}

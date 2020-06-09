@@ -4,7 +4,7 @@ import AWS, { S3 } from "aws-sdk";
 
 export function makeAttachmentsApi({
   region,
-  bucketName
+  bucketName,
 }: {
   /** AWS region bucket resides in */
   region: string;
@@ -35,7 +35,7 @@ export function makeAttachmentsApi({
       Key: getUploadKey(session, noteId, file),
       Bucket: bucketName,
       Body: file,
-      ContentType: file.type
+      ContentType: file.type,
     });
     return new Promise((resolve, reject) => {
       if (onProgressUpdate) {
@@ -55,7 +55,7 @@ export function makeAttachmentsApi({
     return await getS3(session).getSignedUrlPromise("getObject", {
       Bucket: bucketName,
       Key: fileKey,
-      Expires: 1000
+      Expires: 1000,
     });
   }
 
@@ -63,7 +63,7 @@ export function makeAttachmentsApi({
     upload,
     getUploadKey,
     getUploadLocation,
-    makePresignedUrl
+    makePresignedUrl,
   };
 }
 
@@ -84,13 +84,13 @@ function getS3Factory(region: string, bucketName: string) {
       region,
       accessKeyId: session.accessKeyId,
       secretAccessKey: session.secretKey,
-      sessionToken: session.sessionToken
+      sessionToken: session.sessionToken,
     });
     return new S3({
       region,
       params: {
-        Bucket: bucketName
-      }
+        Bucket: bucketName,
+      },
     });
   };
 }

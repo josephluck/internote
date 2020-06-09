@@ -20,7 +20,7 @@ const writeFile = (
     fs.writeFile(
       path.resolve(__dirname, relativePathToOutput),
       content,
-      err => {
+      (err) => {
         if (err) {
           reject(err);
         } else {

@@ -12,7 +12,8 @@
     "deploy:prod": "npx concurrently \"yarn deploy:prod:api\"  \"yarn deploy:prod:ui\"",
     "deploy:prod:api": "yarn --cwd api deploy:prod",
     "deploy:prod:ui": "yarn --cwd ui deploy:prod",
-    "clean": "find . -name \"node_modules\" -exec rm -rf '{}' + && find . -name \".build\" -exec rm -rf '{}' + && yarn cache clean"
+    "clean": "find . -name \"node_modules\" -exec rm -rf '{}' + && find . -name \".build\" -exec rm -rf '{}' + && yarn cache clean",
+    "format": "prettier --write \"./**/*.{ts,tsx,js,json}\""
   },
   "license": "ISC",
   "workspaces": {
@@ -25,5 +26,8 @@
       "**/serverless",
       "**/serverless/**"
     ]
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5"
   }
 }

@@ -14,7 +14,7 @@ function withExternals(nextConfig) {
         return nextConfig.webpack(config, options);
       }
       return config;
-    }
+    },
   });
 }
 
@@ -35,8 +35,8 @@ module.exports = withExternals(
             COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
             SERVICES_HOST: process.env.SERVICES_HOST,
             SERVICES_REGION: process.env.SERVICES_REGION,
-            SPEECH_BUCKET_NAME: process.env.SPEECH_BUCKET_NAME
-          }
+            SPEECH_BUCKET_NAME: process.env.SPEECH_BUCKET_NAME,
+          },
         })
       )
     )

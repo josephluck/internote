@@ -2,7 +2,7 @@ import { Session } from "../auth/storage";
 import { MakeSignedRequest } from "./api";
 import {
   LookupRequestBody,
-  LookupResponseBody
+  LookupResponseBody,
 } from "@internote/dictionary-service/types";
 import { ApiResponse } from "@internote/lib/types";
 
@@ -16,8 +16,8 @@ export function dictionary(makeRequest: MakeSignedRequest) {
         path: "/dictionary/lookup",
         method: "POST",
         session,
-        body: request
+        body: request,
       });
-    }
+    },
   };
 }

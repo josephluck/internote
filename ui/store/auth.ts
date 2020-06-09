@@ -42,7 +42,7 @@ function defaultState(): OwnState {
   return {
     needsVerify: false,
     session: null,
-    signInSession: { email: "", session: "" }
+    signInSession: { email: "", session: "" },
   };
 }
 
@@ -72,10 +72,10 @@ export function model(_api: Api, auth: AuthApi): Model {
         authStorage.storeSession(latestSession);
         return {
           ...state,
-          session: latestSession
+          session: latestSession,
         };
       },
-      setSignInSession: setter("signInSession")
+      setSignInSession: setter("signInSession"),
     },
     effects: {
       async signUp(_state, actions, payload) {
@@ -93,7 +93,7 @@ export function model(_api: Api, auth: AuthApi): Model {
         const response = await auth.signIn(email);
         actions.auth.setSignInSession({
           email: email,
-          session: response.Session
+          session: response.Session,
         });
         actions.auth.setNeedsVerify(true);
       },
@@ -107,7 +107,7 @@ export function model(_api: Api, auth: AuthApi): Model {
           accessToken: credentials.AuthenticationResult.AccessToken,
           expires: credentials.AuthenticationResult.ExpiresIn,
           idToken: credentials.AuthenticationResult.IdToken,
-          refreshToken: credentials.AuthenticationResult.RefreshToken
+          refreshToken: credentials.AuthenticationResult.RefreshToken,
         });
         await actions.auth.getAndSetCredentials();
         Router.push("/");
@@ -125,7 +125,7 @@ export function model(_api: Api, auth: AuthApi): Model {
           accessKeyId: credentials.Credentials.AccessKeyId,
           expiration: credentials.Credentials.Expiration,
           secretKey: credentials.Credentials.SecretKey,
-          sessionToken: credentials.Credentials.SessionToken
+          sessionToken: credentials.Credentials.SessionToken,
         };
         actions.auth.setSession(session);
         await actions.sync.storeSession();
@@ -152,7 +152,7 @@ export function model(_api: Api, auth: AuthApi): Model {
           refreshToken,
           accessToken: credentials.AuthenticationResult.AccessToken,
           expires: credentials.AuthenticationResult.ExpiresIn,
-          idToken: credentials.AuthenticationResult.IdToken
+          idToken: credentials.AuthenticationResult.IdToken,
         });
         await actions.auth.getAndSetCredentials();
       },
@@ -163,7 +163,7 @@ export function model(_api: Api, auth: AuthApi): Model {
           onConfirm() {
             actions.auth.signOut();
             actions.confirmation.setConfirmation(null);
-          }
+          },
         });
       },
       async signOut(_state, actions) {
@@ -185,7 +185,7 @@ export function model(_api: Api, auth: AuthApi): Model {
             actions.confirmation.setConfirmationConfirmLoading(true);
             await actions.auth.deleteAccount();
             actions.confirmation.setConfirmation(null);
-          }
+          },
         });
       },
       async deleteAccount(_state, actions) {
@@ -196,8 +196,8 @@ export function model(_api: Api, auth: AuthApi): Model {
         //   state.auth.session.user.id
         // );
         actions.auth.signOut();
-      }
-    }
+      },
+    },
   };
   return withAsyncLoading(ownModel, "auth");
 }

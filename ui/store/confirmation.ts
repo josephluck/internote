@@ -27,7 +27,7 @@ interface OwnEffects {}
 
 function defaultState(): OwnState {
   return {
-    confirmation: null
+    confirmation: null,
   };
 }
 
@@ -51,17 +51,17 @@ export function model(_api: Api): Model {
         ...state,
         confirmation: {
           ...state.confirmation,
-          confirmLoading
-        }
+          confirmLoading,
+        },
       }),
       setConfirmationCancelLoading: (state, cancelLoading) => ({
         ...state,
         confirmation: {
           ...state.confirmation,
-          cancelLoading
-        }
-      })
+          cancelLoading,
+        },
+      }),
     },
-    effects: {}
+    effects: {},
   };
 }

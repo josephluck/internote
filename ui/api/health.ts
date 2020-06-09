@@ -8,8 +8,8 @@ export function health(makeRequest: MakeSignedRequest) {
       return makeRequest({
         path: "/authenticated",
         method: "GET",
-        session
+        session,
       });
-    }
+    },
   };
 }

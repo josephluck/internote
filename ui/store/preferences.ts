@@ -4,7 +4,7 @@ import {
   colorThemes,
   fontThemes,
   ColorThemeWithName,
-  FontThemeWithName
+  FontThemeWithName,
 } from "../theming/themes";
 import { Api } from "../api/api";
 import { Preferences } from "@internote/preferences-service/db/models";
@@ -43,7 +43,7 @@ function defaultState(): OwnState {
     distractionFree: false,
     voice: "Male",
     outlineShowing: false,
-    offlineSync: false
+    offlineSync: false,
   };
 }
 
@@ -68,12 +68,12 @@ export function model(api: Api): Model {
       setDistractionFree: setter("distractionFree"),
       setVoice: setter("voice"),
       setOutlineShowing: setter("outlineShowing"),
-      setOfflineSync: setter("offlineSync")
+      setOfflineSync: setter("offlineSync"),
     },
     effects: {
       async get(state, actions) {
         const result = await api.preferences.get(state.auth.session);
-        result.map(preferences => {
+        result.map((preferences) => {
           if (preferences.offlineSync) {
             actions.sync.register();
           }
@@ -81,8 +81,8 @@ export function model(api: Api): Model {
             deserializePreferences(preferences)
           );
         });
-      }
-    }
+      },
+    },
   };
 }
 
@@ -91,12 +91,12 @@ function deserializePreferences(preferences: Preferences): OwnState {
     ...preferences,
     colorThemes,
     colorTheme:
-      colorThemes.find(theme => theme.name === preferences.colorTheme) ||
+      colorThemes.find((theme) => theme.name === preferences.colorTheme) ||
       colorThemes[0],
     fontThemes,
     fontTheme:
-      fontThemes.find(theme => theme.name === preferences.fontTheme) ||
+      fontThemes.find((theme) => theme.name === preferences.fontTheme) ||
       fontThemes[0],
-    voice: preferences.voice as AvailableVoice
+    voice: preferences.voice as AvailableVoice,
   };
 }

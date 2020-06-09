@@ -51,7 +51,7 @@ function getLocation(href: string) {
       port: match[4],
       pathname: match[5],
       search: match[6],
-      hash: match[7]
+      hash: match[7],
     }
   );
 }

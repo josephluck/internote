@@ -4,7 +4,7 @@ import { SES } from "aws-sdk";
 
 const ses = new SES();
 
-export const handler: CognitoUserPoolTriggerHandler = async event => {
+export const handler: CognitoUserPoolTriggerHandler = async (event) => {
   let secretLoginCode: string;
   if (!event.request.session || !event.request.session.length) {
     // This is a new auth session
@@ -24,7 +24,7 @@ export const handler: CognitoUserPoolTriggerHandler = async event => {
 
   // This is sent back to the client app
   event.response.publicChallengeParameters = {
-    email: event.request.userAttributes.email
+    email: event.request.userAttributes.email,
   };
 
   // Add the secret login code to the private challenge parameters
@@ -55,19 +55,19 @@ async function sendEmail(emailAddress: string, secretLoginCode: string) {
                 <p style="font-size: 12px; line-height: 24px; color: #666666;">If you didn't attempt to log in but received this email, please ignore this email.</p>
               </body>
             </html>
-          `
+          `,
         },
         Text: {
           Charset: "UTF-8",
-          Data: `Internote verification code: ${secretLoginCode}`
-        }
+          Data: `Internote verification code: ${secretLoginCode}`,
+        },
       },
       Subject: {
         Charset: "UTF-8",
-        Data: `Internote verification code: ${secretLoginCode}`
-      }
+        Data: `Internote verification code: ${secretLoginCode}`,
+      },
     },
-    Source: process.env.SES_FROM_ADDRESS!
+    Source: process.env.SES_FROM_ADDRESS!,
   };
   await ses.sendEmail(params).promise();
 }

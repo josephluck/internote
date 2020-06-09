@@ -4,7 +4,7 @@ import { Flex } from "@rebass/grid";
 import { spacing } from "../theming/symbols";
 import {
   ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap
+  ToolbarExpandingButtonIconWrap,
 } from "./toolbar-expanding-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -12,7 +12,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 export function UndoRedoButton({
   icon,
   onClick,
-  tooltip
+  tooltip,
 }: {
   icon: IconProp;
   onClick: () => any;
@@ -23,7 +23,7 @@ export function UndoRedoButton({
       onClick={onClick}
       collapsedContent={<Flex pl={spacing._0_25}>{tooltip}</Flex>}
     >
-      {collapse => (
+      {(collapse) => (
         <ToolbarExpandingButton>
           <ToolbarExpandingButtonIconWrap>
             <FontAwesomeIcon icon={icon} />

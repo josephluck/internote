@@ -5,7 +5,7 @@ import { faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import {
   DropdownMenu,
   DropdownMenuItem,
-  DropdownChevron
+  DropdownChevron,
 } from "./dropdown-menu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
@@ -25,7 +25,7 @@ const NotesMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
   padding-top: 0;
   overflow: hidden;
   transition: all 300ms ease;
-  width: ${props =>
+  width: ${(props) =>
     props.isExpanded
       ? size.notesMenuDropdownWidthExpanded
       : size.notesMenuDropdownWidth};
@@ -43,12 +43,12 @@ const MaxHeight = styled.div`
   overflow: auto;
   margin: ${spacing._0_5} 0;
   padding: ${spacing._0_5} 0;
-  border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
+  border-top: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
 `;
 
 const TagsWrapper = styled.div`
   padding: 0 ${spacing._0_5};
-  border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
+  border-top: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
 `;
 
 function getNoteTitle(note: GetNoteDTO): string {
@@ -57,18 +57,18 @@ function getNoteTitle(note: GetNoteDTO): string {
 
 export function NoteMenu({
   currentNote,
-  onMenuToggled
+  onMenuToggled,
 }: {
   currentNote: GetNoteDTO;
   onMenuToggled: (showing: boolean) => any;
 }) {
-  const allNotes = useTwineState(state => state.notes.notes);
-  const tags = useTwineState(state => state.tags.tags);
+  const allNotes = useTwineState((state) => state.notes.notes);
+  const tags = useTwineState((state) => state.tags.tags);
 
-  const { onDeleteNote, onCreateNote } = useTwineActions(actions => ({
+  const { onDeleteNote, onCreateNote } = useTwineActions((actions) => ({
     onDeleteNote: (noteId: string) =>
       actions.notes.deleteNoteConfirmation({ noteId }),
-    onCreateNote: actions.notes.createNote
+    onCreateNote: actions.notes.createNote,
   }));
 
   const [searchFocused, setSearchFocused] = React.useState(false);
@@ -97,7 +97,7 @@ export function NoteMenu({
       distance: 30,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: isTagSearch ? ["tags"] : ["title"]
+      keys: isTagSearch ? ["tags"] : ["title"],
     });
     setFilteredNotes(value.length ? fuzzy.search(value) : allNotes);
   }
@@ -111,7 +111,7 @@ export function NoteMenu({
     <MenuControl
       onMenuToggled={onMenuToggled}
       menuName="Notes menu"
-      menu={menu => (
+      menu={(menu) => (
         <NotesMenu
           showing={menu.menuShowing}
           horizontalPosition="center"
@@ -166,7 +166,7 @@ export function NoteMenu({
             {filteredNotes.length === 0 ? (
               <NoResults emojis="🔎 🙄" message="No notes found" />
             ) : (
-              filteredNotes.map(note => (
+              filteredNotes.map((note) => (
                 <SearchMenuItem
                   isLoading={noteLoading === note.noteId}
                   isSelected={
@@ -187,7 +187,7 @@ export function NoteMenu({
             )}
           </MaxHeight>
           <TagsWrapper>
-            {tags.map(tag => (
+            {tags.map((tag) => (
               <Tag
                 key={tag}
                 isFocused={false}
@@ -200,7 +200,7 @@ export function NoteMenu({
         </NotesMenu>
       )}
     >
-      {menu => (
+      {(menu) => (
         <DropdownChevron
           onClick={() => menu.toggleMenuShowing(!menu.menuShowing)}
         >

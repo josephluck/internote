@@ -4,7 +4,7 @@ import {
   SchemaInline,
   ListItemBlock,
   SchemaNoneTextInline,
-  SchemaMark
+  SchemaMark,
 } from "../types";
 
 /** Given a type of block, get the Markdown formatting prefix */

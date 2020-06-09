@@ -5,7 +5,7 @@ import {
   marshallNoteToNoteIndex,
   unmarshallNoteIndexToNote,
   NotesDbInterface,
-  AuthDbInterface
+  AuthDbInterface,
 } from "./db";
 import { Api } from "../api/api";
 import { defaultNote } from "@internote/notes-service/db/default-note";
@@ -37,7 +37,7 @@ export function makeServiceWorkerApi(
       {
         state: "UPDATE",
         createOnServer: true,
-        synced: false
+        synced: false,
       }
     );
     const noteId = await notesDb.add({ ...updates, noteId: uuid() });
@@ -65,22 +65,22 @@ export function makeServiceWorkerApi(
       const updates = marshallNoteToNoteIndex(body, {
         state: "UPDATE",
         createOnServer: note.createOnServer || false,
-        synced: false
+        synced: false,
       });
       await notesDb.update(noteId, {
         ...note,
-        ...updates
+        ...updates,
       });
     } else {
       const updates = marshallNoteToNoteIndex(body, {
         state: "UPDATE",
         createOnServer: true,
-        synced: false
+        synced: false,
       });
       await notesDb.add({
         ...note,
         ...updates,
-        noteId
+        noteId,
       });
     }
     return await notesDb.get(noteId);
@@ -100,7 +100,7 @@ export function makeServiceWorkerApi(
         ...note,
         state: "DELETE",
         createOnServer: false,
-        synced: false
+        synced: false,
       });
       return notesDb.get(noteId);
     }
@@ -138,7 +138,7 @@ export function makeServiceWorkerApi(
         marshallNoteToNoteIndex(serverNote, {
           synced: true,
           state: "UPDATE",
-          createOnServer: false
+          createOnServer: false,
         })
       );
     }
@@ -163,34 +163,34 @@ export function makeServiceWorkerApi(
     if (session) {
       const noteIndexesToSync = await getNotesToSync();
       const noteIndexesToCreate = noteIndexesToSync.filter(
-        note => note.createOnServer === true && note.state !== "DELETE"
+        (note) => note.createOnServer === true && note.state !== "DELETE"
       );
       const noteIndexesToUpdate = noteIndexesToSync.filter(
-        note => note.createOnServer === false && note.state === "UPDATE"
+        (note) => note.createOnServer === false && note.state === "UPDATE"
       );
       const noteIndexesToDelete = noteIndexesToSync.filter(
-        note => note.createOnServer === false && note.state === "DELETE"
+        (note) => note.createOnServer === false && note.state === "DELETE"
       );
       console.log(`[SW] [SYNC] starting sync.`, {
         "Notes to sync": noteIndexesToSync.length,
         "Notes to create": noteIndexesToCreate.length,
         "Notes to update": noteIndexesToUpdate.length,
-        "Notes to delete": noteIndexesToDelete.length
+        "Notes to delete": noteIndexesToDelete.length,
       });
 
-      const createRequests = noteIndexesToCreate.map(async noteIndex => {
+      const createRequests = noteIndexesToCreate.map(async (noteIndex) => {
         const update = unmarshallNoteIndexToNote(noteIndex);
         const result = await api.notes.create(session, {
           title: update.title,
           content: update.content,
-          tags: update.tags
+          tags: update.tags,
         });
         return await result.fold(
           async () => {
             console.log(`[SW] [SYNC] failed to create note ${update.title}`);
             return await removeNoteFromIndex(noteIndex.noteId);
           },
-          async serverNote => {
+          async (serverNote) => {
             return await replaceNoteInIndexWithServerNote(
               noteIndex.noteId,
               serverNote
@@ -199,19 +199,19 @@ export function makeServiceWorkerApi(
         );
       });
 
-      const updateRequests = noteIndexesToUpdate.map(async noteIndex => {
+      const updateRequests = noteIndexesToUpdate.map(async (noteIndex) => {
         const update = unmarshallNoteIndexToNote(noteIndex);
         const result = await api.notes.update(session, update.noteId, {
           title: update.title,
           content: update.content,
-          tags: update.tags
+          tags: update.tags,
         });
         return await result.fold(
           async () => {
             console.log(`[SW] [SYNC] failed to update note ${update.noteId}`);
             return await removeNoteFromIndex(noteIndex.noteId);
           },
-          async serverNote => {
+          async (serverNote) => {
             return await replaceNoteInIndexWithServerNote(
               noteIndex.noteId,
               serverNote
@@ -220,7 +220,7 @@ export function makeServiceWorkerApi(
         );
       });
 
-      const deleteRequests = noteIndexesToDelete.map(async update => {
+      const deleteRequests = noteIndexesToDelete.map(async (update) => {
         const result = await api.notes.delete(session, update.noteId);
         return await result.fold(
           async () => {
@@ -234,18 +234,15 @@ export function makeServiceWorkerApi(
       });
 
       await Promise.all(
-        []
-          .concat(createRequests)
-          .concat(updateRequests)
-          .concat(deleteRequests)
+        [].concat(createRequests).concat(updateRequests).concat(deleteRequests)
       );
 
       const latestNotesFromServer = await api.notes.list(session);
       await latestNotesFromServer.fold(
         () => Promise.resolve(),
-        async notes => {
+        async (notes) => {
           return await Promise.all(
-            notes.map(async note => {
+            notes.map(async (note) => {
               return await replaceNoteInIndexWithServerNote(note.noteId, note);
             })
           );
@@ -261,6 +258,6 @@ export function makeServiceWorkerApi(
     createNewNoteInIndex,
     updateNoteInIndex,
     setNoteToDeletedInIndex,
-    syncNotesFromIndexToServer
+    syncNotesFromIndexToServer,
   };
 }

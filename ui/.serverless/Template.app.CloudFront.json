@@ -19,10 +19,7 @@
   ],
   "defaults": {
     "ttl": 5,
-    "allowedHttpMethods": [
-      "HEAD",
-      "GET"
-    ],
+    "allowedHttpMethods": ["HEAD", "GET"],
     "cookies": "all",
     "queryString": true,
     "lambda@edge": {

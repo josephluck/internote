@@ -3,7 +3,7 @@ import { jsonBodyParser, cors } from "middy/middlewares";
 import {
   encodeResponse,
   jsonErrorHandler,
-  validateRequestBody
+  validateRequestBody,
 } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
 import { CreateHandler } from "@internote/lib/types";
@@ -15,7 +15,7 @@ import md5 from "md5";
 
 const validator = validateRequestBody<CreateExportDTO>({
   title: [required, isString],
-  content: [required]
+  content: [required],
 });
 
 const html: CreateHandler<CreateExportDTO> = async (event, _ctx, callback) => {
@@ -28,7 +28,7 @@ const html: CreateHandler<CreateExportDTO> = async (event, _ctx, callback) => {
     Bucket: process.env.EXPORT_BUCKET,
     Key: S3UploadPath,
     Body: output,
-    ACL: "public-read"
+    ACL: "public-read",
   }).promise();
 
   const src = `https://s3-${process.env.REGION}.amazonaws.com/${process.env.EXPORT_BUCKET}/${S3UploadPath}`;

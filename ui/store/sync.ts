@@ -32,7 +32,7 @@ function defaultState(): OwnState {
   return {
     isPolling: false,
     registration: null,
-    interval: -1
+    interval: -1,
   };
 }
 
@@ -56,15 +56,15 @@ export function model(_api: Api): Model {
       resetState: () => defaultState(),
       setIsPolling: setter("isPolling"),
       setRegistration: setter("registration"),
-      setInterval: setter("interval")
+      setInterval: setter("interval"),
     },
     effects: {
       async register(_state, actions) {
-        return new Promise(async resolve => {
+        return new Promise(async (resolve) => {
           if (!isServer() && navigator && navigator.serviceWorker) {
             try {
               await navigator.serviceWorker.register("/service-worker.js", {
-                scope: "/"
+                scope: "/",
               });
               const registration = await navigator.serviceWorker.ready;
               console.log("[SW] [APP] Registered");
@@ -83,7 +83,7 @@ export function model(_api: Api): Model {
         if (!isServer() && navigator && navigator.serviceWorker) {
           const registrations = await navigator.serviceWorker.getRegistrations();
           await Promise.all(
-            registrations.map(registration => registration.unregister())
+            registrations.map((registration) => registration.unregister())
           );
           actions.sync.setRegistration(null);
           console.log("[SW] [APP] Unregistered");
@@ -127,8 +127,8 @@ export function model(_api: Api): Model {
           return await authDb.set(state.auth.session);
         }
         return Promise.resolve();
-      }
-    }
+      },
+    },
   };
   return withAsyncLoading(ownModel, "sync");
 }

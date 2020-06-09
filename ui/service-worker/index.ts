@@ -2,7 +2,7 @@ import { makeRouter } from "./router";
 import {
   unmarshallNoteIndexToNote,
   makeNotesDbInterface,
-  makeAuthDbInterface
+  makeAuthDbInterface,
 } from "./db";
 import { makeServiceWorkerApi } from "./api";
 import { makeApi } from "../api/api";
@@ -14,31 +14,31 @@ const authDb = makeAuthDbInterface();
 const notesDb = makeNotesDbInterface();
 const serverApi = makeApi({
   host: env.SERVICES_HOST,
-  region: env.SERVICES_REGION
+  region: env.SERVICES_REGION,
 });
 const api = makeServiceWorkerApi(authDb, notesDb, serverApi);
 
-self.addEventListener("fetch", async event => {
+self.addEventListener("fetch", async (event) => {
   const router = makeRouter();
 
   router.add({
     path: "/notes",
     method: "GET",
-    handler: async event => {
+    handler: async (event) => {
       swLog("[HANDLER] Handling get notes request", { event });
       const notes = await api.listNotesFromIndex();
       return new Response(JSON.stringify(notes.map(unmarshallNoteIndexToNote)));
-    }
+    },
   });
 
   router.add({
     path: "/notes",
     method: "POST",
-    handler: async event => {
+    handler: async (event) => {
       swLog("[HANDLER] Handling create note request", { event });
       const note = await api.createNewNoteInIndex(await event.request.json());
       return new Response(JSON.stringify(unmarshallNoteIndexToNote(note)));
-    }
+    },
   });
 
   router.add({
@@ -51,7 +51,7 @@ self.addEventListener("fetch", async event => {
         await event.request.json()
       );
       return new Response(JSON.stringify(unmarshallNoteIndexToNote(note)));
-    }
+    },
   });
 
   router.add({
@@ -62,16 +62,16 @@ self.addEventListener("fetch", async event => {
       await api.setNoteToDeletedInIndex(noteId);
       return new Response(
         JSON.stringify({
-          message: `SW will delete ${noteId} when it next syncs`
+          message: `SW will delete ${noteId} when it next syncs`,
         })
       );
-    }
+    },
   });
 
   event.waitUntil(router.handle(event));
 });
 
-self.addEventListener("sync", async event => {
+self.addEventListener("sync", async (event) => {
   if (event.tag === "sync-notes") {
     event.waitUntil(api.syncNotesFromIndexToServer());
   }

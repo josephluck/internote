@@ -29,7 +29,7 @@ export function ProgressCircle({
   progress,
   size = 18,
   stroke = 3,
-  showPercentage = true
+  showPercentage = true,
 }: {
   progress: number;
   size?: number;

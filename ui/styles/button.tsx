@@ -14,30 +14,30 @@ interface ButtonProps {
 }
 
 const ButtonWrap = styled.button<ButtonProps>`
-  background: ${props =>
+  background: ${(props) =>
     props.primary
       ? props.theme.primaryButtonBackground
       : props.theme.secondaryButtonBackground};
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: ${props => (props.fullWidth ? "100%" : "auto")};
+  width: ${(props) => (props.fullWidth ? "100%" : "auto")};
   border-radius: ${borderRadius._6};
   outline: none;
   border: 0;
-  padding: ${props =>
+  padding: ${(props) =>
     props.small
       ? `${spacing._0_25} ${spacing._0_5}`
       : `${spacing._0_5} ${spacing._1}`};
-  color: ${props =>
+  color: ${(props) =>
     props.primary
       ? props.theme.primaryButtonText
       : props.theme.secondaryButtonText};
   font-weight: bold;
-  font-size: ${props => (props.small ? font._12.size : font._18.size)};
-  line-height: ${props =>
+  font-size: ${(props) => (props.small ? font._12.size : font._18.size)};
+  line-height: ${(props) =>
     props.small ? font._12.lineHeight : font._18.lineHeight};
-  cursor: ${props =>
+  cursor: ${(props) =>
     props.disabled
       ? "not-allowed"
       : props.onClick || props.type === "submit"
@@ -48,12 +48,12 @@ const ButtonWrap = styled.button<ButtonProps>`
 const SpinnerIcon = styled.div<{ primary?: boolean; small?: boolean }>`
   display: inline-block;
   margin-right: ${spacing._0_5};
-  color: ${props =>
+  color: ${(props) =>
     props.primary
       ? props.theme.primaryButtonText
       : props.theme.secondaryButtonText};
   opacity: 0.7;
-  font-size: ${props => (props.small ? font._12.size : font._16.size)};
+  font-size: ${(props) => (props.small ? font._12.size : font._16.size)};
 `;
 
 export function Button(
@@ -72,7 +72,7 @@ export function Button(
 }
 
 export const RoundButton = styled.button<{ isActive: boolean }>`
-  background: ${props =>
+  background: ${(props) =>
     props.isActive
       ? props.theme.formatButtonActiveBackground
       : props.theme.formatButtonInactiveBackground};
@@ -83,11 +83,11 @@ export const RoundButton = styled.button<{ isActive: boolean }>`
   outline: none;
   border: 0;
   padding: 0;
-  color: ${props =>
+  color: ${(props) =>
     props.isActive
       ? props.theme.formatButtonActiveText
       : props.theme.formatButtonInactiveText};
-  font-weight: ${props => (props.isActive ? "bold" : "normal")};
+  font-weight: ${(props) => (props.isActive ? "bold" : "normal")};
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
   padding: ${spacing._0_25};

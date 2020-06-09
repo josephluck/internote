@@ -333,7 +333,7 @@ export function InternoteEditor({
       scrollWrap.current.addEventListener("scroll", handleEditorScroll);
       scrollWrap.current.addEventListener("click", handleFocusModeScroll);
     }
-    return function() {
+    return function () {
       scrollWrap.current.removeEventListener("scroll", handleEditorScroll);
       scrollWrap.current.removeEventListener("click", handleFocusModeScroll);
     };
@@ -499,13 +499,15 @@ export function InternoteEditor({
     const range = native.getRangeAt(0);
     const rect = range.getBoundingClientRect();
     snippetInsertionIndicator.style.opacity = "1";
-    snippetInsertionIndicator.style.top = `${rect.top +
-      window.pageYOffset -
-      snippetInsertionIndicator.offsetHeight}px`;
-    snippetInsertionIndicator.style.left = `${rect.left +
+    snippetInsertionIndicator.style.top = `${
+      rect.top + window.pageYOffset - snippetInsertionIndicator.offsetHeight
+    }px`;
+    snippetInsertionIndicator.style.left = `${
+      rect.left +
       window.pageXOffset -
       snippetInsertionIndicator.offsetWidth / 2 +
-      rect.width / 2}px`;
+      rect.width / 2
+    }px`;
   };
 
   const onFileUploadStarted = useCallback(

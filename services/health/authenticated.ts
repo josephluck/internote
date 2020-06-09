@@ -4,8 +4,8 @@ export async function handler() {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Credentials": true,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ message: "Authenticated" })
+    body: JSON.stringify({ message: "Authenticated" }),
   };
 }

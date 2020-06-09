@@ -13,10 +13,10 @@ function getEnvPath() {
 }
 
 const { parsed: localEnv } = dotenv.config({
-  path: getEnvPath()
+  path: getEnvPath(),
 });
 
-module.exports = function(nextConfig) {
+module.exports = function (nextConfig) {
   return Object.assign({}, nextConfig, {
     webpack(config, options) {
       config.plugins.push(new webpack.EnvironmentPlugin(localEnv));
@@ -26,6 +26,6 @@ module.exports = function(nextConfig) {
       }
 
       return config;
-    }
+    },
   });
 };

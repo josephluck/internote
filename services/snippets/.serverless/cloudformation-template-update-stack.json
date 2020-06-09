@@ -43,36 +43,23 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
+                "Service": ["lambda.amazonaws.com"]
               },
-              "Action": [
-                "sts:AssumeRole"
-              ]
+              "Action": ["sts:AssumeRole"]
             }
           ]
         },
         "Policies": [
           {
             "PolicyName": {
-              "Fn::Join": [
-                "-",
-                [
-                  "dev",
-                  "internote-snippets-service",
-                  "lambda"
-                ]
-              ]
+              "Fn::Join": ["-", ["dev", "internote-snippets-service", "lambda"]]
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream"
-                  ],
+                  "Action": ["logs:CreateLogStream"],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-snippets-service-dev*:*"
@@ -81,9 +68,7 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
+                  "Action": ["logs:PutLogEvents"],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-snippets-service-dev*:*:*"
@@ -103,10 +88,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::GetAtt": [
-                        "SnippetsTable",
-                        "Arn"
-                      ]
+                      "Fn::GetAtt": ["SnippetsTable", "Arn"]
                     }
                   ]
                 }
@@ -143,10 +125,7 @@
         "Handler": "list.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
         },
         "Runtime": "nodejs8.10",
         "Timeout": 30,
@@ -158,10 +137,7 @@
           }
         }
       },
-      "DependsOn": [
-        "ListLogGroup",
-        "IamRoleLambdaExecution"
-      ]
+      "DependsOn": ["ListLogGroup", "IamRoleLambdaExecution"]
     },
     "ListLambdaVersionLV8GaE6yv4RHue6GrS0eHa4QzWocMQLgzKklbWtARs": {
       "Type": "AWS::Lambda::Version",
@@ -186,10 +162,7 @@
         "Handler": "create.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
         },
         "Runtime": "nodejs8.10",
         "Timeout": 30,
@@ -201,10 +174,7 @@
           }
         }
       },
-      "DependsOn": [
-        "CreateLogGroup",
-        "IamRoleLambdaExecution"
-      ]
+      "DependsOn": ["CreateLogGroup", "IamRoleLambdaExecution"]
     },
     "CreateLambdaVersionDCdp9Lh67CUeBJVfwgaCw9O6NFkpK1S3pxMhFbk50bk": {
       "Type": "AWS::Lambda::Version",
@@ -229,10 +199,7 @@
         "Handler": "delete.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
         },
         "Runtime": "nodejs8.10",
         "Timeout": 30,
@@ -244,10 +211,7 @@
           }
         }
       },
-      "DependsOn": [
-        "DeleteLogGroup",
-        "IamRoleLambdaExecution"
-      ]
+      "DependsOn": ["DeleteLogGroup", "IamRoleLambdaExecution"]
     },
     "DeleteLambdaVersioncV7VCFVd8nRzDXaxEeGpmLgsgh4kK2JStrqnwgAocno": {
       "Type": "AWS::Lambda::Version",
@@ -407,10 +371,7 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": [
-                    "ListLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["ListLambdaFunction", "Arn"]
                 },
                 "/invocations"
               ]
@@ -450,10 +411,7 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": [
-                    "CreateLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["CreateLambdaFunction", "Arn"]
                 },
                 "/invocations"
               ]
@@ -493,10 +451,7 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": [
-                    "DeleteLambdaFunction",
-                    "Arn"
-                  ]
+                  "Fn::GetAtt": ["DeleteLambdaFunction", "Arn"]
                 },
                 "/invocations"
               ]
@@ -526,10 +481,7 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": [
-            "ListLambdaFunction",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["ListLambdaFunction", "Arn"]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",
@@ -563,10 +515,7 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": [
-            "CreateLambdaFunction",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["CreateLambdaFunction", "Arn"]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",
@@ -600,10 +549,7 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": [
-            "DeleteLambdaFunction",
-            "Arn"
-          ]
+          "Fn::GetAtt": ["DeleteLambdaFunction", "Arn"]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",

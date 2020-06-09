@@ -5,6 +5,6 @@ export const SnippetsRepository = db
   .define(Snippet, {
     tableName: process.env.TABLE_NAME,
     sortKey: "userId",
-    partitionKey: "snippetId"
+    partitionKey: "snippetId",
   })
   .getInstance();

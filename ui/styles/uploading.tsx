@@ -4,7 +4,7 @@ import { borderRadius, spacing, font } from "../theming/symbols";
 import { sansSerif } from "../theming/themes";
 
 const UploadingWrapper = styled.div`
-  background: ${props => props.theme.toolbarBackground};
+  background: ${(props) => props.theme.toolbarBackground};
   border-radius: ${borderRadius._4};
   padding: ${spacing._1} ${spacing._1} ${spacing._2};
   font-family: ${sansSerif.fontFamily};
@@ -26,12 +26,12 @@ const Percentage = styled.span`
   font-size: ${font._16.size};
   line-height: ${font._16.lineHeight};
   font-weight: bold;
-  color: ${props => props.theme.toolbarButtonInactiveText};
+  color: ${(props) => props.theme.toolbarButtonInactiveText};
 `;
 
 export function Uploading({
   name,
-  progress
+  progress,
 }: {
   name: string;
   progress: number;

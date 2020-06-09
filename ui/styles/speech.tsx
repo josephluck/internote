@@ -4,7 +4,7 @@ import {
   faMicrophone,
   faTimes,
   faPlay,
-  faPause
+  faPause,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
@@ -14,7 +14,7 @@ import { spacing } from "../theming/symbols";
 import { Flex } from "@rebass/grid";
 import {
   ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap
+  ToolbarExpandingButtonIconWrap,
 } from "./toolbar-expanding-button";
 
 const CollapsedWrapper = styled.div`
@@ -27,7 +27,7 @@ const CollapsedWrapper = styled.div`
 const TimelineWrap = styled.div`
   width: 70px;
   border-radius: 9999px;
-  background: ${props => props.theme.audioTimelineInactive};
+  background: ${(props) => props.theme.audioTimelineInactive};
   overflow: hidden;
   margin-right: ${spacing._0_25};
 `;
@@ -35,7 +35,7 @@ const TimelineWrap = styled.div`
 const TimelineInner = styled.div`
   height: 6px;
   border-radius: 9999px;
-  background: ${props => props.theme.audioTimelineActive};
+  background: ${(props) => props.theme.audioTimelineActive};
   transition: width 333ms linear;
 `;
 
@@ -44,7 +44,7 @@ export function Speech({
   isLoading,
   onRequest,
   onDiscard,
-  onFinished
+  onFinished,
 }: {
   src: string;
   isLoading: boolean;
@@ -66,7 +66,7 @@ export function Speech({
   }
   return (
     <AudioPlayer src={src} autoPlay onFinished={onFinished}>
-      {audio => (
+      {(audio) => (
         <CollapseWidthOnHover
           onClick={!src ? onRequest : undefined}
           forceShow={!!src || isLoading}
@@ -91,7 +91,7 @@ export function Speech({
             </CollapsedWrapper>
           }
         >
-          {collapse => (
+          {(collapse) => (
             <ToolbarExpandingButton forceShow={!!src}>
               <ToolbarExpandingButtonIconWrap
                 onClick={() => onIconClick(audio)}

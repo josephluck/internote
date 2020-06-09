@@ -62,7 +62,7 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
 
     React.useEffect(() => {
       setState(stateMapper(store.state));
-      const unsubscribe = store.subscribe(storeState => {
+      const unsubscribe = store.subscribe((storeState) => {
         const newState = stateMapper(storeState);
         // TODO: fix this since state is invalid
         // if (!memoiseState(state, newState)) {
@@ -134,7 +134,7 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
         return {
           initialState,
           initialProps,
-          store: { ...app.ctx.store, state: initialState }
+          store: { ...app.ctx.store, state: initialState },
         };
       }
 
@@ -154,7 +154,7 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
     useTwineState,
     useTwineActions,
     injectTwine,
-    TwineContext
+    TwineContext,
   };
 }
 

@@ -23,7 +23,7 @@ export function MenuControl({
   onClose,
   onMenuToggled,
   disableCloseShortcut = false,
-  forceShow = false
+  forceShow = false,
 }: {
   children: (state: RenderProps) => React.ReactNode;
   menu: (state: RenderProps) => React.ReactNode;
@@ -55,16 +55,13 @@ export function MenuControl({
 
   const renderProps: RenderProps = {
     menuShowing: menuShowing || forceShow,
-    toggleMenuShowing
+    toggleMenuShowing,
   };
   return (
     <MenuWrapper className={className} onClickOutside={handleClose}>
       {menuShowing || forceShow ? (
         <Shortcut
-          id={menuName
-            .split(" ")
-            .join("-")
-            .toLowerCase()}
+          id={menuName.split(" ").join("-").toLowerCase()}
           description={`Close ${menuName.toLowerCase()}`}
           disabled={disableCloseShortcut}
           keyCombo="esc"

@@ -7,14 +7,14 @@ import Head from "next/head";
 import {
   sansSerif,
   googleFontsFamilies,
-  googleFontsWeights
+  googleFontsWeights,
 } from "../theming/themes";
 import { ShortcutsProvider } from "../styles/shortcuts";
 import { InternoteThemes } from "../styles/theme-provider";
 import { SnippetsProvider } from "../styles/snippets-context";
 
 const googleFontsUrls = googleFontsFamilies
-  .map(family => `${family}:${googleFontsWeights.join(",")}`)
+  .map((family) => `${family}:${googleFontsWeights.join(",")}`)
   .join("|");
 
 export const GlobalStyles = createGlobalStyle`
@@ -23,8 +23,8 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
   body, html, #__next {
-    color: ${props => props.theme.appText};
-    background-color: ${props => props.theme.appBackground};
+    color: ${(props) => props.theme.appText};
+    background-color: ${(props) => props.theme.appBackground};
     font-family: ${sansSerif.fontFamily};
     font-size: ${font._24.size};
     line-height: ${font._24.lineHeight};

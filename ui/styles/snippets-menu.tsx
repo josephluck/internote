@@ -12,7 +12,7 @@ import { Flex } from "@rebass/grid";
 import { spacing, size, font } from "../theming/symbols";
 import {
   ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap
+  ToolbarExpandingButtonIconWrap,
 } from "./toolbar-expanding-button";
 import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,7 +27,7 @@ const SnippetsDropdownMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
   overflow: hidden;
   transition: all 300ms ease;
   margin-bottom: ${spacing._0_5};
-  width: ${props =>
+  width: ${(props) =>
     props.isExpanded
       ? size.notesMenuDropdownWidthExpanded
       : size.notesMenuDropdownWidth};
@@ -45,7 +45,7 @@ const MaxHeight = styled.div`
   overflow: auto;
   margin: ${spacing._0_5} 0 0;
   padding: ${spacing._0_5} 0 0;
-  border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
+  border-top: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
 `;
 
 const InstructionsWrapper = styled.div`
@@ -59,7 +59,7 @@ const Instructions = styled.p`
 
 export function SnippetsMenu({
   onSnippetSelected,
-  hasHighlighted
+  hasHighlighted,
 }: {
   onSnippetSelected: (snippet: GetSnippetDTO) => void;
   hasHighlighted: boolean;
@@ -68,23 +68,23 @@ export function SnippetsMenu({
     snippetsMenuShowing,
     setSnippetToInsert,
     setSnippetsMenuShowing,
-    setCreateSnippetModalOpen
+    setCreateSnippetModalOpen,
   } = useContext(SnippetsContext);
-  const snippets = useTwineState(state => state.snippets.snippets);
+  const snippets = useTwineState((state) => state.snippets.snippets);
   const [inputText, setInputText] = useState("");
   const [
     createNewSnippetInstructionsShowing,
-    setCreateNewSnippetInstructionsShowing
+    setCreateNewSnippetInstructionsShowing,
   ] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [filteredSnippets, setFilteredSnippets] = useState<GetSnippetDTO[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const [snippetBeingDeleted, setSnippetBeingDeleted] = useState("");
   const deleteSnippet = useTwineActions(
-    actions => actions.snippets.deleteSnippet
+    (actions) => actions.snippets.deleteSnippet
   );
   const deleteSnippetLoading = useTwineState(
-    state => state.snippets.loading.deleteSnippet
+    (state) => state.snippets.loading.deleteSnippet
   );
 
   function focusInput() {
@@ -106,7 +106,7 @@ export function SnippetsMenu({
       distance: 30,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: ["title"]
+      keys: ["title"],
     });
     setFilteredSnippets(value.length ? fuzzy.search(value) : snippets);
   }
@@ -123,7 +123,7 @@ export function SnippetsMenu({
         menuName="Snippets menu"
         onMenuToggled={setSnippetsMenuShowing}
         forceShow={snippetsMenuShowing}
-        menu={menu => (
+        menu={(menu) => (
           <SnippetsDropdownMenu
             showing={menu.menuShowing}
             horizontalPosition="center"
@@ -183,7 +183,7 @@ export function SnippetsMenu({
                     {filteredSnippets.length === 0 ? (
                       <NoResults emojis="🔎 🙄" message="No snippets found" />
                     ) : (
-                      filteredSnippets.map(snippet => (
+                      filteredSnippets.map((snippet) => (
                         <SearchMenuItem
                           content={snippet.title}
                           onMouseIn={() => {
@@ -212,7 +212,7 @@ export function SnippetsMenu({
           </SnippetsDropdownMenu>
         )}
       >
-        {menu => (
+        {(menu) => (
           <CollapseWidthOnHover
             onClick={() => {
               if (hasHighlighted) {
@@ -228,7 +228,7 @@ export function SnippetsMenu({
               </Flex>
             }
           >
-            {collapse => (
+            {(collapse) => (
               <ToolbarExpandingButton forceShow={menu.menuShowing}>
                 <ToolbarExpandingButtonIconWrap>
                   <FontAwesomeIcon icon={faCut} />

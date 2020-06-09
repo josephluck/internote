@@ -2,7 +2,7 @@ import React from "react";
 import { StoriesOf } from "../types";
 import { Speech } from "./speech";
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("Speech", module)
     .add("With audio file", () => (
       <Speech

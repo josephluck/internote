@@ -13,7 +13,7 @@ import { SchemaBlockType } from "@internote/export-service/types";
 export function mapBlockToString(block: Block): string {
   return block.nodes
     .filter(
-      node =>
+      (node) =>
         node.object === "text" ||
         (node.object === "inline" && node.type === "emoji")
     )
@@ -54,8 +54,8 @@ export function getTagsFromEditorValue(editorValue: Value): string[] {
   ) {
     const tags = editorValue.document
       .getInlines()
-      .filter(inline => inline.type === "tag")
-      .map(inline => inline.data.get("tag"))
+      .filter((inline) => inline.type === "tag")
+      .map((inline) => inline.data.get("tag"))
       .toArray();
     return tags;
   } else {
@@ -122,19 +122,16 @@ export function currentFocusIsWithinList(
 }
 
 export function currentFocusHasMark(type: string, value: Value): boolean {
-  return value.activeMarks.some(mark => mark.type === type);
+  return value.activeMarks.some((mark) => mark.type === type);
 }
 
 export function currentFocusHasBlock(type: string, value: Value): boolean {
-  return value.blocks.some(node => node.type === type);
+  return value.blocks.some((node) => node.type === type);
 }
 
 function splitParagraphAtOffset(offset: number) {
-  return function(paragraph: string) {
-    return paragraph
-      .split("")
-      .slice(0, offset)
-      .join("");
+  return function (paragraph: string) {
+    return paragraph.split("").slice(0, offset).join("");
   };
 }
 
@@ -153,8 +150,8 @@ function getLastItemFromArray<A>(arr: A[]): A {
 function getCurrentFocusText(value: Value): Option<string> {
   const { focusText } = value;
   return Option(focusText)
-    .filter(f => !!f.text && f.text.length > 0) // Ensure there is focus and chars
-    .map(f => f.text); // Grab text from focus
+    .filter((f) => !!f.text && f.text.length > 0) // Ensure there is focus and chars
+    .map((f) => f.text); // Grab text from focus
 }
 
 export function getCurrentFocusedWord(value: Value): Option<string> {
@@ -174,11 +171,11 @@ export function getRangeFromWordInCurrentFocus(
   value: Value
 ): Option<Range> {
   return getCurrentFocusText(value)
-    .map(text => text.indexOf(word))
-    .map(start =>
+    .map((text) => text.indexOf(word))
+    .map((start) =>
       Range.create({
         anchor: Point.create({ offset: start - 1 }), // NB: word does not include the colon
-        focus: Point.create({ offset: start + word.length })
+        focus: Point.create({ offset: start + word.length }),
       })
     );
 }
@@ -247,18 +244,18 @@ const blocksInOutline: SchemaBlockType[] = ["heading-one", "heading-two"];
 export function getOutlineHeadingsFromEditorValue(value: Value): OutlineItem[] {
   return value.document
     .getBlocks()
-    .filter(block => blocksInOutline.includes(block.type as any))
-    .map(block => ({
+    .filter((block) => blocksInOutline.includes(block.type as any))
+    .map((block) => ({
       block,
-      name: mapBlockToString(block)
+      name: mapBlockToString(block),
     }))
-    .filter(block => hasLength(block.name))
+    .filter((block) => hasLength(block.name))
     .map(({ block, name }) => {
       return {
         key: block.key,
         name,
         type: block.type as any,
-        node: block
+        node: block,
       };
     })
     .toArray();
@@ -267,8 +264,8 @@ export function getOutlineHeadingsFromEditorValue(value: Value): OutlineItem[] {
 export function getOutlineTagsFromEditorValue(value: Value): string[] {
   const allTags = value.document
     .getInlines()
-    .filter(inline => inline.type === "tag")
-    .map(inline => inline.data.get("tag"))
+    .filter((inline) => inline.type === "tag")
+    .map((inline) => inline.data.get("tag"))
     .toArray();
   return [...new Set(allTags)];
 }
@@ -287,7 +284,7 @@ export function getChanges(value: Value): OnChange {
   return {
     content: value.toJSON(),
     title: getTitleFromEditorValue(value),
-    tags: getTagsFromEditorValue(value)
+    tags: getTagsFromEditorValue(value),
   };
 }
 

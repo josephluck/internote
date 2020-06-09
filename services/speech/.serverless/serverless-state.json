@@ -30,9 +30,7 @@
       "iamRoleStatements": [
         {
           "Effect": "Allow",
-          "Action": [
-            "s3:*"
-          ],
+          "Action": ["s3:*"],
           "Resource": {
             "Fn::Join": [
               "",
@@ -48,9 +46,7 @@
         },
         {
           "Effect": "Allow",
-          "Action": [
-            "polly:*"
-          ],
+          "Action": ["polly:*"],
           "Resource": "*"
         }
       ],
@@ -89,13 +85,9 @@
                   {
                     "Effect": "Allow",
                     "Principal": {
-                      "Service": [
-                        "lambda.amazonaws.com"
-                      ]
+                      "Service": ["lambda.amazonaws.com"]
                     },
-                    "Action": [
-                      "sts:AssumeRole"
-                    ]
+                    "Action": ["sts:AssumeRole"]
                   }
                 ]
               },
@@ -104,11 +96,7 @@
                   "PolicyName": {
                     "Fn::Join": [
                       "-",
-                      [
-                        "dev",
-                        "internote-speech-service",
-                        "lambda"
-                      ]
+                      ["dev", "internote-speech-service", "lambda"]
                     ]
                   },
                   "PolicyDocument": {
@@ -116,9 +104,7 @@
                     "Statement": [
                       {
                         "Effect": "Allow",
-                        "Action": [
-                          "logs:CreateLogStream"
-                        ],
+                        "Action": ["logs:CreateLogStream"],
                         "Resource": [
                           {
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-speech-service-dev*:*"
@@ -127,9 +113,7 @@
                       },
                       {
                         "Effect": "Allow",
-                        "Action": [
-                          "logs:PutLogEvents"
-                        ],
+                        "Action": ["logs:PutLogEvents"],
                         "Resource": [
                           {
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-speech-service-dev*:*:*"
@@ -175,10 +159,7 @@
               "Handler": "speech.handler",
               "MemorySize": 256,
               "Role": {
-                "Fn::GetAtt": [
-                  "IamRoleLambdaExecution",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
               },
               "Runtime": "nodejs8.10",
               "Timeout": 30,
@@ -191,10 +172,7 @@
                 }
               }
             },
-            "DependsOn": [
-              "SpeechLogGroup",
-              "IamRoleLambdaExecution"
-            ]
+            "DependsOn": ["SpeechLogGroup", "IamRoleLambdaExecution"]
           },
           "SpeechLambdaVersion2dL6kgUxOu4yX89JpTpbVcp6qZLDhuFQ7hx1n5Ona0": {
             "Type": "AWS::Lambda::Version",
@@ -295,10 +273,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "SpeechLambdaFunction",
-                          "Arn"
-                        ]
+                        "Fn::GetAtt": ["SpeechLambdaFunction", "Arn"]
                       },
                       "/invocations"
                     ]
@@ -325,10 +300,7 @@
             "Type": "AWS::Lambda::Permission",
             "Properties": {
               "FunctionName": {
-                "Fn::GetAtt": [
-                  "SpeechLambdaFunction",
-                  "Arn"
-                ]
+                "Fn::GetAtt": ["SpeechLambdaFunction", "Arn"]
               },
               "Action": "lambda:InvokeFunction",
               "Principal": "apigateway.amazonaws.com",
@@ -365,19 +337,9 @@
               "CorsConfiguration": {
                 "CorsRules": [
                   {
-                    "AllowedOrigins": [
-                      "*"
-                    ],
-                    "AllowedHeaders": [
-                      "*"
-                    ],
-                    "AllowedMethods": [
-                      "GET",
-                      "PUT",
-                      "POST",
-                      "DELETE",
-                      "HEAD"
-                    ],
+                    "AllowedOrigins": ["*"],
+                    "AllowedHeaders": ["*"],
+                    "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
                     "MaxAge": 3000
                   }
                 ]
@@ -422,10 +384,7 @@
           },
           "SpeechAudioFilesBucketArn": {
             "Value": {
-              "Fn::GetAtt": [
-                "SpeechAudioFilesBucket",
-                "Arn"
-              ]
+              "Fn::GetAtt": ["SpeechAudioFilesBucket", "Arn"]
             },
             "Export": {
               "Name": "dev-SpeechAudioFilesBucketArn"
@@ -479,18 +438,13 @@
       "webpack": {
         "config": "webpack.config.js",
         "includeModules": {
-          "forceExclude": [
-            "aws-sdk"
-          ]
+          "forceExclude": ["aws-sdk"]
         },
         "packager": "yarn"
       },
       "bucketName": "internote-dev-services-speech-audio-files"
     },
-    "plugins": [
-      "serverless-plugin-monorepo",
-      "serverless-webpack"
-    ],
+    "plugins": ["serverless-plugin-monorepo", "serverless-webpack"],
     "pluginsData": {},
     "functions": {
       "speech": {
@@ -501,14 +455,9 @@
               "path": "speech",
               "method": "post",
               "cors": {
-                "origins": [
-                  "*"
-                ],
+                "origins": ["*"],
                 "origin": "*",
-                "methods": [
-                  "OPTIONS",
-                  "POST"
-                ],
+                "methods": ["OPTIONS", "POST"],
                 "headers": [
                   "Content-Type",
                   "X-Amz-Date",
@@ -546,19 +495,9 @@
             "CorsConfiguration": {
               "CorsRules": [
                 {
-                  "AllowedOrigins": [
-                    "*"
-                  ],
-                  "AllowedHeaders": [
-                    "*"
-                  ],
-                  "AllowedMethods": [
-                    "GET",
-                    "PUT",
-                    "POST",
-                    "DELETE",
-                    "HEAD"
-                  ],
+                  "AllowedOrigins": ["*"],
+                  "AllowedHeaders": ["*"],
+                  "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
                   "MaxAge": 3000
                 }
               ]
@@ -569,10 +508,7 @@
       "Outputs": {
         "SpeechAudioFilesBucketArn": {
           "Value": {
-            "Fn::GetAtt": [
-              "SpeechAudioFilesBucket",
-              "Arn"
-            ]
+            "Fn::GetAtt": ["SpeechAudioFilesBucket", "Arn"]
           },
           "Export": {
             "Name": "dev-SpeechAudioFilesBucketArn"

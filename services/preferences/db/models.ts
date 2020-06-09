@@ -21,5 +21,5 @@ export const defaultPreferences: Preferences = {
   distractionFree: false,
   voice: "Male",
   outlineShowing: true,
-  offlineSync: false
+  offlineSync: false,
 };

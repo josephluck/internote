@@ -48,7 +48,7 @@ class IndexDb extends Dexie {
       notes:
         "&noteId, userId, title, content, *tags, dateUpdated, dateCreated, synced, state, createOnServer",
       auth:
-        "&idToken, accessToken, expires, refreshToken, accessKeyId, expiration, secretKey, sessionToken"
+        "&idToken, accessToken, expires, refreshToken, accessKeyId, expiration, secretKey, sessionToken",
     });
     this.notes = this.table("notes");
     this.auth = this.table("auth");
@@ -69,7 +69,7 @@ export const marshallNoteToNoteIndex = (
   content: body.content,
   tags: [...new Set(body.tags)],
   dateUpdated: body.dateUpdated,
-  ...additionalProperties
+  ...additionalProperties,
 });
 
 /**
@@ -85,7 +85,7 @@ export const unmarshallNoteIndexToNote = (
   content: noteIndex.content,
   tags: [...new Set(noteIndex.tags)],
   dateCreated: noteIndex.dateCreated,
-  dateUpdated: noteIndex.dateUpdated
+  dateUpdated: noteIndex.dateUpdated,
 });
 
 export const db = new IndexDb();
@@ -114,7 +114,7 @@ export function makeNotesDbInterface() {
   }
 
   function getUnsynced() {
-    return db.notes.filter(n => !n.synced).toArray();
+    return db.notes.filter((n) => !n.synced).toArray();
   }
 
   function remove(id: string) {
@@ -127,7 +127,7 @@ export function makeNotesDbInterface() {
     add,
     update,
     getUnsynced,
-    remove
+    remove,
   };
 }
 
@@ -146,13 +146,13 @@ export function makeAuthDbInterface() {
 
   async function set(session: Session) {
     const all = await db.auth.toArray();
-    await Promise.all(all.map(s => db.auth.delete(s.idToken)));
+    await Promise.all(all.map((s) => db.auth.delete(s.idToken)));
     await db.auth.add(session);
   }
 
   return {
     get,
-    set
+    set,
   };
 }
 

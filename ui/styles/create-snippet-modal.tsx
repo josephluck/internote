@@ -8,14 +8,14 @@ import { spacing } from "../theming/symbols";
 import { useTwineState } from "../store";
 
 export function CreateSnippetModal({
-  onCreateSnippet
+  onCreateSnippet,
 }: {
   onCreateSnippet: (title: string) => Promise<void>;
 }) {
   const {
     createSnippetModalOpen,
     setCreateSnippetModalOpen,
-    setSnippetsMenuShowing
+    setSnippetsMenuShowing,
   } = useContext(SnippetsContext);
   const [createSnippetTitle, setCreateSnippetTitle] = useState("");
   const handleCreateSnippet = useCallback(async () => {
@@ -25,7 +25,7 @@ export function CreateSnippetModal({
     setSnippetsMenuShowing(true);
   }, [createSnippetTitle]);
   const createSnippetLoading = useTwineState(
-    state => state.snippets.loading.createSnippet
+    (state) => state.snippets.loading.createSnippet
   );
 
   return (
@@ -44,7 +44,7 @@ export function CreateSnippetModal({
         {createSnippetModalOpen ? (
           <Input
             value={createSnippetTitle}
-            onChange={e => setCreateSnippetTitle(e.target.value)}
+            onChange={(e) => setCreateSnippetTitle(e.target.value)}
             autoFocus
           />
         ) : null}
