@@ -5,6 +5,7 @@ export type InternoteSlateEditor = ReturnType<typeof useCreateInternoteEditor>;
 export type MarkType = "bold" | "italic" | "underline" | "code";
 
 export type BlockType =
+  | "paragraph"
   | "numbered-list"
   | "bulleted-list"
   | "heading-one"

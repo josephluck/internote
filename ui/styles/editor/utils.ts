@@ -1,5 +1,5 @@
 import { InternoteSlateEditor, SlateNodeType } from "./types";
-import { Transforms, Editor } from "slate";
+import { Transforms, Editor, Node } from "slate";
 
 const LIST_TYPES: SlateNodeType[] = ["numbered-list", "bulleted-list"];
 
@@ -56,3 +56,27 @@ export const isMarkActive = (
   const marks = Editor.marks(editor);
   return marks ? marks[format] === true : false;
 };
+
+export const extractTextFromNodes = (nodes: Node[]) =>
+  nodes
+    .map((node) => node.text)
+    .filter(Boolean)
+    .join("");
+
+export const findFirstNonEmptyNodeOfType = (type: SlateNodeType) => (
+  nodes: Node[]
+) =>
+  nodes.find(
+    (node) =>
+      node.type === type &&
+      extractTextFromNodes(node.children as any).length > 0
+  );
+
+export const extractTitleFromValue = (value: Node[]): string => {
+  const firstNode = findFirstNonEmptyNodeOfType("paragraph")(value);
+  return firstNode
+    ? extractTextFromNodes(firstNode.children as any)
+    : DEFAULT_NOTE_TITLE;
+};
+
+const DEFAULT_NOTE_TITLE = "Welcome to Internote";
