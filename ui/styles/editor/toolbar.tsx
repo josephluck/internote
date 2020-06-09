@@ -8,6 +8,7 @@ import { Wrapper } from "../wrapper";
 import { useInternoteEditor } from "./hooks";
 import { SlateNodeType } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
+import { NoteSavingIndicator } from "./saving";
 
 export const Toolbar: React.FunctionComponent<{}> = ({}) => {
   const distractionFree = useTwineState(
@@ -31,6 +32,9 @@ export const Toolbar: React.FunctionComponent<{}> = ({}) => {
           <BlockButton nodeType="block-quote" />
           <BlockButton nodeType="numbered-list" />
           <BlockButton nodeType="bulleted-list" />
+        </Flex>
+        <Flex alignItems="center">
+          <NoteSavingIndicator />
         </Flex>
       </ToolbarInner>
     </ToolbarWrapper>
