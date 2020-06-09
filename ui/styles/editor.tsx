@@ -1,11 +1,18 @@
-import React, { useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useRef, useEffect, useMemo } from "react";
 import zenscroll from "zenscroll";
+import { Transforms, createEditor, Editor, Node } from "slate";
 import {
-  Editor as SlateEditor,
-  RenderBlockProps,
-  RenderMarkProps
+  Slate,
+  Editable,
+  withReact,
+  useEditor,
+  ReactEditor,
+  useFocused,
+  useSelected,
+  RenderElementProps,
+  RenderLeafProps,
 } from "slate-react";
-import { SchemaProperties, Block, Document } from "slate";
+
 import {
   getValueOrDefault,
   isBoldHotkey,
@@ -29,7 +36,7 @@ import {
   isSpaceHotKey,
   isBackspaceHotKey,
   handleMarkdownFormatShortcut,
-  handleMarkdownBackspaceShortcut
+  handleMarkdownBackspaceShortcut,
 } from "../utilities/editor";
 import { Wrap, EditorStyles, EditorInnerWrap } from "./editor-styles";
 import { Option, Some, None } from "space-lift";
@@ -40,14 +47,9 @@ import { Tag } from "./tag";
 import { useDebounce, useThrottle } from "../utilities/hooks";
 import { Toolbar } from "./toolbar";
 import { useTwineState, useTwineActions } from "../store";
-import dynamic from "next/dynamic";
-import {
-  InternoteSlateEditorPropsWithRef,
-  InternoteSlateEditorProps
-} from "./slate";
 import {
   SchemaMarkType,
-  SchemaBlockType
+  SchemaBlockType,
 } from "@internote/export-service/types";
 import { isServer } from "../utilities/window";
 import styled, { keyframes } from "styled-components";
@@ -56,102 +58,42 @@ import { CreateSnippetModal } from "./create-snippet-modal";
 import { MediaEmbed } from "./media-embed";
 import { GetSnippetDTO } from "@internote/snippets-service/types";
 import { InternoteUploadEvent } from "./file-upload";
+import { Block } from "typescript";
+import { RenderBlockProps, RenderMarkProps } from "slate-react";
+import { SchemaProperties } from "slate";
 
-const DynamicEditor = dynamic<InternoteSlateEditorPropsWithRef>(
-  import("./slate").then(mod => mod.Editor),
-  {
-    ssr: false
-  }
-) as any;
-
-const Editor = React.forwardRef<unknown, InternoteSlateEditorProps>(
-  (props, ref) => <DynamicEditor {...props} forwardedRef={ref} />
-);
-
-const DEFAULT_NODE = "paragraph";
-
-const bouncy = keyframes`
-  from {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-5px);
-  }
-
-  to {
-    transform: translateY(0px);
-  }
-`;
-
-const SnippetInsertionIndicator = styled.div`
-  position: absolute;
-  z-index: 1;
-  top: -10000px;
-  left: -10000px;
-  opacity: 0;
-  transition: opacity 0.75s;
-  animation: ${bouncy} 1s ease-in-out infinite;
-`;
-
-const mediaSchema = {
-  isVoid: true,
-  data: {
-    src: _src => true,
-    key: _key => true,
-    name: _name => true,
-    uploaded: _uploaded => true
-  }
-};
-
-const schema: SchemaProperties = {
-  inlines: {
-    emoji: {
-      isVoid: true,
-      data: {
-        code: code => !!code && code.length > 0
-      }
-    },
-    tag: {
-      isVoid: true,
-      data: {
-        tag: tag => !!tag && tag.length > 0
-      }
-    }
-  },
-  blocks: {
-    image: mediaSchema,
-    video: mediaSchema,
-    audio: mediaSchema,
-    "unknown-file": mediaSchema
-  }
-};
+type SlateEditor = Editor & ReactEditor;
 
 export function InternoteEditor({
   id,
-  initialValue
+  initialValue,
 }: {
   id: string;
   initialValue: {};
 }) {
-  const overwriteCount = useTwineState(state => state.notes.overwriteCount);
+  const editor: SlateEditor = useMemo(() => withReact(createEditor()), []);
+
+  const overwriteCount = useTwineState((state) => state.notes.overwriteCount);
+
   const outlineShowing = useTwineState(
-    state => state.preferences.outlineShowing
+    (state) => state.preferences.outlineShowing
   );
+
   const isDictionaryShowing = useTwineState(
-    state => state.dictionary.dictionaryShowing
+    (state) => state.dictionary.dictionaryShowing
   );
+
   const distractionFree = useTwineState(
-    state => state.preferences.distractionFree
+    (state) => state.preferences.distractionFree
   );
 
   const {
     onChange,
     onRequestDictionary,
     onRequestSpeech,
-    createSnippet
+    createSnippet,
   } = useTwineActions(
-    actions => ({
+    (actions) => ({
       onChange: (value: OnChange) =>
         actions.notes.updateNote({ ...value, noteId: id }),
       onRequestDictionary: actions.dictionary.lookup,
@@ -159,7 +101,7 @@ export function InternoteEditor({
         actions.speech.requestSpeech({ words, id }),
       onCreateNewTag: (value: OnChange) =>
         actions.tags.saveNewTag({ ...value, noteId: id }),
-      createSnippet: actions.snippets.createSnippet
+      createSnippet: actions.snippets.createSnippet,
     }),
     [id]
   );
@@ -167,10 +109,9 @@ export function InternoteEditor({
   /**
    * State
    */
-  const [value, setValue] = React.useState(() =>
+  const [value, setValue] = React.useState<Node[]>(() =>
     getValueOrDefault(initialValue)
   );
-  // TODO: hack as per https://github.com/ianstormtaylor/slate/issues/2927
   const valueRef = useRef(value);
   valueRef.current = value;
   const debouncedValue = useDebounce(value, 1000);
@@ -185,14 +126,12 @@ export function InternoteEditor({
    */
   const selectedText = getSelectedText(value);
   const shortcutSearch = getCurrentFocusedWord(value).filter(isShortcut);
-  // TODO: hack as per https://github.com/ianstormtaylor/slate/issues/2927
   const shortcutSearchRef = useRef(shortcutSearch);
   shortcutSearchRef.current = shortcutSearch;
 
   /**
    * Refs
    */
-  const editor = React.useRef<SlateEditor>();
   const scrollWrap = React.useRef<HTMLDivElement>();
   const scrollRef = React.useRef<ReturnType<typeof zenscroll.createScroller>>();
   const preventScrollListener = React.useRef<boolean>(false);
@@ -241,15 +180,15 @@ export function InternoteEditor({
       return Some(onClickMark("underlined"));
     } else if (isCodeHotkey(event)) {
       return Some(onClickMark("code"));
-    } else if (isH1Hotkey(event)) {
+    } else if (isH1Hotkey(event as KeyboardEvent)) {
       return Some(onClickBlock("heading-one"));
-    } else if (isH2Hotkey(event)) {
+    } else if (isH2Hotkey(event as KeyboardEvent)) {
       return Some(onClickBlock("heading-two"));
     } else if (isQuoteHotkey(event)) {
       return Some(onClickBlock("block-quote"));
-    } else if (isOlHotkey(event)) {
+    } else if (isOlHotkey(event as KeyboardEvent)) {
       return Some(onClickBlock("numbered-list"));
-    } else if (isUlHotkey(event)) {
+    } else if (isUlHotkey(event as KeyboardEvent)) {
       return Some(onClickBlock("bulleted-list"));
     } else {
       return None;
@@ -264,7 +203,7 @@ export function InternoteEditor({
    */
   React.useEffect(() => {
     const onWindowKeyDown = (event: Event) => {
-      getToolbarShortcutHandlerFromKeyEvent(event).map(handler => {
+      getToolbarShortcutHandlerFromKeyEvent(event).map((handler) => {
         handler(event);
       });
     };
@@ -272,7 +211,7 @@ export function InternoteEditor({
     return () => {
       window.removeEventListener("keydown", onWindowKeyDown);
     };
-  }, [editor.current, value]);
+  }, [editor, value]);
 
   /**
    * Editor keydown behavior:
@@ -298,23 +237,11 @@ export function InternoteEditor({
 
     // Handle markdown shortcuts for lists and headings
     if (isSpaceHotKey(event)) {
-      handleMarkdownFormatShortcut(
-        event,
-        editor.current,
-        valueRef.current,
-        next
-      );
+      handleMarkdownFormatShortcut(event, editor, valueRef.current, next);
     }
 
-    // Handle markdown backspace resetting
-    // TODO: not sure if strictly necessary
     if (isBackspaceHotKey(event)) {
-      handleMarkdownBackspaceShortcut(
-        event,
-        editor.current,
-        valueRef.current,
-        next
-      );
+      handleMarkdownBackspaceShortcut(event, editor, valueRef.current, next);
     }
 
     // Handle enter key
@@ -323,10 +250,12 @@ export function InternoteEditor({
       const previousSchemaBlockType = valueRef.current.focusBlock.type;
       const isListItem = previousSchemaBlockType === "list-item";
       if (!isListItem) {
-        // NB: Allow enter key to progress to add new paragraph
-        // it's important that next() is called before
-        // resetBlocks() as otherwise the previous formatting
-        // will be removed (next places the cursor on the next line)
+        /**
+         * NB: Allow enter key to progress to add new paragraph
+         * it's important that next() is called before
+         * resetBlocks() as otherwise the previous formatting
+         * will be removed (next places the cursor on the next line)
+         */
         next();
         resetBlocks();
         return;
@@ -342,54 +271,33 @@ export function InternoteEditor({
       }
     }
     next();
-  }, []); // TODO: this relies on resetBlocks but https://github.com/ianstormtaylor/slate/issues/2927 prevents it from being cache-busted
+  }, []);
 
   /**
    * Editor methods
    */
   const resetBlocks = useCallback(
     (node: string = DEFAULT_NODE) => {
-      editor.current
+      editor
         .setBlocks(node)
         .unwrapBlock("bulleted-list")
         .unwrapBlock("numbered-list");
     },
-    [editor.current]
+    [editor]
   );
 
   const focusBlock = useCallback(
     (node: Block, end: boolean = false) => {
-      editor.current.moveToRangeOfNode(node as any); // TODO
+      editor.moveToRangeOfNode(node as any);
       if (end) {
-        editor.current.moveStartToEndOfBlock();
-        editor.current.moveFocusToEndOfNode(node as any);
+        editor.moveStartToEndOfBlock();
+        editor.moveFocusToEndOfNode(node as any);
       } else {
-        editor.current.moveFocusToStartOfNode(node as any);
+        editor.moveFocusToStartOfNode(node as any);
       }
-      editor.current.focus();
+      editor.focus();
     },
-    [editor.current]
-  );
-
-  const focusNextBlock = useCallback(
-    (_?: Block) => {
-      // TODO: would be good to preserve cursor column too
-      const nextBlock = valueRef.current.nextBlock;
-      if (nextBlock) {
-        focusBlock(nextBlock);
-      } else {
-        addNewBlockAndFocus();
-      }
-    },
-    [editor.current]
-  );
-
-  const addNewBlockAndFocus = useCallback(
-    (_?: Block) => {
-      editor.current.insertBlock("paragraph");
-      focusNextBlock();
-    },
-    [editor.current]
+    [editor]
   );
 
   /**
@@ -401,7 +309,7 @@ export function InternoteEditor({
     const onMouseUp = () => (isMouseDown.current = false);
     window.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mouseup", onMouseUp);
-    return function() {
+    return () => {
       window.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mouseup", onMouseUp);
     };
@@ -414,7 +322,7 @@ export function InternoteEditor({
     if (!preventScrollListener.current) {
       setUserScrolled(true);
     }
-  }, [preventScrollListener.current]);
+  }, []);
 
   /**
    * Handle scroll refs and focus mode handling
@@ -463,9 +371,9 @@ export function InternoteEditor({
   const onClickMark = useCallback(
     (type: SchemaMarkType) => (event: Event) => {
       event.preventDefault();
-      editor.current.toggleMark(type);
+      editor.toggleMark(type);
     },
-    [editor.current]
+    [editor]
   );
 
   const onClickBlock = useCallback(
@@ -478,12 +386,12 @@ export function InternoteEditor({
         if (isList) {
           resetBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
         } else {
-          editor.current.setBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
+          editor.setBlocks(hasBeenMadeActive ? DEFAULT_NODE : type);
         }
       } else {
         // Handle the extra wrapping required for list buttons.
         const isType = value.blocks.some(
-          block =>
+          (block) =>
             !!value.document.getClosest(
               block.key,
               (parent: any) => parent.type === type
@@ -492,17 +400,17 @@ export function InternoteEditor({
         if (isList && isType) {
           resetBlocks();
         } else if (isList) {
-          editor.current
+          editor
             .unwrapBlock(
               type === "bulleted-list" ? "numbered-list" : "bulleted-list"
             )
             .wrapBlock(type);
         } else {
-          editor.current.setBlocks("list-item").wrapBlock(type);
+          editor.setBlocks("list-item").wrapBlock(type);
         }
       }
     },
-    [editor.current, value, resetBlocks]
+    [editor, value, resetBlocks]
   );
 
   /**
@@ -524,15 +432,15 @@ export function InternoteEditor({
    */
   const insertEmoji = useCallback(
     (emoji: Emoji, searchText: string) => {
-      editor.current.deleteBackward(searchText.length);
-      editor.current.insertInline({
+      editor.deleteBackward(searchText.length);
+      editor.insertInline({
         type: "emoji",
-        data: { code: emoji.char }
+        data: { code: emoji.char },
       });
-      editor.current.focus();
-      editor.current.moveToStartOfNextText();
+      editor.focus();
+      editor.moveToStartOfNextText();
     },
-    [shortcutSearch, editor.current]
+    [shortcutSearch, editor]
   );
 
   /**
@@ -540,12 +448,12 @@ export function InternoteEditor({
    */
   const insertTag = useCallback(
     (tag: string, searchText: string) => {
-      editor.current.deleteBackward(searchText.length);
-      editor.current.insertInline({ type: "tag", data: { tag } });
-      editor.current.focus();
-      editor.current.moveToStartOfNextText();
+      editor.deleteBackward(searchText.length);
+      editor.insertInline({ type: "tag", data: { tag } });
+      editor.focus();
+      editor.moveToStartOfNextText();
     },
-    [shortcutSearch, editor.current]
+    [shortcutSearch, editor]
   );
 
   const createNewTag = useCallback(
@@ -558,13 +466,13 @@ export function InternoteEditor({
   const insertSnippet = useCallback(
     (snippet: GetSnippetDTO) => {
       const doc = Document.fromJSON(snippet.content);
-      editor.current.focus();
+      editor.focus();
       // NB: wait for focus to happen
       requestAnimationFrame(() => {
-        editor.current.insertFragment(doc as any);
+        editor.insertFragment(doc as any);
       });
     },
-    [editor.current]
+    [editor]
   );
 
   /** Positions the snippet insertion indicator to where the user's cursor would be (and where the snippet would end up) */
@@ -585,7 +493,7 @@ export function InternoteEditor({
     }
 
     /** NB: important to focus the editor so that the window.getSelection() works */
-    editor.current.focus();
+    editor.focus();
 
     const native = window.getSelection();
     const range = native.getRangeAt(0);
@@ -602,108 +510,27 @@ export function InternoteEditor({
 
   const onFileUploadStarted = useCallback(
     (e: InternoteUploadEvent) => {
-      editor.current.insertBlock({
+      editor.insertBlock({
         type: e.type, // NB: Generic media type. See schema for more information
-        data: { src: e.src, key: e.key, name: e.name, uploaded: e.uploaded }
+        data: { src: e.src, key: e.key, name: e.name, uploaded: e.uploaded },
       });
-      editor.current.focus();
-      editor.current.moveToStartOfNextText();
+      editor.focus();
+      editor.moveToStartOfNextText();
     },
-    [editor.current]
+    [editor]
   );
 
   useEffect(() => {
     updateSnippetInsertionIndicator();
   }, [value, snippetsMenuShowing, snippetToInsert]);
 
-  const onCreateSnippet = useCallback(async (title: string) => {
+  const handleCreateSnippet = useCallback((title: string) => {
     const fragment = valueRef.current.fragment.toJSON();
-    await createSnippet({
+    createSnippet({
       title,
-      content: fragment as any
+      content: fragment as any,
     });
   }, []);
-
-  /**
-   * Rendering
-   */
-  const renderBlock = (props: RenderBlockProps) => {
-    const fadeClassName = props.isSelected ? "node-focused" : "node-unfocused";
-    const preventForBlocks: SchemaBlockType[] = [
-      "list-item",
-      "bulleted-list",
-      "numbered-list"
-    ];
-    const shouldFocusNode =
-      !hasSelection(value) &&
-      !preventForBlocks.includes(props.node.type as SchemaBlockType) &&
-      props.isSelected &&
-      props.key !== focusedNodeKey.current;
-    if (shouldFocusNode) {
-      focusedNodeKey.current = props.key;
-      handleFocusModeScroll();
-    }
-    switch (props.node.type as SchemaBlockType) {
-      case "paragraph":
-        return (
-          <p {...props.attributes} className={fadeClassName}>
-            {props.children}
-          </p>
-        );
-      case "block-quote":
-        return (
-          <blockquote {...props.attributes} className={fadeClassName}>
-            {props.children}
-          </blockquote>
-        );
-      case "bulleted-list":
-        return <ul {...props.attributes}>{props.children}</ul>;
-      case "numbered-list":
-        return <ol {...props.attributes}>{props.children}</ol>;
-      case "heading-one":
-        return (
-          <h1 {...props.attributes} className={fadeClassName}>
-            {props.children}
-          </h1>
-        );
-      case "heading-two":
-        return (
-          <h2 {...props.attributes} className={fadeClassName}>
-            {props.children}
-          </h2>
-        );
-      case "list-item":
-        return (
-          <li {...props.attributes} className={fadeClassName}>
-            {props.children}
-          </li>
-        );
-      case "image":
-      case "video":
-      case "audio":
-      case "unknown-file":
-        return <MediaEmbed {...props} />;
-    }
-  };
-
-  const renderMark = (
-    props: RenderMarkProps,
-    _editor: any,
-    next: () => any
-  ) => {
-    switch (props.mark.type as SchemaMarkType) {
-      case "bold":
-        return <strong {...props.attributes}>{props.children}</strong>;
-      case "code":
-        return <code {...props.attributes}>{props.children}</code>;
-      case "italic":
-        return <em {...props.attributes}>{props.children}</em>;
-      case "underlined":
-        return <u {...props.attributes}>{props.children}</u>;
-      default:
-        return next();
-    }
-  };
 
   const renderInline = (props, _editor, next) => {
     const { attributes, node } = props;
@@ -713,7 +540,7 @@ export function InternoteEditor({
           <span
             {...attributes}
             contentEditable={false}
-            onDrop={e => e.preventDefault()}
+            onDrop={(e) => e.preventDefault()}
           >
             {node.data.get("code")}
           </span>
@@ -725,7 +552,7 @@ export function InternoteEditor({
             isFocused
             large
             contentEditable={false}
-            onDrop={e => e.preventDefault()}
+            onDrop={(e) => e.preventDefault()}
           >
             {node.data.get("tag")}
           </Tag>
@@ -735,6 +562,16 @@ export function InternoteEditor({
     }
   };
 
+  const renderElement = useCallback(
+    (props: RenderElementProps) => <EditorElement {...props} />,
+    []
+  );
+
+  const renderLeaf = useCallback(
+    (props: RenderLeafProps) => <EditorLeaf {...props} />,
+    []
+  );
+
   return (
     <Wrap>
       <EditorStyles ref={scrollWrap}>
@@ -742,11 +579,42 @@ export function InternoteEditor({
           distractionFree={distractionFree}
           userScrolled={userScrolled}
         >
-          <Editor
+          <Slate editor={editor} value={value} onChange={setValue}>
+            <Editable renderElement={renderElement} renderLeaf={renderLeaf} />
+
+            <Toolbar
+              createNewTag={createNewTag}
+              distractionFree={distractionFree}
+              id={id}
+              insertEmoji={insertEmoji}
+              insertTag={insertTag}
+              isDictionaryShowing={isDictionaryShowing}
+              onClickBlock={onClickBlock}
+              onClickMark={onClickMark}
+              requestDictionary={requestDictionary}
+              requestSpeech={requestSpeech}
+              selectedText={selectedText}
+              shortcutSearch={shortcutSearch}
+              value={value}
+              onSnippetSelected={insertSnippet}
+              onFileUploadStarted={onFileUploadStarted}
+            />
+
+            <SnippetInsertionIndicator ref={snippetInsertionIndicatorRef}>
+              👇
+            </SnippetInsertionIndicator>
+            <Outline
+              value={value}
+              onHeadingClick={focusBlock}
+              showing={outlineShowing}
+            />
+            <CreateSnippetModal onCreateSnippet={handleCreateSnippet} />
+          </Slate>
+          {/* <Editor
             placeholder=""
             ref={editor}
             value={value as any}
-            onChange={c => setValue(c.value)}
+            onChange={(c) => setValue(c.value)}
             onKeyDown={onEditorKeyDown}
             renderBlock={renderBlock}
             renderMark={renderMark}
@@ -754,37 +622,195 @@ export function InternoteEditor({
             autoFocus
             schema={schema as any}
             distractionFree={distractionFree}
-          />
-          <Outline
-            value={value}
-            onHeadingClick={focusBlock}
-            showing={outlineShowing}
-          />
+          /> */}
         </EditorInnerWrap>
       </EditorStyles>
-
-      <Toolbar
-        createNewTag={createNewTag}
-        distractionFree={distractionFree}
-        id={id}
-        insertEmoji={insertEmoji}
-        insertTag={insertTag}
-        isDictionaryShowing={isDictionaryShowing}
-        onClickBlock={onClickBlock}
-        onClickMark={onClickMark}
-        requestDictionary={requestDictionary}
-        requestSpeech={requestSpeech}
-        selectedText={selectedText}
-        shortcutSearch={shortcutSearch}
-        value={value}
-        onSnippetSelected={insertSnippet}
-        onFileUploadStarted={onFileUploadStarted}
-      />
-
-      <SnippetInsertionIndicator ref={snippetInsertionIndicatorRef}>
-        👇
-      </SnippetInsertionIndicator>
-      <CreateSnippetModal onCreateSnippet={onCreateSnippet} />
     </Wrap>
   );
 }
+
+const toggleBlock = (editor: SlateEditor, format: string) => {
+  const isActive = isBlockActive(editor, format);
+  const isList = LIST_TYPES.includes(format);
+
+  Transforms.unwrapNodes(editor, {
+    match: (n) => LIST_TYPES.includes(n.type),
+    split: true,
+  });
+
+  Transforms.setNodes(editor, {
+    type: isActive ? "paragraph" : isList ? "list-item" : format,
+  });
+
+  if (!isActive && isList) {
+    const block = { type: format, children: [] };
+    Transforms.wrapNodes(editor, block);
+  }
+};
+
+const toggleMark = (editor: SlateEditor, format: string) => {
+  const isActive = isMarkActive(editor, format);
+
+  if (isActive) {
+    Editor.removeMark(editor, format);
+  } else {
+    Editor.addMark(editor, format, true);
+  }
+};
+
+const isBlockActive = (editor: SlateEditor, format: string) => {
+  const [match] = Editor.nodes(editor, {
+    match: (nodes) => nodes.type === format,
+  });
+
+  return !!match;
+};
+
+const isMarkActive = (editor: SlateEditor, format: string) => {
+  const marks = Editor.marks(editor);
+  return marks && Boolean(marks[format]);
+};
+
+const EditorElement: React.FunctionComponent<RenderElementProps> = ({
+  element,
+  ...props
+}) => {
+  console.log({ props });
+
+  const fadeClassName = props.isSelected ? "node-focused" : "node-unfocused";
+  // const preventForBlocks: SchemaBlockType[] = [
+  //   "list-item",
+  //   "bulleted-list",
+  //   "numbered-list",
+  // ];
+  // const shouldFocusNode =
+  //   !hasSelection(value) &&
+  //   !preventForBlocks.includes(props.node.type as SchemaBlockType) &&
+  //   props.isSelected &&
+  //   props.key !== focusedNodeKey.current;
+  // if (shouldFocusNode) {
+  //   focusedNodeKey.current = props.key;
+  //   handleFocusModeScroll();
+  // }
+
+  switch (element.type) {
+    case "block-quote":
+      return (
+        <blockquote {...props.attributes} className={fadeClassName}>
+          {props.children}
+        </blockquote>
+      );
+    case "bulleted-list":
+      return <ul {...props.attributes}>{props.children}</ul>;
+    case "numbered-list":
+      return <ol {...props.attributes}>{props.children}</ol>;
+    case "heading-one":
+      return (
+        <h1 {...props.attributes} className={fadeClassName}>
+          {props.children}
+        </h1>
+      );
+    case "heading-two":
+      return (
+        <h2 {...props.attributes} className={fadeClassName}>
+          {props.children}
+        </h2>
+      );
+    case "list-item":
+      return (
+        <li {...props.attributes} className={fadeClassName}>
+          {props.children}
+        </li>
+      );
+    case "image":
+    case "video":
+    case "audio":
+    case "unknown-file":
+      return <MediaEmbed {...props} />;
+    default:
+      return (
+        <p {...props.attributes} className={fadeClassName}>
+          {props.children}
+        </p>
+      );
+  }
+};
+
+const EditorLeaf: React.FunctionComponent<RenderLeafProps> = ({
+  leaf,
+  children,
+  attributes,
+}) => {
+  if (leaf.bold) {
+    return <strong {...attributes}>{children}</strong>;
+  }
+  if (leaf.code) {
+    return <code {...attributes}>{children}</code>;
+  }
+  if (leaf.italic) {
+    return <em {...attributes}>{children}</em>;
+  }
+  if (leaf.underlined) {
+    return <u {...attributes}>{children}</u>;
+  }
+  return <span {...attributes}>{children}</span>;
+};
+
+const DEFAULT_NODE = "paragraph";
+
+const bouncy = keyframes`
+  from {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+
+  to {
+    transform: translateY(0px);
+  }
+`;
+
+const SnippetInsertionIndicator = styled.div`
+  position: absolute;
+  z-index: 1;
+  top: -10000px;
+  left: -10000px;
+  opacity: 0;
+  transition: opacity 0.75s;
+  animation: ${bouncy} 1s ease-in-out infinite;
+`;
+
+const mediaSchema = {
+  isVoid: true,
+  data: {
+    src: (_src) => true,
+    key: (_key) => true,
+    name: (_name) => true,
+    uploaded: (_uploaded) => true,
+  },
+};
+
+const schema: SchemaProperties = {
+  inlines: {
+    emoji: {
+      isVoid: true,
+      data: {
+        code: (code) => !!code && code.length > 0,
+      },
+    },
+    tag: {
+      isVoid: true,
+      data: {
+        tag: (tag) => !!tag && tag.length > 0,
+      },
+    },
+  },
+  blocks: {
+    image: mediaSchema,
+    video: mediaSchema,
+    audio: mediaSchema,
+    "unknown-file": mediaSchema,
+  },
+};
