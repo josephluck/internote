@@ -37,7 +37,7 @@ export const InternoteEditor: React.FunctionComponent<{
         autoFocus
         onKeyDown={handleKeyboardShortcut}
       />
-      <Toolbar />
+      <Toolbar noteId={noteId} />
     </Slate>
   );
 };

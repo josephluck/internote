@@ -3,14 +3,17 @@ import React from "react";
 import styled from "styled-components";
 import { useTwineState } from "../../store";
 import { font, size, spacing } from "../../theming/symbols";
-import { ToolbarButton } from "../toolbar-button";
+import { ToolbarButton, ButtonSpacer } from "../toolbar-button";
 import { Wrapper } from "../wrapper";
 import { useInternoteEditor } from "./hooks";
 import { SlateNodeType } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 import { NoteSavingIndicator } from "./saving";
+import { DeleteNoteButton } from "./delete";
 
-export const Toolbar: React.FunctionComponent<{}> = ({}) => {
+export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
+  noteId,
+}) => {
   const distractionFree = useTwineState(
     (state) => state.preferences.distractionFree
   );
@@ -34,6 +37,9 @@ export const Toolbar: React.FunctionComponent<{}> = ({}) => {
           <BlockButton nodeType="bulleted-list" />
         </Flex>
         <Flex alignItems="center">
+          <ButtonSpacer>
+            <DeleteNoteButton noteId={noteId} />
+          </ButtonSpacer>
           <NoteSavingIndicator />
         </Flex>
       </ToolbarInner>

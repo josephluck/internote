@@ -4,20 +4,20 @@ import {
   ToolbarInner,
   ToolbarExpandedWrapper,
   ToolbarExpandedInner,
-  renderToolbarIcon
+  renderToolbarIcon,
 } from "./toolbar-styles";
 import { Flex } from "@rebass/grid";
 import { ButtonSpacer, ToolbarButton } from "./toolbar-button";
 import { EmojiToggle } from "./emoji-toggle";
 import { DictionaryButton } from "./dictionary-button";
 import { Speech } from "./speech";
-import { DeleteNoteButton } from "./delete-note-button";
+import { DeleteButton } from "./delete-note-button";
 import { Saving } from "./saving";
 import { Shortcut } from "./shortcuts";
 import {
   stringIsOneWord,
   removeFirstLetterFromString,
-  getFirstWordFromString
+  getFirstWordFromString,
 } from "../utilities/string";
 import { Collapse } from "react-collapse";
 import { TagsList } from "./tags-list";
@@ -30,7 +30,7 @@ import {
   currentFocusIsWithinList,
   wordIsEmojiShortcut,
   wordIsTagShortcut,
-  hasSelection
+  hasSelection,
 } from "../utilities/editor";
 import { Option } from "space-lift";
 import { Value } from "slate";
@@ -38,7 +38,7 @@ import { Emoji } from "../utilities/emojis";
 import { useTwineState, useTwineActions } from "../store";
 import {
   SchemaMarkType,
-  SchemaBlockType
+  SchemaBlockType,
 } from "@internote/export-service/types";
 import { SnippetsMenu } from "./snippets-menu";
 import { GetSnippetDTO } from "@internote/snippets-service/types";
@@ -59,7 +59,7 @@ export function Toolbar({
   shortcutSearch,
   value,
   onSnippetSelected,
-  onFileUploadStarted
+  onFileUploadStarted,
 }: {
   createNewTag: (searchText: string) => any;
   distractionFree: boolean;
@@ -77,33 +77,33 @@ export function Toolbar({
   onSnippetSelected: (snippet: GetSnippetDTO) => void;
   onFileUploadStarted: (e: InternoteUploadEvent) => void;
 }) {
-  const tags = useTwineState(state => state.tags.tags);
-  const saving = useTwineState(state => state.notes.loading.updateNote);
-  const speechSrc = useTwineState(state => state.speech.speechSrc);
+  const tags = useTwineState((state) => state.tags.tags);
+  const saving = useTwineState((state) => state.notes.loading.updateNote);
+  const speechSrc = useTwineState((state) => state.speech.speechSrc);
   const isSpeechLoading = useTwineState(
-    state => state.speech.loading.requestSpeech
+    (state) => state.speech.loading.requestSpeech
   );
-  const newTagSaving = useTwineState(state => state.tags.loading.saveNewTag);
+  const newTagSaving = useTwineState((state) => state.tags.loading.saveNewTag);
 
   const { onDelete, onDiscardSpeech, onCloseDictionary } = useTwineActions(
-    actions => ({
+    (actions) => ({
       onDelete: () => actions.notes.deleteNoteConfirmation({ noteId: id }),
       onCloseDictionary: () => actions.dictionary.setDictionaryShowing(false),
-      onDiscardSpeech: () => actions.speech.setSpeechSrc(null)
+      onDiscardSpeech: () => actions.speech.setSpeechSrc(null),
     }),
     [id]
   );
 
   const isDictionaryLoading = useTwineState(
-    state => state.dictionary.loading.lookup
+    (state) => state.dictionary.loading.lookup
   );
   const dictionaryResults = useTwineState(
-    state => state.dictionary.dictionaryResults
+    (state) => state.dictionary.dictionaryResults
   );
   const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
   const [
     isShortcutsReferenceShowing,
-    setIsShortcutsReferenceShowing
+    setIsShortcutsReferenceShowing,
   ] = useState(false);
 
   const isEmojiShortcut = shortcutSearch
@@ -211,7 +211,7 @@ export function Toolbar({
             />
           </ButtonSpacer>
           <ButtonSpacer>
-            <DeleteNoteButton onClick={onDelete} />
+            <DeleteButton onClick={onDelete} />
           </ButtonSpacer>
           <Saving saving={saving} />
         </Flex>
