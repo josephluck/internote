@@ -128,7 +128,6 @@ export function model(_api: Api, auth: AuthApi): Model {
           sessionToken: credentials.Credentials.SessionToken,
         };
         actions.auth.setSession(session);
-        await actions.sync.storeSession();
         actions.preferences.get();
         actions.auth.scheduleRefresh();
       },
@@ -168,7 +167,6 @@ export function model(_api: Api, auth: AuthApi): Model {
       },
       async signOut(_state, actions) {
         authStorage.removeSession();
-        actions.sync.unregister();
         actions.preferences.resetState();
         actions.auth.resetState();
         actions.notes.resetState();

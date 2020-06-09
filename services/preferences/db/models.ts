@@ -8,10 +8,6 @@ export class Preferences {
   distractionFree?: boolean;
   voice?: string;
   outlineShowing?: boolean;
-  /**
-   * Experimental offline sync
-   */
-  offlineSync?: boolean;
 }
 
 export const defaultPreferences: Preferences = {
@@ -21,5 +17,4 @@ export const defaultPreferences: Preferences = {
   distractionFree: false,
   voice: "Male",
   outlineShowing: true,
-  offlineSync: false,
 };

@@ -43,7 +43,6 @@ function defaultState(): OwnState {
     distractionFree: false,
     voice: "Male",
     outlineShowing: false,
-    offlineSync: false,
   };
 }
 
@@ -68,15 +67,11 @@ export function model(api: Api): Model {
       setDistractionFree: setter("distractionFree"),
       setVoice: setter("voice"),
       setOutlineShowing: setter("outlineShowing"),
-      setOfflineSync: setter("offlineSync"),
     },
     effects: {
       async get(state, actions) {
         const result = await api.preferences.get(state.auth.session);
         result.map((preferences) => {
-          if (preferences.offlineSync) {
-            actions.sync.register();
-          }
           actions.preferences.setPreferences(
             deserializePreferences(preferences)
           );

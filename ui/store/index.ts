@@ -10,7 +10,6 @@ import * as Confirmation from "./confirmation";
 import * as Tags from "./tags";
 import * as Ui from "./ui";
 import * as Notes from "./notes";
-import * as Sync from "./sync";
 import * as ExportNote from "./export-note";
 import * as Snippets from "./snippets";
 import { makeTwineHooks } from "./with-twine";
@@ -27,7 +26,6 @@ type Models = Twine.Models<
     Tags.Namespace &
     Ui.Namespace &
     Notes.Namespace &
-    Sync.Namespace &
     ExportNote.Namespace &
     Snippets.Namespace
 >;
@@ -78,7 +76,6 @@ function makeModel(api: Api, auth: AuthApi) {
       tags: Tags.model(api),
       ui: Ui.model(api),
       notes: Notes.model(api),
-      sync: Sync.model(api),
       exportNote: ExportNote.model(api),
       snippets: Snippets.model(api),
     },
@@ -141,14 +138,6 @@ export function makeStore() {
             ) {
               api.preferences.update(state.auth.session, {
                 outlineShowing: state.preferences.outlineShowing,
-              });
-            }
-            if (
-              state.preferences.offlineSync !==
-              prevState.preferences.offlineSync
-            ) {
-              api.preferences.update(state.auth.session, {
-                offlineSync: state.preferences.offlineSync,
               });
             }
           }
