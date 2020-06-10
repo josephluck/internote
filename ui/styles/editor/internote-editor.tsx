@@ -10,13 +10,17 @@ import styled, { css } from "styled-components";
 import { useTwineState } from "../../store";
 import { borderRadius, font, spacing } from "../../theming/symbols";
 import { wrapperStyles } from "../wrapper";
+import {
+  elmHasChildFocus,
+  SLATE_BLOCK_CLASS_NAME,
+  SLATE_BLOCK_FOCUSED_CLASS_NAME,
+} from "./focus";
 import { useCreateInternoteEditor } from "./hooks";
 import { useEditorShortcut } from "./hotkeys";
 import { useLiveSave } from "./save";
+import { useScrollFocus } from "./scroll";
 import { Toolbar } from "./toolbar";
 import { InternoteSlateEditor } from "./types";
-import { useScrollFocus } from "./scroll";
-import { useNodeFocus, SLATE_BLOCK_CLASS_NAME } from "./focus";
 
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: Node[];
@@ -31,12 +35,13 @@ export const InternoteEditor: React.FunctionComponent<{
 
   useLiveSave(value, noteId);
 
-  useNodeFocus(editor);
-
   const scrollRef = useRef<HTMLDivElement>();
 
   const handleKeyboardShortcut = useEditorShortcut(editor);
-  const { scrollToFocusedNode } = useScrollFocus(editor, scrollRef);
+  const {
+    scrollToFocusedNode,
+    userHasScrolledOutOfDistractionMode,
+  } = useScrollFocus(editor, scrollRef);
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -60,7 +65,7 @@ export const InternoteEditor: React.FunctionComponent<{
       <FullHeight>
         <InnerPadding ref={scrollRef}>
           <Editor
-            userScrolled={false}
+            userScrolled={userHasScrolledOutOfDistractionMode}
             distractionFree={distractionFree}
             renderElement={renderElement}
             renderLeaf={renderLeaf}
@@ -81,9 +86,14 @@ const Element: React.FunctionComponent<RenderElementProps> = ({
   children,
   element,
 }) => {
+  const isFocused =
+    !!attributes.ref.current && elmHasChildFocus(attributes.ref.current);
+
   const attrs = {
     ...attributes,
-    className: SLATE_BLOCK_CLASS_NAME,
+    className: isFocused
+      ? [SLATE_BLOCK_CLASS_NAME, SLATE_BLOCK_FOCUSED_CLASS_NAME].join(" ")
+      : SLATE_BLOCK_CLASS_NAME,
   };
   switch (element.type) {
     case "block-quote":
@@ -205,12 +215,12 @@ export const Editor = styled(Editable)<{
     font-size: ${font._18.size};
     line-height: ${font._18.lineHeight};
   }
-  .node-unfocused {
+  .${SLATE_BLOCK_CLASS_NAME} {
     opacity: ${(props) =>
       props.distractionFree && !props.userScrolled ? 0.2 : 1};
     transition: all 300ms ease;
   }
-  .node-focused {
+  .${SLATE_BLOCK_FOCUSED_CLASS_NAME} {
     opacity: 1;
     transition: all 100ms ease;
   }
