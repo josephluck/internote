@@ -1,13 +1,14 @@
 import { useCallback, useRef, useState, useEffect } from "react";
 import zenscroll from "zenscroll";
 import { InternoteSlateEditor } from "./types";
-import { useNodeFocus } from "./focus";
+import { getCurrentFocusedHTMLNode } from "./focus";
+import { pipe } from "fp-ts/lib/function";
+import * as O from "fp-ts/lib/Option";
 
 export const useScrollFocus = (
   editor: InternoteSlateEditor,
   scrollRef: React.MutableRefObject<HTMLDivElement>
 ) => {
-  const { getCurrentFocusedHTMLNode } = useNodeFocus(editor);
   const [
     userHasScrolledOutOfDistractionMode,
     setUserHasScrolledOutOfDistractionMode,
@@ -34,12 +35,14 @@ export const useScrollFocus = (
   }, []);
 
   const scrollToFocusedNode = useCallback(() => {
-    const focusedNode = getCurrentFocusedHTMLNode();
-    if (focusedNode) {
-      autoScrolling.current = true;
-      scrollEditorToElement(focusedNode);
-    }
-  }, [scrollRef.current, getCurrentFocusedHTMLNode, scrollEditorToElement]);
+    pipe(
+      getCurrentFocusedHTMLNode(editor),
+      O.map((focusedNode) => {
+        autoScrolling.current = true;
+        scrollEditorToElement(focusedNode);
+      })
+    );
+  }, [scrollRef.current, editor, scrollEditorToElement]);
 
   useEffect(() => {
     const handleClick = () => setTimeout(scrollToFocusedNode, 100);

@@ -21,6 +21,7 @@ export function CollapseWidthOnHover({
   className,
   children,
   onClick,
+  onMouseDown,
   collapsedContent,
   forceShow,
 }: {
@@ -29,6 +30,7 @@ export function CollapseWidthOnHover({
   forceShow?: boolean;
   className?: string;
   onClick?: () => void;
+  onMouseDown?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }) {
   const [width, setWidth] = useState(0);
   const [opacity, setOpacity] = useState(0);
@@ -80,6 +82,7 @@ export function CollapseWidthOnHover({
       onMouseEnter={onHoverIn}
       onMouseLeave={onHoverOut}
       onClick={onClick}
+      onMouseDown={onMouseDown}
     >
       {children({ renderCollapsedContent })}
     </Wrapper>

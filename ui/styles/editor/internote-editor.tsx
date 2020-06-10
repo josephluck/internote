@@ -227,6 +227,9 @@ export const Editor = styled(Editable)<{
     opacity: ${(props) =>
       props.distractionFree && !props.userScrolled ? 0.2 : 1};
     transition: all 300ms ease;
+    .${SLATE_BLOCK_CLASS_NAME} {
+      opacity: 1;
+    }
   }
   .${SLATE_BLOCK_FOCUSED_CLASS_NAME} {
     opacity: 1;

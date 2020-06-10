@@ -1,23 +1,27 @@
 import { Flex } from "@rebass/grid";
-import React, { useCallback } from "react";
+import { pipe } from "fp-ts/lib/function";
+import * as O from "fp-ts/lib/Option";
+import React, { useCallback, useMemo } from "react";
+import { Collapse } from "react-collapse";
 import styled from "styled-components";
 import { useTwineState } from "../../store";
 import { font, size, spacing } from "../../theming/symbols";
-import { ToolbarButton, ButtonSpacer } from "../toolbar-button";
-import { Wrapper } from "../wrapper";
-import { useInternoteEditor } from "./hooks";
-import { SlateNodeType } from "./types";
-import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
-import { NoteSavingIndicator } from "./saving";
-import { DeleteNoteButton } from "./delete";
-import { useMemo } from "react";
-import { Collapse } from "react-collapse";
 import { Dictionary } from "../dictionary";
 import { DictionaryButton } from "../dictionary-button";
+import { ButtonSpacer, ToolbarButton } from "../toolbar-button";
+import { Wrapper } from "../wrapper";
+import { DeleteNoteButton } from "./delete";
+import { useInternoteEditor } from "./hooks";
+import { NoteSavingIndicator } from "./saving";
+import { getHighlightedWord } from "./selection";
+import { SlateNodeType } from "./types";
+import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
 }) => {
+  const editor = useInternoteEditor();
+
   const distractionFree = useTwineState(
     (state) => state.preferences.distractionFree
   );
@@ -34,7 +38,12 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
 
   const isToolbarVisible = toolbarIsExpanded; // TODO: derive from current state
 
-  const selectedText = ""; // TODO: get from state?
+  const selectedWord = pipe(
+    getHighlightedWord(editor),
+    O.getOrElse(() => "")
+  );
+
+  console.log({ selectedWord });
 
   return (
     <ToolbarWrapper
@@ -58,6 +67,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
             <DictionaryButton
               isLoading={isDictionaryLoading}
               isShowing={isDictionaryShowing}
+              selectedWord={selectedWord}
             />
           </ButtonSpacer>
           <ButtonSpacer>
@@ -73,7 +83,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
               {isDictionaryShowing ? (
                 <Dictionary
                   isLoading={isDictionaryLoading}
-                  requestedWord={selectedText}
+                  selectedWord={selectedWord}
                 />
               ) : null}
             </ToolbarInner>

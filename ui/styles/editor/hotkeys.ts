@@ -2,8 +2,10 @@ import { SlateNodeType, InternoteSlateEditor } from "./types";
 import { useCallback, KeyboardEvent } from "react";
 import isHotkey from "is-hotkey";
 import { toggleMark, toggleBlock } from "./utils";
-import { useNodeFocus } from "./focus";
+import { getCurrentFocusedLeafAndPath } from "./focus";
 import { Editor } from "slate";
+import { pipe } from "fp-ts/lib/function";
+import * as O from "fp-ts/lib/Option";
 
 export const HOT_KEYS: Record<string, SlateNodeType> = {
   "mod+b": "bold",
@@ -38,8 +40,6 @@ export const useFormattingHotkey = (editor: InternoteSlateEditor) => {
  * is pressed. See below for the reset shortcuts
  */
 export const useResetListBlocks = (editor: InternoteSlateEditor) => {
-  const { getCurrentFocusedLeafAndPath } = useNodeFocus(editor);
-
   const handleKeyPress = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
       const isValidResetKey = ["enter", "shift+tab"].some((key) =>
@@ -49,21 +49,31 @@ export const useResetListBlocks = (editor: InternoteSlateEditor) => {
 
       if (!isValidResetKey) return;
 
-      const [leaf, path] = getCurrentFocusedLeafAndPath();
-      const isEmpty = leaf && leaf.text === "";
+      const leafAndPath = getCurrentFocusedLeafAndPath(editor);
+      const isEmpty = pipe(
+        leafAndPath,
+        O.filter(([leaf]) => leaf.text === ""),
+        O.isSome
+      );
 
       if (!isEmpty) return;
 
-      const [previousNode] = Editor.above(editor, { at: path });
       const listNodeType: SlateNodeType = "list-item";
-      const previousWasListItem = previousNode.type === listNodeType;
+      const previousWasListItem = pipe(
+        leafAndPath,
+        O.filterMap(([_node, path]) =>
+          O.fromNullable(Editor.above(editor, { at: path }))
+        ),
+        O.filter(([previousNode]) => previousNode.type === listNodeType),
+        O.isSome
+      );
 
       if (!previousWasListItem) return;
 
       event.preventDefault(); // NB: prevent the newline
       toggleBlock(editor, "list-item"); // NB: existing list-item ~> paragraph
     },
-    [getCurrentFocusedLeafAndPath, editor]
+    [editor]
   );
 
   return handleKeyPress;

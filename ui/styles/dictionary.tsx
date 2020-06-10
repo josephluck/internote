@@ -8,9 +8,9 @@ import { DictionaryResult } from "@internote/dictionary-service/types";
 import { useTwineState } from "../store";
 
 export const Dictionary: React.FunctionComponent<{
-  requestedWord: string;
+  selectedWord: string;
   isLoading: boolean;
-}> = ({ requestedWord, isLoading }) => {
+}> = ({ selectedWord, isLoading }) => {
   const results = useTwineState((state) => state.dictionary.dictionaryResults);
 
   return isLoading ? (
@@ -40,7 +40,7 @@ export const Dictionary: React.FunctionComponent<{
       ) : (
         <NoResults
           emojis="📖 🤔"
-          message={`We couldn't find "${requestedWord}" in the dictionary`}
+          message={`We couldn't find "${selectedWord}" in the dictionary`}
         />
       )}
     </div>

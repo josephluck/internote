@@ -13,24 +13,32 @@ import {
 export const DictionaryButton: React.FunctionComponent<{
   isLoading: boolean;
   isShowing: boolean;
-}> = ({ isLoading, isShowing }) => {
+  selectedWord: string;
+}> = ({ isLoading, isShowing, selectedWord }) => {
   const close = useTwineActions((actions) => () =>
     actions.dictionary.setDictionaryShowing(false)
   );
 
   const lookup = useTwineActions((actions) => actions.dictionary.lookup);
 
-  const handlePress = useCallback(() => {
-    if (isShowing) {
-      close();
-    } else {
-      lookup("Architecture");
-    }
-  }, [close, isShowing, lookup]);
+  // TODO: could extract a custom press handler that doesn't lose focus on editor
+  // if this becomes a common pattern
+  const handlePress = useCallback(
+    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (isShowing) {
+        close();
+      } else {
+        lookup(selectedWord);
+      }
+    },
+    [close, isShowing, lookup, selectedWord]
+  );
 
   return (
     <CollapseWidthOnHover
-      onClick={handlePress}
+      onMouseDown={handlePress}
       forceShow={isShowing}
       collapsedContent={<Flex pl={spacing._0_25}>Dictionary</Flex>}
     >

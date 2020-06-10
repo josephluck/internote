@@ -117,5 +117,8 @@
       "jsx"
     ],
     "clearMocks": true
+  },
+  "dependencies": {
+    "fp-ts": "^2.6.5"
   }
 }
