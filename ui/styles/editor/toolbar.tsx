@@ -13,9 +13,10 @@ import { Wrapper } from "../wrapper";
 import { DeleteNoteButton } from "./delete";
 import { useInternoteEditor } from "./hooks";
 import { NoteSavingIndicator } from "./saving";
-import { getHighlightedWord } from "./selection";
+import { getHighlightedWord, getSelectedTextOrBlockText } from "./selection";
 import { SlateNodeType } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
+import { Speech } from "../speech";
 
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
@@ -43,6 +44,11 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     O.getOrElse(() => "")
   );
 
+  const selectedBlockText = pipe(
+    getSelectedTextOrBlockText(editor),
+    O.getOrElse(() => "")
+  );
+
   return (
     <ToolbarWrapper
       distractionFree={distractionFree}
@@ -61,12 +67,15 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
           <BlockButton nodeType="bulleted-list" />
         </Flex>
         <Flex alignItems="center">
-          <ButtonSpacer>
+          <ButtonSpacer small>
             <DictionaryButton
               isLoading={isDictionaryLoading}
               isShowing={isDictionaryShowing}
               selectedWord={selectedWord}
             />
+          </ButtonSpacer>
+          <ButtonSpacer small>
+            <Speech selectedText={selectedBlockText} noteId={noteId} />
           </ButtonSpacer>
           <ButtonSpacer>
             <DeleteNoteButton noteId={noteId} />
