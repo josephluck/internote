@@ -95,6 +95,7 @@ const Element: React.FunctionComponent<RenderElementProps> = ({
       ? [SLATE_BLOCK_CLASS_NAME, SLATE_BLOCK_FOCUSED_CLASS_NAME].join(" ")
       : SLATE_BLOCK_CLASS_NAME,
   };
+
   switch (element.type) {
     case "block-quote":
       return <blockquote {...attrs}>{children}</blockquote>;
@@ -160,6 +161,8 @@ export const Editor = styled(Editable)<{
 }>`
   min-height: 100%;
   ${wrapperStyles};
+  padding-top: 50vh;
+  padding-bottom: 50vh;
   font-family: ${(props) => props.theme.fontFamily};
   strong {
     font-weight: bold;
