@@ -9,13 +9,11 @@ import { GetNoteDTO } from "@internote/notes-service/types";
 import { DEFAULT_NOTE_CONTENT } from "../styles/note";
 
 interface OwnState {
-  overwriteCount: number;
   notes: GetNoteDTO[];
 }
 
 interface OwnReducers {
   resetState: Twine.Reducer0<OwnState>;
-  incrementOverwriteCount: Twine.Reducer0<OwnState>;
   setNotes: Twine.Reducer<OwnState, GetNoteDTO[]>;
 }
 
@@ -24,21 +22,18 @@ export interface UpdateNotePayload {
   content: {};
   tags: string[];
   title: string | undefined;
-  overwrite?: boolean;
 }
 
 interface OwnEffects {
   fetchNotes: InternoteEffect0<Promise<GetNoteDTO[]>>;
   createNote: InternoteEffect0;
   updateNote: InternoteEffect<UpdateNotePayload, Promise<void>>;
-  overwriteNoteConfirmation: InternoteEffect<UpdateNotePayload>;
   deleteNoteConfirmation: InternoteEffect<{ noteId: string }>;
   deleteNote: InternoteEffect<{ noteId: string }>;
 }
 
 function defaultState(): OwnState {
   return {
-    overwriteCount: 0,
     notes: [],
   };
 }
@@ -58,10 +53,6 @@ export function model(api: Api): Model {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      incrementOverwriteCount: (state) => ({
-        ...state,
-        overwriteCount: state.overwriteCount + 1,
-      }),
       setNotes: (state, notes) => ({
         ...state,
         notes: notes.sort((a, b) => (a.dateUpdated > b.dateUpdated ? -1 : 1)),
@@ -90,11 +81,7 @@ export function model(api: Api): Model {
           }
         });
       },
-      async updateNote(
-        state,
-        actions,
-        { noteId, content, title, tags, overwrite = false }
-      ) {
+      async updateNote(state, actions, { noteId, content, title, tags }) {
         return Option(
           state.notes.notes.find((note) => note.noteId === noteId)
         ).fold(
@@ -108,23 +95,11 @@ export function model(api: Api): Model {
                 title,
                 dateUpdated: existingNote.dateUpdated,
                 tags,
-                overwrite,
               }
             );
             await savedNote.fold(
-              (err) => {
-                if (err.type === "Conflict") {
-                  actions.notes.overwriteNoteConfirmation({
-                    noteId,
-                    content,
-                    tags,
-                    title,
-                  });
-                }
-              },
+              () => {},
               async (updatedNote) => {
-                // NB: update dateUpdated in list so that
-                // overwrite confirmation works correctly
                 actions.notes.setNotes(
                   state.notes.notes.map((n) =>
                     n.noteId === updatedNote.noteId ? updatedNote : n
@@ -135,26 +110,6 @@ export function model(api: Api): Model {
             );
           }
         );
-      },
-      overwriteNoteConfirmation(_state, actions, details) {
-        actions.confirmation.setConfirmation({
-          message: `There's a more recent version of ${details.title}. What do you want to do?`,
-          confirmButtonText: "Overwrite",
-          cancelButtonText: "Discard",
-          async onConfirm() {
-            actions.confirmation.setConfirmationConfirmLoading(true);
-            await actions.notes.updateNote({ ...details, overwrite: true });
-            await actions.notes.fetchNotes(); // NB: important to get the latest dateUpdated from the server to avoid prompt again
-            actions.notes.incrementOverwriteCount(); // HACK: Force the editor to re-render
-            actions.confirmation.setConfirmation(null);
-          },
-          async onCancel() {
-            actions.confirmation.setConfirmationCancelLoading(true);
-            await actions.notes.fetchNotes(); // NB: important to get the latest dateUpdated from the server to avoid prompt again
-            actions.notes.incrementOverwriteCount(); // HACK: Force the editor to re-render
-            actions.confirmation.setConfirmation(null);
-          },
-        });
       },
       deleteNoteConfirmation(state, actions, { noteId }) {
         const noteToDelete = state.notes.notes.find(

@@ -1,66 +1,66 @@
-import React, { useCallback, useRef, useEffect, useMemo } from "react";
-import zenscroll from "zenscroll";
-import { Transforms, createEditor, Editor, Node } from "slate";
 import {
-  Slate,
+  SchemaBlockType,
+  SchemaMarkType,
+} from "@internote/export-service/types";
+import { GetSnippetDTO } from "@internote/snippets-service/types";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import {
+  createEditor,
+  Editor,
+  Node,
+  SchemaProperties,
+  Transforms,
+} from "slate";
+import {
   Editable,
-  withReact,
-  useEditor,
   ReactEditor,
-  useFocused,
-  useSelected,
   RenderElementProps,
   RenderLeafProps,
+  Slate,
+  withReact,
 } from "slate-react";
-
+import { None, Option, Some } from "space-lift";
+import styled, { keyframes } from "styled-components";
+import { Block } from "typescript";
+import zenscroll from "zenscroll";
+import { useTwineActions, useTwineState } from "../store";
 import {
+  currentFocusHasBlock,
+  getChanges,
+  getCurrentFocusedWord,
+  getSelectedText,
   getValueOrDefault,
+  handleMarkdownBackspaceShortcut,
+  handleMarkdownFormatShortcut,
+  hasSelection,
+  isBackspaceHotKey,
   isBoldHotkey,
-  isItalicHotkey,
-  isUnderlinedHotkey,
   isCodeHotkey,
+  isEnterHotKey,
   isH1Hotkey,
   isH2Hotkey,
-  isQuoteHotkey,
-  isOlHotkey,
-  isUlHotkey,
-  isEnterHotKey,
-  hasSelection,
-  getSelectedText,
-  currentFocusHasBlock,
-  getCurrentFocusedWord,
-  isShortcut,
-  OnChange,
-  getChanges,
+  isItalicHotkey,
   isListNavigationShortcut,
+  isOlHotkey,
+  isQuoteHotkey,
+  isShortcut,
   isSpaceHotKey,
-  isBackspaceHotKey,
-  handleMarkdownFormatShortcut,
-  handleMarkdownBackspaceShortcut,
+  isUlHotkey,
+  isUnderlinedHotkey,
+  OnChange,
 } from "../utilities/editor";
-import { Wrap, EditorStyles, EditorInnerWrap } from "./editor-styles";
-import { Option, Some, None } from "space-lift";
-import { getFirstWordFromString } from "../utilities/string";
-import { Outline } from "./outline";
 import { Emoji } from "../utilities/emojis";
-import { Tag } from "./tag";
 import { useDebounce, useThrottle } from "../utilities/hooks";
-import { Toolbar } from "./toolbar";
-import { useTwineState, useTwineActions } from "../store";
-import {
-  SchemaMarkType,
-  SchemaBlockType,
-} from "@internote/export-service/types";
+import { getFirstWordFromString } from "../utilities/string";
 import { isServer } from "../utilities/window";
-import styled, { keyframes } from "styled-components";
-import { SnippetsContext } from "./snippets-context";
 import { CreateSnippetModal } from "./create-snippet-modal";
-import { MediaEmbed } from "./media-embed";
-import { GetSnippetDTO } from "@internote/snippets-service/types";
+import { EditorInnerWrap, EditorStyles, Wrap } from "./editor-styles";
 import { InternoteUploadEvent } from "./file-upload";
-import { Block } from "typescript";
-import { RenderBlockProps, RenderMarkProps } from "slate-react";
-import { SchemaProperties } from "slate";
+import { MediaEmbed } from "./media-embed";
+import { Outline } from "./outline";
+import { SnippetsContext } from "./snippets-context";
+import { Tag } from "./tag";
+import { Toolbar } from "./toolbar";
 
 type SlateEditor = Editor & ReactEditor;
 
@@ -72,8 +72,6 @@ export function InternoteEditor({
   initialValue: {};
 }) {
   const editor: SlateEditor = useMemo(() => withReact(createEditor()), []);
-
-  const overwriteCount = useTwineState((state) => state.notes.overwriteCount);
 
   const outlineShowing = useTwineState(
     (state) => state.preferences.outlineShowing
@@ -144,7 +142,7 @@ export function InternoteEditor({
    */
   React.useEffect(() => {
     setValue(getValueOrDefault(initialValue));
-  }, [id, overwriteCount]);
+  }, [id]);
 
   /**
    * Emit changes to parent when value changes
