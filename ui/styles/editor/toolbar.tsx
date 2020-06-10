@@ -43,8 +43,6 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     O.getOrElse(() => "")
   );
 
-  console.log({ selectedWord });
-
   return (
     <ToolbarWrapper
       distractionFree={distractionFree}
