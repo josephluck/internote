@@ -1,26 +1,36 @@
-import React from "react";
-import { CollapseWidthOnHover } from "./collapse-width-on-hover";
+import { faBook, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@rebass/grid";
+import React, { useCallback } from "react";
+import { useTwineActions } from "../store";
 import { spacing } from "../theming/symbols";
+import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 import {
   ToolbarExpandingButton,
   ToolbarExpandingButtonIconWrap,
 } from "./toolbar-expanding-button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner, faBook } from "@fortawesome/free-solid-svg-icons";
-import { useTwineState } from "../store";
 
-export function DictionaryButton({
-  onClick,
-  isShowing,
-}: {
-  onClick: () => any;
+export const DictionaryButton: React.FunctionComponent<{
+  isLoading: boolean;
   isShowing: boolean;
-}) {
-  const isLoading = useTwineState((state) => state.dictionary.loading.lookup);
+}> = ({ isLoading, isShowing }) => {
+  const close = useTwineActions((actions) => () =>
+    actions.dictionary.setDictionaryShowing(false)
+  );
+
+  const lookup = useTwineActions((actions) => actions.dictionary.lookup);
+
+  const handlePress = useCallback(() => {
+    if (isShowing) {
+      close();
+    } else {
+      lookup("Architecture");
+    }
+  }, [close, isShowing, lookup]);
+
   return (
     <CollapseWidthOnHover
-      onClick={onClick}
+      onClick={handlePress}
       forceShow={isShowing}
       collapsedContent={<Flex pl={spacing._0_25}>Dictionary</Flex>}
     >
@@ -38,4 +48,4 @@ export function DictionaryButton({
       )}
     </CollapseWidthOnHover>
   );
-}
+};

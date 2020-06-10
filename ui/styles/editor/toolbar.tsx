@@ -11,6 +11,9 @@ import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 import { NoteSavingIndicator } from "./saving";
 import { DeleteNoteButton } from "./delete";
 import { useMemo } from "react";
+import { Collapse } from "react-collapse";
+import { Dictionary } from "../dictionary";
+import { DictionaryButton } from "../dictionary-button";
 
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
@@ -18,12 +21,25 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   const distractionFree = useTwineState(
     (state) => state.preferences.distractionFree
   );
-  const isToolbarShowing = true; // TODO: derive from current state etc
+
+  const isDictionaryShowing = useTwineState(
+    (state) => state.dictionary.dictionaryShowing
+  );
+
+  const isDictionaryLoading = useTwineState(
+    (state) => state.dictionary.loading.lookup
+  );
+
+  const toolbarIsExpanded = isDictionaryShowing; // TODO: derive from current state
+
+  const isToolbarVisible = toolbarIsExpanded; // TODO: derive from current state
+
+  const selectedText = ""; // TODO: get from state?
 
   return (
     <ToolbarWrapper
       distractionFree={distractionFree}
-      forceShow={isToolbarShowing}
+      forceShow={isToolbarVisible}
     >
       <ToolbarInner>
         <Flex flex={1}>
@@ -39,11 +55,31 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
         </Flex>
         <Flex alignItems="center">
           <ButtonSpacer>
+            <DictionaryButton
+              isLoading={isDictionaryLoading}
+              isShowing={isDictionaryShowing}
+            />
+          </ButtonSpacer>
+          <ButtonSpacer>
             <DeleteNoteButton noteId={noteId} />
           </ButtonSpacer>
           <NoteSavingIndicator />
         </Flex>
       </ToolbarInner>
+      <Collapse isOpened={toolbarIsExpanded}>
+        <ToolbarExpandedWrapper>
+          <ToolbarExpandedInner>
+            <ToolbarInner>
+              {isDictionaryShowing ? (
+                <Dictionary
+                  isLoading={isDictionaryLoading}
+                  requestedWord={selectedText}
+                />
+              ) : null}
+            </ToolbarInner>
+          </ToolbarExpandedInner>
+        </ToolbarExpandedWrapper>
+      </Collapse>
     </ToolbarWrapper>
   );
 };
