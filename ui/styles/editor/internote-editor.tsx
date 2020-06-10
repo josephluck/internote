@@ -16,7 +16,7 @@ import {
   SLATE_BLOCK_FOCUSED_CLASS_NAME,
 } from "./focus";
 import { useCreateInternoteEditor } from "./hooks";
-import { useEditorShortcut } from "./hotkeys";
+import { useFormattingHotkey, useResetListBlocks } from "./hotkeys";
 import { useLiveSave } from "./save";
 import { useScrollFocus } from "./scroll";
 import { Toolbar } from "./toolbar";
@@ -37,7 +37,9 @@ export const InternoteEditor: React.FunctionComponent<{
 
   const scrollRef = useRef<HTMLDivElement>();
 
-  const handleKeyboardShortcut = useEditorShortcut(editor);
+  const handleFormattingShortcut = useFormattingHotkey(editor);
+  const handleResetListBlockOnPress = useResetListBlocks(editor);
+
   const {
     scrollToFocusedNode,
     userHasScrolledOutOfDistractionMode,
@@ -45,9 +47,12 @@ export const InternoteEditor: React.FunctionComponent<{
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
-      handleKeyboardShortcut(event);
+      const handled = handleFormattingShortcut(event);
+      if (!handled) {
+        handleResetListBlockOnPress(event);
+      }
     },
-    [handleKeyboardShortcut]
+    [handleFormattingShortcut, handleResetListBlockOnPress]
   );
 
   const handleKeyUp = useCallback(() => {

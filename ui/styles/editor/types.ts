@@ -10,6 +10,7 @@ export type BlockType =
   | "bulleted-list"
   | "heading-one"
   | "heading-two"
-  | "block-quote";
+  | "block-quote"
+  | "list-item";
 
 export type SlateNodeType = MarkType | BlockType;

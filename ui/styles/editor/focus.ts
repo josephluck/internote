@@ -11,7 +11,7 @@ export const useNodeFocus = (editor: InternoteSlateEditor) => {
   const editorRef = useRef(editor);
   editorRef.current = editor;
 
-  const getCurrentFocusedNode = useCallback(() => {
+  const getCurrentFocusedLeaf = useCallback(() => {
     const { selection } = editorRef.current;
     if (selection) {
       const [node] = Editor.node(editorRef.current, selection);
@@ -19,9 +19,16 @@ export const useNodeFocus = (editor: InternoteSlateEditor) => {
     }
   }, []);
 
+  const getCurrentFocusedLeafAndPath = useCallback(() => {
+    const { selection } = editorRef.current;
+    if (selection) {
+      return Editor.node(editorRef.current, selection);
+    }
+  }, []);
+
   const getCurrentFocusedHTMLLeaf = useCallback(
-    () => ReactEditor.toDOMNode(editorRef.current, getCurrentFocusedNode()),
-    [getCurrentFocusedNode]
+    () => ReactEditor.toDOMNode(editorRef.current, getCurrentFocusedLeaf()),
+    [getCurrentFocusedLeaf]
   );
 
   const getCurrentFocusedHTMLNode = useCallback(
@@ -30,7 +37,8 @@ export const useNodeFocus = (editor: InternoteSlateEditor) => {
   );
 
   return {
-    getCurrentFocusedNode,
+    getCurrentFocusedLeaf,
+    getCurrentFocusedLeafAndPath,
     getCurrentFocusedHTMLLeaf,
     getCurrentFocusedHTMLNode,
   };

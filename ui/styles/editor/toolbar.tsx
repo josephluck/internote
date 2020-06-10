@@ -1,5 +1,5 @@
 import { Flex } from "@rebass/grid";
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { useTwineState } from "../../store";
 import { font, size, spacing } from "../../theming/symbols";
@@ -10,6 +10,7 @@ import { SlateNodeType } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 import { NoteSavingIndicator } from "./saving";
 import { DeleteNoteButton } from "./delete";
+import { useMemo } from "react";
 
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
@@ -51,12 +52,22 @@ const BlockButton: React.FunctionComponent<{ nodeType: SlateNodeType }> = ({
   nodeType,
 }) => {
   const editor = useInternoteEditor();
+
+  const handleToggle = useCallback(() => {
+    toggleBlock(editor, nodeType);
+  }, [editor, nodeType]);
+
+  const isActive = useMemo(() => isBlockActive(editor, nodeType), [
+    editor,
+    nodeType,
+  ]);
+
   return (
     <ToolbarButton
       nodeType={nodeType}
-      isActive={isBlockActive(editor, nodeType)}
+      isActive={isActive}
       shortcutNumber={1}
-      onClick={() => toggleBlock(editor, nodeType)}
+      onClick={handleToggle}
     />
   );
 };
@@ -65,12 +76,22 @@ const MarkButton: React.FunctionComponent<{ nodeType: SlateNodeType }> = ({
   nodeType,
 }) => {
   const editor = useInternoteEditor();
+
+  const handleToggle = useCallback(() => {
+    toggleMark(editor, nodeType);
+  }, [editor, nodeType]);
+
+  const isActive = useMemo(() => isMarkActive(editor, nodeType), [
+    editor,
+    nodeType,
+  ]);
+
   return (
     <ToolbarButton
       nodeType={nodeType}
-      isActive={isMarkActive(editor, nodeType)}
+      isActive={isActive}
       shortcutNumber={1}
-      onClick={() => toggleMark(editor, nodeType)}
+      onClick={handleToggle}
     />
   );
 };
