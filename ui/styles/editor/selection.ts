@@ -1,6 +1,6 @@
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
-import { Range as SlateRange, Editor } from "slate";
+import { Range as SlateRange, Point as SlatePoint, Editor } from "slate";
 import { getCurrentFocusedHTMLNodeTextContent } from "./focus";
 import { InternoteSlateEditor } from "./types";
 
@@ -41,29 +41,48 @@ export const getSelectedTextOrBlockText = (editor: InternoteSlateEditor) =>
 
 /**
  * Returns the word under the cursor.
- * Returns none if there's a highlighted region under the cursor (i.e. the user has
- * selected multiple words)
+ * Returns none if there's a highlighted region under the cursor (i.e. the user
+ * has selected multiple words)
  *
- * TODO: support inclusion of preceding character (for smart search)
+ * NB: includePrecedingCharacter extends the selection to include the character
+ * to the left of the full word. This is necessary because Slate's expansion of
+ * a range does not include special characters.
  */
 export const getWordUnderCursor = (
-  editor: InternoteSlateEditor
+  editor: InternoteSlateEditor,
+  includePrecedingCharacter: boolean = false
 ): O.Option<string> =>
   pipe(
     getEditorRange(editor),
     O.filter((range) => range.focus.offset === range.anchor.offset),
-    O.filterMap(extractTextFromSlateRangeOffset(editor)),
+    O.filterMap(
+      extractExpandedTextFromSlateRange(editor, includePrecedingCharacter)
+    ),
+    O.map((text) => text.trim()),
     O.filter((text) => text.length > 0)
   );
 
-export const extractTextFromSlateRangeOffset = (
-  editor: InternoteSlateEditor
+/**
+ * Expands a slate range to include surrounding full word and extracts the text
+ * content from it
+ */
+export const extractExpandedTextFromSlateRange = (
+  editor: InternoteSlateEditor,
+  includePrecedingCharacter: boolean = false
 ) => (range: SlateRange): O.Option<string> =>
   pipe(
     O.tryCatch(() => expandRangeToFullWord(editor, range)),
+    O.map((range) =>
+      includePrecedingCharacter
+        ? expandRangeToPrecedingCharacter(editor, range)
+        : range
+    ),
     O.filterMap((range) => O.tryCatch(() => Editor.string(editor, range)))
   );
 
+/**
+ * Expands a slate range to include full words
+ */
 const expandRangeToFullWord = (
   editor: InternoteSlateEditor,
   range: SlateRange
@@ -73,6 +92,25 @@ const expandRangeToFullWord = (
   }),
   focus: Editor.after(editor, range, { unit: "word" }),
 });
+
+/**
+ * Expands a slate range to include the character immediately to the left
+ */
+const expandRangeToPrecedingCharacter = (
+  editor: InternoteSlateEditor,
+  range: SlateRange
+): SlateRange => ({
+  anchor: expandPointToPrecedingCharacter(editor, range.anchor),
+  focus: range.focus,
+});
+
+const expandPointToPrecedingCharacter = (
+  editor: InternoteSlateEditor,
+  point: SlatePoint
+): SlatePoint =>
+  Editor.before(editor, point, {
+    unit: "character",
+  });
 
 /**
  * Returns the first word in the current selected (highlighted) text, or the

@@ -13,7 +13,7 @@ export const getSmartSearchShortcut = (shortcut: string) => (
   editor: InternoteSlateEditor
 ): O.Option<string> =>
   pipe(
-    getWordUnderCursor(editor),
+    getWordUnderCursor(editor, true),
     O.map((text) => {
       console.log({ text });
       return text;
