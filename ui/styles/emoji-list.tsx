@@ -3,12 +3,68 @@ import { emojis, Emoji } from "../utilities/emojis";
 import styled from "styled-components";
 import { spacing, size, font } from "../theming/symbols";
 import Fuse from "fuse.js";
-import {
-  isRightHotKey,
-  isLeftHotKey,
-  isEnterHotKey,
-} from "../utilities/editor";
 import { NoResults } from "./no-results";
+
+import isHotkey from "is-hotkey";
+
+export const EmojiList: React.FunctionComponent<{
+  onEmojiSelected: (emoji: Emoji, searchText: string) => any;
+  search: string;
+}> = ({ search, onEmojiSelected }) => {
+  const [filteredEmojis, setFilteredEmojis] = useState<Emoji[]>([]);
+  const [focusedIndex, setFocusedIndex] = useState(0);
+
+  useEffect(() => {
+    setFocusedIndex(0);
+    setFilteredEmojis(
+      search.length > 0 ? fuzzy.search(search).map((i) => i.item) : emojis
+    );
+  }, [search]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (isHotkey("right", event)) {
+        setFocusedIndex(
+          focusedIndex === filteredEmojis.length - 1 ? 0 : focusedIndex + 1
+        );
+      } else if (isHotkey("left", event)) {
+        setFocusedIndex(
+          focusedIndex === 0 ? filteredEmojis.length - 1 : focusedIndex - 1
+        );
+      } else if (isHotkey("enter", event) && focusedIndex >= 0) {
+        onEmojiSelected(filteredEmojis[focusedIndex], `:${search}`);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [filteredEmojis, focusedIndex, onEmojiSelected, search]);
+
+  return (
+    <Wrap>
+      {filteredEmojis.length > 0 ? (
+        <ListInner>
+          {filteredEmojis.map((emoji, i) => (
+            <EmojiItem
+              key={emoji.codes}
+              isFocused={search.length === 0 || focusedIndex === i}
+              onMouseEnter={() => setFocusedIndex(i)}
+              onClick={(e) => {
+                e.preventDefault();
+                onEmojiSelected(emoji, `:${search}`);
+              }}
+            >
+              {emoji.char}
+            </EmojiItem>
+          ))}
+        </ListInner>
+      ) : (
+        <NoResults emojis="🔎 😒" message={`No emojis found for "${search}"`} />
+      )}
+    </Wrap>
+  );
+};
 
 const Wrap = styled.div`
   width: 100%;
@@ -40,63 +96,3 @@ const fuzzy = new Fuse(emojis, {
   minMatchCharLength: 1,
   keys: ["name", "keywords"],
 });
-
-export function EmojiList({
-  search,
-  onEmojiSelected,
-}: {
-  onEmojiSelected: (emoji: Emoji, searchText: string) => any;
-  search: string;
-}) {
-  const [filteredEmojis, setFilteredEmojis] = useState<Emoji[]>([]);
-  const [focusedIndex, setFocusedIndex] = useState(0);
-
-  useEffect(() => {
-    setFocusedIndex(0);
-    setFilteredEmojis(search.length > 0 ? fuzzy.search(search) : emojis);
-  }, [search]);
-
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if (isRightHotKey(event)) {
-        setFocusedIndex(
-          focusedIndex === filteredEmojis.length - 1 ? 0 : focusedIndex + 1
-        );
-      } else if (isLeftHotKey(event)) {
-        setFocusedIndex(
-          focusedIndex === 0 ? filteredEmojis.length - 1 : focusedIndex - 1
-        );
-      } else if (isEnterHotKey(event) && focusedIndex >= 0) {
-        onEmojiSelected(filteredEmojis[focusedIndex], `:${search}`);
-      }
-    }
-    window.addEventListener("keydown", onKeyDown);
-    return function () {
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [filteredEmojis, focusedIndex, onEmojiSelected, search]);
-
-  return (
-    <Wrap>
-      {filteredEmojis.length > 0 ? (
-        <ListInner>
-          {filteredEmojis.map((emoji, i) => (
-            <EmojiItem
-              key={emoji.codes}
-              isFocused={search.length === 0 || focusedIndex === i}
-              onMouseEnter={() => setFocusedIndex(i)}
-              onClick={(e) => {
-                e.preventDefault();
-                onEmojiSelected(emoji, `:${search}`);
-              }}
-            >
-              {emoji.char}
-            </EmojiItem>
-          ))}
-        </ListInner>
-      ) : (
-        <NoResults emojis="🔎 😒" message={`No emojis found for "${search}"`} />
-      )}
-    </Wrap>
-  );
-}

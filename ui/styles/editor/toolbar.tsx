@@ -17,11 +17,12 @@ import { getHighlightedWord, getSelectedTextOrBlockText } from "./selection";
 import { SlateNodeType } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 import { Speech } from "../speech";
+import { EmojiList } from "../emoji-list";
 
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
 }) => {
-  const editor = useInternoteEditor();
+  const { editor, emojiSearchText } = useInternoteEditor();
 
   const distractionFree = useTwineState(
     (state) => state.preferences.distractionFree
@@ -35,9 +36,11 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     (state) => state.dictionary.loading.lookup
   );
 
-  const toolbarIsExpanded = isDictionaryShowing; // TODO: derive from current state
+  const isEmojiShowing = emojiSearchText.length > 0;
 
-  const isToolbarVisible = toolbarIsExpanded; // TODO: derive from current state
+  const toolbarIsExpanded = isDictionaryShowing || isEmojiShowing;
+
+  const isToolbarVisible = toolbarIsExpanded;
 
   const selectedWord = pipe(
     getHighlightedWord(editor),
@@ -87,7 +90,14 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
         <ToolbarExpandedWrapper>
           <ToolbarExpandedInner>
             <ToolbarInner>
-              {isDictionaryShowing ? (
+              {isEmojiShowing ? (
+                <EmojiList
+                  onEmojiSelected={(emoji, searchText) => {
+                    console.log({ emoji, searchText });
+                  }}
+                  search={emojiSearchText}
+                />
+              ) : isDictionaryShowing ? (
                 <Dictionary
                   isLoading={isDictionaryLoading}
                   selectedWord={selectedWord}
@@ -104,7 +114,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
 const BlockButton: React.FunctionComponent<{ nodeType: SlateNodeType }> = ({
   nodeType,
 }) => {
-  const editor = useInternoteEditor();
+  const { editor } = useInternoteEditor();
 
   const handleToggle = useCallback(() => {
     toggleBlock(editor, nodeType);
@@ -128,7 +138,7 @@ const BlockButton: React.FunctionComponent<{ nodeType: SlateNodeType }> = ({
 const MarkButton: React.FunctionComponent<{ nodeType: SlateNodeType }> = ({
   nodeType,
 }) => {
-  const editor = useInternoteEditor();
+  const { editor } = useInternoteEditor();
 
   const handleToggle = useCallback(() => {
     toggleMark(editor, nodeType);

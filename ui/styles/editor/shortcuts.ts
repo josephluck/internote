@@ -1,5 +1,33 @@
 import { Editor, Range, Transforms, Point } from "slate";
-import { SlateNodeType } from "./types";
+import { SlateNodeType, InternoteSlateEditor } from "./types";
+import { pipe } from "fp-ts/lib/function";
+import { getWordUnderCursor } from "./selection";
+import * as O from "fp-ts/lib/Option";
+
+/**
+ * Gets and returns the text under a "smart" search.
+ * For example `:smile` where `:` is the shortcut and `smile` is the search.
+ * For example `#hashtag` where `#` is the shortcut and `hashtag` is the search.
+ */
+export const getSmartSearchShortcut = (shortcut: string) => (
+  editor: InternoteSlateEditor
+): O.Option<string> =>
+  pipe(
+    getWordUnderCursor(editor),
+    O.map((text) => {
+      console.log({ text });
+      return text;
+    }),
+    O.filter((text) => text.startsWith(shortcut)),
+    O.filterMap(trimFirstCharacterFromString)
+  );
+
+const trimFirstCharacterFromString = (value: string): O.Option<string> =>
+  pipe(
+    O.some(value),
+    O.filter((str) => str.length > 1),
+    O.filterMap((str) => O.fromNullable(str.substring(1)))
+  );
 
 const defaultShortcuts: Record<string, SlateNodeType> = {
   "*": "list-item",

@@ -15,7 +15,7 @@ import {
   SLATE_BLOCK_CLASS_NAME,
   SLATE_BLOCK_FOCUSED_CLASS_NAME,
 } from "./focus";
-import { useCreateInternoteEditor } from "./hooks";
+import { useCreateInternoteEditor, InternoteEditorProvider } from "./hooks";
 import { useFormattingHotkey, useResetListBlocks } from "./hotkeys";
 import { useLiveSave } from "./save";
 import { useScrollFocus } from "./scroll";
@@ -38,6 +38,7 @@ export const InternoteEditor: React.FunctionComponent<{
   const scrollRef = useRef<HTMLDivElement>();
 
   const handleFormattingShortcut = useFormattingHotkey(editor);
+
   const handleResetListBlockOnPress = useResetListBlocks(editor);
 
   const {
@@ -67,21 +68,23 @@ export const InternoteEditor: React.FunctionComponent<{
 
   return (
     <Slate editor={editor} value={value} onChange={setValue}>
-      <FullHeight>
-        <InnerPadding ref={scrollRef}>
-          <Editor
-            userScrolled={userHasScrolledOutOfDistractionMode}
-            distractionFree={distractionFree}
-            renderElement={renderElement}
-            renderLeaf={renderLeaf}
-            spellCheck
-            autoFocus
-            onKeyDown={handleKeyDown}
-            onKeyUp={handleKeyUp}
-          />
-        </InnerPadding>
-      </FullHeight>
-      <Toolbar noteId={noteId} />
+      <InternoteEditorProvider>
+        <FullHeight>
+          <InnerPadding ref={scrollRef}>
+            <Editor
+              userScrolled={userHasScrolledOutOfDistractionMode}
+              distractionFree={distractionFree}
+              renderElement={renderElement}
+              renderLeaf={renderLeaf}
+              spellCheck
+              autoFocus
+              onKeyDown={handleKeyDown}
+              onKeyUp={handleKeyUp}
+            />
+          </InnerPadding>
+        </FullHeight>
+        <Toolbar noteId={noteId} />
+      </InternoteEditorProvider>
     </Slate>
   );
 };

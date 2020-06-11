@@ -1,7 +1,6 @@
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
-import { Range as SlateRange } from "slate";
-import { ReactEditor } from "slate-react";
+import { Range as SlateRange, Editor } from "slate";
 import { getCurrentFocusedHTMLNodeTextContent } from "./focus";
 import { InternoteSlateEditor } from "./types";
 
@@ -26,9 +25,7 @@ export const extractTextFromSlateRange = (editor: InternoteSlateEditor) => (
   range: SlateRange
 ): O.Option<string> =>
   pipe(
-    O.tryCatch(() => ReactEditor.toDOMRange(editor, range)),
-    O.mapNullable((domRange) => domRange.cloneContents()),
-    O.mapNullable((fragment) => fragment.textContent),
+    O.tryCatch(() => Editor.string(editor, range)),
     O.filter((text) => text.length > 0)
   );
 
@@ -46,6 +43,8 @@ export const getSelectedTextOrBlockText = (editor: InternoteSlateEditor) =>
  * Returns the word under the cursor.
  * Returns none if there's a highlighted region under the cursor (i.e. the user has
  * selected multiple words)
+ *
+ * TODO: support inclusion of preceding character (for smart search)
  */
 export const getWordUnderCursor = (
   editor: InternoteSlateEditor
@@ -53,59 +52,27 @@ export const getWordUnderCursor = (
   pipe(
     getEditorRange(editor),
     O.filter((range) => range.focus.offset === range.anchor.offset),
-    O.filterMap(extractTextFromSlateRangeOffset(editor))
+    O.filterMap(extractTextFromSlateRangeOffset(editor)),
+    O.filter((text) => text.length > 0)
   );
 
 export const extractTextFromSlateRangeOffset = (
   editor: InternoteSlateEditor
 ) => (range: SlateRange): O.Option<string> =>
   pipe(
-    O.tryCatch(() => ReactEditor.toDOMRange(editor, range)),
-    O.filterMap(extractWordFromRangeStartOffset)
+    O.tryCatch(() => expandRangeToFullWord(editor, range)),
+    O.filterMap((range) => O.tryCatch(() => Editor.string(editor, range)))
   );
 
-/**
- * Given a DOM range, find the word under the start offset of the range.
- */
-const extractWordFromRangeStartOffset = (range: Range): O.Option<string> => {
-  const text = range.startContainer.textContent;
-  const offset = range.startOffset;
-
-  const expandedStartBoundary = findOffsetOfPreviousSpace(offset, text);
-  const expandedEndBoundary = findOffsetOfNextSpace(offset, text);
-
-  const word = text.slice(expandedStartBoundary, expandedEndBoundary);
-
-  return O.fromNullable(word);
-};
-
-/**
- * Given a starting offset and a block of text, find the offset of the closest
- * leftmost space
- */
-const findOffsetOfPreviousSpace = (offset: number, text: string) => {
-  if (offset === 0) {
-    return 0;
-  } else if (text.charAt(offset - 1).match(/\s/g)) {
-    return offset;
-  } else {
-    return findOffsetOfPreviousSpace(offset - 1, text);
-  }
-};
-
-/**
- * Given a starting offset and a block of text, find the offset of the closest
- * rightmost space
- */
-const findOffsetOfNextSpace = (offset: number, text: string) => {
-  if (offset === text.length) {
-    return text.length;
-  } else if (text.charAt(offset).match(/\s/g)) {
-    return offset;
-  } else {
-    return findOffsetOfNextSpace(offset + 1, text);
-  }
-};
+const expandRangeToFullWord = (
+  editor: InternoteSlateEditor,
+  range: SlateRange
+): SlateRange => ({
+  anchor: Editor.before(editor, range, {
+    unit: "word",
+  }),
+  focus: Editor.after(editor, range, { unit: "word" }),
+});
 
 /**
  * Returns the first word in the current selected (highlighted) text, or the
