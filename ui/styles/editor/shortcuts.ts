@@ -14,13 +14,13 @@ export const getSmartSearchShortcut = (shortcut: string) => (
 ): O.Option<string> =>
   pipe(
     getWordUnderCursor(editor, true),
-    O.map((text) => {
-      console.log({ text });
-      return text;
-    }),
     O.filter((text) => text.startsWith(shortcut)),
     O.filterMap(trimFirstCharacterFromString)
   );
+
+export const getEmojiSearchShortcut = getSmartSearchShortcut(":");
+
+export const getHashtagSearchShortcut = getSmartSearchShortcut("#");
 
 const trimFirstCharacterFromString = (value: string): O.Option<string> =>
   pipe(

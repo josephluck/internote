@@ -3,7 +3,11 @@ import { withHistory } from "slate-history";
 import { withReact, useSlate } from "slate-react";
 import { createEditor } from "slate";
 import { InternoteSlateEditor } from "./types";
-import { withShortcuts, getSmartSearchShortcut } from "./shortcuts";
+import {
+  withShortcuts,
+  getEmojiSearchShortcut,
+  getHashtagSearchShortcut,
+} from "./shortcuts";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
 
@@ -13,11 +17,13 @@ export const useCreateInternoteEditor = () =>
 interface InternoteEditorContext {
   editor: InternoteSlateEditor;
   emojiSearchText: string;
+  hashtagSearchText: string;
 }
 
 export const InternoteEditorCtx = createContext<InternoteEditorContext>({
   editor: null,
   emojiSearchText: "",
+  hashtagSearchText: "",
 });
 
 export const InternoteEditorProvider: React.FunctionComponent = ({
@@ -26,13 +32,19 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
   const editor = useGetInternoteEditor();
 
   const emojiSearchText = pipe(
-    getSmartSearchShortcut(":")(editor),
+    getEmojiSearchShortcut(editor),
+    O.getOrElse(() => "")
+  );
+
+  const hashtagSearchText = pipe(
+    getHashtagSearchShortcut(editor),
     O.getOrElse(() => "")
   );
 
   const ctx: InternoteEditorContext = {
     editor,
     emojiSearchText,
+    hashtagSearchText,
   };
 
   return (
