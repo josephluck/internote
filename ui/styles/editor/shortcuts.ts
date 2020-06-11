@@ -10,7 +10,10 @@ const defaultShortcuts: Record<string, SlateNodeType> = {
   "##": "heading-two",
 };
 
-export const withShortcuts = (editor: Editor, shortcuts = defaultShortcuts) => {
+export const withShortcuts = <T extends Editor>(
+  editor: T,
+  shortcuts = defaultShortcuts
+): T => {
   const { deleteBackward, insertText } = editor;
 
   editor.insertText = (text) => {

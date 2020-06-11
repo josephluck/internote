@@ -10,5 +10,5 @@ export const useCreateInternoteEditor = () =>
 
 export const useInternoteEditor = (): InternoteSlateEditor => {
   const editor = useSlate();
-  return (editor as any) as InternoteSlateEditor;
+  return editor as InternoteSlateEditor;
 };
