@@ -37,28 +37,12 @@ export const getCurrentFocusedHTMLLeaf = (
     O.filterMap((node) => O.tryCatch(() => ReactEditor.toDOMNode(editor, node)))
   );
 
-export const getCurrentFocusedHTMLLeafTextContent = (
-  editor: InternoteSlateEditor
-): O.Option<string> =>
-  pipe(
-    getCurrentFocusedHTMLLeaf(editor),
-    O.map((element) => element.textContent)
-  );
-
 export const getCurrentFocusedHTMLNode = (
   editor: InternoteSlateEditor
 ): O.Option<HTMLElement> =>
   pipe(
     getCurrentFocusedHTMLLeaf(editor),
     O.filterMap(findAncestor(SLATE_BLOCK_CLASS_NAME))
-  );
-
-export const getCurrentFocusedHTMLNodeTextContent = (
-  editor: InternoteSlateEditor
-): O.Option<string> =>
-  pipe(
-    getCurrentFocusedHTMLNode(editor),
-    O.map((element) => element.textContent)
   );
 
 /**

@@ -13,7 +13,7 @@ import { Wrapper } from "../wrapper";
 import { DeleteNoteButton } from "./delete";
 import { useInternoteEditor } from "./hooks";
 import { NoteSavingIndicator } from "./saving";
-import { getHighlightedWord, getSelectedTextOrBlockText } from "./selection";
+import { getHighlightedWord } from "./selection";
 import { SlateNodeType } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 import { Speech } from "../speech";
@@ -27,6 +27,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     emojiSearchText,
     hasSmartSearch,
     replaceSmartSearchText,
+    selectedText,
   } = useInternoteEditor();
 
   const distractionFree = useTwineState(
@@ -49,11 +50,6 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
 
   const selectedWord = pipe(
     getHighlightedWord(editor),
-    O.getOrElse(() => "")
-  );
-
-  const selectedBlockText = pipe(
-    getSelectedTextOrBlockText(editor),
     O.getOrElse(() => "")
   );
 
@@ -83,7 +79,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
             />
           </ButtonSpacer>
           <ButtonSpacer small>
-            <Speech selectedText={selectedBlockText} noteId={noteId} />
+            <Speech selectedText={selectedText} noteId={noteId} />
           </ButtonSpacer>
           <ButtonSpacer>
             <DeleteNoteButton noteId={noteId} />

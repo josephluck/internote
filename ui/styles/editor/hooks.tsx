@@ -5,7 +5,10 @@ import { createEditor, Editor, Transforms } from "slate";
 import { withHistory } from "slate-history";
 import { useSlate, withReact } from "slate-react";
 import { isNavigationShortcut } from "./hotkeys";
-import { getWordRangeUnderCursor } from "./selection";
+import {
+  getWordRangeUnderCursor,
+  getSelectedTextOrBlockText,
+} from "./selection";
 import {
   getEmojiSearchShortcut,
   getHashtagSearchShortcut,
@@ -20,6 +23,7 @@ interface InternoteEditorContext {
   editor: InternoteSlateEditor;
   emojiSearchText: string;
   hashtagSearchText: string;
+  selectedText: string;
   hasSmartSearch: boolean;
   handlePreventKeydown: (event: React.KeyboardEvent) => void;
   replaceSmartSearchText: (withText: string) => void;
@@ -29,6 +33,7 @@ export const InternoteEditorCtx = createContext<InternoteEditorContext>({
   editor: null,
   emojiSearchText: "",
   hashtagSearchText: "",
+  selectedText: "",
   hasSmartSearch: false,
   handlePreventKeydown: () => void null,
   replaceSmartSearchText: () => void null,
@@ -52,6 +57,13 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
   const hasSmartSearch = [emojiSearchText, hashtagSearchText].some(
     (val) => val.length > 0
   );
+
+  const selectedText = pipe(
+    getSelectedTextOrBlockText(editor),
+    O.getOrElse(() => "")
+  );
+
+  console.log({ selectedText });
 
   const handlePreventKeydown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -86,6 +98,7 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
     editor,
     emojiSearchText,
     hashtagSearchText,
+    selectedText,
     hasSmartSearch,
     handlePreventKeydown,
     replaceSmartSearchText,

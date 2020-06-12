@@ -1,12 +1,22 @@
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
-import { Range as SlateRange, Point as SlatePoint, Editor } from "slate";
-import { getCurrentFocusedHTMLNodeTextContent } from "./focus";
+import { Range as SlateRange, Point as SlatePoint, Editor, Point } from "slate";
 import { InternoteSlateEditor } from "./types";
 
-export const getEditorRange = (
+/**
+ * Get the current selection from the editor normalized such that the anchor
+ * is guaranteed to be before the focus
+ */
+export const getNormalizedEditorRange = (
   editor: InternoteSlateEditor
-): O.Option<SlateRange> => O.fromNullable(editor.selection);
+): O.Option<SlateRange> =>
+  pipe(
+    O.fromNullable(editor.selection),
+    O.map(({ anchor, focus }) => ({
+      anchor: Point.isBefore(anchor, focus) ? anchor : focus,
+      focus: Point.isAfter(focus, anchor) ? focus : anchor,
+    }))
+  );
 
 /**
  * Returns the text in the current selected (highlighted) text.
@@ -16,27 +26,41 @@ export const getSelectedText = (
   editor: InternoteSlateEditor
 ): O.Option<string> =>
   pipe(
-    getEditorRange(editor),
+    getNormalizedEditorRange(editor),
     O.filter((range) => range.focus.offset !== range.anchor.offset),
-    O.filterMap(extractTextFromSlateRange(editor))
-  );
-
-export const extractTextFromSlateRange = (editor: InternoteSlateEditor) => (
-  range: SlateRange
-): O.Option<string> =>
-  pipe(
-    O.tryCatch(() => Editor.string(editor, range)),
-    O.filter((text) => text.length > 0)
+    O.filterMap((range) => getExpandedRangeToFullWord(editor, range, false)),
+    O.filterMap((range) => extractTextFromSlateRange(editor, range))
   );
 
 /**
  * Returns the current selected (highlighted) text, or the current block's
  * text if there's no selection
  */
-export const getSelectedTextOrBlockText = (editor: InternoteSlateEditor) =>
+export const getSelectedTextOrBlockText = (
+  editor: InternoteSlateEditor
+): O.Option<string> =>
   pipe(
     getSelectedText(editor),
-    O.fold(() => getCurrentFocusedHTMLNodeTextContent(editor), O.some)
+    O.fold(
+      () =>
+        pipe(
+          getRangeOfCurrentSelectionBlock(editor),
+          O.filterMap((range) => extractTextFromSlateRange(editor, range))
+        ),
+      O.some
+    )
+  );
+
+/**
+ * Given a slate range, extract it's contents
+ */
+export const extractTextFromSlateRange = (
+  editor: InternoteSlateEditor,
+  range: SlateRange
+): O.Option<string> =>
+  pipe(
+    O.tryCatch(() => Editor.string(editor, range)),
+    O.filter((text) => text.length > 0)
   );
 
 /**
@@ -53,10 +77,10 @@ export const getWordRangeUnderCursor = (
   includePrecedingCharacter: boolean
 ): O.Option<SlateRange> =>
   pipe(
-    getEditorRange(editor),
+    getNormalizedEditorRange(editor),
     O.filter((range) => range.focus.offset === range.anchor.offset),
     O.filterMap((range) =>
-      getExpandedRange(editor, range, includePrecedingCharacter)
+      getExpandedRangeToFullWord(editor, range, includePrecedingCharacter)
     )
   );
 
@@ -88,7 +112,7 @@ const getTextFromSlateRange = (
 /**
  * Expands a slate range to include surrounding full words
  */
-export const getExpandedRange = (
+export const getExpandedRangeToFullWord = (
   editor: InternoteSlateEditor,
   range: SlateRange,
   includePrecedingCharacter: boolean
@@ -101,6 +125,42 @@ export const getExpandedRange = (
         : O.some(range)
     )
   );
+
+/**
+ * Gets the editors current range and extends it to include surrounding full
+ * block
+ */
+export const getRangeOfCurrentSelectionBlock = (editor: InternoteSlateEditor) =>
+  pipe(
+    getNormalizedEditorRange(editor),
+    O.map((range) => getExpandedRangeToFullBlock(editor, range))
+  );
+
+/**
+ * Takes a slate range and expands it to start and end at a full block
+ */
+const getExpandedRangeToFullBlock = (
+  editor: InternoteSlateEditor,
+  { anchor, focus }: SlateRange
+): SlateRange => ({
+  anchor: pipe(
+    O.tryCatch(() => Editor.before(editor, anchor, { unit: "block" })),
+    O.filter(Boolean),
+    O.getOrElse(() => {
+      console.log("Anchor failed to expand");
+      return anchor;
+    })
+  ),
+  focus: pipe(
+    O.tryCatch(() => Editor.after(editor, focus, { unit: "block" })),
+    O.filter(Boolean),
+    O.getOrElse(() => {
+      console.log("Focus failed to expand");
+      return focus;
+    })
+  ),
+});
+
 /**
  * Expands a slate range to include full words.
  * NB: only expands a side if it is not already at the start of the word.
@@ -118,6 +178,7 @@ const expandRangeToFullWord = (
         unit: "word",
       })
     ),
+    O.filter(Boolean),
     O.getOrElse(() => range.anchor)
   ),
   focus: pipe(
@@ -125,6 +186,7 @@ const expandRangeToFullWord = (
     O.filterMap((range) => getTextFromSlateRange(editor, range)),
     O.filter((character) => character !== " "),
     O.map(() => Editor.after(editor, range.focus, { unit: "word" })),
+    O.filter(Boolean),
     O.getOrElse(() => range.focus)
   ),
 });
@@ -139,6 +201,32 @@ const expandRangeToPrecedingCharacter = (
   pipe(
     expandPointToPrecedingCharacter(editor, range.anchor),
     O.map((anchor) => ({ anchor, focus: range.focus }))
+  );
+
+const expandPointToPrecedingCharacter = (
+  editor: InternoteSlateEditor,
+  point: SlatePoint
+): O.Option<SlatePoint> =>
+  pipe(
+    O.tryCatch(() =>
+      Editor.before(editor, point, {
+        unit: "character",
+      })
+    ),
+    O.filter((point) => Boolean(point))
+  );
+
+const expandPointToNextCharacter = (
+  editor: InternoteSlateEditor,
+  point: SlatePoint
+): O.Option<SlatePoint> =>
+  pipe(
+    O.tryCatch(() =>
+      Editor.after(editor, point, {
+        unit: "character",
+      })
+    ),
+    O.filter((point) => Boolean(point))
   );
 
 /**
@@ -165,26 +253,6 @@ const buildRangeOfNextCharacter = (
   pipe(
     expandPointToNextCharacter(editor, point),
     O.map((focus) => ({ anchor: point, focus }))
-  );
-
-const expandPointToPrecedingCharacter = (
-  editor: InternoteSlateEditor,
-  point: SlatePoint
-): O.Option<SlatePoint> =>
-  O.tryCatch(() =>
-    Editor.before(editor, point, {
-      unit: "character",
-    })
-  );
-
-const expandPointToNextCharacter = (
-  editor: InternoteSlateEditor,
-  point: SlatePoint
-): O.Option<SlatePoint> =>
-  O.tryCatch(() =>
-    Editor.after(editor, point, {
-      unit: "character",
-    })
   );
 
 /**
