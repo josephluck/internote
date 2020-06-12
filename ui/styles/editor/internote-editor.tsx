@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useMemo } from "react";
 import { Node } from "slate";
 import {
   Editable,
@@ -15,25 +15,45 @@ import {
   SLATE_BLOCK_CLASS_NAME,
   SLATE_BLOCK_FOCUSED_CLASS_NAME,
 } from "./focus";
-import { useCreateInternoteEditor, InternoteEditorProvider } from "./hooks";
-import { useFormattingHotkey, useResetListBlocks } from "./hotkeys";
+import {
+  useCreateInternoteEditor,
+  InternoteEditorProvider,
+  useInternoteEditor,
+} from "./hooks";
+import {
+  useFormattingHotkey,
+  useResetListBlocks,
+  sequenceKeyboardEventHandlers,
+} from "./hotkeys";
 import { useLiveSave } from "./save";
 import { useScrollFocus } from "./scroll";
 import { Toolbar } from "./toolbar";
-import { InternoteSlateEditor } from "./types";
 
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: Node[];
   noteId: string;
 }> = ({ initialValue, noteId }) => {
+  const editor = useCreateInternoteEditor();
+
+  const [value, setValue] = useState(initialValue);
+  useLiveSave(value, noteId);
+
+  return (
+    <Slate editor={editor} value={value} onChange={setValue}>
+      <InternoteEditorProvider>
+        <InternoteEditorEditor />
+        <Toolbar noteId={noteId} />
+      </InternoteEditorProvider>
+    </Slate>
+  );
+};
+
+const InternoteEditorEditor = () => {
+  const { editor, handlePreventKeydown } = useInternoteEditor();
+
   const distractionFree = useTwineState(
     (state) => state.preferences.distractionFree
   );
-  const editor: InternoteSlateEditor = useCreateInternoteEditor();
-
-  const [value, setValue] = useState(initialValue);
-
-  useLiveSave(value, noteId);
 
   const scrollRef = useRef<HTMLDivElement>();
 
@@ -46,14 +66,18 @@ export const InternoteEditor: React.FunctionComponent<{
     userHasScrolledOutOfDistractionMode,
   } = useScrollFocus(editor, scrollRef);
 
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
-      const handled = handleFormattingShortcut(event);
-      if (!handled) {
-        handleResetListBlockOnPress(event);
-      }
-    },
-    [handleFormattingShortcut, handleResetListBlockOnPress]
+  const handleKeyDown = useMemo(
+    () =>
+      sequenceKeyboardEventHandlers(
+        handlePreventKeydown,
+        handleFormattingShortcut,
+        handleResetListBlockOnPress
+      ),
+    [
+      handlePreventKeydown,
+      handleFormattingShortcut,
+      handleResetListBlockOnPress,
+    ]
   );
 
   const handleKeyUp = useCallback(() => {
@@ -67,25 +91,20 @@ export const InternoteEditor: React.FunctionComponent<{
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 
   return (
-    <Slate editor={editor} value={value} onChange={setValue}>
-      <InternoteEditorProvider>
-        <FullHeight>
-          <InnerPadding ref={scrollRef}>
-            <Editor
-              userScrolled={userHasScrolledOutOfDistractionMode}
-              distractionFree={distractionFree}
-              renderElement={renderElement}
-              renderLeaf={renderLeaf}
-              spellCheck
-              autoFocus
-              onKeyDown={handleKeyDown}
-              onKeyUp={handleKeyUp}
-            />
-          </InnerPadding>
-        </FullHeight>
-        <Toolbar noteId={noteId} />
-      </InternoteEditorProvider>
-    </Slate>
+    <FullHeight>
+      <InnerPadding ref={scrollRef}>
+        <Editor
+          userScrolled={userHasScrolledOutOfDistractionMode}
+          distractionFree={distractionFree}
+          renderElement={renderElement}
+          renderLeaf={renderLeaf}
+          spellCheck
+          autoFocus
+          onKeyDown={handleKeyDown}
+          onKeyUp={handleKeyUp}
+        />
+      </InnerPadding>
+    </FullHeight>
   );
 };
 
@@ -94,6 +113,8 @@ const Element: React.FunctionComponent<RenderElementProps> = ({
   children,
   element,
 }) => {
+  // TODO: this shouldn't rely on refs. It would be better to use element
+  // and figure out if the selection is within the node.
   const isFocused =
     !!attributes.ref.current && elmHasChildFocus(attributes.ref.current);
 

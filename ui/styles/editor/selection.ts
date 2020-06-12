@@ -40,57 +40,93 @@ export const getSelectedTextOrBlockText = (editor: InternoteSlateEditor) =>
   );
 
 /**
- * Returns the word under the cursor.
+ * Returns the range of the word under the cursor.
  * Returns none if there's a highlighted region under the cursor (i.e. the user
- * has selected multiple words)
+ * has selected multiple words). Also returns none if the word is empty.
  *
  * NB: includePrecedingCharacter extends the selection to include the character
  * to the left of the full word. This is necessary because Slate's expansion of
  * a range does not include special characters.
  */
-export const getWordUnderCursor = (
+export const getWordRangeUnderCursor = (
+  editor: InternoteSlateEditor,
+  includePrecedingCharacter: boolean
+): O.Option<SlateRange> =>
+  pipe(
+    getEditorRange(editor),
+    O.filter((range) => range.focus.offset === range.anchor.offset),
+    O.filterMap((range) =>
+      getExpandedRange(editor, range, includePrecedingCharacter)
+    )
+  );
+
+/**
+ * Returns the text of the word under the cursor.
+ * Returns none if there's a highlighted region under the cursor (i.e. the user
+ * has selected multiple words). Also returns none if the word is empty.
+ *
+ * NB: includePrecedingCharacter extends the selection to include the character
+ * to the left of the full word. This is necessary because Slate's expansion of
+ * a range does not include special characters.
+ */
+export const getWordTextUnderCursor = (
   editor: InternoteSlateEditor,
   includePrecedingCharacter: boolean = false
 ): O.Option<string> =>
   pipe(
-    getEditorRange(editor),
-    O.filter((range) => range.focus.offset === range.anchor.offset),
-    O.filterMap(
-      extractExpandedTextFromSlateRange(editor, includePrecedingCharacter)
-    ),
+    getWordRangeUnderCursor(editor, includePrecedingCharacter),
+    O.filterMap((range) => getTextFromSlateRange(editor, range)),
     O.map((text) => text.trim()),
     O.filter((text) => text.length > 0)
   );
 
-/**
- * Expands a slate range to include surrounding full word and extracts the text
- * content from it
- */
-export const extractExpandedTextFromSlateRange = (
+const getTextFromSlateRange = (
   editor: InternoteSlateEditor,
-  includePrecedingCharacter: boolean = false
-) => (range: SlateRange): O.Option<string> =>
-  pipe(
-    O.tryCatch(() => expandRangeToFullWord(editor, range)),
-    O.map((range) =>
-      includePrecedingCharacter
-        ? expandRangeToPrecedingCharacter(editor, range)
-        : range
-    ),
-    O.filterMap((range) => O.tryCatch(() => Editor.string(editor, range)))
-  );
+  range: SlateRange
+): O.Option<string> => O.tryCatch(() => Editor.string(editor, range));
 
 /**
- * Expands a slate range to include full words
+ * Expands a slate range to include surrounding full words
+ */
+export const getExpandedRange = (
+  editor: InternoteSlateEditor,
+  range: SlateRange,
+  includePrecedingCharacter: boolean
+): O.Option<SlateRange> =>
+  pipe(
+    O.tryCatch(() => expandRangeToFullWord(editor, range)),
+    O.filterMap((range) =>
+      includePrecedingCharacter
+        ? expandRangeToPrecedingCharacter(editor, range)
+        : O.some(range)
+    )
+  );
+/**
+ * Expands a slate range to include full words.
+ * NB: only expands a side if it is not already at the start of the word.
  */
 const expandRangeToFullWord = (
   editor: InternoteSlateEditor,
   range: SlateRange
 ): SlateRange => ({
-  anchor: Editor.before(editor, range, {
-    unit: "word",
-  }),
-  focus: Editor.after(editor, range, { unit: "word" }),
+  anchor: pipe(
+    buildRangeOfPrecedingCharacter(editor, range.anchor),
+    O.filterMap((range) => getTextFromSlateRange(editor, range)),
+    O.filter((character) => character !== " "),
+    O.map(() =>
+      Editor.before(editor, range.anchor, {
+        unit: "word",
+      })
+    ),
+    O.getOrElse(() => range.anchor)
+  ),
+  focus: pipe(
+    buildRangeOfNextCharacter(editor, range.focus),
+    O.filterMap((range) => getTextFromSlateRange(editor, range)),
+    O.filter((character) => character !== " "),
+    O.map(() => Editor.after(editor, range.focus, { unit: "word" })),
+    O.getOrElse(() => range.focus)
+  ),
 });
 
 /**
@@ -99,18 +135,57 @@ const expandRangeToFullWord = (
 const expandRangeToPrecedingCharacter = (
   editor: InternoteSlateEditor,
   range: SlateRange
-): SlateRange => ({
-  anchor: expandPointToPrecedingCharacter(editor, range.anchor),
-  focus: range.focus,
-});
+): O.Option<SlateRange> =>
+  pipe(
+    expandPointToPrecedingCharacter(editor, range.anchor),
+    O.map((anchor) => ({ anchor, focus: range.focus }))
+  );
+
+/**
+ * Given a point, build a slate range consisting of an anchor of the character
+ * immediately to the left and the focus as the point
+ */
+const buildRangeOfPrecedingCharacter = (
+  editor: InternoteSlateEditor,
+  point: SlatePoint
+): O.Option<SlateRange> =>
+  pipe(
+    expandPointToPrecedingCharacter(editor, point),
+    O.map((anchor) => ({ anchor, focus: point }))
+  );
+
+/**
+ * Given a point, build a slate range consisting of an anchor of the character
+ * immediately to the left and the focus as the point
+ */
+const buildRangeOfNextCharacter = (
+  editor: InternoteSlateEditor,
+  point: SlatePoint
+): O.Option<SlateRange> =>
+  pipe(
+    expandPointToNextCharacter(editor, point),
+    O.map((focus) => ({ anchor: point, focus }))
+  );
 
 const expandPointToPrecedingCharacter = (
   editor: InternoteSlateEditor,
   point: SlatePoint
-): SlatePoint =>
-  Editor.before(editor, point, {
-    unit: "character",
-  });
+): O.Option<SlatePoint> =>
+  O.tryCatch(() =>
+    Editor.before(editor, point, {
+      unit: "character",
+    })
+  );
+
+const expandPointToNextCharacter = (
+  editor: InternoteSlateEditor,
+  point: SlatePoint
+): O.Option<SlatePoint> =>
+  O.tryCatch(() =>
+    Editor.after(editor, point, {
+      unit: "character",
+    })
+  );
 
 /**
  * Returns the first word in the current selected (highlighted) text, or the
@@ -122,7 +197,7 @@ export const getHighlightedWord = (
   pipe(
     getSelectedText(editor),
     O.filterMap(getFirstWordFromString),
-    O.fold(() => getWordUnderCursor(editor), O.some)
+    O.fold(() => getWordTextUnderCursor(editor), O.some)
   );
 
 export const getFirstWordFromString = (str: string): O.Option<string> =>

@@ -22,7 +22,12 @@ import { EmojiList } from "../emoji-list";
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
 }) => {
-  const { editor, emojiSearchText } = useInternoteEditor();
+  const {
+    editor,
+    emojiSearchText,
+    hasSmartSearch,
+    replaceSmartSearchText,
+  } = useInternoteEditor();
 
   const distractionFree = useTwineState(
     (state) => state.preferences.distractionFree
@@ -38,7 +43,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
 
   const isEmojiShowing = emojiSearchText.length > 0;
 
-  const toolbarIsExpanded = isDictionaryShowing || isEmojiShowing;
+  const toolbarIsExpanded = isDictionaryShowing || hasSmartSearch;
 
   const isToolbarVisible = toolbarIsExpanded;
 
@@ -92,8 +97,8 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
             <ToolbarInner>
               {isEmojiShowing ? (
                 <EmojiList
-                  onEmojiSelected={(emoji, searchText) => {
-                    console.log({ emoji, searchText });
+                  onEmojiSelected={(emoji) => {
+                    replaceSmartSearchText(emoji.char);
                   }}
                   search={emojiSearchText}
                 />

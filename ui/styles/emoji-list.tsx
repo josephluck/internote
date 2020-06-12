@@ -27,12 +27,19 @@ export const EmojiList: React.FunctionComponent<{
         setFocusedIndex(
           focusedIndex === filteredEmojis.length - 1 ? 0 : focusedIndex + 1
         );
-      } else if (isHotkey("left", event)) {
+        return;
+      }
+      if (isHotkey("left", event)) {
         setFocusedIndex(
           focusedIndex === 0 ? filteredEmojis.length - 1 : focusedIndex - 1
         );
-      } else if (isHotkey("enter", event) && focusedIndex >= 0) {
-        onEmojiSelected(filteredEmojis[focusedIndex], `:${search}`);
+        return;
+      }
+      if (isHotkey("enter", event) && focusedIndex >= 0) {
+        const emoji = filteredEmojis[focusedIndex];
+        if (emoji) {
+          onEmojiSelected(emoji, `:${search}`);
+        }
       }
     };
     window.addEventListener("keydown", onKeyDown);

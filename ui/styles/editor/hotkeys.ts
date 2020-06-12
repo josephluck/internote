@@ -18,20 +18,15 @@ export const HOT_KEYS: Record<string, SlateNodeType> = {
  * Toggles formatting based on hotkey combinations
  */
 export const useFormattingHotkey = (editor: InternoteSlateEditor) => {
-  const handleKeyPress = useCallback(
-    (event: KeyboardEvent<HTMLDivElement>): boolean => {
-      for (const hotkey in HOT_KEYS) {
-        if (isHotkey(hotkey, event as any)) {
-          event.preventDefault();
-          const mark = HOT_KEYS[hotkey];
-          toggleMark(editor, mark);
-          return true;
-        }
+  const handleKeyPress = useCallback((event: KeyboardEvent) => {
+    for (const hotkey in HOT_KEYS) {
+      if (isHotkey(hotkey, event as any)) {
+        event.preventDefault();
+        const mark = HOT_KEYS[hotkey];
+        toggleMark(editor, mark);
       }
-      return false;
-    },
-    []
-  );
+    }
+  }, []);
   return handleKeyPress;
 };
 
@@ -39,9 +34,9 @@ export const useFormattingHotkey = (editor: InternoteSlateEditor) => {
  * Resets list items when focused on an empty list item and a reset shortcut
  * is pressed. See below for the reset shortcuts
  */
-export const useResetListBlocks = (editor: InternoteSlateEditor) => {
-  const handleKeyPress = useCallback(
-    (event: KeyboardEvent<HTMLDivElement>) => {
+export const useResetListBlocks = (editor: InternoteSlateEditor) =>
+  useCallback(
+    (event: KeyboardEvent) => {
       const isValidResetKey = ["enter", "shift+tab"].some((key) =>
         // @ts-ignore hotkey doesn't like keyboard events!? Maybe a mismatch with React types
         isHotkey(key, event)
@@ -76,5 +71,20 @@ export const useResetListBlocks = (editor: InternoteSlateEditor) => {
     [editor]
   );
 
-  return handleKeyPress;
-};
+export const isNavigationShortcut = (event: React.KeyboardEvent): boolean =>
+  // @ts-ignore isHotkey types incompatible with react's
+  ["right", "left", "enter"].some((key) => isHotkey(key, event));
+
+/**
+ * Calls event handlers in sequence stopping at the first event handler that
+ * prevents default.
+ */
+export const sequenceKeyboardEventHandlers = (
+  ...fns: ((event: React.KeyboardEvent) => void)[]
+) => (event: React.KeyboardEvent) =>
+  fns.reduce((prevented, fn) => {
+    if (!prevented) {
+      fn(event);
+    }
+    return event.isDefaultPrevented();
+  }, false);

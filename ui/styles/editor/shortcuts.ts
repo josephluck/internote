@@ -1,7 +1,7 @@
 import { Editor, Range, Transforms, Point } from "slate";
 import { SlateNodeType, InternoteSlateEditor } from "./types";
 import { pipe } from "fp-ts/lib/function";
-import { getWordUnderCursor } from "./selection";
+import { getWordTextUnderCursor } from "./selection";
 import * as O from "fp-ts/lib/Option";
 
 /**
@@ -13,7 +13,7 @@ export const getSmartSearchShortcut = (shortcut: string) => (
   editor: InternoteSlateEditor
 ): O.Option<string> =>
   pipe(
-    getWordUnderCursor(editor, true),
+    getWordTextUnderCursor(editor, true),
     O.filter((text) => text.startsWith(shortcut)),
     O.filterMap(trimFirstCharacterFromString)
   );
