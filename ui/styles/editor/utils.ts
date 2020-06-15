@@ -1,11 +1,14 @@
-import { InternoteSlateEditor, SlateNodeType } from "./types";
+import { InternoteSlateEditor, InternoteEditorNodeType } from "./types";
 import { Transforms, Editor, Node } from "slate";
 
-const LIST_TYPES: SlateNodeType[] = ["numbered-list", "bulleted-list"];
+const LIST_TYPES: InternoteEditorNodeType[] = [
+  "numbered-list",
+  "bulleted-list",
+];
 
 export const toggleBlock = (
   editor: InternoteSlateEditor,
-  format: SlateNodeType
+  format: InternoteEditorNodeType
 ) => {
   const isActive = isBlockActive(editor, format);
   const isList = LIST_TYPES.includes(format);
@@ -27,7 +30,7 @@ export const toggleBlock = (
 
 export const toggleMark = (
   editor: InternoteSlateEditor,
-  format: SlateNodeType
+  format: InternoteEditorNodeType
 ) => {
   const isActive = isMarkActive(editor, format);
 
@@ -40,7 +43,7 @@ export const toggleMark = (
 
 export const isBlockActive = (
   editor: InternoteSlateEditor,
-  format: SlateNodeType
+  format: InternoteEditorNodeType
 ) => {
   const [match] = Editor.nodes(editor, {
     match: (n) => n.type === format,
@@ -51,7 +54,7 @@ export const isBlockActive = (
 
 export const isMarkActive = (
   editor: InternoteSlateEditor,
-  format: SlateNodeType
+  format: InternoteEditorNodeType
 ) => {
   const marks = Editor.marks(editor);
   return marks ? marks[format] === true : false;
@@ -63,7 +66,7 @@ export const extractTextFromNodes = (nodes: Node[]) =>
     .filter(Boolean)
     .join("");
 
-export const findFirstNonEmptyNodeOfType = (type: SlateNodeType) => (
+export const findFirstNonEmptyNodeOfType = (type: InternoteEditorNodeType) => (
   nodes: Node[]
 ) =>
   nodes.find(

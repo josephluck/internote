@@ -1,14 +1,10 @@
-import React, { useCallback, useRef, useState, useMemo } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Node } from "slate";
-import {
-  Editable,
-  RenderElementProps,
-  RenderLeafProps,
-  Slate,
-} from "slate-react";
+import { Editable, Slate } from "slate-react";
 import styled, { css } from "styled-components";
 import { useTwineState } from "../../store";
 import { borderRadius, font, spacing } from "../../theming/symbols";
+import { Tag } from "../tag";
 import { wrapperStyles } from "../wrapper";
 import {
   elmHasChildFocus,
@@ -16,18 +12,22 @@ import {
   SLATE_BLOCK_FOCUSED_CLASS_NAME,
 } from "./focus";
 import {
-  useCreateInternoteEditor,
   InternoteEditorProvider,
+  useCreateInternoteEditor,
   useInternoteEditor,
 } from "./hooks";
 import {
+  sequenceKeyboardEventHandlers,
   useFormattingHotkey,
   useResetListBlocks,
-  sequenceKeyboardEventHandlers,
 } from "./hotkeys";
 import { useLiveSave } from "./save";
 import { useScrollFocus } from "./scroll";
 import { Toolbar } from "./toolbar";
+import {
+  InternoteEditorRenderElementProps,
+  InternoteEditorRenderLeafProps,
+} from "./types";
 
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: Node[];
@@ -108,7 +108,7 @@ const InternoteEditorEditor = () => {
   );
 };
 
-const Element: React.FunctionComponent<RenderElementProps> = ({
+const Element: React.FunctionComponent<InternoteEditorRenderElementProps> = ({
   attributes,
   children,
   element,
@@ -138,12 +138,20 @@ const Element: React.FunctionComponent<RenderElementProps> = ({
       return <li {...attrs}>{children}</li>;
     case "numbered-list":
       return <ol {...attrs}>{children}</ol>;
+    case "tag": {
+      return (
+        <Tag {...attrs} isFocused large>
+          {element.tag}
+          {children}
+        </Tag>
+      );
+    }
     default:
       return <p {...attrs}>{children}</p>;
   }
 };
 
-const Leaf: React.FunctionComponent<RenderLeafProps> = ({
+const Leaf: React.FunctionComponent<InternoteEditorRenderLeafProps> = ({
   attributes,
   children,
   leaf,

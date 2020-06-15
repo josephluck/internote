@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import styled from "styled-components";
 import { RoundButton } from "./button";
 import { spacing, borderRadius, font } from "../theming/symbols";
-import { SlateNodeType } from "./editor/types";
+import { InternoteEditorNodeType } from "./editor/types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
@@ -17,7 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const ToolbarButton: React.FunctionComponent<{
-  nodeType: SlateNodeType;
+  nodeType: InternoteEditorNodeType;
   onClick?: () => void;
   isActive: boolean;
   shortcutNumber: number;
@@ -110,7 +110,10 @@ export const ButtonSpacer = styled.div<{ small?: boolean }>`
   margin-right: ${(props) => (props.small ? spacing._0_125 : spacing._0_4)};
 `;
 
-const toolbarIconMap: Record<SlateNodeType | "outline", React.ReactNode> = {
+const toolbarIconMap: Record<
+  InternoteEditorNodeType | "outline",
+  React.ReactNode
+> = {
   bold: <FontAwesomeIcon icon={faBold} />,
   italic: <FontAwesomeIcon icon={faItalic} />,
   underline: <FontAwesomeIcon icon={faUnderline} />,

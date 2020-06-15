@@ -2,42 +2,18 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { spacing, size } from "../theming/symbols";
 import Fuse from "fuse.js";
-import {
-  isRightHotKey,
-  isLeftHotKey,
-  isEnterHotKey,
-} from "../utilities/editor";
 import { Tag, NewTag } from "./tag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import isHotkey from "is-hotkey";
 
-const Wrap = styled.div`
-  width: 100%;
-  max-height: ${size.emojiMenuMaxHeight};
-`;
-
-const ListInner = styled.div`
-  margin: -${spacing._0_125};
-  padding: ${spacing._0_25} 0;
-`;
-
-const SavingIcon = styled.div`
-  margin-right: ${spacing._0_25};
-`;
-
-export function TagsList({
-  search,
-  tags,
-  onTagSelected,
-  onCreateNewTag,
-  newTagSaving,
-}: {
+export const TagsList: React.FunctionComponent<{
   search: string;
   tags: string[];
   onTagSelected: (tag: string, searchText: string) => any;
   onCreateNewTag: (searchText: string) => any;
   newTagSaving: boolean;
-}) {
+}> = ({ search, tags, onTagSelected, onCreateNewTag, newTagSaving }) => {
   const [filteredTags, setFilteredTags] = useState<string[]>([]);
   const [focusedIndex, setFocusedIndex] = useState(1);
 
@@ -50,11 +26,11 @@ export function TagsList({
       maxPatternLength: 32,
       minMatchCharLength: 1,
     });
-    // NB: for hashtags, need to include the #
+    // NB: for hashtags, need to include the # to the search
     const searchCriteria = `#${search}`;
     const newFilteredTags =
       search.length > 0
-        ? fuzzy.search(searchCriteria).map((i) => tags[i])
+        ? fuzzy.search(searchCriteria).map((i) => tags[i.refIndex])
         : tags;
     setFocusedIndex(newFilteredTags.length > 0 ? 1 : 0);
     setFilteredTags(newFilteredTags);
@@ -62,7 +38,7 @@ export function TagsList({
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (isRightHotKey(event)) {
+      if (isHotkey("right", event)) {
         // NB: start focused index for selected index is 1 to compensate with create new tag being index 0
         setFocusedIndex(
           focusedIndex === filteredTags.length ? 0 : focusedIndex + 1
@@ -70,14 +46,14 @@ export function TagsList({
         return;
       }
 
-      if (isLeftHotKey(event)) {
+      if (isHotkey("left", event)) {
         setFocusedIndex(
           focusedIndex === 0 ? filteredTags.length : focusedIndex - 1
         );
         return;
       }
 
-      const shouldEnterTag = isEnterHotKey(event) && focusedIndex >= 0;
+      const shouldEnterTag = isHotkey("enter", event) && focusedIndex >= 0;
       if (shouldEnterTag) {
         // NB: focused index is 1 indexed for existing tags to compensate with create new tag being index 0
         const focusedExistingTag = filteredTags[focusedIndex - 1];
@@ -130,4 +106,18 @@ export function TagsList({
       </ListInner>
     </Wrap>
   );
-}
+};
+
+const Wrap = styled.div`
+  width: 100%;
+  max-height: ${size.emojiMenuMaxHeight};
+`;
+
+const ListInner = styled.div`
+  margin: -${spacing._0_125};
+  padding: ${spacing._0_25} 0;
+`;
+
+const SavingIcon = styled.div`
+  margin-right: ${spacing._0_25};
+`;

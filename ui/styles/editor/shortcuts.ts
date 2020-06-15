@@ -1,5 +1,5 @@
 import { Editor, Range, Transforms, Point } from "slate";
-import { SlateNodeType, InternoteSlateEditor } from "./types";
+import { InternoteEditorNodeType, InternoteSlateEditor } from "./types";
 import { pipe } from "fp-ts/lib/function";
 import { getWordTextUnderCursor } from "./selection";
 import * as O from "fp-ts/lib/Option";
@@ -29,7 +29,7 @@ const trimFirstCharacterFromString = (value: string): O.Option<string> =>
     O.filterMap((str) => O.fromNullable(str.substring(1)))
   );
 
-const defaultShortcuts: Record<string, SlateNodeType> = {
+const defaultShortcuts: Record<string, InternoteEditorNodeType> = {
   "*": "list-item",
   "-": "list-item",
   "+": "list-item",

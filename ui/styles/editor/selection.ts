@@ -5,7 +5,10 @@ import { InternoteSlateEditor } from "./types";
 
 /**
  * Get the current selection from the editor normalized such that the anchor
- * is guaranteed to be before the focus
+ * is guaranteed to be before the focus.
+ *
+ * This is useful for consistent ranges no matter which direction the user has
+ * selected in.
  */
 export const getNormalizedEditorRange = (
   editor: InternoteSlateEditor
@@ -128,7 +131,10 @@ export const getExpandedRangeToFullWord = (
 
 /**
  * Gets the editors current range and extends it to include surrounding full
- * block
+ * block.
+ *
+ * TODO: depending on the marks in the block and whether it's the last block in
+ * the document or not, sometimes the focus expansion fails.
  */
 export const getRangeOfCurrentSelectionBlock = (editor: InternoteSlateEditor) =>
   pipe(
@@ -146,18 +152,12 @@ const getExpandedRangeToFullBlock = (
   anchor: pipe(
     O.tryCatch(() => Editor.before(editor, anchor, { unit: "block" })),
     O.filter(Boolean),
-    O.getOrElse(() => {
-      console.log("Anchor failed to expand");
-      return anchor;
-    })
+    O.getOrElse(() => anchor)
   ),
   focus: pipe(
     O.tryCatch(() => Editor.after(editor, focus, { unit: "block" })),
     O.filter(Boolean),
-    O.getOrElse(() => {
-      console.log("Focus failed to expand");
-      return focus;
-    })
+    O.getOrElse(() => focus)
   ),
 });
 

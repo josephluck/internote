@@ -14,10 +14,12 @@ import { DeleteNoteButton } from "./delete";
 import { useInternoteEditor } from "./hooks";
 import { NoteSavingIndicator } from "./saving";
 import { getHighlightedWord } from "./selection";
-import { SlateNodeType } from "./types";
+import { InternoteEditorNodeType } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 import { Speech } from "../speech";
 import { EmojiList } from "../emoji-list";
+import { TagsList } from "../tags-list";
+import { Emoji } from "../../utilities/emojis";
 
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
@@ -25,6 +27,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   const {
     editor,
     emojiSearchText,
+    hashtagSearchText,
     hasSmartSearch,
     replaceSmartSearchText,
     selectedText,
@@ -33,6 +36,8 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   const distractionFree = useTwineState(
     (state) => state.preferences.distractionFree
   );
+
+  const tags = useTwineState((state) => state.tags.tags);
 
   const isDictionaryShowing = useTwineState(
     (state) => state.dictionary.dictionaryShowing
@@ -44,6 +49,8 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
 
   const isEmojiShowing = emojiSearchText.length > 0;
 
+  const isHashtagShowing = hashtagSearchText.length > 0;
+
   const toolbarIsExpanded = isDictionaryShowing || hasSmartSearch;
 
   const isToolbarVisible = toolbarIsExpanded;
@@ -51,6 +58,20 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   const selectedWord = pipe(
     getHighlightedWord(editor),
     O.getOrElse(() => "")
+  );
+
+  const handleInsertTag = useCallback(
+    (tag: string) => {
+      replaceSmartSearchText({ type: "tag", tag, children: [{ text: "" }] });
+    },
+    [replaceSmartSearchText]
+  );
+
+  const handleInsertEmoji = useCallback(
+    (emoji: Emoji) => {
+      replaceSmartSearchText(emoji.char);
+    },
+    [replaceSmartSearchText]
   );
 
   return (
@@ -91,11 +112,17 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
         <ToolbarExpandedWrapper>
           <ToolbarExpandedInner>
             <ToolbarInner>
-              {isEmojiShowing ? (
+              {isHashtagShowing ? (
+                <TagsList
+                  tags={tags}
+                  search={hashtagSearchText}
+                  onCreateNewTag={handleInsertTag}
+                  newTagSaving={false}
+                  onTagSelected={handleInsertTag}
+                />
+              ) : isEmojiShowing ? (
                 <EmojiList
-                  onEmojiSelected={(emoji) => {
-                    replaceSmartSearchText(emoji.char);
-                  }}
+                  onEmojiSelected={handleInsertEmoji}
                   search={emojiSearchText}
                 />
               ) : isDictionaryShowing ? (
@@ -112,9 +139,9 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   );
 };
 
-const BlockButton: React.FunctionComponent<{ nodeType: SlateNodeType }> = ({
-  nodeType,
-}) => {
+const BlockButton: React.FunctionComponent<{
+  nodeType: InternoteEditorNodeType;
+}> = ({ nodeType }) => {
   const { editor } = useInternoteEditor();
 
   const handleToggle = useCallback(() => {
@@ -136,9 +163,9 @@ const BlockButton: React.FunctionComponent<{ nodeType: SlateNodeType }> = ({
   );
 };
 
-const MarkButton: React.FunctionComponent<{ nodeType: SlateNodeType }> = ({
-  nodeType,
-}) => {
+const MarkButton: React.FunctionComponent<{
+  nodeType: InternoteEditorNodeType;
+}> = ({ nodeType }) => {
   const { editor } = useInternoteEditor();
 
   const handleToggle = useCallback(() => {

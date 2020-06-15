@@ -6,18 +6,27 @@ import { withHistory } from "slate-history";
 import { useSlate, withReact } from "slate-react";
 import { isNavigationShortcut } from "./hotkeys";
 import {
-  getWordRangeUnderCursor,
   getSelectedTextOrBlockText,
+  getWordRangeUnderCursor,
 } from "./selection";
 import {
   getEmojiSearchShortcut,
   getHashtagSearchShortcut,
   withShortcuts,
 } from "./shortcuts";
-import { InternoteSlateEditor } from "./types";
+import { InternoteEditorElement, InternoteSlateEditor } from "./types";
+import { withVoids } from "./voids";
+import { withInlines } from "./inlines";
 
+// TODO: use function application
 export const useCreateInternoteEditor = () =>
-  useMemo(() => withHistory(withShortcuts(withReact(createEditor()))), []);
+  useMemo(
+    () =>
+      withHistory(
+        withInlines(withVoids(withShortcuts(withReact(createEditor()))))
+      ),
+    []
+  );
 
 interface InternoteEditorContext {
   editor: InternoteSlateEditor;
@@ -26,7 +35,9 @@ interface InternoteEditorContext {
   selectedText: string;
   hasSmartSearch: boolean;
   handlePreventKeydown: (event: React.KeyboardEvent) => void;
-  replaceSmartSearchText: (withText: string) => void;
+  replaceSmartSearchText: (
+    replacement: string | InternoteEditorElement
+  ) => void;
 }
 
 export const InternoteEditorCtx = createContext<InternoteEditorContext>({
@@ -63,8 +74,6 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
     O.getOrElse(() => "")
   );
 
-  console.log({ selectedText });
-
   const handlePreventKeydown = useCallback(
     (event: React.KeyboardEvent) => {
       if (hasSmartSearch && isNavigationShortcut(event)) {
@@ -75,7 +84,7 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
   );
 
   const replaceSmartSearchText = useCallback(
-    (withText: string) => {
+    (replacement: string | InternoteEditorElement) => {
       const searchText = emojiSearchText || hashtagSearchText;
       if (hasSmartSearch && searchText) {
         pipe(
@@ -86,7 +95,11 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
             // user is focused in the middle of the search.
             Editor.deleteBackward(editor, { unit: "word" });
             Editor.deleteBackward(editor, { unit: "character" });
-            Transforms.insertText(editor, withText);
+            if (typeof replacement === "string") {
+              Transforms.insertText(editor, replacement);
+            } else {
+              Transforms.insertNodes(editor, [replacement]);
+            }
           })
         );
       }

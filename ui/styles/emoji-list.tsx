@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { spacing, size, font } from "../theming/symbols";
 import Fuse from "fuse.js";
 import { NoResults } from "./no-results";
-
 import isHotkey from "is-hotkey";
 
 export const EmojiList: React.FunctionComponent<{

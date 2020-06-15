@@ -1,4 +1,4 @@
-import { SlateNodeType, InternoteSlateEditor } from "./types";
+import { InternoteEditorNodeType, InternoteSlateEditor } from "./types";
 import { useCallback, KeyboardEvent } from "react";
 import isHotkey from "is-hotkey";
 import { toggleMark, toggleBlock } from "./utils";
@@ -7,7 +7,7 @@ import { Editor } from "slate";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
 
-export const HOT_KEYS: Record<string, SlateNodeType> = {
+export const HOT_KEYS: Record<string, InternoteEditorNodeType> = {
   "mod+b": "bold",
   "mod+i": "italic",
   "mod+u": "underline",
@@ -53,7 +53,7 @@ export const useResetListBlocks = (editor: InternoteSlateEditor) =>
 
       if (!isEmpty) return;
 
-      const listNodeType: SlateNodeType = "list-item";
+      const listNodeType: InternoteEditorNodeType = "list-item";
       const previousWasListItem = pipe(
         leafAndPath,
         O.filterMap(([_node, path]) =>
