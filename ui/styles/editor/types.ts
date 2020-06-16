@@ -7,14 +7,14 @@ export type InternoteSlateEditor = ReturnType<typeof useCreateInternoteEditor>;
 type BaseElement<T> = Element & T;
 type VoidElement<T> = BaseElement<T> & { children: [] };
 
-type ParagraphElement = BaseElement<{ type: "paragraph" }>;
-type NumberedListElement = BaseElement<{ type: "numbered-list" }>;
-type BulletedListElement = BaseElement<{ type: "bulleted-list" }>;
-type HeadingOneElement = BaseElement<{ type: "heading-one" }>;
-type HeadingTwoElement = BaseElement<{ type: "heading-two" }>;
-type BlockQuoteElement = BaseElement<{ type: "block-quote" }>;
-type ListItemElement = BaseElement<{ type: "list-item" }>;
-type TagElement = VoidElement<{ type: "tag"; tag: string }>;
+export type ParagraphElement = BaseElement<{ type: "paragraph" }>;
+export type NumberedListElement = BaseElement<{ type: "numbered-list" }>;
+export type BulletedListElement = BaseElement<{ type: "bulleted-list" }>;
+export type HeadingOneElement = BaseElement<{ type: "heading-one" }>;
+export type HeadingTwoElement = BaseElement<{ type: "heading-two" }>;
+export type BlockQuoteElement = BaseElement<{ type: "block-quote" }>;
+export type ListItemElement = BaseElement<{ type: "list-item" }>;
+export type TagElement = VoidElement<{ type: "tag"; tag: string }>;
 
 export type InternoteEditorElement =
   | TagElement
@@ -26,7 +26,7 @@ export type InternoteEditorElement =
   | BlockQuoteElement
   | ListItemElement;
 
-type InternoteEditorElementTypes = InternoteEditorElement["type"];
+export type InternoteEditorElementTypes = InternoteEditorElement["type"];
 
 export type InternoteEditorMarkType = "bold" | "italic" | "underline" | "code";
 

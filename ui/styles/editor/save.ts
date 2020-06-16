@@ -1,20 +1,21 @@
 import { useDebounce } from "../../utilities/hooks";
 import { useEffect, useRef } from "react";
 import { useTwineActions } from "../../store";
-import { Node } from "slate";
-import { extractTitleFromValue } from "./utils";
+import { extractTitleFromValue, extractTagsFromValue } from "./utils";
+import { InternoteEditorElement } from "./types";
 
-export const useLiveSave = (value: Node[], noteId: string) => {
+export const useLiveSave = (
+  value: InternoteEditorElement[],
+  noteId: string
+) => {
   const isFirst = useRef(true);
 
-  // console.log(value);
-
   const save = useTwineActions(
-    (actions) => (content: Node[]) =>
+    (actions) => (content: InternoteEditorElement[]) =>
       actions.notes.updateNote({
         content,
         noteId,
-        tags: [],
+        tags: extractTagsFromValue(content),
         title: extractTitleFromValue(content),
       }),
     [noteId]
