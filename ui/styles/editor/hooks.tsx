@@ -8,6 +8,7 @@ import { isNavigationShortcut } from "./hotkeys";
 import {
   getSelectedTextOrBlockText,
   getWordRangeUnderCursor,
+  getSelectedText,
 } from "./selection";
 import {
   getEmojiSearchShortcut,
@@ -29,10 +30,17 @@ export const useCreateInternoteEditor = () =>
   );
 
 interface InternoteEditorContext {
+  /** The raw editor (with plugins attached) */
   editor: InternoteSlateEditor;
+  /** The search text of the emoji search i.e. :heart */
   emojiSearchText: string;
+  /** The search text of the hashtag search i.e. #reactjs */
   hashtagSearchText: string;
+  /** Either the selected text of the current block's text */
+  speechText: string;
+  /** The selected text */
   selectedText: string;
+  /** Whether there's any smart search going on */
   hasSmartSearch: boolean;
   handlePreventKeydown: (event: React.KeyboardEvent) => void;
   replaceSmartSearchText: (
@@ -44,6 +52,7 @@ export const InternoteEditorCtx = createContext<InternoteEditorContext>({
   editor: null,
   emojiSearchText: "",
   hashtagSearchText: "",
+  speechText: "",
   selectedText: "",
   hasSmartSearch: false,
   handlePreventKeydown: () => void null,
@@ -70,6 +79,11 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
   );
 
   const selectedText = pipe(
+    getSelectedText(editor),
+    O.getOrElse(() => "")
+  );
+
+  const speechText = pipe(
     getSelectedTextOrBlockText(editor),
     O.getOrElse(() => "")
   );
@@ -112,6 +126,7 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
     editor,
     emojiSearchText,
     hashtagSearchText,
+    speechText,
     selectedText,
     hasSmartSearch,
     handlePreventKeydown,

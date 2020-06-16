@@ -30,6 +30,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     hashtagSearchText,
     hasSmartSearch,
     replaceSmartSearchText,
+    speechText,
     selectedText,
   } = useInternoteEditor();
 
@@ -53,7 +54,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
 
   const toolbarIsExpanded = isDictionaryShowing || hasSmartSearch;
 
-  const isToolbarVisible = toolbarIsExpanded;
+  const isToolbarVisible = toolbarIsExpanded || Boolean(selectedText);
 
   const selectedWord = pipe(
     getHighlightedWord(editor),
@@ -100,7 +101,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
             />
           </ButtonSpacer>
           <ButtonSpacer small>
-            <Speech selectedText={selectedText} noteId={noteId} />
+            <Speech selectedText={speechText} noteId={noteId} />
           </ButtonSpacer>
           <ButtonSpacer>
             <DeleteNoteButton noteId={noteId} />
