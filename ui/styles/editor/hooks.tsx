@@ -99,6 +99,7 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
               Transforms.insertText(editor, replacement);
             } else {
               Transforms.insertNodes(editor, [replacement]);
+              Transforms.move(editor); // NB: this refocuses after the insertion
             }
           })
         );
