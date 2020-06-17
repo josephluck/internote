@@ -61,14 +61,18 @@ export function AudioPlayer({
 
   function requestPlay() {
     const audio = audioRef.current;
-    audio.play();
-    setUpInterval();
+    if (audio) {
+      audio.play();
+      setUpInterval();
+    }
   }
 
   function requestPause() {
     const audio = audioRef.current;
-    audio.pause();
-    clearInterval();
+    if (audio) {
+      audio.pause();
+      clearInterval();
+    }
   }
 
   useEffect(() => {

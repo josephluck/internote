@@ -1,14 +1,6 @@
-import { faBook, faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Flex } from "@rebass/grid";
 import React, { useCallback } from "react";
 import { useTwineActions } from "../store";
-import { spacing } from "../theming/symbols";
-import { CollapseWidthOnHover } from "./collapse-width-on-hover";
-import {
-  ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap,
-} from "./toolbar-expanding-button";
+import { ToolbarButton, toolbarIconMap } from "./toolbar-button";
 
 export const DictionaryButton: React.FunctionComponent<{
   isLoading: boolean;
@@ -23,37 +15,20 @@ export const DictionaryButton: React.FunctionComponent<{
 
   // TODO: could extract a custom press handler that doesn't lose focus on editor
   // if this becomes a common pattern
-  const handlePress = useCallback(
-    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      event.preventDefault();
-      event.stopPropagation();
-      if (isShowing) {
-        close();
-      } else {
-        lookup(selectedWord);
-      }
-    },
-    [close, isShowing, lookup, selectedWord]
-  );
+  const handlePress = useCallback(() => {
+    if (isShowing) {
+      close();
+    } else {
+      lookup(selectedWord);
+    }
+  }, [close, isShowing, lookup, selectedWord]);
 
   return (
-    <CollapseWidthOnHover
-      onMouseDown={handlePress}
-      forceShow={isShowing}
-      collapsedContent={<Flex pl={spacing._0_25}>Dictionary</Flex>}
-    >
-      {(collapse) => (
-        <ToolbarExpandingButton forceShow={isShowing}>
-          <ToolbarExpandingButtonIconWrap>
-            {isLoading ? (
-              <FontAwesomeIcon icon={faSpinner} spin />
-            ) : (
-              <FontAwesomeIcon icon={faBook} />
-            )}
-          </ToolbarExpandingButtonIconWrap>
-          {collapse.renderCollapsedContent()}
-        </ToolbarExpandingButton>
-      )}
-    </CollapseWidthOnHover>
+    <ToolbarButton
+      onClick={handlePress}
+      forceExpand={isShowing}
+      label="Dictionary"
+      icon={toolbarIconMap[isLoading ? "dictionary-loading" : "dictionary"]}
+    />
   );
 };

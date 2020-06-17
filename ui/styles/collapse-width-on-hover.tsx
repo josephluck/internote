@@ -30,7 +30,7 @@ export function CollapseWidthOnHover({
   forceShow?: boolean;
   className?: string;
   onClick?: () => void;
-  onMouseDown?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onMouseDown?: (event: React.MouseEvent) => void;
 }) {
   const [width, setWidth] = useState(0);
   const [opacity, setOpacity] = useState(0);
