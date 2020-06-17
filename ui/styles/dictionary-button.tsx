@@ -1,6 +1,12 @@
 import React, { useCallback } from "react";
 import { useTwineActions } from "../store";
-import { ToolbarButton, toolbarIconMap } from "./toolbar-button";
+import { ToolbarButton } from "./toolbar-button";
+import {
+  toolbarIconMap,
+  toolbarShortcutMap,
+  toolbarLabelMap,
+} from "./editor/types";
+import { Shortcut } from "./shortcuts";
 
 export const DictionaryButton: React.FunctionComponent<{
   isLoading: boolean;
@@ -24,11 +30,23 @@ export const DictionaryButton: React.FunctionComponent<{
   }, [close, isShowing, lookup, selectedWord]);
 
   return (
-    <ToolbarButton
-      onClick={handlePress}
-      forceExpand={isShowing}
-      label="Dictionary"
-      icon={toolbarIconMap[isLoading ? "dictionary-loading" : "dictionary"]}
-    />
+    <>
+      {isShowing && (
+        <Shortcut
+          keyCombo="esc"
+          callback={close}
+          id="close-dictionary"
+          description="Close the dictionary"
+        />
+      )}
+      <ToolbarButton
+        onClick={handlePress}
+        forceExpand={isShowing}
+        icon={toolbarIconMap[isLoading ? "dictionary-loading" : "dictionary"]}
+        label={toolbarLabelMap.dictionary}
+        name={toolbarLabelMap.dictionary}
+        shortcut={toolbarShortcutMap.dictionary}
+      />
+    </>
   );
 };

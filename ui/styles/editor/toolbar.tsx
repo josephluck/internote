@@ -8,13 +8,18 @@ import { useTwineState } from "../../store";
 import { font, size, spacing } from "../../theming/symbols";
 import { Dictionary } from "../dictionary";
 import { DictionaryButton } from "../dictionary-button";
-import { ButtonSpacer, ToolbarButton, toolbarIconMap } from "../toolbar-button";
+import { ButtonSpacer, ToolbarButton } from "../toolbar-button";
 import { Wrapper } from "../wrapper";
 import { DeleteNoteButton } from "./delete";
 import { useInternoteEditor } from "./hooks";
 import { NoteSavingIndicator } from "./saving";
 import { getHighlightedWord } from "./selection";
-import { InternoteEditorNodeType } from "./types";
+import {
+  InternoteEditorNodeType,
+  toolbarIconMap,
+  toolbarLabelMap,
+  toolbarShortcutMap,
+} from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 import { Speech } from "../speech";
 import { EmojiList } from "../emoji-list";
@@ -152,21 +157,6 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   );
 };
 
-const nodeTypeToLabel: Record<InternoteEditorNodeType, string> = {
-  paragraph: "Paragraph",
-  "heading-one": "Heading",
-  "heading-two": "Subheading",
-  code: "Code",
-  bold: "Bold",
-  italic: "Italic",
-  underline: "Underline",
-  "numbered-list": "Numbers",
-  "bulleted-list": "Bullets",
-  "block-quote": "Quote",
-  "list-item": "List",
-  tag: "Tag",
-};
-
 const BlockButton: React.FunctionComponent<{
   nodeType: InternoteEditorNodeType;
 }> = ({ nodeType }) => {
@@ -184,10 +174,11 @@ const BlockButton: React.FunctionComponent<{
   return (
     <ToolbarButton
       isActive={isActive}
-      shortcutNumber={1}
       onClick={handleToggle}
       icon={toolbarIconMap[nodeType]}
-      label={nodeTypeToLabel[nodeType]}
+      label={toolbarLabelMap[nodeType]}
+      name={toolbarLabelMap[nodeType]}
+      shortcut={toolbarShortcutMap[nodeType]}
     />
   );
 };
@@ -209,10 +200,10 @@ const MarkButton: React.FunctionComponent<{
   return (
     <ToolbarButton
       isActive={isActive}
-      shortcutNumber={1}
       onClick={handleToggle}
       icon={toolbarIconMap[nodeType]}
-      label={nodeTypeToLabel[nodeType]}
+      label={toolbarLabelMap[nodeType]}
+      shortcut={toolbarShortcutMap[nodeType]}
     />
   );
 };

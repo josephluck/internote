@@ -1,81 +1,75 @@
-import {
-  faBold,
-  faBook,
-  faCode,
-  faEye,
-  faHeading,
-  faItalic,
-  faListOl,
-  faListUl,
-  faMicrophone,
-  faPlay,
-  faQuoteLeft,
-  faSpinner,
-  faUnderline,
-  faPause,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@rebass/grid";
 import React, { useCallback } from "react";
 import styled from "styled-components";
 import { borderRadius, font, spacing } from "../theming/symbols";
 import { RoundButton } from "./button";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
-import { InternoteEditorNodeType } from "./editor/types";
+import { Shortcut } from "./shortcuts";
 
 export const ToolbarButton: React.FunctionComponent<{
-  onClick?: (event: React.MouseEvent) => void;
-  stopPropagation?: boolean;
-  preventDefault?: boolean;
+  onClick?: () => void;
   isActive?: boolean;
   shortcutNumber?: number;
   shortcutShowing?: boolean;
   icon?: React.ReactNode;
   label?: React.ReactNode;
   forceExpand?: boolean;
+  shortcut?: string | string[];
+  name?: string;
 }> = ({
   onClick,
-  stopPropagation = true,
-  preventDefault = true,
   isActive,
   shortcutNumber,
   shortcutShowing = false,
   forceExpand = false,
   icon,
   label,
+  shortcut,
+  name,
 }) => {
-  // TODO: support shortcuts that trigger handleMouseDown
   const handleMouseDown = useCallback(
-    (event: React.MouseEvent) => {
-      if (preventDefault) event.preventDefault();
-      if (stopPropagation) event.stopPropagation();
-      if (onClick) onClick(event);
+    (event: React.MouseEvent | React.KeyboardEvent) => {
+      if (onClick) {
+        event.preventDefault();
+        event.stopPropagation();
+        onClick();
+      }
     },
-    [onClick, preventDefault, stopPropagation]
+    [onClick]
   );
 
   return (
-    <CollapseWidthOnHover
-      onMouseDown={handleMouseDown}
-      forceShow={forceExpand}
-      collapsedContent={<Flex pl={spacing._0_25}>{label}</Flex>}
-    >
-      {(collapse) => (
-        <ToolbarExpandingButton
-          isActive={isActive}
-          forceShow={forceExpand}
-          shortcutShowing={shortcutShowing}
-        >
-          <ShortcutNumber isActive={isActive} showing={shortcutShowing}>
-            {shortcutNumber}
-          </ShortcutNumber>
-          <ToolbarExpandingButtonIconWrap>
-            {icon}
-          </ToolbarExpandingButtonIconWrap>
-          {collapse.renderCollapsedContent()}
-        </ToolbarExpandingButton>
+    <>
+      {!!shortcut && !!name && (
+        <Shortcut
+          id={name}
+          description={name}
+          keyCombo={shortcut}
+          callback={onClick}
+        />
       )}
-    </CollapseWidthOnHover>
+      <CollapseWidthOnHover
+        onMouseDown={handleMouseDown}
+        forceShow={forceExpand}
+        collapsedContent={<Flex pl={spacing._0_25}>{label}</Flex>}
+      >
+        {(collapse) => (
+          <ToolbarExpandingButton
+            isActive={isActive}
+            forceShow={forceExpand}
+            shortcutShowing={shortcutShowing}
+          >
+            <ShortcutNumber isActive={isActive} showing={shortcutShowing}>
+              {shortcutNumber}
+            </ShortcutNumber>
+            <ToolbarExpandingButtonIconWrap>
+              {icon}
+            </ToolbarExpandingButtonIconWrap>
+            {collapse.renderCollapsedContent()}
+          </ToolbarExpandingButton>
+        )}
+      </CollapseWidthOnHover>
+    </>
   );
 };
 
@@ -155,36 +149,3 @@ const ShortcutNumber = styled.div<{ isActive: boolean; showing: boolean }>`
 export const ButtonSpacer = styled.div<{ small?: boolean }>`
   margin-right: ${(props) => (props.small ? spacing._0_125 : spacing._0_4)};
 `;
-
-type ToolbarFunctions =
-  | "outline"
-  | "speech"
-  | "speech-loading"
-  | "speech-playing"
-  | "speech-paused"
-  | "dictionary"
-  | "dictionary-loading";
-
-export type ToolbarIconType = InternoteEditorNodeType | ToolbarFunctions;
-
-export const toolbarIconMap: Partial<Record<
-  ToolbarIconType,
-  React.ReactNode
->> = {
-  bold: <FontAwesomeIcon icon={faBold} />,
-  italic: <FontAwesomeIcon icon={faItalic} />,
-  underline: <FontAwesomeIcon icon={faUnderline} />,
-  code: <FontAwesomeIcon icon={faCode} />,
-  "heading-one": <FontAwesomeIcon icon={faHeading} />,
-  "heading-two": "H2", // TODO: find an icon for representing heading-two
-  "block-quote": <FontAwesomeIcon icon={faQuoteLeft} />,
-  "bulleted-list": <FontAwesomeIcon icon={faListUl} />,
-  "numbered-list": <FontAwesomeIcon icon={faListOl} />,
-  outline: <FontAwesomeIcon icon={faEye} />,
-  dictionary: <FontAwesomeIcon icon={faBook} />,
-  "dictionary-loading": <FontAwesomeIcon icon={faSpinner} spin />,
-  speech: <FontAwesomeIcon icon={faMicrophone} />,
-  "speech-loading": <FontAwesomeIcon icon={faSpinner} spin />,
-  "speech-playing": <FontAwesomeIcon icon={faPause} />,
-  "speech-paused": <FontAwesomeIcon icon={faPlay} />,
-};

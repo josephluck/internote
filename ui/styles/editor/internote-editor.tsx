@@ -1,8 +1,15 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Editable, Slate } from "slate-react";
 import styled, { css } from "styled-components";
 import { useTwineState } from "../../store";
 import { borderRadius, font, spacing } from "../../theming/symbols";
+import { ShortcutsContext } from "../shortcuts";
 import { Tag } from "../tag";
 import { wrapperStyles } from "../wrapper";
 import {
@@ -14,11 +21,7 @@ import {
   useCreateInternoteEditor,
   useInternoteEditor,
 } from "./hooks";
-import {
-  sequenceKeyboardEventHandlers,
-  useFormattingHotkey,
-  useResetListBlocks,
-} from "./hotkeys";
+import { sequenceKeyboardEventHandlers, useResetListBlocks } from "./hotkeys";
 import { useLiveSave } from "./save";
 import { useDistractionFreeUx } from "./scroll";
 import { Toolbar } from "./toolbar";
@@ -51,13 +54,13 @@ export const InternoteEditor: React.FunctionComponent<{
 const InternoteEditorEditor = () => {
   const { editor, handlePreventKeydown } = useInternoteEditor();
 
+  const { handleShortcuts } = useContext(ShortcutsContext);
+
   const distractionFree = useTwineState(
     (state) => state.preferences.distractionFree
   );
 
   const scrollRef = useRef<HTMLDivElement>();
-
-  const handleFormattingShortcut = useFormattingHotkey(editor);
 
   const handleResetListBlockOnPress = useResetListBlocks(editor);
 
@@ -68,15 +71,11 @@ const InternoteEditorEditor = () => {
   const handleKeyDown = useMemo(
     () =>
       sequenceKeyboardEventHandlers(
+        handleShortcuts,
         handlePreventKeydown,
-        handleFormattingShortcut,
         handleResetListBlockOnPress
       ),
-    [
-      handlePreventKeydown,
-      handleFormattingShortcut,
-      handleResetListBlockOnPress,
-    ]
+    [handlePreventKeydown, handleShortcuts, handleResetListBlockOnPress]
   );
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);

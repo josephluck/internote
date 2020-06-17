@@ -6,11 +6,14 @@ import styled from "styled-components";
 import { useTwineActions, useTwineState } from "../store";
 import { spacing } from "../theming/symbols";
 import { AudioPlayer, AudioRenderProps } from "./audio";
+import { ToolbarButton } from "./toolbar-button";
 import {
-  ToolbarButton,
+  toolbarLabelMap,
   toolbarIconMap,
   ToolbarIconType,
-} from "./toolbar-button";
+  toolbarShortcutMap,
+} from "./editor/types";
+import { Shortcut } from "./shortcuts";
 
 export const Speech: React.FunctionComponent<{
   selectedText: string;
@@ -33,7 +36,7 @@ export const Speech: React.FunctionComponent<{
   );
 
   const handleCancelPress = useCallback(
-    (event: React.MouseEvent) => {
+    (event: React.MouseEvent | React.KeyboardEvent) => {
       event.stopPropagation();
       event.preventDefault();
       handleFinished();
@@ -75,10 +78,20 @@ export const Speech: React.FunctionComponent<{
             : "speech";
         return (
           <>
+            {(!!src || isLoading) && (
+              <Shortcut
+                keyCombo="esc"
+                callback={handleFinished}
+                id="cancel-speech"
+                description="Cancel speech"
+              />
+            )}
             <ToolbarButton
               forceExpand={!!src || isLoading}
               onClick={() => onIconClick(audio)}
               icon={toolbarIconMap[iconName]}
+              name={toolbarLabelMap.speech}
+              shortcut={toolbarShortcutMap.speech}
               label={
                 <CollapsedWrapper>
                   {src ? (

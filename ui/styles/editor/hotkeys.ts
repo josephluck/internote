@@ -1,34 +1,11 @@
 import { InternoteEditorNodeType, InternoteSlateEditor } from "./types";
 import { useCallback, KeyboardEvent } from "react";
 import isHotkey from "is-hotkey";
-import { toggleMark, toggleBlock } from "./utils";
+import { toggleBlock } from "./utils";
 import { getCurrentFocusedLeafAndPath } from "./focus";
 import { Editor } from "slate";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
-
-export const HOT_KEYS: Record<string, InternoteEditorNodeType> = {
-  "mod+b": "bold",
-  "mod+i": "italic",
-  "mod+u": "underline",
-  "mod+`": "code",
-};
-
-/**
- * Toggles formatting based on hotkey combinations
- */
-export const useFormattingHotkey = (editor: InternoteSlateEditor) => {
-  const handleKeyPress = useCallback((event: KeyboardEvent) => {
-    for (const hotkey in HOT_KEYS) {
-      if (isHotkey(hotkey, event as any)) {
-        event.preventDefault();
-        const mark = HOT_KEYS[hotkey];
-        toggleMark(editor, mark);
-      }
-    }
-  }, []);
-  return handleKeyPress;
-};
 
 /**
  * Resets list items when focused on an empty list item and a reset shortcut
