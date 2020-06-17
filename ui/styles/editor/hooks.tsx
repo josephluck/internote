@@ -5,11 +5,7 @@ import { createEditor, Editor, Transforms } from "slate";
 import { withHistory } from "slate-history";
 import { useSlate, withReact } from "slate-react";
 import { isNavigationShortcut } from "./hotkeys";
-import {
-  getSelectedTextOrBlockText,
-  getWordRangeUnderCursor,
-  getSelectedText,
-} from "./selection";
+import { getSelectedBlockText, getSelectedText } from "./selection";
 import {
   getEmojiSearchShortcut,
   getHashtagSearchShortcut,
@@ -33,13 +29,13 @@ interface InternoteEditorContext {
   /** The raw editor (with plugins attached) */
   editor: InternoteSlateEditor;
   /** The search text of the emoji search i.e. :heart */
-  emojiSearchText: string;
+  emojiSearchText: O.Option<string>;
   /** The search text of the hashtag search i.e. #reactjs */
-  hashtagSearchText: string;
+  hashtagSearchText: O.Option<string>;
   /** Either the selected text of the current block's text */
-  speechText: string;
+  speechText: O.Option<string>;
   /** The selected text */
-  selectedText: string;
+  selectedText: O.Option<string>;
   /** Whether there's any smart search going on */
   hasSmartSearch: boolean;
   handlePreventKeydown: (event: React.KeyboardEvent) => void;
@@ -50,10 +46,10 @@ interface InternoteEditorContext {
 
 export const InternoteEditorCtx = createContext<InternoteEditorContext>({
   editor: null,
-  emojiSearchText: "",
-  hashtagSearchText: "",
-  speechText: "",
-  selectedText: "",
+  emojiSearchText: O.none,
+  hashtagSearchText: O.none,
+  speechText: O.none,
+  selectedText: O.none,
   hasSmartSearch: false,
   handlePreventKeydown: () => void null,
   replaceSmartSearchText: () => void null,
@@ -64,28 +60,19 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
 }) => {
   const editor = useGetInternoteEditor();
 
-  const emojiSearchText = pipe(
-    getEmojiSearchShortcut(editor),
-    O.getOrElse(() => "")
+  const emojiSearchText = pipe(getEmojiSearchShortcut(editor));
+
+  const hashtagSearchText = pipe(getHashtagSearchShortcut(editor));
+
+  const hasSmartSearch = [emojiSearchText, hashtagSearchText].some((val) =>
+    pipe(val, O.isSome)
   );
 
-  const hashtagSearchText = pipe(
-    getHashtagSearchShortcut(editor),
-    O.getOrElse(() => "")
-  );
-
-  const hasSmartSearch = [emojiSearchText, hashtagSearchText].some(
-    (val) => val.length > 0
-  );
-
-  const selectedText = pipe(
-    getSelectedText(editor),
-    O.getOrElse(() => "")
-  );
+  const selectedText = pipe(getSelectedText(editor));
 
   const speechText = pipe(
-    getSelectedTextOrBlockText(editor),
-    O.getOrElse(() => "")
+    selectedText,
+    O.fold(() => getSelectedBlockText(editor), O.some)
   );
 
   const handlePreventKeydown = useCallback(
@@ -101,22 +88,14 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
     (replacement: string | InternoteEditorElement) => {
       const searchText = emojiSearchText || hashtagSearchText;
       if (hasSmartSearch && searchText) {
-        pipe(
-          getWordRangeUnderCursor(editor, true),
-          O.map((_range) => {
-            // TODO: delete the range somehow without collapsing blocks
-            // currently this does not delete the smart search forwards if the
-            // user is focused in the middle of the search.
-            Editor.deleteBackward(editor, { unit: "word" });
-            Editor.deleteBackward(editor, { unit: "character" });
-            if (typeof replacement === "string") {
-              Transforms.insertText(editor, replacement);
-            } else {
-              Transforms.insertNodes(editor, [replacement]);
-              Transforms.move(editor); // NB: this refocuses after the insertion
-            }
-          })
-        );
+        Editor.deleteBackward(editor, { unit: "word" });
+        Editor.deleteBackward(editor, { unit: "character" });
+        if (typeof replacement === "string") {
+          Transforms.insertText(editor, replacement);
+        } else {
+          Transforms.insertNodes(editor, [replacement]);
+          Transforms.move(editor); // NB: this refocuses after the insertion
+        }
       }
     },
     [editor, hasSmartSearch, emojiSearchText, hashtagSearchText]

@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { Node } from "slate";
 import { Editable, Slate } from "slate-react";
 import styled, { css } from "styled-components";
 import { useTwineState } from "../../store";
@@ -7,7 +6,6 @@ import { borderRadius, font, spacing } from "../../theming/symbols";
 import { Tag } from "../tag";
 import { wrapperStyles } from "../wrapper";
 import {
-  elmHasChildFocus,
   SLATE_BLOCK_CLASS_NAME,
   SLATE_BLOCK_FOCUSED_CLASS_NAME,
 } from "./focus";
@@ -27,10 +25,11 @@ import { Toolbar } from "./toolbar";
 import {
   InternoteEditorRenderElementProps,
   InternoteEditorRenderLeafProps,
+  InternoteEditorElement,
 } from "./types";
 
 export const InternoteEditor: React.FunctionComponent<{
-  initialValue: Node[];
+  initialValue: InternoteEditorElement[];
   noteId: string;
 }> = ({ initialValue, noteId }) => {
   const editor = useCreateInternoteEditor();
@@ -39,7 +38,7 @@ export const InternoteEditor: React.FunctionComponent<{
   useLiveSave(value, noteId);
 
   return (
-    <Slate editor={editor} value={value} onChange={setValue}>
+    <Slate editor={editor} value={value} onChange={setValue as any}>
       <InternoteEditorProvider>
         <InternoteEditorEditor />
         <Toolbar noteId={noteId} />
@@ -86,7 +85,7 @@ const InternoteEditorEditor = () => {
     }
   }, [scrollToFocusedNode, distractionFree]);
 
-  const renderElement = useCallback((props) => <Element {...props} />, []);
+  const renderElement = useCallback((props: any) => <Element {...props} />, []);
 
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
 
@@ -113,11 +112,7 @@ const Element: React.FunctionComponent<InternoteEditorRenderElementProps> = ({
   children,
   element,
 }) => {
-  // TODO: this shouldn't rely on refs. It would be better to use element
-  // and figure out if the selection is within the node.
-  const isFocused =
-    !!attributes.ref.current && elmHasChildFocus(attributes.ref.current);
-
+  const isFocused = false;
   const attrs = {
     ...attributes,
     className: isFocused

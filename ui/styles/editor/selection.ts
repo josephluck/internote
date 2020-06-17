@@ -39,19 +39,12 @@ export const getSelectedText = (
  * Returns the current selected (highlighted) text, or the current block's
  * text if there's no selection
  */
-export const getSelectedTextOrBlockText = (
+export const getSelectedBlockText = (
   editor: InternoteSlateEditor
 ): O.Option<string> =>
   pipe(
-    getSelectedText(editor),
-    O.fold(
-      () =>
-        pipe(
-          getRangeOfCurrentSelectionBlock(editor),
-          O.filterMap((range) => extractTextFromSlateRange(editor, range))
-        ),
-      O.some
-    )
+    getRangeOfCurrentSelectionBlock(editor),
+    O.filterMap((range) => extractTextFromSlateRange(editor, range))
   );
 
 /**

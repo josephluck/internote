@@ -36,6 +36,7 @@ export type InternoteEditorNodeType =
 
 export type InternoteEditorRenderElementProps = RenderElementProps & {
   element: InternoteEditorElement;
+  isFocused: boolean;
 };
 
 export type InternoteEditorRenderLeafProps = RenderLeafProps & {

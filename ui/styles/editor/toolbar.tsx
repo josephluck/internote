@@ -48,13 +48,13 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     (state) => state.dictionary.loading.lookup
   );
 
-  const isEmojiShowing = emojiSearchText.length > 0;
+  const isEmojiShowing = O.isSome(emojiSearchText);
 
-  const isHashtagShowing = hashtagSearchText.length > 0;
+  const isHashtagShowing = O.isSome(hashtagSearchText);
 
   const toolbarIsExpanded = isDictionaryShowing || hasSmartSearch;
 
-  const isToolbarVisible = toolbarIsExpanded || Boolean(selectedText);
+  const isToolbarVisible = toolbarIsExpanded || O.isSome(selectedText);
 
   const selectedWord = pipe(
     getHighlightedWord(editor),
@@ -101,7 +101,13 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
             />
           </ButtonSpacer>
           <ButtonSpacer small>
-            <Speech selectedText={speechText} noteId={noteId} />
+            <Speech
+              selectedText={pipe(
+                speechText,
+                O.getOrElse(() => "")
+              )}
+              noteId={noteId}
+            />
           </ButtonSpacer>
           <ButtonSpacer>
             <DeleteNoteButton noteId={noteId} />
@@ -116,7 +122,10 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
               {isHashtagShowing ? (
                 <TagsList
                   tags={tags}
-                  search={hashtagSearchText}
+                  search={pipe(
+                    hashtagSearchText,
+                    O.getOrElse(() => "")
+                  )}
                   onCreateNewTag={handleInsertTag}
                   newTagSaving={false}
                   onTagSelected={handleInsertTag}
@@ -124,7 +133,10 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
               ) : isEmojiShowing ? (
                 <EmojiList
                   onEmojiSelected={handleInsertEmoji}
-                  search={emojiSearchText}
+                  search={pipe(
+                    emojiSearchText,
+                    O.getOrElse(() => "")
+                  )}
                 />
               ) : isDictionaryShowing ? (
                 <Dictionary
