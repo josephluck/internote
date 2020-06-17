@@ -9,13 +9,12 @@ export const getCurrentFocusedLeaf = (
   editor: InternoteSlateEditor
 ): O.Option<Node> => {
   const { selection } = editor;
-  if (!selection) {
-    return O.none;
-  }
-  return pipe(
-    O.fromNullable(Editor.node(editor, selection)),
-    O.map(([node]) => node)
-  );
+  return selection
+    ? pipe(
+        O.fromNullable(Editor.node(editor, selection)),
+        O.map(([node]) => node)
+      )
+    : O.none;
 };
 
 export const getCurrentFocusedLeafAndPath = (
@@ -49,11 +48,12 @@ export const getCurrentFocusedHTMLNode = (
  * Recursively scans up an element tree until an element with the provided class
  * is found.
  */
-const findAncestor = (className: string) => (
+export const findAncestor = (className: string) => (
   elm: HTMLElement
 ): O.Option<HTMLElement> =>
   pipe(
     O.fromNullable(elm),
+    O.filter((element) => !!element.classList),
     O.filter((element) => element.classList.contains(className)),
     O.fold(
       () =>

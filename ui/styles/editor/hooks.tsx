@@ -1,6 +1,13 @@
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
-import { createContext, useCallback, useContext, useMemo } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useEffect,
+  useState,
+} from "react";
 import { createEditor, Editor, Transforms } from "slate";
 import { withHistory } from "slate-history";
 import { useSlate, withReact } from "slate-react";
@@ -120,6 +127,17 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
 };
 
 export const useInternoteEditor = () => useContext(InternoteEditorCtx);
+
+export const useCurrentSelection = () => {
+  const { editor } = useInternoteEditor();
+  const [selection, setSelection] = useState(editor.selection);
+
+  useEffect(() => {
+    setSelection(editor.selection);
+  }, [editor.selection]);
+
+  return selection;
+};
 
 export const useGetInternoteEditor = (): InternoteSlateEditor => {
   const editor = useSlate();

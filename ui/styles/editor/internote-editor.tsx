@@ -20,12 +20,13 @@ import {
   useResetListBlocks,
 } from "./hotkeys";
 import { useLiveSave } from "./save";
-import { useScrollFocus } from "./scroll";
+import { useDistractionFreeUx } from "./scroll";
 import { Toolbar } from "./toolbar";
 import {
+  InternoteEditorElement,
   InternoteEditorRenderElementProps,
   InternoteEditorRenderLeafProps,
-  InternoteEditorElement,
+  voids,
 } from "./types";
 
 export const InternoteEditor: React.FunctionComponent<{
@@ -60,10 +61,9 @@ const InternoteEditorEditor = () => {
 
   const handleResetListBlockOnPress = useResetListBlocks(editor);
 
-  const {
-    scrollToFocusedNode,
-    userHasScrolledOutOfDistractionMode,
-  } = useScrollFocus(editor, scrollRef);
+  const { userHasScrolledOutOfDistractionMode } = useDistractionFreeUx(
+    scrollRef
+  );
 
   const handleKeyDown = useMemo(
     () =>
@@ -78,12 +78,6 @@ const InternoteEditorEditor = () => {
       handleResetListBlockOnPress,
     ]
   );
-
-  const handleKeyUp = useCallback(() => {
-    if (distractionFree) {
-      requestAnimationFrame(scrollToFocusedNode);
-    }
-  }, [scrollToFocusedNode, distractionFree]);
 
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
 
@@ -100,7 +94,6 @@ const InternoteEditorEditor = () => {
           spellCheck
           autoFocus
           onKeyDown={handleKeyDown}
-          onKeyUp={handleKeyUp}
         />
       </InnerPadding>
     </FullHeight>
@@ -112,12 +105,9 @@ const Element: React.FunctionComponent<InternoteEditorRenderElementProps> = ({
   children,
   element,
 }) => {
-  const isFocused = false;
   const attrs = {
     ...attributes,
-    className: isFocused
-      ? [SLATE_BLOCK_CLASS_NAME, SLATE_BLOCK_FOCUSED_CLASS_NAME].join(" ")
-      : SLATE_BLOCK_CLASS_NAME,
+    className: voids.includes(element.type) ? "" : SLATE_BLOCK_CLASS_NAME,
   };
 
   switch (element.type) {

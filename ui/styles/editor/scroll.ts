@@ -1,12 +1,15 @@
 import { useCallback, useRef, useState, useEffect } from "react";
 import zenscroll from "zenscroll";
-import { InternoteSlateEditor } from "./types";
-import { getCurrentFocusedHTMLNode } from "./focus";
+import {
+  findAncestor,
+  SLATE_BLOCK_CLASS_NAME,
+  SLATE_BLOCK_FOCUSED_CLASS_NAME,
+} from "./focus";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
+import { useCurrentSelection } from "./hooks";
 
-export const useScrollFocus = (
-  editor: InternoteSlateEditor,
+export const useDistractionFreeUx = (
   scrollRef: React.MutableRefObject<HTMLDivElement>
 ) => {
   const [
@@ -22,49 +25,53 @@ export const useScrollFocus = (
     autoScrolling.current = true;
     scroller.current.center(element, 100, 0, () => {
       requestAnimationFrame(() => {
-        setUserHasScrolledOutOfDistractionMode(false);
         autoScrolling.current = false;
+        setUserHasScrolledOutOfDistractionMode(false);
       });
     });
   }, []);
 
-  const handleUserHasScrolledEditor = useCallback(() => {
+  const handleScroll = useCallback(() => {
     if (!autoScrolling.current) {
       setUserHasScrolledOutOfDistractionMode(true);
     }
   }, []);
 
-  const scrollToFocusedNode = useCallback(() => {
-    pipe(
-      getCurrentFocusedHTMLNode(editor),
-      O.map((focusedNode) => {
-        autoScrolling.current = true;
-        scrollEditorToElement(focusedNode);
-      })
-    );
-  }, [scrollRef.current, editor, scrollEditorToElement]);
-
   useEffect(() => {
-    const handleClick = () => setTimeout(scrollToFocusedNode, 100);
-    const handleScroll = () => handleUserHasScrolledEditor();
     if (scrollRef.current) {
       scroller.current = zenscroll.createScroller(scrollRef.current, 200);
       scrollRef.current.addEventListener("scroll", handleScroll);
-      scrollRef.current.addEventListener("click", handleClick);
     }
     return () => {
       scrollRef.current.removeEventListener("scroll", handleScroll);
-      scrollRef.current.removeEventListener("click", handleClick);
     };
-  }, [
-    scrollRef.current,
-    autoScrolling.current,
-    handleUserHasScrolledEditor,
-    scrollToFocusedNode,
-  ]);
+  }, [scrollRef.current, handleScroll]);
+
+  const selection = useCurrentSelection();
+
+  useEffect(() => {
+    pipe(
+      O.fromNullable(document.getSelection()),
+      O.filterMap((selection) => O.fromNullable(selection.anchorNode)),
+      O.filterMap(findAncestor(SLATE_BLOCK_CLASS_NAME)),
+      O.map((focusedBlockNode) => {
+        removeCurrentFocusedBlockClassName();
+        focusedBlockNode.classList.add(SLATE_BLOCK_FOCUSED_CLASS_NAME);
+        autoScrolling.current = true;
+        scrollEditorToElement(focusedBlockNode);
+      })
+    );
+  }, [selection]);
 
   return {
-    scrollToFocusedNode,
     userHasScrolledOutOfDistractionMode,
   };
 };
+
+const removeCurrentFocusedBlockClassName = () =>
+  pipe(
+    O.fromNullable(
+      document.querySelector(`.${SLATE_BLOCK_FOCUSED_CLASS_NAME}`)
+    ),
+    O.map((elm) => elm.classList.remove(SLATE_BLOCK_FOCUSED_CLASS_NAME))
+  );
