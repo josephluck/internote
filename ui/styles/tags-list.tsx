@@ -77,8 +77,9 @@ export const TagsList: React.FunctionComponent<{
         <NewTag
           isFocused={focusedIndex === 0}
           onMouseEnter={() => setFocusedIndex(0)}
-          onClick={(e) => {
+          onMouseDown={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             onCreateNewTag(`#${search}`);
           }}
         >
@@ -95,8 +96,9 @@ export const TagsList: React.FunctionComponent<{
             key={tag}
             isFocused={search.length === 0 || focusedIndex === i + 1}
             onMouseEnter={() => setFocusedIndex(i + 1)}
-            onClick={(e) => {
+            onMouseDown={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               onTagSelected(tag, search);
             }}
           >

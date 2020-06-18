@@ -21,6 +21,7 @@ import {
   faList,
   faParagraph,
   faTag,
+  faSmile,
 } from "@fortawesome/free-solid-svg-icons";
 
 export type InternoteSlateEditor = ReturnType<typeof useCreateInternoteEditor>;
@@ -79,7 +80,12 @@ export type InternoteEditorRenderLeafProps = RenderLeafProps & {
   leaf: Text & Record<InternoteEditorMarkType, boolean>;
 };
 
-export type ToolbarFunctions = "outline" | "speech" | "dictionary" | "delete";
+export type ToolbarFunctions =
+  | "outline"
+  | "speech"
+  | "dictionary"
+  | "delete"
+  | "emoji";
 
 export type ToolbarFunctionStates =
   | "speech-loading"
@@ -116,6 +122,7 @@ export const toolbarLabelMap: Record<
   speech: "Speech",
   dictionary: "Dictionary",
   delete: "Delete",
+  emoji: "Emoji",
 };
 
 // TODO: chromebook can't use mod?
@@ -139,6 +146,7 @@ export const toolbarShortcutMap: Record<
   speech: "ctrl+s",
   dictionary: "ctrl+d",
   delete: "ctrl+shift+d",
+  emoji: "ctrl+e",
 };
 
 export const toolbarIconMap: Record<ToolbarIconType, React.ReactNode> = {
@@ -162,4 +170,5 @@ export const toolbarIconMap: Record<ToolbarIconType, React.ReactNode> = {
   paragraph: <FontAwesomeIcon icon={faParagraph} />,
   "list-item": <FontAwesomeIcon icon={faList} />,
   delete: <FontAwesomeIcon icon={faTrash} />,
+  emoji: <FontAwesomeIcon icon={faSmile} />,
 };

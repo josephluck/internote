@@ -56,8 +56,9 @@ export const EmojiList: React.FunctionComponent<{
               key={emoji.codes}
               isFocused={search.length === 0 || focusedIndex === i}
               onMouseEnter={() => setFocusedIndex(i)}
-              onClick={(e) => {
+              onMouseDown={(e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 onEmojiSelected(emoji, `:${search}`);
               }}
             >

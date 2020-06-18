@@ -66,57 +66,59 @@ export const Speech: React.FunctionComponent<{
   );
 
   return (
-    <AudioPlayer src={src} autoPlay onFinished={handleFinished}>
-      {(audio) => {
-        const iconName: ToolbarIconType =
-          isLoading || audio.status === "loading"
-            ? "speech-loading"
-            : audio.status === "playing"
-            ? "speech-playing"
-            : audio.status === "paused" || audio.status === "stopped"
-            ? "speech-paused"
-            : "speech";
-        return (
-          <>
-            {(!!src || isLoading) && (
-              <Shortcut
-                keyCombo="esc"
-                callback={handleFinished}
-                id="cancel-speech"
-                description="Cancel speech"
+    <>
+      {(!!src || isLoading) && (
+        <Shortcut
+          keyCombo="esc"
+          callback={handleFinished}
+          id="cancel-speech"
+          description="Cancel speech"
+        />
+      )}
+      <AudioPlayer src={src} autoPlay onFinished={handleFinished}>
+        {(audio) => {
+          const iconName: ToolbarIconType =
+            isLoading || audio.status === "loading"
+              ? "speech-loading"
+              : audio.status === "playing"
+              ? "speech-playing"
+              : audio.status === "paused" || audio.status === "stopped"
+              ? "speech-paused"
+              : "speech";
+          return (
+            <>
+              <ToolbarButton
+                forceExpand={!!src || isLoading}
+                onClick={() => onIconClick(audio)}
+                icon={toolbarIconMap[iconName]}
+                name={toolbarLabelMap.speech}
+                shortcut={toolbarShortcutMap.speech}
+                label={
+                  <CollapsedWrapper>
+                    {src ? (
+                      <Flex alignItems="center">
+                        <TimelineWrap>
+                          <TimelineInner
+                            style={{ width: `${audio.percentagePlayed}%` }}
+                          />
+                        </TimelineWrap>
+                        <div onMouseDown={handleCancelPress}>
+                          <FontAwesomeIcon icon={faTimes} />
+                        </div>
+                      </Flex>
+                    ) : isLoading ? (
+                      "Loading"
+                    ) : (
+                      "Speech"
+                    )}
+                  </CollapsedWrapper>
+                }
               />
-            )}
-            <ToolbarButton
-              forceExpand={!!src || isLoading}
-              onClick={() => onIconClick(audio)}
-              icon={toolbarIconMap[iconName]}
-              name={toolbarLabelMap.speech}
-              shortcut={toolbarShortcutMap.speech}
-              label={
-                <CollapsedWrapper>
-                  {src ? (
-                    <Flex alignItems="center">
-                      <TimelineWrap>
-                        <TimelineInner
-                          style={{ width: `${audio.percentagePlayed}%` }}
-                        />
-                      </TimelineWrap>
-                      <div onMouseDown={handleCancelPress}>
-                        <FontAwesomeIcon icon={faTimes} />
-                      </div>
-                    </Flex>
-                  ) : isLoading ? (
-                    "Loading"
-                  ) : (
-                    "Speech"
-                  )}
-                </CollapsedWrapper>
-              }
-            />
-          </>
-        );
-      }}
-    </AudioPlayer>
+            </>
+          );
+        }}
+      </AudioPlayer>
+    </>
   );
 };
 

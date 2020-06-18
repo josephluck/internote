@@ -28,6 +28,7 @@ import {
   toolbarShortcutMap,
 } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
+import { Shortcut } from "../shortcuts";
 
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
@@ -36,7 +37,6 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     editor,
     emojiSearchText,
     hashtagSearchText,
-    hasSmartSearch,
     replaceSmartSearchText,
     speechText,
     selectedText,
@@ -56,11 +56,16 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     (state) => state.dictionary.loading.lookup
   );
 
-  const isEmojiShowing = O.isSome(emojiSearchText);
+  const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
 
-  const isHashtagShowing = O.isSome(hashtagSearchText);
+  const [isTagButtonPressed, setIsTagButtonPressed] = React.useState(false);
 
-  const toolbarIsExpanded = isDictionaryShowing || hasSmartSearch;
+  const isEmojiShowing = O.isSome(emojiSearchText) || isEmojiButtonPressed;
+
+  const isHashtagShowing = O.isSome(hashtagSearchText) || isTagButtonPressed;
+
+  const toolbarIsExpanded =
+    isDictionaryShowing || isEmojiShowing || isHashtagShowing;
 
   const isToolbarVisible = toolbarIsExpanded || O.isSome(selectedText);
 
@@ -69,8 +74,19 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     O.getOrElse(() => "")
   );
 
+  const toggleEmojiButtonPressed = useCallback(
+    () => setIsEmojiButtonPressed((prev) => !prev),
+    []
+  );
+
+  const toggleTagButtonPressed = useCallback(
+    () => setIsTagButtonPressed((prev) => !prev),
+    []
+  );
+
   const handleInsertTag = useCallback(
     (tag: string) => {
+      setIsTagButtonPressed(false);
       replaceSmartSearchText({ type: "tag", tag, children: [{ text: "" }] });
     },
     [replaceSmartSearchText]
@@ -78,16 +94,28 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
 
   const handleInsertEmoji = useCallback(
     (emoji: Emoji) => {
+      setIsEmojiButtonPressed(false);
       replaceSmartSearchText(emoji.char);
     },
     [replaceSmartSearchText]
   );
+
+  const handleEscape = useCallback(() => {
+    setIsEmojiButtonPressed(false);
+    setIsTagButtonPressed(false);
+  }, []);
 
   return (
     <ToolbarWrapper
       distractionFree={distractionFree}
       forceShow={isToolbarVisible}
     >
+      <Shortcut
+        keyCombo="esc"
+        callback={handleEscape}
+        id="toolbar-escape"
+        description="Close toolbar"
+      />
       <ToolbarInner>
         <Flex flex={1} alignItems="center">
           {marks.map((mark) => (
@@ -100,6 +128,24 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
               <BlockButton nodeType={block} />
             </ButtonSpacer>
           ))}
+          <ButtonSpacer small>
+            <ToolbarButton
+              onClick={toggleEmojiButtonPressed}
+              icon={toolbarIconMap.emoji}
+              label={toolbarLabelMap.emoji}
+              name={toolbarLabelMap.emoji}
+              shortcut={toolbarShortcutMap.emoji}
+            />
+          </ButtonSpacer>
+          <ButtonSpacer small>
+            <ToolbarButton
+              onClick={toggleTagButtonPressed}
+              icon={toolbarIconMap.tag}
+              label={toolbarLabelMap.tag}
+              name={toolbarLabelMap.tag}
+              shortcut={toolbarShortcutMap.tag}
+            />
+          </ButtonSpacer>
         </Flex>
         <Flex alignItems="center">
           <ButtonSpacer small>
