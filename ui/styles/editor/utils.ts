@@ -13,7 +13,7 @@ const LIST_TYPES: InternoteEditorNodeType[] = [
 ];
 
 export const toggleBlock = (
-  editor: InternoteSlateEditor,
+  editor: Editor,
   format: InternoteEditorNodeType
 ) => {
   const isActive = isBlockActive(editor, format);
@@ -34,10 +34,7 @@ export const toggleBlock = (
   }
 };
 
-export const toggleMark = (
-  editor: InternoteSlateEditor,
-  format: InternoteEditorNodeType
-) => {
+export const toggleMark = (editor: Editor, format: InternoteEditorNodeType) => {
   const isActive = isMarkActive(editor, format);
 
   if (isActive) {
@@ -48,7 +45,7 @@ export const toggleMark = (
 };
 
 export const isBlockActive = (
-  editor: InternoteSlateEditor,
+  editor: Editor,
   format: InternoteEditorNodeType
 ) => {
   const [match] = Editor.nodes(editor, {
@@ -59,7 +56,7 @@ export const isBlockActive = (
 };
 
 export const isMarkActive = (
-  editor: InternoteSlateEditor,
+  editor: Editor,
   format: InternoteEditorNodeType
 ) => {
   const marks = Editor.marks(editor);

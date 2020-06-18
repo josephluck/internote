@@ -51,6 +51,21 @@ export type InternoteEditorElementTypes = InternoteEditorElement["type"];
 
 export type InternoteEditorMarkType = "bold" | "italic" | "underline" | "code";
 
+export const marks: InternoteEditorMarkType[] = [
+  "bold",
+  "italic",
+  "underline",
+  "code",
+];
+
+export const toolbarBlocks: InternoteEditorElementTypes[] = [
+  "heading-one",
+  "heading-two",
+  "bulleted-list",
+  "numbered-list",
+  "block-quote",
+];
+
 export type InternoteEditorNodeType =
   | InternoteEditorMarkType
   | InternoteEditorElementTypes;

@@ -1,13 +1,18 @@
 import { Flex } from "@rebass/grid";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 import { Collapse } from "react-collapse";
+import { useEditor } from "slate-react";
 import styled from "styled-components";
 import { useTwineState } from "../../store";
 import { font, size, spacing } from "../../theming/symbols";
+import { Emoji } from "../../utilities/emojis";
 import { Dictionary } from "../dictionary";
 import { DictionaryButton } from "../dictionary-button";
+import { EmojiList } from "../emoji-list";
+import { Speech } from "../speech";
+import { TagsList } from "../tags-list";
 import { ButtonSpacer, ToolbarButton } from "../toolbar-button";
 import { Wrapper } from "../wrapper";
 import { DeleteNoteButton } from "./delete";
@@ -16,15 +21,13 @@ import { NoteSavingIndicator } from "./saving";
 import { getHighlightedWord } from "./selection";
 import {
   InternoteEditorNodeType,
+  marks,
+  toolbarBlocks,
   toolbarIconMap,
   toolbarLabelMap,
   toolbarShortcutMap,
 } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
-import { Speech } from "../speech";
-import { EmojiList } from "../emoji-list";
-import { TagsList } from "../tags-list";
-import { Emoji } from "../../utilities/emojis";
 
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
@@ -86,16 +89,17 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
       forceShow={isToolbarVisible}
     >
       <ToolbarInner>
-        <Flex flex={1}>
-          <MarkButton nodeType="bold" />
-          <MarkButton nodeType="italic" />
-          <MarkButton nodeType="underline" />
-          <MarkButton nodeType="code" />
-          <BlockButton nodeType="heading-one" />
-          <BlockButton nodeType="heading-two" />
-          <BlockButton nodeType="block-quote" />
-          <BlockButton nodeType="numbered-list" />
-          <BlockButton nodeType="bulleted-list" />
+        <Flex flex={1} alignItems="center">
+          {marks.map((mark) => (
+            <ButtonSpacer small key={mark}>
+              <MarkButton nodeType={mark} />
+            </ButtonSpacer>
+          ))}
+          {toolbarBlocks.map((block) => (
+            <ButtonSpacer small key={block}>
+              <BlockButton nodeType={block} />
+            </ButtonSpacer>
+          ))}
         </Flex>
         <Flex alignItems="center">
           <ButtonSpacer small>
@@ -160,16 +164,13 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
 const BlockButton: React.FunctionComponent<{
   nodeType: InternoteEditorNodeType;
 }> = ({ nodeType }) => {
-  const { editor } = useInternoteEditor();
+  const editor = useEditor();
 
   const handleToggle = useCallback(() => {
     toggleBlock(editor, nodeType);
   }, [editor, nodeType]);
 
-  const isActive = useMemo(() => isBlockActive(editor, nodeType), [
-    editor,
-    nodeType,
-  ]);
+  const isActive = isBlockActive(editor, nodeType);
 
   return (
     <ToolbarButton
@@ -186,16 +187,13 @@ const BlockButton: React.FunctionComponent<{
 const MarkButton: React.FunctionComponent<{
   nodeType: InternoteEditorNodeType;
 }> = ({ nodeType }) => {
-  const { editor } = useInternoteEditor();
+  const editor = useEditor();
 
   const handleToggle = useCallback(() => {
     toggleMark(editor, nodeType);
   }, [editor, nodeType]);
 
-  const isActive = useMemo(() => isMarkActive(editor, nodeType), [
-    editor,
-    nodeType,
-  ]);
+  const isActive = isMarkActive(editor, nodeType);
 
   return (
     <ToolbarButton
@@ -203,6 +201,7 @@ const MarkButton: React.FunctionComponent<{
       onClick={handleToggle}
       icon={toolbarIconMap[nodeType]}
       label={toolbarLabelMap[nodeType]}
+      name={toolbarLabelMap[nodeType]}
       shortcut={toolbarShortcutMap[nodeType]}
     />
   );
