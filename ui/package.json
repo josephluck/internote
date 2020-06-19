@@ -119,6 +119,7 @@
     "clearMocks": true
   },
   "dependencies": {
+    "@slate-collaborative/client": "^0.6.2",
     "fp-ts": "^2.6.5"
   }
 }

@@ -21,15 +21,41 @@ import {
 import { InternoteEditorElement, InternoteSlateEditor } from "./types";
 import { withVoids } from "./voids";
 import { withInlines } from "./inlines";
+import { withIOCollaboration } from "@slate-collaborative/client";
+
+// TODO: from env
+const origin = "http://localhost:9000";
+
+export const COLLABORATION_ENABLED = false;
+
+const withCollaboration = (noteId: string) => <T extends Editor>(
+  editor: T
+): T =>
+  COLLABORATION_ENABLED
+    ? withIOCollaboration(editor, {
+        docId: `/${noteId}`,
+        url: `${origin}/${noteId}`,
+        connectOpts: {
+          query: {
+            token: "some-authentication-token", // The authentication token
+            noteId,
+          },
+        },
+        onConnect: () => console.log("Connected"),
+        onDisconnect: () => console.log("Disconnected"),
+      })
+    : editor;
 
 // TODO: use function application
-export const useCreateInternoteEditor = () =>
+export const useCreateInternoteEditor = (noteId: string) =>
   useMemo(
     () =>
-      withHistory(
-        withInlines(withVoids(withShortcuts(withReact(createEditor()))))
+      withCollaboration(noteId)(
+        withHistory(
+          withInlines(withVoids(withShortcuts(withReact(createEditor()))))
+        )
       ),
-    []
+    [noteId]
   );
 
 interface InternoteEditorContext {

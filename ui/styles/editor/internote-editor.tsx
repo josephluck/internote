@@ -1,6 +1,7 @@
 import React, {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -12,12 +13,12 @@ import { borderRadius, font, spacing } from "../../theming/symbols";
 import { ShortcutsContext } from "../shortcuts";
 import { Tag } from "../tag";
 import { wrapperStyles } from "../wrapper";
-// import { useSharedOperations} from "./shared-operations";
 import {
   SLATE_BLOCK_CLASS_NAME,
   SLATE_BLOCK_FOCUSED_CLASS_NAME,
 } from "./focus";
 import {
+  COLLABORATION_ENABLED,
   InternoteEditorProvider,
   useCreateInternoteEditor,
   useInternoteEditor,
@@ -37,17 +38,37 @@ export const InternoteEditor: React.FunctionComponent<{
   initialValue: InternoteEditorElement[];
   noteId: string;
 }> = ({ initialValue, noteId }) => {
-  const editor = useCreateInternoteEditor();
+  const editor = useCreateInternoteEditor(noteId);
+
+  useEffect(() => {
+    if (COLLABORATION_ENABLED) {
+      // @ts-ignore
+      editor.connect();
+      return editor.destroy;
+    }
+  }, [noteId]);
 
   const [value, setValue] = useState(initialValue);
 
-  // const { captureSharedOperations } = useSharedOperations(editor);
-
-  useLiveSave(value, noteId);
+  if (!COLLABORATION_ENABLED) {
+    useLiveSave(value, noteId);
+  }
 
   const handleChange = (value: InternoteEditorElement[]) => {
     setValue(value);
-    // captureSharedOperations();
+  };
+
+  const [connected, setConnected] = useState(true);
+
+  const handleToggleConnection = () => {
+    if (connected) {
+      // @ts-ignore
+      editor.disconnect();
+    } else {
+      // @ts-ignore
+      editor.connect();
+    }
+    setConnected((prev) => !prev);
   };
 
   return (
@@ -56,6 +77,14 @@ export const InternoteEditor: React.FunctionComponent<{
         <InternoteEditorEditor />
         <Toolbar noteId={noteId} />
       </InternoteEditorProvider>
+      {COLLABORATION_ENABLED && (
+        <button
+          onClick={handleToggleConnection}
+          style={{ position: "fixed", top: 0, left: 0, zIndex: 999 }}
+        >
+          {connected ? "Disconnect" : "Connect"}
+        </button>
+      )}
     </Slate>
   );
 };
