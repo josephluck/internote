@@ -12,6 +12,7 @@ import { borderRadius, font, spacing } from "../../theming/symbols";
 import { ShortcutsContext } from "../shortcuts";
 import { Tag } from "../tag";
 import { wrapperStyles } from "../wrapper";
+// import { useSharedOperations} from "./shared-operations";
 import {
   SLATE_BLOCK_CLASS_NAME,
   SLATE_BLOCK_FOCUSED_CLASS_NAME,
@@ -39,10 +40,18 @@ export const InternoteEditor: React.FunctionComponent<{
   const editor = useCreateInternoteEditor();
 
   const [value, setValue] = useState(initialValue);
+
+  // const { captureSharedOperations } = useSharedOperations(editor);
+
   useLiveSave(value, noteId);
 
+  const handleChange = (value: InternoteEditorElement[]) => {
+    setValue(value);
+    // captureSharedOperations();
+  };
+
   return (
-    <Slate editor={editor} value={value} onChange={setValue as any}>
+    <Slate editor={editor} value={value} onChange={handleChange}>
       <InternoteEditorProvider>
         <InternoteEditorEditor />
         <Toolbar noteId={noteId} />
