@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import { GetNoteDTO } from "@internote/notes-service/types";
 import dynamic from "next/dynamic";
+import { EMPTY_SCHEMA } from "@internote/lib/schema-examples";
 
 const Editor = dynamic(
   async () => {
@@ -19,47 +20,8 @@ export const Note: React.FunctionComponent<{ note: GetNoteDTO }> = ({
       <title>{note.title} - Internote</title>
     </Head>
     <Editor
-      initialValue={
-        Array.isArray(note.content) ? note.content : DEFAULT_NOTE_CONTENT
-      }
+      initialValue={Array.isArray(note.content) ? note.content : EMPTY_SCHEMA}
       noteId={note.noteId}
     />
   </>
 );
-
-export const DEFAULT_NOTE_CONTENT = [
-  {
-    type: "paragraph",
-    children: [
-      { text: "This is editable " },
-      { text: "rich", bold: true },
-      { text: " text, " },
-      { text: "much", italic: true },
-      { text: " better than a " },
-      { text: "<textarea>", code: true },
-      { text: "!" },
-    ],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text:
-          "Since it's rich text, you can do things like turn a selection of text ",
-      },
-      { text: "bold", bold: true },
-      {
-        text:
-          ", or add a semantically rendered block quote in the middle of the page, like this:",
-      },
-    ],
-  },
-  {
-    type: "block-quote",
-    children: [{ text: "A wise quote." }],
-  },
-  {
-    type: "paragraph",
-    children: [{ text: "Try it out for yourself!" }],
-  },
-];

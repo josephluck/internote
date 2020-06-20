@@ -1,121 +1,50 @@
-import {
-  Schema,
-  SchemaBlock,
-  SchemaInline,
-  ListItemBlock,
-  SchemaNoneTextInline,
-  SchemaMark,
-} from "../types";
+import { InternoteEditorElement } from "@internote/lib/editor-types";
+import { Text } from "slate";
+import escapeHtml from "escape-html";
 
-/** Given a type of block, get the HTML tag (not including the <> or </> ) */
-function getBlockTag(block: SchemaBlock): string {
-  switch (block.type) {
-    case "heading-one":
-      return "h1";
-    case "heading-two":
-      return "h2";
-    case "block-quote":
-      return "quote";
-    case "numbered-list":
-      return "ol";
-    case "bulleted-list":
-      return "ul";
-    case "list-item":
-      return "li";
-    case "video":
-      return "video";
-    case "image":
-      return "img";
-    case "audio":
-      return "audio";
-    default:
-      return "p";
+const serializeText = (node: InternoteEditorElement): string => {
+  if (node.bold) {
+    return `<strong>${serializeText({ ...node, bold: false })}</strong>`;
   }
-}
-
-function getBlockAttributes(block: SchemaBlock): string {
-  switch (block.type) {
-    case "video":
-    case "image":
-    case "audio":
-      return `src="${block.data.src}"`;
-    default:
-      return "";
+  if (node.italic) {
+    return `<i>${serializeText({ ...node, italic: false })}</i>`;
   }
-}
-
-function serializeBlock(block: SchemaBlock): string {
-  const tag = getBlockTag(block);
-  const content = serializeBlockContent(block);
-  const attributes = getBlockAttributes(block);
-  return `<${tag}${attributes ? ` ${attributes}` : ""}>${content}</${tag}>`;
-}
-
-function serializeBlockContent(block: SchemaBlock): string {
-  const nodes = block.nodes as (ListItemBlock | SchemaInline)[];
-  return nodes.reduce((str, node: ListItemBlock | SchemaInline, index) => {
-    if (node.type === "list-item") {
-      const newLine = index < nodes.length - 1 ? "\n" : "";
-      return `${str}${serializeListItem(node)}${newLine}`;
-    } else {
-      return `${str}${serializeInline(node)}`;
-    }
-  }, "");
-}
-
-function serializeListItem(node: ListItemBlock): string {
-  const tag = getBlockTag(node);
-  return `<${tag}>${node.nodes.reduce(
-    (str, node) => `${str}${serializeInline(node)}`,
-    ""
-  )}</${tag}>`;
-}
-
-function serializeInline(node: SchemaInline): string {
-  switch (node.object) {
-    case "text":
-      return wrapInMarks(node.text, node.marks);
-    default:
-      return serializeNonTextInline(node);
+  if (node.underline) {
+    return `<u>${serializeText({ ...node, underline: false })}</u>`;
   }
-}
+  return escapeHtml(node.text);
+};
 
-function serializeNonTextInline(node: SchemaNoneTextInline): string {
+const serialize = (node: InternoteEditorElement): string => {
+  if (Text.isText(node)) {
+    return serializeText(node);
+  }
+
+  const children = node.children
+    .map((n) => serialize(n as InternoteEditorElement))
+    .join("");
+
   switch (node.type) {
-    case "emoji":
-      return node.data.code;
+    case "heading-one":
+      return `<h1>${children}</h1>`;
+    case "heading-two":
+      return `<h2>${children}</h2>`;
+    case "bulleted-list":
+      return `<ul>${children}</ul>`;
+    case "numbered-list":
+      return `<ol>${children}</ol>`;
+    case "list-item":
+      return `<li>${children}</li>`;
     case "tag":
-      return node.data.tag;
+      return node.tag;
+    case "block-quote":
+      return `<blockquote><p>${children}</p></blockquote>`;
+    case "paragraph":
+      return `<p>${children}</p>`;
     default:
-      return "";
+      return children;
   }
-}
+};
 
-function getMarkTag(mark: SchemaMark): string {
-  switch (mark.type) {
-    case "bold":
-      return "strong";
-    case "code":
-      return "code";
-    case "italic":
-      return "i";
-    case "underlined":
-      return "u";
-    default:
-      return "";
-  }
-}
-
-function wrapInMarks(content: string, marks: SchemaMark[]): string {
-  return marks.reduce((str, mark) => {
-    const tag = getMarkTag(mark);
-    return `<${tag}>${str}</${tag}>`;
-  }, content);
-}
-
-export function serialize(schema: Schema): string {
-  return schema.nodes.reduce(
-    (str, block) => `${str}${serializeBlock(block)}\n\n`,
-    ""
-  );
-}
+export const serializeHtml = (nodes: InternoteEditorElement[]) =>
+  nodes.map(serialize).join("");

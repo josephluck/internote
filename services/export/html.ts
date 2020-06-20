@@ -6,7 +6,7 @@ import {
   validateRequestBody,
 } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
-import { CreateHandler } from "@internote/lib/types";
+import { CreateHandler } from "@internote/lib/lambda";
 import { CreateExportDTO, ExportResponseDTO } from "./types";
 import { serialize } from "./serializers/html";
 import { required, isString } from "@internote/lib/validator";

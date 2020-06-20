@@ -1,33 +1,28 @@
-# Welcome to Internote!
+# 👋 Welcome to Internote
 
-## ❤ Internote
+Internote is a rich text editor designed for effortless content creation.
 
-Internote is a rich text editor designed for distraction-free content creation ✏📜.
+## Features
 
-Internote supports a wide variety of different formatting options including **bold, \***italic \*and **underline** including **_combinations _****_of_** ****the**** ****_three_**** as well as lists, `code snippets`, headings and quotes. There are also other useful features such as:
+- **Bold, ***italic, *_underline_ and ***_combinations_***. 
+- Integrated oxford dictionary
+- Text-to-speech
+- Emojis, #hashtags and code snippets
+- Multiple colour and typography themes
+- Export as HTML and Markdown
+- Distraction-free mode
+- Passwordless login
+- Fullscreen mode
+- Rich keyboard shortcuts
+- Automatic save
+- Outline navigation
 
-- Integrated code editor
-- In-built Oxford dictionary
-- Text-to-speech at the press of a button
-- Focus mode for distraction-free writing
-- Multiple colour and font themes
-- Emojis 🚀 and #hashtags
+> blockquotes
 
-Internote automatically saves your notes in the cloud and is _completely_ free.
+- Numbered lists
 
-> I built **Internote **to be an effortless writing app. It's inspired by iA Writer and the amazing sans-serif font, Inter.
+## Premium 
 
-```
-const Internote = (content: string) => {
-    return amazing(content)
-}
-const amazing = (content: string) => {
-    // ... magic!
-}
-```
+Internote is currently in **beta**. Any content you write here may be removed at any time. You've been warned! However, whilst Internote is in beta, all features will remain free.
 
-[some-image.png](https://some-bucket.s3.eu-west-1.amazonaws.com/some-image.png)
 
-[some-video.mp4](https://some-bucket.s3.eu-west-1.amazonaws.com/some-video.mp4)
-
-[some-audio.mp3](https://some-bucket.s3.eu-west-1.amazonaws.com/some-audio.mp3)

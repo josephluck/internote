@@ -10,7 +10,7 @@ import { success, exception, notFound } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { updatePreferencesById } from "./db/queries";
 import { Preferences } from "./db/models";
-import { UpdateHandler } from "@internote/lib/types";
+import { UpdateHandler } from "@internote/lib/lambda";
 
 const validator = validateRequestBody<Preferences>({
   id: [],

@@ -7,7 +7,7 @@ import {
   jsonErrorHandler,
 } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
-import { CreateHandler } from "@internote/lib/types";
+import { CreateHandler } from "@internote/lib/lambda";
 import {
   LookupRequestBody,
   LookupResponseBody,

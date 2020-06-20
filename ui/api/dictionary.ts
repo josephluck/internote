@@ -4,7 +4,7 @@ import {
   LookupRequestBody,
   LookupResponseBody,
 } from "@internote/dictionary-service/types";
-import { ApiResponse } from "@internote/lib/types";
+import { ApiResponse } from "@internote/lib/lambda";
 
 export function dictionary(makeRequest: MakeSignedRequest) {
   return {

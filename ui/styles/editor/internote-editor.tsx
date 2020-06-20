@@ -9,7 +9,7 @@ import React, {
 import { Editable, Slate } from "slate-react";
 import styled, { css } from "styled-components";
 import { useTwineState } from "../../store";
-import { borderRadius, font, spacing } from "../../theming/symbols";
+import { borderRadius, font, spacing, size } from "../../theming/symbols";
 import { ShortcutsContext } from "../shortcuts";
 import { Tag } from "../tag";
 import { wrapperStyles } from "../wrapper";
@@ -28,13 +28,13 @@ import { useLiveSave } from "./save";
 import { useDistractionFreeUx } from "./scroll";
 import { Toolbar } from "./toolbar";
 import {
-  InternoteEditorElement,
   InternoteEditorRenderElementProps,
   InternoteEditorRenderLeafProps,
   voids,
 } from "./types";
 import { CreateSnippetModal } from "../create-snippet-modal";
 import { Outline } from "../outline";
+import { InternoteEditorElement } from "@internote/lib/editor-types";
 
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: InternoteEditorElement[];
@@ -46,7 +46,7 @@ export const InternoteEditor: React.FunctionComponent<{
     if (COLLABORATION_ENABLED) {
       // @ts-ignore
       editor.connect();
-      return editor.destroy;
+      return editor.destroy as () => void;
     }
   }, [noteId]);
 
@@ -72,6 +72,8 @@ export const InternoteEditor: React.FunctionComponent<{
     }
     setConnected((prev) => !prev);
   };
+
+  console.log({ value });
 
   return (
     <Slate editor={editor} value={value} onChange={handleChange}>
@@ -100,6 +102,10 @@ const InternoteEditorEditor = () => {
     (state) => state.preferences.distractionFree
   );
 
+  const outlineShowing = useTwineState(
+    (state) => state.preferences.outlineShowing || false
+  );
+
   const scrollRef = useRef<HTMLDivElement>();
 
   const handleResetListBlockOnPress = useResetListBlocks(editor);
@@ -124,7 +130,7 @@ const InternoteEditorEditor = () => {
 
   return (
     <FullHeight>
-      <InnerPadding ref={scrollRef}>
+      <InnerPadding ref={scrollRef} outlineShowing={outlineShowing}>
         <Editor
           userScrolled={userHasScrolledOutOfDistractionMode}
           distractionFree={distractionFree}
@@ -208,15 +214,16 @@ const fullHeightStyles = css`
 
 const FullHeight = styled.div`
   ${fullHeightStyles};
-  display: flex;
   overflow-x: hidden;
+  position: relative;
 `;
 
-const InnerPadding = styled.div`
+const InnerPadding = styled.div<{ outlineShowing: boolean }>`
   ${fullHeightStyles};
   min-height: 100%;
   height: 100%;
   padding: ${spacing._2} 0 ${spacing._1};
+  padding-right: ${(props) => (props.outlineShowing ? size.outlineWidth : 0)};
   overflow-x: hidden;
 `;
 

@@ -6,7 +6,8 @@ import { InternoteEffect0, InternoteEffect } from ".";
 import { Option } from "space-lift";
 import { Api } from "../api/api";
 import { GetNoteDTO } from "@internote/notes-service/types";
-import { DEFAULT_NOTE_CONTENT } from "../styles/note";
+import { InternoteEditorValue } from "@internote/lib/editor-types";
+import { EMPTY_SCHEMA } from "@internote/lib/schema-examples";
 
 interface OwnState {
   notes: GetNoteDTO[];
@@ -19,7 +20,7 @@ interface OwnReducers {
 
 export interface UpdateNotePayload {
   noteId: string;
-  content: {};
+  content: InternoteEditorValue;
   tags: string[];
   title: string | undefined;
 }
@@ -72,7 +73,7 @@ export function model(api: Api): Model {
       async createNote(state, actions) {
         const result = await api.notes.create(state.auth.session, {
           title: `New note - ${new Date().toDateString()}`,
-          content: DEFAULT_NOTE_CONTENT,
+          content: EMPTY_SCHEMA,
         });
         result.map((note) => {
           actions.notes.setNotes([note, ...state.notes.notes]);

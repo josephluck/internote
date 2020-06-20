@@ -9,7 +9,7 @@ import {
 import { success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { createSnippet } from "./db/queries";
-import { CreateHandler } from "@internote/lib/types";
+import { CreateHandler } from "@internote/lib/lambda";
 import { CreateSnippetDTO } from "./types";
 import { required, isString } from "@internote/lib/validator";
 

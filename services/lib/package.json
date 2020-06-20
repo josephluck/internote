@@ -11,8 +11,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "escape-html": "^1.0.3",
     "http-errors": "^1.7.3",
     "middy": "^0.29.0",
+    "slate": "^0.58.3",
     "space-lift": "^0.8.7"
   },
   "devDependencies": {

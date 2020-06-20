@@ -53,7 +53,7 @@ export const Outline: React.FunctionComponent<{
 };
 
 const Wrap = styled.div<{ showing: boolean }>`
-  position: sticky;
+  position: absolute;
   right: 0;
   top: 0;
   height: 100%;
@@ -63,7 +63,6 @@ const Wrap = styled.div<{ showing: boolean }>`
   text-align: right;
   transition: all 333ms ease;
   opacity: ${(props) => (props.showing ? 0.2 : 0)};
-  margin-right: ${(props) => (props.showing ? 0 : `-${size.outlineWidth}`)};
   pointer-events: ${(props) => (props.showing ? "normal" : "none")};
   &:hover {
     opacity: 1;

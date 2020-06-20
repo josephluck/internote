@@ -1,6 +1,6 @@
 import { Session } from "../auth/storage";
 import { MakeSignedRequest } from "./api";
-import { ApiResponse } from "@internote/lib/types";
+import { ApiResponse } from "@internote/lib/lambda";
 
 export function tags(makeRequest: MakeSignedRequest) {
   return {

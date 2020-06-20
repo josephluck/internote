@@ -4,7 +4,7 @@ import {
   validateRequestBody,
 } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
-import { UpdateHandler } from "@internote/lib/types";
+import { UpdateHandler } from "@internote/lib/lambda";
 import { getUserIdentityId } from "@internote/lib/user";
 import { isArray, isString, required } from "@internote/lib/validator";
 import middy from "middy";

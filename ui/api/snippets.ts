@@ -4,7 +4,7 @@ import {
   CreateSnippetDTO,
   GetSnippetDTO,
 } from "@internote/snippets-service/types";
-import { ApiResponse } from "@internote/lib/types";
+import { ApiResponse } from "@internote/lib/lambda";
 
 export function snippets(makeRequest: MakeSignedRequest) {
   return {

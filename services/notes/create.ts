@@ -5,7 +5,7 @@ import { encodeResponse, jsonErrorHandler } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { createNote } from "./db/queries";
-import { CreateHandler } from "@internote/lib/types";
+import { CreateHandler } from "@internote/lib/lambda";
 import { CreateNoteDTO } from "./types";
 
 const create: CreateHandler<CreateNoteDTO> = async (event, _ctx, callback) => {

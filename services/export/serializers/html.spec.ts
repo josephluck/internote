@@ -1,12 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
-import { serialize } from "./html";
-import schema from "./schema-example";
+import { serializeHtml } from "./html";
+import { FULL_SCHEMA_EXAMPLE } from "@internote/lib/schema-examples";
 
 describe("Serializers / html", () => {
   it("Serializes a complex schema to html", async () => {
     const expected = await getFile("./html-example.html");
-    const result = serialize(schema as any);
+    const result = serializeHtml(FULL_SCHEMA_EXAMPLE);
     await writeFile(result, "./html-export.html");
     expect(result).toEqual(expected);
   });

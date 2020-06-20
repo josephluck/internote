@@ -6,7 +6,7 @@ import {
   jsonErrorHandler,
 } from "@internote/lib/middlewares";
 import { success, exception } from "@internote/lib/responses";
-import { CreateHandler } from "@internote/lib/types";
+import { CreateHandler } from "@internote/lib/lambda";
 import { SpeechRequestBody, SpeechResponseBody, AvailableVoice } from "./types";
 import { required, inArray, isString } from "@internote/lib/validator";
 import AWS from "aws-sdk";

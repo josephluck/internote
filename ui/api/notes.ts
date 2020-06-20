@@ -5,7 +5,7 @@ import {
   CreateNoteDTO,
   GetNoteDTO,
 } from "@internote/notes-service/types";
-import { ApiResponse } from "@internote/lib/types";
+import { ApiResponse } from "@internote/lib/lambda";
 
 export function notes(makeRequest: MakeSignedRequest) {
   return {

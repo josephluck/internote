@@ -1,4 +1,5 @@
 import { Note } from "./db/models";
+import { InternoteEditorValue } from "@internote/lib/editor-types";
 
 /**
  * Represents the update note DTO.
@@ -12,7 +13,7 @@ export interface UpdateNoteDTO extends Omit<Note, "content" | "dateCreated"> {
    * is a newer note saved. Used to avoid conflicts.
    */
   dateUpdated?: number;
-  content: {};
+  content: InternoteEditorValue;
 }
 
 /**
@@ -22,7 +23,7 @@ export interface UpdateNoteDTO extends Omit<Note, "content" | "dateCreated"> {
  * in the database, but not over the API.
  */
 export interface GetNoteDTO extends Omit<Note, "content"> {
-  content: {};
+  content: InternoteEditorValue;
 }
 
 /**
@@ -32,5 +33,5 @@ export interface GetNoteDTO extends Omit<Note, "content"> {
  */
 export interface CreateNoteDTO
   extends Omit<Note, "noteId" | "userId" | "content"> {
-  content: {};
+  content: InternoteEditorValue;
 }
