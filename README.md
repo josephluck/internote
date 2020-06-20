@@ -23,13 +23,56 @@
   <br />
 </div>
 
+# 🚨 Fair warning!
+
+Internote is currently in **beta** status. This means that it's not ready for production use and your content may be erased at any time. You've been warned!
+
+# Features
+
+Many of Internote's features are free, however some advanced features are offered at a premium subscription.
+
+> Internote is currently in **beta**. During this time, all features are offered for _free_ without subscription. However, be warned that your content may be erased at any time.
+
+## Free
+
+- Rich editor with all the standard formatting options you'd expect
+- Emojis
+- Rich keyboard shortcuts
+- Outline navigation
+- Hashtags & rich search
+- Distraction-free mode which highlights and centers the content you're focused on
+- Real-time automatic saving
+- Multiple colour and typography themes
+- Full-screen mode
+- Passwordless login
+
+## Premium
+
+- Integrated oxford dictionary
+- Text to speech
+- Export as HTML
+- Export as Markdown
+
+## Coming soon
+
+- Hyperlinks
+- Clickable tags
+- File upload
+- Public publish
+- Offline mode
+- Real-time collaboration
+- Export as PDF
+- Export as DOCX
+- Sync to Google Drive / Dropbox
+- Native app
+
 # Application stack
 
 ## Architecture
 
-Internote is architected as a fully serverless application. This means that both the front-end and the back-end services are stateless, with persistence handled by external file storage and database storage.
+Internote is designed as a fully serverless application. This means that both the front-end and the back-end services are stateless, with persistence handled by external file storage and database storage.
 
-Internote's front-end and back-end services are written in Typescript and the project is structured as a yarn mono-repository to make use of efficient code-sharing where useful. For example, API DTOs are written in Typescript and are shared across the front-end and the back-end.
+Internote's front-end and back-end services are written in Typescript and the project is structured as a mono-repository to make use of efficient code-sharing where useful. For example, API DTOs are written in Typescript and are shared across the front-end and the back-end.
 
 ## Local development
 
@@ -46,8 +89,6 @@ The front-end application can be run locally and is set up to run against the `d
 - Styled Components
 - Storybook
 - Slate
-- Monaco Editor
-- Service workers
 - AWS API Gateway
 - AWS Lambda
 - AWS S3
