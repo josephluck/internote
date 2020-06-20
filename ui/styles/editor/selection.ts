@@ -1,7 +1,8 @@
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
 import { Range as SlateRange, Point as SlatePoint, Editor, Point } from "slate";
-import { InternoteSlateEditor, InternoteEditorElement } from "./types";
+import { InternoteSlateEditor } from "./types";
+import { InternoteEditorElement } from "@internote/lib/editor-types";
 
 /**
  * Get the current selection from the editor normalized such that the anchor

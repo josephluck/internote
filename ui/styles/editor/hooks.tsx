@@ -18,7 +18,8 @@ import {
   getHashtagSearchShortcut,
   withShortcuts,
 } from "./shortcuts";
-import { InternoteEditorElement, InternoteSlateEditor } from "./types";
+import { InternoteSlateEditor } from "./types";
+import { InternoteEditorElement } from "@internote/lib/editor-types";
 import { withVoids } from "./voids";
 import { withInlines } from "./inlines";
 import { withIOCollaboration } from "@slate-collaborative/client";

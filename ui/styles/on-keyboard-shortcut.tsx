@@ -11,6 +11,7 @@ export function OnKeyboardShortcut({
   React.useEffect(() => {
     function onKeyDown(event: Event) {
       const isHotkey = isKeyHotkey(keyCombo);
+      // @ts-ignore
       if (isHotkey(event)) {
         event.preventDefault();
         cb();

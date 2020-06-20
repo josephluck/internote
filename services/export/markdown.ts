@@ -8,7 +8,7 @@ import {
 import { success } from "@internote/lib/responses";
 import { CreateHandler } from "@internote/lib/lambda";
 import { CreateExportDTO, ExportResponseDTO } from "./types";
-import { serialize } from "./serializers/markdown";
+import { serializeMarkdown } from "./serializers/markdown";
 import { required, isString } from "@internote/lib/validator";
 import AWS from "aws-sdk";
 import md5 from "md5";
@@ -25,7 +25,7 @@ const markdown: CreateHandler<CreateExportDTO> = async (
 ) => {
   const S3 = new AWS.S3();
   const { title, content } = event.body;
-  const output = serialize(content.document);
+  const output = serializeMarkdown(content);
   const hash = md5(output);
   const S3UploadPath = `${title} - ${hash}.md`;
   await S3.upload({

@@ -20,13 +20,13 @@ import { useInternoteEditor } from "./hooks";
 import { NoteSavingIndicator } from "./saving";
 import { getHighlightedWord, getNodesFromEditorSelection } from "./selection";
 import {
-  InternoteEditorNodeType,
   marks,
   toolbarBlocks,
   toolbarIconMap,
   toolbarLabelMap,
   toolbarShortcutMap,
 } from "./types";
+import { InternoteEditorNodeType } from "@internote/lib/editor-types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 import { Shortcut } from "../shortcuts";
 import { SnippetsButton } from "../snippets-menu";
@@ -98,6 +98,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   const handleInsertTag = useCallback(
     (tag: string) => {
       setIsTagButtonPressed(false);
+      // @ts-ignore
       replaceSmartSearchText({ type: "tag", tag, children: [{ text: "" }] });
     },
     [replaceSmartSearchText]

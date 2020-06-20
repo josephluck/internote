@@ -1,14 +1,13 @@
 import { Editor, Transforms, Node } from "slate";
+import { OutlineElement } from "./types";
 import {
   InternoteEditorElement,
   InternoteEditorElementTypes,
   InternoteEditorNodeType,
-  InternoteSlateEditor,
   TagElement,
   HeadingOneElement,
   HeadingTwoElement,
-  OutlineElement,
-} from "./types";
+} from "@internote/lib/editor-types";
 
 const LIST_TYPES: InternoteEditorNodeType[] = [
   "numbered-list",

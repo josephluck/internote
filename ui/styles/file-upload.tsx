@@ -7,13 +7,8 @@ import styled from "styled-components";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 import { Flex } from "@rebass/grid";
 import { spacing } from "../theming/symbols";
-import {
-  ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap,
-} from "./toolbar-expanding-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faUpload } from "@fortawesome/free-solid-svg-icons";
-import { FileType } from "@internote/export-service/types";
 
 const HiddenFileInput = styled.input`
   border: 0;
@@ -44,7 +39,7 @@ const attachments = makeAttachmentsApi({
   bucketName: env.ATTACHMENTS_BUCKET_NAME,
 });
 
-export function getFileTypeFromFile(file: File): FileType {
+export function getFileTypeFromFile(file: File): any {
   switch (file.type) {
     case "audio/mp3":
       return "audio";
@@ -61,7 +56,7 @@ export function getFileTypeFromFile(file: File): FileType {
 
 export interface InternoteUploadEvent {
   src: string;
-  type: FileType;
+  type: any;
   key: string;
   name: string;
   progress: number;
@@ -153,14 +148,14 @@ export const FileUpload = ({
         }
       >
         {(collapse) => (
-          <ToolbarExpandingButton forceShow={isUploading}>
-            <ToolbarExpandingButtonIconWrap>
+          <div>
+            <div>
               {isUploading ? (
                 <FontAwesomeIcon icon={faSpinner} spin />
               ) : (
                 <FontAwesomeIcon icon={faUpload} />
               )}
-            </ToolbarExpandingButtonIconWrap>
+            </div>
             {collapse.renderCollapsedContent()}
 
             <HiddenFileInput
@@ -170,7 +165,7 @@ export const FileUpload = ({
               id="upload-file"
             />
             <FileInputLabel htmlFor="upload-file"></FileInputLabel>
-          </ToolbarExpandingButton>
+          </div>
         )}
       </Container>
     </>

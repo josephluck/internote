@@ -1,5 +1,6 @@
 import { Editor, Range, Transforms, Point } from "slate";
-import { InternoteEditorNodeType, InternoteSlateEditor } from "./types";
+import { InternoteSlateEditor } from "./types";
+import { InternoteEditorNodeType } from "@internote/lib/editor-types";
 import { pipe } from "fp-ts/lib/function";
 import { getWordTextUnderCursor } from "./selection";
 import * as O from "fp-ts/lib/Option";

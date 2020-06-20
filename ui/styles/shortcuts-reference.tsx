@@ -47,7 +47,7 @@ export function ShortcutsReference() {
               !shortcutWillBePrevented(shortcut, shortcuts)
           )
           .map((shortcut) => (
-            <ShortcutWrap key={shortcut.id} onClick={shortcut.callback}>
+            <ShortcutWrap key={shortcut.id} onClick={shortcut.callback as any}>
               {typeof shortcut.keyCombo === "object" ? (
                 shortcut.keyCombo.map((keyCombo, i) => (
                   <>

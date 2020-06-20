@@ -62,7 +62,7 @@ export function validate<C extends Record<string, any>, F extends any>(
   strictInput = true
 ) {
   const errors = makeValidator(constraints, strictInput)(fields);
-  const result = isValid(errors) ? Ok(fields) : Err(errors);
+  const result = isValid(errors as any) ? Ok(fields) : Err(errors);
   return result as Result<typeof errors, typeof fields>;
 }
 

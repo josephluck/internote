@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { GetSnippetDTO } from "@internote/snippets-service/types";
-import { InternoteEditorElement } from "./editor/types";
+import { InternoteEditorElement } from "@internote/lib/editor-types";
 import { useTwineActions } from "../store";
 import { useState } from "react";
 

@@ -1,4 +1,5 @@
-import { InternoteEditorNodeType, InternoteSlateEditor } from "./types";
+import { InternoteSlateEditor } from "./types";
+import { InternoteEditorNodeType } from "@internote/lib/editor-types";
 import { useCallback, KeyboardEvent } from "react";
 import isHotkey from "is-hotkey";
 import { toggleBlock } from "./utils";

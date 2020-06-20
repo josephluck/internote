@@ -1,5 +1,6 @@
 import { Editor } from "slate";
-import { InternoteEditorNodeType, inlines } from "./types";
+import { inlines } from "./types";
+import { InternoteEditorNodeType } from "@internote/lib/editor-types";
 
 export const withInlines = <T extends Editor>(editor: T): T => {
   const { isInline } = editor;

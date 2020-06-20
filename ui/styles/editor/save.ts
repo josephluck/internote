@@ -2,7 +2,7 @@ import { useDebounce } from "../../utilities/hooks";
 import { useEffect, useRef } from "react";
 import { useTwineActions } from "../../store";
 import { extractTitleFromValue, extractTagsFromValue } from "./utils";
-import { InternoteEditorElement } from "./types";
+import { InternoteEditorElement } from "@internote/lib/editor-types";
 
 export const useLiveSave = (
   value: InternoteEditorElement[],
