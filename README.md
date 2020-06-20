@@ -48,6 +48,8 @@ Many of Internote's features are free, however some advanced features are offere
 
 ## Premium
 
+> Premium has not yet been built and Internote is currently in **beta**. All of the following features are free until Internote is out of beta.
+
 - Integrated oxford dictionary
 - Text to speech
 - Export as HTML
