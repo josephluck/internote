@@ -34,6 +34,7 @@ import {
   voids,
 } from "./types";
 import { CreateSnippetModal } from "../create-snippet-modal";
+import { Outline } from "../outline";
 
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: InternoteEditorElement[];
@@ -134,6 +135,7 @@ const InternoteEditorEditor = () => {
           onKeyDown={handleKeyDown}
         />
       </InnerPadding>
+      <Outline value={editor.children as any} />
       <CreateSnippetModal />
     </FullHeight>
   );
@@ -206,6 +208,8 @@ const fullHeightStyles = css`
 
 const FullHeight = styled.div`
   ${fullHeightStyles};
+  display: flex;
+  overflow-x: hidden;
 `;
 
 const InnerPadding = styled.div`

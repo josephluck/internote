@@ -1,10 +1,13 @@
-import { Editor, Transforms } from "slate";
+import { Editor, Transforms, Node } from "slate";
 import {
   InternoteEditorElement,
   InternoteEditorElementTypes,
   InternoteEditorNodeType,
   InternoteSlateEditor,
   TagElement,
+  HeadingOneElement,
+  HeadingTwoElement,
+  OutlineElement,
 } from "./types";
 
 const LIST_TYPES: InternoteEditorNodeType[] = [
@@ -102,20 +105,52 @@ export const extractTagsStringsFromTags = (tags: TagElement[]): string[] =>
 export const flattenEditorElements = (
   value: InternoteEditorElement[]
 ): InternoteEditorElement[] =>
-  value.reduce((prev, { children, ...element }) => {
-    const elements = children
-      ? flattenEditorElements(children as InternoteEditorElement[])
+  value.reduce((prev, element) => {
+    const elements = element.children
+      ? flattenEditorElements(element.children as InternoteEditorElement[])
       : [];
     return [...prev, element, ...elements];
   }, []);
 
 export const extractAllTagElementsFromValue = (
   value: InternoteEditorElement[]
-): TagElement[] => extractTagElementsFromValue(flattenEditorElements(value));
+): TagElement[] =>
+  filterElementsOfType(["tag"])(flattenEditorElements(value)) as TagElement[];
 
-const extractTagElementsFromValue = (
+export const extractAllHeadingElementsFromValue = (
   value: InternoteEditorElement[]
-): TagElement[] => value.filter((node) => node.type === "tag") as TagElement[];
+): (HeadingOneElement | HeadingTwoElement)[] =>
+  filterElementsOfType(["heading-one", "heading-two"])(
+    flattenEditorElements(value)
+  ) as (HeadingOneElement | HeadingTwoElement)[];
+
+export const extractOutlineFromValue = (
+  value: InternoteEditorElement[]
+): OutlineElement[] =>
+  extractAllHeadingElementsFromValue(value)
+    .filter((heading) => !!heading.children && heading.children.length > 0)
+    .map((heading, i) => ({
+      path: undefined,
+      key: i.toString(),
+      text: Array.from(Node.texts(heading))
+        .map(([text]) => text.text)
+        .filter(Boolean)
+        .join(" "),
+      element: heading,
+      type: heading.type,
+    }))
+    .filter((heading) => heading.text.length > 0);
+
+/**
+ * NB: expects a flattened list of editor elements. If your structure is nested,
+ * refer to flattenEditorElements
+ */
+const filterElementsOfType = (types: InternoteEditorElementTypes[]) => (
+  value: InternoteEditorElement[]
+): InternoteEditorElement[] =>
+  value
+    .filter((node) => types.includes(node.type))
+    .filter(Boolean) as InternoteEditorElement[];
 
 /**
  * Shallow de-duplicates an array

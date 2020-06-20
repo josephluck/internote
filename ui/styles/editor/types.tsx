@@ -80,6 +80,14 @@ export type InternoteEditorRenderLeafProps = RenderLeafProps & {
   leaf: Text & Record<InternoteEditorMarkType, boolean>;
 };
 
+export type OutlineElement = {
+  path: any;
+  element: HeadingOneElement | HeadingTwoElement;
+  key: string;
+  type: InternoteEditorElementTypes;
+  text: string;
+};
+
 export type ToolbarFunctions =
   | "outline"
   | "speech"
