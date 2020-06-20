@@ -8,7 +8,7 @@
       "stage": "dev",
       "variableSyntax": "\\${([ ~:a-zA-Z0-9._@'\",\\-\\/\\(\\)*]+?)}",
       "name": "aws",
-      "runtime": "nodejs8.10",
+      "runtime": "nodejs12.x",
       "region": "eu-west-1",
       "versionFunctions": true,
       "remoteFunctionData": null,
@@ -37,9 +37,19 @@
               "CorsConfiguration": {
                 "CorsRules": [
                   {
-                    "AllowedOrigins": ["*"],
-                    "AllowedHeaders": ["*"],
-                    "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+                    "AllowedOrigins": [
+                      "*"
+                    ],
+                    "AllowedHeaders": [
+                      "*"
+                    ],
+                    "AllowedMethods": [
+                      "GET",
+                      "PUT",
+                      "POST",
+                      "DELETE",
+                      "HEAD"
+                    ],
                     "MaxAge": 3000
                   }
                 ]
@@ -55,7 +65,10 @@
           },
           "AttachmentsBucketArn": {
             "Value": {
-              "Fn::GetAtt": ["AttachmentsBucket", "Arn"]
+              "Fn::GetAtt": [
+                "AttachmentsBucket",
+                "Arn"
+              ]
             },
             "Export": {
               "Name": "dev-AttachmentsBucketArn"
@@ -114,9 +127,19 @@
             "CorsConfiguration": {
               "CorsRules": [
                 {
-                  "AllowedOrigins": ["*"],
-                  "AllowedHeaders": ["*"],
-                  "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+                  "AllowedOrigins": [
+                    "*"
+                  ],
+                  "AllowedHeaders": [
+                    "*"
+                  ],
+                  "AllowedMethods": [
+                    "GET",
+                    "PUT",
+                    "POST",
+                    "DELETE",
+                    "HEAD"
+                  ],
                   "MaxAge": 3000
                 }
               ]
@@ -127,7 +150,10 @@
       "Outputs": {
         "AttachmentsBucketArn": {
           "Value": {
-            "Fn::GetAtt": ["AttachmentsBucket", "Arn"]
+            "Fn::GetAtt": [
+              "AttachmentsBucket",
+              "Arn"
+            ]
           },
           "Export": {
             "Name": "dev-AttachmentsBucketArn"
@@ -147,7 +173,7 @@
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/internote-attachments-service/dev/1568373027795-2019-09-13T11:10:27.795Z",
+    "artifactDirectoryName": "serverless/internote-attachments-service/dev/1592677381704-2020-06-20T18:23:01.704Z",
     "artifact": ""
   }
 }

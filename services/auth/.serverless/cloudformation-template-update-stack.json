@@ -49,23 +49,36 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": ["lambda.amazonaws.com"]
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
               },
-              "Action": ["sts:AssumeRole"]
+              "Action": [
+                "sts:AssumeRole"
+              ]
             }
           ]
         },
         "Policies": [
           {
             "PolicyName": {
-              "Fn::Join": ["-", ["dev", "internote-auth-service", "lambda"]]
+              "Fn::Join": [
+                "-",
+                [
+                  "dev",
+                  "internote-auth-service",
+                  "lambda"
+                ]
+              ]
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": ["logs:CreateLogStream"],
+                  "Action": [
+                    "logs:CreateLogStream"
+                  ],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-auth-service-dev*:*"
@@ -74,7 +87,9 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": ["logs:PutLogEvents"],
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-auth-service-dev*:*:*"
@@ -83,8 +98,12 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": ["ses:SendEmail"],
-                  "Resource": ["arn:aws:ses:eu-west-1:*:*"]
+                  "Action": [
+                    "ses:SendEmail"
+                  ],
+                  "Resource": [
+                    "arn:aws:ses:eu-west-1:*:*"
+                  ]
                 }
               ]
             }
@@ -113,15 +132,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-auth-service/dev/1568373063472-2019-09-13T11:11:03.472Z/internote-auth-service.zip"
+          "S3Key": "serverless/internote-auth-service/dev/1592677438533-2020-06-20T18:23:58.533Z/internote-auth-service.zip"
         },
         "FunctionName": "internote-auth-service-dev-authPreSignUp",
         "Handler": "pre-sign-up.handler",
         "MemorySize": 1024,
         "Role": {
-          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         },
-        "Runtime": "nodejs8.10",
+        "Runtime": "nodejs12.x",
         "Timeout": 6,
         "Environment": {
           "Variables": {
@@ -129,16 +151,19 @@
           }
         }
       },
-      "DependsOn": ["AuthPreSignUpLogGroup", "IamRoleLambdaExecution"]
+      "DependsOn": [
+        "AuthPreSignUpLogGroup",
+        "IamRoleLambdaExecution"
+      ]
     },
-    "AuthPreSignUpLambdaVersionifv70Osfbf4cC4t0JIYPNYJyi7sy4zFZqS0wFAQaO0": {
+    "AuthPreSignUpLambdaVersioneeiBp7nqDnDw0HYfzfxJdrhm3RWXy96wsDIpWsaQk4": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AuthPreSignUpLambdaFunction"
         },
-        "CodeSha256": "4MppYJ22n4+IS7mmK/0GVK/nUPRu7LqNiDQxPlEd8FQ="
+        "CodeSha256": "t3huo8Zls0wx9PRjozBU6e4rAjCQeSw7Sag1pxFK8Lc="
       }
     },
     "DefineAuthChallengeLambdaFunction": {
@@ -148,15 +173,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-auth-service/dev/1568373063472-2019-09-13T11:11:03.472Z/internote-auth-service.zip"
+          "S3Key": "serverless/internote-auth-service/dev/1592677438533-2020-06-20T18:23:58.533Z/internote-auth-service.zip"
         },
         "FunctionName": "internote-auth-service-dev-defineAuthChallenge",
         "Handler": "define-auth-challenge.handler",
         "MemorySize": 1024,
         "Role": {
-          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         },
-        "Runtime": "nodejs8.10",
+        "Runtime": "nodejs12.x",
         "Timeout": 6,
         "Environment": {
           "Variables": {
@@ -164,16 +192,19 @@
           }
         }
       },
-      "DependsOn": ["DefineAuthChallengeLogGroup", "IamRoleLambdaExecution"]
+      "DependsOn": [
+        "DefineAuthChallengeLogGroup",
+        "IamRoleLambdaExecution"
+      ]
     },
-    "DefineAuthChallengeLambdaVersionu9ApdtRuVTS5WnjVaCr1ErbA9o1YQ8zSnsYs82z687o": {
+    "DefineAuthChallengeLambdaVersionLm7Y5tLGIyo7AGVcX6kiMLbCumztyl0cO8ZnyK8nM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DefineAuthChallengeLambdaFunction"
         },
-        "CodeSha256": "4MppYJ22n4+IS7mmK/0GVK/nUPRu7LqNiDQxPlEd8FQ="
+        "CodeSha256": "t3huo8Zls0wx9PRjozBU6e4rAjCQeSw7Sag1pxFK8Lc="
       }
     },
     "CreateAuthChallengeLambdaFunction": {
@@ -183,15 +214,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-auth-service/dev/1568373063472-2019-09-13T11:11:03.472Z/internote-auth-service.zip"
+          "S3Key": "serverless/internote-auth-service/dev/1592677438533-2020-06-20T18:23:58.533Z/internote-auth-service.zip"
         },
         "FunctionName": "internote-auth-service-dev-createAuthChallenge",
         "Handler": "create-auth-challenge.handler",
         "MemorySize": 1024,
         "Role": {
-          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         },
-        "Runtime": "nodejs8.10",
+        "Runtime": "nodejs12.x",
         "Timeout": 6,
         "Environment": {
           "Variables": {
@@ -199,16 +233,19 @@
           }
         }
       },
-      "DependsOn": ["CreateAuthChallengeLogGroup", "IamRoleLambdaExecution"]
+      "DependsOn": [
+        "CreateAuthChallengeLogGroup",
+        "IamRoleLambdaExecution"
+      ]
     },
-    "CreateAuthChallengeLambdaVersionlfV8jld3WiQK51rD5nXewGlJnaaAqZD8E0XN5YgFVQ": {
+    "CreateAuthChallengeLambdaVersionk4s5j8dkRLTF9M1zsGVvvoTbhC0tsyDr3sLEgGW1uTs": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateAuthChallengeLambdaFunction"
         },
-        "CodeSha256": "4MppYJ22n4+IS7mmK/0GVK/nUPRu7LqNiDQxPlEd8FQ="
+        "CodeSha256": "t3huo8Zls0wx9PRjozBU6e4rAjCQeSw7Sag1pxFK8Lc="
       }
     },
     "VerifyAuthChallengeResponseLambdaFunction": {
@@ -218,15 +255,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-auth-service/dev/1568373063472-2019-09-13T11:11:03.472Z/internote-auth-service.zip"
+          "S3Key": "serverless/internote-auth-service/dev/1592677438533-2020-06-20T18:23:58.533Z/internote-auth-service.zip"
         },
         "FunctionName": "internote-auth-service-dev-verifyAuthChallengeResponse",
         "Handler": "verify-auth-challenge-response.handler",
         "MemorySize": 1024,
         "Role": {
-          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         },
-        "Runtime": "nodejs8.10",
+        "Runtime": "nodejs12.x",
         "Timeout": 6,
         "Environment": {
           "Variables": {
@@ -239,14 +279,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "VerifyAuthChallengeResponseLambdaVersionhKufbfYM5pPRFA3WfmqJfsjizwivuOAGVnlpGyubU": {
+    "VerifyAuthChallengeResponseLambdaVersionvyFp54OSYFvPwPh01c7m4WG5B5L9dpRvWkOt0IX0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "VerifyAuthChallengeResponseLambdaFunction"
         },
-        "CodeSha256": "4MppYJ22n4+IS7mmK/0GVK/nUPRu7LqNiDQxPlEd8FQ="
+        "CodeSha256": "t3huo8Zls0wx9PRjozBU6e4rAjCQeSw7Sag1pxFK8Lc="
       }
     },
     "CognitoUserPoolCognitoUserPool": {
@@ -255,16 +295,28 @@
         "UserPoolName": "dev-internote-user-pool",
         "LambdaConfig": {
           "PreSignUp": {
-            "Fn::GetAtt": ["AuthPreSignUpLambdaFunction", "Arn"]
+            "Fn::GetAtt": [
+              "AuthPreSignUpLambdaFunction",
+              "Arn"
+            ]
           },
           "DefineAuthChallenge": {
-            "Fn::GetAtt": ["DefineAuthChallengeLambdaFunction", "Arn"]
+            "Fn::GetAtt": [
+              "DefineAuthChallengeLambdaFunction",
+              "Arn"
+            ]
           },
           "CreateAuthChallenge": {
-            "Fn::GetAtt": ["CreateAuthChallengeLambdaFunction", "Arn"]
+            "Fn::GetAtt": [
+              "CreateAuthChallengeLambdaFunction",
+              "Arn"
+            ]
           },
           "VerifyAuthChallengeResponse": {
-            "Fn::GetAtt": ["VerifyAuthChallengeResponseLambdaFunction", "Arn"]
+            "Fn::GetAtt": [
+              "VerifyAuthChallengeResponseLambdaFunction",
+              "Arn"
+            ]
           }
         },
         "Policies": {
@@ -276,7 +328,9 @@
             "RequireUppercase": false
           }
         },
-        "UsernameAttributes": ["email"],
+        "UsernameAttributes": [
+          "email"
+        ],
         "MfaConfiguration": "OFF"
       },
       "DependsOn": [
@@ -290,12 +344,18 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": ["AuthPreSignUpLambdaFunction", "Arn"]
+          "Fn::GetAtt": [
+            "AuthPreSignUpLambdaFunction",
+            "Arn"
+          ]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "cognito-idp.amazonaws.com",
         "SourceArn": {
-          "Fn::GetAtt": ["CognitoUserPoolCognitoUserPool", "Arn"]
+          "Fn::GetAtt": [
+            "CognitoUserPoolCognitoUserPool",
+            "Arn"
+          ]
         }
       }
     },
@@ -303,12 +363,18 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": ["DefineAuthChallengeLambdaFunction", "Arn"]
+          "Fn::GetAtt": [
+            "DefineAuthChallengeLambdaFunction",
+            "Arn"
+          ]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "cognito-idp.amazonaws.com",
         "SourceArn": {
-          "Fn::GetAtt": ["CognitoUserPoolCognitoUserPool", "Arn"]
+          "Fn::GetAtt": [
+            "CognitoUserPoolCognitoUserPool",
+            "Arn"
+          ]
         }
       }
     },
@@ -316,12 +382,18 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": ["CreateAuthChallengeLambdaFunction", "Arn"]
+          "Fn::GetAtt": [
+            "CreateAuthChallengeLambdaFunction",
+            "Arn"
+          ]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "cognito-idp.amazonaws.com",
         "SourceArn": {
-          "Fn::GetAtt": ["CognitoUserPoolCognitoUserPool", "Arn"]
+          "Fn::GetAtt": [
+            "CognitoUserPoolCognitoUserPool",
+            "Arn"
+          ]
         }
       }
     },
@@ -329,12 +401,18 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": ["VerifyAuthChallengeResponseLambdaFunction", "Arn"]
+          "Fn::GetAtt": [
+            "VerifyAuthChallengeResponseLambdaFunction",
+            "Arn"
+          ]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "cognito-idp.amazonaws.com",
         "SourceArn": {
-          "Fn::GetAtt": ["CognitoUserPoolCognitoUserPool", "Arn"]
+          "Fn::GetAtt": [
+            "CognitoUserPoolCognitoUserPool",
+            "Arn"
+          ]
         }
       }
     },
@@ -345,7 +423,9 @@
         "UserPoolId": {
           "Ref": "CognitoUserPoolCognitoUserPool"
         },
-        "ExplicitAuthFlows": ["CUSTOM_AUTH_FLOW_ONLY"],
+        "ExplicitAuthFlows": [
+          "CUSTOM_AUTH_FLOW_ONLY"
+        ],
         "GenerateSecret": false
       }
     },
@@ -361,7 +441,9 @@
               "Principal": {
                 "Federated": "cognito-identity.amazonaws.com"
               },
-              "Action": ["sts:AssumeRoleWithWebIdentity"],
+              "Action": [
+                "sts:AssumeRoleWithWebIdentity"
+              ],
               "Condition": {
                 "StringEquals": {
                   "cognito-identity.amazonaws.com:aud": {
@@ -392,7 +474,9 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": ["execute-api:Invoke"],
+                  "Action": [
+                    "execute-api:Invoke"
+                  ],
                   "Resource": {
                     "Fn::Join": [
                       "",
@@ -416,7 +500,9 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": ["s3:*"],
+                  "Action": [
+                    "s3:*"
+                  ],
                   "Resource": [
                     {
                       "Fn::Join": [
@@ -435,7 +521,9 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": ["s3:*"],
+                  "Action": [
+                    "s3:*"
+                  ],
                   "Resource": [
                     {
                       "Fn::Join": [
@@ -469,7 +557,10 @@
               "Ref": "CognitoUserPoolClient"
             },
             "ProviderName": {
-              "Fn::GetAtt": ["CognitoUserPoolCognitoUserPool", "ProviderName"]
+              "Fn::GetAtt": [
+                "CognitoUserPoolCognitoUserPool",
+                "ProviderName"
+              ]
             }
           }
         ]
@@ -483,7 +574,10 @@
         },
         "Roles": {
           "authenticated": {
-            "Fn::GetAtt": ["CognitoAuthRole", "Arn"]
+            "Fn::GetAtt": [
+              "CognitoAuthRole",
+              "Arn"
+            ]
           }
         }
       }
@@ -498,25 +592,25 @@
     "AuthPreSignUpLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AuthPreSignUpLambdaVersionifv70Osfbf4cC4t0JIYPNYJyi7sy4zFZqS0wFAQaO0"
+        "Ref": "AuthPreSignUpLambdaVersioneeiBp7nqDnDw0HYfzfxJdrhm3RWXy96wsDIpWsaQk4"
       }
     },
     "DefineAuthChallengeLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DefineAuthChallengeLambdaVersionu9ApdtRuVTS5WnjVaCr1ErbA9o1YQ8zSnsYs82z687o"
+        "Ref": "DefineAuthChallengeLambdaVersionLm7Y5tLGIyo7AGVcX6kiMLbCumztyl0cO8ZnyK8nM"
       }
     },
     "CreateAuthChallengeLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateAuthChallengeLambdaVersionlfV8jld3WiQK51rD5nXewGlJnaaAqZD8E0XN5YgFVQ"
+        "Ref": "CreateAuthChallengeLambdaVersionk4s5j8dkRLTF9M1zsGVvvoTbhC0tsyDr3sLEgGW1uTs"
       }
     },
     "VerifyAuthChallengeResponseLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "VerifyAuthChallengeResponseLambdaVersionhKufbfYM5pPRFA3WfmqJfsjizwivuOAGVnlpGyubU"
+        "Ref": "VerifyAuthChallengeResponseLambdaVersionvyFp54OSYFvPwPh01c7m4WG5B5L9dpRvWkOt0IX0"
       }
     },
     "UserPoolId": {

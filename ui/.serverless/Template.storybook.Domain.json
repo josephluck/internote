@@ -1,12 +1,1 @@
-{
-  "region": "us-east-1",
-  "privateZone": false,
-  "domain": "internote.app",
-  "subdomains": [
-    {
-      "domain": "storybook.internote.app",
-      "type": "awsS3Website",
-      "s3BucketName": "internote-storybook"
-    }
-  ]
-}
+{}

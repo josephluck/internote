@@ -5,12 +5,11 @@ app:
   inputs:
     domain: ["dev", "internote.app"]
     bucketName: internote-ui
-
-storybook:
-  component: "@serverless/website"
-  inputs:
-    code:
-      src: storybook-static
-    domain: storybook.internote.app
-    region: eu-west-1
-    bucketName: internote-storybook
+# storybook:
+#   component: "@serverless/website"
+#   inputs:
+#     code:
+#       src: storybook-static
+#     domain: storybook.internote.app
+#     region: eu-west-1
+#     bucketName: internote-storybook

@@ -12,7 +12,7 @@ const nodeExternals = require("webpack-node-externals");
 module.exports = function (config) {
   return {
     resolve: {
-      extensions: [".json", ".ts"],
+      extensions: [".json", ".ts", ".js"],
     },
     output: {
       libraryTarget: "commonjs",

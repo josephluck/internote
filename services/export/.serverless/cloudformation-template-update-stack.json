@@ -37,23 +37,36 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": ["lambda.amazonaws.com"]
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
               },
-              "Action": ["sts:AssumeRole"]
+              "Action": [
+                "sts:AssumeRole"
+              ]
             }
           ]
         },
         "Policies": [
           {
             "PolicyName": {
-              "Fn::Join": ["-", ["dev", "internote-export-service", "lambda"]]
+              "Fn::Join": [
+                "-",
+                [
+                  "dev",
+                  "internote-export-service",
+                  "lambda"
+                ]
+              ]
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": ["logs:CreateLogStream"],
+                  "Action": [
+                    "logs:CreateLogStream"
+                  ],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-export-service-dev*:*"
@@ -62,7 +75,9 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": ["logs:PutLogEvents"],
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-export-service-dev*:*:*"
@@ -71,7 +86,10 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": ["s3:PutObject", "s3:PutObjectAcl"],
+                  "Action": [
+                    "s3:PutObject",
+                    "s3:PutObjectAcl"
+                  ],
                   "Resource": {
                     "Fn::Join": [
                       "",
@@ -112,15 +130,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-export-service/dev/1568373120709-2019-09-13T11:12:00.709Z/internote-export-service.zip"
+          "S3Key": "serverless/internote-export-service/dev/1592677230586-2020-06-20T18:20:30.586Z/internote-export-service.zip"
         },
         "FunctionName": "internote-export-service-dev-markdown",
         "Handler": "markdown.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         },
-        "Runtime": "nodejs8.10",
+        "Runtime": "nodejs12.x",
         "Timeout": 30,
         "Environment": {
           "Variables": {
@@ -131,16 +152,19 @@
           }
         }
       },
-      "DependsOn": ["MarkdownLogGroup", "IamRoleLambdaExecution"]
+      "DependsOn": [
+        "MarkdownLogGroup",
+        "IamRoleLambdaExecution"
+      ]
     },
-    "MarkdownLambdaVersionnJeLxdpL7hwsMlEmHoOVj39pFdIC9chtxEbqEGlXM": {
+    "MarkdownLambdaVersionIAqPhPw32KXzaFYQD43zrtHFk4vYuncnh43T15azCto": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "MarkdownLambdaFunction"
         },
-        "CodeSha256": "r3SOguqcl3HwLm90E5Kv88x/3591Av3NNJZKjgJoUZ8="
+        "CodeSha256": "ZVM69rbQ9KttNnouy60l1fSrTNUX23kejJmKHx10vso="
       }
     },
     "HtmlLambdaFunction": {
@@ -150,15 +174,18 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-export-service/dev/1568373120709-2019-09-13T11:12:00.709Z/internote-export-service.zip"
+          "S3Key": "serverless/internote-export-service/dev/1592677230586-2020-06-20T18:20:30.586Z/internote-export-service.zip"
         },
         "FunctionName": "internote-export-service-dev-html",
         "Handler": "html.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         },
-        "Runtime": "nodejs8.10",
+        "Runtime": "nodejs12.x",
         "Timeout": 30,
         "Environment": {
           "Variables": {
@@ -169,16 +196,19 @@
           }
         }
       },
-      "DependsOn": ["HtmlLogGroup", "IamRoleLambdaExecution"]
+      "DependsOn": [
+        "HtmlLogGroup",
+        "IamRoleLambdaExecution"
+      ]
     },
-    "HtmlLambdaVersionlLz8l6BK8AFA3vsKdi2GXEepZZ2EOCY0QZ8r4WO8A0": {
+    "HtmlLambdaVersionOw28JVQfmcharq1Tfk2Bd6MJTjnr2TWghhmw8MAWJXk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "HtmlLambdaFunction"
         },
-        "CodeSha256": "r3SOguqcl3HwLm90E5Kv88x/3591Av3NNJZKjgJoUZ8="
+        "CodeSha256": "ZVM69rbQ9KttNnouy60l1fSrTNUX23kejJmKHx10vso="
       }
     },
     "ApiGatewayResourceExport": {
@@ -341,7 +371,10 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": ["MarkdownLambdaFunction", "Arn"]
+                  "Fn::GetAtt": [
+                    "MarkdownLambdaFunction",
+                    "Arn"
+                  ]
                 },
                 "/invocations"
               ]
@@ -381,7 +414,10 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": ["HtmlLambdaFunction", "Arn"]
+                  "Fn::GetAtt": [
+                    "HtmlLambdaFunction",
+                    "Arn"
+                  ]
                 },
                 "/invocations"
               ]
@@ -391,7 +427,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1568373106542": {
+    "ApiGatewayDeployment1592677203518": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -410,7 +446,10 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": ["MarkdownLambdaFunction", "Arn"]
+          "Fn::GetAtt": [
+            "MarkdownLambdaFunction",
+            "Arn"
+          ]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",
@@ -444,7 +483,10 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": ["HtmlLambdaFunction", "Arn"]
+          "Fn::GetAtt": [
+            "HtmlLambdaFunction",
+            "Arn"
+          ]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",
@@ -491,13 +533,13 @@
     "MarkdownLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MarkdownLambdaVersionnJeLxdpL7hwsMlEmHoOVj39pFdIC9chtxEbqEGlXM"
+        "Ref": "MarkdownLambdaVersionIAqPhPw32KXzaFYQD43zrtHFk4vYuncnh43T15azCto"
       }
     },
     "HtmlLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HtmlLambdaVersionlLz8l6BK8AFA3vsKdi2GXEepZZ2EOCY0QZ8r4WO8A0"
+        "Ref": "HtmlLambdaVersionOw28JVQfmcharq1Tfk2Bd6MJTjnr2TWghhmw8MAWJXk"
       }
     },
     "ServiceEndpoint": {

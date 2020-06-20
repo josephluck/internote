@@ -12,8 +12,9 @@
     "build:storybook": "rm -rf ./storybook-static && yarn build-storybook",
     "deploy:dev:prepare": "rm -rf ./.next && yarn deploy:dev:environment-variables",
     "deploy:dev:environment-variables": "eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv > .env)",
-    "deploy:dev:build": "yarn build:storybook",
+    "deploy:dev:build": "echo \"TODO: yarn build:storybook\"",
     "deploy:dev": "yarn deploy:dev:prepare && yarn deploy:dev:build && serverless",
+    "deploy": "yarn deploy:dev",
     "test": "jest",
     "test:tsc": "tsc --noEmit"
   },

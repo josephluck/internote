@@ -27,7 +27,6 @@ interface OwnReducers {
   setDistractionFree: Twine.Reducer<OwnState, boolean>;
   setVoice: Twine.Reducer<OwnState, AvailableVoice>;
   setOutlineShowing: Twine.Reducer<OwnState, boolean>;
-  setOfflineSync: Twine.Reducer<OwnState, boolean>;
 }
 
 interface OwnEffects {

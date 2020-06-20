@@ -23,9 +23,19 @@
         "CorsConfiguration": {
           "CorsRules": [
             {
-              "AllowedOrigins": ["*"],
-              "AllowedHeaders": ["*"],
-              "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+              "AllowedOrigins": [
+                "*"
+              ],
+              "AllowedHeaders": [
+                "*"
+              ],
+              "AllowedMethods": [
+                "GET",
+                "PUT",
+                "POST",
+                "DELETE",
+                "HEAD"
+              ],
               "MaxAge": 3000
             }
           ]
@@ -41,7 +51,10 @@
     },
     "AttachmentsBucketArn": {
       "Value": {
-        "Fn::GetAtt": ["AttachmentsBucket", "Arn"]
+        "Fn::GetAtt": [
+          "AttachmentsBucket",
+          "Arn"
+        ]
       },
       "Export": {
         "Name": "dev-AttachmentsBucketArn"

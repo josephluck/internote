@@ -12,5 +12,5 @@ function Modal() {
   useEffect(() => {
     setCreateSnippetModalOpen(true);
   }, []);
-  return <CreateSnippetModal onCreateSnippet={console.log as any} />;
+  return <CreateSnippetModal />;
 }

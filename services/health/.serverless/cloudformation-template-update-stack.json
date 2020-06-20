@@ -37,23 +37,36 @@
             {
               "Effect": "Allow",
               "Principal": {
-                "Service": ["lambda.amazonaws.com"]
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
               },
-              "Action": ["sts:AssumeRole"]
+              "Action": [
+                "sts:AssumeRole"
+              ]
             }
           ]
         },
         "Policies": [
           {
             "PolicyName": {
-              "Fn::Join": ["-", ["dev", "internote-health-service", "lambda"]]
+              "Fn::Join": [
+                "-",
+                [
+                  "dev",
+                  "internote-health-service",
+                  "lambda"
+                ]
+              ]
             },
             "PolicyDocument": {
               "Version": "2012-10-17",
               "Statement": [
                 {
                   "Effect": "Allow",
-                  "Action": ["logs:CreateLogStream"],
+                  "Action": [
+                    "logs:CreateLogStream"
+                  ],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-health-service-dev*:*"
@@ -62,7 +75,9 @@
                 },
                 {
                   "Effect": "Allow",
-                  "Action": ["logs:PutLogEvents"],
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
                   "Resource": [
                     {
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/internote-health-service-dev*:*:*"
@@ -96,27 +111,33 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-health-service/dev/1568373127016-2019-09-13T11:12:07.016Z/internote-health-service.zip"
+          "S3Key": "serverless/internote-health-service/dev/1592685141358-2020-06-20T20:32:21.358Z/internote-health-service.zip"
         },
         "FunctionName": "internote-health-service-dev-health",
         "Handler": "health.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         },
-        "Runtime": "nodejs8.10",
+        "Runtime": "nodejs12.x",
         "Timeout": 30
       },
-      "DependsOn": ["HealthLogGroup", "IamRoleLambdaExecution"]
+      "DependsOn": [
+        "HealthLogGroup",
+        "IamRoleLambdaExecution"
+      ]
     },
-    "HealthLambdaVersionQz45TZrI6niEWcYtjyDNAoOc6rcsfxK5WysqXJwZu4": {
+    "HealthLambdaVersionimOAGuz5wDYvtTWfsAwj8IpBLBTYC3jORRUqmoHB5hw": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "HealthLambdaFunction"
         },
-        "CodeSha256": "/xzYyDxVupoplnMEyops/rx8rZqhmShkTxdfyHMp5vI="
+        "CodeSha256": "/gDiz4xzuanNoZuft4y0PgzBxak7wls5XsUOgaBKCOg="
       }
     },
     "AuthenticatedLambdaFunction": {
@@ -126,27 +147,33 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-health-service/dev/1568373127016-2019-09-13T11:12:07.016Z/internote-health-service.zip"
+          "S3Key": "serverless/internote-health-service/dev/1592685141358-2020-06-20T20:32:21.358Z/internote-health-service.zip"
         },
         "FunctionName": "internote-health-service-dev-authenticated",
         "Handler": "authenticated.handler",
         "MemorySize": 256,
         "Role": {
-          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
         },
-        "Runtime": "nodejs8.10",
+        "Runtime": "nodejs12.x",
         "Timeout": 30
       },
-      "DependsOn": ["AuthenticatedLogGroup", "IamRoleLambdaExecution"]
+      "DependsOn": [
+        "AuthenticatedLogGroup",
+        "IamRoleLambdaExecution"
+      ]
     },
-    "AuthenticatedLambdaVersionXAwFd1ivs656GCb2lG5SezdLMj3WV9QHSak5rCDbGws": {
+    "AuthenticatedLambdaVersionwurOEBH7OJ2dEUKEXiZAlbHWHjr5YvEMNEwEH7WDIA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AuthenticatedLambdaFunction"
         },
-        "CodeSha256": "/xzYyDxVupoplnMEyops/rx8rZqhmShkTxdfyHMp5vI="
+        "CodeSha256": "/gDiz4xzuanNoZuft4y0PgzBxak7wls5XsUOgaBKCOg="
       }
     },
     "ApiGatewayRestApi": {
@@ -154,7 +181,9 @@
       "Properties": {
         "Name": "dev-internote-health-service",
         "EndpointConfiguration": {
-          "Types": ["EDGE"]
+          "Types": [
+            "EDGE"
+          ]
         },
         "MinimumCompressionSize": 1024
       }
@@ -163,7 +192,10 @@
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
-          "Fn::GetAtt": ["ApiGatewayRestApi", "RootResourceId"]
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
         },
         "PathPart": "health",
         "RestApiId": {
@@ -175,7 +207,10 @@
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
-          "Fn::GetAtt": ["ApiGatewayRestApi", "RootResourceId"]
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
         },
         "PathPart": "authenticated",
         "RestApiId": {
@@ -307,7 +342,10 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": ["HealthLambdaFunction", "Arn"]
+                  "Fn::GetAtt": [
+                    "HealthLambdaFunction",
+                    "Arn"
+                  ]
                 },
                 "/invocations"
               ]
@@ -347,7 +385,10 @@
                 },
                 ":lambda:path/2015-03-31/functions/",
                 {
-                  "Fn::GetAtt": ["AuthenticatedLambdaFunction", "Arn"]
+                  "Fn::GetAtt": [
+                    "AuthenticatedLambdaFunction",
+                    "Arn"
+                  ]
                 },
                 "/invocations"
               ]
@@ -357,7 +398,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1568373123238": {
+    "ApiGatewayDeployment1592685138779": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -376,7 +417,10 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": ["HealthLambdaFunction", "Arn"]
+          "Fn::GetAtt": [
+            "HealthLambdaFunction",
+            "Arn"
+          ]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",
@@ -410,7 +454,10 @@
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
-          "Fn::GetAtt": ["AuthenticatedLambdaFunction", "Arn"]
+          "Fn::GetAtt": [
+            "AuthenticatedLambdaFunction",
+            "Arn"
+          ]
         },
         "Action": "lambda:InvokeFunction",
         "Principal": "apigateway.amazonaws.com",
@@ -476,13 +523,13 @@
     "HealthLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HealthLambdaVersionQz45TZrI6niEWcYtjyDNAoOc6rcsfxK5WysqXJwZu4"
+        "Ref": "HealthLambdaVersionimOAGuz5wDYvtTWfsAwj8IpBLBTYC3jORRUqmoHB5hw"
       }
     },
     "AuthenticatedLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AuthenticatedLambdaVersionXAwFd1ivs656GCb2lG5SezdLMj3WV9QHSak5rCDbGws"
+        "Ref": "AuthenticatedLambdaVersionwurOEBH7OJ2dEUKEXiZAlbHWHjr5YvEMNEwEH7WDIA"
       }
     },
     "ServiceEndpoint": {
@@ -518,7 +565,10 @@
     },
     "ApiGatewayRestApiRootResourceId": {
       "Value": {
-        "Fn::GetAtt": ["ApiGatewayRestApi", "RootResourceId"]
+        "Fn::GetAtt": [
+          "ApiGatewayRestApi",
+          "RootResourceId"
+        ]
       },
       "Export": {
         "Name": "dev-ApiGatewayRestApiRootResourceId"
