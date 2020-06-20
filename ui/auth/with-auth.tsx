@@ -46,7 +46,6 @@ export function withAuth<C extends typeof React.Component>(
 
       async function initAuthRequest(): Promise<any> {
         const cookie = getCookie();
-        console.log({ cookie });
         const authStorage = makeAuthStorage(cookie);
 
         const session = authStorage.getSession();

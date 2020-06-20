@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Box } from "@rebass/grid";
 import ReactHighlight from "react-highlight-words";
 import { DropdownMenuItem } from "./dropdown-menu";
@@ -41,17 +41,7 @@ const Highlighter = styled(ReactHighlight)<{ hasSearch: boolean }>`
   }
 `;
 
-export function SearchMenuItem({
-  isLoading,
-  isSelected,
-  content,
-  onDelete,
-  onSelect,
-  onMouseIn,
-  onMouseOut,
-  searchText,
-  deleteLoading = false,
-}: {
+export const SearchMenuItem: React.FunctionComponent<{
   isLoading?: boolean;
   isSelected?: boolean;
   content: string;
@@ -61,7 +51,35 @@ export function SearchMenuItem({
   onMouseOut?: () => void;
   searchText: string;
   deleteLoading?: boolean;
-}) {
+}> = ({
+  isLoading,
+  isSelected,
+  content,
+  onDelete,
+  onSelect,
+  onMouseIn,
+  onMouseOut,
+  searchText,
+  deleteLoading = false,
+}) => {
+  const handleOnSelect = useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      onSelect();
+    },
+    [onSelect]
+  );
+
+  const handleOnDelete = useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      onDelete();
+    },
+    [onDelete]
+  );
+
   return (
     <SearchMenuItemWrapper
       icon={
@@ -74,11 +92,8 @@ export function SearchMenuItem({
     >
       <Box
         flex="1"
-        style={{
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}
-        onClick={onSelect}
+        style={boxStyle}
+        onMouseDown={handleOnSelect as any}
         onMouseEnter={onMouseIn}
         onMouseLeave={onMouseOut}
       >
@@ -89,7 +104,7 @@ export function SearchMenuItem({
           hasSearch={searchText.length > 0}
         />
       </Box>
-      <DeleteIcon onClick={onDelete} forceShow={deleteLoading}>
+      <DeleteIcon onMouseDown={handleOnDelete} forceShow={deleteLoading}>
         <FontAwesomeIcon
           icon={deleteLoading ? faSpinner : faTrash}
           spin={deleteLoading}
@@ -97,4 +112,9 @@ export function SearchMenuItem({
       </DeleteIcon>
     </SearchMenuItemWrapper>
   );
-}
+};
+
+const boxStyle = {
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+};

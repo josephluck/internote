@@ -33,6 +33,7 @@ import {
   InternoteEditorRenderLeafProps,
   voids,
 } from "./types";
+import { CreateSnippetModal } from "../create-snippet-modal";
 
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: InternoteEditorElement[];
@@ -133,6 +134,7 @@ const InternoteEditorEditor = () => {
           onKeyDown={handleKeyDown}
         />
       </InnerPadding>
+      <CreateSnippetModal />
     </FullHeight>
   );
 };

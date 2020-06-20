@@ -1,7 +1,7 @@
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
 import { Range as SlateRange, Point as SlatePoint, Editor, Point } from "slate";
-import { InternoteSlateEditor } from "./types";
+import { InternoteSlateEditor, InternoteEditorElement } from "./types";
 
 /**
  * Get the current selection from the editor normalized such that the anchor
@@ -104,6 +104,30 @@ const getTextFromSlateRange = (
   editor: InternoteSlateEditor,
   range: SlateRange
 ): O.Option<string> => O.tryCatch(() => Editor.string(editor, range));
+
+/**
+ * Given a slate range, provide the array of nodes within the range
+ */
+export const getNodesFromSlateRange = (
+  editor: InternoteSlateEditor,
+  range: SlateRange
+): O.Option<InternoteEditorElement[]> =>
+  pipe(
+    O.tryCatch(() => Editor.fragment(editor, range)),
+    O.map((nodes) => Array.from(nodes)),
+    O.map((nodes) => nodes.map((node) => node as InternoteEditorElement))
+  );
+
+/**
+ * Gets the array of nodes within the editor's current selection
+ */
+export const getNodesFromEditorSelection = (
+  editor: InternoteSlateEditor
+): O.Option<InternoteEditorElement[]> =>
+  pipe(
+    O.fromNullable(editor.selection),
+    O.filterMap((range) => getNodesFromSlateRange(editor, range))
+  );
 
 /**
  * Expands a slate range to include surrounding full words

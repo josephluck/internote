@@ -51,7 +51,11 @@ export const ToolbarButton: React.FunctionComponent<{
       <CollapseWidthOnHover
         onMouseDown={handleMouseDown}
         forceShow={forceExpand}
-        collapsedContent={<Flex pl={spacing._0_25}>{label}</Flex>}
+        collapsedContent={
+          <CollapsedContentWrap pl={spacing._0_25}>
+            {label}
+          </CollapsedContentWrap>
+        }
       >
         {(collapse) => (
           <ToolbarExpandingButton
@@ -121,6 +125,10 @@ export const ToolbarExpandingButtonIconWrap = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+`;
+
+const CollapsedContentWrap = styled(Flex)`
+  white-space: nowrap;
 `;
 
 const ShortcutNumber = styled.div<{ isActive: boolean; showing: boolean }>`

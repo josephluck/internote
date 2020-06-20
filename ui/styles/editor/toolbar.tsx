@@ -18,7 +18,7 @@ import { Wrapper } from "../wrapper";
 import { DeleteNoteButton } from "./delete";
 import { useInternoteEditor } from "./hooks";
 import { NoteSavingIndicator } from "./saving";
-import { getHighlightedWord } from "./selection";
+import { getHighlightedWord, getNodesFromEditorSelection } from "./selection";
 import {
   InternoteEditorNodeType,
   marks,
@@ -29,6 +29,10 @@ import {
 } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 import { Shortcut } from "../shortcuts";
+import { SnippetsButton } from "../snippets-menu";
+import { GetSnippetDTO } from "@internote/snippets-service/types";
+import { SnippetsContext } from "../snippets-context";
+import { Editor } from "slate";
 
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
@@ -41,6 +45,12 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     speechText,
     selectedText,
   } = useInternoteEditor();
+
+  const {
+    snippetsMenuShowing,
+    setCreateSnippetModalOpen,
+    setSnippetSelection,
+  } = React.useContext(SnippetsContext);
 
   const distractionFree = useTwineState(
     (state) => state.preferences.distractionFree
@@ -67,7 +77,8 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   const toolbarIsExpanded =
     isDictionaryShowing || isEmojiShowing || isHashtagShowing;
 
-  const isToolbarVisible = toolbarIsExpanded || O.isSome(selectedText);
+  const isToolbarVisible =
+    toolbarIsExpanded || O.isSome(selectedText) || snippetsMenuShowing;
 
   const selectedWord = pipe(
     getHighlightedWord(editor),
@@ -99,6 +110,21 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     },
     [replaceSmartSearchText]
   );
+
+  const handleInsertSnippet = useCallback(
+    (snippet: GetSnippetDTO) => Editor.insertFragment(editor, snippet.content),
+    [editor]
+  );
+
+  const handleCreateSnippet = useCallback(() => {
+    pipe(
+      getNodesFromEditorSelection(editor),
+      O.map((nodes) => {
+        setSnippetSelection(nodes);
+        setCreateSnippetModalOpen(true);
+      })
+    );
+  }, [editor]);
 
   const handleEscape = useCallback(() => {
     setIsEmojiButtonPressed(false);
@@ -144,6 +170,13 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
               label={toolbarLabelMap.tag}
               name={toolbarLabelMap.tag}
               shortcut={toolbarShortcutMap.tag}
+            />
+          </ButtonSpacer>
+          <ButtonSpacer small>
+            <SnippetsButton
+              hasHighlighted={pipe(selectedText, O.isSome)}
+              onSnippetSelected={handleInsertSnippet}
+              onCreateSnippet={handleCreateSnippet}
             />
           </ButtonSpacer>
         </Flex>

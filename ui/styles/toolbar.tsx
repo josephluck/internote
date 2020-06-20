@@ -40,7 +40,7 @@ import {
   SchemaMarkType,
   SchemaBlockType,
 } from "@internote/export-service/types";
-import { SnippetsMenu } from "./snippets-menu";
+import { SnippetsButton } from "./snippets-menu";
 import { GetSnippetDTO } from "@internote/snippets-service/types";
 import { FileUpload, InternoteUploadEvent } from "./file-upload";
 
@@ -185,7 +185,7 @@ export function Toolbar({
             />
           </ButtonSpacer>
           <ButtonSpacer small>
-            <SnippetsMenu
+            <SnippetsButton
               onSnippetSelected={onSnippetSelected}
               hasHighlighted={hasHighlighted}
             />

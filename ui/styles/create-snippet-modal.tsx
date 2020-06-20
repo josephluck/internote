@@ -1,29 +1,29 @@
-import React, { useContext, useState, useCallback } from "react";
-import { SnippetsContext } from "./snippets-context";
-import { Modal } from "./modal";
-import { Input } from "./input";
-import { Button } from "./button";
 import { Flex } from "@rebass/grid";
-import { spacing } from "../theming/symbols";
+import React, { useCallback, useContext } from "react";
 import { useTwineState } from "../store";
+import { spacing } from "../theming/symbols";
+import { Button } from "./button";
+import { Input } from "./input";
+import { Modal } from "./modal";
+import { SnippetsContext } from "./snippets-context";
 
-export function CreateSnippetModal({
-  onCreateSnippet,
-}: {
-  onCreateSnippet: (title: string) => Promise<void>;
-}) {
+export function CreateSnippetModal() {
   const {
     createSnippetModalOpen,
     setCreateSnippetModalOpen,
     setSnippetsMenuShowing,
+    finaliseCreateSnippet,
+    createSnippetTitle,
+    setCreateSnippetTitle,
   } = useContext(SnippetsContext);
-  const [createSnippetTitle, setCreateSnippetTitle] = useState("");
+
   const handleCreateSnippet = useCallback(async () => {
-    await onCreateSnippet(createSnippetTitle);
+    await finaliseCreateSnippet();
     setCreateSnippetModalOpen(false);
     setCreateSnippetTitle("");
     setSnippetsMenuShowing(true);
   }, [createSnippetTitle]);
+
   const createSnippetLoading = useTwineState(
     (state) => state.snippets.loading.createSnippet
   );

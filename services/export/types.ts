@@ -16,6 +16,7 @@ export interface ExportResponseDTO {
   src: string;
 }
 
+// TODO: extract FE types from there to lib. Deprecate from here.
 export interface Schema {
   object: "document";
   data: {};
