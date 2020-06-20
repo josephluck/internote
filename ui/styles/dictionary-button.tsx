@@ -1,41 +1,52 @@
-import React from "react";
-import { CollapseWidthOnHover } from "./collapse-width-on-hover";
-import { Flex } from "@rebass/grid";
-import { spacing } from "../theming/symbols";
+import React, { useCallback } from "react";
+import { useTwineActions } from "../store";
+import { ToolbarButton } from "./toolbar-button";
 import {
-  ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap
-} from "./toolbar-expanding-button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner, faBook } from "@fortawesome/free-solid-svg-icons";
-import { useTwineState } from "../store";
+  toolbarIconMap,
+  toolbarShortcutMap,
+  toolbarLabelMap,
+} from "./editor/types";
+import { Shortcut } from "./shortcuts";
 
-export function DictionaryButton({
-  onClick,
-  isShowing
-}: {
-  onClick: () => any;
+export const DictionaryButton: React.FunctionComponent<{
+  isLoading: boolean;
   isShowing: boolean;
-}) {
-  const isLoading = useTwineState(state => state.dictionary.loading.lookup);
-  return (
-    <CollapseWidthOnHover
-      onClick={onClick}
-      forceShow={isShowing}
-      collapsedContent={<Flex pl={spacing._0_25}>Dictionary</Flex>}
-    >
-      {collapse => (
-        <ToolbarExpandingButton forceShow={isShowing}>
-          <ToolbarExpandingButtonIconWrap>
-            {isLoading ? (
-              <FontAwesomeIcon icon={faSpinner} spin />
-            ) : (
-              <FontAwesomeIcon icon={faBook} />
-            )}
-          </ToolbarExpandingButtonIconWrap>
-          {collapse.renderCollapsedContent()}
-        </ToolbarExpandingButton>
-      )}
-    </CollapseWidthOnHover>
+  selectedWord: string;
+}> = ({ isLoading, isShowing, selectedWord }) => {
+  const close = useTwineActions((actions) => () =>
+    actions.dictionary.setDictionaryShowing(false)
   );
-}
+
+  const lookup = useTwineActions((actions) => actions.dictionary.lookup);
+
+  // TODO: could extract a custom press handler that doesn't lose focus on editor
+  // if this becomes a common pattern
+  const handlePress = useCallback(() => {
+    if (isShowing) {
+      close();
+    } else {
+      lookup(selectedWord);
+    }
+  }, [close, isShowing, lookup, selectedWord]);
+
+  return (
+    <>
+      {isShowing && (
+        <Shortcut
+          keyCombo="esc"
+          callback={close}
+          id="close-dictionary"
+          description="Close the dictionary"
+        />
+      )}
+      <ToolbarButton
+        onClick={handlePress}
+        forceExpand={isShowing}
+        icon={toolbarIconMap[isLoading ? "dictionary-loading" : "dictionary"]}
+        label={toolbarLabelMap.dictionary}
+        name={toolbarLabelMap.dictionary}
+        shortcut={toolbarShortcutMap.dictionary}
+      />
+    </>
+  );
+};

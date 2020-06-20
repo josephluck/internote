@@ -18,12 +18,12 @@ const Message = styled.div`
   font-size: ${font._16.size};
   line-height: ${font._16.size};
   font-weight: 500;
-  color: ${props => props.theme.noResultsText};
+  color: ${(props) => props.theme.noResultsText};
 `;
 
 export function NoResults({
   emojis,
-  message
+  message,
 }: {
   emojis: React.ReactNode;
   message: React.ReactNode;

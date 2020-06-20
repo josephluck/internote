@@ -4,7 +4,7 @@ export function makeAuthApi({
   region,
   userPoolId,
   userPoolClientId,
-  identityPoolId
+  identityPoolId,
 }: {
   region: string;
   userPoolId: string;
@@ -31,14 +31,14 @@ export function makeAuthApi({
         ClientId: userPoolClientId,
         AuthFlow: "REFRESH_TOKEN_AUTH",
         AuthParameters: {
-          REFRESH_TOKEN: refreshToken
-        }
+          REFRESH_TOKEN: refreshToken,
+        },
       },
       {
         headers: {
           "Content-Type": "application/x-amz-json-1.1",
-          "X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth"
-        }
+          "X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth",
+        },
       }
     );
     return response.data;
@@ -58,13 +58,13 @@ export function makeAuthApi({
     const response = await Axios.post(
       COGNITO_URL,
       {
-        AccessToken: accessToken
+        AccessToken: accessToken,
       },
       {
         headers: {
           "Content-Type": "application/x-amz-json-1.1",
-          "X-Amz-Target": "AWSCognitoIdentityProviderService.GetUser"
-        }
+          "X-Amz-Target": "AWSCognitoIdentityProviderService.GetUser",
+        },
       }
     );
     return response.data;
@@ -91,15 +91,15 @@ export function makeAuthApi({
       COGNITO_IDENTITY_URL,
       {
         Logins: {
-          [`cognito-idp.${region}.amazonaws.com/${userPoolId}`]: idToken
+          [`cognito-idp.${region}.amazonaws.com/${userPoolId}`]: idToken,
         },
-        IdentityId: identityId
+        IdentityId: identityId,
       },
       {
         headers: {
           "Content-Type": "application/x-amz-json-1.1",
-          "X-Amz-Target": "AWSCognitoIdentityService.GetCredentialsForIdentity"
-        }
+          "X-Amz-Target": "AWSCognitoIdentityService.GetCredentialsForIdentity",
+        },
       }
     );
     return response.data;
@@ -122,14 +122,14 @@ export function makeAuthApi({
       {
         IdentityPoolId: identityPoolId,
         Logins: {
-          [`cognito-idp.${region}.amazonaws.com/${userPoolId}`]: accessToken
-        }
+          [`cognito-idp.${region}.amazonaws.com/${userPoolId}`]: accessToken,
+        },
       },
       {
         headers: {
           "Content-Type": "application/x-amz-json-1.1",
-          "X-Amz-Target": "AWSCognitoIdentityService.GetId"
-        }
+          "X-Amz-Target": "AWSCognitoIdentityService.GetId",
+        },
       }
     );
     return response.data;
@@ -164,17 +164,17 @@ export function makeAuthApi({
         ChallengeName: "CUSTOM_CHALLENGE",
         ChallengeResponses: {
           USERNAME: username,
-          ANSWER: answer
+          ANSWER: answer,
         },
         ClientId: userPoolClientId,
-        Session: sessionToken
+        Session: sessionToken,
       },
       {
         headers: {
           "Content-Type": "application/x-amz-json-1.1",
           "X-Amz-Target":
-            "AWSCognitoIdentityProviderService.RespondToAuthChallenge"
-        }
+            "AWSCognitoIdentityProviderService.RespondToAuthChallenge",
+        },
       }
     );
     return response.data;
@@ -197,13 +197,13 @@ export function makeAuthApi({
         AuthFlow: "CUSTOM_AUTH",
         ClientId: userPoolClientId,
         AuthParameters: { USERNAME: username },
-        ClientMetadata: {}
+        ClientMetadata: {},
       },
       {
         headers: {
           "Content-Type": "application/x-amz-json-1.1",
-          "X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth"
-        }
+          "X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth",
+        },
       }
     );
     return response.data;
@@ -228,13 +228,13 @@ export function makeAuthApi({
           Username: username,
           Password: getRandomString(30),
           UserAttributes: [],
-          ValidationData: null
+          ValidationData: null,
         },
         {
           headers: {
             "Content-Type": "application/x-amz-json-1.1",
-            "X-Amz-Target": "AWSCognitoIdentityProviderService.SignUp"
-          }
+            "X-Amz-Target": "AWSCognitoIdentityProviderService.SignUp",
+          },
         }
       );
       return response.data;
@@ -250,7 +250,7 @@ export function makeAuthApi({
     getUser,
     respondToAuthChallenge,
     signIn,
-    signUp
+    signUp,
   };
 }
 
@@ -265,9 +265,7 @@ function intToHex(nr: number) {
 function getRandomString(bytes: number = 30) {
   const randomValues = new Uint8Array(bytes);
   window.crypto.getRandomValues(randomValues);
-  return Array.from(randomValues)
-    .map(intToHex)
-    .join("");
+  return Array.from(randomValues).map(intToHex).join("");
 }
 
 function makeExpiryDate(adjustmentInMs: number) {

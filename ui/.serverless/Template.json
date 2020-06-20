@@ -1,6 +1,5 @@
 {
   "components": {
-    "app": "/home/josephreubenluck/.serverless/components/registry/npm/serverless-next.js@1.2.3/node_modules/serverless-next.js",
-    "storybook": "/home/josephreubenluck/.serverless/components/registry/npm/@serverless/website@3.1.0/node_modules/@serverless/website"
+    "app": "/home/josephreubenluck/.serverless/components/registry/npm/serverless-next.js@1.14.0/node_modules/serverless-next.js"
   }
 }

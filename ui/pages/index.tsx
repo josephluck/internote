@@ -15,12 +15,12 @@ const PageWrapper = styled.div`
 
 const Page: NextTwineSFC<Store, { id: string | string[] }> = ({ id }) => {
   const note = useTwineState(
-    state => (id ? state.notes.notes.find(n => n.noteId === id) : null),
+    (state) => (id ? state.notes.notes.find((n) => n.noteId === id) : null),
     [id],
     (prev, next) => prev.noteId === next.noteId
   );
   const navigateToFirstNote = useTwineActions(
-    actions => actions.ui.navigateToFirstNote
+    (actions) => actions.ui.navigateToFirstNote
   );
 
   return (
@@ -39,7 +39,7 @@ Page.getInitialProps = async ({ store, query }) => {
     await Promise.all([
       store.actions.notes.fetchNotes(),
       store.actions.tags.fetchTags(),
-      store.actions.snippets.fetchSnippets()
+      store.actions.snippets.fetchSnippets(),
     ]);
   } else {
     // No need to wait if notes are already fetched - just update in background
@@ -48,7 +48,7 @@ Page.getInitialProps = async ({ store, query }) => {
     store.actions.snippets.fetchSnippets();
   }
   return {
-    id: query.id
+    id: query.id,
   };
 };
 

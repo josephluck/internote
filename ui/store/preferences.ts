@@ -4,7 +4,7 @@ import {
   colorThemes,
   fontThemes,
   ColorThemeWithName,
-  FontThemeWithName
+  FontThemeWithName,
 } from "../theming/themes";
 import { Api } from "../api/api";
 import { Preferences } from "@internote/preferences-service/db/models";
@@ -27,7 +27,6 @@ interface OwnReducers {
   setDistractionFree: Twine.Reducer<OwnState, boolean>;
   setVoice: Twine.Reducer<OwnState, AvailableVoice>;
   setOutlineShowing: Twine.Reducer<OwnState, boolean>;
-  setOfflineSync: Twine.Reducer<OwnState, boolean>;
 }
 
 interface OwnEffects {
@@ -43,7 +42,6 @@ function defaultState(): OwnState {
     distractionFree: false,
     voice: "Male",
     outlineShowing: false,
-    offlineSync: false
   };
 }
 
@@ -68,21 +66,17 @@ export function model(api: Api): Model {
       setDistractionFree: setter("distractionFree"),
       setVoice: setter("voice"),
       setOutlineShowing: setter("outlineShowing"),
-      setOfflineSync: setter("offlineSync")
     },
     effects: {
       async get(state, actions) {
         const result = await api.preferences.get(state.auth.session);
-        result.map(preferences => {
-          if (preferences.offlineSync) {
-            actions.sync.register();
-          }
+        result.map((preferences) => {
           actions.preferences.setPreferences(
             deserializePreferences(preferences)
           );
         });
-      }
-    }
+      },
+    },
   };
 }
 
@@ -91,12 +85,12 @@ function deserializePreferences(preferences: Preferences): OwnState {
     ...preferences,
     colorThemes,
     colorTheme:
-      colorThemes.find(theme => theme.name === preferences.colorTheme) ||
+      colorThemes.find((theme) => theme.name === preferences.colorTheme) ||
       colorThemes[0],
     fontThemes,
     fontTheme:
-      fontThemes.find(theme => theme.name === preferences.fontTheme) ||
+      fontThemes.find((theme) => theme.name === preferences.fontTheme) ||
       fontThemes[0],
-    voice: preferences.voice as AvailableVoice
+    voice: preferences.voice as AvailableVoice,
   };
 }

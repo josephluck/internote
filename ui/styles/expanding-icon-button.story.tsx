@@ -4,7 +4,7 @@ import { ExpandingIconButton } from "./expanding-icon-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExpand } from "@fortawesome/free-solid-svg-icons";
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("ExpandingIconButton", module).add("With search", () => (
     <ExpandingIconButton
       forceShow={false}

@@ -3,9 +3,9 @@ import { MakeSignedRequest } from "./api";
 import {
   UpdateNoteDTO,
   CreateNoteDTO,
-  GetNoteDTO
+  GetNoteDTO,
 } from "@internote/notes-service/types";
-import { ApiResponse } from "@internote/lib/types";
+import { ApiResponse } from "@internote/lib/lambda";
 
 export function notes(makeRequest: MakeSignedRequest) {
   return {
@@ -13,14 +13,14 @@ export function notes(makeRequest: MakeSignedRequest) {
       return makeRequest({
         path: "/notes",
         method: "GET",
-        session
+        session,
       });
     },
     async get(session: Session, noteId: string): ApiResponse<GetNoteDTO> {
       return makeRequest({
         path: `/notes/${noteId}`,
         method: "GET",
-        session
+        session,
       });
     },
     async create(
@@ -31,7 +31,7 @@ export function notes(makeRequest: MakeSignedRequest) {
         path: "/notes",
         method: "POST",
         session,
-        body: note
+        body: note,
       });
     },
     async update(
@@ -43,15 +43,15 @@ export function notes(makeRequest: MakeSignedRequest) {
         path: `/notes/${noteId}`,
         method: "PUT",
         session,
-        body: note
+        body: note,
       });
     },
     async delete(session: Session, noteId: string): ApiResponse<void> {
       return makeRequest({
         path: `/notes/${noteId}`,
         method: "DELETE",
-        session
+        session,
       });
-    }
+    },
   };
 }

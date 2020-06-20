@@ -20,7 +20,7 @@ interface OwnEffects {
 
 function defaultState(): OwnState {
   return {
-    tags: []
+    tags: [],
   };
 }
 
@@ -41,7 +41,7 @@ export function model(api: Api): Model {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      setTags: setter("tags")
+      setTags: setter("tags"),
     },
     effects: {
       async fetchTags(state, actions) {
@@ -52,8 +52,8 @@ export function model(api: Api): Model {
         // NB: own effect for the purpose of loading state inside tags drawer...
         // internally all we need to do is save the current note
         await actions.notes.updateNote(payload);
-      }
-    }
+      },
+    },
   };
   return withAsyncLoading(ownModel, "tags");
 }

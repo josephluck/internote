@@ -1,9 +1,9 @@
 import { Session } from "../auth/storage";
 import { MakeSignedRequest } from "./api";
-import { ApiResponse } from "@internote/lib/types";
+import { ApiResponse } from "@internote/lib/lambda";
 import {
   SpeechResponseBody,
-  SpeechRequestBody
+  SpeechRequestBody,
 } from "@internote/speech-service/types";
 
 export function speech(makeRequest: MakeSignedRequest) {
@@ -16,8 +16,8 @@ export function speech(makeRequest: MakeSignedRequest) {
         path: "/speech",
         method: "POST",
         session,
-        body: request
+        body: request,
       });
-    }
+    },
   };
 }

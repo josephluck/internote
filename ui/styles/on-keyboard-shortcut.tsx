@@ -3,7 +3,7 @@ import isKeyHotkey from "is-hotkey";
 
 export function OnKeyboardShortcut({
   keyCombo,
-  cb
+  cb,
 }: {
   keyCombo: string;
   cb: () => void;
@@ -11,13 +11,14 @@ export function OnKeyboardShortcut({
   React.useEffect(() => {
     function onKeyDown(event: Event) {
       const isHotkey = isKeyHotkey(keyCombo);
+      // @ts-ignore
       if (isHotkey(event)) {
         event.preventDefault();
         cb();
       }
     }
     document.addEventListener("keydown", onKeyDown);
-    return function() {
+    return function () {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [keyCombo]);

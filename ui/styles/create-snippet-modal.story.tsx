@@ -3,7 +3,7 @@ import { StoriesOf } from "../types";
 import { CreateSnippetModal } from "./create-snippet-modal";
 import { SnippetsContext } from "./snippets-context";
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("CreateSnippetModal", module).add("default", () => <Modal />);
 }
 
@@ -12,5 +12,5 @@ function Modal() {
   useEffect(() => {
     setCreateSnippetModalOpen(true);
   }, []);
-  return <CreateSnippetModal onCreateSnippet={console.log as any} />;
+  return <CreateSnippetModal />;
 }

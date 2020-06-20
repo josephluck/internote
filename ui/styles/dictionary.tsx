@@ -5,6 +5,68 @@ import { spacing, font } from "../theming/symbols";
 import { NoResults } from "./no-results";
 import { Tag } from "./tag";
 import { DictionaryResult } from "@internote/dictionary-service/types";
+import { useTwineState } from "../store";
+
+export const Dictionary: React.FunctionComponent<{
+  selectedWord: string;
+  isLoading: boolean;
+}> = ({ selectedWord, isLoading }) => {
+  const results = useTwineState((state) => state.dictionary.dictionaryResults);
+
+  return isLoading ? (
+    <div style={{ width: "100%" }}>
+      <GhostWordHeading />
+      <GhostDescriptionWrapper>
+        <GhostDescription style={{ width: "430px" }} />
+        <GhostDescription style={{ width: "480px" }} />
+        <GhostDescription style={{ width: "460px" }} />
+        <GhostDescription style={{ width: "280px" }} />
+      </GhostDescriptionWrapper>
+
+      <ThesaurusWrapper>
+        <GhostThesaurusWord style={{ width: "30px" }} />
+        <GhostThesaurusWord style={{ width: "40px" }} />
+        <GhostThesaurusWord style={{ width: "24px" }} />
+        <GhostThesaurusWord style={{ width: "34px" }} />
+        <GhostThesaurusWord style={{ width: "43px" }} />
+      </ThesaurusWrapper>
+    </div>
+  ) : (
+    <div style={{ width: "100%" }}>
+      {results.length > 0 ? (
+        results.map((result) => (
+          <DictionaryEntry result={result} key={result.word} />
+        ))
+      ) : (
+        <NoResults
+          emojis="📖 🤔"
+          message={`We couldn't find "${selectedWord}" in the dictionary`}
+        />
+      )}
+    </div>
+  );
+};
+
+const DictionaryEntry: React.FunctionComponent<{
+  result: DictionaryResult;
+}> = ({ result }) => (
+  <DictionaryEntryWrapper>
+    <DictionaryHeadingWrapper>
+      <DictionaryWordHeading>{result.word}</DictionaryWordHeading>
+      <DictionaryType>{result.lexicalCategory.toLowerCase()}</DictionaryType>
+    </DictionaryHeadingWrapper>
+    <DictionaryDescription>{result.definition}</DictionaryDescription>
+    {result.synonyms.length ? (
+      <ThesaurusWrapper>
+        {result.synonyms.map((synonym) => (
+          <Tag key={synonym} isFocused>
+            {synonym}
+          </Tag>
+        ))}
+      </ThesaurusWrapper>
+    ) : null}
+  </DictionaryEntryWrapper>
+);
 
 const DictionaryHeadingWrapper = styled.div`
   display: flex;
@@ -22,7 +84,7 @@ const GhostWordHeading = styled(GhostHeadingTwo)`
 `;
 
 const DictionaryType = styled.p`
-  color: ${props => props.theme.dictionaryDescriptionText};
+  color: ${(props) => props.theme.dictionaryDescriptionText};
   font-size: ${font._12.size};
   line-height: ${font._12.size};
   margin: 0;
@@ -30,7 +92,7 @@ const DictionaryType = styled.p`
 `;
 
 const DictionaryDescription = styled.p`
-  color: ${props => props.theme.dictionaryDescriptionText};
+  color: ${(props) => props.theme.dictionaryDescriptionText};
   margin: ${spacing._0_5} 0;
 `;
 
@@ -68,70 +130,3 @@ const DictionaryEntryWrapper = styled.div`
     margin-bottom: 0;
   }
 `;
-
-function DictionaryEntry({ result }: { result: DictionaryResult }) {
-  return (
-    <DictionaryEntryWrapper>
-      <DictionaryHeadingWrapper>
-        <DictionaryWordHeading>{result.word}</DictionaryWordHeading>
-        <DictionaryType>{result.lexicalCategory.toLowerCase()}</DictionaryType>
-      </DictionaryHeadingWrapper>
-      <DictionaryDescription>{result.definition}</DictionaryDescription>
-      {result.synonyms.length ? (
-        <ThesaurusWrapper>
-          {result.synonyms.map(synonym => (
-            <Tag key={synonym} isFocused>
-              {synonym}
-            </Tag>
-          ))}
-        </ThesaurusWrapper>
-      ) : null}
-    </DictionaryEntryWrapper>
-  );
-}
-
-export function Dictionary({
-  isLoading = false,
-  results,
-  requestedWord
-}: {
-  isLoading?: boolean;
-  results: DictionaryResult[];
-  requestedWord: string;
-}) {
-  if (isLoading) {
-    return (
-      <div style={{ width: "100%" }}>
-        <GhostWordHeading />
-        <GhostDescriptionWrapper>
-          <GhostDescription style={{ width: "430px" }} />
-          <GhostDescription style={{ width: "480px" }} />
-          <GhostDescription style={{ width: "460px" }} />
-          <GhostDescription style={{ width: "280px" }} />
-        </GhostDescriptionWrapper>
-
-        <ThesaurusWrapper>
-          <GhostThesaurusWord style={{ width: "30px" }} />
-          <GhostThesaurusWord style={{ width: "40px" }} />
-          <GhostThesaurusWord style={{ width: "24px" }} />
-          <GhostThesaurusWord style={{ width: "34px" }} />
-          <GhostThesaurusWord style={{ width: "43px" }} />
-        </ThesaurusWrapper>
-      </div>
-    );
-  }
-  return (
-    <div style={{ width: "100%" }}>
-      {results.length > 0 ? (
-        results.map(result => {
-          return <DictionaryEntry result={result} key={result.word} />;
-        })
-      ) : (
-        <NoResults
-          emojis="📖 🤔"
-          message={`We couldn't find "${requestedWord}" in the dictionary`}
-        />
-      )}
-    </div>
-  );
-}

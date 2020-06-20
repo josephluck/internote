@@ -26,7 +26,7 @@ export function withAuth<C extends typeof React.Component>(
       function redirectToLogin() {
         if (context.res) {
           context.res.writeHead(302, {
-            Location: "/authenticate"
+            Location: "/authenticate",
           });
           context.res.end();
         } else if (!isServer()) {
@@ -46,7 +46,6 @@ export function withAuth<C extends typeof React.Component>(
 
       async function initAuthRequest(): Promise<any> {
         const cookie = getCookie();
-        console.log({ cookie });
         const authStorage = makeAuthStorage(cookie);
 
         const session = authStorage.getSession();
@@ -64,10 +63,10 @@ export function withAuth<C extends typeof React.Component>(
 
         const latestSession = context.store.getState().auth.session;
 
-        Object.keys(latestSession).forEach(key => {
+        Object.keys(latestSession).forEach((key) => {
           setCookie(context, key, latestSession[key], {
             path: "/",
-            maxAge: latestSession.expiration
+            maxAge: latestSession.expiration,
           });
         });
       }

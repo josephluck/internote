@@ -8,7 +8,7 @@
       "stage": "dev",
       "variableSyntax": "\\${([ ~:a-zA-Z0-9._@'\",\\-\\/\\(\\)*]+?)}",
       "name": "aws",
-      "runtime": "nodejs8.10",
+      "runtime": "nodejs12.x",
       "region": "eu-west-1",
       "environment": {
         "REGION": "eu-west-1",
@@ -166,7 +166,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-preferences-service/dev/1568373760413-2019-09-13T11:22:40.413Z/internote-preferences-service.zip"
+                "S3Key": "serverless/internote-preferences-service/dev/1592685864596-2020-06-20T20:44:24.596Z/internote-preferences-service.zip"
               },
               "FunctionName": "internote-preferences-service-dev-get",
               "Handler": "get.handler",
@@ -177,7 +177,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 30,
               "Environment": {
                 "Variables": {
@@ -192,14 +192,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "GetLambdaVersionGVl4kSSmmcXj25G2axCsWx0FAF5y4XWLAj8tHJjE0": {
+          "GetLambdaVersionLXdjrd0szLwONUyGay8tQ6oXJ0Y74R6EcOzPLqlOGc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetLambdaFunction"
               },
-              "CodeSha256": "M//NeBTa8cFr1Y70Mf5rvXWG+GHvK1pJ7hZFYjl2rws="
+              "CodeSha256": "tQGs+W7fAdHNn4+J71afVrU8gBDxYx9h6EZ67SW/d4k="
             }
           },
           "UpdateLambdaFunction": {
@@ -209,7 +209,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-preferences-service/dev/1568373760413-2019-09-13T11:22:40.413Z/internote-preferences-service.zip"
+                "S3Key": "serverless/internote-preferences-service/dev/1592685864596-2020-06-20T20:44:24.596Z/internote-preferences-service.zip"
               },
               "FunctionName": "internote-preferences-service-dev-update",
               "Handler": "update.handler",
@@ -220,7 +220,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 30,
               "Environment": {
                 "Variables": {
@@ -235,14 +235,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "UpdateLambdaVersion96niDGqZ872xd5VFbVMVJHMGuqbP4ZiUFaHscqAaPCk": {
+          "UpdateLambdaVersion9LP479VthBglmo4HJ3WDIt5DGIZGWB5Cg1vJpqRPE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "UpdateLambdaFunction"
               },
-              "CodeSha256": "M//NeBTa8cFr1Y70Mf5rvXWG+GHvK1pJ7hZFYjl2rws="
+              "CodeSha256": "tQGs+W7fAdHNn4+J71afVrU8gBDxYx9h6EZ67SW/d4k="
             }
           },
           "ApiGatewayResourcePreferences": {
@@ -390,7 +390,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1568373700562": {
+          "ApiGatewayDeployment1592685829836": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -507,13 +507,13 @@
           "GetLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetLambdaVersionGVl4kSSmmcXj25G2axCsWx0FAF5y4XWLAj8tHJjE0"
+              "Ref": "GetLambdaVersionLXdjrd0szLwONUyGay8tQ6oXJ0Y74R6EcOzPLqlOGc"
             }
           },
           "UpdateLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "UpdateLambdaVersion96niDGqZ872xd5VFbVMVJHMGuqbP4ZiUFaHscqAaPCk"
+              "Ref": "UpdateLambdaVersion9LP479VthBglmo4HJ3WDIt5DGIZGWB5Cg1vJpqRPE"
             }
           },
           "ServiceEndpoint": {
@@ -641,7 +641,7 @@
         },
         "memory": 256,
         "timeout": 30,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       },
       "update": {
@@ -684,7 +684,7 @@
         },
         "memory": 256,
         "timeout": 30,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       }
     },
@@ -716,7 +716,7 @@
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/internote-preferences-service/dev/1568373760413-2019-09-13T11:22:40.413Z",
+    "artifactDirectoryName": "serverless/internote-preferences-service/dev/1592685864596-2020-06-20T20:44:24.596Z",
     "artifact": ""
   }
 }

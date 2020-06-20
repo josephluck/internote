@@ -22,7 +22,7 @@ export const createSnippet = async (
     title: body.title,
     content: body.content,
     snippetId,
-    userId
+    userId,
   }).execute();
   return await result.data;
 };
@@ -34,7 +34,7 @@ export const deleteSnippetById = async (
   try {
     await SnippetsRepository.delete({
       snippetId,
-      userId
+      userId,
     }).execute();
   } catch (err) {
     if (isDbError(err, "ItemNotFound")) {

@@ -12,7 +12,7 @@ import {
   faPlus,
   faSpinner,
   faCompress,
-  faExpand
+  faExpand,
 } from "@fortawesome/free-solid-svg-icons";
 import { ExpandingIconButton } from "./expanding-icon-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,14 +25,14 @@ const HeadingWrapper = styled.div<{
 }>`
   padding: ${spacing._0_5} 0;
   flex: 0 0 auto;
-  background: ${props => props.theme.headingBackground};
+  background: ${(props) => props.theme.headingBackground};
   position: fixed;
   left: 0;
   right: 0;
   top: 0;
   transition: all 500ms ease;
-  opacity: ${props => (props.distractionFree && !props.forceShow ? 0 : 1)};
-  transform: ${props =>
+  opacity: ${(props) => (props.distractionFree && !props.forceShow ? 0 : 1)};
+  transform: ${(props) =>
     props.distractionFree && !props.forceShow
       ? "translateY(-5px)"
       : "translateY(0px)"};
@@ -56,16 +56,16 @@ const ButtonSpacer = styled.div`
 
 export function Heading({ note }: { note: GetNoteDTO | null }) {
   const createNoteLoading = useTwineState(
-    state => state.notes.loading.createNote
+    (state) => state.notes.loading.createNote
   );
   const distractionFree = useTwineState(
-    state => state.preferences.distractionFree
+    (state) => state.preferences.distractionFree
   );
-  const isFullscreen = useTwineState(state => state.ui.isFullscreen);
+  const isFullscreen = useTwineState((state) => state.ui.isFullscreen);
 
-  const { toggleFullscreen, createNote } = useTwineActions(actions => ({
+  const { toggleFullscreen, createNote } = useTwineActions((actions) => ({
     toggleFullscreen: actions.ui.toggleFullscreen,
-    createNote: actions.notes.createNote
+    createNote: actions.notes.createNote,
   }));
 
   const [noteMenuShowing, setNoteMenuShowing] = useState(false);

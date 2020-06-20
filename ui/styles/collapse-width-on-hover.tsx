@@ -3,7 +3,7 @@ import { Motion, spring } from "react-motion";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  cursor: ${props => (props.onClick ? "pointer" : "default")};
+  cursor: ${(props) => (props.onClick ? "pointer" : "default")};
 `;
 
 const InnerWrap = styled.div``;
@@ -21,14 +21,16 @@ export function CollapseWidthOnHover({
   className,
   children,
   onClick,
+  onMouseDown,
   collapsedContent,
-  forceShow
+  forceShow,
 }: {
   children: (renderProps: RenderProps) => ReactNode;
   collapsedContent: ReactNode;
   forceShow?: boolean;
   className?: string;
   onClick?: () => void;
+  onMouseDown?: (event: React.MouseEvent) => void;
 }) {
   const [width, setWidth] = useState(0);
   const [opacity, setOpacity] = useState(0);
@@ -58,12 +60,12 @@ export function CollapseWidthOnHover({
 
   const renderCollapsedContent = () => (
     <Motion style={{ width: spring(width), opacity: spring(opacity) }}>
-      {value => (
+      {(value) => (
         <InnerWrap
           style={{
             width: value.width,
             opacity: value.opacity,
-            pointerEvents: width > 0 ? "auto" : "none"
+            pointerEvents: width > 0 ? "auto" : "none",
           }}
         >
           <CollapsedContent ref={collapsedContentRef}>
@@ -80,6 +82,7 @@ export function CollapseWidthOnHover({
       onMouseEnter={onHoverIn}
       onMouseLeave={onHoverOut}
       onClick={onClick}
+      onMouseDown={onMouseDown}
     >
       {children({ renderCollapsedContent })}
     </Wrapper>

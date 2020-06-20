@@ -1,13 +1,13 @@
 {
   "name": "yjkcvpc-r7tmuu7",
-  "hash": "9ifQzfLSTiTW2JXRP1BYn1JgA7In0aMNJECXOxuH/fk=",
+  "hash": "fdiCjbHjcdTwJLLS5p8AdiWFfjeexcltiBeTAUEo/0A=",
   "description": "Default Lambda@Edge for Next CloudFront distribution",
   "memory": 512,
   "timeout": 10,
-  "code": "./.serverless_nextjs/default-lambda",
+  "code": "/home/josephreubenluck/code/internote/ui/.serverless_nextjs/default-lambda",
   "shims": [],
   "handler": "index.handler",
-  "runtime": "nodejs10.x",
+  "runtime": "nodejs12.x",
   "env": {},
   "role": {
     "arn": "arn:aws:iam::822567739604:role/yjkcvpc-yztgxhb"

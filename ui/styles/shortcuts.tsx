@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import isKeyHotkey from "is-hotkey";
+import React, { useEffect, useCallback, useState } from "react";
+import isHotkey from "is-hotkey";
 import { anyOverlappingStrOccurrences } from "../utilities/string";
 
 interface Shortcut {
@@ -22,7 +22,7 @@ interface Shortcut {
   /**
    * The callback to trigger when the keyCombo is pressed by the user.
    */
-  callback: () => any;
+  callback: (event: React.KeyboardEvent) => any;
   /**
    * When truthy, prevents other shortcuts with the same keyCombo from
    * being called if this shortcut is higher up in the list of shortcuts.
@@ -57,15 +57,20 @@ interface Context {
    * to remove it.
    */
   removeShortcut: (shortcut: Shortcut) => void;
+  /**
+   * Given a keyboard event, runs through the list of shortcuts and handles them
+   */
+  handleShortcuts: (event: React.KeyboardEvent) => void;
 }
 
 /**
  * Default context
  */
 export const ShortcutsContext = React.createContext<Context>({
+  handleShortcuts: () => void null,
   shortcuts: [],
   addShortcut() {},
-  removeShortcut() {}
+  removeShortcut() {},
 });
 
 /**
@@ -73,70 +78,58 @@ export const ShortcutsContext = React.createContext<Context>({
  * shortcuts functionality
  */
 export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
+  const [shortcuts, setShortcuts] = useState<Shortcut[]>([]);
+
   /**
    * Adds a given shortcut to the list of available shortcuts.
    */
-  function addShortcut(shortcut: Shortcut) {
-    setCtx(prevState => {
-      return {
-        ...prevState,
-        shortcuts: shortcutExists(prevState.shortcuts, shortcut)
-          ? prevState.shortcuts
-          : [shortcut, ...prevState.shortcuts].sort(sortShortcuts)
-      };
-    });
-  }
+  const addShortcut = useCallback(
+    (shortcut: Shortcut) =>
+      setShortcuts((prevShortcuts) =>
+        shortcutExists(prevShortcuts, shortcut)
+          ? prevShortcuts
+          : [shortcut, ...prevShortcuts].sort(sortShortcuts)
+      ),
+    [setShortcuts]
+  );
 
   /**
    * Removes a given shortcut from the list of shortcuts.
    * NB: uses the shortcut's ID property to determine whether
    * to remove it.
    */
-  function removeShortcut(shortcut: Shortcut) {
-    setCtx(prevState => {
-      return {
-        ...prevState,
-        shortcuts: prevState.shortcuts.filter(s => s.id !== shortcut.id)
-      };
-    });
-  }
+  const removeShortcut = useCallback(
+    (shortcut: Shortcut) =>
+      setShortcuts((prevShortcuts) =>
+        prevShortcuts.filter((s) => s.id !== shortcut.id)
+      ),
+    [setShortcuts]
+  );
 
-  /**
-   * Stores the current context including shortcuts and
-   * methods for adding and removing shortcuts.
-   */
-  const [ctx, setCtx] = React.useState<Context>({
-    shortcuts: [],
+  const handleShortcuts = useCallback(
+    (event: React.KeyboardEvent) => {
+      const enabledShortcuts = shortcuts.filter(
+        ({ disabled = false }) => disabled === false
+      );
+      enabledShortcuts.reduce((isPrevented, shortcut) => {
+        if (!isPrevented && isHotkey(shortcut.keyCombo, event as any)) {
+          event.preventDefault();
+          event.stopPropagation();
+          shortcut.callback(event as any);
+          return Boolean(shortcut.preventOtherShortcuts);
+        }
+        return isPrevented;
+      }, false);
+    },
+    [shortcuts]
+  );
+
+  const ctx: Context = {
+    handleShortcuts,
+    shortcuts,
     addShortcut,
-    removeShortcut
-  });
-
-  /**
-   * Binds window events to the shortcut list and
-   * traverses the list when a key combo is pressed.
-   */
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      let isPrevented = false;
-      ctx.shortcuts
-        .filter(shortcut => !shortcut.disabled)
-        .map(shortcut => {
-          if (!isPrevented && shouldEventTriggerShortcut(event, shortcut)) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (shortcut.preventOtherShortcuts) {
-              isPrevented = true;
-            }
-            shortcut.callback();
-          }
-        });
-    }
-
-    window.addEventListener("keydown", onKeyDown);
-    return function() {
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [shortcutsHash(ctx.shortcuts)]);
+    removeShortcut,
+  };
 
   return (
     <ShortcutsContext.Provider value={ctx}>
@@ -154,12 +147,18 @@ export function ShortcutsProvider({ children }: { children: React.ReactNode }) {
  */
 export function Shortcut(shortcut: Shortcut) {
   const { addShortcut, removeShortcut } = React.useContext(ShortcutsContext);
+
   useEffect(() => {
     addShortcut(shortcut);
-    return function() {
-      removeShortcut(shortcut);
-    };
-  }, [shortcut.id, shortcut.keyCombo, shortcut.disabled]);
+    return () => removeShortcut(shortcut);
+  }, [
+    addShortcut,
+    removeShortcut,
+    shortcut.id,
+    shortcut.keyCombo,
+    shortcut.disabled,
+    shortcut.callback,
+  ]);
 
   return null;
 }
@@ -168,9 +167,9 @@ export function Shortcut(shortcut: Shortcut) {
  * Computes a unique hash of the list of shortcuts for effective
  * diffing two lists of shortcuts for strict equality
  */
-function shortcutsHash(shortcuts: Shortcut[]): string {
-  return shortcuts.reduce((prev, shortcut) => `${prev}-${shortcut.id}`, "");
-}
+// function shortcutsHash(shortcuts: Shortcut[]): string {
+//   return shortcuts.reduce((prev, shortcut) => `${prev}-${shortcut.id}`, "");
+// }
 
 /**
  * Returns a boolean whether a given shortcut is in the list of given
@@ -179,7 +178,7 @@ function shortcutsHash(shortcuts: Shortcut[]): string {
  * NB: uses the shortcut's ID property to determine inclusion.
  */
 function shortcutExists(shortcuts: Shortcut[], shortcut: Shortcut): boolean {
-  return shortcuts.map(s => s.id).includes(shortcut.id);
+  return shortcuts.map((s) => s.id).includes(shortcut.id);
 }
 
 /**
@@ -199,17 +198,6 @@ function sortShortcuts(
 }
 
 /**
- * Determines whether a given event should trigger the
- * callback of a given shortcut according to the shortcut's
- * keyCombo
- */
-function shouldEventTriggerShortcut(event: any, shortcut: Shortcut): boolean {
-  return typeof shortcut.keyCombo === "object"
-    ? shortcut.keyCombo.some(keyCombo => isKeyHotkey(keyCombo, event))
-    : isKeyHotkey(shortcut.keyCombo, event);
-}
-
-/**
  * Given a shortcut within a list of shortcuts, determines
  * whether the shortcut will be prevented by higher priority
  * shortcuts that are set to prevent other shortcuts
@@ -218,7 +206,7 @@ export function shortcutWillBePrevented(
   shortcut: Shortcut,
   shortcuts: Shortcut[]
 ): boolean {
-  const index = shortcuts.findIndex(s => s.id === shortcut.id);
+  const index = shortcuts.findIndex((s) => s.id === shortcut.id);
   return shortcuts.some(
     (s, i) =>
       s.preventOtherShortcuts &&

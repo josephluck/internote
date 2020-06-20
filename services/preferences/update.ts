@@ -4,13 +4,13 @@ import { jsonBodyParser, cors } from "middy/middlewares";
 import {
   encodeResponse,
   validateRequestBody,
-  jsonErrorHandler
+  jsonErrorHandler,
 } from "@internote/lib/middlewares";
 import { success, exception, notFound } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { updatePreferencesById } from "./db/queries";
 import { Preferences } from "./db/models";
-import { UpdateHandler } from "@internote/lib/types";
+import { UpdateHandler } from "@internote/lib/lambda";
 
 const validator = validateRequestBody<Preferences>({
   id: [],
@@ -19,7 +19,6 @@ const validator = validateRequestBody<Preferences>({
   distractionFree: [],
   voice: [],
   outlineShowing: [],
-  offlineSync: []
 });
 
 const update: UpdateHandler<Preferences> = async (event, _ctx, callback) => {

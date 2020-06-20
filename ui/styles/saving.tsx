@@ -18,7 +18,7 @@ const bounce = keyframes`
 `;
 
 export const Saving = styled.div<{ saving: boolean }>`
-  animation: ${props =>
+  animation: ${(props) =>
     props.saving
       ? css`
           ${bounce} 1.5s ease infinite
@@ -28,9 +28,9 @@ export const Saving = styled.div<{ saving: boolean }>`
   height: 10px;
   width: 10px;
   border-radius: 9999px;
-  background: ${props =>
+  background: ${(props) =>
     props.saving ? "transparent" : props.theme.savingInactive};
   border: solid 2px
-    ${props =>
+    ${(props) =>
       props.saving ? props.theme.savingActive : props.theme.savingInactive};
 `;

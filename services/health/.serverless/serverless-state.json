@@ -8,7 +8,7 @@
       "stage": "dev",
       "variableSyntax": "\\${([ ~:a-zA-Z0-9._@'\",\\-\\/\\(\\)*]+?)}",
       "name": "aws",
-      "runtime": "nodejs8.10",
+      "runtime": "nodejs12.x",
       "region": "eu-west-1",
       "memorySize": 256,
       "timeout": 30,
@@ -130,7 +130,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-health-service/dev/1568373127016-2019-09-13T11:12:07.016Z/internote-health-service.zip"
+                "S3Key": "serverless/internote-health-service/dev/1592685141358-2020-06-20T20:32:21.358Z/internote-health-service.zip"
               },
               "FunctionName": "internote-health-service-dev-health",
               "Handler": "health.handler",
@@ -141,7 +141,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 30
             },
             "DependsOn": [
@@ -149,14 +149,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "HealthLambdaVersionQz45TZrI6niEWcYtjyDNAoOc6rcsfxK5WysqXJwZu4": {
+          "HealthLambdaVersionimOAGuz5wDYvtTWfsAwj8IpBLBTYC3jORRUqmoHB5hw": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "HealthLambdaFunction"
               },
-              "CodeSha256": "/xzYyDxVupoplnMEyops/rx8rZqhmShkTxdfyHMp5vI="
+              "CodeSha256": "/gDiz4xzuanNoZuft4y0PgzBxak7wls5XsUOgaBKCOg="
             }
           },
           "AuthenticatedLambdaFunction": {
@@ -166,7 +166,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-health-service/dev/1568373127016-2019-09-13T11:12:07.016Z/internote-health-service.zip"
+                "S3Key": "serverless/internote-health-service/dev/1592685141358-2020-06-20T20:32:21.358Z/internote-health-service.zip"
               },
               "FunctionName": "internote-health-service-dev-authenticated",
               "Handler": "authenticated.handler",
@@ -177,7 +177,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 30
             },
             "DependsOn": [
@@ -185,14 +185,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "AuthenticatedLambdaVersionXAwFd1ivs656GCb2lG5SezdLMj3WV9QHSak5rCDbGws": {
+          "AuthenticatedLambdaVersionwurOEBH7OJ2dEUKEXiZAlbHWHjr5YvEMNEwEH7WDIA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AuthenticatedLambdaFunction"
               },
-              "CodeSha256": "/xzYyDxVupoplnMEyops/rx8rZqhmShkTxdfyHMp5vI="
+              "CodeSha256": "/gDiz4xzuanNoZuft4y0PgzBxak7wls5XsUOgaBKCOg="
             }
           },
           "ApiGatewayRestApi": {
@@ -417,7 +417,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1568373123238": {
+          "ApiGatewayDeployment1592685138779": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -542,13 +542,13 @@
           "HealthLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HealthLambdaVersionQz45TZrI6niEWcYtjyDNAoOc6rcsfxK5WysqXJwZu4"
+              "Ref": "HealthLambdaVersionimOAGuz5wDYvtTWfsAwj8IpBLBTYC3jORRUqmoHB5hw"
             }
           },
           "AuthenticatedLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AuthenticatedLambdaVersionXAwFd1ivs656GCb2lG5SezdLMj3WV9QHSak5rCDbGws"
+              "Ref": "AuthenticatedLambdaVersionwurOEBH7OJ2dEUKEXiZAlbHWHjr5YvEMNEwEH7WDIA"
             }
           },
           "ServiceEndpoint": {
@@ -691,7 +691,7 @@
         },
         "memory": 256,
         "timeout": 30,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       },
       "authenticated": {
@@ -734,7 +734,7 @@
         },
         "memory": 256,
         "timeout": 30,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       }
     },
@@ -796,7 +796,7 @@
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/internote-health-service/dev/1568373127016-2019-09-13T11:12:07.016Z",
+    "artifactDirectoryName": "serverless/internote-health-service/dev/1592685141358-2020-06-20T20:32:21.358Z",
     "artifact": ""
   }
 }

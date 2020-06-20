@@ -3,7 +3,7 @@ import { StoriesOf } from "../types";
 import { Uploading } from "./uploading";
 import { UnknownFile } from "./unknown-file";
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("Uploading", module)
     .add("No progress", () => <Uploading name="file.md" progress={0} />)
     .add("In progress", () => <Uploading name="file.md" progress={30} />)

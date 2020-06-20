@@ -32,12 +32,12 @@ export interface Props {
 export function Component({
   items,
   shortcutsEnabled = true,
-  onSubMenuToggled
+  onSubMenuToggled,
 }: Props) {
   const [subMenu, setSubMenu] = React.useState<null | string>(null);
   const renderProps: RenderProps = {
     toSubMenu: (s: string) => setSubMenu(s),
-    toMainMenu: () => setSubMenu(null)
+    toMainMenu: () => setSubMenu(null),
   };
 
   React.useEffect(() => {
@@ -47,7 +47,7 @@ export function Component({
   }, [subMenu]);
 
   const subMenuItem = subMenu
-    ? items.find(item => item.title === subMenu)
+    ? items.find((item) => item.title === subMenu)
     : null;
 
   return (
@@ -64,7 +64,7 @@ export function Component({
           />
           <Motion name={`item-${subMenu}`}>
             <Move scaleY={false}>
-              {motion => (
+              {(motion) => (
                 <div {...motion}>
                   <DropdownMenuItem
                     onClick={() => setSubMenu(null)}
@@ -84,7 +84,7 @@ export function Component({
           {items.map((item, i) => (
             <Motion key={item.title || i} name={`item-${item.title}`}>
               <Move scaleY={false}>
-                {motion => (
+                {(motion) => (
                   <div {...motion}>
                     {item.item(renderProps)}
                     {item.spacerAfter ? <DropdownMenuSpacer /> : null}

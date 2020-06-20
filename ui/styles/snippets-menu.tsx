@@ -1,90 +1,58 @@
-import { NoResults } from "./no-results";
-import { useTwineState, useTwineActions } from "../store";
-import { useState, useRef, useEffect, useContext, useCallback } from "react";
-import { MenuControl } from "./menu-control";
-import Fuse from "fuse.js";
-import { InputWithIcons } from "./input-with-icons";
-import { DropdownMenuItem, DropdownMenu } from "./dropdown-menu";
-import { faPlus, faCut } from "@fortawesome/free-solid-svg-icons";
-import { CollapseWidthOnHover } from "./collapse-width-on-hover";
-import React from "react";
-import { Flex } from "@rebass/grid";
-import { spacing, size, font } from "../theming/symbols";
-import {
-  ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap
-} from "./toolbar-expanding-button";
-import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
+import { faCut, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SearchMenuItem } from "./search-menu-item";
-import styled from "styled-components";
-import { SnippetsContext } from "./snippets-context";
-import { Button } from "./button";
 import { GetSnippetDTO } from "@internote/snippets-service/types";
+import Fuse from "fuse.js";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import styled from "styled-components";
+import { useTwineActions, useTwineState } from "../store";
+import { font, size, spacing } from "../theming/symbols";
+import { Button } from "./button";
+import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
+import { InputWithIcons } from "./input-with-icons";
+import { MenuControl } from "./menu-control";
+import { NoResults } from "./no-results";
+import { SearchMenuItem } from "./search-menu-item";
+import { SnippetsContext } from "./snippets-context";
+import { ToolbarButton } from "./toolbar-button";
+import { Shortcut } from "./shortcuts";
 
-const SnippetsDropdownMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
-  padding-top: 0;
-  overflow: hidden;
-  transition: all 300ms ease;
-  margin-bottom: ${spacing._0_5};
-  width: ${props =>
-    props.isExpanded
-      ? size.notesMenuDropdownWidthExpanded
-      : size.notesMenuDropdownWidth};
-`;
-
-const HeadingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding-right: ${spacing._0_25};
-  margin: ${spacing._0_25} ${spacing._0_25} 0;
-`;
-
-const MaxHeight = styled.div`
-  max-height: ${size.notesMenuListMaxHeight};
-  overflow: auto;
-  margin: ${spacing._0_5} 0 0;
-  padding: ${spacing._0_5} 0 0;
-  border-top: solid 1px ${props => props.theme.dropdownMenuSpacerBorder};
-`;
-
-const InstructionsWrapper = styled.div`
-  padding: 0 ${spacing._1};
-`;
-
-const Instructions = styled.p`
-  font-size: ${font._16.size};
-  line-height: ${font._16.lineHeight};
-`;
-
-export function SnippetsMenu({
-  onSnippetSelected,
-  hasHighlighted
-}: {
+export const SnippetsButton: React.FunctionComponent<{
   onSnippetSelected: (snippet: GetSnippetDTO) => void;
   hasHighlighted: boolean;
-}) {
+  onCreateSnippet: () => void;
+}> = ({ onSnippetSelected, hasHighlighted, onCreateSnippet }) => {
   const {
     snippetsMenuShowing,
     setSnippetToInsert,
     setSnippetsMenuShowing,
-    setCreateSnippetModalOpen
   } = useContext(SnippetsContext);
-  const snippets = useTwineState(state => state.snippets.snippets);
+
+  const snippets = useTwineState((state) => state.snippets.snippets);
+
   const [inputText, setInputText] = useState("");
-  const [
-    createNewSnippetInstructionsShowing,
-    setCreateNewSnippetInstructionsShowing
-  ] = useState(false);
+
+  const [instructionsShowing, setInstructionsShowing] = useState(false);
+
   const [searchFocused, setSearchFocused] = useState(false);
+
   const [filteredSnippets, setFilteredSnippets] = useState<GetSnippetDTO[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
+
   const [snippetBeingDeleted, setSnippetBeingDeleted] = useState("");
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const deleteSnippet = useTwineActions(
-    actions => actions.snippets.deleteSnippet
+    (actions) => actions.snippets.deleteSnippet
   );
+
   const deleteSnippetLoading = useTwineState(
-    state => state.snippets.loading.deleteSnippet
+    (state) => state.snippets.loading.deleteSnippet
   );
 
   function focusInput() {
@@ -98,17 +66,18 @@ export function SnippetsMenu({
   }, [inputText, snippets.length]);
 
   function searchSnippets(value: string) {
-    const fuse: any = Fuse; // TODO: fix types
-    const fuzzy = new fuse(snippets, {
+    const fuzzy = new Fuse(snippets, {
       shouldSort: true,
       threshold: 0.6,
       location: 0,
       distance: 30,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: ["title"]
+      keys: ["title"],
     });
-    setFilteredSnippets(value.length ? fuzzy.search(value) : snippets);
+    setFilteredSnippets(
+      value.length ? fuzzy.search(value).map((v) => v.item) : snippets
+    );
   }
 
   const onDeleteSnippet = useCallback(async (snippetId: string) => {
@@ -117,13 +86,21 @@ export function SnippetsMenu({
     setSnippetBeingDeleted("");
   }, []);
 
+  const handleShowInstructions = useCallback(() => {
+    setInstructionsShowing(true);
+  }, []);
+
+  const handleHideInstructions = useCallback(() => {
+    setInstructionsShowing(false);
+  }, []);
+
   return (
     <>
       <MenuControl
         menuName="Snippets menu"
         onMenuToggled={setSnippetsMenuShowing}
         forceShow={snippetsMenuShowing}
-        menu={menu => (
+        menu={(menu) => (
           <SnippetsDropdownMenu
             showing={menu.menuShowing}
             horizontalPosition="center"
@@ -131,26 +108,27 @@ export function SnippetsMenu({
             isExpanded={searchFocused || inputText.length > 0}
           >
             <>
-              {createNewSnippetInstructionsShowing ? (
+              {instructionsShowing ? (
                 <InstructionsWrapper>
                   <Instructions>
                     To create a new snippet, highlight the selection you would
                     like to save, and press the "Create snippet" button in the
                     toolbar.
                   </Instructions>
-                  <Button
-                    fullWidth
-                    onClick={() =>
-                      setCreateNewSnippetInstructionsShowing(false)
-                    }
-                  >
+                  <Button fullWidth onClick={handleHideInstructions}>
                     Got it
                   </Button>
                 </InstructionsWrapper>
               ) : (
                 <>
                   {menu.menuShowing && !searchFocused ? (
-                    <OnKeyboardShortcut keyCombo="s" cb={focusInput} />
+                    <Shortcut
+                      id="search-snippets"
+                      description="Search snippets"
+                      preventOtherShortcuts
+                      keyCombo="s"
+                      callback={focusInput}
+                    />
                   ) : null}
                   <HeadingWrapper>
                     <InputWithIcons
@@ -170,7 +148,7 @@ export function SnippetsMenu({
                   </HeadingWrapper>
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faPlus} />}
-                    onClick={() => setCreateNewSnippetInstructionsShowing(true)}
+                    onClick={handleShowInstructions}
                   >
                     <span>Create a new snippet</span>
                   </DropdownMenuItem>
@@ -183,7 +161,7 @@ export function SnippetsMenu({
                     {filteredSnippets.length === 0 ? (
                       <NoResults emojis="🔎 🙄" message="No snippets found" />
                     ) : (
-                      filteredSnippets.map(snippet => (
+                      filteredSnippets.map((snippet) => (
                         <SearchMenuItem
                           content={snippet.title}
                           onMouseIn={() => {
@@ -212,33 +190,55 @@ export function SnippetsMenu({
           </SnippetsDropdownMenu>
         )}
       >
-        {menu => (
-          <CollapseWidthOnHover
+        {(menu) => (
+          <ToolbarButton
             onClick={() => {
               if (hasHighlighted) {
-                setCreateSnippetModalOpen(true);
+                onCreateSnippet();
               } else {
                 menu.toggleMenuShowing(!menu.menuShowing);
               }
             }}
-            forceShow={menu.menuShowing}
-            collapsedContent={
-              <Flex pl={spacing._0_25} style={{ whiteSpace: "nowrap" }}>
-                {hasHighlighted ? "Create snippet" : "Snippets"}
-              </Flex>
-            }
-          >
-            {collapse => (
-              <ToolbarExpandingButton forceShow={menu.menuShowing}>
-                <ToolbarExpandingButtonIconWrap>
-                  <FontAwesomeIcon icon={faCut} />
-                </ToolbarExpandingButtonIconWrap>
-                {collapse.renderCollapsedContent()}
-              </ToolbarExpandingButton>
-            )}
-          </CollapseWidthOnHover>
+            label={hasHighlighted ? "Create snippet" : "Snippets"}
+            icon={<FontAwesomeIcon icon={faCut} />}
+          />
         )}
       </MenuControl>
     </>
   );
-}
+};
+
+const SnippetsDropdownMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
+  padding-top: 0;
+  overflow: hidden;
+  transition: all 300ms ease;
+  margin-bottom: ${spacing._0_5};
+  width: ${(props) =>
+    props.isExpanded
+      ? size.notesMenuDropdownWidthExpanded
+      : size.notesMenuDropdownWidth};
+`;
+
+const HeadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding-right: ${spacing._0_25};
+  margin: ${spacing._0_25} ${spacing._0_25} 0;
+`;
+
+const MaxHeight = styled.div`
+  max-height: ${size.notesMenuListMaxHeight};
+  overflow: auto;
+  margin: ${spacing._0_5} 0 0;
+  padding: ${spacing._0_5} 0 0;
+  border-top: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
+`;
+
+const InstructionsWrapper = styled.div`
+  padding: 0 ${spacing._1};
+`;
+
+const Instructions = styled.p`
+  font-size: ${font._16.size};
+  line-height: ${font._16.lineHeight};
+`;

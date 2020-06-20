@@ -8,7 +8,7 @@
       "stage": "dev",
       "variableSyntax": "\\${([ ~:a-zA-Z0-9._@'\",\\-\\/\\(\\)*]+?)}",
       "name": "aws",
-      "runtime": "nodejs8.10",
+      "runtime": "nodejs12.x",
       "region": "eu-west-1",
       "environment": {
         "REGION": "eu-west-1",
@@ -172,7 +172,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-snippets-service/dev/1568373781822-2019-09-13T11:23:01.822Z/internote-snippets-service.zip"
+                "S3Key": "serverless/internote-snippets-service/dev/1592686545624-2020-06-20T20:55:45.624Z/internote-snippets-service.zip"
               },
               "FunctionName": "internote-snippets-service-dev-list",
               "Handler": "list.handler",
@@ -183,7 +183,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 30,
               "Environment": {
                 "Variables": {
@@ -198,14 +198,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "ListLambdaVersionLV8GaE6yv4RHue6GrS0eHa4QzWocMQLgzKklbWtARs": {
+          "ListLambdaVersionJFd1mucev3hm3s79utumZdLacXszoLhttsaHKYJ3YA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ListLambdaFunction"
               },
-              "CodeSha256": "z6uzFRQ+2wNlNgqqP1OXHt4ML95VetZscK5yvNzrcDI="
+              "CodeSha256": "7kRjgteqA3jLaPFuuxXCWrFl/CQeF/hsWHTE7fPYQAc="
             }
           },
           "CreateLambdaFunction": {
@@ -215,7 +215,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-snippets-service/dev/1568373781822-2019-09-13T11:23:01.822Z/internote-snippets-service.zip"
+                "S3Key": "serverless/internote-snippets-service/dev/1592686545624-2020-06-20T20:55:45.624Z/internote-snippets-service.zip"
               },
               "FunctionName": "internote-snippets-service-dev-create",
               "Handler": "create.handler",
@@ -226,7 +226,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 30,
               "Environment": {
                 "Variables": {
@@ -241,14 +241,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "CreateLambdaVersionDCdp9Lh67CUeBJVfwgaCw9O6NFkpK1S3pxMhFbk50bk": {
+          "CreateLambdaVersionGomQ3Zh3aQ9ND78MZhzoEkoDIHCmpTAgJnJAPCeF2Bk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateLambdaFunction"
               },
-              "CodeSha256": "z6uzFRQ+2wNlNgqqP1OXHt4ML95VetZscK5yvNzrcDI="
+              "CodeSha256": "7kRjgteqA3jLaPFuuxXCWrFl/CQeF/hsWHTE7fPYQAc="
             }
           },
           "DeleteLambdaFunction": {
@@ -258,7 +258,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-snippets-service/dev/1568373781822-2019-09-13T11:23:01.822Z/internote-snippets-service.zip"
+                "S3Key": "serverless/internote-snippets-service/dev/1592686545624-2020-06-20T20:55:45.624Z/internote-snippets-service.zip"
               },
               "FunctionName": "internote-snippets-service-dev-delete",
               "Handler": "delete.handler",
@@ -269,7 +269,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 30,
               "Environment": {
                 "Variables": {
@@ -284,14 +284,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "DeleteLambdaVersioncV7VCFVd8nRzDXaxEeGpmLgsgh4kK2JStrqnwgAocno": {
+          "DeleteLambdaVersiondYXH8rmxX8daC8UpC4GGG4NglGN14WgK40wLuqNo": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DeleteLambdaFunction"
               },
-              "CodeSha256": "z6uzFRQ+2wNlNgqqP1OXHt4ML95VetZscK5yvNzrcDI="
+              "CodeSha256": "7kRjgteqA3jLaPFuuxXCWrFl/CQeF/hsWHTE7fPYQAc="
             }
           },
           "ApiGatewayResourceSnippets": {
@@ -541,7 +541,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1568373727797": {
+          "ApiGatewayDeployment1592686498302": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -705,19 +705,19 @@
           "ListLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ListLambdaVersionLV8GaE6yv4RHue6GrS0eHa4QzWocMQLgzKklbWtARs"
+              "Ref": "ListLambdaVersionJFd1mucev3hm3s79utumZdLacXszoLhttsaHKYJ3YA"
             }
           },
           "CreateLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateLambdaVersionDCdp9Lh67CUeBJVfwgaCw9O6NFkpK1S3pxMhFbk50bk"
+              "Ref": "CreateLambdaVersionGomQ3Zh3aQ9ND78MZhzoEkoDIHCmpTAgJnJAPCeF2Bk"
             }
           },
           "DeleteLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DeleteLambdaVersioncV7VCFVd8nRzDXaxEeGpmLgsgh4kK2JStrqnwgAocno"
+              "Ref": "DeleteLambdaVersiondYXH8rmxX8daC8UpC4GGG4NglGN14WgK40wLuqNo"
             }
           },
           "ServiceEndpoint": {
@@ -845,7 +845,7 @@
         },
         "memory": 256,
         "timeout": 30,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       },
       "create": {
@@ -888,7 +888,7 @@
         },
         "memory": 256,
         "timeout": 30,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       },
       "delete": {
@@ -931,7 +931,7 @@
         },
         "memory": 256,
         "timeout": 30,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       }
     },
@@ -971,7 +971,7 @@
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/internote-snippets-service/dev/1568373781822-2019-09-13T11:23:01.822Z",
+    "artifactDirectoryName": "serverless/internote-snippets-service/dev/1592686545624-2020-06-20T20:55:45.624Z",
     "artifact": ""
   }
 }

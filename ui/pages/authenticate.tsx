@@ -24,11 +24,13 @@ const Instructions = styled.p`
 `;
 
 const Page: NextTwineSFC<Store, {}> = () => {
-  const authenticateLoading = useTwineState(state => state.auth.loading.signUp);
-  const verifyLoading = useTwineState(state => state.auth.loading.verify);
-  const needsVerify = useTwineState(state => state.auth.needsVerify);
-  const authenticate = useTwineActions(actions => actions.auth.signUp);
-  const verify = useTwineActions(actions => actions.auth.verify);
+  const authenticateLoading = useTwineState(
+    (state) => state.auth.loading.signUp
+  );
+  const verifyLoading = useTwineState((state) => state.auth.loading.verify);
+  const needsVerify = useTwineState((state) => state.auth.needsVerify);
+  const authenticate = useTwineActions((actions) => actions.auth.signUp);
+  const verify = useTwineActions((actions) => actions.auth.verify);
   return (
     <>
       <Modal open showCloseIcon={false} onClose={() => null}>
@@ -37,10 +39,10 @@ const Page: NextTwineSFC<Store, {}> = () => {
         </CenteredLogo>
         {needsVerify ? (
           <form
-            onSubmit={e => {
+            onSubmit={(e) => {
               e.preventDefault();
               verify({
-                code: (document.getElementById("verify") as any).value
+                code: (document.getElementById("verify") as any).value,
               });
             }}
           >
@@ -67,10 +69,10 @@ const Page: NextTwineSFC<Store, {}> = () => {
           </form>
         ) : (
           <form
-            onSubmit={e => {
+            onSubmit={(e) => {
               e.preventDefault();
               authenticate({
-                email: (document.getElementById("email") as any).value
+                email: (document.getElementById("email") as any).value,
               });
             }}
           >

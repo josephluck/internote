@@ -3,10 +3,10 @@ import { jsonBodyParser, cors } from "middy/middlewares";
 import {
   encodeResponse,
   validateRequestBody,
-  jsonErrorHandler
+  jsonErrorHandler,
 } from "@internote/lib/middlewares";
 import { success, exception } from "@internote/lib/responses";
-import { CreateHandler } from "@internote/lib/types";
+import { CreateHandler } from "@internote/lib/lambda";
 import { SpeechRequestBody, SpeechResponseBody, AvailableVoice } from "./types";
 import { required, inArray, isString } from "@internote/lib/validator";
 import AWS from "aws-sdk";
@@ -17,7 +17,7 @@ import { getUserIdentityId } from "@internote/lib/user";
 const validator = validateRequestBody<SpeechRequestBody>({
   id: [required],
   words: [required, isString],
-  voice: [required, inArray(availableVoices)]
+  voice: [required, inArray(availableVoices)],
 });
 
 const speech: CreateHandler<SpeechRequestBody> = async (
@@ -38,7 +38,7 @@ const speech: CreateHandler<SpeechRequestBody> = async (
       OutputFormat: "mp3",
       Text: event.body.words,
       TextType: "text",
-      VoiceId: voiceId
+      VoiceId: voiceId,
     }).promise();
 
     console.log("[DEBUG]", "Speech made");
@@ -50,14 +50,14 @@ const speech: CreateHandler<SpeechRequestBody> = async (
     await S3.upload({
       Bucket: process.env.SPEECH_BUCKET,
       Key: S3UploadKey,
-      Body: speech.AudioStream
+      Body: speech.AudioStream,
     }).promise();
 
     console.log("[DEBUG]", "Upload done");
 
     const response: SpeechResponseBody = {
       src: `https://s3-${process.env.REGION}.amazonaws.com/${process.env.SPEECH_BUCKET}/${S3UploadKey}`,
-      key: S3UploadKey
+      key: S3UploadKey,
     };
     console.log("[DEBUG]", { response });
     return callback(null, success(response));

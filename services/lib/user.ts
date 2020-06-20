@@ -1,4 +1,4 @@
-import { UpdateEvent } from "@internote/lib/types";
+import { UpdateEvent } from "@internote/lib/lambda";
 
 /**
  * Returns the Cognito Federated Identity ID of the

@@ -1,30 +1,70 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
-import { spacing, size, font, media } from "../theming/symbols";
+import { useTwineState } from "../store";
+import { font, size, spacing } from "../theming/symbols";
+import { OutlineElement } from "./editor/types";
 import {
-  getOutlineHeadingsFromEditorValue,
-  getOutlineTagsFromEditorValue
-} from "../utilities/editor";
-import { Value, Node } from "slate";
+  extractAllTagElementsFromValue,
+  extractOutlineFromValue,
+} from "./editor/utils";
 import { Tag } from "./tag";
+import { InternoteEditorElement } from "@internote/lib/editor-types";
+
+export const Outline: React.FunctionComponent<{
+  value: InternoteEditorElement[];
+}> = ({ value }) => {
+  const showing = useTwineState(
+    (state) => state.preferences.outlineShowing || false
+  );
+  const headings = extractOutlineFromValue(value);
+  const hashtags = extractAllTagElementsFromValue(value);
+
+  const handleHeadingClick = useCallback((heading: OutlineElement) => {
+    console.log("Focus", heading);
+  }, []);
+
+  return (
+    <Wrap showing={showing}>
+      {headings.map((heading) => (
+        <OutlineItemWrapper
+          key={heading.key}
+          onMouseDown={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            handleHeadingClick(heading);
+          }}
+        >
+          {heading.type === "heading-one" ? (
+            <OutlineHeadingOne>{heading.text}</OutlineHeadingOne>
+          ) : (
+            <OutlineHeadingTwo>{heading.text}</OutlineHeadingTwo>
+          )}
+        </OutlineItemWrapper>
+      ))}
+      <Spacer />
+      <TagsWrapper>
+        {hashtags.map((tag) => (
+          <Tag key={tag.tag} isFocused={false}>
+            {tag.tag}
+          </Tag>
+        ))}
+      </TagsWrapper>
+    </Wrap>
+  );
+};
 
 const Wrap = styled.div<{ showing: boolean }>`
-  position: sticky;
+  position: absolute;
   right: 0;
   top: 0;
-  height: 100vh;
+  height: 100%;
   overflow: auto;
   width: ${size.outlineWidth};
-  padding-left: ${spacing._1};
-  transition: all 333ms ease;
+  padding: ${spacing._3} ${spacing._1} ${spacing._3} 0;
   text-align: right;
-  padding-bottom: ${spacing._5};
-  opacity: ${props => (props.showing ? 0.2 : 0)};
-  margin-right: ${props => (props.showing ? 0 : `-${size.outlineWidth}`)};
-  pointer-events: ${props => (props.showing ? "normal" : "none")};
-  @media (min-width: ${media.tablet}) {
-    padding-left: ${spacing._2};
-  }
+  transition: all 333ms ease;
+  opacity: ${(props) => (props.showing ? 0.2 : 0)};
+  pointer-events: ${(props) => (props.showing ? "normal" : "none")};
   &:hover {
     opacity: 1;
   }
@@ -65,41 +105,3 @@ const Spacer = styled.div`
 const TagsWrapper = styled.div`
   margin: -${spacing._0_125};
 `;
-
-export function Outline({
-  value,
-  onHeadingClick,
-  showing
-}: {
-  value: Value;
-  onHeadingClick: (node: Node) => any;
-  showing: boolean;
-}) {
-  const headings = getOutlineHeadingsFromEditorValue(value);
-  const hashtags = getOutlineTagsFromEditorValue(value);
-
-  return (
-    <Wrap showing={showing}>
-      {headings.map(block => (
-        <OutlineItemWrapper
-          key={block.key}
-          onClick={() => onHeadingClick(block.node)}
-        >
-          {block.type === "heading-one" ? (
-            <OutlineHeadingOne>{block.name}</OutlineHeadingOne>
-          ) : (
-            <OutlineHeadingTwo>{block.name}</OutlineHeadingTwo>
-          )}
-        </OutlineItemWrapper>
-      ))}
-      <Spacer />
-      <TagsWrapper>
-        {hashtags.map(tag => (
-          <Tag key={tag} isFocused={false}>
-            {tag}
-          </Tag>
-        ))}
-      </TagsWrapper>
-    </Wrap>
-  );
-}

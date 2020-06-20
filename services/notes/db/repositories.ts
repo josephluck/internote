@@ -5,6 +5,6 @@ export const NotesRepository = db
   .define(Note, {
     tableName: process.env.TABLE_NAME,
     sortKey: "userId",
-    partitionKey: "noteId"
+    partitionKey: "noteId",
   })
   .getInstance();

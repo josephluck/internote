@@ -3,7 +3,7 @@ import { httpErrorHandler, cors } from "middy/middlewares";
 import { encodeResponse } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
-import { DeleteHandler } from "@internote/lib/types";
+import { DeleteHandler } from "@internote/lib/lambda";
 import { deleteSnippetById } from "./db/queries";
 
 const del33t: DeleteHandler<{ snippetId: string }> = async (

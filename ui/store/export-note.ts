@@ -33,18 +33,18 @@ export function model(api: Api): Model {
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
-      resetState: () => defaultState()
+      resetState: () => defaultState(),
     },
     effects: {
       async markdown(state, _actions, { noteId }) {
         const { content, title } = state.notes.notes.find(
-          n => n.noteId === noteId
+          (n) => n.noteId === noteId
         );
         const result = await api.exportNote.markdown(state.auth.session, {
           content,
-          title
+          title,
         } as any); // TODO: improve type of NoteDTO to include new schema types from export service
-        result.map(response => {
+        result.map((response) => {
           if (!isServer()) {
             window.open(response.src, "_blank");
           }
@@ -52,19 +52,19 @@ export function model(api: Api): Model {
       },
       async html(state, _actions, { noteId }) {
         const { content, title } = state.notes.notes.find(
-          n => n.noteId === noteId
+          (n) => n.noteId === noteId
         );
         const result = await api.exportNote.html(state.auth.session, {
           content,
-          title
+          title,
         } as any); // TODO: improve type of NoteDTO to include new schema types from export service
-        result.map(response => {
+        result.map((response) => {
           if (!isServer()) {
             window.open(response.src, "_blank");
           }
         });
-      }
-    }
+      },
+    },
   };
   return withAsyncLoading(ownModel, "exportNote");
 }

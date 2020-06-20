@@ -23,101 +23,58 @@
   <br />
 </div>
 
+# 🚨 Fair warning!
+
+Internote is currently in **beta** status. This means that it's not ready for production use and your content may be erased at any time. You've been warned!
+
 # Features
 
-## Rich editor
+Many of Internote's features are free, however some advanced features are offered at a premium subscription.
 
-All the standard formatting options you'd expect from a modern editor.
+> Internote is currently in **beta**. During this time, all features are offered for _free_ without subscription. However, be warned that your content may be erased at any time.
 
-## Beautiful design
+## Free
 
-Internote has been designed with simplicity and beauty in mind for effortless note taking.
+- Rich editor with all the standard formatting options you'd expect
+- Emojis
+- Rich keyboard shortcuts
+- Outline navigation
+- Hashtags & rich search
+- Distraction-free mode which highlights and centers the content you're focused on
+- Real-time automatic saving
+- Multiple colour and typography themes
+- Full-screen mode
+- Passwordless login
 
-## Focus mode
+## Premium
 
-Go full zen by entering focus mode. All distracting user interface disappears and the current section highlighted so you can focus on writing completely distraction-free.
+> Premium has not yet been built and Internote is currently in **beta**. All of the following features are free until Internote is out of beta.
 
-## Outline
+- Integrated oxford dictionary
+- Text to speech
+- Export as HTML
+- Export as Markdown
 
-See the overview of your document and quickly navigate to headings and subheadings using a handy outline view.
+## Coming soon
 
-## Themes
-
-Multiple colour and typography themes. Serif's your jam? What about dark mode? No problems.
-
-## Emojis
-
-Emoji support because Internote is down with the kids 🎉
-
-## Tags
-
-Tag notes using a simple #tag system. Easily search for notes by tag.
-
-## Media attachments
-
-Embed images, videos, audios and attach any other files to your notes. Your files are stored securely, only you can access them.
-
-## Dictionary
-
-Can't find the perfect word or want to check that your use of a word is correct? Just highlight a word and you're a single click away to the full power of Oxford's English dictionary and thesaurus.
-
-## Speech
-
-Just highlight a sentence or paragraph and press the speech button to hear it. Choose from multiple voices, male or female.
-
-## Snippets
-
-Create snippets of content that can be saved and reused whenever needed.
-
-## Export
-
-Need to take your notes elsewhere? Export as markdown, or as HTML.
-
-## Code editor
-
-Integrated code editor based on Visual Studio Code's Monaco editor. Embed multiple code editors in a single document. Full syntax highlighting, IntelliSense, you name it.
-
-## Full-screen mode
-
-Go completely distraction free by entering full-screen mode.
-
-## Keyboard shortcuts
-
-Rich keyboard shortcuts system for power use.
-
-## Markdown shortcuts
-
-Familiar with markdown? Use markdown shortcuts like ## Heading two and > Block quote and - List item for quick formatting.
-
-## Auto save
-
-No need to press save. Notes and settings are automatically saved to the cloud. Log in on many devices using the same account.
-
-## Offline sync
-
-Don't worry about dropping off the WiFi or accidentally closing Internote, notes are saved offline and synced periodically to the server in the background, even when Internote is closed.
-
-## Conflict detection
-
-No messy overwrites, Internote will let you know if you're about to overwrite your note.
-
-## Password-less login
-
-Always forget your password? Just enter your e-mail and receive a one-time pass-code to sign up or sign in.
-
-## More
-
-Many more features are planned and if you feel like lending a hand, feel free to contribute to any of the open issues.
-
-Feel free to request new features too, but please bear in mind that this is a personal side project with a very specific purpose, so I might not agree with and/or build everything!
+- Hyperlinks
+- Clickable tags
+- File upload
+- Public publish
+- Offline mode
+- Real-time collaboration
+- Export as PDF
+- Export as DOCX
+- Sync to Google Drive / Dropbox
+- Native app
 
 # Application stack
 
 ## Architecture
 
-Internote is architected as a fully serverless application. This means that both the front-end and the back-end services are stateless, with persistence handled by external file storage and database storage.
+Internote is designed as a fully serverless application. This means that both the front-end and the back-end services are stateless, with persistence handled by external file storage and database storage.
 
-Internote's front-end and back-end services are written in Typescript and the project is structured as a yarn mono-repository to make use of efficient code-sharing where useful. For example, API DTOs are written in Typescript and are shared across the front-end and the back-end.
+Internote's front-end and back-end services are written in Typescript and the project is structured as a mono-repository to make use of efficient code-sharing where useful. For example, API DTOs are written in Typescript and are shared across the front-end and the back-end.
 
 ## Local development
 
@@ -134,8 +91,6 @@ The front-end application can be run locally and is set up to run against the `d
 - Styled Components
 - Storybook
 - Slate
-- Monaco Editor
-- Service workers
 - AWS API Gateway
 - AWS Lambda
 - AWS S3

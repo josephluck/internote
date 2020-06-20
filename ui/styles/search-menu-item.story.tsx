@@ -2,7 +2,7 @@ import React from "react";
 import { StoriesOf } from "../types";
 import { SearchMenuItem } from "./search-menu-item";
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("SearchMenuItem", module)
     .add("default", () => (
       <SearchMenuItem

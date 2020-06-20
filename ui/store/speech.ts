@@ -20,7 +20,7 @@ interface OwnEffects {
 
 function defaultState(): OwnState {
   return {
-    speechSrc: null
+    speechSrc: null,
   };
 }
 
@@ -39,31 +39,31 @@ const setter = makeSetter<OwnState>();
 export function model(api: Api): Model {
   const attachments = makeAttachmentsApi({
     region: env.SERVICES_REGION,
-    bucketName: env.SPEECH_BUCKET_NAME
+    bucketName: env.SPEECH_BUCKET_NAME,
   });
 
   const ownModel: OwnModel = {
     state: defaultState(),
     reducers: {
       resetState: () => defaultState(),
-      setSpeechSrc: setter("speechSrc")
+      setSpeechSrc: setter("speechSrc"),
     },
     effects: {
       async requestSpeech(state, actions, { words, id }) {
         const result = await api.speech.create(state.auth.session, {
           id,
           words,
-          voice: state.preferences.voice || "Male"
+          voice: state.preferences.voice || "Male",
         });
-        result.map(async response => {
+        result.map(async (response) => {
           const src = await attachments.makePresignedUrl(
             state.auth.session,
             response.key
           );
           actions.speech.setSpeechSrc(src);
         });
-      }
-    }
+      },
+    },
   };
   return withAsyncLoading(ownModel, "speech");
 }

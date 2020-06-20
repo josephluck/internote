@@ -2,52 +2,52 @@ export const borderRadius = {
   _4: "4px",
   _6: "6px",
   pill: "9999px",
-  circle: "100%"
+  circle: "100%",
 };
 
 export const color = {
   cinder: "#0f0d16",
   jumbo: "#737278",
   cornFlower: "#9fc7ec",
-  blueRibbon: "#095efd"
+  blueRibbon: "#095efd",
 };
 
 export const font = {
   _8: {
     size: "8px",
-    lineHeight: "1em"
+    lineHeight: "1em",
   },
   _10: {
     size: "10px",
-    lineHeight: "1.1em"
+    lineHeight: "1.1em",
   },
   _12: {
     size: "12px",
-    lineHeight: "1.2em"
+    lineHeight: "1.2em",
   },
   _16: {
     size: "16px",
-    lineHeight: "1.3em"
+    lineHeight: "1.3em",
   },
   _18: {
     size: "18px",
-    lineHeight: "1.4em"
+    lineHeight: "1.4em",
   },
   _24: {
     size: "24px",
-    lineHeight: "1.6em"
+    lineHeight: "1.6em",
   },
   _28: {
     size: "28px",
-    lineHeight: "1.7em"
+    lineHeight: "1.7em",
   },
   _36: {
     size: "36px",
-    lineHeight: "1.8em"
+    lineHeight: "1.8em",
   },
   family: {
-    inter: "'Inter UI', Helvetica, Arial, sans-serif"
-  }
+    inter: "'Inter UI', Helvetica, Arial, sans-serif",
+  },
 };
 
 export const spacing = {
@@ -66,11 +66,11 @@ export const spacing = {
   _1_75: "1.75rem",
   _2: "2rem",
   _3: "3rem",
-  _5: "5rem"
+  _5: "5rem",
 };
 
 export const media = {
-  tablet: "48rem"
+  tablet: "48rem",
 };
 
 export const size = {
@@ -81,5 +81,5 @@ export const size = {
   outlineWidth: "10rem",
   wrapperMaxWidth: "42rem",
   toolbarExpandedMaxHeight: "40vh",
-  emojiMenuMaxHeight: "5rem"
+  emojiMenuMaxHeight: "5rem",
 };

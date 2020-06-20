@@ -30,7 +30,7 @@ export function makeApi({ host, region }: { host: string; region: string }) {
   const makeSignedRequest: MakeSignedRequest = async ({
     path,
     method,
-    body
+    body,
   }) => {
     if (store) {
       // NB: refresh token if needed
@@ -57,20 +57,20 @@ export function makeApi({ host, region }: { host: string; region: string }) {
           body: body ? JSON.stringify(body) : undefined,
           headers: body
             ? {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
               }
-            : undefined
+            : undefined,
         },
         {
           accessKeyId: session.accessKeyId,
           secretAccessKey: session.secretKey,
-          sessionToken: session.sessionToken
+          sessionToken: session.sessionToken,
         }
       );
       const response = await fetch(request.url, {
         method,
         headers: request.headers,
-        body: body ? JSON.stringify(body) : undefined
+        body: body ? JSON.stringify(body) : undefined,
       });
       if (!response.ok) {
         try {
@@ -100,7 +100,7 @@ export function makeApi({ host, region }: { host: string; region: string }) {
     tags: tags(makeSignedRequest),
     snippets: snippets(makeSignedRequest),
     exportNote: exportNote(makeSignedRequest),
-    setStore: (s: Store) => (store = s)
+    setStore: (s: Store) => (store = s),
   };
 }
 

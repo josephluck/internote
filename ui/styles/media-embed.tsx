@@ -1,22 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { uploadSignal } from "./file-upload";
-import { RenderBlockProps } from "slate-react";
 import {
   makeAttachmentsApi,
-  getExtensionFromFileSrc
+  getExtensionFromFileSrc,
 } from "../api/attachments";
 import { env } from "../env";
 import { useTwineState } from "../store";
 import styled from "styled-components";
 import { borderRadius } from "../theming/symbols";
-import { FileType } from "@internote/export-service/types";
 
 import { Uploading } from "./uploading";
 import { UnknownFile } from "./unknown-file";
 
 const attachments = makeAttachmentsApi({
   region: env.SERVICES_REGION,
-  bucketName: env.ATTACHMENTS_BUCKET_NAME
+  bucketName: env.ATTACHMENTS_BUCKET_NAME,
 });
 
 const Img = styled.img`
@@ -25,14 +23,15 @@ const Img = styled.img`
   border-radius: ${borderRadius._4};
 `;
 
-export function MediaEmbed({ node, editor }: RenderBlockProps) {
+// TODO
+export function MediaEmbed({ node, editor }: any) {
   const initialUploaded = node.data.get("uploaded");
   const name = node.data.get("name");
   const key = node.data.get("key");
   const src = node.data.get("src");
-  const type = node.get("type") as FileType;
+  const type = node.get("type");
 
-  const session = useTwineState(state => state.auth.session);
+  const session = useTwineState((state) => state.auth.session);
   const [uploaded, setUploaded] = useState(initialUploaded);
   const [uploadProgress, setUploadProgress] = useState(
     initialUploaded ? 100 : 0
@@ -40,7 +39,7 @@ export function MediaEmbed({ node, editor }: RenderBlockProps) {
   const [presignedUrl, setPresignedUrl] = useState("");
 
   useEffect(() => {
-    const binding = uploadSignal.add(e => {
+    const binding = uploadSignal.add((e) => {
       if (e.src === src && e.key === key && e.name === name) {
         setUploaded(e.uploaded);
         setUploadProgress(e.progress);
@@ -51,8 +50,8 @@ export function MediaEmbed({ node, editor }: RenderBlockProps) {
               src,
               key,
               name,
-              uploaded: true
-            }
+              uploaded: true,
+            },
           });
         }
       }

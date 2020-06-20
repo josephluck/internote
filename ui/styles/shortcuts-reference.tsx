@@ -42,12 +42,12 @@ export function ShortcutsReference() {
       <ListInner>
         {shortcuts
           .filter(
-            shortcut =>
+            (shortcut) =>
               !shortcut.disabled &&
               !shortcutWillBePrevented(shortcut, shortcuts)
           )
-          .map(shortcut => (
-            <ShortcutWrap key={shortcut.id} onClick={shortcut.callback}>
+          .map((shortcut) => (
+            <ShortcutWrap key={shortcut.id} onClick={shortcut.callback as any}>
               {typeof shortcut.keyCombo === "object" ? (
                 shortcut.keyCombo.map((keyCombo, i) => (
                   <>

@@ -23,7 +23,7 @@ export function AudioPlayer({
   src,
   autoPlay,
   children,
-  onFinished
+  onFinished,
 }: {
   src?: string | null;
   autoPlay: boolean;
@@ -61,14 +61,18 @@ export function AudioPlayer({
 
   function requestPlay() {
     const audio = audioRef.current;
-    audio.play();
-    setUpInterval();
+    if (audio) {
+      audio.play();
+      setUpInterval();
+    }
   }
 
   function requestPause() {
     const audio = audioRef.current;
-    audio.pause();
-    clearInterval();
+    if (audio) {
+      audio.pause();
+      clearInterval();
+    }
   }
 
   useEffect(() => {
@@ -100,7 +104,7 @@ export function AudioPlayer({
         requestPlay();
       }
     }
-    return function() {
+    return function () {
       const audio = audioRef.current;
       if (audio) {
         audio.removeEventListener("loadstart", setStatusLoading);
@@ -132,7 +136,7 @@ export function AudioPlayer({
         requestPlay: requestPlay,
         requestPause: requestPause,
         percentagePlayed:
-          currentTime > 0 && duration > 0 ? (currentTime / duration) * 100 : 0
+          currentTime > 0 && duration > 0 ? (currentTime / duration) * 100 : 0,
       })}
     </>
   );

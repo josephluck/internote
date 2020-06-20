@@ -101,7 +101,7 @@ export const dark: Theme = {
   toolbarButtonHoverText: "#FFFFFF",
   toolbarButtonInactiveBackground: "transparent",
   toolbarButtonInactiveText: "#504D5D",
-  settingsMenuDescriptionText: "#999999"
+  settingsMenuDescriptionText: "#999999",
 };
 
 export const light: Theme = {
@@ -154,7 +154,7 @@ export const light: Theme = {
   toolbarButtonHoverText: "#000000",
   toolbarButtonInactiveBackground: "transparent",
   toolbarButtonInactiveText: "#A79FAC",
-  settingsMenuDescriptionText: "#444444"
+  settingsMenuDescriptionText: "#444444",
 };
 
 export interface ColorThemeWithName {
@@ -173,13 +173,13 @@ export const colorThemes: ColorThemeWithName[] = [
   {
     name: "Dark",
     theme: dark,
-    shortcut: "i"
+    shortcut: "i",
   },
   {
     name: "Light",
     theme: light,
-    shortcut: "d"
-  }
+    shortcut: "d",
+  },
 ];
 
 export interface FontTheme {
@@ -190,31 +190,31 @@ export const googleFontsFamilies = ["Work+Sans", "Caladea", "IBM+Plex+Mono"];
 export const googleFontsWeights = [400, 500, 700, 800];
 
 export const sansSerif: FontTheme = {
-  fontFamily: "'Work Sans', Helvetica, Arial, sans-serif"
+  fontFamily: "'Work Sans', Helvetica, Arial, sans-serif",
 };
 
 export const serif: FontTheme = {
-  fontFamily: "'Caladea', serif"
+  fontFamily: "'Caladea', serif",
 };
 
 export const monospace: FontTheme = {
-  fontFamily: "'IBM Plex Mono', monospace"
+  fontFamily: "'IBM Plex Mono', monospace",
 };
 
 export const fontThemes: FontThemeWithName[] = [
   {
     name: "Sans serif",
     theme: sansSerif,
-    shortcut: "i"
+    shortcut: "i",
   },
   {
     name: "Serif",
     theme: serif,
-    shortcut: "e"
+    shortcut: "e",
   },
   {
     name: "Monospace",
     theme: monospace,
-    shortcut: "o"
-  }
+    shortcut: "o",
+  },
 ];

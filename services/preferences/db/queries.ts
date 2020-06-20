@@ -7,7 +7,7 @@ import { attributeNotExists } from "type-dynamo";
 export const findPreferencesById = async (id: string) => {
   try {
     const result = await PreferencesRepository.find({
-      id
+      id,
     }).execute();
     return result.data;
   } catch (err) {
@@ -45,7 +45,7 @@ export const updatePreferencesById = async (
 export const createPreferences = async (id: string) => {
   const result = await PreferencesRepository.save({
     ...defaultPreferences,
-    id
+    id,
   })
     .withCondition(attributeNotExists("id"))
     .execute();
@@ -55,7 +55,7 @@ export const createPreferences = async (id: string) => {
 export const deletePreferencesById = async (id: string) => {
   try {
     const result = await PreferencesRepository.delete({
-      id
+      id,
     }).execute();
     return result.data;
   } catch (err) {

@@ -8,7 +8,7 @@
       "stage": "dev",
       "variableSyntax": "\\${([ ~:a-zA-Z0-9._@'\",\\-\\/\\(\\)*]+?)}",
       "name": "aws",
-      "runtime": "nodejs8.10",
+      "runtime": "nodejs12.x",
       "region": "eu-west-1",
       "apiGateway": {
         "minimumCompressionSize": 1024,
@@ -163,7 +163,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-auth-service/dev/1568373063472-2019-09-13T11:11:03.472Z/internote-auth-service.zip"
+                "S3Key": "serverless/internote-auth-service/dev/1592677438533-2020-06-20T18:23:58.533Z/internote-auth-service.zip"
               },
               "FunctionName": "internote-auth-service-dev-authPreSignUp",
               "Handler": "pre-sign-up.handler",
@@ -174,7 +174,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 6,
               "Environment": {
                 "Variables": {
@@ -187,14 +187,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "AuthPreSignUpLambdaVersionifv70Osfbf4cC4t0JIYPNYJyi7sy4zFZqS0wFAQaO0": {
+          "AuthPreSignUpLambdaVersioneeiBp7nqDnDw0HYfzfxJdrhm3RWXy96wsDIpWsaQk4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AuthPreSignUpLambdaFunction"
               },
-              "CodeSha256": "4MppYJ22n4+IS7mmK/0GVK/nUPRu7LqNiDQxPlEd8FQ="
+              "CodeSha256": "t3huo8Zls0wx9PRjozBU6e4rAjCQeSw7Sag1pxFK8Lc="
             }
           },
           "DefineAuthChallengeLambdaFunction": {
@@ -204,7 +204,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-auth-service/dev/1568373063472-2019-09-13T11:11:03.472Z/internote-auth-service.zip"
+                "S3Key": "serverless/internote-auth-service/dev/1592677438533-2020-06-20T18:23:58.533Z/internote-auth-service.zip"
               },
               "FunctionName": "internote-auth-service-dev-defineAuthChallenge",
               "Handler": "define-auth-challenge.handler",
@@ -215,7 +215,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 6,
               "Environment": {
                 "Variables": {
@@ -228,14 +228,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "DefineAuthChallengeLambdaVersionu9ApdtRuVTS5WnjVaCr1ErbA9o1YQ8zSnsYs82z687o": {
+          "DefineAuthChallengeLambdaVersionLm7Y5tLGIyo7AGVcX6kiMLbCumztyl0cO8ZnyK8nM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DefineAuthChallengeLambdaFunction"
               },
-              "CodeSha256": "4MppYJ22n4+IS7mmK/0GVK/nUPRu7LqNiDQxPlEd8FQ="
+              "CodeSha256": "t3huo8Zls0wx9PRjozBU6e4rAjCQeSw7Sag1pxFK8Lc="
             }
           },
           "CreateAuthChallengeLambdaFunction": {
@@ -245,7 +245,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-auth-service/dev/1568373063472-2019-09-13T11:11:03.472Z/internote-auth-service.zip"
+                "S3Key": "serverless/internote-auth-service/dev/1592677438533-2020-06-20T18:23:58.533Z/internote-auth-service.zip"
               },
               "FunctionName": "internote-auth-service-dev-createAuthChallenge",
               "Handler": "create-auth-challenge.handler",
@@ -256,7 +256,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 6,
               "Environment": {
                 "Variables": {
@@ -269,14 +269,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "CreateAuthChallengeLambdaVersionlfV8jld3WiQK51rD5nXewGlJnaaAqZD8E0XN5YgFVQ": {
+          "CreateAuthChallengeLambdaVersionk4s5j8dkRLTF9M1zsGVvvoTbhC0tsyDr3sLEgGW1uTs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateAuthChallengeLambdaFunction"
               },
-              "CodeSha256": "4MppYJ22n4+IS7mmK/0GVK/nUPRu7LqNiDQxPlEd8FQ="
+              "CodeSha256": "t3huo8Zls0wx9PRjozBU6e4rAjCQeSw7Sag1pxFK8Lc="
             }
           },
           "VerifyAuthChallengeResponseLambdaFunction": {
@@ -286,7 +286,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-auth-service/dev/1568373063472-2019-09-13T11:11:03.472Z/internote-auth-service.zip"
+                "S3Key": "serverless/internote-auth-service/dev/1592677438533-2020-06-20T18:23:58.533Z/internote-auth-service.zip"
               },
               "FunctionName": "internote-auth-service-dev-verifyAuthChallengeResponse",
               "Handler": "verify-auth-challenge-response.handler",
@@ -297,7 +297,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 6,
               "Environment": {
                 "Variables": {
@@ -310,14 +310,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "VerifyAuthChallengeResponseLambdaVersionhKufbfYM5pPRFA3WfmqJfsjizwivuOAGVnlpGyubU": {
+          "VerifyAuthChallengeResponseLambdaVersionvyFp54OSYFvPwPh01c7m4WG5B5L9dpRvWkOt0IX0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "VerifyAuthChallengeResponseLambdaFunction"
               },
-              "CodeSha256": "4MppYJ22n4+IS7mmK/0GVK/nUPRu7LqNiDQxPlEd8FQ="
+              "CodeSha256": "t3huo8Zls0wx9PRjozBU6e4rAjCQeSw7Sag1pxFK8Lc="
             }
           },
           "CognitoUserPoolCognitoUserPool": {
@@ -623,25 +623,25 @@
           "AuthPreSignUpLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AuthPreSignUpLambdaVersionifv70Osfbf4cC4t0JIYPNYJyi7sy4zFZqS0wFAQaO0"
+              "Ref": "AuthPreSignUpLambdaVersioneeiBp7nqDnDw0HYfzfxJdrhm3RWXy96wsDIpWsaQk4"
             }
           },
           "DefineAuthChallengeLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DefineAuthChallengeLambdaVersionu9ApdtRuVTS5WnjVaCr1ErbA9o1YQ8zSnsYs82z687o"
+              "Ref": "DefineAuthChallengeLambdaVersionLm7Y5tLGIyo7AGVcX6kiMLbCumztyl0cO8ZnyK8nM"
             }
           },
           "CreateAuthChallengeLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateAuthChallengeLambdaVersionlfV8jld3WiQK51rD5nXewGlJnaaAqZD8E0XN5YgFVQ"
+              "Ref": "CreateAuthChallengeLambdaVersionk4s5j8dkRLTF9M1zsGVvvoTbhC0tsyDr3sLEgGW1uTs"
             }
           },
           "VerifyAuthChallengeResponseLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "VerifyAuthChallengeResponseLambdaVersionhKufbfYM5pPRFA3WfmqJfsjizwivuOAGVnlpGyubU"
+              "Ref": "VerifyAuthChallengeResponseLambdaVersionvyFp54OSYFvPwPh01c7m4WG5B5L9dpRvWkOt0IX0"
             }
           },
           "UserPoolId": {
@@ -723,7 +723,7 @@
         },
         "memory": 1024,
         "timeout": 6,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       },
       "defineAuthChallenge": {
@@ -742,7 +742,7 @@
         },
         "memory": 1024,
         "timeout": 6,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       },
       "createAuthChallenge": {
@@ -761,7 +761,7 @@
         },
         "memory": 1024,
         "timeout": 6,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       },
       "verifyAuthChallengeResponse": {
@@ -780,7 +780,7 @@
         },
         "memory": 1024,
         "timeout": 6,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       }
     },
@@ -994,7 +994,7 @@
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/internote-auth-service/dev/1568373063472-2019-09-13T11:11:03.472Z",
+    "artifactDirectoryName": "serverless/internote-auth-service/dev/1592677438533-2020-06-20T18:23:58.533Z",
     "artifact": ""
   }
 }

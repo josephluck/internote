@@ -2,9 +2,9 @@ import { Session } from "../auth/storage";
 import { MakeSignedRequest } from "./api";
 import {
   CreateSnippetDTO,
-  GetSnippetDTO
+  GetSnippetDTO,
 } from "@internote/snippets-service/types";
-import { ApiResponse } from "@internote/lib/types";
+import { ApiResponse } from "@internote/lib/lambda";
 
 export function snippets(makeRequest: MakeSignedRequest) {
   return {
@@ -12,7 +12,7 @@ export function snippets(makeRequest: MakeSignedRequest) {
       return makeRequest({
         path: "/snippets",
         method: "GET",
-        session
+        session,
       });
     },
     async create(
@@ -23,15 +23,15 @@ export function snippets(makeRequest: MakeSignedRequest) {
         path: "/snippets",
         method: "POST",
         session,
-        body: snippet
+        body: snippet,
       });
     },
     async delete(session: Session, snippetId: string): ApiResponse<void> {
       return makeRequest({
         path: `/snippets/${snippetId}`,
         method: "DELETE",
-        session
+        session,
       });
-    }
+    },
   };
 }

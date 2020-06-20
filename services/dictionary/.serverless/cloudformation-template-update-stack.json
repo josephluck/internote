@@ -105,7 +105,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-dictionary-service/dev/1568373078652-2019-09-13T11:11:18.652Z/internote-dictionary-service.zip"
+          "S3Key": "serverless/internote-dictionary-service/dev/1592685049174-2020-06-20T20:30:49.174Z/internote-dictionary-service.zip"
         },
         "FunctionName": "internote-dictionary-service-dev-lookup",
         "Handler": "lookup.handler",
@@ -116,7 +116,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs8.10",
+        "Runtime": "nodejs12.x",
         "Timeout": 30,
         "Environment": {
           "Variables": {
@@ -131,14 +131,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "LookupLambdaVersionvEzZWAGYYOnHEgievvKKAc4eC7QPSTNBvSodD5mLDz0": {
+    "LookupLambdaVersionYUV8aB6CrcpvqgEDO9BTMLfPfUlcTplJLUOfruTwM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "LookupLambdaFunction"
         },
-        "CodeSha256": "rob+Kvz21diaY77/aQKGTqDo/b2UY1OYmr5Tf/TRgnU="
+        "CodeSha256": "gzUJfX8vjyhuWI7FKCnw0rfgj8PkI8PwWFkCFWU+nlc="
       }
     },
     "ApiGatewayResourceDictionary": {
@@ -255,7 +255,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1568373060069": {
+    "ApiGatewayDeployment1592685032153": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -315,7 +315,7 @@
     "LookupLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "LookupLambdaVersionvEzZWAGYYOnHEgievvKKAc4eC7QPSTNBvSodD5mLDz0"
+        "Ref": "LookupLambdaVersionYUV8aB6CrcpvqgEDO9BTMLfPfUlcTplJLUOfruTwM"
       }
     },
     "ServiceEndpoint": {

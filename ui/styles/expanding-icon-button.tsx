@@ -20,14 +20,14 @@ const ExpandingButton = styled.div<{ forceShow: boolean }>`
   overflow: hidden;
   padding: ${spacing._0_25};
   transition: all 300ms ease;
-  color: ${props =>
+  color: ${(props) =>
     props.forceShow
       ? props.theme.expandingIconButtonActiveText
       : props.theme.expandingIconButtonInactiveText};
-  background: ${props => props.theme.expandingIconButtonBackground};
+  background: ${(props) => props.theme.expandingIconButtonBackground};
   cursor: pointer;
   &:hover {
-    color: ${props => props.theme.expandingIconButtonActiveText};
+    color: ${(props) => props.theme.expandingIconButtonActiveText};
   }
 `;
 
@@ -46,7 +46,7 @@ export function ExpandingIconButton({
   onClick,
   icon,
   text,
-  collapsedContent
+  collapsedContent,
 }: {
   forceShow: boolean;
   onClick?: () => any;
@@ -65,7 +65,7 @@ export function ExpandingIconButton({
         )
       }
     >
-      {collapse => (
+      {(collapse) => (
         <ExpandingButton forceShow={forceShow} onClick={onClick}>
           <ExpandingIcon>{icon}</ExpandingIcon>
           {collapse.renderCollapsedContent()}

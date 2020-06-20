@@ -13,16 +13,18 @@ const DarkOverlay = styled.div<{ showing: boolean }>`
   top: 0;
   height: 100%;
   width: 100%;
-  background: ${props => props.theme.modalBackdropBackground};
+  background: ${(props) => props.theme.modalBackdropBackground};
   transition: all 300ms ease;
-  opacity: ${props => (props.showing ? "1" : "0")};
+  opacity: ${(props) => (props.showing ? "1" : "0")};
   pointer-events: none;
 `;
 
 export function Global() {
-  const confirmation = useTwineState(state => state.confirmation.confirmation);
+  const confirmation = useTwineState(
+    (state) => state.confirmation.confirmation
+  );
   const setConfirmation = useTwineActions(
-    actions => actions.confirmation.setConfirmation
+    (actions) => actions.confirmation.setConfirmation
   );
 
   return (

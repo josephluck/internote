@@ -8,7 +8,7 @@
       "stage": "dev",
       "variableSyntax": "\\${([ ~:a-zA-Z0-9._@'\",\\-\\/\\(\\)*]+?)}",
       "name": "aws",
-      "runtime": "nodejs8.10",
+      "runtime": "nodejs12.x",
       "region": "eu-west-1",
       "environment": {
         "REGION": "eu-west-1",
@@ -166,7 +166,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-export-service/dev/1568373120709-2019-09-13T11:12:00.709Z/internote-export-service.zip"
+                "S3Key": "serverless/internote-export-service/dev/1592689723317-2020-06-20T21:48:43.317Z/internote-export-service.zip"
               },
               "FunctionName": "internote-export-service-dev-markdown",
               "Handler": "markdown.handler",
@@ -177,7 +177,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 30,
               "Environment": {
                 "Variables": {
@@ -193,14 +193,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "MarkdownLambdaVersionnJeLxdpL7hwsMlEmHoOVj39pFdIC9chtxEbqEGlXM": {
+          "MarkdownLambdaVersionbByIh8b7NGEpZVn3dWehpn287xJAdnoh13zh0jGU": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "MarkdownLambdaFunction"
               },
-              "CodeSha256": "r3SOguqcl3HwLm90E5Kv88x/3591Av3NNJZKjgJoUZ8="
+              "CodeSha256": "GYdvv8uxlHIO1wb545dE+XpHSTbol/bqhToT+/f/pKg="
             }
           },
           "HtmlLambdaFunction": {
@@ -210,7 +210,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/internote-export-service/dev/1568373120709-2019-09-13T11:12:00.709Z/internote-export-service.zip"
+                "S3Key": "serverless/internote-export-service/dev/1592689723317-2020-06-20T21:48:43.317Z/internote-export-service.zip"
               },
               "FunctionName": "internote-export-service-dev-html",
               "Handler": "html.handler",
@@ -221,7 +221,7 @@
                   "Arn"
                 ]
               },
-              "Runtime": "nodejs8.10",
+              "Runtime": "nodejs12.x",
               "Timeout": 30,
               "Environment": {
                 "Variables": {
@@ -237,14 +237,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "HtmlLambdaVersionlLz8l6BK8AFA3vsKdi2GXEepZZ2EOCY0QZ8r4WO8A0": {
+          "HtmlLambdaVersion2XhSu25FfAoiilDXuKSG4vbR4r6cBgVFHrytdFl04": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "HtmlLambdaFunction"
               },
-              "CodeSha256": "r3SOguqcl3HwLm90E5Kv88x/3591Av3NNJZKjgJoUZ8="
+              "CodeSha256": "GYdvv8uxlHIO1wb545dE+XpHSTbol/bqhToT+/f/pKg="
             }
           },
           "ApiGatewayResourceExport": {
@@ -463,7 +463,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1568373106542": {
+          "ApiGatewayDeployment1592689676692": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -569,13 +569,13 @@
           "MarkdownLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "MarkdownLambdaVersionnJeLxdpL7hwsMlEmHoOVj39pFdIC9chtxEbqEGlXM"
+              "Ref": "MarkdownLambdaVersionbByIh8b7NGEpZVn3dWehpn287xJAdnoh13zh0jGU"
             }
           },
           "HtmlLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HtmlLambdaVersionlLz8l6BK8AFA3vsKdi2GXEepZZ2EOCY0QZ8r4WO8A0"
+              "Ref": "HtmlLambdaVersion2XhSu25FfAoiilDXuKSG4vbR4r6cBgVFHrytdFl04"
             }
           },
           "ServiceEndpoint": {
@@ -703,7 +703,7 @@
         },
         "memory": 256,
         "timeout": 30,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       },
       "html": {
@@ -746,7 +746,7 @@
         },
         "memory": 256,
         "timeout": 30,
-        "runtime": "nodejs8.10",
+        "runtime": "nodejs12.x",
         "vpc": {}
       }
     },
@@ -766,7 +766,7 @@
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/internote-export-service/dev/1568373120709-2019-09-13T11:12:00.709Z",
+    "artifactDirectoryName": "serverless/internote-export-service/dev/1592689723317-2020-06-20T21:48:43.317Z",
     "artifact": ""
   }
 }

@@ -3,7 +3,7 @@ import routerEvents from "next-router-events";
 
 export function OnNavigate({
   onComplete,
-  onStart
+  onStart,
 }: {
   onComplete?: () => void;
   onStart?: () => void;
@@ -15,7 +15,7 @@ export function OnNavigate({
     if (onStart) {
       routerEvents.on("routeChangeStart", onStart);
     }
-    return function() {
+    return function () {
       if (onComplete) {
         routerEvents.off("routeChangeComplete", onComplete);
       }

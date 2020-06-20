@@ -6,7 +6,7 @@ export function useDebounce<V>(value: V, delay: number = 500) {
     const handler = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
-    return function() {
+    return function () {
       clearTimeout(handler);
     };
   }, [value, delay]);
@@ -17,14 +17,14 @@ export function useThrottle<V>(value: V, delay: number = 500) {
   const [throttledValue, setThrottledValue] = useState(value);
   const lastRan = useRef(Date.now());
   useEffect(() => {
-    const handler = setTimeout(function() {
+    const handler = setTimeout(function () {
       if (Date.now() - lastRan.current >= delay) {
         setThrottledValue(value);
         lastRan.current = Date.now();
       }
     }, delay - (Date.now() - lastRan.current));
 
-    return function() {
+    return function () {
       clearTimeout(handler);
     };
   }, [value, delay]);

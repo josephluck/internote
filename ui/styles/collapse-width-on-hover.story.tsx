@@ -5,17 +5,17 @@ import { Flex } from "@rebass/grid";
 import styled from "styled-components";
 
 const Collapse = styled(CollapseWidthOnHover)`
-  background-color: ${props => props.theme.toolbarButtonActiveBackground};
+  background-color: ${(props) => props.theme.toolbarButtonActiveBackground};
   display: inline-block;
   white-space: nowrap;
 `;
 
-export default function(s: StoriesOf) {
+export default function (s: StoriesOf) {
   s("CollapseWidthOnHover", module)
     .add("default", () => {
       return (
         <Collapse collapsedContent={<Flex>Collapsed content</Flex>}>
-          {collapse => (
+          {(collapse) => (
             <Flex>Outer content {collapse.renderCollapsedContent()}</Flex>
           )}
         </Collapse>
@@ -24,7 +24,7 @@ export default function(s: StoriesOf) {
     .add("Force shown", () => {
       return (
         <Collapse forceShow collapsedContent={<Flex>Collapsed content</Flex>}>
-          {collapse => (
+          {(collapse) => (
             <Flex>Outer content {collapse.renderCollapsedContent()}</Flex>
           )}
         </Collapse>
@@ -49,7 +49,7 @@ function ChangingInnerContentWidth() {
       collapsedContent={<Flex>{bool ? "Small" : "Laaaaaaaaaarge"}</Flex>}
       forceShow
     >
-      {collapse => (
+      {(collapse) => (
         <Flex>Outer content {collapse.renderCollapsedContent()}</Flex>
       )}
     </Collapse>

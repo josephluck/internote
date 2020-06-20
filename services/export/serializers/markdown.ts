@@ -1,114 +1,49 @@
-import {
-  Schema,
-  SchemaBlock,
-  SchemaInline,
-  ListItemBlock,
-  SchemaNoneTextInline,
-  SchemaMark
-} from "../types";
+import { InternoteEditorElement } from "@internote/lib/editor-types";
+import { Text } from "slate";
 
-/** Given a type of block, get the Markdown formatting prefix */
-function getBlockPrefix(block: SchemaBlock): string {
-  switch (block.type) {
-    case "heading-one":
-      return "# ";
-    case "heading-two":
-      return "## ";
-    case "block-quote":
-      return "> ";
-    case "list-item":
-      return "- ";
-    default:
-      return "";
+const serializeText = (node: InternoteEditorElement): string => {
+  if (node.bold) {
+    return `**${serializeText({ ...node, bold: false })}**`;
   }
-}
-
-/** Given a type of block, get the Markdown formatting suffix */
-function getBlockSuffix(block: SchemaBlock): string {
-  switch (block.type) {
-    default:
-      return "";
+  if (node.italic) {
+    return `*${serializeText({ ...node, italic: false })}*`;
   }
-}
-
-function serializeBlock(block: SchemaBlock): string {
-  const prefix = getBlockPrefix(block);
-  const suffix = getBlockSuffix(block);
-  const content = serializeBlockContent(block);
-  return `${prefix}${content}${suffix}`;
-}
-
-function serializeBlockContent(block: SchemaBlock): string {
-  if (
-    block.type === "image" ||
-    block.type === "audio" ||
-    block.type === "video"
-  ) {
-    return `[${block.data.name}](${block.data.src})`;
+  if (node.underline) {
+    return `_${serializeText({ ...node, underline: false })}_`;
   }
-  const nodes = block.nodes as (ListItemBlock | SchemaInline)[];
-  return nodes.reduce((str, node: ListItemBlock | SchemaInline, index) => {
-    if (node.type === "list-item") {
-      const newLine = index < nodes.length - 1 ? "\n" : "";
-      return `${str}${serializeListItem(node)}${newLine}`;
-    } else {
-      return `${str}${serializeInline(node)}`;
-    }
-  }, "");
-}
+  return (node.text as string) || "";
+};
 
-function serializeListItem(node: ListItemBlock): string {
-  return `${getBlockPrefix(node)}${node.nodes.reduce(
-    (str, node) => `${str}${serializeInline(node)}`,
-    ""
-  )}`;
-}
-
-function serializeInline(node: SchemaInline): string {
-  switch (node.object) {
-    case "text":
-      return wrapInMarks(node.text, node.marks);
-    default:
-      return serializeNonTextInline(node);
+const serialize = (node: InternoteEditorElement): string => {
+  if (Text.isText(node)) {
+    return serializeText(node);
   }
-}
 
-function serializeNonTextInline(node: SchemaNoneTextInline): string {
+  const children = node.children
+    .map((n) => serialize(n as InternoteEditorElement))
+    .join("");
+
   switch (node.type) {
-    case "emoji":
-      return node.data.code;
+    case "heading-one":
+      return `# ${children}\n`;
+    case "heading-two":
+      return `## ${children}\n`;
+    case "bulleted-list":
+      return `${children}`;
+    case "numbered-list":
+      return `${children}`;
+    case "list-item":
+      return `- ${children}\n`; // TODO: numbered list
     case "tag":
-      return node.data.tag;
+      return node.tag;
+    case "block-quote":
+      return `> ${children}\n`;
+    case "paragraph":
+      return `${children}\n`;
     default:
-      return "";
+      return `${children}\n`;
   }
-}
+};
 
-function getMarkFix(mark: SchemaMark): string {
-  switch (mark.type) {
-    case "bold":
-      return "**";
-    case "code":
-      return "`";
-    case "italic":
-      return "*";
-    case "underlined":
-      return "__";
-    default:
-      return "";
-  }
-}
-
-function wrapInMarks(content: string, marks: SchemaMark[]): string {
-  return marks.reduce((str, mark) => {
-    const fix = getMarkFix(mark);
-    return `${fix}${str}${fix}`;
-  }, content);
-}
-
-export function serialize(schema: Schema): string {
-  return schema.nodes.reduce(
-    (str, block) => `${str}${serializeBlock(block)}\n\n`,
-    ""
-  );
-}
+export const serializeMarkdown = (nodes: InternoteEditorElement[]) =>
+  nodes.map(serialize).join("\n");

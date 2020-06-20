@@ -1,4 +1,4 @@
-import { Schema } from "@internote/export-service/types";
+import { InternoteEditorValue } from "@internote/lib/editor-types";
 
 export class Snippet {
   /**
@@ -16,5 +16,5 @@ export class Snippet {
   /**
    * The content of snippet
    */
-  content: Schema;
+  content: InternoteEditorValue;
 }

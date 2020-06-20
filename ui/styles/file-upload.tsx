@@ -7,13 +7,8 @@ import styled from "styled-components";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 import { Flex } from "@rebass/grid";
 import { spacing } from "../theming/symbols";
-import {
-  ToolbarExpandingButton,
-  ToolbarExpandingButtonIconWrap
-} from "./toolbar-expanding-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faUpload } from "@fortawesome/free-solid-svg-icons";
-import { FileType } from "@internote/export-service/types";
 
 const HiddenFileInput = styled.input`
   border: 0;
@@ -41,10 +36,10 @@ const Container = styled(CollapseWidthOnHover)`
 
 const attachments = makeAttachmentsApi({
   region: env.SERVICES_REGION,
-  bucketName: env.ATTACHMENTS_BUCKET_NAME
+  bucketName: env.ATTACHMENTS_BUCKET_NAME,
 });
 
-export function getFileTypeFromFile(file: File): FileType {
+export function getFileTypeFromFile(file: File): any {
   switch (file.type) {
     case "audio/mp3":
       return "audio";
@@ -61,7 +56,7 @@ export function getFileTypeFromFile(file: File): FileType {
 
 export interface InternoteUploadEvent {
   src: string;
-  type: FileType;
+  type: any;
   key: string;
   name: string;
   progress: number;
@@ -76,7 +71,7 @@ export const FileUpload = ({
   noteId,
   onUploadStarted,
   onUploadProgress,
-  onUploadFinished
+  onUploadFinished,
 }: {
   noteId: string;
   onUploadStarted: (e: InternoteUploadEvent) => void;
@@ -85,7 +80,7 @@ export const FileUpload = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const session = useTwineState(state => state.auth.session);
+  const session = useTwineState((state) => state.auth.session);
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLInputElement>) => {
       e.preventDefault();
@@ -106,11 +101,11 @@ export const FileUpload = ({
           type,
           name: file.name,
           progress: 0,
-          uploaded: false
+          uploaded: false,
         };
         onUploadStarted(uploadStartEvent);
         uploadSignal.dispatch(uploadStartEvent);
-        await attachments.upload(session, noteId, file, progress => {
+        await attachments.upload(session, noteId, file, (progress) => {
           const percentage = (progress.loaded / progress.total) * 100;
           const uploadProgressEvent = {
             src,
@@ -118,7 +113,7 @@ export const FileUpload = ({
             type,
             name: file.name,
             progress: percentage,
-            uploaded: false
+            uploaded: false,
           };
           uploadSignal.dispatch(uploadProgressEvent);
           if (onUploadProgress) {
@@ -131,7 +126,7 @@ export const FileUpload = ({
           type,
           name: file.name,
           progress: 100,
-          uploaded: true
+          uploaded: true,
         };
         if (onUploadFinished) {
           onUploadFinished(uploadFinishedEvent);
@@ -152,15 +147,15 @@ export const FileUpload = ({
           </Flex>
         }
       >
-        {collapse => (
-          <ToolbarExpandingButton forceShow={isUploading}>
-            <ToolbarExpandingButtonIconWrap>
+        {(collapse) => (
+          <div>
+            <div>
               {isUploading ? (
                 <FontAwesomeIcon icon={faSpinner} spin />
               ) : (
                 <FontAwesomeIcon icon={faUpload} />
               )}
-            </ToolbarExpandingButtonIconWrap>
+            </div>
             {collapse.renderCollapsedContent()}
 
             <HiddenFileInput
@@ -170,7 +165,7 @@ export const FileUpload = ({
               id="upload-file"
             />
             <FileInputLabel htmlFor="upload-file"></FileInputLabel>
-          </ToolbarExpandingButton>
+          </div>
         )}
       </Container>
     </>
