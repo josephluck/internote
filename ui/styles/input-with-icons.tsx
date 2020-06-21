@@ -74,7 +74,7 @@ export function InputWithIcons({
   placeholder,
   isFocused,
   onClear,
-  onInput,
+  onChange,
   onFocus,
   onBlur,
   inputRef,
@@ -84,7 +84,7 @@ export function InputWithIcons({
   placeholder?: string;
   isFocused?: boolean;
   onClear?: () => any;
-  onInput?: (e: any) => any;
+  onChange?: (e: any) => any;
   onFocus?: () => any;
   onBlur?: () => any;
   inputRef?: (ref: HTMLInputElement) => any;
@@ -101,7 +101,7 @@ export function InputWithIcons({
         value={value}
         onFocus={onFocus}
         onBlur={onBlur}
-        onInput={onInput}
+        onChange={onChange}
       />
       {onClear ? (
         <ClearIcon isShowing={isFocused} onClick={onClear}>

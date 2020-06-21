@@ -10,7 +10,7 @@ interface Props {
 
 export function TextLink({ href, scroll = false, children }: Props) {
   return (
-    <NextLink href={href} scroll={scroll} prefetch>
+    <NextLink href={href} scroll={scroll}>
       <TextAnchor>{children}</TextAnchor>
     </NextLink>
   );
@@ -18,7 +18,7 @@ export function TextLink({ href, scroll = false, children }: Props) {
 
 export function BlockLink({ href, scroll = false, children }: Props) {
   return (
-    <NextLink href={href} scroll={scroll} prefetch>
+    <NextLink href={href} scroll={scroll}>
       <BlockAnchor>{children}</BlockAnchor>
     </NextLink>
   );

@@ -40,8 +40,16 @@ export const InternoteEditor: React.FunctionComponent<{
   initialValue: InternoteEditorElement[];
   noteId: string;
 }> = ({ initialValue, noteId }) => {
+  const valueRef = useRef(initialValue);
+  valueRef.current = initialValue;
+
+  console.log({ initialValue, noteId });
+
   const editor = useCreateInternoteEditor(noteId);
 
+  /**
+   * Connects the editor to sockets
+   */
   useEffect(() => {
     if (COLLABORATION_ENABLED) {
       // @ts-ignore
@@ -52,13 +60,21 @@ export const InternoteEditor: React.FunctionComponent<{
 
   const [value, setValue] = useState(initialValue);
 
+  /**
+   * Keeps editor value in sync with the current noteId, only when the noteId
+   * changes.
+   */
+  // useEffect(() => {
+  //   editor.selection = {
+  //     anchor: { path: [0, 0], offset: 0 },
+  //     focus: { path: [0, 0], offset: 0 },
+  //   };
+  //   setValue(valueRef.current);
+  // }, [noteId]);
+
   if (!COLLABORATION_ENABLED) {
     useLiveSave(value, noteId);
   }
-
-  const handleChange = (value: InternoteEditorElement[]) => {
-    setValue(value);
-  };
 
   const [connected, setConnected] = useState(true);
 
@@ -76,7 +92,7 @@ export const InternoteEditor: React.FunctionComponent<{
   console.log({ value });
 
   return (
-    <Slate editor={editor} value={value} onChange={handleChange}>
+    <Slate editor={editor} value={value} onChange={setValue as any}>
       <InternoteEditorProvider>
         <InternoteEditorEditor />
         <Toolbar noteId={noteId} />
@@ -218,7 +234,10 @@ const FullHeight = styled.div`
   position: relative;
 `;
 
-const InnerPadding = styled.div<{ outlineShowing: boolean }>`
+const InnerPadding = styled.div.withConfig({
+  shouldForwardProp: (prop: string, def) =>
+    !["outlineShowing"].includes(prop) && def(prop),
+})<{ outlineShowing: boolean }>`
   ${fullHeightStyles};
   min-height: 100%;
   height: 100%;
@@ -227,7 +246,10 @@ const InnerPadding = styled.div<{ outlineShowing: boolean }>`
   overflow-x: hidden;
 `;
 
-export const Editor = styled(Editable)<{
+export const Editor = styled(Editable).withConfig({
+  shouldForwardProp: (prop: string, def) =>
+    !["distractionFree", "userScrolled"].includes(prop) && def(prop),
+})<{
   distractionFree: boolean;
   userScrolled: boolean;
 }>`

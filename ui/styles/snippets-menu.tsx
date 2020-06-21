@@ -138,7 +138,7 @@ export const SnippetsButton: React.FunctionComponent<{
                         setInputText("");
                         focusInput();
                       }}
-                      onInput={(e: any) => {
+                      onChange={(e: any) => {
                         setInputText(e.target.value);
                       }}
                       onFocus={() => setSearchFocused(true)}

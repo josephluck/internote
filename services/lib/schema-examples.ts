@@ -5,7 +5,7 @@ export const EMPTY_SCHEMA: InternoteEditorElement[] = [
     type: "heading-one",
     children: [
       {
-        text: " ",
+        text: "",
       },
     ],
   },

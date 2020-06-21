@@ -13,7 +13,11 @@ interface ButtonProps {
   loading?: boolean;
 }
 
-const ButtonWrap = styled.button<ButtonProps>`
+const ButtonWrap = styled.button.withConfig({
+  shouldForwardProp: (prop: string, def) =>
+    !["primary", "secondary", "fullWidth", "small", "loading"].includes(prop) &&
+    def(prop),
+})<ButtonProps>`
   background: ${(props) =>
     props.primary
       ? props.theme.primaryButtonBackground

@@ -56,7 +56,7 @@ export const useCreateInternoteEditor = (noteId: string) =>
           withInlines(withVoids(withShortcuts(withReact(createEditor()))))
         )
       ),
-    [noteId]
+    []
   );
 
 interface InternoteEditorContext {

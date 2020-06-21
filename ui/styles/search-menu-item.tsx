@@ -7,7 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { spacing, font } from "../theming/symbols";
 
-const DeleteIcon = styled.div<{ forceShow: boolean }>`
+const DeleteIcon = styled.div.withConfig({
+  shouldForwardProp: (prop: string, def) =>
+    !["forceShow"].includes(prop) && def(prop),
+})<{ forceShow: boolean }>`
   margin-left: ${spacing._1_5};
   font-size: ${font._12.size};
   cursor: pointer;
@@ -28,10 +31,10 @@ const SearchMenuItemWrapper = styled(DropdownMenuItem)`
   }
 `;
 
-const Highlighter = styled(ReactHighlight)<{ hasSearch: boolean }>`
-  font-weight: ${(props) => (props.hasSearch ? 500 : 600)};
+const Highlighter = styled(ReactHighlight)<{ searchWords: boolean }>`
+  font-weight: ${(props) => (props.searchWords.length > 0 ? 500 : 600)};
   color: ${(props) =>
-    props.hasSearch
+    props.searchWords > 0
       ? props.theme.notesMenuItemTextInactive
       : props.theme.dropdownMenuItemText};
   mark {
@@ -98,10 +101,9 @@ export const SearchMenuItem: React.FunctionComponent<{
         onMouseLeave={onMouseOut}
       >
         <Highlighter
-          searchWords={searchText.split("")}
+          searchWords={searchText ? searchText.split("") : []}
           autoEscape={true}
-          textToHighlight={content}
-          hasSearch={searchText.length > 0}
+          textToHighlight={content || ""}
         />
       </Box>
       <DeleteIcon onMouseDown={handleOnDelete} forceShow={deleteLoading}>

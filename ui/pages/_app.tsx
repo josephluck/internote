@@ -1,5 +1,5 @@
 import React from "react";
-import App, { Container } from "next/app";
+import App from "next/app";
 import { font } from "../theming/symbols";
 import { injectTwine } from "../store";
 import { createGlobalStyle } from "styled-components";
@@ -18,7 +18,6 @@ const googleFontsUrls = googleFontsFamilies
   .join("|");
 
 export const GlobalStyles = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css?family=${googleFontsUrls}');
   * {
     box-sizing: border-box;
   }
@@ -58,21 +57,23 @@ export class Application extends App {
   render() {
     const { Component, pageProps, store } = this.props as any;
     return (
-      <Container>
-        <InternoteThemes>
-          <>
-            <Head>
-              <title>Internote</title>
-            </Head>
-            <GlobalStyles />
-            <ShortcutsProvider>
-              <SnippetsProvider>
-                <Component {...pageProps} store={store} />
-              </SnippetsProvider>
-            </ShortcutsProvider>
-          </>
-        </InternoteThemes>
-      </Container>
+      <InternoteThemes>
+        <>
+          <Head>
+            <title>Internote</title>
+            <link
+              rel="stylesheet"
+              href={`https://fonts.googleapis.com/css?family=${googleFontsUrls}`}
+            />
+          </Head>
+          <GlobalStyles />
+          <ShortcutsProvider>
+            <SnippetsProvider>
+              <Component {...pageProps} store={store} />
+            </SnippetsProvider>
+          </ShortcutsProvider>
+        </>
+      </InternoteThemes>
     );
   }
 }

@@ -140,7 +140,7 @@ export function NoteMenu({
                 setSearchText("");
                 focusInput();
               }}
-              onInput={(e: any) => {
+              onChange={(e: any) => {
                 setSearchText(e.target.value);
               }}
               onFocus={() => setSearchFocused(true)}
@@ -169,6 +169,7 @@ export function NoteMenu({
             ) : (
               filteredNotes.map((note) => (
                 <SearchMenuItem
+                  key={note.noteId}
                   isLoading={noteLoading === note.noteId}
                   isSelected={
                     !!currentNote && note.noteId === currentNote.noteId
