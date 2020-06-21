@@ -4,18 +4,10 @@ import { font } from "../theming/symbols";
 import { injectTwine } from "../store";
 import { createGlobalStyle } from "styled-components";
 import Head from "next/head";
-import {
-  sansSerif,
-  googleFontsFamilies,
-  googleFontsWeights,
-} from "../theming/themes";
+import { sansSerif } from "../theming/themes";
 import { ShortcutsProvider } from "../styles/shortcuts";
 import { InternoteThemes } from "../styles/theme-provider";
 import { SnippetsProvider } from "../styles/snippets-context";
-
-const googleFontsUrls = googleFontsFamilies
-  .map((family) => `${family}:${googleFontsWeights.join(",")}`)
-  .join("|");
 
 export const GlobalStyles = createGlobalStyle`
   * {
@@ -61,10 +53,6 @@ export class Application extends App {
         <>
           <Head>
             <title>Internote</title>
-            <link
-              rel="stylesheet"
-              href={`https://fonts.googleapis.com/css?family=${googleFontsUrls}`}
-            />
           </Head>
           <GlobalStyles />
           <ShortcutsProvider>

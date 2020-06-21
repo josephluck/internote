@@ -7,6 +7,7 @@ import Document, {
 } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 import { color } from "../theming/symbols";
+import { googleFontsFamilies, googleFontsWeights } from "../theming/themes";
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -43,6 +44,11 @@ export default class MyDocument extends Document {
             name="viewport"
             content="width=device-width, initial-scale=1, user-scalable=0"
           />
+          <link
+            rel="stylesheet"
+            href={`https://fonts.googleapis.com/css?family=${googleFontsUrls}`}
+          />
+
           {this.props.styles}
         </Head>
         <body>
@@ -53,3 +59,7 @@ export default class MyDocument extends Document {
     );
   }
 }
+
+const googleFontsUrls = googleFontsFamilies
+  .map((family) => `${family}:${googleFontsWeights.join(",")}`)
+  .join("|");

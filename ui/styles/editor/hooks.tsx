@@ -29,6 +29,7 @@ const origin = "http://localhost:9000";
 
 export const COLLABORATION_ENABLED = false;
 
+// TODO: does switching notes work? Can this be done without resorting to a plugin?
 const withCollaboration = (noteId: string) => <T extends Editor>(
   editor: T
 ): T =>

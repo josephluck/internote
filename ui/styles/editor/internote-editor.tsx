@@ -64,13 +64,13 @@ export const InternoteEditor: React.FunctionComponent<{
    * Keeps editor value in sync with the current noteId, only when the noteId
    * changes.
    */
-  // useEffect(() => {
-  //   editor.selection = {
-  //     anchor: { path: [0, 0], offset: 0 },
-  //     focus: { path: [0, 0], offset: 0 },
-  //   };
-  //   setValue(valueRef.current);
-  // }, [noteId]);
+  useEffect(() => {
+    editor.selection = {
+      anchor: { path: [0, 0], offset: 0 },
+      focus: { path: [0, 0], offset: 0 },
+    };
+    setValue(valueRef.current);
+  }, [noteId]);
 
   if (!COLLABORATION_ENABLED) {
     useLiveSave(value, noteId);
