@@ -1,44 +1,22 @@
-const path = require("path");
-const withTranspile = require("next-plugin-transpile-modules");
-const withDotenv = require("./with-dotenv");
-const withCustomBabelConfig = require("next-plugin-custom-babel-config");
-const withCss = require("@zeit/next-css");
-
-const isProd = process.env.NODE_ENV === "production";
-
-function withExternals(nextConfig) {
-  return Object.assign({}, nextConfig, {
-    webpack(config, options) {
-      config.externals = config.externals || [];
-      if (typeof nextConfig.webpack === "function") {
-        return nextConfig.webpack(config, options);
-      }
-      return config;
-    },
-  });
+module.exports = function(...args) {
+  let original = require('./next.config.original.1592761211870.js');
+  const finalConfig = {};
+  const target = { target: 'serverless' };
+  if (typeof original === 'function' && original.constructor.name === 'AsyncFunction') {
+    // AsyncFunctions will become promises
+    original = original(...args);
+  }
+  if (original instanceof Promise) {
+    // Special case for promises, as it's currently not supported
+    // and will just error later on
+    return original
+      .then((orignalConfig) => Object.assign(finalConfig, orignalConfig))
+      .then((config) => Object.assign(config, target));
+  } else if (typeof original === 'function') {
+    Object.assign(finalConfig, original(...args));
+  } else if (typeof original === 'object') {
+    Object.assign(finalConfig, original);
+  }
+  Object.assign(finalConfig, target);
+  return finalConfig;
 }
-
-module.exports = withExternals(
-  withCustomBabelConfig(
-    withDotenv(
-      withTranspile(
-        withCss({
-          transpileModules: ["@internote"],
-          babelConfigFile: path.resolve("./babel.config.js"),
-          target: "serverless",
-          experimental: { publicDirectory: true },
-          env: {
-            ATTACHMENTS_BUCKET_NAME: process.env.ATTACHMENTS_BUCKET_NAME,
-            COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
-            COGNITO_USER_POOL_CLIENT_ID:
-              process.env.COGNITO_USER_POOL_CLIENT_ID,
-            COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
-            SERVICES_HOST: process.env.SERVICES_HOST,
-            SERVICES_REGION: process.env.SERVICES_REGION,
-            SPEECH_BUCKET_NAME: process.env.SPEECH_BUCKET_NAME,
-          },
-        })
-      )
-    )
-  )
-);

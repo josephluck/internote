@@ -31,10 +31,10 @@ const SearchMenuItemWrapper = styled(DropdownMenuItem)`
   }
 `;
 
-const Highlighter = styled(ReactHighlight)<{ searchWords: boolean }>`
+const Highlighter = styled(ReactHighlight)<{ searchWords: string[] }>`
   font-weight: ${(props) => (props.searchWords.length > 0 ? 500 : 600)};
   color: ${(props) =>
-    props.searchWords > 0
+    props.searchWords.length > 0
       ? props.theme.notesMenuItemTextInactive
       : props.theme.dropdownMenuItemText};
   mark {
