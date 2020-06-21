@@ -89,8 +89,7 @@ export function NoteMenu({
   }, [searchText, combineStrings(allNotes.map(getNoteTitle))]);
 
   function searchNotes(value: string) {
-    const fuse: any = Fuse; // TODO: fix types
-    const fuzzy = new fuse(allNotes, {
+    const fuzzy = new Fuse(allNotes, {
       shouldSort: true,
       threshold: 0.6,
       location: 0,
@@ -99,7 +98,9 @@ export function NoteMenu({
       minMatchCharLength: 1,
       keys: isTagSearch ? ["tags"] : ["title"],
     });
-    setFilteredNotes(value.length ? fuzzy.search(value) : allNotes);
+    setFilteredNotes(
+      value.length ? fuzzy.search(value).map((v) => v.item) : allNotes
+    );
   }
 
   function onTagClicked(tag: string) {
