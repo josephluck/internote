@@ -8,6 +8,40 @@ import { sansSerif } from "../theming/themes";
 import { ShortcutsProvider } from "../styles/shortcuts";
 import { InternoteThemes } from "../styles/theme-provider";
 import { SnippetsProvider } from "../styles/snippets-context";
+import * as Sentry from "@sentry/node";
+import { env } from "../env";
+
+Sentry.init({
+  enabled: env.NODE_ENV === "production",
+  dsn: env.SENTRY_DSN,
+});
+
+export class Application extends App {
+  componentDidMount() {
+    const { store } = this.props as any;
+    store.actions.auth.scheduleRefresh();
+  }
+  render() {
+    const { Component, pageProps, store, err } = this.props as any;
+    return (
+      <InternoteThemes>
+        <>
+          <Head>
+            <title>Internote</title>
+          </Head>
+          <GlobalStyles />
+          <ShortcutsProvider>
+            <SnippetsProvider>
+              <Component {...pageProps} err={err} store={store} />
+            </SnippetsProvider>
+          </ShortcutsProvider>
+        </>
+      </InternoteThemes>
+    );
+  }
+}
+
+export default injectTwine(Application);
 
 export const GlobalStyles = createGlobalStyle`
   * {
@@ -40,30 +74,3 @@ export const GlobalStyles = createGlobalStyle`
     background: inherit;
   }
 `;
-
-export class Application extends App {
-  componentDidMount() {
-    const { store } = this.props as any;
-    store.actions.auth.scheduleRefresh();
-  }
-  render() {
-    const { Component, pageProps, store } = this.props as any;
-    return (
-      <InternoteThemes>
-        <>
-          <Head>
-            <title>Internote</title>
-          </Head>
-          <GlobalStyles />
-          <ShortcutsProvider>
-            <SnippetsProvider>
-              <Component {...pageProps} store={store} />
-            </SnippetsProvider>
-          </ShortcutsProvider>
-        </>
-      </InternoteThemes>
-    );
-  }
-}
-
-export default injectTwine(Application);

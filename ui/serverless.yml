@@ -5,6 +5,9 @@ app:
   inputs:
     domain: ["dev", "internote.app"]
     bucketName: internote-ui
+    build:
+      env:
+        NODE_ENV: production
 # storybook:
 #   component: "@serverless/website"
 #   inputs:

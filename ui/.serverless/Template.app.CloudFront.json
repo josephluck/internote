@@ -21,7 +21,7 @@
             "GET"
           ],
           "lambda@edge": {
-            "origin-request": "arn:aws:lambda:us-east-1:822567739604:function:yjkcvpc-r7tmuu7:12"
+            "origin-request": "arn:aws:lambda:us-east-1:822567739604:function:yjkcvpc-r7tmuu7:14"
           }
         }
       }
@@ -38,7 +38,7 @@
       "GET"
     ],
     "lambda@edge": {
-      "origin-request": "arn:aws:lambda:us-east-1:822567739604:function:yjkcvpc-r7tmuu7:12"
+      "origin-request": "arn:aws:lambda:us-east-1:822567739604:function:yjkcvpc-r7tmuu7:14"
     }
   }
 }

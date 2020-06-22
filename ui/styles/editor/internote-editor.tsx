@@ -43,8 +43,6 @@ export const InternoteEditor: React.FunctionComponent<{
   const valueRef = useRef(initialValue);
   valueRef.current = initialValue;
 
-  console.log({ initialValue, noteId });
-
   const editor = useCreateInternoteEditor(noteId);
 
   /**
@@ -88,8 +86,6 @@ export const InternoteEditor: React.FunctionComponent<{
     }
     setConnected((prev) => !prev);
   };
-
-  console.log({ value });
 
   return (
     <Slate editor={editor} value={value} onChange={setValue as any}>
