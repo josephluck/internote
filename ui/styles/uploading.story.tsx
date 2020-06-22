@@ -1,7 +1,8 @@
 import React from "react";
+
 import { StoriesOf } from "../types";
-import { Uploading } from "./uploading";
 import { UnknownFile } from "./unknown-file";
+import { Uploading } from "./uploading";
 
 export default function (s: StoriesOf) {
   s("Uploading", module)

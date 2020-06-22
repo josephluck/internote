@@ -1,10 +1,11 @@
+import htmlEscape from "htmlescape";
 import Document, { Head, Main, NextScript } from "next/document";
 import React from "react";
 import { ServerStyleSheet } from "styled-components";
+
 import { prepareClientExposedEnv } from "../env";
 import { color } from "../theming/symbols";
 import { googleFontsFamilies, googleFontsWeights } from "../theming/themes";
-import htmlEscape from "htmlescape";
 
 export default class InternoteDocument extends Document {
   static getInitialProps({ renderPage }) {

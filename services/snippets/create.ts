@@ -1,6 +1,4 @@
-import uuid from "uuid";
-import middy from "middy";
-import { jsonBodyParser, cors } from "middy/middlewares";
+import { CreateHandler } from "@internote/lib/lambda";
 import {
   encodeResponse,
   jsonErrorHandler,
@@ -8,10 +6,13 @@ import {
 } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
+import { isString, required } from "@internote/lib/validator";
+import middy from "middy";
+import { cors, jsonBodyParser } from "middy/middlewares";
+import uuid from "uuid";
+
 import { createSnippet } from "./db/queries";
-import { CreateHandler } from "@internote/lib/lambda";
 import { CreateSnippetDTO } from "./types";
-import { required, isString } from "@internote/lib/validator";
 
 const validator = validateRequestBody<CreateSnippetDTO>({
   title: [required, isString],

@@ -1,5 +1,6 @@
-import { Handler, APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEvent, Handler } from "aws-lambda";
 import { Result } from "space-lift";
+
 import { HttpResponseError } from "./errors";
 
 export interface UpdateEvent<B, Q extends Record<string, string> = {}>

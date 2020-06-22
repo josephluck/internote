@@ -1,6 +1,7 @@
 import React from "react";
+
 import { StoriesOf } from "../types";
-import { Tag, NewTag } from "./tag";
+import { NewTag, Tag } from "./tag";
 
 export default function (s: StoriesOf) {
   s("Tag", module)

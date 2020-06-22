@@ -1,7 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
-import { serializeHtml } from "./html";
+
 import { FULL_SCHEMA_EXAMPLE } from "@internote/lib/schema-examples";
+
+import { serializeHtml } from "./html";
 
 describe("Serializers / html", () => {
   it("Serializes a complex schema to html", async () => {

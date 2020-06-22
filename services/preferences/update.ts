@@ -1,16 +1,17 @@
-import HttpError from "http-errors";
-import middy from "middy";
-import { jsonBodyParser, cors } from "middy/middlewares";
+import { UpdateHandler } from "@internote/lib/lambda";
 import {
   encodeResponse,
-  validateRequestBody,
   jsonErrorHandler,
+  validateRequestBody,
 } from "@internote/lib/middlewares";
-import { success, exception, notFound } from "@internote/lib/responses";
+import { exception, notFound, success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
-import { updatePreferencesById } from "./db/queries";
+import HttpError from "http-errors";
+import middy from "middy";
+import { cors, jsonBodyParser } from "middy/middlewares";
+
 import { Preferences } from "./db/models";
-import { UpdateHandler } from "@internote/lib/lambda";
+import { updatePreferencesById } from "./db/queries";
 
 const validator = validateRequestBody<Preferences>({
   id: [],

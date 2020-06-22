@@ -1,6 +1,7 @@
 import React from "react";
-import { OnClickOutside } from "./on-click-outside";
 import styled from "styled-components";
+
+import { OnClickOutside } from "./on-click-outside";
 import { Shortcut } from "./shortcuts";
 
 const MenuWrapper = styled(OnClickOutside)`

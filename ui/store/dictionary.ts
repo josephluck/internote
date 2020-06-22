@@ -1,8 +1,9 @@
-import { Twine } from "twine-js";
-import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect, makeSetter } from ".";
-import { Api } from "../api/api";
 import { DictionaryResult } from "@internote/dictionary-service/types";
+import { Twine } from "twine-js";
+
+import { Api } from "../api/api";
+import { WithAsyncLoadingModel, withAsyncLoading } from "./with-async-loading";
+import { InternoteEffect, makeSetter } from ".";
 
 interface OwnState {
   dictionaryShowing: boolean;

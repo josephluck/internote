@@ -1,11 +1,12 @@
-import React, { useCallback } from "react";
-import { Box } from "@rebass/grid";
-import ReactHighlight from "react-highlight-words";
-import { DropdownMenuItem } from "./dropdown-menu";
-import styled from "styled-components";
+import { faCheck, faSpinner, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { spacing, font } from "../theming/symbols";
+import { Box } from "@rebass/grid";
+import React, { useCallback } from "react";
+import ReactHighlight from "react-highlight-words";
+import styled from "styled-components";
+
+import { font, spacing } from "../theming/symbols";
+import { DropdownMenuItem } from "./dropdown-menu";
 
 const DeleteIcon = styled.div.withConfig({
   shouldForwardProp: (prop: string, def) =>

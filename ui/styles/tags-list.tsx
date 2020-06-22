@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { spacing, size } from "../theming/symbols";
-import Fuse from "fuse.js";
-import { Tag, NewTag } from "./tag";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Fuse from "fuse.js";
 import isHotkey from "is-hotkey";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+
+import { size, spacing } from "../theming/symbols";
+import { NewTag, Tag } from "./tag";
 
 export const TagsList: React.FunctionComponent<{
   search: string;

@@ -1,3 +1,4 @@
+import { InternoteEditorElement } from "@internote/lib/editor-types";
 import React, {
   useCallback,
   useContext,
@@ -8,8 +9,11 @@ import React, {
 } from "react";
 import { Editable, Slate } from "slate-react";
 import styled, { css } from "styled-components";
+
 import { useTwineState } from "../../store";
-import { borderRadius, font, spacing, size } from "../../theming/symbols";
+import { borderRadius, font, size, spacing } from "../../theming/symbols";
+import { CreateSnippetModal } from "../create-snippet-modal";
+import { Outline } from "../outline";
 import { ShortcutsContext } from "../shortcuts";
 import { Tag } from "../tag";
 import { wrapperStyles } from "../wrapper";
@@ -32,9 +36,6 @@ import {
   InternoteEditorRenderLeafProps,
   voids,
 } from "./types";
-import { CreateSnippetModal } from "../create-snippet-modal";
-import { Outline } from "../outline";
-import { InternoteEditorElement } from "@internote/lib/editor-types";
 
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: InternoteEditorElement[];

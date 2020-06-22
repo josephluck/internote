@@ -1,8 +1,9 @@
-import React from "react";
-import { spacing, borderRadius, font } from "../theming/symbols";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import styled from "styled-components";
+
+import { borderRadius, font, spacing } from "../theming/symbols";
 
 const ModalOuter = styled.div<{ open: boolean; withBackground: boolean }>`
   position: fixed;

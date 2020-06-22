@@ -1,12 +1,13 @@
 import React from "react";
-import { NextTwineSFC } from "../store/with-twine";
-import { Store, useTwineState, useTwineActions } from "../store";
+import styled from "styled-components";
+
 import { withAuth } from "../auth/with-auth";
-import { Heading } from "../styles/heading";
+import { Store, useTwineActions, useTwineState } from "../store";
+import { NextTwineSFC } from "../store/with-twine";
 import { Global } from "../styles/global";
+import { Heading } from "../styles/heading";
 import { Note } from "../styles/note";
 import { OnMount } from "../styles/on-mount";
-import styled from "styled-components";
 
 const PageWrapper = styled.div`
   min-height: 100%;

@@ -1,4 +1,4 @@
-import { validate, required, validateArrayItems } from "./validator";
+import { required, validate, validateArrayItems } from "./validator";
 
 describe("validator", () => {
   it("Returns the valid fields when valid", () => {

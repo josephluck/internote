@@ -1,16 +1,23 @@
+import { InternoteEditorNodeType } from "@internote/lib/editor-types";
+import { GetSnippetDTO } from "@internote/snippets-service/types";
 import { Flex } from "@rebass/grid";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
 import React, { useCallback } from "react";
 import { Collapse } from "react-collapse";
+import { Editor } from "slate";
 import { useEditor } from "slate-react";
 import styled from "styled-components";
+
 import { useTwineState } from "../../store";
 import { font, size, spacing } from "../../theming/symbols";
 import { Emoji } from "../../utilities/emojis";
 import { Dictionary } from "../dictionary";
 import { DictionaryButton } from "../dictionary-button";
 import { EmojiList } from "../emoji-list";
+import { Shortcut } from "../shortcuts";
+import { SnippetsContext } from "../snippets-context";
+import { SnippetsButton } from "../snippets-menu";
 import { Speech } from "../speech";
 import { TagsList } from "../tags-list";
 import { ButtonSpacer, ToolbarButton } from "../toolbar-button";
@@ -26,13 +33,7 @@ import {
   toolbarLabelMap,
   toolbarShortcutMap,
 } from "./types";
-import { InternoteEditorNodeType } from "@internote/lib/editor-types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
-import { Shortcut } from "../shortcuts";
-import { SnippetsButton } from "../snippets-menu";
-import { GetSnippetDTO } from "@internote/snippets-service/types";
-import { SnippetsContext } from "../snippets-context";
-import { Editor } from "slate";
 
 export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   noteId,

@@ -1,5 +1,6 @@
-import React, { useEffect, useCallback, useState } from "react";
 import isHotkey from "is-hotkey";
+import React, { useCallback, useEffect, useState } from "react";
+
 import { anyOverlappingStrOccurrences } from "../utilities/string";
 
 interface Shortcut {

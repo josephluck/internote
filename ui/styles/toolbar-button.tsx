@@ -1,6 +1,7 @@
 import { Flex } from "@rebass/grid";
 import React, { useCallback } from "react";
 import styled from "styled-components";
+
 import { borderRadius, font, spacing } from "../theming/symbols";
 import { RoundButton } from "./button";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";

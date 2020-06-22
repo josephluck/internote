@@ -1,21 +1,21 @@
 import twine, { Twine } from "twine-js";
+
+import { Api, makeApi } from "../api/api";
+import { AuthApi, makeAuthApi } from "../auth/api";
+import { env } from "../env";
 // import logger from "twine-js/lib/log";
 import { isServer } from "../utilities/window";
-
-import * as Speech from "./speech";
-import * as Preferences from "./preferences";
 import * as Auth from "./auth";
-import * as Dictionary from "./dictionary";
 import * as Confirmation from "./confirmation";
+import * as Dictionary from "./dictionary";
+import * as ExportNote from "./export-note";
+import * as Notes from "./notes";
+import * as Preferences from "./preferences";
+import * as Snippets from "./snippets";
+import * as Speech from "./speech";
 import * as Tags from "./tags";
 import * as Ui from "./ui";
-import * as Notes from "./notes";
-import * as ExportNote from "./export-note";
-import * as Snippets from "./snippets";
 import { makeTwineHooks } from "./with-twine";
-import { env } from "../env";
-import { AuthApi, makeAuthApi } from "../auth/api";
-import { makeApi, Api } from "../api/api";
 
 type Models = Twine.Models<
   Speech.Namespace &

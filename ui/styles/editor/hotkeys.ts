@@ -1,12 +1,13 @@
-import { InternoteSlateEditor } from "./types";
 import { InternoteEditorNodeType } from "@internote/lib/editor-types";
-import { useCallback, KeyboardEvent } from "react";
-import isHotkey from "is-hotkey";
-import { toggleBlock } from "./utils";
-import { getCurrentFocusedLeafAndPath } from "./focus";
-import { Editor } from "slate";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
+import isHotkey from "is-hotkey";
+import { KeyboardEvent, useCallback } from "react";
+import { Editor } from "slate";
+
+import { getCurrentFocusedLeafAndPath } from "./focus";
+import { InternoteSlateEditor } from "./types";
+import { toggleBlock } from "./utils";
 
 /**
  * Resets list items when focused on an empty list item and a reset shortcut

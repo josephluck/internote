@@ -1,8 +1,9 @@
 import { Twine } from "twine-js";
-import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect } from ".";
+
 import { Api } from "../api/api";
 import { isServer } from "../utilities/window";
+import { WithAsyncLoadingModel, withAsyncLoading } from "./with-async-loading";
+import { InternoteEffect } from ".";
 
 interface OwnState {}
 

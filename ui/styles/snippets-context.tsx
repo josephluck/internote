@@ -1,8 +1,9 @@
-import React, { useCallback } from "react";
-import { GetSnippetDTO } from "@internote/snippets-service/types";
 import { InternoteEditorElement } from "@internote/lib/editor-types";
-import { useTwineActions } from "../store";
+import { GetSnippetDTO } from "@internote/snippets-service/types";
+import React, { useCallback } from "react";
 import { useState } from "react";
+
+import { useTwineActions } from "../store";
 
 interface Context {
   createSnippetModalOpen: boolean;

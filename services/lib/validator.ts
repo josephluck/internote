@@ -1,4 +1,4 @@
-import { Ok, Err, Result } from "space-lift";
+import { Err, Ok, Result } from "space-lift";
 
 type Constraint = (
   field: any,

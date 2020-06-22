@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components";
-import { font, borderRadius, spacing } from "../theming/symbols";
+
+import { borderRadius, font, spacing } from "../theming/symbols";
 
 const ghostPulse = keyframes`
   from {

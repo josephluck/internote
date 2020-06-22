@@ -1,10 +1,11 @@
-import { Session } from "../auth/storage";
-import { MakeSignedRequest } from "./api";
+import { ApiResponse } from "@internote/lib/lambda";
 import {
   CreateSnippetDTO,
   GetSnippetDTO,
 } from "@internote/snippets-service/types";
-import { ApiResponse } from "@internote/lib/lambda";
+
+import { Session } from "../auth/storage";
+import { MakeSignedRequest } from "./api";
 
 export function snippets(makeRequest: MakeSignedRequest) {
   return {

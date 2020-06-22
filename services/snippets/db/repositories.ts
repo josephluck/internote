@@ -1,5 +1,5 @@
-import { Snippet } from "./models";
 import { db } from "./db";
+import { Snippet } from "./models";
 
 export const SnippetsRepository = db
   .define(Snippet, {

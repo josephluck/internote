@@ -1,11 +1,12 @@
+import Motion, { Move } from "@element-motion/core";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Collapse } from "react-collapse";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { DropdownMenuItem, DropdownMenuSpacer } from "./dropdown-menu";
-import Motion, { Move } from "@element-motion/core";
-import { Shortcut } from "./shortcuts";
+
 import { shortcutPriorities } from "../utilities/shortcuts";
+import { DropdownMenuItem, DropdownMenuSpacer } from "./dropdown-menu";
+import { Shortcut } from "./shortcuts";
 
 interface RenderProps {
   toMainMenu: () => void;

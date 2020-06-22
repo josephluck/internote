@@ -1,7 +1,8 @@
+import { faBolt } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
+
 import { StoriesOf } from "../types";
 import { InputWithIcons } from "./input-with-icons";
-import { faBolt } from "@fortawesome/free-solid-svg-icons";
 
 export default function (s: StoriesOf) {
   s("InputWithIcons", module)

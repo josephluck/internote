@@ -3,17 +3,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Flex } from "@rebass/grid";
 import React, { useCallback } from "react";
 import styled from "styled-components";
+
 import { useTwineActions, useTwineState } from "../store";
 import { spacing } from "../theming/symbols";
 import { AudioPlayer, AudioRenderProps } from "./audio";
-import { ToolbarButton } from "./toolbar-button";
 import {
-  toolbarLabelMap,
-  toolbarIconMap,
   ToolbarIconType,
+  toolbarIconMap,
+  toolbarLabelMap,
   toolbarShortcutMap,
 } from "./editor/types";
 import { Shortcut } from "./shortcuts";
+import { ToolbarButton } from "./toolbar-button";
 
 export const Speech: React.FunctionComponent<{
   selectedText: string;

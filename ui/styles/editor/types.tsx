@@ -1,36 +1,37 @@
-import { useCreateInternoteEditor } from "./hooks";
-import { RenderElementProps, RenderLeafProps } from "slate-react";
-import { Text } from "slate";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
-  faItalic,
-  faUnderline,
-  faCode,
-  faHeading,
-  faQuoteLeft,
-  faListUl,
-  faListOl,
-  faEye,
   faBook,
-  faSpinner,
+  faCode,
+  faEye,
+  faHeading,
+  faItalic,
+  faList,
+  faListOl,
+  faListUl,
   faMicrophone,
+  faParagraph,
   faPause,
   faPlay,
-  faTrash,
-  faList,
-  faParagraph,
-  faTag,
+  faQuoteLeft,
   faSmile,
+  faSpinner,
+  faTag,
+  faTrash,
+  faUnderline,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  InternoteEditorElement,
-  InternoteEditorMarkType,
   HeadingOneElement,
   HeadingTwoElement,
+  InternoteEditorElement,
   InternoteEditorElementTypes,
+  InternoteEditorMarkType,
   InternoteEditorNodeType,
 } from "@internote/lib/editor-types";
+import { Text } from "slate";
+import { RenderElementProps, RenderLeafProps } from "slate-react";
+
+import { useCreateInternoteEditor } from "./hooks";
 
 export type InternoteSlateEditor = ReturnType<typeof useCreateInternoteEditor>;
 

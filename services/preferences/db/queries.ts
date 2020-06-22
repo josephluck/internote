@@ -1,8 +1,9 @@
+import { isDbError } from "@internote/lib/errors";
 import HttpError from "http-errors";
+import { attributeNotExists } from "type-dynamo";
+
 import { Preferences, defaultPreferences } from "./models";
 import { PreferencesRepository } from "./repositories";
-import { isDbError } from "@internote/lib/errors";
-import { attributeNotExists } from "type-dynamo";
 
 export const findPreferencesById = async (id: string) => {
   try {

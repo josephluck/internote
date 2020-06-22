@@ -1,8 +1,8 @@
-import React from "react";
-import Head from "next/head";
+import { EMPTY_SCHEMA } from "@internote/lib/schema-examples";
 import { GetNoteDTO } from "@internote/notes-service/types";
 import dynamic from "next/dynamic";
-import { EMPTY_SCHEMA } from "@internote/lib/schema-examples";
+import Head from "next/head";
+import React from "react";
 
 const Editor = dynamic(
   async () => {

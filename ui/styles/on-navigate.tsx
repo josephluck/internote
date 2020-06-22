@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import routerEvents from "next-router-events";
+import { useEffect } from "react";
 
 export function OnNavigate({
   onComplete,

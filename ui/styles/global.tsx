@@ -1,10 +1,11 @@
+import { Box, Flex } from "@rebass/grid";
 import React from "react";
-import { spacing } from "../theming/symbols";
 import styled from "styled-components";
-import { useTwineState, useTwineActions } from "../store";
-import { Modal } from "./modal";
+
+import { useTwineActions, useTwineState } from "../store";
+import { spacing } from "../theming/symbols";
 import { Button } from "./button";
-import { Flex, Box } from "@rebass/grid";
+import { Modal } from "./modal";
 
 const DarkOverlay = styled.div<{ showing: boolean }>`
   position: fixed;

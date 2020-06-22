@@ -1,6 +1,6 @@
+import { NextComponentType, NextPageContext } from "next";
 import * as React from "react";
 import { Twine } from "twine-js";
-import { NextPageContext, NextComponentType } from "next";
 
 const STORE_KEY = "__TWINE_STORE__";
 

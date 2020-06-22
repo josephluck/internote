@@ -1,9 +1,10 @@
-import { Editor, Range, Transforms, Point } from "slate";
-import { InternoteSlateEditor } from "./types";
 import { InternoteEditorNodeType } from "@internote/lib/editor-types";
 import { pipe } from "fp-ts/lib/function";
-import { getWordTextUnderCursor } from "./selection";
 import * as O from "fp-ts/lib/Option";
+import { Editor, Point, Range, Transforms } from "slate";
+
+import { getWordTextUnderCursor } from "./selection";
+import { InternoteSlateEditor } from "./types";
 
 /**
  * Gets and returns the text under a "smart" search.

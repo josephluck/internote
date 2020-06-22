@@ -1,14 +1,15 @@
+import { UpdateHandler } from "@internote/lib/lambda";
 import {
   encodeResponse,
   jsonErrorHandler,
   validateRequestBody,
 } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
-import { UpdateHandler } from "@internote/lib/lambda";
 import { getUserIdentityId } from "@internote/lib/user";
 import { isArray, isString, required } from "@internote/lib/validator";
 import middy from "middy";
 import { cors, jsonBodyParser } from "middy/middlewares";
+
 import { updateNoteById } from "./db/queries";
 import { UpdateNoteDTO } from "./types";
 

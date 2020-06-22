@@ -1,11 +1,12 @@
-import * as React from "react";
+import { NextPage, NextPageContext } from "next";
 import Router from "next/router";
+import { setCookie } from "nookies";
+import * as React from "react";
+
 import { Store } from "../store";
 import { isServer } from "../utilities/window";
 import { isNearExpiry } from "./api";
 import { makeAuthStorage } from "./storage";
-import { setCookie } from "nookies";
-import { NextPageContext, NextPage } from "next";
 
 interface Options {
   restricted: boolean;

@@ -1,12 +1,13 @@
 import React, { useCallback } from "react";
+
 import { useTwineActions } from "../store";
-import { ToolbarButton } from "./toolbar-button";
 import {
   toolbarIconMap,
-  toolbarShortcutMap,
   toolbarLabelMap,
+  toolbarShortcutMap,
 } from "./editor/types";
 import { Shortcut } from "./shortcuts";
+import { ToolbarButton } from "./toolbar-button";
 
 export const DictionaryButton: React.FunctionComponent<{
   isLoading: boolean;

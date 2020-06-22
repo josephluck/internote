@@ -3,6 +3,7 @@ import {
   ParagraphElement,
   TagElement,
 } from "@internote/lib/editor-types";
+
 import { extractAllTagElementsFromValue, flattenEditorElements } from "./utils";
 
 describe("Extract tags", () => {

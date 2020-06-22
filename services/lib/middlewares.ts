@@ -1,7 +1,8 @@
+import { Constraints, validate } from "@internote/lib/validator";
 import HttpError from "http-errors";
-import { validate, Constraints } from "@internote/lib/validator";
 import { MiddlewareObject } from "middy";
-import { mapStatusCodeToErrorType, HttpResponseError } from "./errors";
+
+import { HttpResponseError, mapStatusCodeToErrorType } from "./errors";
 
 export const validateRequestBody = <M extends Record<string, any>>(
   constraints: Constraints<M>

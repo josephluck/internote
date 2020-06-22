@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
+
 import { sansSerif } from "../theming/themes";
 
 const ProgressSvgCircle = styled.circle`

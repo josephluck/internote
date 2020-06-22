@@ -1,5 +1,5 @@
-import express from "express";
 import { SocketIOConnection } from "@slate-collaborative/backend";
+import express from "express";
 
 const PORT = process.env.PORT || 9000;
 

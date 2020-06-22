@@ -1,11 +1,12 @@
+import { DictionaryResult } from "@internote/dictionary-service/types";
 import React from "react";
 import styled from "styled-components";
-import { HeadingTwo, GhostHeadingTwo, BaseGhostElement } from "./typography";
-import { spacing, font } from "../theming/symbols";
+
+import { useTwineState } from "../store";
+import { font, spacing } from "../theming/symbols";
 import { NoResults } from "./no-results";
 import { Tag } from "./tag";
-import { DictionaryResult } from "@internote/dictionary-service/types";
-import { useTwineState } from "../store";
+import { BaseGhostElement, GhostHeadingTwo, HeadingTwo } from "./typography";
 
 export const Dictionary: React.FunctionComponent<{
   selectedWord: string;

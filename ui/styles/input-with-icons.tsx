@@ -1,9 +1,10 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 import styled from "styled-components";
-import { font, spacing, borderRadius } from "../theming/symbols";
+
+import { borderRadius, font, spacing } from "../theming/symbols";
 
 const InputIcon = styled.div`
   position: absolute;

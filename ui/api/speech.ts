@@ -1,10 +1,11 @@
-import { Session } from "../auth/storage";
-import { MakeSignedRequest } from "./api";
 import { ApiResponse } from "@internote/lib/lambda";
 import {
-  SpeechResponseBody,
   SpeechRequestBody,
+  SpeechResponseBody,
 } from "@internote/speech-service/types";
+
+import { Session } from "../auth/storage";
+import { MakeSignedRequest } from "./api";
 
 export function speech(makeRequest: MakeSignedRequest) {
   return {

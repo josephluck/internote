@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { uploadSignal } from "./file-upload";
+import React, { useCallback, useEffect, useState } from "react";
+import styled from "styled-components";
+
 import {
-  makeAttachmentsApi,
   getExtensionFromFileSrc,
+  makeAttachmentsApi,
 } from "../api/attachments";
 import { env } from "../env";
 import { useTwineState } from "../store";
-import styled from "styled-components";
 import { borderRadius } from "../theming/symbols";
-
-import { Uploading } from "./uploading";
+import { uploadSignal } from "./file-upload";
 import { UnknownFile } from "./unknown-file";
+import { Uploading } from "./uploading";
 
 const attachments = makeAttachmentsApi({
   region: env.SERVICES_REGION,

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+
 import { StoriesOf } from "../types";
 import { CreateSnippetModal } from "./create-snippet-modal";
 import { SnippetsContext } from "./snippets-context";

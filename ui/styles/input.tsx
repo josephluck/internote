@@ -1,7 +1,8 @@
 import React from "react";
+import { InputHTMLAttributes, useCallback, useState } from "react";
 import styled from "styled-components";
-import { borderRadius, spacing, font } from "../theming/symbols";
-import { InputHTMLAttributes, useState, useCallback } from "react";
+
+import { borderRadius, font, spacing } from "../theming/symbols";
 
 export const Input = styled.input`
   background: ${(props) => props.theme.inputBackground};

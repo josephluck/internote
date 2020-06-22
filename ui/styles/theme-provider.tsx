@@ -1,6 +1,7 @@
 import React from "react";
-import { useTwineState } from "../store";
 import { ThemeProvider } from "styled-components";
+
+import { useTwineState } from "../store";
 
 export function InternoteThemes({ children }: { children: React.ReactNode }) {
   const colorTheme = useTwineState(

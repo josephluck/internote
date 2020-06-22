@@ -1,8 +1,9 @@
-import HttpError from "http-errors";
-import { SnippetsRepository } from "./repositories";
 import { isDbError } from "@internote/lib/errors";
-import { match, isEqualTo } from "type-dynamo";
-import { GetSnippetDTO, CreateSnippetDTO } from "../types";
+import HttpError from "http-errors";
+import { isEqualTo, match } from "type-dynamo";
+
+import { CreateSnippetDTO, GetSnippetDTO } from "../types";
+import { SnippetsRepository } from "./repositories";
 
 export const listSnippetsByUserId = async (
   userId: string

@@ -1,6 +1,7 @@
+import { AuthenticatedResponse } from "@internote/health-service/types";
+
 import { Session } from "../auth/storage";
 import { MakeSignedRequest } from "./api";
-import { AuthenticatedResponse } from "@internote/health-service/types";
 
 export function health(makeRequest: MakeSignedRequest) {
   return {

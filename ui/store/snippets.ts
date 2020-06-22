@@ -1,11 +1,12 @@
-import { Twine } from "twine-js";
-import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect, InternoteEffect0, makeSetter } from ".";
-import { Api } from "../api/api";
 import {
   CreateSnippetDTO,
   GetSnippetDTO,
 } from "@internote/snippets-service/types";
+import { Twine } from "twine-js";
+
+import { Api } from "../api/api";
+import { WithAsyncLoadingModel, withAsyncLoading } from "./with-async-loading";
+import { InternoteEffect, InternoteEffect0, makeSetter } from ".";
 
 interface OwnState {
   snippets: GetSnippetDTO[];

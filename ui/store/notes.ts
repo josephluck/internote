@@ -1,13 +1,14 @@
-import { Twine } from "twine-js";
-import Router from "next/router";
-import { isServer } from "../utilities/window";
-import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect0, InternoteEffect } from ".";
-import { Option } from "space-lift";
-import { Api } from "../api/api";
-import { GetNoteDTO } from "@internote/notes-service/types";
 import { InternoteEditorValue } from "@internote/lib/editor-types";
 import { EMPTY_SCHEMA } from "@internote/lib/schema-examples";
+import { GetNoteDTO } from "@internote/notes-service/types";
+import Router from "next/router";
+import { Option } from "space-lift";
+import { Twine } from "twine-js";
+
+import { Api } from "../api/api";
+import { isServer } from "../utilities/window";
+import { WithAsyncLoadingModel, withAsyncLoading } from "./with-async-loading";
+import { InternoteEffect, InternoteEffect0 } from ".";
 
 interface OwnState {
   notes: GetNoteDTO[];

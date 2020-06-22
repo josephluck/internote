@@ -2,6 +2,7 @@ import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
 import { Editor, Node, NodeEntry } from "slate";
 import { ReactEditor } from "slate-react";
+
 import { isServer } from "../../utilities/window";
 import { InternoteSlateEditor } from "./types";
 

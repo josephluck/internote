@@ -1,4 +1,5 @@
 import React from "react";
+
 import { StoriesOf } from "../types";
 import { Heading } from "./heading";
 

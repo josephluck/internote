@@ -1,7 +1,8 @@
-import NextErrorComponent from "next/error";
 import * as Sentry from "@sentry/node";
 import { NextPage } from "next";
-import { isServer, env } from "../env";
+import NextErrorComponent from "next/error";
+
+import { env, isServer } from "../env";
 
 const InternoteErrorPage: NextPage<any> = ({
   statusCode,

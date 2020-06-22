@@ -1,11 +1,11 @@
-import React from "react";
-
-import { borderRadius, spacing, font } from "../theming/symbols";
-import { Flex } from "@rebass/grid";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faFile } from "@fortawesome/free-solid-svg-icons";
-import { sansSerif } from "../theming/themes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Flex } from "@rebass/grid";
+import React from "react";
 import styled from "styled-components";
+
+import { borderRadius, font, spacing } from "../theming/symbols";
+import { sansSerif } from "../theming/themes";
 
 const UnknownFileWrap = styled.div`
   background: ${(props) => props.theme.toolbarBackground}; // TODO: own theme

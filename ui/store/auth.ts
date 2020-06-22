@@ -1,11 +1,12 @@
-import { Twine } from "twine-js";
-import { withAsyncLoading, WithAsyncLoadingModel } from "./with-async-loading";
-import { InternoteEffect, InternoteEffect0, makeSetter } from ".";
-import { isServer } from "../utilities/window";
 import Router from "next/router";
+import { Twine } from "twine-js";
+
+import { Api } from "../api/api";
 import { AuthApi } from "../auth/api";
 import { Session, makeAuthStorage } from "../auth/storage";
-import { Api } from "../api/api";
+import { isServer } from "../utilities/window";
+import { WithAsyncLoadingModel, withAsyncLoading } from "./with-async-loading";
+import { InternoteEffect, InternoteEffect0, makeSetter } from ".";
 
 interface SignInSession {
   email: string;

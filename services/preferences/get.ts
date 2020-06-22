@@ -1,11 +1,12 @@
+import { GetHandler } from "@internote/lib/lambda";
+import { encodeResponse } from "@internote/lib/middlewares";
+import { exception, success } from "@internote/lib/responses";
+import { getUserIdentityId } from "@internote/lib/user";
 import HttpError from "http-errors";
 import middy from "middy";
-import { httpErrorHandler, cors } from "middy/middlewares";
-import { encodeResponse } from "@internote/lib/middlewares";
-import { success, exception } from "@internote/lib/responses";
-import { getUserIdentityId } from "@internote/lib/user";
-import { GetHandler } from "@internote/lib/lambda";
-import { findPreferencesById, createPreferences } from "./db/queries";
+import { cors, httpErrorHandler } from "middy/middlewares";
+
+import { createPreferences, findPreferencesById } from "./db/queries";
 
 const get: GetHandler = async (event, _ctx, callback) => {
   try {

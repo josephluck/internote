@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { emojis, Emoji } from "../utilities/emojis";
-import styled from "styled-components";
-import { spacing, size, font } from "../theming/symbols";
 import Fuse from "fuse.js";
-import { NoResults } from "./no-results";
 import isHotkey from "is-hotkey";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+
+import { font, size, spacing } from "../theming/symbols";
+import { Emoji, emojis } from "../utilities/emojis";
+import { NoResults } from "./no-results";
 
 export const EmojiList: React.FunctionComponent<{
   onEmojiSelected: (emoji: Emoji, searchText: string) => any;

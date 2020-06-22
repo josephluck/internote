@@ -1,14 +1,15 @@
-import React from "react";
-import { spacing, font } from "../theming/symbols";
 import { Box, Flex } from "@rebass/grid";
-import { NextTwineSFC } from "../store/with-twine";
-import { Store, useTwineState, useTwineActions } from "../store";
-import { Logo } from "../styles/logo";
+import React from "react";
 import styled from "styled-components";
-import { Button } from "../styles/button";
-import { Modal } from "../styles/modal";
-import { Input, InputLabel } from "../styles/input";
+
 import { withAuth } from "../auth/with-auth";
+import { Store, useTwineActions, useTwineState } from "../store";
+import { NextTwineSFC } from "../store/with-twine";
+import { Button } from "../styles/button";
+import { Input, InputLabel } from "../styles/input";
+import { Logo } from "../styles/logo";
+import { Modal } from "../styles/modal";
+import { font, spacing } from "../theming/symbols";
 
 const CenteredLogo = styled.div`
   display: flex;

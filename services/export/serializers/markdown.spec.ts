@@ -1,7 +1,9 @@
 import * as fs from "fs";
 import * as path from "path";
-import { serializeMarkdown } from "./markdown";
+
 import { FULL_SCHEMA_EXAMPLE } from "@internote/lib/schema-examples";
+
+import { serializeMarkdown } from "./markdown";
 
 describe("Serializers / markdown", () => {
   it("Serializes a complex schema to markdown", async () => {

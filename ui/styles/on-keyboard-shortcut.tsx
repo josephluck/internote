@@ -1,5 +1,5 @@
-import React from "react";
 import isKeyHotkey from "is-hotkey";
+import React from "react";
 
 export function OnKeyboardShortcut({
   keyCombo,

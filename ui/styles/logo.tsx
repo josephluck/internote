@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { font, color } from "../theming/symbols";
+
+import { color, font } from "../theming/symbols";
 
 export const Logo = styled.div<{ large?: boolean }>`
   font-weight: 900;

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useRef, useEffect } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { Motion, spring } from "react-motion";
 import styled from "styled-components";
 

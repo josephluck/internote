@@ -1,14 +1,15 @@
-import { Twine } from "twine-js";
-import { InternoteEffect0, makeSetter } from ".";
-import {
-  colorThemes,
-  fontThemes,
-  ColorThemeWithName,
-  FontThemeWithName,
-} from "../theming/themes";
-import { Api } from "../api/api";
 import { Preferences } from "@internote/preferences-service/db/models";
 import { AvailableVoice } from "@internote/speech-service/types";
+import { Twine } from "twine-js";
+
+import { Api } from "../api/api";
+import {
+  ColorThemeWithName,
+  FontThemeWithName,
+  colorThemes,
+  fontThemes,
+} from "../theming/themes";
+import { InternoteEffect0, makeSetter } from ".";
 
 interface OwnState
   extends Omit<Preferences, "id" | "colorTheme" | "fontTheme" | "voice"> {

@@ -1,6 +1,6 @@
 import { CognitoUserPoolTriggerHandler } from "aws-lambda";
-import { randomDigits } from "crypto-secure-random-digit";
 import { SES } from "aws-sdk";
+import { randomDigits } from "crypto-secure-random-digit";
 
 const ses = new SES();
 

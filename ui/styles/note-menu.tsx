@@ -1,25 +1,26 @@
-import React from "react";
-import Fuse from "fuse.js";
-import { MenuControl } from "./menu-control";
 import { faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { GetNoteDTO } from "@internote/notes-service/types";
+import Fuse from "fuse.js";
+import Router from "next/router";
+import React from "react";
+import styled from "styled-components";
+
+import { useTwineActions, useTwineState } from "../store";
+import { size, spacing } from "../theming/symbols";
+import { combineStrings } from "../utilities/string";
 import {
+  DropdownChevron,
   DropdownMenu,
   DropdownMenuItem,
-  DropdownChevron,
 } from "./dropdown-menu";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled from "styled-components";
-import { spacing, size } from "../theming/symbols";
-import { OnNavigate } from "./on-navigate";
-import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
-import { combineStrings } from "../utilities/string";
-import { NoResults } from "./no-results";
-import { Tag } from "./tag";
-import { SearchMenuItem } from "./search-menu-item";
-import { useTwineState, useTwineActions } from "../store";
-import { GetNoteDTO } from "@internote/notes-service/types";
 import { InputWithIcons } from "./input-with-icons";
-import Router from "next/router";
+import { MenuControl } from "./menu-control";
+import { NoResults } from "./no-results";
+import { OnKeyboardShortcut } from "./on-keyboard-shortcut";
+import { OnNavigate } from "./on-navigate";
+import { SearchMenuItem } from "./search-menu-item";
+import { Tag } from "./tag";
 
 const NotesMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
   padding-top: 0;

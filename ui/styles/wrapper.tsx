@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
-import { media, spacing, size } from "../theming/symbols";
+
+import { media, size, spacing } from "../theming/symbols";
 
 export const wrapperStyles = css`
   padding-left: ${spacing._1};

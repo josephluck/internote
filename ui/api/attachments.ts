@@ -1,6 +1,8 @@
 import "isomorphic-fetch";
-import { Session } from "../auth/storage";
+
 import AWS, { S3 } from "aws-sdk";
+
+import { Session } from "../auth/storage";
 
 export function makeAttachmentsApi({
   region,

@@ -1,22 +1,23 @@
-import HttpError from "http-errors";
-import middy from "middy";
-import { jsonBodyParser, cors } from "middy/middlewares";
-import {
-  encodeResponse,
-  validateRequestBody,
-  jsonErrorHandler,
-} from "@internote/lib/middlewares";
-import { success } from "@internote/lib/responses";
 import { CreateHandler } from "@internote/lib/lambda";
 import {
+  encodeResponse,
+  jsonErrorHandler,
+  validateRequestBody,
+} from "@internote/lib/middlewares";
+import { success } from "@internote/lib/responses";
+import { isSingleWord, isString, required } from "@internote/lib/validator";
+import Axios from "axios";
+import HttpError from "http-errors";
+import middy from "middy";
+import { cors, jsonBodyParser } from "middy/middlewares";
+import { None, Option, Some } from "space-lift";
+
+import {
+  DictionaryResult,
   LookupRequestBody,
   LookupResponseBody,
   Oxford,
-  DictionaryResult,
 } from "./types";
-import { required, isString, isSingleWord } from "@internote/lib/validator";
-import Axios from "axios";
-import { Option, Some, None } from "space-lift";
 
 const api = Axios.create({
   baseURL: "https://od-api.oxforddictionaries.com:443/api/v2",

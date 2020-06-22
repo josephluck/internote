@@ -1,8 +1,9 @@
+import { Flex } from "@rebass/grid";
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+
 import { StoriesOf } from "../types";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
-import { Flex } from "@rebass/grid";
-import styled from "styled-components";
 
 const Collapse = styled(CollapseWidthOnHover)`
   background-color: ${(props) => props.theme.toolbarButtonActiveBackground};

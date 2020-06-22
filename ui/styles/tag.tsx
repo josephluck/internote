@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { font, spacing, borderRadius } from "../theming/symbols";
+
+import { borderRadius, font, spacing } from "../theming/symbols";
 
 export const Tag = styled.div<{ isFocused: boolean; large?: boolean }>`
   display: inline-flex;

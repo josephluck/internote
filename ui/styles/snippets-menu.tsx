@@ -10,6 +10,7 @@ import React, {
   useState,
 } from "react";
 import styled from "styled-components";
+
 import { useTwineActions, useTwineState } from "../store";
 import { font, size, spacing } from "../theming/symbols";
 import { Button } from "./button";
@@ -18,9 +19,9 @@ import { InputWithIcons } from "./input-with-icons";
 import { MenuControl } from "./menu-control";
 import { NoResults } from "./no-results";
 import { SearchMenuItem } from "./search-menu-item";
+import { Shortcut } from "./shortcuts";
 import { SnippetsContext } from "./snippets-context";
 import { ToolbarButton } from "./toolbar-button";
-import { Shortcut } from "./shortcuts";
 
 export const SnippetsButton: React.FunctionComponent<{
   onSnippetSelected: (snippet: GetSnippetDTO) => void;

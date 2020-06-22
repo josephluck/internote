@@ -1,5 +1,5 @@
-import { Note } from "./models";
 import { db } from "./db";
+import { Note } from "./models";
 
 export const NotesRepository = db
   .define(Note, {

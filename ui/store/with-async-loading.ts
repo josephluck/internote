@@ -1,4 +1,5 @@
 import { Twine } from "twine-js";
+
 import { GlobalState } from ".";
 
 type AnyModel = Twine.Model<any, any, any>;

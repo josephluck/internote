@@ -1,23 +1,24 @@
-import React, { useState } from "react";
-import { spacing } from "../theming/symbols";
-import { Logo } from "../styles/logo";
-import { BlockLink } from "../styles/link";
-import { useTwineState, useTwineActions } from "../store";
-import { Wrapper } from "./wrapper";
-import styled from "styled-components";
-import { NoteMenu } from "./note-menu";
-import { Flex } from "@rebass/grid";
-import { SettingsMenu } from "./settings-menu";
 import {
-  faPlus,
-  faSpinner,
   faCompress,
   faExpand,
+  faPlus,
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
-import { ExpandingIconButton } from "./expanding-icon-button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GetNoteDTO } from "@internote/notes-service/types";
+import { Flex } from "@rebass/grid";
+import React, { useState } from "react";
+import styled from "styled-components";
+
+import { useTwineActions, useTwineState } from "../store";
+import { BlockLink } from "../styles/link";
+import { Logo } from "../styles/logo";
+import { spacing } from "../theming/symbols";
+import { ExpandingIconButton } from "./expanding-icon-button";
 import { ExportMenu } from "./export-menu";
+import { NoteMenu } from "./note-menu";
+import { SettingsMenu } from "./settings-menu";
+import { Wrapper } from "./wrapper";
 
 const HeadingWrapper = styled.div<{
   distractionFree: boolean;

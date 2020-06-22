@@ -1,5 +1,6 @@
-import { isServer } from "../utilities/window";
 import CookieFactory, { CookieSetOptions } from "universal-cookie";
+
+import { isServer } from "../utilities/window";
 
 const days30InMs = 2.592e9;
 

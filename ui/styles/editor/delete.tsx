@@ -1,5 +1,6 @@
-import { useTwineActions } from "../../store";
 import { useCallback } from "react";
+
+import { useTwineActions } from "../../store";
 import { DeleteButton } from "../delete-button";
 
 export const DeleteNoteButton: React.FunctionComponent<{ noteId: string }> = ({

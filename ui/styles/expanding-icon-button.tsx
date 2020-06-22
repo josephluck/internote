@@ -1,7 +1,8 @@
 import React, { ReactNode } from "react";
-import { spacing, font, borderRadius } from "../theming/symbols";
-import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 import styled from "styled-components";
+
+import { borderRadius, font, spacing } from "../theming/symbols";
+import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 
 const ExpandingIcon = styled.div`
   transition: all 260ms ease;

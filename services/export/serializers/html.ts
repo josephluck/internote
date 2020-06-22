@@ -1,6 +1,6 @@
 import { InternoteEditorElement } from "@internote/lib/editor-types";
-import { Text } from "slate";
 import escapeHtml from "escape-html";
+import { Text } from "slate";
 
 const serializeText = (node: InternoteEditorElement): string => {
   if (node.bold) {

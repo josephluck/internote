@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useRef, useEffect } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 
 interface RenderMethods {
   requestPlay: () => void;

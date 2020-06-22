@@ -1,12 +1,13 @@
-import { useCallback, useRef, useState, useEffect } from "react";
-import zenscroll from "zenscroll";
-import {
-  findAncestor,
-  SLATE_BLOCK_CLASS_NAME,
-  SLATE_BLOCK_FOCUSED_CLASS_NAME,
-} from "./focus";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
+import { useCallback, useEffect, useRef, useState } from "react";
+import zenscroll from "zenscroll";
+
+import {
+  SLATE_BLOCK_CLASS_NAME,
+  SLATE_BLOCK_FOCUSED_CLASS_NAME,
+  findAncestor,
+} from "./focus";
 import { useCurrentSelection } from "./hooks";
 
 export const useDistractionFreeUx = (

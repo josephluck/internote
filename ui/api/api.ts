@@ -1,17 +1,19 @@
 import "isomorphic-fetch";
+
 import aws4 from "aws4";
-import { health } from "./health";
-import { preferences } from "./preferences";
-import { Session } from "../auth/storage";
-import { speech } from "./speech";
-import { dictionary } from "./dictionary";
-import { notes } from "./notes";
-import { tags } from "./tags";
-import { snippets } from "./snippets";
-import { exportNote } from "./export";
 import { Err, Ok } from "space-lift";
-import { Store } from "../store";
+
 import { isNearExpiry } from "../auth/api";
+import { Session } from "../auth/storage";
+import { Store } from "../store";
+import { dictionary } from "./dictionary";
+import { exportNote } from "./export";
+import { health } from "./health";
+import { notes } from "./notes";
+import { preferences } from "./preferences";
+import { snippets } from "./snippets";
+import { speech } from "./speech";
+import { tags } from "./tags";
 
 export type MakeSignedRequest = (options: AwsSignedRequest) => any;
 

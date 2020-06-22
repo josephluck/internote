@@ -1,8 +1,9 @@
+import { faExpand } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+
 import { StoriesOf } from "../types";
 import { ExpandingIconButton } from "./expanding-icon-button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExpand } from "@fortawesome/free-solid-svg-icons";
 
 export default function (s: StoriesOf) {
   s("ExpandingIconButton", module).add("With search", () => (

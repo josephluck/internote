@@ -1,11 +1,12 @@
+import { compress, decompress } from "@internote/lib/compression";
+import { isDbError } from "@internote/lib/errors";
 import HttpError from "http-errors";
+import { isEqualTo, match } from "type-dynamo";
+
+import { CreateNoteDTO, GetNoteDTO, UpdateNoteDTO } from "../types";
+import { defaultNote } from "./default-note";
 import { Note } from "./models";
 import { NotesRepository } from "./repositories";
-import { isDbError } from "@internote/lib/errors";
-import { match, isEqualTo } from "type-dynamo";
-import { GetNoteDTO, UpdateNoteDTO, CreateNoteDTO } from "../types";
-import { decompress, compress } from "@internote/lib/compression";
-import { defaultNote } from "./default-note";
 
 export const listNotesByUserId = async (
   userId: string

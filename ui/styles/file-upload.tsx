@@ -1,14 +1,15 @@
+import { faSpinner, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Flex } from "@rebass/grid";
+import React, { FormEvent, useCallback, useRef, useState } from "react";
 import { Signal } from "signals";
-import React, { useCallback, FormEvent, useRef, useState } from "react";
+import styled from "styled-components";
+
 import { makeAttachmentsApi } from "../api/attachments";
 import { env } from "../env";
 import { useTwineState } from "../store";
-import styled from "styled-components";
-import { CollapseWidthOnHover } from "./collapse-width-on-hover";
-import { Flex } from "@rebass/grid";
 import { spacing } from "../theming/symbols";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 
 const HiddenFileInput = styled.input`
   border: 0;

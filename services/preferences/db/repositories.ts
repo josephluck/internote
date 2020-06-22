@@ -1,5 +1,5 @@
-import { Preferences } from "./models";
 import { db } from "./db";
+import { Preferences } from "./models";
 
 export const PreferencesRepository = db
   .define(Preferences, {

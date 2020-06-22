@@ -1,5 +1,7 @@
+import { InternoteEditorElement } from "@internote/lib/editor-types";
 import React, { useCallback } from "react";
 import styled from "styled-components";
+
 import { useTwineState } from "../store";
 import { font, size, spacing } from "../theming/symbols";
 import { OutlineElement } from "./editor/types";
@@ -8,7 +10,6 @@ import {
   extractOutlineFromValue,
 } from "./editor/utils";
 import { Tag } from "./tag";
-import { InternoteEditorElement } from "@internote/lib/editor-types";
 
 export const Outline: React.FunctionComponent<{
   value: InternoteEditorElement[];

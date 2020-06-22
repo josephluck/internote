@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { spacing, size, font, borderRadius } from "../theming/symbols";
+
+import { borderRadius, font, size, spacing } from "../theming/symbols";
 import { ShortcutsContext, shortcutWillBePrevented } from "./shortcuts";
 import { Tag } from "./tag";
 

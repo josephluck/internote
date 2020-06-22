@@ -1,10 +1,11 @@
-import React from "react";
-import styled from "styled-components";
-import { spacing, borderRadius, font } from "../theming/symbols";
-import { Box } from "@rebass/grid";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box } from "@rebass/grid";
+import React from "react";
 import { Collapse } from "react-collapse";
+import styled from "styled-components";
+
+import { borderRadius, font, spacing } from "../theming/symbols";
 
 export const DropdownMenuContainer = styled.div<{
   showing: boolean;

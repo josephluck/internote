@@ -6,7 +6,7 @@
   "author": "",
   "scripts": {
     "clean": "find . -name \"node_modules\" -exec rm -rf '{}' + && find . -name \".build\" -exec rm -rf '{}' + && yarn cache clean",
-    "format": "prettier --write \"./**/*.{ts,tsx,js,json}\""
+    "format": "prettier --write \"./**/*.{ts,tsx,js}\""
   },
   "license": "ISC",
   "workspaces": {
@@ -20,7 +20,15 @@
       "**/serverless/**"
     ]
   },
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "style": "module",
+      "parser": "typescript"
+    }
+  },
   "devDependencies": {
-    "prettier": "^2.0.5"
+    "import-sort-style-module": "^6.0.0",
+    "prettier": "^2.0.5",
+    "prettier-plugin-import-sort": "^0.0.4"
   }
 }

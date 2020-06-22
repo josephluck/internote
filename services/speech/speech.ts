@@ -1,18 +1,19 @@
-import middy from "middy";
-import { jsonBodyParser, cors } from "middy/middlewares";
+import { CreateHandler } from "@internote/lib/lambda";
 import {
   encodeResponse,
-  validateRequestBody,
   jsonErrorHandler,
+  validateRequestBody,
 } from "@internote/lib/middlewares";
-import { success, exception } from "@internote/lib/responses";
-import { CreateHandler } from "@internote/lib/lambda";
-import { SpeechRequestBody, SpeechResponseBody, AvailableVoice } from "./types";
-import { required, inArray, isString } from "@internote/lib/validator";
+import { exception, success } from "@internote/lib/responses";
+import { getUserIdentityId } from "@internote/lib/user";
+import { inArray, isString, required } from "@internote/lib/validator";
 import AWS from "aws-sdk";
 import md5 from "md5";
+import middy from "middy";
+import { cors, jsonBodyParser } from "middy/middlewares";
+
 import { availableVoices } from "./available-voices";
-import { getUserIdentityId } from "@internote/lib/user";
+import { AvailableVoice, SpeechRequestBody, SpeechResponseBody } from "./types";
 
 const validator = validateRequestBody<SpeechRequestBody>({
   id: [required],

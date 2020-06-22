@@ -1,15 +1,16 @@
-import React from "react";
-import App from "next/app";
-import { font } from "../theming/symbols";
-import { injectTwine } from "../store";
-import { createGlobalStyle } from "styled-components";
-import Head from "next/head";
-import { sansSerif } from "../theming/themes";
-import { ShortcutsProvider } from "../styles/shortcuts";
-import { InternoteThemes } from "../styles/theme-provider";
-import { SnippetsProvider } from "../styles/snippets-context";
 import * as Sentry from "@sentry/node";
+import App from "next/app";
+import Head from "next/head";
+import React from "react";
+import { createGlobalStyle } from "styled-components";
+
 import { env } from "../env";
+import { injectTwine } from "../store";
+import { ShortcutsProvider } from "../styles/shortcuts";
+import { SnippetsProvider } from "../styles/snippets-context";
+import { InternoteThemes } from "../styles/theme-provider";
+import { font } from "../theming/symbols";
+import { sansSerif } from "../theming/themes";
 
 Sentry.init({
   enabled: env.NODE_ENV === "production",

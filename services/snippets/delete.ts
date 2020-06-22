@@ -1,9 +1,10 @@
-import middy from "middy";
-import { httpErrorHandler, cors } from "middy/middlewares";
+import { DeleteHandler } from "@internote/lib/lambda";
 import { encodeResponse } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
-import { DeleteHandler } from "@internote/lib/lambda";
+import middy from "middy";
+import { cors, httpErrorHandler } from "middy/middlewares";
+
 import { deleteSnippetById } from "./db/queries";
 
 const del33t: DeleteHandler<{ snippetId: string }> = async (

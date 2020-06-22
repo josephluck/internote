@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { borderRadius, spacing, font } from "../theming/symbols";
+
+import { borderRadius, font, spacing } from "../theming/symbols";
 import { sansSerif } from "../theming/themes";
 
 const UploadingWrapper = styled.div`

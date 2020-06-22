@@ -1,6 +1,7 @@
 import React from "react";
-import { Button } from "./button";
+
 import { StoriesOf } from "../types";
+import { Button } from "./button";
 
 export default function (s: StoriesOf) {
   s("Button", module)
