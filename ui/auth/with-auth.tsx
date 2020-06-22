@@ -5,13 +5,13 @@ import { isServer } from "../utilities/window";
 import { isNearExpiry } from "./api";
 import { makeAuthStorage } from "./storage";
 import { setCookie } from "nookies";
-import { NextPageContext } from "next";
+import { NextPageContext, NextPage } from "next";
 
 interface Options {
   restricted: boolean;
 }
 
-export function withAuth<C extends typeof React.Component>(
+export function withAuth<C extends NextPage>(
   Child: C,
   options: Options = { restricted: true }
 ) {

@@ -23,7 +23,7 @@ const Instructions = styled.p`
   margin: 0 auto;
 `;
 
-const Page: NextTwineSFC<Store, {}> = () => {
+const Page: NextTwineSFC<Store> = () => {
   const authenticateLoading = useTwineState(
     (state) => state.auth.loading.signUp
   );
@@ -92,4 +92,4 @@ const Page: NextTwineSFC<Store, {}> = () => {
   );
 };
 
-export default withAuth(Page as any, { restricted: false });
+export default withAuth(Page, { restricted: false });

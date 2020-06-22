@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Twine } from "twine-js";
-import { NextPageContext } from "next";
+import { NextPageContext, NextComponentType } from "next";
 
 const STORE_KEY = "__TWINE_STORE__";
 
@@ -159,16 +159,8 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
   };
 }
 
-export interface NextTwineSFC<
+export type NextTwineSFC<
   Store extends Twine.Return<any, any>,
-  ExtraProps = {}
->
-  extends React.StatelessComponent<
-    ExtraProps & {
-      store: Store;
-    }
-  > {
-  getInitialProps?: (
-    ctx: NextPageContext & { store: Store }
-  ) => Promise<ExtraProps>;
-}
+  P = {},
+  IP = P
+> = NextComponentType<NextPageContext & { store: Store }, P, IP>;
