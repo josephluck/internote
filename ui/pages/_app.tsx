@@ -5,7 +5,6 @@ import React from "react";
 import { createGlobalStyle } from "styled-components";
 
 import { env } from "../env";
-import { injectTwine } from "../store";
 import { ShortcutsProvider } from "../styles/shortcuts";
 import { SnippetsProvider } from "../styles/snippets-context";
 import { InternoteThemes } from "../styles/theme-provider";
@@ -17,13 +16,9 @@ Sentry.init({
   dsn: env.SENTRY_DSN,
 });
 
-export class Application extends App {
-  componentDidMount() {
-    const { store } = this.props as any;
-    store.actions.auth.scheduleRefresh();
-  }
+export default class Application extends App<{ err: any }> {
   render() {
-    const { Component, pageProps, store, err } = this.props as any;
+    const { Component, pageProps, err } = this.props;
     return (
       <InternoteThemes>
         <>
@@ -33,7 +28,7 @@ export class Application extends App {
           <GlobalStyles />
           <ShortcutsProvider>
             <SnippetsProvider>
-              <Component {...pageProps} err={err} store={store} />
+              <Component {...pageProps} err={err} />
             </SnippetsProvider>
           </ShortcutsProvider>
         </>
@@ -41,8 +36,6 @@ export class Application extends App {
     );
   }
 }
-
-export default injectTwine(Application);
 
 export const GlobalStyles = createGlobalStyle`
   * {

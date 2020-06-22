@@ -1,4 +1,4 @@
-import { NextComponentType, NextPageContext } from "next";
+import { NextComponentType, NextPage, NextPageContext } from "next";
 import * as React from "react";
 import { Twine } from "twine-js";
 
@@ -97,7 +97,7 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
     return actions as ReturnType<typeof mapActions>;
   }
 
-  function injectTwine(Child: any) {
+  function injectTwine<Page extends NextPage>(Child: Page) {
     return class WithTwine extends React.Component {
       store: Store;
 
@@ -105,12 +105,7 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
         super(props, context);
 
         const { initialState, store } = props;
-        const validStore =
-          store &&
-          "state" in store &&
-          "actions" in store &&
-          "subscribe" in store &&
-          "getState" in store;
+        const validStore = isValidStore(store);
 
         if (validStore) {
           this.store = store;
@@ -123,19 +118,21 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
         }
       }
 
-      static async getInitialProps(app) {
+      static async getInitialProps(
+        ctx: NextPageContext & { store: Twine.Return<any, any> }
+      ) {
         const store = initStore<Store>(makeStore);
-        app.ctx.store = { ...store, state: store.getState() };
+        ctx.store = { ...store, state: store.getState() };
 
         const initialProps = Child.getInitialProps
-          ? await Child.getInitialProps.call(Child, app)
+          ? await Child.getInitialProps.call(Child, ctx)
           : {};
-        const initialState = app.ctx.store.getState();
+        const initialState = ctx.store.getState();
 
         return {
           initialState,
           initialProps,
-          store: { ...app.ctx.store, state: initialState },
+          store: { ...ctx.store, state: initialState },
         };
       }
 
@@ -158,6 +155,13 @@ export function makeTwineHooks<Store extends Twine.Return<any, any>>(
     TwineContext,
   };
 }
+
+const isValidStore = (store: any): store is Twine.Return<any, any> =>
+  store &&
+  "state" in store &&
+  "actions" in store &&
+  "subscribe" in store &&
+  "getState" in store;
 
 export type NextTwineSFC<
   Store extends Twine.Return<any, any>,

@@ -73,8 +73,8 @@ export function withAuth<C extends NextPage>(
       }
 
       await initAuthRequest().catch(() => {
-        context.store.actions.auth.signOut();
         if (options.restricted) {
+          context.store.actions.auth.signOut();
           redirectToLogin();
         }
       });

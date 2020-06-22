@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { withAuth } from "../auth/with-auth";
 import { Store, useTwineActions, useTwineState } from "../store";
+import { injectTwine } from "../store";
 import { NextTwineSFC } from "../store/with-twine";
 import { Global } from "../styles/global";
 import { Heading } from "../styles/heading";
@@ -20,6 +21,7 @@ const Page: NextTwineSFC<Store, { id: string | string[] }> = ({ id }) => {
     [id],
     (prev, next) => prev.noteId === next.noteId
   );
+
   const navigateToFirstNote = useTwineActions(
     (actions) => actions.ui.navigateToFirstNote
   );
@@ -43,7 +45,6 @@ Page.getInitialProps = async ({ store, query }) => {
       store.actions.snippets.fetchSnippets(),
     ]);
   } else {
-    // No need to wait if notes are already fetched - just update in background
     store.actions.notes.fetchNotes();
     store.actions.tags.fetchTags();
     store.actions.snippets.fetchSnippets();
@@ -53,4 +54,4 @@ Page.getInitialProps = async ({ store, query }) => {
   };
 };
 
-export default withAuth(Page, { restricted: true });
+export default injectTwine(withAuth(Page, { restricted: true }));

@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import { withAuth } from "../auth/with-auth";
 import { Store, useTwineActions, useTwineState } from "../store";
+import { injectTwine } from "../store";
 import { NextTwineSFC } from "../store/with-twine";
 import { Button } from "../styles/button";
 import { Input, InputLabel } from "../styles/input";
@@ -93,4 +94,4 @@ const Page: NextTwineSFC<Store> = () => {
   );
 };
 
-export default withAuth(Page, { restricted: false });
+export default injectTwine(withAuth(Page, { restricted: false }));
