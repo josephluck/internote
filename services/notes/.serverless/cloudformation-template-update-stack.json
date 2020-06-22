@@ -155,7 +155,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-notes-service/dev/1592685246581-2020-06-20T20:34:06.581Z/internote-notes-service.zip"
+          "S3Key": "serverless/internote-notes-service/dev/1592843212464-2020-06-22T16:26:52.464Z/internote-notes-service.zip"
         },
         "FunctionName": "internote-notes-service-dev-list",
         "Handler": "list.handler",
@@ -181,14 +181,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "ListLambdaVersiondNXbOSwMeCTLqgq5vJpm3eRvOOcDSEuv28f044tViLI": {
+    "ListLambdaVersionqoagPdAvM1ZldWlWuz0bjlDM23NG20sTCnIDcQNzi4": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ListLambdaFunction"
         },
-        "CodeSha256": "o/AC/w4yHkRhFwkk2RGBHWZkVp4/LSZXqphAIYfAdAM="
+        "CodeSha256": "tPoYaV2p7+YQkxJwV5/87xeV5ol5mecQHwvdW2g5zMc="
       }
     },
     "GetLambdaFunction": {
@@ -198,7 +198,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-notes-service/dev/1592685246581-2020-06-20T20:34:06.581Z/internote-notes-service.zip"
+          "S3Key": "serverless/internote-notes-service/dev/1592843212464-2020-06-22T16:26:52.464Z/internote-notes-service.zip"
         },
         "FunctionName": "internote-notes-service-dev-get",
         "Handler": "get.handler",
@@ -224,14 +224,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetLambdaVersionuEiGBpLN42aqETQBbxZuw4C3a7weP0SWMPbI7H1bjiQ": {
+    "GetLambdaVersion3mqqu6FJSu8P86oGtnOCPXqeOSqNDH9YOH54fNWN8": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetLambdaFunction"
         },
-        "CodeSha256": "o/AC/w4yHkRhFwkk2RGBHWZkVp4/LSZXqphAIYfAdAM="
+        "CodeSha256": "tPoYaV2p7+YQkxJwV5/87xeV5ol5mecQHwvdW2g5zMc="
       }
     },
     "CreateLambdaFunction": {
@@ -241,7 +241,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-notes-service/dev/1592685246581-2020-06-20T20:34:06.581Z/internote-notes-service.zip"
+          "S3Key": "serverless/internote-notes-service/dev/1592843212464-2020-06-22T16:26:52.464Z/internote-notes-service.zip"
         },
         "FunctionName": "internote-notes-service-dev-create",
         "Handler": "create.handler",
@@ -267,14 +267,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "CreateLambdaVersionF1a1X8nSGoWUXNaoWCUt54rgx1xgxoQdofpbkWbe8": {
+    "CreateLambdaVersion8xUBNUqBbLg1Izb6gVMSFThPIT5vRbLgdfGZUjpaLM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateLambdaFunction"
         },
-        "CodeSha256": "o/AC/w4yHkRhFwkk2RGBHWZkVp4/LSZXqphAIYfAdAM="
+        "CodeSha256": "tPoYaV2p7+YQkxJwV5/87xeV5ol5mecQHwvdW2g5zMc="
       }
     },
     "UpdateLambdaFunction": {
@@ -284,7 +284,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-notes-service/dev/1592685246581-2020-06-20T20:34:06.581Z/internote-notes-service.zip"
+          "S3Key": "serverless/internote-notes-service/dev/1592843212464-2020-06-22T16:26:52.464Z/internote-notes-service.zip"
         },
         "FunctionName": "internote-notes-service-dev-update",
         "Handler": "update.handler",
@@ -310,14 +310,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateLambdaVersion0RRXwL6QiQHQbayv9MFdjxht7CcwQ7VSfnBbPHM5O4": {
+    "UpdateLambdaVersionz3FTjDapZ0wTMXi78HocIM7rqBfYr2YjNDEtx31Hk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateLambdaFunction"
         },
-        "CodeSha256": "o/AC/w4yHkRhFwkk2RGBHWZkVp4/LSZXqphAIYfAdAM="
+        "CodeSha256": "tPoYaV2p7+YQkxJwV5/87xeV5ol5mecQHwvdW2g5zMc="
       }
     },
     "DeleteLambdaFunction": {
@@ -327,7 +327,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-notes-service/dev/1592685246581-2020-06-20T20:34:06.581Z/internote-notes-service.zip"
+          "S3Key": "serverless/internote-notes-service/dev/1592843212464-2020-06-22T16:26:52.464Z/internote-notes-service.zip"
         },
         "FunctionName": "internote-notes-service-dev-delete",
         "Handler": "delete.handler",
@@ -353,14 +353,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteLambdaVersion1t5rPa0sSNrJAnYqkO0hMzMMjoNmv5DU0CIE75G6E": {
+    "DeleteLambdaVersiony651Rc4iyGTZOzFzsI2NyWgDjdaokUWJzMiz2QHvWU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteLambdaFunction"
         },
-        "CodeSha256": "o/AC/w4yHkRhFwkk2RGBHWZkVp4/LSZXqphAIYfAdAM="
+        "CodeSha256": "tPoYaV2p7+YQkxJwV5/87xeV5ol5mecQHwvdW2g5zMc="
       }
     },
     "TagsLambdaFunction": {
@@ -370,7 +370,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-notes-service/dev/1592685246581-2020-06-20T20:34:06.581Z/internote-notes-service.zip"
+          "S3Key": "serverless/internote-notes-service/dev/1592843212464-2020-06-22T16:26:52.464Z/internote-notes-service.zip"
         },
         "FunctionName": "internote-notes-service-dev-tags",
         "Handler": "tags.handler",
@@ -396,14 +396,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "TagsLambdaVersionJjKhlIJ9vOsMFXkUsPf1136UKRKfaTSyZP72rGb2OfE": {
+    "TagsLambdaVersionTZbJjbKmhj7K8IeK1qArF9oNcbh1EmwhJzvIcrqJQVQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "TagsLambdaFunction"
         },
-        "CodeSha256": "o/AC/w4yHkRhFwkk2RGBHWZkVp4/LSZXqphAIYfAdAM="
+        "CodeSha256": "tPoYaV2p7+YQkxJwV5/87xeV5ol5mecQHwvdW2g5zMc="
       }
     },
     "ApiGatewayResourceNotes": {
@@ -841,7 +841,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1592685193294": {
+    "ApiGatewayDeployment1592843178275": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -1087,6 +1087,9 @@
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "TableName": "dev-notes",
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        },
         "AttributeDefinitions": [
           {
             "AttributeName": "noteId",
@@ -1120,37 +1123,37 @@
     "ListLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ListLambdaVersiondNXbOSwMeCTLqgq5vJpm3eRvOOcDSEuv28f044tViLI"
+        "Ref": "ListLambdaVersionqoagPdAvM1ZldWlWuz0bjlDM23NG20sTCnIDcQNzi4"
       }
     },
     "GetLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetLambdaVersionuEiGBpLN42aqETQBbxZuw4C3a7weP0SWMPbI7H1bjiQ"
+        "Ref": "GetLambdaVersion3mqqu6FJSu8P86oGtnOCPXqeOSqNDH9YOH54fNWN8"
       }
     },
     "CreateLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateLambdaVersionF1a1X8nSGoWUXNaoWCUt54rgx1xgxoQdofpbkWbe8"
+        "Ref": "CreateLambdaVersion8xUBNUqBbLg1Izb6gVMSFThPIT5vRbLgdfGZUjpaLM"
       }
     },
     "UpdateLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateLambdaVersion0RRXwL6QiQHQbayv9MFdjxht7CcwQ7VSfnBbPHM5O4"
+        "Ref": "UpdateLambdaVersionz3FTjDapZ0wTMXi78HocIM7rqBfYr2YjNDEtx31Hk"
       }
     },
     "DeleteLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteLambdaVersion1t5rPa0sSNrJAnYqkO0hMzMMjoNmv5DU0CIE75G6E"
+        "Ref": "DeleteLambdaVersiony651Rc4iyGTZOzFzsI2NyWgDjdaokUWJzMiz2QHvWU"
       }
     },
     "TagsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "TagsLambdaVersionJjKhlIJ9vOsMFXkUsPf1136UKRKfaTSyZP72rGb2OfE"
+        "Ref": "TagsLambdaVersionTZbJjbKmhj7K8IeK1qArF9oNcbh1EmwhJzvIcrqJQVQ"
       }
     },
     "ServiceEndpoint": {

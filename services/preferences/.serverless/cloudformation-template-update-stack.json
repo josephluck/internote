@@ -131,7 +131,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-preferences-service/dev/1592685864596-2020-06-20T20:44:24.596Z/internote-preferences-service.zip"
+          "S3Key": "serverless/internote-preferences-service/dev/1592843408795-2020-06-22T16:30:08.795Z/internote-preferences-service.zip"
         },
         "FunctionName": "internote-preferences-service-dev-get",
         "Handler": "get.handler",
@@ -157,14 +157,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetLambdaVersionLXdjrd0szLwONUyGay8tQ6oXJ0Y74R6EcOzPLqlOGc": {
+    "GetLambdaVersiona5ws0RAdUICp0x6DNr1XeV2M6Dw4RYauWP9U87rg": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetLambdaFunction"
         },
-        "CodeSha256": "tQGs+W7fAdHNn4+J71afVrU8gBDxYx9h6EZ67SW/d4k="
+        "CodeSha256": "1obzUKrqyUjwHcwOCJVJRFJ/PFKxcUElur8LjsQIyuY="
       }
     },
     "UpdateLambdaFunction": {
@@ -174,7 +174,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/internote-preferences-service/dev/1592685864596-2020-06-20T20:44:24.596Z/internote-preferences-service.zip"
+          "S3Key": "serverless/internote-preferences-service/dev/1592843408795-2020-06-22T16:30:08.795Z/internote-preferences-service.zip"
         },
         "FunctionName": "internote-preferences-service-dev-update",
         "Handler": "update.handler",
@@ -200,14 +200,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateLambdaVersion9LP479VthBglmo4HJ3WDIt5DGIZGWB5Cg1vJpqRPE": {
+    "UpdateLambdaVersionQMKipN6BO2rinf15o7Ksxx4plhWZalOIKRkp0ZwAc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateLambdaFunction"
         },
-        "CodeSha256": "tQGs+W7fAdHNn4+J71afVrU8gBDxYx9h6EZ67SW/d4k="
+        "CodeSha256": "1obzUKrqyUjwHcwOCJVJRFJ/PFKxcUElur8LjsQIyuY="
       }
     },
     "ApiGatewayResourcePreferences": {
@@ -355,7 +355,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1592685829836": {
+    "ApiGatewayDeployment1592843359548": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -447,6 +447,9 @@
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "TableName": "dev-preferences",
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        },
         "AttributeDefinitions": [
           {
             "AttributeName": "id",
@@ -472,13 +475,13 @@
     "GetLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetLambdaVersionLXdjrd0szLwONUyGay8tQ6oXJ0Y74R6EcOzPLqlOGc"
+        "Ref": "GetLambdaVersiona5ws0RAdUICp0x6DNr1XeV2M6Dw4RYauWP9U87rg"
       }
     },
     "UpdateLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateLambdaVersion9LP479VthBglmo4HJ3WDIt5DGIZGWB5Cg1vJpqRPE"
+        "Ref": "UpdateLambdaVersionQMKipN6BO2rinf15o7Ksxx4plhWZalOIKRkp0ZwAc"
       }
     },
     "ServiceEndpoint": {

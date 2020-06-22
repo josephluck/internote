@@ -1,5 +1,5 @@
 {
   "components": {
-    "app": "/home/josephreubenluck/.serverless/components/registry/npm/serverless-next.js@1.14.0/node_modules/serverless-next.js"
+    "app": "/home/josephreubenluck/.serverless/components/registry/npm/serverless-next.js@1.15.0-alpha.0/node_modules/serverless-next.js"
   }
 }

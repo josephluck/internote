@@ -234,7 +234,7 @@ Non-sensitive environment variables such as the "stage" (production or developme
 
 Sensitive variables (such as private API keys) are stored in AWS Parameter Store and are referenced inside the Serverless framework configuration files in the codebase. These variables are not committed to source control.
 
-**Important: **Since the Serverless framework does not have SSM permissions by default they need to be added to the Serverless user in IAM. See below for more info.
+**Important:** Since the Serverless framework does not have SSM permissions by default they need to be added to the Serverless user in IAM. See below for more info.
 
 In general, secrets stored in SSM are prefixed with the "stage". For example `/internote/dev/OXFORD_API_ID` / `/internote/prod/OXFORD_API_ID`. These are then referenced in the relevant `serverless.yml` files using string substitution on the stage of the deployment.
 
@@ -272,7 +272,7 @@ Since the application is running on seed.run's free tier, it's important to keep
 
 ## Seed.run IAM
 
-There is a CloudFormation stack set up to manage iAM roles etc that seed.run needs, which was set up by seed.run when the project was set up. However, since Internote uses font-awesome, the npm token needs to be added as an environment variable to seed.run. Please see `seed.yml` and the official documentation for more info.
+There is a CloudFormation stack set up to manage IAM roles etc that seed.run needs, which was set up by seed.run when the project was set up. However, since Internote uses font-awesome, the npm token needs to be added as an environment variable to seed.run. Please see `seed.yml` and the official documentation for more info.
 
 # Logs
 
@@ -290,27 +290,29 @@ Logging is available in CloudWatch inside the AWS console.
 
 Logging and metrics are also available in Dashbird.
 
-There is a CloudFormation stack set up to manage iAM roles etc that Dashbird needs. These were provisioned by Dashbird when the project was set up.
+There is a CloudFormation stack set up to manage IAM roles etc that Dashbird needs. These were provisioned by Dashbird when the project was set up.
 
 # Additional IAM permissions
 
-The serverless policy needs the following additional permissions to deploy the app:
+The serverless policy needs the following additional IAM permissions to deploy the app:
 
-- "s3:PutBucketAcl"
-- "acm:ListCertificates"
-- "apigateway:GET"
-- "apigateway:DELETE"
-- "apigateway:POST"
-- "apigateway:POST"
-- "cloudfront:UpdateDistribution"
-- "route53:ListHostedZones"
-- "route53:ChangeResourceRecordSets"
-- "route53:GetHostedZone"
-- "route53:ListResourceRecordSets"
-- "iam:CreateServiceLinkedRole"
-- "ssm:\*"
-- "logs:PutSubscriptionFilter"
-- "route53:ListHostedZonesByName"
-- "acm:RequestCertificate"
-- "acm:DescribeCertificate"
-- "iam:AttachRolePolicy"
+- `s3:PutBucketAcl`
+- `acm:ListCertificates`
+- `apigateway:GET`
+- `apigateway:DELETE`
+- `apigateway:POST`
+- `apigateway:POST`
+- `cloudfront:UpdateDistribution`
+- `route53:ListHostedZones`
+- `route53:ChangeResourceRecordSets`
+- `route53:GetHostedZone`
+- `route53:ListResourceRecordSets`
+- `iam:CreateServiceLinkedRole`
+- `ssm:*`
+- `logs:PutSubscriptionFilter`
+- `route53:ListHostedZonesByName`
+- `acm:RequestCertificate`
+- `acm:DescribeCertificate`
+- `iam:AttachRolePolicy`
+- `dynamodb:DescribeContinuousBackups`
+- `dynamodb:UpdateContinuousBackups`
