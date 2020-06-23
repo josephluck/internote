@@ -13,3 +13,4 @@ storybook-static
 aws-env
 *.zip
 ui/next.config.original.*
+cdk.out/

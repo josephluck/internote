@@ -17,12 +17,15 @@
   },
   "dependencies": {
     "@internote/lib": "*",
+    "@internote/infra": "*",
     "aws-sdk": "^2.520.0",
     "http-errors": "^1.7.3",
     "md5": "^2.2.1",
     "middy": "^0.29.0"
   },
   "devDependencies": {
+    "@aws-cdk/core": "*",
+    "@aws-cdk/aws-apigateway": "*",
     "@types/jest": "^24.0.18",
     "@types/md5": "^2.1.33",
     "jest": "^24.9.0",

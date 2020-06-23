@@ -12,8 +12,12 @@ import md5 from "md5";
 import middy from "middy";
 import { cors, jsonBodyParser } from "middy/middlewares";
 
-import { availableVoices } from "./available-voices";
-import { AvailableVoice, SpeechRequestBody, SpeechResponseBody } from "./types";
+import { availableVoices } from "../available-voices";
+import {
+  AvailableVoice,
+  SpeechRequestBody,
+  SpeechResponseBody,
+} from "../types";
 
 const validator = validateRequestBody<SpeechRequestBody>({
   id: [required],
