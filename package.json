@@ -11,9 +11,18 @@
   "license": "ISC",
   "workspaces": {
     "packages": [
-      "api",
-      "ui",
-      "services/*"
+      "attachments",
+      "auth",
+      "collaborate",
+      "dictionary",
+      "export",
+      "health",
+      "lib",
+      "notes",
+      "preferences",
+      "snippets",
+      "speech",
+      "ui"
     ],
     "nohoist": [
       "**/serverless",

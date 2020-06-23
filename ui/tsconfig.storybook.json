@@ -6,5 +6,5 @@
     "lib": ["dom", "es7", "webworker"],
     "jsx": "react"
   },
-  "include": ["**/*", "../services/**/*"]
+  "include": ["**/*", "../**/*"]
 }
