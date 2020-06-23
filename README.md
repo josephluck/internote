@@ -166,7 +166,7 @@ There are two domains available for Internote services:
 - https://dev-services.internote.app
 - https://services.internote.app
 
-Each service is responsible for defining it's routing via it's serverless.yml definition. Deployment of the API gateway and domain name is done in the services/health/serverless.yml[/services/health/serverless.yml] service via serverless-domain-manager.
+Each service is responsible for defining it's routing via it's serverless.yml definition. Deployment of the API gateway and domain name is done in the [services/health/serverless.yml](/services/health/serverless.yml) service via serverless-domain-manager.
 
 **API Gateway**
 
@@ -224,7 +224,7 @@ There is a special mention for the front-end Next.js SSR Lambdas, which are depl
 
 # Environment variables
 
-There are multiple ways that environment variables are handled in Internote.
+There are multiple ways that environment variables are handled in Internote. There are no environment variables committed to source control.
 
 ## Non sensitive variables
 
@@ -240,7 +240,15 @@ In general, secrets stored in SSM are prefixed with the "stage". For example `/i
 
 ## Front-end environment variables
 
-Since Serverless components has not figured out a good way to deal with secret environment variables properly (with respect to KMS), the [`aws-env`](https://github.com/Droplr/aws-env) executable is used to generate a `.env` file in the root of the `ui` project from AWS SSM variables. Serverless components then picks up the keys in the `.env` file and loads them in to the app. The `.env` file is in `.gitignore`.
+#### In development
+
+To support next's local development environment the [aws-env](https://github.com/Droplr/aws-env) executable is used to import and hydrate process.env from AWS SSM variables in-line before the development server has started. Similarly, when running a "built" version of the app, aws-env is used to hydrate the process.env before the server starts.
+
+aws-env is configured to load _all_ variables prefixed with the "stage" for example `/internote/dev/*`.
+
+#### In serverless (deployed)
+
+Environment configuration is injected in to the serverless build scripts via AWS SSM using the AWS SDK for node. These environment variables are loaded in to the configuration at build time.
 
 ## Variable explanations
 

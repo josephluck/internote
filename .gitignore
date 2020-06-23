@@ -6,11 +6,10 @@ node_modules
 .env.local
 .build
 .webpack
-ui/public/service-worker.js
 env.json
-sls-next-build
 .serverless_nextjs
 .awcache
 storybook-static
 aws-env
 *.zip
+ui/next.config.original.*

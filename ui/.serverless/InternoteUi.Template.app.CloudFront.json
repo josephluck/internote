@@ -1,7 +1,7 @@
 {
-  "id": "E27SZYKCPDDV91",
-  "arn": "arn:aws:cloudfront::822567739604:distribution/E27SZYKCPDDV91",
-  "url": "https://d1ni6wjeboud3l.cloudfront.net",
+  "id": "E19TON74HSP085",
+  "arn": "arn:aws:cloudfront::822567739604:distribution/E19TON74HSP085",
+  "url": "https://d3arsrdwwgxx2f.cloudfront.net",
   "region": "us-east-1",
   "origins": [
     {
@@ -21,7 +21,7 @@
             "GET"
           ],
           "lambda@edge": {
-            "origin-request": "arn:aws:lambda:us-east-1:822567739604:function:yjkcvpc-r7tmuu7:16"
+            "origin-request": "arn:aws:lambda:us-east-1:822567739604:function:hm8ij7s-kv5gkze:1"
           }
         }
       }
@@ -38,7 +38,7 @@
       "GET"
     ],
     "lambda@edge": {
-      "origin-request": "arn:aws:lambda:us-east-1:822567739604:function:yjkcvpc-r7tmuu7:16"
+      "origin-request": "arn:aws:lambda:us-east-1:822567739604:function:hm8ij7s-kv5gkze:1"
     }
   }
 }

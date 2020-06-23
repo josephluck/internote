@@ -34,7 +34,7 @@ InternoteErrorPage.getInitialProps = async ({ res, err, asPath }) => {
     Sentry.captureException(err, {
       extra: {
         isServer,
-        environment: env.ENVIRONMENT,
+        environment: env.STAGE,
       },
     });
     return errorInitialProps;
