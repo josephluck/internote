@@ -8,7 +8,7 @@ import webpack from "webpack";
 
 const services = [
   // "attachments",
-  // "auth",
+  "auth",
   // "collaborate",
   // "dictionary",
   // "export",

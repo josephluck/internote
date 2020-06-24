@@ -1,33 +1,19 @@
-import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as cdk from "@aws-cdk/core";
+import { InternoteGatewayStack } from "@internote/auth-service/cdk";
 import { InternoteSpeechStack } from "@internote/speech-service/cdk";
 
+// import { InternoteApiGatewayStack } from "./api-gateway";
 import { buildServices } from "./build-services";
 
-type InternoteApiGatewayStackProps = cdk.StackProps & {};
-
-class InternoteApiGatewayStack extends cdk.Stack {
-  api: apigateway.RestApi;
-  cognitoAuthorizer: apigateway.IAuthorizer;
-
-  constructor(
-    scope: cdk.App,
-    id: string,
-    props: InternoteApiGatewayStackProps = {}
-  ) {
-    super(scope, id, props);
-
-    this.api = new apigateway.RestApi(this, id, {
-      restApiName: "Internote API",
-    });
-
-    // TODO: get this from the auth CDK stack (https://github.com/aws-samples/aws-cdk-examples/blob/master/typescript/cognito-api-lambda/index.ts#L25)
-    this.cognitoAuthorizer = {
-      authorizerId: "",
-      authorizationType: apigateway.AuthorizationType.COGNITO,
-    };
-  }
-}
+/**
+ * TODOS
+ *
+ * - Build out remaining stacks
+ * - Route53
+ * - Federated identity for direct S3 upload for attachments
+ * - Migration of DynamoDB data from existing infra
+ * - Migration of users from existing user pool
+ */
 
 export const build = async () => {
   try {
@@ -37,15 +23,11 @@ export const build = async () => {
     throw err;
   }
 
-  const id = `internote`; // TODO: stage?
+  const id = `internote-cdk-experiment`; // TODO: stage?
   const props = {};
   const app = new cdk.App();
 
-  const { api, cognitoAuthorizer } = new InternoteApiGatewayStack(
-    app,
-    `${id}-api-gateway-service`,
-    props
-  );
+  const { api, cognitoAuthorizer } = new InternoteGatewayStack(app, id, props);
 
   const speechStack = new InternoteSpeechStack(app, `${id}-speech-service`, {
     ...props,

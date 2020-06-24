@@ -47,7 +47,7 @@ export class InternoteLambdaApiIntegration extends cdk.Construct {
     this.lambdaFn = new lambda.Function(this, name, {
       code: new lambda.AssetCode(path.join(dirname, ".build")),
       handler: handler,
-      runtime: lambda.Runtime.NODEJS_8_10,
+      runtime: lambda.Runtime.NODEJS_12_X,
       environment: {},
       timeout: cdk.Duration.seconds(30),
       memorySize: 256,

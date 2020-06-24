@@ -20,11 +20,12 @@ export class InternoteSpeechStack extends cdk.Stack {
 
     const speechLambda = new InternoteLambdaApiIntegration(
       this,
-      `${id}LambdaSpeechHandler`,
+      `${id}-speech-handler-lambda`,
       {
         dirname: __dirname,
         name: "speech",
         handler: "handler",
+        options: { functionName: `${id}-speech-handler` },
       }
     );
 
@@ -32,8 +33,8 @@ export class InternoteSpeechStack extends cdk.Stack {
       authorizer: props.cognitoAuthorizer,
     });
 
-    const bucket = new s3.Bucket(this, `${id}AudioFilesBucket`, {
-      bucketName: `${id}AudioFiles`,
+    const bucket = new s3.Bucket(this, `${id}-audio-files-bucket`, {
+      bucketName: `${id}-audio-files-bucket`,
       removalPolicy: RemovalPolicy.DESTROY,
       publicReadAccess: true, // TODO: limit to current authenticated user via cognito if possible..
     });

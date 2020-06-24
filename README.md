@@ -196,6 +196,28 @@ Although Internote does not support replies on emails sent to users, an S3 bucke
 
 # Deployment
 
+The infrastructure for Internote is managed by AWS CDK. In order to deploy Internote, you will need to have set up an AWS account and installed the AWS CDK CLI (please refer to official documentation for how to do this). Then, you will need to set up AWS profile with credentials under the `internote` profile. If you're on a mac, the configuration will usually be stored at `~/.aws/credentials`.
+
+## CDK structure
+
+The entire application is constructed of a CDK App which is made up (loosely) of one CDK Stack per service and with each CDK Stack containing CDK Constructs.
+
+#### Naming conventions
+
+The Internote infrastructure follows an extension naming convention whereby identifiers are extended as such:
+
+- The top-level CDK App defines the root identifier. This is how environments are supported, aka `internote-dev`
+- Each CDK Stack assumes that a namespace has already been given aka `new InternoteSomethingStack(this,`\${id}-something`)`
+- Within each CDK Stack, Constructs are extended similarly aka `new lambda.Function(this,`\${id}-awesome-lambda`)`
+- Construct identifiers are suffixed with the type of Construct aka `-lambda`, `-bucket`
+- Constructs that accept a "name" option, such as Lambda functions or S3 buckets take the identifier without the Construct suffix, aka `{ functionName:`\${id}-awesome`}`.
+
+#### Custom constructs
+
+There are some custom CDK Constructs defined that provide sensible abstractions and defaults specific to Internote. These are available in the `infra` workspace under `constructs`.
+
+# [OLD] serverless framework deployment
+
 ## Set up
 
 Deployment is managed by the Serverless Framework deploying to AWS. To set up Serverless, follow the official documentation ensuring that Serverless is set up with the correct AWS credentials.
