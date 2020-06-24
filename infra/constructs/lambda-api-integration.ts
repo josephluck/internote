@@ -23,6 +23,14 @@ type InternoteLambdaApiIntegrationProps = {
   options?: Partial<lambda.FunctionProps>;
 };
 
+/**
+ * Makes a standard Internote lambda function with defaults.
+ *
+ * Loads asset code in to the lambda according to the dirname, name and handler
+ * props provided.
+ *
+ * Also creates an API Gateway Integration for the lambda.
+ */
 export class InternoteLambdaApiIntegration extends cdk.Construct {
   lambdaFn: lambda.Function;
   lambdaIntegration: apigateway.LambdaIntegration;
