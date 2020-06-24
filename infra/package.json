@@ -9,7 +9,8 @@
     "cdk": "cdk",
     "cdk:synth": "yarn cdk synthesize --profile internote",
     "cdk:deploy": "yarn cdk deploy \"*\" --profile internote",
-    "deploy": "yarn cdk:synth && yarn cdk:deploy"
+    "deploy": "yarn cdk:synth && yarn cdk:deploy",
+    "cdk:destroy": "yarn cdk destroy"
   },
   "license": "MIT",
   "devDependencies": {

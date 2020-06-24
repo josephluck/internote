@@ -37,20 +37,21 @@ export const build = async () => {
     throw err;
   }
 
-  const props = {}; // TODO: stage?
+  const id = `internote`; // TODO: stage?
+  const props = {};
   const app = new cdk.App();
 
   const { api, cognitoAuthorizer } = new InternoteApiGatewayStack(
     app,
-    "internote-api-gateway-service",
+    `${id}-api-gateway-service`,
     props
   );
 
-  const speechStack = new InternoteSpeechStack(
-    app,
-    "internote-speech-service",
-    { ...props, api, cognitoAuthorizer }
-  );
+  const speechStack = new InternoteSpeechStack(app, `${id}-speech-service`, {
+    ...props,
+    api,
+    cognitoAuthorizer,
+  });
 
   console.log(speechStack.toString());
 

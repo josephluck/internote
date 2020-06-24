@@ -141,7 +141,7 @@
     "@aws-cdk/core" "1.46.0"
     constructs "^3.0.2"
 
-"@aws-cdk/aws-iam@1.46.0":
+"@aws-cdk/aws-iam@*", "@aws-cdk/aws-iam@1.46.0":
   version "1.46.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-iam/-/aws-iam-1.46.0.tgz#a1ce3c64b3619d49d6c91d72db1e7151d97ef349"
   integrity sha512-D400DpnQ8u+Iz2SauL/16P13g4GT1A38rPtbs4S7I5Y9ZVlHkCf0fbwBwKrZt+Tn/GtHj4oqkchWBd9fd9TAPA==
@@ -210,7 +210,7 @@
     "@aws-cdk/cx-api" "1.46.0"
     constructs "^3.0.2"
 
-"@aws-cdk/aws-s3@1.46.0":
+"@aws-cdk/aws-s3@*", "@aws-cdk/aws-s3@1.46.0":
   version "1.46.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-s3/-/aws-s3-1.46.0.tgz#e45a8aae507f1e25cdfbf3ad9326d80678d9bf03"
   integrity sha512-v9R6AK/SQHqwMwiXvou2Ww5RrqUghlCJyW4cmn2rrbwbgYRMbMLgYGcrYb3OSxenjYP68cPtw+UB+/zjsVjHMg==

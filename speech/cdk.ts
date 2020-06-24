@@ -1,7 +1,9 @@
 import * as apigateway from "@aws-cdk/aws-apigateway";
-import * as lambda from "@aws-cdk/aws-lambda";
+import * as iam from "@aws-cdk/aws-iam";
+import * as s3 from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
-import { LambdaApiGatewayStack } from "@internote/infra/cdk-lambda-gateway-stack";
+import { RemovalPolicy } from "@aws-cdk/core";
+import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-api-integration";
 
 type SpeechStackProps = cdk.StackProps & {
   api: apigateway.RestApi;
@@ -9,31 +11,46 @@ type SpeechStackProps = cdk.StackProps & {
 };
 
 export class InternoteSpeechStack extends cdk.Stack {
-  lambdaApiGateway: InternoteSpeechGatewayLambdasStack;
-
-  constructor(scope: cdk.App, id: string, props: SpeechStackProps) {
-    super(scope, id, props);
-
-    this.lambdaApiGateway = new InternoteSpeechGatewayLambdasStack(
-      scope,
-      `${id}-gateway-lambdas`,
-      props
-    );
-  }
-}
-
-export class InternoteSpeechGatewayLambdasStack extends LambdaApiGatewayStack {
   rootResource: apigateway.Resource;
-  lambdas: lambda.Function[];
 
   constructor(scope: cdk.App, id: string, props: SpeechStackProps) {
-    super(scope, id, { ...props, dirname: __dirname });
+    super(scope, id, { ...props });
 
     this.rootResource = props.api.root.addResource("speech");
 
-    const speechLambda = this.makeLambdaIntegration("speech");
-    this.rootResource.addMethod("POST", speechLambda, {
+    const speechLambda = new InternoteLambdaApiIntegration(this, "speech", {
+      dirname: __dirname,
+      name: "speech",
+      handler: "handler",
+    });
+
+    this.rootResource.addMethod("POST", speechLambda.lambdaIntegration, {
       authorizer: props.cognitoAuthorizer,
     });
+
+    const bucket = new s3.Bucket(this, `${id}-speech-bucket`, {
+      bucketName: `${id}-speech-audio-files`,
+      removalPolicy: RemovalPolicy.DESTROY,
+      publicReadAccess: true, // TODO: limit to current authenticated user via cognito if possible..
+    });
+
+    /**
+     * Grants the lambdas read-write access to S3
+     */
+    bucket.grantReadWrite(speechLambda.lambdaFn);
+
+    /**
+     * Grants the lambdas access to polly
+     */
+    const role = new iam.Role(this, "Role", {
+      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
+    });
+    role.addToPolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        resources: [speechLambda.lambdaFn.functionArn],
+        actions: ["polly:*"],
+      })
+    );
   }
 }
