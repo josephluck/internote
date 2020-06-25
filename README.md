@@ -218,7 +218,11 @@ There are some custom CDK Constructs defined that provide sensible abstractions 
 
 #### Environment variables
 
-Environment variables are constructed at build-time using CDK and are exported / stored for later use.
+environment variables are used to plumb services together and are used as a mechanism for accessing resources at run-time, such as S3 buckets and DynamoDB tables. These variables are constructed at build-time using (mostly) CDK constructs and are exported / stored for later use.
+
+**About process.env**
+
+The view is taken that accessing `process.env` directly is dangerous as it isn't type-safe. For this purpose, type-safe abstractions around `process.env` have been written to ensure that services are not able to be run unless the correct environment is available.
 
 **Lambdas**
 

@@ -5,7 +5,7 @@ import { getUserIdentityId } from "@internote/lib/user";
 import middy from "middy";
 import { cors, httpErrorHandler } from "middy/middlewares";
 
-import { listNotesByUserId } from "./db/queries";
+import { listNotesByUserId } from "../db/queries";
 
 const list: GetHandler = async (event, _ctx, callback) => {
   const userId = getUserIdentityId(event);

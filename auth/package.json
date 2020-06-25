@@ -18,9 +18,10 @@
     "crypto-secure-random-digit": "^1.0.8"
   },
   "devDependencies": {
-    "@aws-cdk/aws-apigateway": "*",
-    "@aws-cdk/aws-cognito": "*",
-    "@aws-cdk/core": "*",
+    "@aws-cdk/aws-apigateway": "1.47.0",
+    "@aws-cdk/aws-cognito": "1.47.0",
+    "@aws-cdk/aws-iam": "1.47.0",
+    "@aws-cdk/core": "1.47.0",
     "@internote/infra": "*",
     "serverless": "^1.51.0",
     "serverless-plugin-monorepo": "^0.7.0",

@@ -1,6 +1,8 @@
 import { TypeDynamo } from "type-dynamo";
 
+import { env } from "../env";
+
 export const db = new TypeDynamo({
-  endpoint: process.env.DYNAMO_ENDPOINT,
-  region: process.env.REGION,
+  endpoint: env.DYNAMO_ENDPOINT,
+  region: env.SERVICES_REGION,
 });

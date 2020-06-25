@@ -1,19 +1,24 @@
-import { GetHandler } from "@internote/lib/lambda";
+import { DeleteHandler } from "@internote/lib/lambda";
 import { encodeResponse } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import middy from "middy";
 import { cors, httpErrorHandler } from "middy/middlewares";
 
-import { listNotesByUserId } from "./db/queries";
+import { deleteNoteById } from "../db/queries";
 
-const list: GetHandler = async (event, _ctx, callback) => {
+const del33t: DeleteHandler<{ noteId: string }> = async (
+  event,
+  _ctx,
+  callback
+) => {
+  const { noteId } = event.pathParameters;
   const userId = getUserIdentityId(event);
-  const notes = await listNotesByUserId(userId);
-  return callback(null, success(notes));
+  await deleteNoteById(noteId, userId);
+  return callback(null, success({}));
 };
 
-export const handler = middy(list)
+export const handler = middy(del33t)
   .use(encodeResponse())
   .use(httpErrorHandler())
   .use(cors());

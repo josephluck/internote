@@ -28,6 +28,7 @@ export class InternoteGatewayStack extends cdk.Stack {
 
     this.api = new apigateway.RestApi(this, `${id}-api-gateway`, {
       restApiName: `${id}-api-gateway`,
+      minimumCompressionSize: 1024,
     });
 
     const preSignUpLambda = new InternoteLambdaApiIntegration(

@@ -14,8 +14,9 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@aws-cdk/aws-apigateway": "*",
-    "@aws-cdk/core": "*",
+    "@aws-cdk/aws-apigateway": "1.47.0",
+    "@aws-cdk/aws-lambda": "1.47.0",
+    "@aws-cdk/core": "1.47.0",
     "@internote/auth-service": "*",
     "@internote/speech-service": "*",
     "@types/node": "^12.7.12",

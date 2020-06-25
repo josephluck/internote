@@ -13,8 +13,8 @@ const services = [
   // "dictionary",
   // "export",
   // "health",
-  // "notes",
-  // "preferences",
+  "notes",
+  "preferences",
   // "snippets",
   "speech",
 ];

@@ -1,4 +1,3 @@
-import { getEnv } from "@internote/infra/env";
 import { CreateHandler } from "@internote/lib/lambda";
 import {
   encodeResponse,
@@ -14,6 +13,7 @@ import middy from "middy";
 import { cors, jsonBodyParser } from "middy/middlewares";
 
 import { availableVoices } from "../available-voices";
+import { env } from "../env";
 import {
   AvailableVoice,
   SpeechRequestBody,
@@ -25,9 +25,6 @@ const validator = validateRequestBody<SpeechRequestBody>({
   words: [required, isString],
   voice: [required, inArray(availableVoices)],
 });
-
-const env = getEnv(["SPEECH_BUCKET_NAME", "SERVICES_REGION"], process.env);
-export type SpeechHandlerEnvironment = typeof env;
 
 const speech: CreateHandler<SpeechRequestBody> = async (
   event,

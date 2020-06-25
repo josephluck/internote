@@ -5,16 +5,15 @@ import { getUserIdentityId } from "@internote/lib/user";
 import middy from "middy";
 import { cors, httpErrorHandler } from "middy/middlewares";
 
-import { findNoteById } from "./db/queries";
+import { listNotesByUserId } from "../db/queries";
 
-const get: GetHandler<{ noteId: string }> = async (event, _ctx, callback) => {
-  const { noteId } = event.pathParameters;
+const list: GetHandler = async (event, _ctx, callback) => {
   const userId = getUserIdentityId(event);
-  const note = await findNoteById(noteId, userId);
-  return callback(null, success(note));
+  const notes = await listNotesByUserId(userId);
+  return callback(null, success(notes));
 };
 
-export const handler = middy(get)
+export const handler = middy(list)
   .use(encodeResponse())
   .use(httpErrorHandler())
   .use(cors());

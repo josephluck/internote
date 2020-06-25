@@ -6,19 +6,40 @@ export type NodeEnvironment = "development" | "production";
  * The entire possible environment for the stack
  */
 export type Env = {
-  ATTACHMENTS_BUCKET_NAME: string;
-  COGNITO_IDENTITY_POOL_ID: string;
-  COGNITO_USER_POOL_CLIENT_ID: string;
-  COGNITO_USER_POOL_ID: string;
+  // Misc
   STAGE: Stage;
   NODE_ENV: NodeEnvironment;
+
+  // Sentry
   SENTRY_AUTH_TOKEN: string;
   SENTRY_DSN: string;
   SENTRY_ORG: string;
   SENTRY_PROJECT: string;
+
+  // All services
   SERVICES_HOST: string;
   SERVICES_REGION: string;
+  DYNAMO_ENDPOINT: string;
+
+  // Authentication
+  COGNITO_IDENTITY_POOL_ID: string;
+  COGNITO_USER_POOL_CLIENT_ID: string;
+  COGNITO_USER_POOL_ID: string;
+
+  // Attachments
+  ATTACHMENTS_BUCKET_NAME: string;
+
+  // Speech
   SPEECH_BUCKET_NAME: string;
+
+  // Preferences
+  PREFERENCES_TABLE_NAME: string;
+  PREFERENCES_TABLE_PARTITION_KEY: "id";
+
+  // Notes
+  NOTES_TABLE_NAME: string;
+  NOTES_TABLE_PARTITION_KEY: "noteId";
+  NOTES_TABLE_SORT_KEY: "userId";
 };
 
 /**

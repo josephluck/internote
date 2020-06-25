@@ -2,10 +2,9 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as iam from "@aws-cdk/aws-iam";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
-import { RemovalPolicy } from "@aws-cdk/core";
 import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-api-integration";
 
-import { SpeechHandlerEnvironment } from "./lambdas/speech";
+import { SpeechHandlerEnvironment } from "./env";
 
 type SpeechStackProps = cdk.StackProps & {
   api: apigateway.RestApi;
@@ -23,7 +22,7 @@ export class InternoteSpeechStack extends cdk.Stack {
 
     const bucket = new s3.Bucket(this, `${id}-audio-files-bucket`, {
       bucketName: `${id}-audio-files-bucket`,
-      removalPolicy: RemovalPolicy.DESTROY,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     /**
