@@ -202,7 +202,7 @@ The infrastructure for Internote is managed by AWS CDK. In order to deploy Inter
 
 The entire application is constructed of a CDK App which is made up (loosely) of one CDK Stack per service and with each CDK Stack containing CDK Constructs.
 
-#### Naming conventions
+#### Naming conventions for identifiers
 
 The Internote infrastructure follows an extension naming convention whereby identifiers are extended as such:
 
@@ -212,9 +212,25 @@ The Internote infrastructure follows an extension naming convention whereby iden
 - Construct identifiers are suffixed with the type of Construct aka `-lambda`, `-bucket`
 - Constructs that accept a "name" option, such as Lambda functions or S3 buckets take the identifier without the Construct suffix, aka `{ functionName:`\${id}-awesome`}`.
 
-#### Custom constructs
+#### Custom CDK constructs
 
 There are some custom CDK Constructs defined that provide sensible abstractions and defaults specific to Internote. These are available in the `infra` workspace under `constructs`.
+
+#### Environment variables
+
+Environment variables are constructed at build-time using CDK and are exported / stored for later use.
+
+**Lambdas**
+
+Each lambda defines and exports a type for it's required environment (picked from the full environment type defined in the `infra` workspace). During the CDK synthesis, the necessary environment is prepared and passed in to the service at build time using the CDK Lambda construct. Note that only the minimum necessary environment is passed in to each lambda to keep the lambdas light-weight. The environment is validated at run-time and fails-fast if any required environment configuration is missing.
+
+**Exports**
+
+Particular environment configuration is exported as a CloudFormation export during CDK synthesis and is exported to AWS SSM for later use once the stack has been constructed.
+
+**AWS SSM**
+
+AWS SSM is used to store environment variables and secrets that are used across the stack. During CDK synthesis of the back-end services, AWS SSM is populated with values corresponding to the created resources, for example `COGNITO_USER_POOL_ID`. These SSM values are used later by the front-end CDK synthesis to hydrate necessary environment configuration that connects the front-end to the back-end services.
 
 # [OLD] serverless framework deployment
 

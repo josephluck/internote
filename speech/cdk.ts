@@ -5,6 +5,8 @@ import * as cdk from "@aws-cdk/core";
 import { RemovalPolicy } from "@aws-cdk/core";
 import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-api-integration";
 
+import { SpeechHandlerEnvironment } from "./lambdas/speech";
+
 type SpeechStackProps = cdk.StackProps & {
   api: apigateway.RestApi;
   cognitoAuthorizer: apigateway.IAuthorizer;
@@ -18,6 +20,17 @@ export class InternoteSpeechStack extends cdk.Stack {
 
     this.rootResource = props.api.root.addResource("speech");
 
+    const bucket = new s3.Bucket(this, `${id}-audio-files-bucket`, {
+      bucketName: `${id}-audio-files-bucket`,
+      removalPolicy: RemovalPolicy.DESTROY,
+      publicReadAccess: true, // TODO: limit to current authenticated user via cognito if possible..
+    });
+
+    const environment: SpeechHandlerEnvironment = {
+      SPEECH_BUCKET_NAME: bucket.bucketName,
+      SERVICES_REGION: "eu-west-1", // TODO: get this from context?
+    };
+
     const speechLambda = new InternoteLambdaApiIntegration(
       this,
       `${id}-speech-handler-lambda`,
@@ -25,18 +38,15 @@ export class InternoteSpeechStack extends cdk.Stack {
         dirname: __dirname,
         name: "speech",
         handler: "handler",
-        options: { functionName: `${id}-speech-handler` },
+        options: {
+          functionName: `${id}-speech-handler`,
+          environment,
+        },
       }
     );
 
     this.rootResource.addMethod("POST", speechLambda.lambdaIntegration, {
       authorizer: props.cognitoAuthorizer,
-    });
-
-    const bucket = new s3.Bucket(this, `${id}-audio-files-bucket`, {
-      bucketName: `${id}-audio-files-bucket`,
-      removalPolicy: RemovalPolicy.DESTROY,
-      publicReadAccess: true, // TODO: limit to current authenticated user via cognito if possible..
     });
 
     /**

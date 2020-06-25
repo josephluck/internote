@@ -3,7 +3,7 @@ export type Stage = "dev" | "prod";
 export type NodeEnvironment = "development" | "production";
 
 /**
- * The full environment for the stack
+ * The entire possible environment for the stack
  */
 export type Env = {
   ATTACHMENTS_BUCKET_NAME: string;
@@ -39,14 +39,29 @@ export const ssmEnvKeys: (keyof Env)[] = [
   "STAGE",
 ];
 
-export const validateEnv = (keys: (keyof Env)[], env: unknown): env is Env => {
+/**
+ * Env variables that should be kept secret (not exposed publicly)
+ */
+export const secretEnvKeys: (keyof Env)[] = ["SENTRY_AUTH_TOKEN"];
+
+/**
+ * Validates and returns a type-safe environment object from the given keys
+ * and environment e.g:
+ *
+ * getEnv(["STAGE", "SERVICES_REGION"], process.env)
+ */
+export const getEnv = <K extends keyof Env>(
+  keys: K[],
+  env: unknown
+): { [P in typeof keys[number]]: Env[P] } => {
   keys.forEach((key) => {
     if (!env[key]) {
       throw new Error(`Missing ${key} from env`);
     }
   });
-  return true;
+  return keys.reduce((acc, key) => ({ ...acc, [key]: env[key] }), {}) as any;
 };
 
+/** TODO: deprecate and use getEnv directly */
 export const validateProcessEnv = (keys: (keyof Env)[]) =>
-  validateEnv(keys, process.env);
+  getEnv(keys, process.env);

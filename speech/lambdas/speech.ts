@@ -1,3 +1,4 @@
+import { getEnv } from "@internote/infra/env";
 import { CreateHandler } from "@internote/lib/lambda";
 import {
   encodeResponse,
@@ -24,6 +25,9 @@ const validator = validateRequestBody<SpeechRequestBody>({
   words: [required, isString],
   voice: [required, inArray(availableVoices)],
 });
+
+const env = getEnv(["SPEECH_BUCKET_NAME", "SERVICES_REGION"], process.env);
+export type SpeechHandlerEnvironment = typeof env;
 
 const speech: CreateHandler<SpeechRequestBody> = async (
   event,
@@ -53,7 +57,7 @@ const speech: CreateHandler<SpeechRequestBody> = async (
     const S3UploadKey = `private/${userId}/${event.body.id}/${hash}-${voiceId}.mp3`;
     console.log("[DEBUG]", { S3UploadKey });
     await S3.upload({
-      Bucket: process.env.SPEECH_BUCKET,
+      Bucket: env.SPEECH_BUCKET_NAME,
       Key: S3UploadKey,
       Body: speech.AudioStream,
     }).promise();
@@ -61,7 +65,7 @@ const speech: CreateHandler<SpeechRequestBody> = async (
     console.log("[DEBUG]", "Upload done");
 
     const response: SpeechResponseBody = {
-      src: `https://s3-${process.env.REGION}.amazonaws.com/${process.env.SPEECH_BUCKET}/${S3UploadKey}`,
+      src: `https://s3-${env.SERVICES_REGION}.amazonaws.com/${env.SPEECH_BUCKET_NAME}/${S3UploadKey}`,
       key: S3UploadKey,
     };
     console.log("[DEBUG]", { response });
