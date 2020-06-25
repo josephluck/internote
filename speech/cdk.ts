@@ -10,10 +10,11 @@ import { SpeechHandlerEnvironment } from "./lambdas/speech";
 type SpeechStackProps = cdk.StackProps & {
   api: apigateway.RestApi;
   cognitoAuthorizer: apigateway.IAuthorizer;
+  authenticatedRole: iam.Role;
 };
 
 export class InternoteSpeechStack extends cdk.Stack {
-  rootResource: apigateway.Resource;
+  private rootResource: apigateway.Resource;
 
   constructor(scope: cdk.App, id: string, props: SpeechStackProps) {
     super(scope, id, { ...props });
@@ -23,8 +24,14 @@ export class InternoteSpeechStack extends cdk.Stack {
     const bucket = new s3.Bucket(this, `${id}-audio-files-bucket`, {
       bucketName: `${id}-audio-files-bucket`,
       removalPolicy: RemovalPolicy.DESTROY,
-      publicReadAccess: true, // TODO: limit to current authenticated user via cognito if possible..
     });
+
+    /**
+     * Ensure only authenticated users can read from the bucket.
+     * TODO: support only the current user's portion of the bucket using
+     * objectsKeyPattern
+     */
+    bucket.grantRead(props.authenticatedRole);
 
     const environment: SpeechHandlerEnvironment = {
       SPEECH_BUCKET_NAME: bucket.bucketName,

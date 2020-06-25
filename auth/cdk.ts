@@ -12,12 +12,16 @@ type Props = cdk.StackProps & {};
  * the Cognito bits and bobs.
  */
 export class InternoteGatewayStack extends cdk.Stack {
-  api: apigateway.RestApi;
-  authorizer: apigateway.CfnAuthorizer;
-  cognitoAuthorizer: apigateway.IAuthorizer;
-  userPool: cognito.UserPool;
-  userPoolClient: cognito.UserPoolClient;
-  identityPool: cognito.CfnIdentityPool;
+  public api: apigateway.RestApi;
+  private authorizer: apigateway.CfnAuthorizer;
+  public cognitoAuthorizer: apigateway.IAuthorizer;
+
+  public userPool: cognito.UserPool;
+  public userPoolClient: cognito.UserPoolClient;
+  public identityPool: cognito.CfnIdentityPool;
+
+  public unauthenticatedRole: iam.Role;
+  public authenticatedRole: iam.Role;
 
   constructor(scope: cdk.App, id: string, props: Props) {
     super(scope, id, props);
@@ -163,7 +167,7 @@ export class InternoteGatewayStack extends cdk.Stack {
       }
     );
 
-    const unauthenticatedRole = new iam.Role(
+    this.unauthenticatedRole = new iam.Role(
       this,
       `${id}-auth-unauthenticated-role`,
       {
@@ -182,7 +186,7 @@ export class InternoteGatewayStack extends cdk.Stack {
       }
     );
 
-    unauthenticatedRole.addToPolicy(
+    this.unauthenticatedRole.addToPolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ["cognito-sync:*"],
@@ -190,7 +194,7 @@ export class InternoteGatewayStack extends cdk.Stack {
       })
     );
 
-    const authenticatedRole = new iam.Role(
+    this.authenticatedRole = new iam.Role(
       this,
       `${id}-auth-authenticated-role`,
       {
@@ -209,7 +213,7 @@ export class InternoteGatewayStack extends cdk.Stack {
       }
     );
 
-    authenticatedRole.addToPolicy(
+    this.authenticatedRole.addToPolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: [
@@ -227,8 +231,8 @@ export class InternoteGatewayStack extends cdk.Stack {
       {
         identityPoolId: this.identityPool.ref,
         roles: {
-          unauthenticated: unauthenticatedRole.roleArn,
-          authenticated: authenticatedRole.roleArn,
+          unauthenticated: this.unauthenticatedRole.roleArn,
+          authenticated: this.authenticatedRole.roleArn,
         },
       }
     );

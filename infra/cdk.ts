@@ -29,12 +29,17 @@ export const build = async () => {
   const props = {};
   const app = new cdk.App();
 
-  const { api, cognitoAuthorizer } = new InternoteGatewayStack(app, id, props);
+  const {
+    api,
+    cognitoAuthorizer,
+    authenticatedRole,
+  } = new InternoteGatewayStack(app, id, props);
 
   const speechStack = new InternoteSpeechStack(app, `${id}-speech-service`, {
     ...props,
     api,
     cognitoAuthorizer,
+    authenticatedRole,
   });
 
   console.log(speechStack.toString());
