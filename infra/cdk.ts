@@ -12,7 +12,9 @@ import { buildServices } from "./build-services";
  * - Route53
  * - Federated identity for direct S3 upload for attachments
  * - Migration of DynamoDB data from existing infra
- * - Migration of users from existing user pool
+ * - Migration of users from existing user pool (https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cognito-readme.html#importing-user-pools)
+ * - Automatic population of environment outputs in to SSM
+ * - Rename auth workspace to gateway, as it includes gateway and it's a nicer name
  */
 
 export const build = async () => {

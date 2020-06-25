@@ -59,7 +59,8 @@ export function withAuth<C extends NextPage>(
           !session.accessKeyId || !session.secretKey || !session.sessionToken;
 
         if (tokenNearExpiry || (session.refreshToken && tokensMissing)) {
-          await context.store.actions.auth.refreshToken(session.refreshToken);
+          console.log("TODO: refresh");
+          // await context.store.actions.auth.refreshToken(session.refreshToken);
         }
 
         const latestSession = context.store.getState().auth.session;

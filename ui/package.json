@@ -7,6 +7,7 @@
   "main": "serverless.js",
   "scripts": {
     "dev": "NODE_ENV=development eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv) next -p 3000",
+    "dev:cdk": "NODE_ENV=development eval $(AWS_ENV_PATH=/internote/cdk/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv) next -p 3000",
     "dev:storybook": "start-storybook --quiet -p 6006 -s ./",
     "build:local:dev:next": "rm -rf ./.next && NODE_ENV=production eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv) next build",
     "start:local:dev:next": "NODE_ENV=production eval $(AWS_ENV_PATH=/internote/dev/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv) next start",
