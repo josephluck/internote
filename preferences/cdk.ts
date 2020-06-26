@@ -57,7 +57,7 @@ export class InternotePreferencesStack extends InternoteStack {
       }
     );
     this.rootResource.addMethod("GET", getLambda.lambdaIntegration, {
-      authorizationScopes: [apigateway.AuthorizationType.IAM],
+      authorizationType: apigateway.AuthorizationType.IAM,
     });
     table.grantReadData(getLambda.lambdaFn);
 
@@ -75,7 +75,7 @@ export class InternotePreferencesStack extends InternoteStack {
       }
     );
     this.rootResource.addMethod("PUT", updateLambda.lambdaIntegration, {
-      authorizationScopes: [apigateway.AuthorizationType.IAM],
+      authorizationType: apigateway.AuthorizationType.IAM,
     });
     table.grantReadWriteData(updateLambda.lambdaFn);
 

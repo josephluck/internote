@@ -35,6 +35,7 @@ export class InternoteNotesStack extends InternoteStack {
     const table = new dynamo.Table(this, `${id}-table`, {
       tableName: id,
       partitionKey: {
+        // TODO: One or more parameter values were invalid: Type mismatch for key noteId expected: S actual: M
         name: NOTES_TABLE_PARTITION_KEY,
         type: dynamo.AttributeType.STRING,
       },
@@ -72,7 +73,7 @@ export class InternoteNotesStack extends InternoteStack {
       }
     );
     this.rootResource.addMethod("GET", listLambda.lambdaIntegration, {
-      authorizationScopes: [apigateway.AuthorizationType.IAM],
+      authorizationType: apigateway.AuthorizationType.IAM,
     });
     table.grantReadData(listLambda.lambdaFn);
 
@@ -93,7 +94,7 @@ export class InternoteNotesStack extends InternoteStack {
       }
     );
     this.singleResource.addMethod("GET", getLambda.lambdaIntegration, {
-      authorizationScopes: [apigateway.AuthorizationType.IAM],
+      authorizationType: apigateway.AuthorizationType.IAM,
     });
     table.grantReadData(getLambda.lambdaFn);
 
@@ -114,7 +115,7 @@ export class InternoteNotesStack extends InternoteStack {
       }
     );
     this.rootResource.addMethod("POST", createLambda.lambdaIntegration, {
-      authorizationScopes: [apigateway.AuthorizationType.IAM],
+      authorizationType: apigateway.AuthorizationType.IAM,
     });
     table.grantReadWriteData(createLambda.lambdaFn);
 
@@ -135,7 +136,7 @@ export class InternoteNotesStack extends InternoteStack {
       }
     );
     this.singleResource.addMethod("PUT", putLambda.lambdaIntegration, {
-      authorizationScopes: [apigateway.AuthorizationType.IAM],
+      authorizationType: apigateway.AuthorizationType.IAM,
     });
     table.grantReadWriteData(putLambda.lambdaFn);
 
@@ -156,7 +157,7 @@ export class InternoteNotesStack extends InternoteStack {
       }
     );
     this.singleResource.addMethod("DELETE", deleteLambda.lambdaIntegration, {
-      authorizationScopes: [apigateway.AuthorizationType.IAM],
+      authorizationType: apigateway.AuthorizationType.IAM,
     });
     table.grantReadWriteData(deleteLambda.lambdaFn);
 
@@ -177,7 +178,7 @@ export class InternoteNotesStack extends InternoteStack {
       }
     );
     this.rootResourceTags.addMethod("GET", tagsLambda.lambdaIntegration, {
-      authorizationScopes: [apigateway.AuthorizationType.IAM],
+      authorizationType: apigateway.AuthorizationType.IAM,
     });
     table.grantReadData(tagsLambda.lambdaFn);
 

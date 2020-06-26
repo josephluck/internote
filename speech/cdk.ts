@@ -53,7 +53,7 @@ export class InternoteSpeechStack extends InternoteStack {
     );
 
     this.rootResource.addMethod("POST", speechLambda.lambdaIntegration, {
-      authorizationScopes: [apigateway.AuthorizationType.IAM],
+      authorizationType: apigateway.AuthorizationType.IAM,
     });
 
     /**

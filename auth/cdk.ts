@@ -31,6 +31,14 @@ export class InternoteGatewayStack extends InternoteStack {
     this.api = new apigateway.RestApi(this, `${id}-api-gateway`, {
       restApiName: `${id}-api-gateway`,
       minimumCompressionSize: 1024,
+      cloudWatchRole: true,
+      deployOptions: {
+        // TODO: somehow provide a log group name - the random one isn't easy to find in CloudWatch
+        loggingLevel: apigateway.MethodLoggingLevel.INFO,
+        dataTraceEnabled: true,
+        metricsEnabled: true,
+        stageName: "prod", // TODO: support stage via context
+      },
     });
 
     const env: AuthEnvironment = {
@@ -241,6 +249,20 @@ export class InternoteGatewayStack extends InternoteStack {
           // TODO: support direct attachment upload using this
         ],
         resources: ["*"],
+      })
+    );
+
+    /**
+     * Allow authenticated users to call our API gateway
+     *
+     * TODO: something similar to this could be used to protect premium features
+     * using Cognito user groups with attached roles.
+     */
+    this.authenticatedRole.addToPolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["execute-api:Invoke"],
+        resources: [this.api.arnForExecuteApi()],
       })
     );
 
