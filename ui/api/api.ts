@@ -18,6 +18,11 @@ import { tags } from "./tags";
 export type MakeSignedRequest = (options: AwsSignedRequest) => any;
 
 export interface AwsSignedRequest {
+  /**
+   * The path from the root of the services gateway
+   *
+   * NB: MUST include leading `/` e.e. `/preferences`.
+   */
   path: string;
   // TODO: session could be renamed to 'authenticated: boolean' since
   // makeSignedRequest pulls out the session from the store automatically
@@ -26,70 +31,93 @@ export interface AwsSignedRequest {
   body?: any;
 }
 
-export function makeApi({ host, region }: { host: string; region: string }) {
+export function makeApi({
+  host: root,
+  region,
+}: {
+  host: string;
+  region: string;
+}) {
   let store: Store = null;
 
-  const makeSignedRequest: MakeSignedRequest = async ({
-    path,
-    method,
-    body,
-  }) => {
-    if (store) {
-      // NB: refresh token if needed
-      let session = store.getState().auth.session;
-      if (
-        session &&
-        session.expiration &&
-        session.refreshToken &&
-        isNearExpiry(session.expiration * 1000) // NB: expiration is in seconds not ms
-      ) {
-        await store.actions.auth.refreshToken(session.refreshToken);
-        const state = store.getState();
-        session = state.auth.session;
-      }
-      const request = aws4.sign(
-        {
-          host,
-          path,
-          url: `https://${host}${path}`,
-          method,
-          region,
-          service: "execute-api",
-          data: body,
-          body: body ? JSON.stringify(body) : undefined,
-          headers: body
-            ? {
-                "Content-Type": "application/json",
-              }
-            : undefined,
-        },
-        {
-          accessKeyId: session.accessKeyId,
-          secretAccessKey: session.secretKey,
-          sessionToken: session.sessionToken,
-        }
+  const makeSignedRequest: MakeSignedRequest = async (request) => {
+    if (!request.path.startsWith("/")) {
+      throw new Error(
+        `Failed to make API request. The path ${request.path} must begin with a leading "/".`
       );
-      const response = await fetch(request.url, {
-        method,
-        headers: request.headers,
-        body: body ? JSON.stringify(body) : undefined,
-      });
-      if (!response.ok) {
-        try {
-          const json = await response.json();
-          return Err(json);
-        } catch (err) {
-          return Err("Response error was not JSON");
-        }
-      }
+    }
+
+    if (!store) {
+      throw new Error("Failed to make API request. Store is not configured.");
+    }
+
+    /**
+     * Refresh the authentication token if present and near expiry.
+     */
+    let session = store.getState().auth.session;
+    if (
+      session &&
+      session.expiration &&
+      session.refreshToken &&
+      isNearExpiry(session.expiration * 1000) // NB: expiration is in seconds not ms
+    ) {
+      await store.actions.auth.refreshToken(session.refreshToken);
+      const state = store.getState();
+      session = state.auth.session;
+    }
+
+    /**
+     * NB: aws4 signing expects the host to _not_ include the protocol or trailing
+     * slash.
+     */
+
+    const rootHost = root.endsWith("/") ? root.slice(0, -1) : root; // Remove trailing / from SSM
+
+    const { host, path, protocol } = aws4UrlParse(`${rootHost}${request.path}`);
+
+    const options = {
+      host,
+      path,
+      url: `${protocol}//${host}${path}`,
+      method: request.method,
+      region,
+      service: "execute-api",
+      data: request.body,
+      body: request.body ? JSON.stringify(request.body) : undefined,
+      headers: request.body
+        ? {
+            "Content-Type": "application/json",
+          }
+        : undefined,
+    };
+
+    console.log({ request, options, session });
+
+    const signedRequest = aws4.sign(options, {
+      accessKeyId: session.accessKeyId,
+      secretAccessKey: session.secretKey,
+      sessionToken: session.sessionToken,
+    });
+
+    const response = await fetch(signedRequest.url, {
+      method: request.method,
+      headers: signedRequest.headers,
+      body: request.body ? JSON.stringify(request.body) : undefined,
+    });
+
+    if (!response.ok) {
       try {
         const json = await response.json();
-        return Ok(json);
+        return Err(json);
       } catch (err) {
         return Err("Response error was not JSON");
       }
-    } else {
-      throw new Error("Store is not configured");
+    }
+    try {
+      const json = await response.json();
+      return Ok(json);
+    } catch (err) {
+      return Err("Response error was not JSON");
     }
   };
 
@@ -107,3 +135,12 @@ export function makeApi({ host, region }: { host: string; region: string }) {
 }
 
 export type Api = ReturnType<typeof makeApi>;
+
+export const aws4UrlParse = (url: string) => {
+  const u = new URL(url);
+  return {
+    host: u.host,
+    path: u.pathname,
+    protocol: u.protocol,
+  };
+};

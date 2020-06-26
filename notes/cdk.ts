@@ -2,37 +2,49 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as dynamo from "@aws-cdk/aws-dynamodb";
 import * as iam from "@aws-cdk/aws-iam";
 import * as cdk from "@aws-cdk/core";
-import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-api-integration";
+import { addCorsOptions } from "@internote/infra/constructs/cors";
+import { InternoteStack } from "@internote/infra/constructs/internote-stack";
+import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-fn";
 
 import { NotesEnv } from "./env";
 
-type SpeechStackProps = cdk.StackProps & {
+type NotesStackProps = cdk.StackProps & {
   api: apigateway.RestApi;
   cognitoAuthorizer: apigateway.IAuthorizer;
   authenticatedRole: iam.Role;
 };
 
-export class InternoteSpeechStack extends cdk.Stack {
+export class InternoteNotesStack extends InternoteStack {
   private rootResource: apigateway.Resource;
   private singleResource: apigateway.Resource;
   private rootResourceTags: apigateway.Resource;
 
-  constructor(scope: cdk.App, id: string, props: SpeechStackProps) {
+  constructor(scope: cdk.App, id: string, props: NotesStackProps) {
     super(scope, id, { ...props });
 
     this.rootResource = props.api.root.addResource("notes");
     this.singleResource = this.rootResource.addResource("{noteId}");
     this.rootResourceTags = props.api.root.addResource("tags");
+    [this.rootResource, this.singleResource, this.rootResourceTags].forEach(
+      addCorsOptions
+    );
 
     const NOTES_TABLE_PARTITION_KEY = "noteId";
     const NOTES_TABLE_SORT_KEY = "userId";
 
     const table = new dynamo.Table(this, `${id}-table`, {
       tableName: id,
-      partitionKey: NOTES_TABLE_PARTITION_KEY,
-      sortKey: NOTES_TABLE_SORT_KEY,
+      partitionKey: {
+        name: NOTES_TABLE_PARTITION_KEY,
+        type: dynamo.AttributeType.STRING,
+      },
+      sortKey: {
+        name: NOTES_TABLE_SORT_KEY,
+        type: dynamo.AttributeType.STRING,
+      },
       pointInTimeRecovery: true, // TODO: abstract so it's the default
       billingMode: dynamo.BillingMode.PAY_PER_REQUEST, // TODO: abstract so it's the default
+      removalPolicy: cdk.RemovalPolicy.DESTROY, // TODO: DON'T DO THIS!!!
     });
 
     const environment: NotesEnv = {
@@ -60,7 +72,7 @@ export class InternoteSpeechStack extends cdk.Stack {
       }
     );
     this.rootResource.addMethod("GET", listLambda.lambdaIntegration, {
-      authorizer: props.cognitoAuthorizer,
+      authorizationScopes: [apigateway.AuthorizationType.IAM],
     });
     table.grantReadData(listLambda.lambdaFn);
 
@@ -81,7 +93,7 @@ export class InternoteSpeechStack extends cdk.Stack {
       }
     );
     this.singleResource.addMethod("GET", getLambda.lambdaIntegration, {
-      authorizer: props.cognitoAuthorizer,
+      authorizationScopes: [apigateway.AuthorizationType.IAM],
     });
     table.grantReadData(getLambda.lambdaFn);
 
@@ -102,7 +114,7 @@ export class InternoteSpeechStack extends cdk.Stack {
       }
     );
     this.rootResource.addMethod("POST", createLambda.lambdaIntegration, {
-      authorizer: props.cognitoAuthorizer,
+      authorizationScopes: [apigateway.AuthorizationType.IAM],
     });
     table.grantReadWriteData(createLambda.lambdaFn);
 
@@ -123,7 +135,7 @@ export class InternoteSpeechStack extends cdk.Stack {
       }
     );
     this.singleResource.addMethod("PUT", putLambda.lambdaIntegration, {
-      authorizer: props.cognitoAuthorizer,
+      authorizationScopes: [apigateway.AuthorizationType.IAM],
     });
     table.grantReadWriteData(putLambda.lambdaFn);
 
@@ -144,7 +156,7 @@ export class InternoteSpeechStack extends cdk.Stack {
       }
     );
     this.singleResource.addMethod("DELETE", deleteLambda.lambdaIntegration, {
-      authorizer: props.cognitoAuthorizer,
+      authorizationScopes: [apigateway.AuthorizationType.IAM],
     });
     table.grantReadWriteData(deleteLambda.lambdaFn);
 
@@ -165,8 +177,12 @@ export class InternoteSpeechStack extends cdk.Stack {
       }
     );
     this.rootResourceTags.addMethod("GET", tagsLambda.lambdaIntegration, {
-      authorizer: props.cognitoAuthorizer,
+      authorizationScopes: [apigateway.AuthorizationType.IAM],
     });
     table.grantReadData(tagsLambda.lambdaFn);
+
+    this.exportToSSM("NOTES_TABLE_PARTITION_KEY", NOTES_TABLE_PARTITION_KEY);
+    this.exportToSSM("NOTES_TABLE_SORT_KEY", NOTES_TABLE_SORT_KEY);
+    this.exportToSSM("NOTES_TABLE_NAME", table.tableName);
   }
 }

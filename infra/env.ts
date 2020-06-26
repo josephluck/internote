@@ -16,10 +16,23 @@ export type Env = {
   SENTRY_ORG: string;
   SENTRY_PROJECT: string;
 
-  // All services
+  /**
+   * All services
+   */
+
+  /**
+   * The API gateway domain. Includes `https://` and the trailing `/`
+   *
+   * e.g. `https://services.internote.app/` or
+   * e.g. `https://elrgi28lcj.execute-api.eu-west-1.amazonaws.com/prod/`
+   *
+   * Note that the front-end removes the leading `https://` and trailing `/` as
+   * part of the AWS4 signing process.
+   */
   SERVICES_HOST: string;
   SERVICES_REGION: string;
   DYNAMO_ENDPOINT: string;
+  SES_FROM_ADDRESS: string;
 
   // Authentication
   COGNITO_IDENTITY_POOL_ID: string;

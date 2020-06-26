@@ -1,21 +1,11 @@
 import * as cdk from "@aws-cdk/core";
 import { InternoteGatewayStack } from "@internote/auth-service/cdk";
+import { InternoteNotesStack } from "@internote/notes-service/cdk";
+import { InternotePreferencesStack } from "@internote/preferences-service/cdk";
 import { InternoteSpeechStack } from "@internote/speech-service/cdk";
 
 // import { InternoteApiGatewayStack } from "./api-gateway";
 import { buildServices } from "./build-services";
-
-/**
- * TODOS
- *
- * - Build out remaining stacks
- * - Route53
- * - Federated identity for direct S3 upload for attachments
- * - Migration of DynamoDB data from existing infra
- * - Migration of users from existing user pool (https://docs.aws.amazon.com/cdk/api/latest/docs/aws-cognito-readme.html#importing-user-pools)
- * - Automatic population of environment outputs in to SSM
- * - Rename auth workspace to gateway, as it includes gateway and it's a nicer name
- */
 
 export const build = async () => {
   try {
@@ -42,7 +32,29 @@ export const build = async () => {
     authenticatedRole,
   });
 
-  console.log(speechStack.toString());
+  const preferencesStack = new InternotePreferencesStack(
+    app,
+    `${id}-preferences-service`,
+    {
+      ...props,
+      api,
+      cognitoAuthorizer,
+      authenticatedRole,
+    }
+  );
+
+  const notesStack = new InternoteNotesStack(app, `${id}-notes-service`, {
+    ...props,
+    api,
+    cognitoAuthorizer,
+    authenticatedRole,
+  });
+
+  console.log({
+    speechStack: speechStack.toString(),
+    preferencesStack: preferencesStack.toString(),
+    notesStack: notesStack.toString(),
+  });
 
   // app.synth();
 };

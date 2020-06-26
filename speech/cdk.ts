@@ -2,7 +2,8 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as iam from "@aws-cdk/aws-iam";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
-import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-api-integration";
+import { InternoteStack } from "@internote/infra/constructs/internote-stack";
+import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-fn";
 
 import { SpeechHandlerEnvironment } from "./env";
 
@@ -12,7 +13,7 @@ type SpeechStackProps = cdk.StackProps & {
   authenticatedRole: iam.Role;
 };
 
-export class InternoteSpeechStack extends cdk.Stack {
+export class InternoteSpeechStack extends InternoteStack {
   private rootResource: apigateway.Resource;
 
   constructor(scope: cdk.App, id: string, props: SpeechStackProps) {
@@ -52,7 +53,7 @@ export class InternoteSpeechStack extends cdk.Stack {
     );
 
     this.rootResource.addMethod("POST", speechLambda.lambdaIntegration, {
-      authorizer: props.cognitoAuthorizer,
+      authorizationScopes: [apigateway.AuthorizationType.IAM],
     });
 
     /**
@@ -63,7 +64,7 @@ export class InternoteSpeechStack extends cdk.Stack {
     /**
      * Grants the lambdas access to polly
      */
-    const role = new iam.Role(this, "Role", {
+    const role = new iam.Role(this, `${id}-polly-role`, {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
     });
     role.addToPolicy(
@@ -73,5 +74,7 @@ export class InternoteSpeechStack extends cdk.Stack {
         actions: ["polly:*"],
       })
     );
+
+    this.exportToSSM("SPEECH_BUCKET_NAME", bucket.bucketName);
   }
 }

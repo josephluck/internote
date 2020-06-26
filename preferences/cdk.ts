@@ -2,31 +2,38 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as dynamo from "@aws-cdk/aws-dynamodb";
 import * as iam from "@aws-cdk/aws-iam";
 import * as cdk from "@aws-cdk/core";
-import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-api-integration";
+import { addCorsOptions } from "@internote/infra/constructs/cors";
+import { InternoteStack } from "@internote/infra/constructs/internote-stack";
+import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-fn";
 
 import { PreferencesEnv } from "./env";
 
-type SpeechStackProps = cdk.StackProps & {
+type PreferencesStackProps = cdk.StackProps & {
   api: apigateway.RestApi;
   cognitoAuthorizer: apigateway.IAuthorizer;
   authenticatedRole: iam.Role;
 };
 
-export class InternoteSpeechStack extends cdk.Stack {
+export class InternotePreferencesStack extends InternoteStack {
   private rootResource: apigateway.Resource;
 
-  constructor(scope: cdk.App, id: string, props: SpeechStackProps) {
+  constructor(scope: cdk.App, id: string, props: PreferencesStackProps) {
     super(scope, id, { ...props });
 
     this.rootResource = props.api.root.addResource("preferences");
+    addCorsOptions(this.rootResource); // TODO: abstract these two to the API?
 
     const PREFERENCES_TABLE_PARTITION_KEY = "id";
 
     const table = new dynamo.Table(this, `${id}-table`, {
       tableName: id,
-      partitionKey: PREFERENCES_TABLE_PARTITION_KEY,
+      partitionKey: {
+        name: PREFERENCES_TABLE_PARTITION_KEY,
+        type: dynamo.AttributeType.STRING,
+      },
       pointInTimeRecovery: true,
       billingMode: dynamo.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.DESTROY, // TODO: DON'T DO THIS!!!
     });
 
     const environment: PreferencesEnv = {
@@ -50,7 +57,7 @@ export class InternoteSpeechStack extends cdk.Stack {
       }
     );
     this.rootResource.addMethod("GET", getLambda.lambdaIntegration, {
-      authorizer: props.cognitoAuthorizer,
+      authorizationScopes: [apigateway.AuthorizationType.IAM],
     });
     table.grantReadData(getLambda.lambdaFn);
 
@@ -68,8 +75,14 @@ export class InternoteSpeechStack extends cdk.Stack {
       }
     );
     this.rootResource.addMethod("PUT", updateLambda.lambdaIntegration, {
-      authorizer: props.cognitoAuthorizer,
+      authorizationScopes: [apigateway.AuthorizationType.IAM],
     });
     table.grantReadWriteData(updateLambda.lambdaFn);
+
+    this.exportToSSM("PREFERENCES_TABLE_NAME", table.tableName);
+    this.exportToSSM(
+      "PREFERENCES_TABLE_PARTITION_KEY",
+      PREFERENCES_TABLE_PARTITION_KEY
+    );
   }
 }

@@ -21,6 +21,9 @@
     "*.worker.js",
     "static",
     "storybook-static",
-    "sls-next-build"
+    "sls-next-build",
+    "*.js.map",
+    ".serverless_nextjs",
+    ".build"
   ]
 }

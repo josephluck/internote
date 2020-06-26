@@ -14,3 +14,4 @@ aws-env
 *.zip
 ui/next.config.original.*
 cdk.out/
+api.spec.ts

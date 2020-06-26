@@ -2,8 +2,10 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as cognito from "@aws-cdk/aws-cognito";
 import * as iam from "@aws-cdk/aws-iam";
 import * as cdk from "@aws-cdk/core";
-import { InternoteCfnOutput } from "@internote/infra/constructs/cfn-output";
-import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-api-integration";
+import { InternoteStack } from "@internote/infra/constructs/internote-stack";
+import { InternoteLambda } from "@internote/infra/constructs/lambda-fn";
+
+import { AuthEnvironment } from "./env";
 
 type Props = cdk.StackProps & {};
 
@@ -11,7 +13,7 @@ type Props = cdk.StackProps & {};
  * Creates the API Gateway that sits in front of the serverless APIs as well as
  * the Cognito bits and bobs.
  */
-export class InternoteGatewayStack extends cdk.Stack {
+export class InternoteGatewayStack extends InternoteStack {
   public api: apigateway.RestApi;
   private authorizer: apigateway.CfnAuthorizer;
   public cognitoAuthorizer: apigateway.IAuthorizer;
@@ -31,17 +33,21 @@ export class InternoteGatewayStack extends cdk.Stack {
       minimumCompressionSize: 1024,
     });
 
-    const preSignUpLambda = new InternoteLambdaApiIntegration(
+    const env: AuthEnvironment = {
+      SES_FROM_ADDRESS: "noreply@internote.app", // TODO: from context?
+    };
+
+    const preSignUpLambda = new InternoteLambda(
       this,
       `${id}-auth-pre-sign-up-lambda`,
       {
         dirname: __dirname,
         name: "pre-sign-up",
-        options: { functionName: `${id}-auth-pre` },
+        options: { functionName: `${id}-auth-pre`, environment: env },
       }
     );
 
-    const createAuthChallengeLambda = new InternoteLambdaApiIntegration(
+    const createAuthChallengeLambda = new InternoteLambda(
       this,
       `${id}-auth-create-auth-challenge-lambda`,
       {
@@ -49,11 +55,12 @@ export class InternoteGatewayStack extends cdk.Stack {
         name: "create-auth-challenge",
         options: {
           functionName: `${id}-auth-create`,
+          environment: env,
         },
       }
     );
 
-    const defineAuthChallengeLambda = new InternoteLambdaApiIntegration(
+    const defineAuthChallengeLambda = new InternoteLambda(
       this,
       `${id}-auth-define-auth-challenge-lambda`,
       {
@@ -61,11 +68,12 @@ export class InternoteGatewayStack extends cdk.Stack {
         name: "define-auth-challenge",
         options: {
           functionName: `${id}-auth-define`,
+          environment: env,
         },
       }
     );
 
-    const verifyAuthChallengeResponseLambda = new InternoteLambdaApiIntegration(
+    const verifyAuthChallengeResponseLambda = new InternoteLambda(
       this,
       `${id}-auth-verify-auth-challenge-response-lambda`,
       {
@@ -73,6 +81,7 @@ export class InternoteGatewayStack extends cdk.Stack {
         name: "verify-auth-challenge-response",
         options: {
           functionName: `${id}-auth-verify`,
+          environment: env,
         },
       }
     );
@@ -89,14 +98,7 @@ export class InternoteGatewayStack extends cdk.Stack {
         requireSymbols: false,
         requireUppercase: false,
       },
-      standardAttributes: {
-        email: {
-          required: true,
-          mutable: true,
-        },
-      },
-      autoVerify: { email: true },
-      signInAliases: { username: true, email: true },
+      signInAliases: { email: true },
       lambdaTriggers: {
         preSignUp: preSignUpLambda.lambdaFn,
         createAuthChallenge: createAuthChallengeLambda.lambdaFn,
@@ -104,6 +106,21 @@ export class InternoteGatewayStack extends cdk.Stack {
         verifyAuthChallengeResponse: verifyAuthChallengeResponseLambda.lambdaFn,
       },
     });
+
+    /**
+     * Enable the code to be e-mailed to the user
+     */
+    if (createAuthChallengeLambda.lambdaFn.role) {
+      createAuthChallengeLambda.lambdaFn.role.addToPolicy(
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          resources: [
+            `arn:aws:ses:${this.region}:${this.account}:identity/internote.app`,
+          ],
+          actions: ["ses:SendEmail"],
+        })
+      );
+    }
 
     // this.userPoolClient = new cognito.CfnUserPoolClient(
     //   this,
@@ -149,6 +166,7 @@ export class InternoteGatewayStack extends cdk.Stack {
       }
     );
 
+    // TODO: this might not be necessary
     this.cognitoAuthorizer = {
       authorizerId: this.authorizer.ref,
       authorizationType: apigateway.AuthorizationType.COGNITO,
@@ -238,16 +256,15 @@ export class InternoteGatewayStack extends cdk.Stack {
       }
     );
 
-    new InternoteCfnOutput(this, "cognito-identity-pool-id", {
-      value: this.identityPool.ref,
-    });
+    this.exportToSSM("SERVICES_HOST", this.api.url);
 
-    new InternoteCfnOutput(this, "cognito-user-pool-client-id", {
-      value: this.userPoolClient.userPoolClientId,
-    });
+    this.exportToSSM("COGNITO_IDENTITY_POOL_ID", this.identityPool.ref);
 
-    new InternoteCfnOutput(this, "cognito-user-pool-id", {
-      value: this.userPool.userPoolId,
-    });
+    this.exportToSSM("COGNITO_USER_POOL_ID", this.userPool.userPoolId);
+
+    this.exportToSSM(
+      "COGNITO_USER_POOL_CLIENT_ID",
+      this.userPoolClient.userPoolClientId
+    );
   }
 }

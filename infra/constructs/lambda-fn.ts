@@ -4,13 +4,14 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as lambda from "@aws-cdk/aws-lambda";
 import * as cdk from "@aws-cdk/core";
 
-type InternoteLambdaApiIntegrationProps = {
+type Props = {
   /**
    * The __dirname at the root of the service
    */
   dirname: string;
   /**
    * The file name of the lambda relative to the dirname
+   * TODO: deprecate and use handler
    */
   name: string;
   /**
@@ -28,31 +29,40 @@ type InternoteLambdaApiIntegrationProps = {
  *
  * Loads asset code in to the lambda according to the dirname, name and handler
  * props provided.
- *
- * Also creates an API Gateway Integration for the lambda.
  */
-export class InternoteLambdaApiIntegration extends cdk.Construct {
+export class InternoteLambda extends cdk.Construct {
   lambdaFn: lambda.Function;
-  lambdaIntegration: apigateway.LambdaIntegration;
 
-  constructor(
-    scope: cdk.Construct,
-    id: string,
-    props: InternoteLambdaApiIntegrationProps
-  ) {
+  constructor(scope: cdk.Construct, id: string, props: Props) {
     super(scope, id);
 
     const { dirname, name, handler = "handler", options = {} } = props;
 
     this.lambdaFn = new lambda.Function(this, name, {
       code: new lambda.AssetCode(path.join(dirname, ".build")),
-      handler: handler,
+      handler: `${name}.${handler}`,
       runtime: lambda.Runtime.NODEJS_12_X,
       environment: {},
       timeout: cdk.Duration.seconds(30),
       memorySize: 256,
       ...options,
     });
+  }
+}
+
+/**
+ * Makes a standard Internote lambda function with defaults.
+ *
+ * Loads asset code in to the lambda according to the dirname, name and handler
+ * props provided.
+ *
+ * Also creates an API Gateway Integration for the lambda.
+ */
+export class InternoteLambdaApiIntegration extends InternoteLambda {
+  lambdaIntegration: apigateway.LambdaIntegration;
+
+  constructor(scope: cdk.Construct, id: string, props: Props) {
+    super(scope, id, props);
 
     this.lambdaIntegration = new apigateway.LambdaIntegration(this.lambdaFn);
   }

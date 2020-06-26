@@ -16,7 +16,7 @@
     "deploy:dev:build": "echo \"TODO: yarn build:storybook\"",
     "deploy:dev": "yarn deploy:dev:prepare && yarn deploy:dev:build && serverless --env=dev",
     "deploy": "yarn deploy:dev",
-    "test": "jest",
+    "test": "eval $(AWS_ENV_PATH=/internote/cdk/ AWS_REGION=eu-west-1 ./aws-env --format=dotenv) jest",
     "test:tsc": "tsc --noEmit"
   },
   "devDependencies": {

@@ -196,7 +196,18 @@ Although Internote does not support replies on emails sent to users, an S3 bucke
 
 # Deployment
 
-The infrastructure for Internote is managed by AWS CDK. In order to deploy Internote, you will need to have set up an AWS account and installed the AWS CDK CLI (please refer to official documentation for how to do this). Then, you will need to set up AWS profile with credentials under the `internote` profile. If you're on a mac, the configuration will usually be stored at `~/.aws/credentials`.
+The infrastructure for Internote is managed by AWS CDK.
+
+#### Set up
+
+- Create an AWS account.
+- Create an IAM policy that has full access to AWS.
+- Create an IAM profile and attach the above role to it. Call it something like `internote-cdk`.
+- Add the access & secret keys to a new profile in `~/.aws/config` and give the profile a name like `[profile internote]`. This config should contain the default `region` (eu-west-1) and the profile's `aws_access_key_id` and `aws_secret_access_key`.
+- Install the AWS CDK CLI tools. These can be found [here](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html).
+- Make a note of your AWS account ID. This can be found [here](https://console.aws.amazon.com/billing/home?#/account).
+- Run the CDK bootstrapping using the AWS account ID you found in the step above. Ensure you use the same region you added to the credentials you used above. Should be `eu-west-1`. Steps for running this can be found [here](https://docs.aws.amazon.com/cdk/latest/guide/troubleshooting.html). It should be something like `cdk bootstrap aws://1234567890/eu-west-1 --profile=internote`.
+- If this is successful you should see the project run what looks like a CDK synth, however it won't deploy. You should see something like `✅ Environment aws://1234567890/eu-west-1 bootstrapped.` returned from the console.
 
 ## CDK structure
 

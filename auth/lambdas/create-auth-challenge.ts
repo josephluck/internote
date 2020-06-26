@@ -2,6 +2,8 @@ import { CognitoUserPoolTriggerHandler } from "aws-lambda";
 import { SES } from "aws-sdk";
 import { randomDigits } from "crypto-secure-random-digit";
 
+import { env } from "../env";
+
 const ses = new SES();
 
 export const handler: CognitoUserPoolTriggerHandler = async (event) => {
@@ -67,7 +69,7 @@ async function sendEmail(emailAddress: string, secretLoginCode: string) {
         Data: `Internote verification code: ${secretLoginCode}`,
       },
     },
-    Source: process.env.SES_FROM_ADDRESS!,
+    Source: env.SES_FROM_ADDRESS!,
   };
   await ses.sendEmail(params).promise();
 }
