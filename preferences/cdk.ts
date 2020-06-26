@@ -59,7 +59,9 @@ export class InternotePreferencesStack extends InternoteStack {
     this.rootResource.addMethod("GET", getLambda.lambdaIntegration, {
       authorizationType: apigateway.AuthorizationType.IAM,
     });
-    table.grantReadData(getLambda.lambdaFn);
+    // NB: GET needs write just in-case preferences aren't found for a user
+    // aka. new user
+    table.grantReadWriteData(getLambda.lambdaFn);
 
     const updateLambda = new InternoteLambdaApiIntegration(
       this,

@@ -10,8 +10,8 @@ import HttpError from "http-errors";
 import middy from "middy";
 import { cors, jsonBodyParser } from "middy/middlewares";
 
-import { Preferences } from "../db/models";
-import { updatePreferencesById } from "../db/queries";
+import { updatePreferencesById } from "../db";
+import { Preferences } from "../models";
 
 const validator = validateRequestBody<Preferences>({
   id: [],

@@ -6,7 +6,7 @@ import HttpError from "http-errors";
 import middy from "middy";
 import { cors, httpErrorHandler } from "middy/middlewares";
 
-import { createPreferences, findPreferencesById } from "../db/queries";
+import { createPreferences, findPreferencesById } from "../db";
 
 const get: GetHandler = async (event, _ctx, callback) => {
   try {
