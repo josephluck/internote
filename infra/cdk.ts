@@ -4,7 +4,6 @@ import { InternoteNotesStack } from "@internote/notes-service/cdk";
 import { InternotePreferencesStack } from "@internote/preferences-service/cdk";
 import { InternoteSpeechStack } from "@internote/speech-service/cdk";
 
-// import { InternoteApiGatewayStack } from "./api-gateway";
 import { buildServices } from "./build-services";
 
 export const build = async () => {

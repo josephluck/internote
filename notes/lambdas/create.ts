@@ -6,7 +6,7 @@ import middy from "middy";
 import { cors, jsonBodyParser } from "middy/middlewares";
 import uuid from "uuid";
 
-import { createNote } from "../db/queries";
+import { createNote } from "../db";
 import { CreateNoteDTO } from "../types";
 
 const create: CreateHandler<CreateNoteDTO> = async (event, _ctx, callback) => {

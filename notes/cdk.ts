@@ -31,6 +31,7 @@ export class InternoteNotesStack extends InternoteStack {
 
     const NOTES_TABLE_PARTITION_KEY = "noteId";
     const NOTES_TABLE_SORT_KEY = "userId";
+    const NOTES_TABLE_USER_ID_INDEX = "noteIdUserIdIndex";
 
     const table = new dynamo.Table(this, `${id}-table`, {
       tableName: id,
@@ -49,12 +50,24 @@ export class InternoteNotesStack extends InternoteStack {
       removalPolicy: cdk.RemovalPolicy.DESTROY, // TODO: DON'T DO THIS!!!
     });
 
+    /**
+     * Allows querying by userId
+     */
+    table.addGlobalSecondaryIndex({
+      indexName: NOTES_TABLE_USER_ID_INDEX,
+      partitionKey: {
+        name: NOTES_TABLE_SORT_KEY,
+        type: dynamo.AttributeType.STRING,
+      },
+    });
+
     const environment: NotesEnv = {
       SERVICES_REGION: "eu-west-1", // TODO: from context?
       DYNAMO_ENDPOINT: "https://dynamodb.eu-west-1.amazonaws.com", // TODO: from context?
       NOTES_TABLE_NAME: table.tableName,
       NOTES_TABLE_PARTITION_KEY,
       NOTES_TABLE_SORT_KEY,
+      NOTES_TABLE_USER_ID_INDEX,
     };
 
     /**
@@ -123,23 +136,23 @@ export class InternoteNotesStack extends InternoteStack {
     /**
      * PUT a single note by it's noteId
      */
-    const putLambda = new InternoteLambdaApiIntegration(
+    const updateLambda = new InternoteLambdaApiIntegration(
       this,
-      `${id}-put-lambda`,
+      `${id}-update-lambda`,
       {
         dirname: __dirname,
-        name: "put",
+        name: "update",
         handler: "handler",
         options: {
-          functionName: `${id}-put`,
+          functionName: `${id}-update`,
           environment,
         },
       }
     );
-    this.singleResource.addMethod("PUT", putLambda.lambdaIntegration, {
+    this.singleResource.addMethod("PUT", updateLambda.lambdaIntegration, {
       authorizationType: apigateway.AuthorizationType.IAM,
     });
-    table.grantReadWriteData(putLambda.lambdaFn);
+    table.grantReadWriteData(updateLambda.lambdaFn);
 
     /**
      * DELETE a single note by it's noteId
@@ -186,5 +199,6 @@ export class InternoteNotesStack extends InternoteStack {
     this.exportToSSM("NOTES_TABLE_PARTITION_KEY", NOTES_TABLE_PARTITION_KEY);
     this.exportToSSM("NOTES_TABLE_SORT_KEY", NOTES_TABLE_SORT_KEY);
     this.exportToSSM("NOTES_TABLE_NAME", table.tableName);
+    this.exportToSSM("NOTES_TABLE_USER_ID_INDEX", NOTES_TABLE_USER_ID_INDEX);
   }
 }

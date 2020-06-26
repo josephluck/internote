@@ -59,8 +59,12 @@ const makeWebpackConfig = async (
     );
   }
 
+  /**
+   * Manually cleans out the .build directory
+   */
   if (fs.existsSync(outputPath)) {
     rimraf.sync(outputPath);
+    fs.mkdirSync(outputPath, { recursive: true });
   }
 
   return {

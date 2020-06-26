@@ -10,7 +10,7 @@ import { isArray, isString, required } from "@internote/lib/validator";
 import middy from "middy";
 import { cors, jsonBodyParser } from "middy/middlewares";
 
-import { updateNoteById } from "../db/queries";
+import { updateNoteById } from "../db";
 import { UpdateNoteDTO } from "../types";
 
 const update: UpdateHandler<UpdateNoteDTO, { noteId: string }> = async (

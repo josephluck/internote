@@ -280,16 +280,6 @@
     "@aws-cdk/core" "1.47.0"
     constructs "^3.0.2"
 
-"@aws-cdk/aws-ses@1.47.0":
-  version "1.47.0"
-  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-ses/-/aws-ses-1.47.0.tgz#d1812ca88a34fbc662621f71a4e392e510328870"
-  integrity sha512-E4DWzuqw1oTkNOmrv+ENM5V3mPgi9O1uFFOVNKM7elS5VRZrXaP56EQvAOVkul6Q215pQKxDVo8qu3wjAesGYw==
-  dependencies:
-    "@aws-cdk/aws-iam" "1.47.0"
-    "@aws-cdk/aws-lambda" "1.47.0"
-    "@aws-cdk/core" "1.47.0"
-    constructs "^3.0.2"
-
 "@aws-cdk/aws-sns@1.47.0":
   version "1.47.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-sns/-/aws-sns-1.47.0.tgz#ae9759dde92d3d4f002599e96e02efe3f0241d85"
@@ -20000,6 +19990,17 @@ ts-loader@^6.0.4:
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-6.0.4.tgz#bc331ad91a887a60632d94c9f79448666f2c4b63"
   integrity sha512-p2zJYe7OtwR+49kv4gs7v4dMrfYD1IPpOtqiSPCbe8oR+4zEBtdHwzM7A7M91F+suReqgzZrlClk4LRSSp882g==
+  dependencies:
+    chalk "^2.3.0"
+    enhanced-resolve "^4.0.0"
+    loader-utils "^1.0.2"
+    micromatch "^4.0.0"
+    semver "^6.0.0"
+
+ts-loader@^7.0.5:
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-7.0.5.tgz#789338fb01cb5dc0a33c54e50558b34a73c9c4c5"
+  integrity sha512-zXypEIT6k3oTc+OZNx/cqElrsbBtYqDknf48OZos0NQ3RTt045fBIU8RRSu+suObBzYB355aIPGOe/3kj9h7Ig==
   dependencies:
     chalk "^2.3.0"
     enhanced-resolve "^4.0.0"

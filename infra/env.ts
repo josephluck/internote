@@ -51,8 +51,9 @@ export type Env = {
 
   // Notes
   NOTES_TABLE_NAME: string;
-  NOTES_TABLE_PARTITION_KEY: "noteId";
+  NOTES_TABLE_PARTITION_KEY: "noteId"; // TODO: make typesafe with model?
   NOTES_TABLE_SORT_KEY: "userId";
+  NOTES_TABLE_USER_ID_INDEX: string;
 };
 
 /**

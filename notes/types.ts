@@ -1,6 +1,6 @@
 import { InternoteEditorValue } from "@internote/lib/editor-types";
 
-import { Note } from "./db/models";
+import { Note } from "./models";
 
 /**
  * Represents the update note DTO.
