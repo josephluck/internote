@@ -38,6 +38,8 @@ export class InternoteLambda extends cdk.Construct {
 
     const { dirname, name, handler = "handler", options = {} } = props;
 
+    // TODO: support checking for existence of lambda file in .build directory
+    // throw otherwise.
     this.lambdaFn = new lambda.Function(this, name, {
       code: new lambda.AssetCode(path.join(dirname, ".build")),
       handler: `${name}.${handler}`,

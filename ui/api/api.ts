@@ -91,8 +91,6 @@ export function makeApi({
         : undefined,
     };
 
-    console.log({ request, options, session });
-
     const signedRequest = aws4.sign(options, {
       accessKeyId: session.accessKeyId,
       secretAccessKey: session.secretKey,

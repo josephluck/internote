@@ -27,7 +27,6 @@ const Instructions = styled.p`
 `;
 
 const Page: NextTwineSFC<Store> = () => {
-  console.log("14:37", env);
   const authenticateLoading = useTwineState(
     (state) => state.auth.loading.signUp
   );
