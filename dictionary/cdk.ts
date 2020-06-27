@@ -1,6 +1,7 @@
 import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as iam from "@aws-cdk/aws-iam";
 import * as cdk from "@aws-cdk/core";
+import { addCorsOptions } from "@internote/infra/constructs/cors";
 import { InternoteStack } from "@internote/infra/constructs/internote-stack";
 import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-fn";
 
@@ -19,6 +20,7 @@ export class InternoteDictionaryStack extends InternoteStack {
     super(scope, id, { ...props });
 
     this.rootResource = props.api.root.addResource("dictionary");
+    addCorsOptions(this.rootResource);
 
     const environment: DictionaryHandlerEnvironment = {
       OXFORD_API_ID: this.importFromSSM("OXFORD_API_ID"),
