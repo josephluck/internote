@@ -115,33 +115,29 @@ The front-end application can be run locally and is set up to run against the `d
 
 ## Back-end services
 
-There are several independent micro-services, each responsible for a portion of the overall back-end. Each service is deployed using the Serverless framework and there's a shared library of utilities that are used in multiple services.
+There are several independent micro-services, each responsible for a portion of the overall back-end. Each service is deployed using AWS CDK and there's a shared library of utilities that are used in multiple services.
 
-The Internote services are organised using a yarn workspaces mono-repository, though maintain autonomy and isolation from one another in terms of deployment and resources.
+The Internote services are organised using a yarn workspaces mono-repository, and maintain autonomy and isolation from one another in terms of deployment and code.
 
 **Auth**
 
 Authentication in Internote is powered by AWS Cognito and follows a password-less experience whereby the user does not set their own password, but instead, receives a one-time pass-code for signing up or signing in via email (SES is used for e-mail sending).
 
-The authentication credentials are used to sign requests to other services using AWS Signing Key Signatures. These include requests to API Gateway or S3 for example using a Cognito Federated Identity. Other services are authorized using API Gateway's IAM authorization (this means that authorization is handled prior to lambdas that require authorization being invoked).
+The authentication credentials are used to sign requests to other services using AWS Signing Key Signatures (aws4). These include requests to the API Gateway (backed by AWS lambda) or other AWS services for example S3 using a Cognito Federated Identity.
 
-The auth service sets up a Cognito User Pool, Cognito Identity Pool, Cognito User Pool Client and the associated IAM roles and permissions to link them together.
+Most back-end services are authorized using API Gateway's IAM authorization (this means that authorization is handled prior to lambdas that require authorization being invoked). This keeps the concept of authentication and authorization away from the business logic of the underlying lambdas.
 
-**Health**
-
-The health service is the "master" service which means it sets up the API Gateway (and exposes it) to the other services.
-
-The health services also exposes two endpoints. One that does not require authentication and one that does for the purpose of testing the Serverless set up.
+The auth service sets up a Cognito User Pool, Cognito Identity Pool, Cognito User Pool Client and the associated IAM roles and permissions to link them together, as well as the API Gateway that sits in front of the services.
 
 **Attachments**
 
-The attachments service is responsible for facilitating client uploads to an S3 bucket for storing inside notes. For example, images and videos.
+The attachments service is responsible for facilitating attachment uploads to an S3 bucket for storing inside notes. For example, images and videos.
 
-It is important that the client uploads these attachments directly to the S3 bucket, since it's discouraged to supply an endpoint to facilitate the same.
+> It's crucial that the browser uploads these attachments directly to the S3 bucket - doing so via a lambda would be both unnecessary and expensive. Cognito Federated Identities are set up to facilitate the browser doing this securely.
 
 **Notes**
 
-The notes service is responsible for the creation, deletion, listing and management of notes in the Internote app.
+The notes service is responsible for the creation, deletion, listing and management of notes as well as tags.
 
 **Preferences**
 
@@ -151,52 +147,42 @@ The preferences service is responsible for the creation, management and retrieva
 
 Each Internote service defines it's own types for request and response DTOs. These types are consumed by client applications to construct strongly-typed SDKs on top of the services.
 
-Each Internote service defines request body validation using API Gateway Request Body Validations using the Serverless framework as per this guide.
-
 **Database**
 
-The Internote services use DynamoDB for data persistence. Each service is responsible for defining it's own DynamoDB schema and management.
+Each service may use DynamoDB for database-like persistence. Each service is responsible for defining it's own DynamoDB schema and management.
 
-The Internote services uses Type Dynamo as an ORM on top of DynamoDB. Since DynamoDB is schemaless, attributes that are added to a model after initial set up and deployment are defined as optional attributes and are enforced as such using strict TypeScript compiler options.
+Since DynamoDB is schemaless, attributes that are added to a model after initial set up and deployment are defined as optional attributes and are enforced as such using strict TypeScript compiler options.
 
-**Domains**
+**Stages / domains**
 
-There are two domains available for Internote services:
+CDK is setup with the concept of a "stage" which is an isolated deployment of the entire Internote stack. These stages are used to resemble environments. There are two main "environments" set up, although others can be deployed easily:
 
 - https://dev-services.internote.app
 - https://services.internote.app
 
-Each service is responsible for defining it's routing via it's serverless.yml definition. Deployment of the API gateway and domain name is done in the [services/health/serverless.yml](/services/health/serverless.yml) service via serverless-domain-manager.
-
 **API Gateway**
 
-An API Gateway is created by the Serverless framework to route traffic from the internet through to the lambdas that power the Internote services. Each service references this API Gateway in it's Serverless set up as to use the same API Gateway.
+An API Gateway is created by the Serverless framework to route traffic from the internet through to the lambdas that power the back-end services. Each service references this API Gateway in it's CDK set up.
 
-Since the Internote services are designed to be called by a 3rd party client application (such as the front-end that powers the Internote editor), CORS is enabled for every lambda that the front-end hits directly.
+Since the Internote services are designed to be called by a 3rd party client application (such as the front-end that powers the Internote editor), CORS is enabled for every lambda integration to the API gateway.
 
-**SSL**
+**Domain / SSL**
 
-SSL certificates are managed by AWS Certificate Manager where a sub-domain wildcard SSL certificate is linked with the API gateway that powers Internote services.
+The domain and SSL configuration is managed manually through Route53 and AWS Certificate Manager using the AWS console.
 
-**Set up**
-
-Since Route53 is not covered by the Serverless framework, the domain and SSL set up is managed manually through Route53 and AWS Certificate Manager using the AWS console.
+SSL certificates are managed by AWS Certificate Manager where a sub-domain wildcard SSL certificate is linked with the API gateway.
 
 **Email**
 
-The Internote services send emails to users. Amazon SES is set up and configured for this purpose and is set up loosely according to these guidelines.
+Amazon SES is used to send e-mails to users. Typically `no-reply@internote.app` is used as the sending address.
 
-Note that SES is set up manually outside of the Serverless framework using the AWS console.
-
-The Internote service's lambdas are set up to send from "no-reply@internote.app"
+> Note that SES is set up outside the context of the CDK application manually through the AWS console.
 
 **Receiving email**
 
-Although Internote does not support replies on emails sent to users, an S3 bucket is set up to receive e-mails.
+There is no facility for Internote to receive e-mail from users.
 
 # Deployment
-
-The infrastructure for Internote is managed by AWS CDK.
 
 #### Set up
 
@@ -229,7 +215,7 @@ There are some custom CDK Constructs defined that provide sensible abstractions 
 
 #### Environment variables
 
-environment variables are used to plumb services together and are used as a mechanism for accessing resources at run-time, such as S3 buckets and DynamoDB tables. These variables are constructed at build-time using (mostly) CDK constructs and are exported / stored for later use.
+Environment variables are used to plumb services together and are used as a mechanism for accessing resources at run-time, such as S3 buckets and DynamoDB tables. These variables are constructed at build-time using (mostly) CDK constructs and are exported / stored for later use.
 
 **About process.env**
 
@@ -239,13 +225,11 @@ The view is taken that accessing `process.env` directly is dangerous as it isn't
 
 Each lambda defines and exports a type for it's required environment (picked from the full environment type defined in the `infra` workspace). During the CDK synthesis, the necessary environment is prepared and passed in to the service at build time using the CDK Lambda construct. Note that only the minimum necessary environment is passed in to each lambda to keep the lambdas light-weight. The environment is validated at run-time and fails-fast if any required environment configuration is missing.
 
-**Exports**
-
-Particular environment configuration is exported as a CloudFormation export during CDK synthesis and is exported to AWS SSM for later use once the stack has been constructed.
-
 **AWS SSM**
 
 AWS SSM is used to store environment variables and secrets that are used across the stack. During CDK synthesis of the back-end services, AWS SSM is populated with values corresponding to the created resources, for example `COGNITO_USER_POOL_ID`. These SSM values are used later by the front-end CDK synthesis to hydrate necessary environment configuration that connects the front-end to the back-end services.
+
+Some services require environment variables that aren't created by CDK, for example the dictionary service requires API keys for the Oxford Dictionary API. These environment variables are configured and managed by AWS SSM directly and are imported in to the CDK definition of the service using AWS SSM imports.
 
 # [OLD] serverless framework deployment
 
