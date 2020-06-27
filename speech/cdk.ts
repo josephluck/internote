@@ -54,28 +54,27 @@ export class InternoteSpeechStack extends InternoteStack {
       }
     );
 
-    this.rootResource.addMethod("POST", speechLambda.lambdaIntegration, {
-      authorizationType: apigateway.AuthorizationType.IAM,
-    });
-
     /**
      * Grants the lambdas read-write access to S3
      */
     bucket.grantReadWrite(speechLambda.lambdaFn);
 
+    this.rootResource.addMethod("POST", speechLambda.lambdaIntegration, {
+      authorizationType: apigateway.AuthorizationType.IAM,
+    });
+
     /**
      * Grants the lambdas access to polly
      */
-    const role = new iam.Role(this, `${id}-polly-role`, {
-      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-    });
-    role.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        resources: [speechLambda.lambdaFn.functionArn],
-        actions: ["polly:*"],
-      })
-    );
+    if (speechLambda.lambdaFn.role) {
+      speechLambda.lambdaFn.role.addToPolicy(
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          resources: ["*"],
+          actions: ["polly:*"],
+        })
+      );
+    }
 
     this.exportToSSM("SPEECH_BUCKET_NAME", bucket.bucketName);
   }
