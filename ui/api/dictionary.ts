@@ -14,7 +14,7 @@ export function dictionary(makeRequest: MakeSignedRequest) {
       request: LookupRequestBody
     ): ApiResponse<LookupResponseBody> {
       return makeRequest({
-        path: "/dictionary/lookup",
+        path: "/dictionary",
         method: "POST",
         session,
         body: request,
