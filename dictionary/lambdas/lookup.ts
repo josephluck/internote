@@ -12,18 +12,19 @@ import middy from "middy";
 import { cors, jsonBodyParser } from "middy/middlewares";
 import { None, Option, Some } from "space-lift";
 
+import { env } from "../env";
 import {
   DictionaryResult,
   LookupRequestBody,
   LookupResponseBody,
   Oxford,
-} from "./types";
+} from "../types";
 
 const api = Axios.create({
   baseURL: "https://od-api.oxforddictionaries.com:443/api/v2",
   headers: {
-    app_id: process.env.OXFORD_API_ID,
-    app_key: process.env.OXFORD_API_KEY,
+    app_id: env.OXFORD_API_ID,
+    app_key: env.OXFORD_API_KEY,
   },
 });
 

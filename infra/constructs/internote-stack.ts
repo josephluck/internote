@@ -13,6 +13,8 @@ export class InternoteStack extends cdk.Stack {
     this.rootId = id;
   }
 
+  // TODO: constrain this type to only env variables that are generated through
+  // CDK
   exportToSSM<K extends keyof Env>(key: K, value: Env[K]) {
     new ssm.StringParameter(this, `${this.rootId}-${key}`, {
       simpleName: false,
@@ -20,5 +22,14 @@ export class InternoteStack extends cdk.Stack {
       stringValue: value,
       tier: ssm.ParameterTier.STANDARD,
     });
+  }
+
+  // TODO: constrain this type to env variables that aren't generated through
+  // CDK
+  importFromSSM<K extends keyof Env>(key: K): Env[K] {
+    return ssm.StringParameter.valueForStringParameter(
+      this,
+      `/internote/${this.stage}/${key}`
+    ) as Env[K];
   }
 }

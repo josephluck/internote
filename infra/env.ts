@@ -55,11 +55,15 @@ export type Env = {
   NOTES_TABLE_SORT_KEY: "userId";
   NOTES_TABLE_USER_ID_INDEX: string;
 
-  // Preferences
+  // Snippets
   SNIPPETS_TABLE_NAME: string;
   SNIPPETS_TABLE_PARTITION_KEY: "snippetId";
   SNIPPETS_TABLE_SORT_KEY: "userId";
   SNIPPETS_TABLE_USER_ID_INDEX: string;
+
+  // Dictionary
+  OXFORD_API_ID: string;
+  OXFORD_API_KEY: string;
 };
 
 /**

@@ -16,5 +16,5 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "exclude": [".build", "*.js.map"]
+  "exclude": [".build", "*.js.map", "cdk.out"]
 }

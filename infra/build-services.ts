@@ -10,22 +10,13 @@ const services = [
   // "attachments",
   "auth",
   // "collaborate",
-  // "dictionary",
+  "dictionary",
   // "export",
-  // "health",
   "notes",
   "preferences",
   "snippets",
   "speech",
 ];
-
-const externals = ["aws-sdk"].concat(nodeBuiltIns).reduce(
-  (externalsMap, moduleName) => ({
-    ...externalsMap,
-    [moduleName]: moduleName,
-  }),
-  {}
-);
 
 export const buildServices = async () =>
   await Promise.all(services.map(buildService));
@@ -49,9 +40,12 @@ const buildService = async (service: string) => {
 const makeWebpackConfig = async (
   service: string
 ): Promise<webpack.Configuration> => {
-  const inputPath = path.join(__dirname, "../", service, "lambdas");
-  const outputPath = path.join(__dirname, "../", service, ".build");
-  const rootNodeModulesPath = path.join(__dirname, "../", "node_modules");
+  const rootDir = path.join(__dirname, "../");
+  const serviceDir = path.join(rootDir, service);
+
+  const inputPath = path.join(serviceDir, "lambdas");
+  const outputPath = path.join(serviceDir, ".build");
+  const rootNodeModulesPath = path.join(rootDir, "node_modules");
 
   if (!fs.existsSync(inputPath)) {
     throw new Error(
@@ -104,6 +98,14 @@ const makeWebpackConfig = async (
     devtool: "source-map",
   };
 };
+
+const externals = ["aws-sdk"].concat(nodeBuiltIns).reduce(
+  (externalsMap, moduleName) => ({
+    ...externalsMap,
+    [moduleName]: moduleName,
+  }),
+  {}
+);
 
 /**
  * TODO: document why this is necessary
