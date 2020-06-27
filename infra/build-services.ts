@@ -15,7 +15,7 @@ const services = [
   // "health",
   "notes",
   "preferences",
-  // "snippets",
+  "snippets",
   "speech",
 ];
 

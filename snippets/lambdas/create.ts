@@ -11,8 +11,8 @@ import middy from "middy";
 import { cors, jsonBodyParser } from "middy/middlewares";
 import uuid from "uuid";
 
-import { createSnippet } from "./db/queries";
-import { CreateSnippetDTO } from "./types";
+import { createSnippet } from "../db";
+import { CreateSnippetDTO } from "../types";
 
 const validator = validateRequestBody<CreateSnippetDTO>({
   title: [required, isString],
@@ -25,9 +25,9 @@ const create: CreateHandler<CreateSnippetDTO> = async (
   callback
 ) => {
   const userId = getUserIdentityId(event);
-  const noteId = uuid();
-  const note = await createSnippet(noteId, userId, event.body);
-  return callback(null, success(note));
+  const snippetId = uuid();
+  const snippet = await createSnippet(snippetId, userId, event.body);
+  return callback(null, success(snippet));
 };
 
 export const handler = middy(create)

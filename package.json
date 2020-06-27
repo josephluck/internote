@@ -5,6 +5,7 @@
   "description": "",
   "author": "",
   "scripts": {
+    "deploy": "yarn workspace @internote/infra deploy",
     "clean": "find . -name \"node_modules\" -exec rm -rf '{}' + && find . -name \".build\" -exec rm -rf '{}' + && yarn cache clean",
     "format": "prettier --write \"./**/*.{ts,tsx,js}\""
   },
@@ -16,7 +17,6 @@
       "collaborate",
       "dictionary",
       "export",
-      "health",
       "infra",
       "lib",
       "notes",

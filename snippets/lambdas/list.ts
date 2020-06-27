@@ -5,12 +5,12 @@ import { getUserIdentityId } from "@internote/lib/user";
 import middy from "middy";
 import { cors, httpErrorHandler } from "middy/middlewares";
 
-import { listSnippetsByUserId } from "./db/queries";
+import { listSnippetsByUserId } from "../db";
 
 const list: GetHandler = async (event, _ctx, callback) => {
   const userId = getUserIdentityId(event);
-  const notes = await listSnippetsByUserId(userId);
-  return callback(null, success(notes));
+  const snippets = await listSnippetsByUserId(userId);
+  return callback(null, success(snippets));
 };
 
 export const handler = middy(list)

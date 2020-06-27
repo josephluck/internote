@@ -8,7 +8,6 @@ import { Session } from "../auth/storage";
 import { Store } from "../store";
 import { dictionary } from "./dictionary";
 import { exportNote } from "./export";
-import { health } from "./health";
 import { notes } from "./notes";
 import { preferences } from "./preferences";
 import { snippets } from "./snippets";
@@ -120,7 +119,6 @@ export function makeApi({
   };
 
   return {
-    health: health(makeSignedRequest),
     preferences: preferences(makeSignedRequest),
     speech: speech(makeSignedRequest),
     dictionary: dictionary(makeSignedRequest),

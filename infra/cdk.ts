@@ -3,6 +3,7 @@ import { InternoteGatewayStack } from "@internote/auth-service/cdk";
 import { InternoteNotesStack } from "@internote/notes-service/cdk";
 import { InternotePreferencesStack } from "@internote/preferences-service/cdk";
 import { InternoteSpeechStack } from "@internote/speech-service/cdk";
+import { InternoteSnippetsStack } from "@internote/snippets-service/cdk";
 
 import { buildServices } from "./build-services";
 
@@ -49,10 +50,18 @@ export const build = async () => {
     authenticatedRole,
   });
 
+  const snippetsStack = new InternoteSnippetsStack(app, `${id}-snippets-service`, {
+    ...props,
+    api,
+    cognitoAuthorizer,
+    authenticatedRole,
+  });
+
   console.log({
     speechStack: speechStack.toString(),
     preferencesStack: preferencesStack.toString(),
     notesStack: notesStack.toString(),
+    snippetsStack: snippetsStack.toString(),
   });
 
   // app.synth();

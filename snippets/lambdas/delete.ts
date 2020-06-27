@@ -5,7 +5,7 @@ import { getUserIdentityId } from "@internote/lib/user";
 import middy from "middy";
 import { cors, httpErrorHandler } from "middy/middlewares";
 
-import { deleteSnippetById } from "./db/queries";
+import { deleteSnippetById } from "../db";
 
 const del33t: DeleteHandler<{ snippetId: string }> = async (
   event,
