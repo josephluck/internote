@@ -2,6 +2,7 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as acm from "@aws-cdk/aws-certificatemanager";
 import * as cognito from "@aws-cdk/aws-cognito";
 import * as iam from "@aws-cdk/aws-iam";
+import * as logs from "@aws-cdk/aws-logs";
 import * as route53 from "@aws-cdk/aws-route53";
 import * as route53targets from "@aws-cdk/aws-route53-targets";
 import * as cdk from "@aws-cdk/core";
@@ -31,6 +32,10 @@ export class InternoteGatewayStack extends InternoteStack {
   constructor(scope: cdk.App, id: string, props: Props) {
     super(scope, id, props);
 
+    /**
+     * Lookup the existing hosted zone to avoid CDK managing it (and destroying
+     * it if the CDK stack is destroyed)
+     */
     this.hostedZone = route53.PublicHostedZone.fromLookup(
       this,
       `${id}-hosted-zone`,
@@ -41,13 +46,24 @@ export class InternoteGatewayStack extends InternoteStack {
 
     const servicesGatewayDomainName = `${this.stage}-services.internote.app`;
 
+    /**
+     * It's safe to create a new DNS certificate managed by CDK
+     */
     const servicesDnsCertificate = new acm.DnsValidatedCertificate(
       this,
       `${id}-dns-certificate`,
       {
         domainName: servicesGatewayDomainName,
         hostedZone: this.hostedZone,
-        region: "eu-west-1",
+        region: this.region, // NB: this must match the API gateway's region.
+      }
+    );
+
+    const gatewayCloudwatchLogGroup = new logs.LogGroup(
+      this,
+      `${id}-api-gateway-logs`,
+      {
+        logGroupName: `${id}-api-gateway`,
       }
     );
 
@@ -55,6 +71,7 @@ export class InternoteGatewayStack extends InternoteStack {
       restApiName: `${id}-api-gateway`,
       minimumCompressionSize: 1024,
       cloudWatchRole: true,
+      failOnWarnings: true,
       domainName: {
         domainName: servicesGatewayDomainName,
         certificate: servicesDnsCertificate,
@@ -64,7 +81,10 @@ export class InternoteGatewayStack extends InternoteStack {
         loggingLevel: apigateway.MethodLoggingLevel.INFO,
         dataTraceEnabled: true,
         metricsEnabled: true,
-        stageName: "prod", // TODO: support stage via context
+        stageName: "prod", // TODO: see whether this is necessary with domain name
+        accessLogDestination: new apigateway.LogGroupLogDestination(
+          gatewayCloudwatchLogGroup
+        ),
       },
     });
 
