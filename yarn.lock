@@ -126,6 +126,19 @@
     "@aws-cdk/cx-api" "1.47.0"
     constructs "^3.0.2"
 
+"@aws-cdk/aws-cloudfront@1.47.0":
+  version "1.47.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudfront/-/aws-cloudfront-1.47.0.tgz#01fb83a0796bc15f0b088364aacc671f6c7d8809"
+  integrity sha512-POCZ8dV7h+tbkWzFrmMMBhYD9LjKctQo2mL+kZJJf26Jemvjw3S2kswyZLjA8nC3C44wJJDL7LM7sorw7BlJiw==
+  dependencies:
+    "@aws-cdk/aws-certificatemanager" "1.47.0"
+    "@aws-cdk/aws-iam" "1.47.0"
+    "@aws-cdk/aws-kms" "1.47.0"
+    "@aws-cdk/aws-lambda" "1.47.0"
+    "@aws-cdk/aws-s3" "1.47.0"
+    "@aws-cdk/core" "1.47.0"
+    constructs "^3.0.2"
+
 "@aws-cdk/aws-cloudwatch@1.47.0":
   version "1.47.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudwatch/-/aws-cloudwatch-1.47.0.tgz#9802cb31424a3da670f8310b690f262edf3c7bb5"
@@ -175,6 +188,15 @@
     "@aws-cdk/core" "1.47.0"
     "@aws-cdk/cx-api" "1.47.0"
     "@aws-cdk/region-info" "1.47.0"
+    constructs "^3.0.2"
+
+"@aws-cdk/aws-elasticloadbalancing@1.47.0":
+  version "1.47.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-elasticloadbalancing/-/aws-elasticloadbalancing-1.47.0.tgz#92d0fd45c040900af0df1efc94871500806a9fe8"
+  integrity sha512-l2qUCFPmRDGflf9C1cL1ESNFx4d1GFjX068bKUthThkhTvaEm0t63cZezUxMjomCCHizmewdlw79anIuWVZD+A==
+  dependencies:
+    "@aws-cdk/aws-ec2" "1.47.0"
+    "@aws-cdk/core" "1.47.0"
     constructs "^3.0.2"
 
 "@aws-cdk/aws-elasticloadbalancingv2@1.47.0":
@@ -243,6 +265,24 @@
     "@aws-cdk/aws-cloudwatch" "1.47.0"
     "@aws-cdk/aws-iam" "1.47.0"
     "@aws-cdk/core" "1.47.0"
+    constructs "^3.0.2"
+
+"@aws-cdk/aws-route53-targets@1.47.0":
+  version "1.47.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-route53-targets/-/aws-route53-targets-1.47.0.tgz#639524548059c8d85dd5ebe60bf1ffd60af773e2"
+  integrity sha512-svVQ3iVuRkYzCT+KUfFu4MASFc/xmkmcLn0ebGx9EQ81fzCLmLxgVPK3DEEx/3GXM4bBrTwpeE4r7DkbVVNPUA==
+  dependencies:
+    "@aws-cdk/aws-apigateway" "1.47.0"
+    "@aws-cdk/aws-cloudfront" "1.47.0"
+    "@aws-cdk/aws-cognito" "1.47.0"
+    "@aws-cdk/aws-ec2" "1.47.0"
+    "@aws-cdk/aws-elasticloadbalancing" "1.47.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.47.0"
+    "@aws-cdk/aws-iam" "1.47.0"
+    "@aws-cdk/aws-route53" "1.47.0"
+    "@aws-cdk/aws-s3" "1.47.0"
+    "@aws-cdk/core" "1.47.0"
+    "@aws-cdk/region-info" "1.47.0"
     constructs "^3.0.2"
 
 "@aws-cdk/aws-route53@1.47.0":

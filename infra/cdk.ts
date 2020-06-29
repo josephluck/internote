@@ -17,20 +17,25 @@ export const build = async () => {
     throw err;
   }
 
+  /**
+   * The base id from which child stacks extend
+   */
   const id = `internote-cdk-experiment`; // TODO: stage?
-  const props = {};
+
+  const props: cdk.StackProps = {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: process.env.CDK_DEFAULT_REGION,
+    },
+  };
+
   const app = new cdk.App();
 
-  const {
-    api,
-
-    authenticatedRole,
-  } = new InternoteGatewayStack(app, id, props);
+  const { api, authenticatedRole } = new InternoteGatewayStack(app, id, props);
 
   const speechStack = new InternoteSpeechStack(app, `${id}-speech-service`, {
     ...props,
     api,
-
     authenticatedRole,
   });
 

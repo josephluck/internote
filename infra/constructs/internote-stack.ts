@@ -5,7 +5,7 @@ import { Env } from "../env";
 
 export class InternoteStack extends cdk.Stack {
   private rootId: string;
-  private stage: "cdk" = "cdk"; // TODO: get from context?
+  public stage: "cdk" = "cdk"; // TODO: get from context?
 
   constructor(scope: cdk.Construct, id: string, options?: cdk.StackProps) {
     super(scope, id, options);

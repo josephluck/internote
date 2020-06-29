@@ -1,6 +1,9 @@
 import * as apigateway from "@aws-cdk/aws-apigateway";
+import * as acm from "@aws-cdk/aws-certificatemanager";
 import * as cognito from "@aws-cdk/aws-cognito";
 import * as iam from "@aws-cdk/aws-iam";
+import * as route53 from "@aws-cdk/aws-route53";
+import * as route53targets from "@aws-cdk/aws-route53-targets";
 import * as cdk from "@aws-cdk/core";
 import { InternoteStack } from "@internote/infra/constructs/internote-stack";
 import { InternoteLambda } from "@internote/infra/constructs/lambda-fn";
@@ -14,6 +17,8 @@ type Props = cdk.StackProps & {};
  * the Cognito bits and bobs.
  */
 export class InternoteGatewayStack extends InternoteStack {
+  public hostedZone: route53.IHostedZone;
+
   public api: apigateway.RestApi;
 
   public userPool: cognito.UserPool;
@@ -26,10 +31,34 @@ export class InternoteGatewayStack extends InternoteStack {
   constructor(scope: cdk.App, id: string, props: Props) {
     super(scope, id, props);
 
+    this.hostedZone = route53.PublicHostedZone.fromLookup(
+      this,
+      `${id}-hosted-zone`,
+      {
+        domainName: "internote.app",
+      }
+    );
+
+    const servicesGatewayDomainName = `${this.stage}-services.internote.app`;
+
+    const servicesDnsCertificate = new acm.DnsValidatedCertificate(
+      this,
+      `${id}-dns-certificate`,
+      {
+        domainName: servicesGatewayDomainName,
+        hostedZone: this.hostedZone,
+        region: "eu-west-1",
+      }
+    );
+
     this.api = new apigateway.RestApi(this, `${id}-api-gateway`, {
       restApiName: `${id}-api-gateway`,
       minimumCompressionSize: 1024,
       cloudWatchRole: true,
+      domainName: {
+        domainName: servicesGatewayDomainName,
+        certificate: servicesDnsCertificate,
+      },
       deployOptions: {
         // TODO: somehow provide a log group name - the random one isn't easy to find in CloudWatch
         loggingLevel: apigateway.MethodLoggingLevel.INFO,
@@ -38,6 +67,18 @@ export class InternoteGatewayStack extends InternoteStack {
         stageName: "prod", // TODO: support stage via context
       },
     });
+
+    const aRecordProps: route53.ARecordProps = {
+      recordName: servicesGatewayDomainName,
+      target: route53.RecordTarget.fromAlias(
+        new route53targets.ApiGateway(this.api)
+      ),
+      zone: this.hostedZone,
+    };
+
+    new route53.ARecord(this, `${id}-a-record`, aRecordProps);
+
+    new route53.AaaaRecord(this, `${id}-aaaa-record`, aRecordProps);
 
     const env: AuthEnvironment = {
       SES_FROM_ADDRESS: "noreply@internote.app", // TODO: from context?
@@ -258,7 +299,8 @@ export class InternoteGatewayStack extends InternoteStack {
       }
     );
 
-    this.exportToSSM("SERVICES_HOST", this.api.url);
+    // NB: this _must_ include the trailing slash
+    this.exportToSSM("SERVICES_HOST", `${servicesGatewayDomainName}/`);
 
     this.exportToSSM("COGNITO_IDENTITY_POOL_ID", this.identityPool.ref);
 
