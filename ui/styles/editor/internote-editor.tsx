@@ -137,9 +137,12 @@ const InternoteEditorEditor = () => {
     [handlePreventKeydown, handleShortcuts, handleResetListBlockOnPress]
   );
 
-  const renderElement = useCallback((props: any) => <Element {...props} />, []);
+  const renderElement = useCallback(
+    (props: any) => <EditorElement {...props} />,
+    []
+  );
 
-  const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
+  const renderLeaf = useCallback((props: any) => <EditorLeaf {...props} />, []);
 
   return (
     <FullHeight>
@@ -160,65 +163,61 @@ const InternoteEditorEditor = () => {
   );
 };
 
-const Element: React.FunctionComponent<InternoteEditorRenderElementProps> = ({
-  attributes,
-  children,
-  element,
-}) => {
-  const attrs = {
-    ...attributes,
-    className: voids.includes(element.type) ? "" : SLATE_BLOCK_CLASS_NAME,
-  };
+const EditorElement: React.FunctionComponent<InternoteEditorRenderElementProps> = React.memo(
+  ({ attributes, children, element }) => {
+    const attrs = {
+      ...attributes,
+      className: voids.includes(element.type) ? "" : SLATE_BLOCK_CLASS_NAME,
+    };
 
-  switch (element.type) {
-    case "block-quote":
-      return <blockquote {...attrs}>{children}</blockquote>;
-    case "bulleted-list":
-      return <ul {...attrs}>{children}</ul>;
-    case "heading-one":
-      return <h1 {...attrs}>{children}</h1>;
-    case "heading-two":
-      return <h2 {...attrs}>{children}</h2>;
-    case "list-item":
-      return <li {...attrs}>{children}</li>;
-    case "numbered-list":
-      return <ol {...attrs}>{children}</ol>;
-    case "tag": {
-      return (
-        <Tag {...attrs} isFocused large>
-          {element.tag}
-          {children}
-        </Tag>
-      );
+    switch (element.type) {
+      case "block-quote":
+        return <blockquote {...attrs}>{children}</blockquote>;
+      case "bulleted-list":
+        return <ul {...attrs}>{children}</ul>;
+      case "heading-one":
+        return <h1 {...attrs}>{children}</h1>;
+      case "heading-two":
+        return <h2 {...attrs}>{children}</h2>;
+      case "list-item":
+        return <li {...attrs}>{children}</li>;
+      case "numbered-list":
+        return <ol {...attrs}>{children}</ol>;
+      case "tag": {
+        return (
+          <Tag {...attrs} isFocused large>
+            {element.tag}
+            {children}
+          </Tag>
+        );
+      }
+      default:
+        return <p {...attrs}>{children}</p>;
     }
-    default:
-      return <p {...attrs}>{children}</p>;
   }
-};
+);
 
-const Leaf: React.FunctionComponent<InternoteEditorRenderLeafProps> = ({
-  attributes,
-  children,
-  leaf,
-}) => {
-  if (leaf.bold) {
-    children = <strong>{children}</strong>;
+const EditorLeaf: React.FunctionComponent<InternoteEditorRenderLeafProps> = React.memo(
+  ({ attributes, children, leaf }) => {
+    if (leaf.bold) {
+      children = <strong>{children}</strong>;
+    }
+
+    if (leaf.code) {
+      children = <code>{children}</code>;
+    }
+
+    if (leaf.italic) {
+      children = <em>{children}</em>;
+    }
+
+    if (leaf.underline) {
+      children = <u>{children}</u>;
+    }
+
+    return <span {...attributes}>{children}</span>;
   }
-
-  if (leaf.code) {
-    children = <code>{children}</code>;
-  }
-
-  if (leaf.italic) {
-    children = <em>{children}</em>;
-  }
-
-  if (leaf.underline) {
-    children = <u>{children}</u>;
-  }
-
-  return <span {...attributes}>{children}</span>;
-};
+);
 
 const fullHeightStyles = css`
   min-height: 100%;
@@ -244,8 +243,8 @@ const InnerPadding = styled.div.withConfig({
 `;
 
 export const Editor = styled(Editable).withConfig({
-  shouldForwardProp: (prop: string, def) =>
-    !["distractionFree", "userScrolled"].includes(prop) && def(prop),
+  shouldForwardProp: (prop: string) =>
+    !["distractionFree", "userScrolled"].includes(prop),
 })<{
   distractionFree: boolean;
   userScrolled: boolean;
