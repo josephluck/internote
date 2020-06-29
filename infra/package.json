@@ -20,7 +20,7 @@
     "@aws-cdk/aws-ssm": "1.47.0",
     "@aws-cdk/core": "1.47.0",
     "@internote/attachments-service": "*",
-    "@internote/auth-service": "*",
+    "@internote/gateway-service": "*",
     "@internote/collaborate-service": "*",
     "@internote/dictionary-service": "*",
     "@internote/export-service": "*",

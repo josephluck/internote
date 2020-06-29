@@ -1,7 +1,7 @@
 import * as cdk from "@aws-cdk/core";
-import { InternoteGatewayStack } from "@internote/auth-service/cdk";
 import { InternoteDictionaryStack } from "@internote/dictionary-service/cdk";
 import { InternoteExportStack } from "@internote/export-service/cdk";
+import { InternoteGatewayStack } from "@internote/gateway-service/cdk";
 import { InternoteNotesStack } from "@internote/notes-service/cdk";
 import { InternotePreferencesStack } from "@internote/preferences-service/cdk";
 import { InternoteSnippetsStack } from "@internote/snippets-service/cdk";

@@ -127,7 +127,7 @@ The authentication credentials are used to sign requests to other services using
 
 Most back-end services are authorized using API Gateway's IAM authorization (this means that authorization is handled prior to lambdas that require authorization being invoked). This keeps the concept of authentication and authorization away from the business logic of the underlying lambdas.
 
-The auth service sets up a Cognito User Pool, Cognito Identity Pool, Cognito User Pool Client and the associated IAM roles and permissions to link them together, as well as the API Gateway that sits in front of the services.
+The gateway service sets up a Cognito User Pool, Cognito Identity Pool, Cognito User Pool Client and the associated IAM roles and permissions to link them together, as well as the API Gateway that sits in front of the services.
 
 **Attachments**
 
