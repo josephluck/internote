@@ -10,7 +10,6 @@ import { PreferencesEnv } from "./env";
 
 type PreferencesStackProps = cdk.StackProps & {
   api: apigateway.RestApi;
-  cognitoAuthorizer: apigateway.IAuthorizer;
   authenticatedRole: iam.Role;
 };
 

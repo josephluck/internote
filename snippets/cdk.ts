@@ -10,7 +10,6 @@ import { SnippetsEnv } from "./env";
 
 type SnippetsStackProps = cdk.StackProps & {
   api: apigateway.RestApi;
-  cognitoAuthorizer: apigateway.IAuthorizer;
   authenticatedRole: iam.Role;
 };
 

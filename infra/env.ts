@@ -64,6 +64,9 @@ export type Env = {
   // Dictionary
   OXFORD_API_ID: string;
   OXFORD_API_KEY: string;
+
+  // Export
+  EXPORT_BUCKET_NAME: string;
 };
 
 /**

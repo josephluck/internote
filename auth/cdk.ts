@@ -15,8 +15,6 @@ type Props = cdk.StackProps & {};
  */
 export class InternoteGatewayStack extends InternoteStack {
   public api: apigateway.RestApi;
-  private authorizer: apigateway.CfnAuthorizer;
-  public cognitoAuthorizer: apigateway.IAuthorizer;
 
   public userPool: cognito.UserPool;
   public userPoolClient: cognito.UserPoolClient;
@@ -161,24 +159,6 @@ export class InternoteGatewayStack extends InternoteStack {
         authFlows: { custom: true, refreshToken: true },
       }
     );
-
-    this.authorizer = new apigateway.CfnAuthorizer(
-      this,
-      `${id}-auth-cognito-authorizer`,
-      {
-        restApiId: this.api.restApiId,
-        name: `${id}-auth-cognito-authorizer`,
-        type: apigateway.AuthorizationType.COGNITO,
-        identitySource: "method.request.header.Authorization",
-        providerArns: [this.userPool.userPoolArn],
-      }
-    );
-
-    // TODO: this might not be necessary
-    this.cognitoAuthorizer = {
-      authorizerId: this.authorizer.ref,
-      authorizationType: apigateway.AuthorizationType.COGNITO,
-    };
 
     this.identityPool = new cognito.CfnIdentityPool(
       this,

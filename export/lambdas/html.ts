@@ -11,8 +11,9 @@ import md5 from "md5";
 import middy from "middy";
 import { cors, jsonBodyParser } from "middy/middlewares";
 
-import { serializeHtml } from "./serializers/html";
-import { CreateExportDTO, ExportResponseDTO } from "./types";
+import { env } from "../env";
+import { serializeHtml } from "../serializers/html";
+import { CreateExportDTO, ExportResponseDTO } from "../types";
 
 const validator = validateRequestBody<CreateExportDTO>({
   title: [required, isString],
@@ -26,13 +27,13 @@ const html: CreateHandler<CreateExportDTO> = async (event, _ctx, callback) => {
   const hash = md5(output);
   const S3UploadPath = `${title} - ${hash}.html`;
   await S3.upload({
-    Bucket: process.env.EXPORT_BUCKET,
+    Bucket: env.EXPORT_BUCKET_NAME,
     Key: S3UploadPath,
     Body: output,
     ACL: "public-read",
   }).promise();
 
-  const src = `https://s3-${process.env.REGION}.amazonaws.com/${process.env.EXPORT_BUCKET}/${S3UploadPath}`;
+  const src = `https://s3-${env.SERVICES_REGION}.amazonaws.com/${env.EXPORT_BUCKET_NAME}/${S3UploadPath}`;
 
   const response: ExportResponseDTO = { src };
 

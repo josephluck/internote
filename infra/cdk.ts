@@ -1,6 +1,7 @@
 import * as cdk from "@aws-cdk/core";
 import { InternoteGatewayStack } from "@internote/auth-service/cdk";
 import { InternoteDictionaryStack } from "@internote/dictionary-service/cdk";
+import { InternoteExportStack } from "@internote/export-service/cdk";
 import { InternoteNotesStack } from "@internote/notes-service/cdk";
 import { InternotePreferencesStack } from "@internote/preferences-service/cdk";
 import { InternoteSnippetsStack } from "@internote/snippets-service/cdk";
@@ -22,14 +23,14 @@ export const build = async () => {
 
   const {
     api,
-    cognitoAuthorizer,
+
     authenticatedRole,
   } = new InternoteGatewayStack(app, id, props);
 
   const speechStack = new InternoteSpeechStack(app, `${id}-speech-service`, {
     ...props,
     api,
-    cognitoAuthorizer,
+
     authenticatedRole,
   });
 
@@ -39,7 +40,7 @@ export const build = async () => {
     {
       ...props,
       api,
-      cognitoAuthorizer,
+
       authenticatedRole,
     }
   );
@@ -47,7 +48,7 @@ export const build = async () => {
   const notesStack = new InternoteNotesStack(app, `${id}-notes-service`, {
     ...props,
     api,
-    cognitoAuthorizer,
+
     authenticatedRole,
   });
 
@@ -57,7 +58,7 @@ export const build = async () => {
     {
       ...props,
       api,
-      cognitoAuthorizer,
+
       authenticatedRole,
     }
   );
@@ -68,10 +69,17 @@ export const build = async () => {
     {
       ...props,
       api,
-      cognitoAuthorizer,
+
       authenticatedRole,
     }
   );
+
+  const exportStack = new InternoteExportStack(app, `${id}-export-service`, {
+    ...props,
+    api,
+
+    authenticatedRole,
+  });
 
   console.log({
     speechStack: speechStack.toString(),
@@ -79,6 +87,7 @@ export const build = async () => {
     notesStack: notesStack.toString(),
     snippetsStack: snippetsStack.toString(),
     dictionaryStack: dictionaryStack.toString(),
+    exportStack: exportStack.toString(),
   });
 
   // app.synth();

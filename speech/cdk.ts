@@ -10,7 +10,6 @@ import { SpeechHandlerEnvironment } from "./env";
 
 type SpeechStackProps = cdk.StackProps & {
   api: apigateway.RestApi;
-  cognitoAuthorizer: apigateway.IAuthorizer;
   authenticatedRole: iam.Role;
 };
 

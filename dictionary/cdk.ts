@@ -9,7 +9,6 @@ import { DictionaryHandlerEnvironment } from "./env";
 
 type DictionaryStackProps = cdk.StackProps & {
   api: apigateway.RestApi;
-  cognitoAuthorizer: apigateway.IAuthorizer;
   authenticatedRole: iam.Role;
 };
 

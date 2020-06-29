@@ -11,7 +11,7 @@ const services = [
   "auth",
   // "collaborate",
   "dictionary",
-  // "export",
+  "export",
   "notes",
   "preferences",
   "snippets",
