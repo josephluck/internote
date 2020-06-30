@@ -6,12 +6,15 @@ import * as logs from "@aws-cdk/aws-logs";
 import * as route53 from "@aws-cdk/aws-route53";
 import * as route53targets from "@aws-cdk/aws-route53-targets";
 import * as cdk from "@aws-cdk/core";
-import { InternoteStack } from "@internote/infra/constructs/internote-stack";
+import {
+  InternoteProps,
+  InternoteStack,
+} from "@internote/infra/constructs/internote-stack";
 import { InternoteLambda } from "@internote/infra/constructs/lambda-fn";
 
 import { AuthEnvironment } from "./env";
 
-type Props = cdk.StackProps & {};
+type Props = InternoteProps;
 
 /**
  * Creates the API Gateway that sits in front of the serverless APIs as well as
@@ -29,8 +32,11 @@ export class InternoteGatewayStack extends InternoteStack {
   public unauthenticatedRole: iam.Role;
   public authenticatedRole: iam.Role;
 
-  constructor(scope: cdk.App, id: string, props: Props) {
+  constructor(scope: cdk.Construct, id: string, props: Props) {
     super(scope, id, props);
+
+    const domainName = "internote.app";
+    const servicesGatewayDomainName = `${this.stage}-services.${domainName}`;
 
     /**
      * Lookup the existing hosted zone to avoid CDK managing it (and destroying
@@ -40,11 +46,9 @@ export class InternoteGatewayStack extends InternoteStack {
       this,
       `${id}-hosted-zone`,
       {
-        domainName: "internote.app",
+        domainName,
       }
     );
-
-    const servicesGatewayDomainName = `${this.stage}-services.internote.app`;
 
     /**
      * It's safe to create a new DNS certificate managed by CDK
@@ -101,8 +105,10 @@ export class InternoteGatewayStack extends InternoteStack {
     new route53.AaaaRecord(this, `${id}-aaaa-record`, aRecordProps);
 
     const env: AuthEnvironment = {
-      SES_FROM_ADDRESS: "noreply@internote.app", // TODO: from context?
+      SES_FROM_ADDRESS: `no-reply@${domainName}`, // TODO: from context?
     };
+
+    // message: "CreateAuthChallenge failed with error User `arn:aws:sts::822567739604:assumed-role/internote-cdk-test-internotecdktestgatewayinternot-YH56ZL7FHZ8A/internote-cdk-test-gateway-auth-create' is not authorized to perform `ses:SendEmail' on resource `arn:aws:ses:eu-west-1:822567739604:identity/no-reply@internote.app'."
 
     const preSignUpLambda = new InternoteLambda(
       this,
@@ -182,7 +188,7 @@ export class InternoteGatewayStack extends InternoteStack {
         new iam.PolicyStatement({
           effect: iam.Effect.ALLOW,
           resources: [
-            `arn:aws:ses:${this.region}:${this.account}:identity/internote.app`,
+            `arn:aws:ses:${props.region}:${props.account}:identity/${env.SES_FROM_ADDRESS}`,
           ],
           actions: ["ses:SendEmail"],
         })
@@ -319,8 +325,9 @@ export class InternoteGatewayStack extends InternoteStack {
       }
     );
 
-    // NB: this _must_ include the trailing slash
-    this.exportToSSM("SERVICES_HOST", `${servicesGatewayDomainName}/`);
+    // NB: this must be a fully-qualified URL with the trailing slash for aws4
+    // auth signing
+    this.exportToSSM("SERVICES_HOST", `https://${servicesGatewayDomainName}/`);
 
     this.exportToSSM("COGNITO_IDENTITY_POOL_ID", this.identityPool.ref);
 

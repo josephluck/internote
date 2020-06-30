@@ -3,12 +3,15 @@ import * as iam from "@aws-cdk/aws-iam";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
 import { addCorsOptions } from "@internote/infra/constructs/cors";
-import { InternoteStack } from "@internote/infra/constructs/internote-stack";
+import {
+  InternoteProps,
+  InternoteStack,
+} from "@internote/infra/constructs/internote-stack";
 import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-fn";
 
 import { SpeechHandlerEnvironment } from "./env";
 
-type SpeechStackProps = cdk.StackProps & {
+type SpeechStackProps = InternoteProps & {
   api: apigateway.RestApi;
   authenticatedRole: iam.Role;
 };
@@ -16,8 +19,8 @@ type SpeechStackProps = cdk.StackProps & {
 export class InternoteSpeechStack extends InternoteStack {
   private rootResource: apigateway.Resource;
 
-  constructor(scope: cdk.App, id: string, props: SpeechStackProps) {
-    super(scope, id, { ...props });
+  constructor(scope: cdk.Construct, id: string, props: SpeechStackProps) {
+    super(scope, id, props);
 
     this.rootResource = props.api.root.addResource("speech");
     addCorsOptions(this.rootResource);

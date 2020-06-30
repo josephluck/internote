@@ -1,4 +1,4 @@
-export type Stage = "dev" | "prod";
+export type Stage = "prod" | "dev" | "cdk-experiment" | "cdk-test";
 
 export type NodeEnvironment = "development" | "production";
 

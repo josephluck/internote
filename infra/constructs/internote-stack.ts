@@ -1,16 +1,24 @@
 import * as ssm from "@aws-cdk/aws-ssm";
 import * as cdk from "@aws-cdk/core";
 
-import { Env } from "../env";
+import { Env, Stage } from "../env";
 
-export class InternoteStack extends cdk.Stack {
+export type InternoteProps = cdk.StackProps & {
+  stage: Stage;
+  account: string;
+  region: string;
+};
+
+export class InternoteStack extends cdk.Construct {
   private rootId: string;
-  public stage: "cdk" = "cdk"; // TODO: get from context?
+  public stage: Stage;
+  public region: string = "eu-west-1";
 
-  constructor(scope: cdk.Construct, id: string, options?: cdk.StackProps) {
-    super(scope, id, options);
+  constructor(scope: cdk.Construct, id: string, options: InternoteProps) {
+    super(scope, id);
 
     this.rootId = id;
+    this.stage = options.stage;
   }
 
   // TODO: constrain this type to only env variables that are generated through

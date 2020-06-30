@@ -2,12 +2,15 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as iam from "@aws-cdk/aws-iam";
 import * as cdk from "@aws-cdk/core";
 import { addCorsOptions } from "@internote/infra/constructs/cors";
-import { InternoteStack } from "@internote/infra/constructs/internote-stack";
+import {
+  InternoteProps,
+  InternoteStack,
+} from "@internote/infra/constructs/internote-stack";
 import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-fn";
 
 import { DictionaryHandlerEnvironment } from "./env";
 
-type DictionaryStackProps = cdk.StackProps & {
+type DictionaryStackProps = InternoteProps & {
   api: apigateway.RestApi;
   authenticatedRole: iam.Role;
 };
@@ -15,8 +18,8 @@ type DictionaryStackProps = cdk.StackProps & {
 export class InternoteDictionaryStack extends InternoteStack {
   private rootResource: apigateway.Resource;
 
-  constructor(scope: cdk.App, id: string, props: DictionaryStackProps) {
-    super(scope, id, { ...props });
+  constructor(scope: cdk.Construct, id: string, props: DictionaryStackProps) {
+    super(scope, id, props);
 
     this.rootResource = props.api.root.addResource("dictionary");
     addCorsOptions(this.rootResource);

@@ -195,13 +195,45 @@ There is no facility for Internote to receive e-mail from users.
 - Run the CDK bootstrapping using the AWS account ID you found in the step above. Ensure you use the same region you added to the credentials you used above. Should be `eu-west-1`. Steps for running this can be found [here](https://docs.aws.amazon.com/cdk/latest/guide/troubleshooting.html). It should be something like `cdk bootstrap aws://1234567890/eu-west-1 --profile=internote`.
 - If this is successful you should see the project run what looks like a CDK synth, however it won't deploy. You should see something like `✅ Environment aws://1234567890/eu-west-1 bootstrapped.` returned from the console.
 
+## Stages
+
+There are several "stages" set up, where each stage is an entire full stack deployment of Internote.
+
+#### Adding a new stage
+
+Add the stage name to the type `Stage` in `infra/env`, then add it as a stack output to `infra/cdk`.
+
+You'll then need to add environment configuration to SSM for environment variables that are _not_ generated via AWS CDK during deployment. See `infra/env` for the list. Note that SSM keys are populated using the convention `internote/[stage]/[key]` where `[stage]` is the stage of the deployment (i.e. `dev`) and `[key]` is the name of the key of the variable (i.e. `OXFORD_API_KEY`).
+
+## Deploying
+
+Deployment of the entire stack is managed via the `infra` workspace. There are three parts that must be run in this order:
+
+- `yarn build:services`: Transpiles services code from TypeScript to JavaScript ready for deployment.
+- `cdk --profile=internote synth internote-[stage]`: Synthesises the CDK stack to CloudFormation ready for deployment. Replace `[stage]` with the stage you wish to synthesise.
+- `cdk --profile=internote deploy internote-[stage]`: Deploys the CDK stack to AWS using the synthesised CloudFormation template.
+
+#### Example
+
+```bash
+yarn build:services
+cdk synth internote-dev
+cdk deploy internote-dev
+```
+
+#### Removing services
+
+To decommission a stage, you can run `cdk destroy internote-[stage]` where `[stage]` is the name of the stage to remove.
+
+> 🚨 Be really careful when doing this. Some of the constructs in this repository have dangerous removal policies (user pools for example). Double check what you're deleting before you run this!
+
 ## CDK structure
 
 The entire application is constructed of a CDK App which is made up (loosely) of one CDK Stack per service and with each CDK Stack containing CDK Constructs.
 
 #### Naming conventions for identifiers
 
-The Internote infrastructure follows an extension naming convention whereby identifiers are extended as such:
+The Internote infrastructure identifiers follows a naming convention whereby identifiers are extended as such:
 
 - The top-level CDK App defines the root identifier. This is how environments are supported, aka `internote-dev`
 - Each CDK Stack assumes that a namespace has already been given aka `new InternoteSomethingStack(this,`\${id}-something`)`

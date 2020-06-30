@@ -3,12 +3,15 @@ import * as dynamo from "@aws-cdk/aws-dynamodb";
 import * as iam from "@aws-cdk/aws-iam";
 import * as cdk from "@aws-cdk/core";
 import { addCorsOptions } from "@internote/infra/constructs/cors";
-import { InternoteStack } from "@internote/infra/constructs/internote-stack";
+import {
+  InternoteProps,
+  InternoteStack,
+} from "@internote/infra/constructs/internote-stack";
 import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-fn";
 
 import { SnippetsEnv } from "./env";
 
-type SnippetsStackProps = cdk.StackProps & {
+type SnippetsStackProps = InternoteProps & {
   api: apigateway.RestApi;
   authenticatedRole: iam.Role;
 };
@@ -17,8 +20,8 @@ export class InternoteSnippetsStack extends InternoteStack {
   private rootResource: apigateway.Resource;
   private singleResource: apigateway.Resource;
 
-  constructor(scope: cdk.App, id: string, props: SnippetsStackProps) {
-    super(scope, id, { ...props });
+  constructor(scope: cdk.Construct, id: string, props: SnippetsStackProps) {
+    super(scope, id, props);
 
     this.rootResource = props.api.root.addResource("snippets");
     this.singleResource = this.rootResource.addResource("{snippetId}");

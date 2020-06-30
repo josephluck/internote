@@ -128,3 +128,5 @@ const makeWebpackEntries = (source: string): Promise<Record<string, string>> =>
       resolve(filePaths);
     });
   });
+
+buildServices();

@@ -69,7 +69,7 @@ async function sendEmail(emailAddress: string, secretLoginCode: string) {
         Data: `Internote verification code: ${secretLoginCode}`,
       },
     },
-    Source: env.SES_FROM_ADDRESS!,
+    Source: env.SES_FROM_ADDRESS,
   };
   await ses.sendEmail(params).promise();
 }

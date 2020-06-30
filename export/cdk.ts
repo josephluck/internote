@@ -3,12 +3,15 @@ import * as iam from "@aws-cdk/aws-iam";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
 import { addCorsOptions } from "@internote/infra/constructs/cors";
-import { InternoteStack } from "@internote/infra/constructs/internote-stack";
+import {
+  InternoteProps,
+  InternoteStack,
+} from "@internote/infra/constructs/internote-stack";
 import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-fn";
 
 import { ExportHandlerEnvironment } from "./env";
 
-type ExportStackProps = cdk.StackProps & {
+type ExportStackProps = InternoteProps & {
   api: apigateway.RestApi;
   authenticatedRole: iam.Role;
 };
@@ -18,8 +21,8 @@ export class InternoteExportStack extends InternoteStack {
   private htmlResource: apigateway.Resource;
   private markdownResource: apigateway.Resource;
 
-  constructor(scope: cdk.App, id: string, props: ExportStackProps) {
-    super(scope, id, { ...props });
+  constructor(scope: cdk.Construct, id: string, props: ExportStackProps) {
+    super(scope, id, props);
 
     this.rootResource = props.api.root.addResource("export");
     this.htmlResource = this.rootResource.addResource("html");

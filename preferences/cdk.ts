@@ -3,12 +3,15 @@ import * as dynamo from "@aws-cdk/aws-dynamodb";
 import * as iam from "@aws-cdk/aws-iam";
 import * as cdk from "@aws-cdk/core";
 import { addCorsOptions } from "@internote/infra/constructs/cors";
-import { InternoteStack } from "@internote/infra/constructs/internote-stack";
+import {
+  InternoteProps,
+  InternoteStack,
+} from "@internote/infra/constructs/internote-stack";
 import { InternoteLambdaApiIntegration } from "@internote/infra/constructs/lambda-fn";
 
 import { PreferencesEnv } from "./env";
 
-type PreferencesStackProps = cdk.StackProps & {
+type PreferencesStackProps = InternoteProps & {
   api: apigateway.RestApi;
   authenticatedRole: iam.Role;
 };
@@ -16,8 +19,8 @@ type PreferencesStackProps = cdk.StackProps & {
 export class InternotePreferencesStack extends InternoteStack {
   private rootResource: apigateway.Resource;
 
-  constructor(scope: cdk.App, id: string, props: PreferencesStackProps) {
-    super(scope, id, { ...props });
+  constructor(scope: cdk.Construct, id: string, props: PreferencesStackProps) {
+    super(scope, id, props);
 
     this.rootResource = props.api.root.addResource("preferences");
     addCorsOptions(this.rootResource); // TODO: abstract these two to the API?
