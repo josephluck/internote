@@ -19,6 +19,11 @@
     "test:tsc": "tsc --noEmit"
   },
   "devDependencies": {
+    "@aws-cdk/aws-cloudfront": "1.47.0",
+    "@aws-cdk/aws-s3-deployment": "1.47.0",
+    "@aws-cdk/aws-s3": "1.47.0",
+    "@aws-cdk/aws-lambda": "1.47.0",
+    "@aws-cdk/core": "1.47.0",
     "@babel/core": "^7.10.2",
     "@element-motion/core": "^2.12.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",

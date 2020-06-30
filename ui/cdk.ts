@@ -14,23 +14,19 @@ export class InternoteUiStack extends cdk.Stack {
 
     const assetsBucket = new s3.Bucket(scope, `${id}-static-assets-bucket`);
 
-    const bucketDeployment = new s3deployment.BucketDeployment(
-      this,
-      `${id}-website`,
-      {
-        sources: [s3deployment.Source.asset("./.next")],
-        destinationBucket: assetsBucket,
-        destinationKeyPrefix: "static",
-      }
-    );
+    new s3deployment.BucketDeployment(this, `${id}-website`, {
+      sources: [s3deployment.Source.asset("./.next")],
+      destinationBucket: assetsBucket,
+      destinationKeyPrefix: "static",
+    });
 
     const coreEdgeFn = new lambda.Function(this, `${id}-core-edge-fn`, {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: "index.handler",
-      code: lambda.Code.fromAsset(path.join("./.cdk-nextjs/core-edge-fn")),
+      code: lambda.Code.fromAsset(path.join("./TODO")),
     });
 
-    const cfDistribution = new cloudfront.CloudFrontWebDistribution(
+    new cloudfront.CloudFrontWebDistribution(
       scope,
       `${id}-cloudfront-distribution`,
       {
