@@ -1,4 +1,4 @@
-import { Preferences } from "@internote/preferences-service/db/models";
+import { Preferences } from "@internote/preferences-service/models";
 import { AvailableVoice } from "@internote/speech-service/types";
 import { Twine } from "twine-js";
 

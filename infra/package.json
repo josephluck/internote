@@ -11,6 +11,9 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@aws-cdk/aws-cloudfront": "1.47.0",
+    "@aws-cdk/aws-s3-deployment": "1.47.0",
+    "@aws-cdk/aws-s3": "1.47.0",
     "@aws-cdk/aws-apigateway": "1.47.0",
     "@aws-cdk/aws-lambda": "1.47.0",
     "@aws-cdk/aws-ssm": "1.47.0",
@@ -25,7 +28,7 @@
     "@internote/snippets-service": "*",
     "@internote/speech-service": "*",
     "@internote/ui": "*",
-    "@types/node": "^12.7.12",
+    "@types/node": "*",
     "@types/rimraf": "^3.0.0",
     "builtin-modules": "^3.1.0",
     "clean-webpack-plugin": "^3.0.0",
@@ -33,7 +36,7 @@
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.13",
     "ts-loader": "^7.0.5",
-    "ts-node": "^8.4.1",
+    "ts-node": "^8.10.2",
     "typescript": "^3.6.4",
     "webpack": "^4.43.0"
   },

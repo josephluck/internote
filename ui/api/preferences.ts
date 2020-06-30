@@ -1,5 +1,5 @@
 import { ApiResponse } from "@internote/lib/lambda";
-import { Preferences } from "@internote/preferences-service/db/models";
+import { Preferences } from "@internote/preferences-service/models";
 
 import { Session } from "../auth/storage";
 import { MakeSignedRequest } from "./api";

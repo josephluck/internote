@@ -15,3 +15,4 @@ aws-env
 ui/next.config.original.*
 cdk.out/
 api.spec.ts
+ui/.next
