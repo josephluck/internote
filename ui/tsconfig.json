@@ -1,21 +1,20 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "jsx": "preserve",
-    "lib": ["dom", "es2017", "webworker"],
-    "strict": false,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "module": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react"
   },
-  "exclude": [
-    "../node_modules",
-    "../*/node_modules",
-    "node_modules",
-    "storybook-static",
-    ".next"
-  ]
+  "include": ["src"]
 }

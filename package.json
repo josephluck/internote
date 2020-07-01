@@ -22,7 +22,8 @@
       "preferences",
       "snippets",
       "speech",
-      "ui"
+      "ui",
+      "ui-old"
     ],
     "nohoist": [
       "**/serverless",
