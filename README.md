@@ -216,7 +216,7 @@ Deployment of the entire stack is managed via the `infra` workspace. There are t
 #### Example
 
 ```bash
-yarn build:services
+yarn build
 cdk synth internote-dev
 cdk deploy internote-dev
 ```

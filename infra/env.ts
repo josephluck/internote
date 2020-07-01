@@ -14,11 +14,11 @@ export type EnvConfig = {
   /**
    * Used to package appropriately
    */
-  NODE_ENV: {
-    public: true;
-    generated: true;
-    type: NodeEnvironment;
-  };
+  // NODE_ENV: {
+  //   public: true;
+  //   generated: true;
+  //   type: NodeEnvironment;
+  // };
 
   /**
    * Sentry auth token
@@ -79,7 +79,7 @@ export type EnvConfig = {
    * The dynamodb endpoint
    */
   DYNAMO_ENDPOINT: {
-    public: true;
+    public: false;
     generated: false;
     type: string;
   };
@@ -87,7 +87,7 @@ export type EnvConfig = {
    * The e-mail address that Internote sends emails from.
    */
   SES_FROM_ADDRESS: {
-    public: true;
+    public: false;
     generated: true;
     type: string;
   };
@@ -120,11 +120,11 @@ export type EnvConfig = {
   /**
    * The name of the S3 bucket that files are uploaded to
    */
-  ATTACHMENTS_BUCKET_NAME: {
-    public: true;
-    generated: true;
-    type: string;
-  };
+  // ATTACHMENTS_BUCKET_NAME: {
+  //   public: true;
+  //   generated: true;
+  //   type: string;
+  // };
 
   /**
    * The name of the S3 bucket that generated speech files are stored in to
@@ -139,7 +139,7 @@ export type EnvConfig = {
    * The name of the preferences dynamo table
    */
   PREFERENCES_TABLE_NAME: {
-    public: true;
+    public: false;
     generated: true;
     type: string;
   };
@@ -147,7 +147,7 @@ export type EnvConfig = {
    * The partition key of the preferences table
    */
   PREFERENCES_TABLE_PARTITION_KEY: {
-    public: true;
+    public: false;
     generated: true;
     type: "id";
   };
@@ -156,7 +156,7 @@ export type EnvConfig = {
    * The name of the notes dynamo table
    */
   NOTES_TABLE_NAME: {
-    public: true;
+    public: false;
     generated: true;
     type: string;
   };
@@ -164,7 +164,7 @@ export type EnvConfig = {
    * The partition key of the notes table
    */
   NOTES_TABLE_PARTITION_KEY: {
-    public: true;
+    public: false;
     generated: true;
     type: "noteId";
   };
@@ -172,7 +172,7 @@ export type EnvConfig = {
    * The sort key of the notes table
    */
   NOTES_TABLE_SORT_KEY: {
-    public: true;
+    public: false;
     generated: true;
     type: "userId";
   };
@@ -180,7 +180,7 @@ export type EnvConfig = {
    * The name of the userId -> noteId index (used to query notes for a user)
    */
   NOTES_TABLE_USER_ID_INDEX: {
-    public: true;
+    public: false;
     generated: true;
     type: string;
   };
@@ -189,7 +189,7 @@ export type EnvConfig = {
    * The name of the notes dynamo table
    */
   SNIPPETS_TABLE_NAME: {
-    public: true;
+    public: false;
     generated: true;
     type: string;
   };
@@ -197,7 +197,7 @@ export type EnvConfig = {
    * The partition key of the notes table
    */
   SNIPPETS_TABLE_PARTITION_KEY: {
-    public: true;
+    public: false;
     generated: true;
     type: "snippetId";
   };
@@ -205,7 +205,7 @@ export type EnvConfig = {
    * The sort key of the notes table
    */
   SNIPPETS_TABLE_SORT_KEY: {
-    public: true;
+    public: false;
     generated: true;
     type: "userId";
   };
@@ -213,7 +213,7 @@ export type EnvConfig = {
    * The name of the userId -> noteId index (used to query notes for a user)
    */
   SNIPPETS_TABLE_USER_ID_INDEX: {
-    public: true;
+    public: false;
     generated: true;
     type: string;
   };
@@ -252,12 +252,32 @@ export type Env = { [K in keyof EnvConfig]: EnvConfig[K]["type"] };
  */
 export type PublicEnv = PickEnvPublic<true>;
 export type PublicEnvKeys = PickNonNeverKeys<PublicEnv>;
+export const publicEnvKeys: PublicEnvKeys[] = [
+  // "ATTACHMENTS_BUCKET_NAME",
+  "COGNITO_IDENTITY_POOL_ID",
+  "COGNITO_USER_POOL_CLIENT_ID",
+  "COGNITO_USER_POOL_ID",
+  "EXPORT_BUCKET_NAME",
+  // "NODE_ENV",
+  "SENTRY_DSN",
+  "SENTRY_ORG",
+  "SENTRY_PROJECT",
+  "SERVICES_HOST",
+  "SERVICES_REGION",
+  "SPEECH_BUCKET_NAME",
+  "STAGE",
+];
 
 /**
  * The private environment (secrets that should not be shared)
  */
 export type PrivateEnv = PickEnvPublic<false>;
 export type PrivateEnvKeys = PickNonNeverKeys<PrivateEnv>;
+export const privateEnvKeys: PrivateEnvKeys[] = [
+  "OXFORD_API_KEY",
+  "OXFORD_API_ID",
+  "SENTRY_AUTH_TOKEN",
+];
 
 /**
  * The environment that is generated through CDK
@@ -270,46 +290,6 @@ export type GeneratedEnvKeys = PickNonNeverKeys<GeneratedEnv>;
  */
 export type ManualEnv = PickEnvGenerated<false>;
 export type ManualEnvKeys = PickNonNeverKeys<ManualEnv>;
-
-/**
- * An exhaustive tuple of all public environment keys
- */
-export const publicEnvKeys: PublicEnvKeys[] = [
-  "ATTACHMENTS_BUCKET_NAME",
-  "COGNITO_IDENTITY_POOL_ID",
-  "COGNITO_USER_POOL_CLIENT_ID",
-  "COGNITO_USER_POOL_ID",
-  "DYNAMO_ENDPOINT",
-  "EXPORT_BUCKET_NAME",
-  "NODE_ENV",
-  "NOTES_TABLE_NAME",
-  "NOTES_TABLE_PARTITION_KEY",
-  "NOTES_TABLE_SORT_KEY",
-  "NOTES_TABLE_USER_ID_INDEX",
-  "PREFERENCES_TABLE_NAME",
-  "PREFERENCES_TABLE_PARTITION_KEY",
-  "SENTRY_DSN",
-  "SENTRY_ORG",
-  "SENTRY_PROJECT",
-  "SERVICES_HOST",
-  "SERVICES_REGION",
-  "SES_FROM_ADDRESS",
-  "SNIPPETS_TABLE_NAME",
-  "SNIPPETS_TABLE_PARTITION_KEY",
-  "SNIPPETS_TABLE_SORT_KEY",
-  "SNIPPETS_TABLE_USER_ID_INDEX",
-  "SPEECH_BUCKET_NAME",
-  "STAGE",
-];
-
-/**
- * An exhaustive tuple of all private environment keys
- */
-export const privateEnvKeys: PrivateEnvKeys[] = [
-  "OXFORD_API_KEY",
-  "OXFORD_API_ID",
-  "SENTRY_AUTH_TOKEN",
-];
 
 type ExcludeRecordNevers<T> = {
   [K in keyof T]: T[K] extends never ? never : K;
@@ -325,7 +305,7 @@ type PickNonNeverKeys<T> = ExcludeRecordNevers<T>[keyof T];
  */
 export const getEnv = <K extends keyof Env>(
   keys: K[],
-  env: unknown
+  env: any
 ): { [P in typeof keys[number]]: Env[P] } => {
   keys.forEach((key) => {
     if (!env[key]) {

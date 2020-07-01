@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "aws-env --region eu-west-1 /internote react-scripts start",
+    "start": "yarn start:cdk-test",
+    "start:cdk-test": "yarn env:cdk-test && react-scripts start",
+    "env:cdk-test": "ts-node prepare-env.ts --stage=cdk-test && prettier --write \"./src/env.ts\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -85,5 +87,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "minimist": "^1.2.5"
   }
 }

@@ -29,25 +29,13 @@ export class InternoteStack extends cdk.Construct {
 
   // TODO: constrain this type to only env variables that are generated through
   // CDK
-  exportToSSM<K extends GeneratedEnvKeys>(
-    key: K,
-    value: GeneratedEnv[K],
-    isPublic?: boolean
-  ) {
+  exportToSSM<K extends GeneratedEnvKeys>(key: K, value: GeneratedEnv[K]) {
     new ssm.StringParameter(this, `${this.rootId}-${key}`, {
       simpleName: false,
       parameterName: `/internote/${this.stage}/${key}`,
       stringValue: value,
       tier: ssm.ParameterTier.STANDARD,
     });
-    if (isPublic) {
-      new ssm.StringParameter(this, `${this.rootId}-${key}`, {
-        simpleName: false,
-        parameterName: `/internote/${this.stage}/REACT_APP_${key}`,
-        stringValue: value,
-        tier: ssm.ParameterTier.STANDARD,
-      });
-    }
   }
 
   // TODO: constrain this type to env variables that aren't generated through
