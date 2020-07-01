@@ -263,9 +263,11 @@ AWS SSM is used to store environment variables and secrets that are used across 
 
 Some services require environment variables that aren't created by CDK, for example the dictionary service requires API keys for the Oxford Dictionary API. These environment variables are configured and managed by AWS SSM directly and are imported in to the CDK definition of the service using AWS SSM imports.
 
+The front-end requires some environment configuration. To facilitate this, some CDK generated environment variables are exported as "public" which results in two SSM key values, one for the original key and another prefixed with `REACT_APP_`.
+
 **Front end**
 
-The front-end hydrates the `process.env` by pulling from both AWS SSM and from local config files at build time using [aws-env](https://github.com/Droplr/aws-env) (you will have to `chmod +x aws-env` once it has installed).
+The front-end hydrates the `process.env` by pulling from both AWS SSM and from local config files at build time using [aws-env](https://github.com/Droplr/aws-env) which is installed automatically for you.
 
 # Logging
 
