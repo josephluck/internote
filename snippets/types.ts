@@ -1,4 +1,4 @@
-import { Snippet } from "./db/models";
+import { Snippet } from "./models";
 
 /**
  * Represents the get snippet DTO.

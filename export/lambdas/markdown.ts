@@ -1,0 +1,52 @@
+import { CreateHandler } from "@internote/lib/lambda";
+import {
+  encodeResponse,
+  jsonErrorHandler,
+  validateRequestBody,
+} from "@internote/lib/middlewares";
+import { success } from "@internote/lib/responses";
+import { isString, required } from "@internote/lib/validator";
+import AWS from "aws-sdk";
+import md5 from "md5";
+import middy from "middy";
+import { cors, jsonBodyParser } from "middy/middlewares";
+
+import { env } from "../env";
+import { serializeMarkdown } from "../serializers/markdown";
+import { CreateExportDTO, ExportResponseDTO } from "../types";
+
+const validator = validateRequestBody<CreateExportDTO>({
+  title: [required, isString],
+  content: [required],
+});
+
+const markdown: CreateHandler<CreateExportDTO> = async (
+  event,
+  _ctx,
+  callback
+) => {
+  const S3 = new AWS.S3();
+  const { title, content } = event.body;
+  const output = serializeMarkdown(content);
+  const hash = md5(output);
+  const S3UploadPath = `${title} - ${hash}.md`;
+  await S3.upload({
+    Bucket: env.EXPORT_BUCKET_NAME,
+    Key: S3UploadPath,
+    Body: output,
+    ACL: "public-read",
+  }).promise();
+
+  const src = `https://s3-${env.SERVICES_REGION}.amazonaws.com/${env.EXPORT_BUCKET_NAME}/${S3UploadPath}`;
+
+  const response: ExportResponseDTO = { src };
+
+  return callback(null, success(response));
+};
+
+export const handler = middy(markdown)
+  .use(jsonBodyParser())
+  .use(validator)
+  .use(encodeResponse())
+  .use(jsonErrorHandler())
+  .use(cors());

@@ -1,0 +1,36 @@
+{
+  "name": "@internote/gateway-service",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "files": [
+    "*"
+  ],
+  "scripts": {
+    "deploy": "yarn deploy:dev",
+    "deploy:dev": "yarn deploy:dev:services",
+    "deploy:dev:services": "NODE_ENV=development sls deploy --stage dev -v",
+    "deploy:prod": "yarn deploy:prod:services",
+    "deploy:prod:services": "NODE_ENV=production sls deploy --stage prod"
+  },
+  "dependencies": {
+    "crypto-secure-random-digit": "^1.0.8"
+  },
+  "devDependencies": {
+    "@aws-cdk/aws-apigateway": "1.47.0",
+    "@aws-cdk/aws-certificatemanager": "1.47.0",
+    "@aws-cdk/aws-logs": "1.47.0",
+    "@aws-cdk/aws-cognito": "1.47.0",
+    "@aws-cdk/aws-iam": "1.47.0",
+    "@aws-cdk/aws-route53-targets": "1.47.0",
+    "@aws-cdk/aws-route53": "1.47.0",
+    "@aws-cdk/core": "1.47.0",
+    "@internote/infra": "*",
+    "serverless": "^1.51.0",
+    "serverless-plugin-monorepo": "^0.7.0",
+    "serverless-webpack": "^5.3.1",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.9.5"
+  }
+}

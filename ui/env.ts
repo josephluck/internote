@@ -23,7 +23,7 @@ export type ClientExposedEnv = Omit<Env, "SENTRY_AUTH_TOKEN">;
  * Prepares environment variables from the server and makes them available.
  */
 export const prepareServerExposedEnv = (): Env => ({
-  ATTACHMENTS_BUCKET_NAME: process.env.ATTACHMENTS_BUCKET_NAME,
+  ATTACHMENTS_BUCKET_NAME: process.env.ATTACHMENTS_BUCKET_NAME || "TODO",
   COGNITO_IDENTITY_POOL_ID: process.env.COGNITO_IDENTITY_POOL_ID,
   COGNITO_USER_POOL_CLIENT_ID: process.env.COGNITO_USER_POOL_CLIENT_ID,
   COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,

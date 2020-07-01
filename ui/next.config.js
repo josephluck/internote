@@ -1,7 +1,7 @@
 const path = require("path");
 const withTranspile = require("next-plugin-transpile-modules");
 const withCustomBabelConfig = require("next-plugin-custom-babel-config");
-const withCss = require("@zeit/next-css");
+// const withCss = require("@zeit/next-css");
 const withSourceMaps = require("@zeit/next-source-maps")();
 const SentryWebpackPlugin = require("@sentry/webpack-plugin");
 const {
@@ -59,15 +59,12 @@ module.exports = withExternals(
   withCustomBabelConfig(
     withTranspile(
       withSentrySourceMaps(
-        withSourceMaps(
-          withCss({
-            transpileModules: ["@internote"],
-            babelConfigFile: path.resolve("./babel.config.js"),
-            target: "serverless",
-            experimental: { publicDirectory: true },
-            env: nextEnv,
-          })
-        )
+        withSourceMaps({
+          transpileModules: ["@internote"],
+          babelConfigFile: path.resolve("./babel.config.js"),
+          target: "serverless",
+          env: nextEnv,
+        })
       )
     )
   )

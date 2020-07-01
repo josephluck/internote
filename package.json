@@ -12,11 +12,11 @@
   "workspaces": {
     "packages": [
       "attachments",
-      "auth",
+      "gateway",
       "collaborate",
       "dictionary",
       "export",
-      "health",
+      "infra",
       "lib",
       "notes",
       "preferences",

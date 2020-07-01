@@ -164,6 +164,7 @@ export const SnippetsButton: React.FunctionComponent<{
                     ) : (
                       filteredSnippets.map((snippet) => (
                         <SearchMenuItem
+                          key={snippet.snippetId}
                           content={snippet.title}
                           onMouseIn={() => {
                             setSnippetToInsert(snippet);

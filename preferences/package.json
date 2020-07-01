@@ -19,17 +19,18 @@
     "@internote/lib": "*",
     "aws-sdk": "^2.524.0",
     "http-errors": "^1.7.3",
-    "middy": "^0.29.0",
-    "type-dynamo": "^0.1.6"
+    "middy": "^0.29.0"
   },
   "devDependencies": {
+    "@aws-cdk/aws-apigateway": "1.47.0",
+    "@aws-cdk/aws-iam": "1.47.0",
+    "@aws-cdk/core": "1.47.0",
+    "@aws-cdk/aws-dynamodb": "1.47.0",
+    "@internote/infra": "*",
     "@types/jest": "^24.0.18",
     "jest": "^24.9.0",
-    "serverless": "^1.51.0",
-    "serverless-plugin-monorepo": "^0.7.0",
-    "serverless-webpack": "^5.3.1",
     "ts-loader": "^6.0.4",
-    "typescript": "^3.6.3"
+    "typescript": "^3.9.5"
   },
   "jest": {
     "roots": [

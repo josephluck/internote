@@ -32,7 +32,7 @@
     "serverless-plugin-monorepo": "^0.7.0",
     "serverless-webpack": "^5.3.1",
     "ts-loader": "^6.0.4",
-    "typescript": "^3.6.3"
+    "typescript": "^3.9.5"
   },
   "jest": {
     "roots": [

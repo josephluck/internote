@@ -137,9 +137,12 @@ const InternoteEditorEditor = () => {
     [handlePreventKeydown, handleShortcuts, handleResetListBlockOnPress]
   );
 
-  const renderElement = useCallback((props: any) => <Element {...props} />, []);
+  const renderElement = useCallback(
+    (props: any) => <EditorElement {...props} />,
+    []
+  );
 
-  const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
+  const renderLeaf = useCallback((props: any) => <EditorLeaf {...props} />, []);
 
   return (
     <FullHeight>
@@ -160,7 +163,7 @@ const InternoteEditorEditor = () => {
   );
 };
 
-const Element: React.FunctionComponent<InternoteEditorRenderElementProps> = ({
+const EditorElement: React.FunctionComponent<InternoteEditorRenderElementProps> = ({
   attributes,
   children,
   element,
@@ -196,7 +199,7 @@ const Element: React.FunctionComponent<InternoteEditorRenderElementProps> = ({
   }
 };
 
-const Leaf: React.FunctionComponent<InternoteEditorRenderLeafProps> = ({
+const EditorLeaf: React.FunctionComponent<InternoteEditorRenderLeafProps> = ({
   attributes,
   children,
   leaf,
@@ -244,8 +247,8 @@ const InnerPadding = styled.div.withConfig({
 `;
 
 export const Editor = styled(Editable).withConfig({
-  shouldForwardProp: (prop: string, def) =>
-    !["distractionFree", "userScrolled"].includes(prop) && def(prop),
+  shouldForwardProp: (prop: string) =>
+    !["distractionFree", "userScrolled"].includes(prop),
 })<{
   distractionFree: boolean;
   userScrolled: boolean;
