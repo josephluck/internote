@@ -5,7 +5,7 @@
   "scripts": {
     "start": "yarn start:cdk-test",
     "start:cdk-test": "yarn env:cdk-test && react-scripts start",
-    "env:cdk-test": "ts-node prepare-env.ts --stage=cdk-test && prettier --write \"./src/env.ts\"",
+    "env:cdk-test": "ts-node -P ./tsconfig.json -O \"{\\\"module\\\": \\\"commonjs\\\"}\" prepare-env.ts --stage=cdk-test && prettier --write \"./src/env.ts\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

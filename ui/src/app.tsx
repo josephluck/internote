@@ -1,5 +1,7 @@
 import React from "react";
 
-const App = () => <div>Hello, world</div>;
+import { env } from "./env";
+
+const App = () => <div>Hello, world, {JSON.stringify(env)}</div>;
 
 export default App;
