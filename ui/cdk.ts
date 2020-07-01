@@ -27,7 +27,7 @@ export class InternoteUiStack extends cdk.Stack {
     });
 
     new cloudfront.CloudFrontWebDistribution(
-      scope,
+      this,
       `${id}-cloudfront-distribution`,
       {
         originConfigs: [

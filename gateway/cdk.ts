@@ -108,8 +108,6 @@ export class InternoteGatewayStack extends InternoteStack {
       SES_FROM_ADDRESS: `no-reply@${domainName}`, // TODO: from context?
     };
 
-    // message: "CreateAuthChallenge failed with error User `arn:aws:sts::822567739604:assumed-role/internote-cdk-test-internotecdktestgatewayinternot-YH56ZL7FHZ8A/internote-cdk-test-gateway-auth-create' is not authorized to perform `ses:SendEmail' on resource `arn:aws:ses:eu-west-1:822567739604:identity/no-reply@internote.app'."
-
     const preSignUpLambda = new InternoteLambda(
       this,
       `${id}-auth-pre-sign-up-lambda`,
@@ -195,24 +193,6 @@ export class InternoteGatewayStack extends InternoteStack {
       );
     }
 
-    // this.userPoolClient = new cognito.CfnUserPoolClient(
-    //   this,
-    //   `${id}-auth-user-pool-client`,
-    //   {
-    //     supportedIdentityProviders: ["COGNITO"],
-    //     clientName: `${id}-auth-user-pool-client`,
-    //     // allowedOAuthFlowsUserPoolClient: true,
-    //     // allowedOAuthFlows: ["code"],
-    //     // allowedOAuthScopes: ["email"],
-    //     explicitAuthFlows: ["CUSTOM_AUTH_FLOW_ONLY"],
-    //     preventUserExistenceErrors: "ENABLED",
-    //     generateSecret: false,
-    //     refreshTokenValidity: 1,
-    //     userPoolId: this.userPool.userPoolId,
-    //   }
-    // );
-
-    // TODO: is this simpler:
     this.userPoolClient = new cognito.UserPoolClient(
       this,
       `${id}-auth-user-pool-client`,

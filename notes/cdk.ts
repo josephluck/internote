@@ -39,7 +39,6 @@ export class InternoteNotesStack extends InternoteStack {
       tableName: id,
 
       partitionKey: {
-        // TODO: One or more parameter values were invalid: Type mismatch for key noteId expected: S actual: M
         name: NOTES_TABLE_PARTITION_KEY,
         type: dynamo.AttributeType.STRING,
       },

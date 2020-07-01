@@ -4,10 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "build:services": "ts-node ./build-services.ts",
-    "deploy": "yarn build:services && cdk deploy \"*\" --profile internote"
+    "build": "ts-node ./build-services.ts"
   },
   "license": "MIT",
   "devDependencies": {

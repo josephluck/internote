@@ -209,7 +209,7 @@ You'll then need to add environment configuration to SSM for environment variabl
 
 Deployment of the entire stack is managed via the `infra` workspace. There are three parts that must be run in this order:
 
-- `yarn build:services`: Transpiles services code from TypeScript to JavaScript ready for deployment.
+- `yarn build`: Transpiles services code from TypeScript to JavaScript ready for deployment.
 - `cdk --profile=internote synth internote-[stage]`: Synthesises the CDK stack to CloudFormation ready for deployment. Replace `[stage]` with the stage you wish to synthesise.
 - `cdk --profile=internote deploy internote-[stage]`: Deploys the CDK stack to AWS using the synthesised CloudFormation template.
 

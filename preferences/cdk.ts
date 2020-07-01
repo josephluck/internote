@@ -23,7 +23,7 @@ export class InternotePreferencesStack extends InternoteStack {
     super(scope, id, props);
 
     this.rootResource = props.api.root.addResource("preferences");
-    addCorsOptions(this.rootResource); // TODO: abstract these two to the API?
+    addCorsOptions(this.rootResource);
 
     const PREFERENCES_TABLE_PARTITION_KEY = "id";
 
