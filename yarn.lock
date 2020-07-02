@@ -2583,6 +2583,13 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@josephluck/stately@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@josephluck/stately/-/stately-1.1.8.tgz#7961e5fe62fe63fb48d5129d803bab2ceb683b26"
+  integrity sha512-QrQUi1JgEQu8NkpQ77J8vlhqeTB2GtK6ugnNPuCoV4IHyZeM2Vx0DC6AnsEx0BZxLHj5tlIU9NALU858R9I7uQ==
+  dependencies:
+    immer "^5.0.0"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"

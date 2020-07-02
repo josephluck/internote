@@ -1,7 +1,12 @@
+import { Router } from "@reach/router";
 import React from "react";
 
-import { env } from "./env";
+import { Authenticate } from "./pages/authenticate";
 
-const App = () => <div>Hello, world, {JSON.stringify(env)}</div>;
+const App = () => (
+  <Router>
+    <Authenticate path="/authenticate" />
+  </Router>
+);
 
 export default App;
