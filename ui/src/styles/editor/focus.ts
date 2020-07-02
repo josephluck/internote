@@ -3,7 +3,6 @@ import * as O from "fp-ts/lib/Option";
 import { Editor, Node, NodeEntry } from "slate";
 import { ReactEditor } from "slate-react";
 
-import { isServer } from "../../utilities/window";
 import { InternoteSlateEditor } from "./types";
 
 export const getCurrentFocusedLeaf = (
@@ -75,5 +74,7 @@ export const SLATE_BLOCK_FOCUSED_CLASS_NAME = "slate-block-focused";
  * Given a HTML element, return whether the current focus is somewhere inside
  * it.
  */
-export const elmHasChildFocus = (elm: HTMLElement): boolean =>
-  !isServer() && elm.contains(window.getSelection().focusNode);
+export const elmHasChildFocus = (elm: HTMLElement): boolean => {
+  const selection = window.getSelection();
+  return !!selection && elm.contains(selection.focusNode);
+};

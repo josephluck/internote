@@ -9,7 +9,7 @@ import { MakeSignedRequest } from "./api";
 
 export function snippets(makeRequest: MakeSignedRequest) {
   return {
-    async list(session: Session): ApiResponse<GetSnippetDTO[]> {
+    async list(session: Session): Promise<ApiResponse<GetSnippetDTO[]>> {
       return makeRequest({
         path: "/snippets",
         method: "GET",
@@ -19,7 +19,7 @@ export function snippets(makeRequest: MakeSignedRequest) {
     async create(
       session: Session,
       snippet: Partial<CreateSnippetDTO> = {}
-    ): ApiResponse<GetSnippetDTO> {
+    ): Promise<ApiResponse<GetSnippetDTO>> {
       return makeRequest({
         path: "/snippets",
         method: "POST",
@@ -27,7 +27,10 @@ export function snippets(makeRequest: MakeSignedRequest) {
         body: snippet,
       });
     },
-    async delete(session: Session, snippetId: string): ApiResponse<void> {
+    async delete(
+      session: Session,
+      snippetId: string
+    ): Promise<ApiResponse<void>> {
       return makeRequest({
         path: `/snippets/${snippetId}`,
         method: "DELETE",

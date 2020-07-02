@@ -9,7 +9,7 @@ const MenuWrapper = styled(OnClickOutside)`
 `;
 
 export type RenderProps = {
-  toggleMenuShowing: (menuShowing?: boolean) => void;
+  toggleMenuShowing: (menuShowing: boolean) => void;
 } & State;
 
 interface State {
@@ -31,7 +31,7 @@ export function MenuControl({
   menuName: string;
   className?: string;
   onClose?: () => any;
-  onMenuToggled?: (menuShowing?: boolean) => void;
+  onMenuToggled?: (menuShowing: boolean) => void;
   disableCloseShortcut?: boolean;
   forceShow?: boolean;
 }) {
@@ -47,7 +47,7 @@ export function MenuControl({
     }
   }
 
-  function toggleMenuShowing(showing?: boolean) {
+  function toggleMenuShowing(showing: boolean) {
     setMenuShowing(showing);
     if (onMenuToggled) {
       onMenuToggled(showing);
@@ -58,6 +58,7 @@ export function MenuControl({
     menuShowing: menuShowing || forceShow,
     toggleMenuShowing,
   };
+
   return (
     <MenuWrapper className={className} onClickOutside={handleClose}>
       {menuShowing || forceShow ? (

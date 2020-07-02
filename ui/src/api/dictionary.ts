@@ -12,7 +12,7 @@ export function dictionary(makeRequest: MakeSignedRequest) {
     async lookup(
       session: Session,
       request: LookupRequestBody
-    ): ApiResponse<LookupResponseBody> {
+    ): Promise<ApiResponse<LookupResponseBody>> {
       return makeRequest({
         path: "/dictionary",
         method: "POST",

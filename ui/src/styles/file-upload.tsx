@@ -5,9 +5,8 @@ import React, { FormEvent, useCallback, useRef, useState } from "react";
 import { Signal } from "signals";
 import styled from "styled-components";
 
-import { makeAttachmentsApi } from "../api/attachments";
-import { env } from "../env";
-import { useTwineState } from "../store";
+import { api } from "../api";
+import { useStately } from "../store/store";
 import { spacing } from "../theming/symbols";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 
@@ -34,11 +33,6 @@ const FileInputLabel = styled.label`
 const Container = styled(CollapseWidthOnHover)`
   position: relative;
 `;
-
-const attachments = makeAttachmentsApi({
-  region: env.SERVICES_REGION,
-  bucketName: env.ATTACHMENTS_BUCKET_NAME,
-});
 
 export function getFileTypeFromFile(file: File): any {
   switch (file.type) {
@@ -80,22 +74,31 @@ export const FileUpload = ({
   onUploadFinished?: (e: InternoteUploadEvent) => void;
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [isUploading, setIsUploading] = useState(false);
-  const session = useTwineState((state) => state.auth.session);
+
+  const session = useStately((state) => state.auth.session);
+
   const onSubmit = useCallback(
     async (e: FormEvent<HTMLInputElement>) => {
       e.preventDefault();
-      const file: File =
+
+      const file: File | undefined =
         fileInputRef.current &&
         fileInputRef.current.files &&
         fileInputRef.current.files.length > 0
           ? fileInputRef.current.files[0]
           : undefined;
+
       if (file) {
         setIsUploading(true);
+
         const type = getFileTypeFromFile(file);
-        const src = attachments.getUploadLocation(session, noteId, file);
-        const key = attachments.getUploadKey(session, noteId, file);
+
+        const src = api.attachments.getUploadLocation(session, noteId, file);
+
+        const key = api.attachments.getUploadKey(session, noteId, file);
+
         const uploadStartEvent = {
           src,
           key,
@@ -104,9 +107,12 @@ export const FileUpload = ({
           progress: 0,
           uploaded: false,
         };
+
         onUploadStarted(uploadStartEvent);
+
         uploadSignal.dispatch(uploadStartEvent);
-        await attachments.upload(session, noteId, file, (progress) => {
+
+        await api.attachments.upload(session, noteId, file, (progress) => {
           const percentage = (progress.loaded / progress.total) * 100;
           const uploadProgressEvent = {
             src,
@@ -121,6 +127,7 @@ export const FileUpload = ({
             onUploadProgress(uploadProgressEvent);
           }
         });
+
         const uploadFinishedEvent = {
           src,
           key,
@@ -129,10 +136,13 @@ export const FileUpload = ({
           progress: 100,
           uploaded: true,
         };
+
         if (onUploadFinished) {
           onUploadFinished(uploadFinishedEvent);
         }
+
         uploadSignal.dispatch(uploadFinishedEvent);
+
         setIsUploading(false);
       }
     },

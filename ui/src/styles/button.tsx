@@ -15,9 +15,14 @@ interface ButtonProps {
 }
 
 const ButtonWrap = styled.button.withConfig({
-  shouldForwardProp: (prop: string, def) =>
-    !["primary", "secondary", "fullWidth", "small", "loading"].includes(prop) &&
-    def(prop),
+  shouldForwardProp: (prop: React.ReactText, def) =>
+    !([
+      "primary",
+      "secondary",
+      "fullWidth",
+      "small",
+      "loading",
+    ] as React.ReactText[]).includes(prop) && def(prop),
 })<ButtonProps>`
   background: ${(props) =>
     props.primary

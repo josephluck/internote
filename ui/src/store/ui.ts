@@ -3,6 +3,7 @@ import { AxiosError } from "axios";
 
 import { exitFullscreen, requestFullScreen } from "../utilities/fullscreen";
 import { signOut } from "./auth";
+import { createNote, fetchNotes } from "./notes";
 import { store } from "./store";
 
 type UiState = {
@@ -22,10 +23,10 @@ export const setFullscreen = store.createMutator(
 );
 
 export const navigateToFirstNote = store.createEffect(async () => {
-  const notes = fetchNotes();
+  const notes = await fetchNotes();
   if (notes.length === 0) {
     createNote();
-  } else if (!isServer()) {
+  } else if (notes[0]) {
     navigate(`/?id=${notes[0].noteId}`);
   }
 });

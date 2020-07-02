@@ -28,6 +28,7 @@ import {
   InternoteEditorMarkType,
   InternoteEditorNodeType,
 } from "@internote/lib/editor-types";
+import React from "react";
 import { Text } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
 

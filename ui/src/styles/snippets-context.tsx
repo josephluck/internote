@@ -3,20 +3,20 @@ import { GetSnippetDTO } from "@internote/snippets-service/types";
 import React, { useCallback } from "react";
 import { useState } from "react";
 
-import { useTwineActions } from "../store";
+import { createSnippet } from "../store/snippets";
 
 interface Context {
   createSnippetModalOpen: boolean;
   snippetToInsert: null | GetSnippetDTO;
-  snippetsmenuShowing?: boolean;
+  snippetsMenuShowing: boolean;
   snippetSelection: InternoteEditorElement[];
   createSnippetTitle: string;
   setCreateSnippetTitle: (title: string) => void;
   setSnippetSelection: (selection: InternoteEditorElement[]) => void;
   clearCreateSnippet: () => void;
-  setSnippetToInsert: (snippetToInsert: GetSnippetDTO) => void;
-  setSnippetsMenuShowing: (showing?: boolean) => void;
-  setCreateSnippetModalOpen: (showing?: boolean) => void;
+  setSnippetToInsert: (snippetToInsert: GetSnippetDTO | null) => void;
+  setSnippetsMenuShowing: (showing: boolean) => void;
+  setCreateSnippetModalOpen: (showing: boolean) => void;
   finaliseCreateSnippet: () => void;
 }
 
@@ -43,10 +43,6 @@ export const SnippetsContext = React.createContext<Context>({
  * snippets functionality
  */
 export function SnippetsProvider({ children }: { children: React.ReactNode }) {
-  const createSnippet = useTwineActions(
-    (actions) => actions.snippets.createSnippet
-  );
-
   const [snippetSelection, setSnippetSelection] = useState<
     InternoteEditorElement[]
   >([]);
@@ -70,7 +66,7 @@ export function SnippetsProvider({ children }: { children: React.ReactNode }) {
       title: createSnippetTitle,
       content: snippetSelection as any,
     });
-  }, [createSnippet, createSnippetTitle, snippetSelection]);
+  }, [createSnippetTitle, snippetSelection]);
 
   const ctx: Context = {
     snippetToInsert,

@@ -1,28 +1,19 @@
-import routerEvents from "next-router-events";
-import { useEffect } from "react";
+import { useLocation } from "@reach/router";
+import React, { useEffect, useRef } from "react";
 
-export function OnNavigate({
-  onComplete,
-  onStart,
-}: {
+export const OnNavigate: React.FunctionComponent<{
   onComplete?: () => void;
-  onStart?: () => void;
-}) {
+}> = (props) => {
+  const onComplete = useRef(props.onComplete);
+  onComplete.current = props.onComplete;
+
+  const location = useLocation();
+
   useEffect(() => {
-    if (onComplete) {
-      routerEvents.on("routeChangeComplete", onComplete);
+    if (onComplete.current) {
+      onComplete.current();
     }
-    if (onStart) {
-      routerEvents.on("routeChangeStart", onStart);
-    }
-    return function () {
-      if (onComplete) {
-        routerEvents.off("routeChangeComplete", onComplete);
-      }
-      if (onStart) {
-        routerEvents.off("routeChangeStart", onStart);
-      }
-    };
-  }, []);
+  }, [location]);
+
   return null;
-}
+};

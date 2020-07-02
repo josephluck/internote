@@ -1,4 +1,4 @@
-import NextLink from "next/link";
+import { Link } from "@reach/router";
 import React from "react";
 import styled from "styled-components";
 
@@ -8,19 +8,19 @@ interface Props {
   scroll?: boolean;
 }
 
-export function TextLink({ href, scroll = false, children }: Props) {
+export function TextLink({ href, children }: Props) {
   return (
-    <NextLink href={href} scroll={scroll}>
+    <Link to={href}>
       <TextAnchor>{children}</TextAnchor>
-    </NextLink>
+    </Link>
   );
 }
 
-export function BlockLink({ href, scroll = false, children }: Props) {
+export function BlockLink({ href, children }: Props) {
   return (
-    <NextLink href={href} scroll={scroll}>
+    <Link to={href}>
       <BlockAnchor>{children}</BlockAnchor>
-    </NextLink>
+    </Link>
   );
 }
 

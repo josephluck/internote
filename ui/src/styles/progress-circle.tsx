@@ -42,11 +42,13 @@ export function ProgressCircle({
   const percentage = Math.ceil(progress);
 
   useEffect(() => {
-    const radius = circleRef.current.r.baseVal.value;
-    const circumference = radius * 2 * Math.PI;
-    const offset = circumference - (percentage / 100) * circumference;
-    circleRef.current.style.strokeDasharray = `${circumference} ${circumference}`;
-    circleRef.current.style.strokeDashoffset = `${offset}`;
+    if (circleRef.current) {
+      const radius = circleRef.current.r.baseVal.value;
+      const circumference = radius * 2 * Math.PI;
+      const offset = circumference - (percentage / 100) * circumference;
+      circleRef.current.style.strokeDasharray = `${circumference} ${circumference}`;
+      circleRef.current.style.strokeDashoffset = `${offset}`;
+    }
   }, [percentage, ringRef.current, circleRef.current]);
 
   return (

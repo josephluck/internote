@@ -33,7 +33,7 @@ export function AudioPlayer({
   const [currentTime, setCurrentTime] = useState(-1);
   const [duration, setDuration] = useState(-1);
   const [status, setStatus] = useState<AudioStatus>("stopped");
-  const audioRef = useRef<HTMLMediaElement>();
+  const audioRef = useRef<HTMLMediaElement>(null);
   const timerInterval = useRef(-1);
 
   function storeDuration() {

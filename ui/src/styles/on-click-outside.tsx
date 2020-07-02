@@ -23,7 +23,7 @@ export function OnClickOutside({
   disabled?: boolean;
   className?: string;
 }) {
-  const wrappingRef = React.useRef<HTMLDivElement>();
+  const wrappingRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     function onClick(e: MouseEvent) {

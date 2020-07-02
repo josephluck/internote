@@ -92,7 +92,7 @@ export function InputWithIcons({
   leftIcon?: IconProp;
 }) {
   return (
-    <SearchBoxWrapper isFocused={isFocused}>
+    <SearchBoxWrapper isFocused={isFocused || false}>
       <SearchIcon>
         <FontAwesomeIcon icon={leftIcon} />
       </SearchIcon>

@@ -10,7 +10,7 @@ import React, {
 import { Editable, Slate } from "slate-react";
 import styled, { css } from "styled-components";
 
-import { useTwineState } from "../../store";
+import { useStately } from "../../store/store";
 import { borderRadius, font, size, spacing } from "../../theming/symbols";
 import { CreateSnippetModal } from "../create-snippet-modal";
 import { Outline } from "../outline";
@@ -111,15 +111,15 @@ const InternoteEditorEditor = () => {
 
   const { handleShortcuts } = useContext(ShortcutsContext);
 
-  const distractionFree = useTwineState(
+  const distractionFree = useStately(
     (state) => state.preferences.distractionFree
   );
 
-  const outlineShowing = useTwineState(
+  const outlineShowing = useStately(
     (state) => state.preferences.outlineShowing || false
   );
 
-  const scrollRef = useRef<HTMLDivElement>();
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const handleResetListBlockOnPress = useResetListBlocks(editor);
 
@@ -149,7 +149,7 @@ const InternoteEditorEditor = () => {
       <InnerPadding ref={scrollRef} outlineShowing={outlineShowing}>
         <Editor
           userScrolled={userHasScrolledOutOfDistractionMode}
-          distractionFree={distractionFree}
+          distractionFree={distractionFree || false}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           spellCheck
@@ -235,9 +235,9 @@ const FullHeight = styled.div`
 `;
 
 const InnerPadding = styled.div.withConfig({
-  shouldForwardProp: (prop: string, def) =>
-    !["outlineShowing"].includes(prop) && def(prop),
-})<{ outlineshowing?: boolean }>`
+  shouldForwardProp: (prop: React.ReactText, def) =>
+    !(["outlineShowing"] as React.ReactText[]).includes(prop) && def(prop),
+})<{ outlineShowing?: boolean }>`
   ${fullHeightStyles};
   min-height: 100%;
   height: 100%;
@@ -247,8 +247,8 @@ const InnerPadding = styled.div.withConfig({
 `;
 
 export const Editor = styled(Editable).withConfig({
-  shouldForwardProp: (prop: string) =>
-    !["distractionFree", "userScrolled"].includes(prop),
+  shouldForwardProp: (prop: React.ReactText) =>
+    !(["distractionFree", "userScrolled"] as React.ReactText[]).includes(prop),
 })<{
   distractionFree: boolean;
   userScrolled: boolean;

@@ -11,14 +11,14 @@ import {
 import { useCurrentSelection } from "./hooks";
 
 export const useDistractionFreeUx = (
-  scrollRef: React.MutableRefObject<HTMLDivElement>
+  scrollRef: React.MutableRefObject<HTMLDivElement | null>
 ) => {
   const [
     userHasScrolledOutOfDistractionMode,
     setUserHasScrolledOutOfDistractionMode,
   ] = useState(false);
 
-  const scroller = useRef(zenscroll.createScroller(scrollRef.current, 200));
+  const scroller = useRef(zenscroll.createScroller(scrollRef.current!, 200)); // TODO: is this dangerous?
 
   const autoScrolling = useRef(false);
 
@@ -44,7 +44,9 @@ export const useDistractionFreeUx = (
       scrollRef.current.addEventListener("scroll", handleScroll);
     }
     return () => {
-      scrollRef.current.removeEventListener("scroll", handleScroll);
+      if (scrollRef.current) {
+        scrollRef.current.removeEventListener("scroll", handleScroll);
+      }
     };
   }, [scrollRef.current, handleScroll]);
 
@@ -53,7 +55,9 @@ export const useDistractionFreeUx = (
   useEffect(() => {
     pipe(
       O.fromNullable(document.getSelection()),
-      O.filterMap((selection) => O.fromNullable(selection.anchorNode)),
+      O.filterMap((selection) =>
+        O.fromNullable(selection.anchorNode as HTMLElement)
+      ),
       O.filterMap(findAncestor(SLATE_BLOCK_CLASS_NAME)),
       O.map((focusedBlockNode) => {
         removeCurrentFocusedBlockClassName();

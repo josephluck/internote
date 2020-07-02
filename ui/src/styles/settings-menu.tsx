@@ -14,7 +14,15 @@ import { availableVoices } from "@internote/speech-service/available-voices";
 import React from "react";
 import styled from "styled-components";
 
-import { useTwineActions, useTwineState } from "../store";
+import { deleteAccount, signOut } from "../store/auth";
+import {
+  setColorTheme,
+  setDistractionFree,
+  setFontTheme,
+  setOutlineShowing,
+  setVoice,
+} from "../store/preferences";
+import { useStately } from "../store/store";
 import { size } from "../theming/symbols";
 import { shortcutPriorities } from "../utilities/shortcuts";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
@@ -34,37 +42,19 @@ const Menu = styled(MenuControl)`
 export function SettingsMenu({
   onMenuToggled,
 }: {
-  onMenuToggled: (menuShowing?: boolean) => void;
+  onMenuToggled: (menuShowing: boolean) => void;
 }) {
-  const colorThemes = useTwineState((state) => state.preferences.colorThemes);
-  const colorTheme = useTwineState((state) => state.preferences.colorTheme);
-  const fontThemes = useTwineState((state) => state.preferences.fontThemes);
-  const fontTheme = useTwineState((state) => state.preferences.fontTheme);
-  const distractionFree = useTwineState(
+  const colorThemes = useStately((state) => state.preferences.colorThemes);
+  const colorTheme = useStately((state) => state.preferences.colorTheme);
+  const fontThemes = useStately((state) => state.preferences.fontThemes);
+  const fontTheme = useStately((state) => state.preferences.fontTheme);
+  const distractionFree = useStately(
     (state) => state.preferences.distractionFree
   );
-  const outlineShowing = useTwineState(
+  const outlineShowing = useStately(
     (state) => state.preferences.outlineShowing
   );
-
-  const voice = useTwineState((state) => state.preferences.voice);
-  const {
-    setColorTheme,
-    setFontTheme,
-    setDistractionFree,
-    setOutlineShowing,
-    setVoice,
-    signOutConfirmation,
-    deleteAccountConfirmation,
-  } = useTwineActions((actions) => ({
-    setColorTheme: actions.preferences.setColorTheme,
-    setFontTheme: actions.preferences.setFontTheme,
-    setDistractionFree: actions.preferences.setDistractionFree,
-    setOutlineShowing: actions.preferences.setOutlineShowing,
-    setVoice: actions.preferences.setVoice,
-    signOutConfirmation: actions.auth.signOutConfirmation,
-    deleteAccountConfirmation: actions.auth.deleteAccountConfirmation,
-  }));
+  const voice = useStately((state) => state.preferences.voice);
 
   const [subMenuOpen, setSubMenuOpen] = React.useState<boolean>(false);
 
@@ -320,7 +310,7 @@ export function SettingsMenu({
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faSignOutAlt} />}
                     onClick={() => {
-                      signOutConfirmation();
+                      signOut(); // TODO: confirmation
                       menu.toggleMenuShowing(false);
                     }}
                   >
@@ -334,7 +324,7 @@ export function SettingsMenu({
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faTrash} />}
                     onClick={() => {
-                      deleteAccountConfirmation();
+                      deleteAccount(); // TODO: confirmation
                       menu.toggleMenuShowing(false);
                     }}
                   >
@@ -349,7 +339,7 @@ export function SettingsMenu({
     >
       {(menu) => (
         <ExpandingIconButton
-          forceShow={menu.menuShowing}
+          forceShow={menu.menuShowing || false}
           text="Settings"
           onClick={() => menu.toggleMenuShowing(!menu.menuShowing)}
           icon={<FontAwesomeIcon icon={faCog} />}

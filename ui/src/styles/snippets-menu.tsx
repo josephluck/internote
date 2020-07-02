@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 
-import { useTwineActions, useTwineState } from "../store";
+import { useStately } from "../store/store";
 import { font, size, spacing } from "../theming/symbols";
 import { Button } from "./button";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
@@ -34,7 +34,7 @@ export const SnippetsButton: React.FunctionComponent<{
     setSnippetsMenuShowing,
   } = useContext(SnippetsContext);
 
-  const snippets = useTwineState((state) => state.snippets.snippets);
+  const snippets = useStately((state) => state.snippets.snippets);
 
   const [inputText, setInputText] = useState("");
 
@@ -47,10 +47,6 @@ export const SnippetsButton: React.FunctionComponent<{
   const [snippetBeingDeleted, setSnippetBeingDeleted] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const deleteSnippet = useTwineActions(
-    (actions) => actions.snippets.deleteSnippet
-  );
 
   const deleteSnippetLoading = false;
 
@@ -81,7 +77,7 @@ export const SnippetsButton: React.FunctionComponent<{
 
   const onDeleteSnippet = useCallback(async (snippetId: string) => {
     setSnippetBeingDeleted(snippetId);
-    await deleteSnippet(snippetId);
+    await onDeleteSnippet(snippetId);
     setSnippetBeingDeleted("");
   }, []);
 

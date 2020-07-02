@@ -81,7 +81,7 @@ export const initialize = store.createEffect(
         session && session.accessToken && session.accessToken.length > 0;
 
       if (hasSession) {
-        await actions.preferences.get();
+        await getPreferences();
       } else if (restricted) {
         signOut();
       }

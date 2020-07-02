@@ -1,21 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 
-import {
-  getExtensionFromFileSrc,
-  makeAttachmentsApi,
-} from "../api/attachments";
-import { env } from "../env";
-import { useTwineState } from "../store";
+import { api } from "../api";
+import { getExtensionFromFileSrc } from "../api/attachments";
+import { useStately } from "../store/store";
 import { borderRadius } from "../theming/symbols";
 import { uploadSignal } from "./file-upload";
 import { UnknownFile } from "./unknown-file";
 import { Uploading } from "./uploading";
-
-const attachments = makeAttachmentsApi({
-  region: env.SERVICES_REGION,
-  bucketName: env.ATTACHMENTS_BUCKET_NAME,
-});
 
 const Img = styled.img`
   max-width: 100%;
@@ -31,7 +23,7 @@ export function MediaEmbed({ node, editor }: any) {
   const src = node.data.get("src");
   const type = node.get("type");
 
-  const session = useTwineState((state) => state.auth.session);
+  const session = useStately((state) => state.auth.session);
   const [uploaded, setUploaded] = useState(initialUploaded);
   const [uploadProgress, setUploadProgress] = useState(
     initialUploaded ? 100 : 0
@@ -64,7 +56,7 @@ export function MediaEmbed({ node, editor }: any) {
   useEffect(() => {
     async function doEffect() {
       if (uploaded) {
-        const url = await attachments.makePresignedUrl(session, key);
+        const url = await api.attachments.makePresignedUrl(session, key);
         setPresignedUrl(url);
       }
     }

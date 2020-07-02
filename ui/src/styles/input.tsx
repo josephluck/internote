@@ -41,14 +41,24 @@ export function InputWithLabel({
   ...props
 }: InputHTMLAttributes<HTMLInputElement> & { label: string }) {
   const [isFocused, setIsFocused] = useState(false);
-  const handleFocus = useCallback((e: any) => {
-    setIsFocused(true);
-    onFocus(e);
-  }, []);
-  const handleBlur = useCallback((e: any) => {
-    setIsFocused(false);
-    onBlur(e);
-  }, []);
+  const handleFocus = useCallback(
+    (e: any) => {
+      setIsFocused(true);
+      if (onFocus) {
+        onFocus(e);
+      }
+    },
+    [onFocus]
+  );
+  const handleBlur = useCallback(
+    (e: any) => {
+      setIsFocused(false);
+      if (onBlur) {
+        onBlur(e);
+      }
+    },
+    [onBlur]
+  );
   return (
     <InputWithLabelContainer className={className}>
       <InputLabel isFocused={isFocused}>{label}</InputLabel>

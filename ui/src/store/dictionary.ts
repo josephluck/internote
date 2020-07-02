@@ -22,12 +22,12 @@ export const setDictionaryResults = store.createMutator(
     (state.dictionary.dictionaryResults = results)
 );
 
-export const setdictionaryShowing = store.createMutator(
+export const setDictionaryShowing = store.createMutator(
   (state, showing?: boolean) => (state.dictionary.dictionaryShowing = showing)
 );
 
 export const lookup = store.createEffect(async (state, word: string) => {
-  setdictionaryShowing(true);
+  setDictionaryShowing(true);
   const response = await api.dictionary.lookup(state.auth.session, {
     word,
   });

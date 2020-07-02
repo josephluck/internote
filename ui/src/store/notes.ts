@@ -5,8 +5,8 @@ import { navigate } from "@reach/router";
 import { Option } from "space-lift";
 
 import { api } from "../api";
-import { isServer } from "../utilities/window";
 import { store } from "./store";
+import { fetchTags } from "./tags";
 
 type NotesState = {
   notes: GetNoteDTO[];
@@ -42,9 +42,7 @@ export const createNote = store.createEffect(async (state) => {
   });
   result.map((note) => {
     setNotes([note, ...state.notes.notes]);
-    if (!isServer()) {
-      navigate(`/?id=${note.noteId}`);
-    }
+    navigate(`/?id=${note.noteId}`);
   });
 });
 

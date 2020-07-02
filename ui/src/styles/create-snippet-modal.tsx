@@ -1,7 +1,6 @@
 import { Flex } from "@rebass/grid";
 import React, { useCallback, useContext } from "react";
 
-import { useTwineState } from "../store";
 import { spacing } from "../theming/symbols";
 import { Button } from "./button";
 import { Input } from "./input";

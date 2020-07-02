@@ -4,7 +4,8 @@ import { Flex } from "@rebass/grid";
 import React, { useCallback } from "react";
 import styled from "styled-components";
 
-import { useTwineActions, useTwineState } from "../store";
+import { requestSpeech, setSpeechSrc } from "../store/speech";
+import { useLoadingAction, useStately } from "../store/store";
 import { spacing } from "../theming/symbols";
 import { AudioPlayer, AudioRenderProps } from "./audio";
 import {
@@ -20,19 +21,15 @@ export const Speech: React.FunctionComponent<{
   selectedText: string;
   noteId: string;
 }> = ({ selectedText, noteId }) => {
-  const src = useTwineState((state) => state.speech.speechSrc);
+  const src = useStately((state) => state.speech.speechSrc);
 
-  const isLoading = false;
+  const { loading: isLoading, exec } = useLoadingAction(requestSpeech);
 
-  const handleRequestSpeech = useTwineActions(
-    (actions) => () =>
-      actions.speech.requestSpeech({ words: selectedText, id: noteId }),
-    [selectedText, noteId]
-  );
+  const doRequestSpeech = useCallback(() => {
+    exec({ words: selectedText, id: noteId });
+  }, [exec, selectedText, noteId]);
 
-  const handleFinished = useTwineActions((actions) => () =>
-    actions.speech.setSpeechSrc(null)
-  );
+  const handleFinished = useCallback(() => setSpeechSrc(null), []);
 
   const handleCancelPress = useCallback(
     (event: React.MouseEvent | React.KeyboardEvent) => {
@@ -46,7 +43,7 @@ export const Speech: React.FunctionComponent<{
   const onIconClick = useCallback(
     (audioState: AudioRenderProps) => {
       if (!src) {
-        handleRequestSpeech();
+        doRequestSpeech();
         return;
       }
       if (isLoading || audioState.status === "loading") {
@@ -61,7 +58,7 @@ export const Speech: React.FunctionComponent<{
         return;
       }
     },
-    [isLoading, src, handleRequestSpeech]
+    [isLoading, src, doRequestSpeech]
   );
 
   return (

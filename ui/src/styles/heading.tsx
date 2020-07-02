@@ -10,7 +10,9 @@ import { Flex } from "@rebass/grid";
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { useTwineActions, useTwineState } from "../store";
+import { createNote } from "../store/notes";
+import { useLoadingAction, useStately } from "../store/store";
+import { toggleFullscreen } from "../store/ui";
 import { BlockLink } from "../styles/link";
 import { Logo } from "../styles/logo";
 import { spacing } from "../theming/symbols";
@@ -56,16 +58,12 @@ const ButtonSpacer = styled.div`
 `;
 
 export function Heading({ note }: { note: GetNoteDTO | null }) {
-  const createNoteLoading = false;
-  const distractionFree = useTwineState(
+  const distractionFree = useStately(
     (state) => state.preferences.distractionFree
   );
-  const isFullscreen = useTwineState((state) => state.ui.isFullscreen);
+  const isFullscreen = useStately((state) => state.ui.isFullscreen);
 
-  const { toggleFullscreen, createNote } = useTwineActions((actions) => ({
-    toggleFullscreen: actions.ui.toggleFullscreen,
-    createNote: actions.notes.createNote,
-  }));
+  const handleCreateNote = useLoadingAction(createNote);
 
   const [noteMenuShowing, setNoteMenuShowing] = useState(false);
   const [settingsMenuShowing, setSettingsMenuShowing] = useState(false);
@@ -74,11 +72,14 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
   const forceShow =
     noteMenuShowing ||
     settingsMenuShowing ||
-    createNoteLoading ||
+    handleCreateNote.loading ||
     exportMenuShowing;
 
   return (
-    <HeadingWrapper distractionFree={distractionFree} forceShow={forceShow}>
+    <HeadingWrapper
+      distractionFree={distractionFree || false}
+      forceShow={forceShow}
+    >
       <HeadingInner>
         <BlockLink href="/">
           <Logo>Internote</Logo>
@@ -108,11 +109,11 @@ export function Heading({ note }: { note: GetNoteDTO | null }) {
         </ButtonSpacer>
         <ButtonSpacer>
           <ExpandingIconButton
-            forceShow={createNoteLoading}
+            forceShow={handleCreateNote.loading}
             text="Create note"
-            onClick={createNote}
+            onClick={handleCreateNote.exec}
             icon={
-              createNoteLoading ? (
+              handleCreateNote.loading ? (
                 <FontAwesomeIcon icon={faSpinner} spin />
               ) : (
                 <FontAwesomeIcon icon={faPlus} />

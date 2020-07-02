@@ -9,7 +9,7 @@ import { Editor } from "slate";
 import { useEditor } from "slate-react";
 import styled from "styled-components";
 
-import { useTwineState } from "../../store";
+import { useStately } from "../../store/store";
 import { font, size, spacing } from "../../theming/symbols";
 import { Emoji } from "../../utilities/emojis";
 import { Dictionary } from "../dictionary";
@@ -53,13 +53,13 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
     setSnippetSelection,
   } = React.useContext(SnippetsContext);
 
-  const distractionFree = useTwineState(
+  const distractionFree = useStately(
     (state) => state.preferences.distractionFree
   );
 
-  const tags = useTwineState((state) => state.tags.tags);
+  const tags = useStately((state) => state.tags.tags);
 
-  const isdictionaryShowing = useTwineState(
+  const isDictionaryShowing = useStately(
     (state) => state.dictionary.dictionaryShowing
   );
 
@@ -74,7 +74,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
   const isHashtagShowing = O.isSome(hashtagSearchText) || isTagButtonPressed;
 
   const toolbarIsExpanded =
-    isdictionaryShowing || isEmojiShowing || isHashtagShowing;
+    isDictionaryShowing || isEmojiShowing || isHashtagShowing;
 
   const isToolbarVisible =
     toolbarIsExpanded || O.isSome(selectedText) || snippetsMenuShowing;
@@ -133,7 +133,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
 
   return (
     <ToolbarWrapper
-      distractionFree={distractionFree}
+      distractionFree={distractionFree || false}
       forceShow={isToolbarVisible}
     >
       <Shortcut
@@ -184,7 +184,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
           <ButtonSpacer small>
             <DictionaryButton
               isLoading={isDictionaryLoading}
-              isShowing={isdictionaryShowing}
+              isShowing={isDictionaryShowing}
               selectedWord={selectedWord}
             />
           </ButtonSpacer>
@@ -226,7 +226,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
                     O.getOrElse(() => "")
                   )}
                 />
-              ) : isdictionaryShowing ? (
+              ) : isDictionaryShowing ? (
                 <Dictionary
                   isLoading={isDictionaryLoading}
                   selectedWord={selectedWord}

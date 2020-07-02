@@ -12,7 +12,7 @@ export function exportNote(makeRequest: MakeSignedRequest) {
     async markdown(
       session: Session,
       request: CreateExportDTO
-    ): ApiResponse<ExportResponseDTO> {
+    ): Promise<ApiResponse<ExportResponseDTO>> {
       return makeRequest({
         path: `/export/markdown`,
         method: "POST",
@@ -23,7 +23,7 @@ export function exportNote(makeRequest: MakeSignedRequest) {
     async html(
       session: Session,
       request: CreateExportDTO
-    ): ApiResponse<ExportResponseDTO> {
+    ): Promise<ApiResponse<ExportResponseDTO>> {
       return makeRequest({
         path: `/export/html`,
         method: "POST",

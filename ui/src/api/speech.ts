@@ -12,7 +12,7 @@ export function speech(makeRequest: MakeSignedRequest) {
     async create(
       session: Session,
       request: SpeechRequestBody
-    ): ApiResponse<SpeechResponseBody> {
+    ): Promise<ApiResponse<SpeechResponseBody>> {
       return makeRequest({
         path: "/speech",
         method: "POST",

@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 
-import { useTwineActions } from "../store";
+import { lookup, setDictionaryShowing } from "../store/dictionary";
 import {
   toolbarIconMap,
   toolbarLabelMap,
@@ -14,11 +14,7 @@ export const DictionaryButton: React.FunctionComponent<{
   isShowing?: boolean;
   selectedWord: string;
 }> = ({ isLoading, isShowing, selectedWord }) => {
-  const close = useTwineActions((actions) => () =>
-    actions.dictionary.setdictionaryShowing(false)
-  );
-
-  const lookup = useTwineActions((actions) => actions.dictionary.lookup);
+  const close = useCallback(() => setDictionaryShowing(false), []);
 
   // TODO: could extract a custom press handler that doesn't lose focus on editor
   // if this becomes a common pattern

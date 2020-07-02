@@ -2,6 +2,7 @@ import { InternoteEditorElement } from "@internote/lib/editor-types";
 import { withIOCollaboration } from "@slate-collaborative/client";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
+import React from "react";
 import {
   createContext,
   useCallback,
@@ -81,7 +82,7 @@ interface InternoteEditorContext {
 }
 
 export const InternoteEditorCtx = createContext<InternoteEditorContext>({
-  editor: null,
+  editor: (null as any) as InternoteSlateEditor,
   emojiSearchText: O.none,
   hashtagSearchText: O.none,
   speechText: O.none,

@@ -2583,10 +2583,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@josephluck/stately@^1.1.8":
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/@josephluck/stately/-/stately-1.1.8.tgz#7961e5fe62fe63fb48d5129d803bab2ceb683b26"
-  integrity sha512-QrQUi1JgEQu8NkpQ77J8vlhqeTB2GtK6ugnNPuCoV4IHyZeM2Vx0DC6AnsEx0BZxLHj5tlIU9NALU858R9I7uQ==
+"@josephluck/stately@^1.1.9":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@josephluck/stately/-/stately-1.1.9.tgz#90bf33e2d1158cdb18ccfbe2d04ff8aafd4af554"
+  integrity sha512-rWX2FtVhyaZu4be4Ec2IL6LPmdtHeefUEtll8fLpCFT+6MDW6cfnXmPl/588AckYr/zSVvV3jnkODI807ufyIw==
   dependencies:
     immer "^5.0.0"
 

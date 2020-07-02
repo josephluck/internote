@@ -108,9 +108,9 @@ export const flattenEditorElements = (
   value.reduce((prev, element) => {
     const elements = element.children
       ? flattenEditorElements(element.children as InternoteEditorElement[])
-      : [];
+      : ([] as InternoteEditorElement[]);
     return [...prev, element, ...elements];
-  }, []);
+  }, [] as InternoteEditorElement[]);
 
 export const extractAllTagElementsFromValue = (
   value: InternoteEditorElement[]

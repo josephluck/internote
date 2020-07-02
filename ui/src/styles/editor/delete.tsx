@@ -1,16 +1,13 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 
-import { useTwineActions } from "../../store";
+import { deleteNote } from "../../store/notes";
 import { DeleteButton } from "../delete-button";
 
 export const DeleteNoteButton: React.FunctionComponent<{ noteId: string }> = ({
   noteId,
 }) => {
-  const doDelete = useTwineActions(
-    (actions) => actions.notes.deleteNoteConfirmation
-  );
   const handleDelete = useCallback(() => {
-    doDelete({ noteId });
+    deleteNote(noteId);
   }, [noteId]);
 
   return <DeleteButton onClick={handleDelete} />;

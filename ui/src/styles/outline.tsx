@@ -2,7 +2,7 @@ import { InternoteEditorElement } from "@internote/lib/editor-types";
 import React, { useCallback } from "react";
 import styled from "styled-components";
 
-import { useTwineState } from "../store";
+import { useStately } from "../store/store";
 import { font, size, spacing } from "../theming/symbols";
 import { OutlineElement } from "./editor/types";
 import {
@@ -14,14 +14,14 @@ import { Tag } from "./tag";
 export const Outline: React.FunctionComponent<{
   value: InternoteEditorElement[];
 }> = ({ value }) => {
-  const showing = useTwineState(
+  const showing = useStately(
     (state) => state.preferences.outlineShowing || false
   );
   const headings = extractOutlineFromValue(value);
   const hashtags = extractAllTagElementsFromValue(value);
 
   const handleHeadingClick = useCallback((heading: OutlineElement) => {
-    console.log("Focus", heading);
+    console.log("TODO: Focus", heading);
   }, []);
 
   return (

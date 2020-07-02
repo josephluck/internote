@@ -6,7 +6,7 @@ import { MakeSignedRequest } from "./api";
 
 export function preferences(makeRequest: MakeSignedRequest) {
   return {
-    async get(session: Session): ApiResponse<Preferences> {
+    async get(session: Session): Promise<ApiResponse<Preferences>> {
       return makeRequest({
         path: "/preferences",
         method: "GET",
@@ -16,7 +16,7 @@ export function preferences(makeRequest: MakeSignedRequest) {
     async update(
       session: Session,
       preferences: Partial<Preferences>
-    ): ApiResponse<Preferences> {
+    ): Promise<ApiResponse<Preferences>> {
       return makeRequest({
         path: "/preferences",
         method: "PUT",

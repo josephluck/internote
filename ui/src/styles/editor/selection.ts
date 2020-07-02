@@ -170,12 +170,12 @@ const getExpandedRangeToFullBlock = (
 ): SlateRange => ({
   anchor: pipe(
     O.tryCatch(() => Editor.before(editor, anchor, { unit: "block" })),
-    O.filter(Boolean),
+    O.filter((point): point is Point => Boolean(point)),
     O.getOrElse(() => anchor)
   ),
   focus: pipe(
     O.tryCatch(() => Editor.after(editor, focus, { unit: "block" })),
-    O.filter(Boolean),
+    O.filter((point): point is Point => Boolean(point)),
     O.getOrElse(() => focus)
   ),
 });
@@ -197,7 +197,7 @@ const expandRangeToFullWord = (
         unit: "word",
       })
     ),
-    O.filter(Boolean),
+    O.filter((point): point is Point => Boolean(point)),
     O.getOrElse(() => range.anchor)
   ),
   focus: pipe(
@@ -205,7 +205,7 @@ const expandRangeToFullWord = (
     O.filterMap((range) => getTextFromSlateRange(editor, range)),
     O.filter((character) => character !== " "),
     O.map(() => Editor.after(editor, range.focus, { unit: "word" })),
-    O.filter(Boolean),
+    O.filter((point): point is Point => Boolean(point)),
     O.getOrElse(() => range.focus)
   ),
 });
@@ -232,7 +232,7 @@ const expandPointToPrecedingCharacter = (
         unit: "character",
       })
     ),
-    O.filter((point) => Boolean(point))
+    O.filter((point): point is Point => Boolean(point))
   );
 
 const expandPointToNextCharacter = (
@@ -245,7 +245,7 @@ const expandPointToNextCharacter = (
         unit: "character",
       })
     ),
-    O.filter((point) => Boolean(point))
+    O.filter((point): point is Point => Boolean(point))
   );
 
 /**

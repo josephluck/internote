@@ -9,8 +9,8 @@ import { font, spacing } from "../theming/symbols";
 import { DropdownMenuItem } from "./dropdown-menu";
 
 const DeleteIcon = styled.div.withConfig({
-  shouldForwardProp: (prop: string, def) =>
-    !["forceShow"].includes(prop) && def(prop),
+  shouldForwardProp: (prop: React.ReactText, def) =>
+    !(["forceShow"] as React.ReactText[]).includes(prop) && def(prop),
 })<{ forceShow: boolean }>`
   margin-left: ${spacing._1_5};
   font-size: ${font._12.size};

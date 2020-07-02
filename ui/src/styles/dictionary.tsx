@@ -2,7 +2,7 @@ import { DictionaryResult } from "@internote/dictionary-service/types";
 import React from "react";
 import styled from "styled-components";
 
-import { useTwineState } from "../store";
+import { useStately } from "../store/store";
 import { font, spacing } from "../theming/symbols";
 import { NoResults } from "./no-results";
 import { Tag } from "./tag";
@@ -12,7 +12,7 @@ export const Dictionary: React.FunctionComponent<{
   selectedWord: string;
   isLoading: boolean;
 }> = ({ selectedWord, isLoading }) => {
-  const results = useTwineState((state) => state.dictionary.dictionaryResults);
+  const results = useStately((state) => state.dictionary.dictionaryResults);
 
   return isLoading ? (
     <div style={{ width: "100%" }}>

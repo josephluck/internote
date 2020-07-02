@@ -1,12 +1,13 @@
 import { faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GetNoteDTO } from "@internote/notes-service/types";
+import { navigate } from "@reach/router";
 import Fuse from "fuse.js";
-import Router from "next/router";
 import React from "react";
 import styled from "styled-components";
 
-import { useTwineActions, useTwineState } from "../store";
+import { createNote, deleteNote } from "../store/notes";
+import { useStately } from "../store/store";
 import { size, spacing } from "../theming/symbols";
 import { combineStrings } from "../utilities/string";
 import {
@@ -22,59 +23,19 @@ import { OnNavigate } from "./on-navigate";
 import { SearchMenuItem } from "./search-menu-item";
 import { Tag } from "./tag";
 
-const NotesMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
-  padding-top: 0;
-  overflow: hidden;
-  transition: all 300ms ease;
-  width: ${(props) =>
-    props.isExpanded
-      ? size.notesMenuDropdownWidthExpanded
-      : size.notesMenuDropdownWidth};
-`;
-
-const HeadingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding-right: ${spacing._0_25};
-  margin: ${spacing._0_25} ${spacing._0_25} 0;
-`;
-
-const MaxHeight = styled.div`
-  max-height: ${size.notesMenuListMaxHeight};
-  overflow: auto;
-  margin: ${spacing._0_5} 0;
-  padding: ${spacing._0_5} 0;
-  border-top: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
-`;
-
-const TagsWrapper = styled.div`
-  padding: 0 ${spacing._0_5};
-  border-top: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
-`;
-
-function getNoteTitle(note: GetNoteDTO): string {
-  return note.title;
-}
-
 export function NoteMenu({
   currentNote,
   onMenuToggled,
 }: {
-  currentNote: GetNoteDTO;
-  onMenuToggled: (showing?: boolean) => any;
+  currentNote: GetNoteDTO | null;
+  onMenuToggled: (showing: boolean) => any;
 }) {
-  const allNotes = useTwineState((state) => state.notes.notes);
-  const tags = useTwineState((state) => state.tags.tags);
-
-  const { onDeleteNote, onCreateNote } = useTwineActions((actions) => ({
-    onDeleteNote: (noteId: string) =>
-      actions.notes.deleteNoteConfirmation({ noteId }),
-    onCreateNote: actions.notes.createNote,
-  }));
+  const allNotes = useStately((state) => state.notes.notes);
+  const tags = useStately((state) => state.tags.tags);
 
   const [searchFocused, setSearchFocused] = React.useState(false);
   const [searchText, setSearchText] = React.useState("");
-  const [noteLoading, setNoteLoading] = React.useState(null);
+  const [noteLoading, setNoteLoading] = React.useState<string | null>(null);
   const [filteredNotes, setFilteredNotes] = React.useState<GetNoteDTO[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const isTagSearch = searchText.startsWith("#");
@@ -159,7 +120,7 @@ export function NoteMenu({
             }
             onClick={() => {
               setNoteLoading("new-note");
-              onCreateNote();
+              createNote();
             }}
           >
             <span>Create a new note</span>
@@ -178,11 +139,11 @@ export function NoteMenu({
                   content={note.title}
                   onSelect={() => {
                     setNoteLoading(note.noteId);
-                    Router.push(`/?id=${note.noteId}`);
+                    navigate(`/?id=${note.noteId}`);
                   }}
                   onDelete={() => {
                     menu.toggleMenuShowing(false);
-                    onDeleteNote(note.noteId);
+                    deleteNote(note.noteId); // TODO: confirmation
                   }}
                   searchText={isTagSearch ? "" : searchText}
                 />
@@ -212,4 +173,38 @@ export function NoteMenu({
       )}
     </MenuControl>
   );
+}
+
+const NotesMenu = styled(DropdownMenu)<{ isExpanded: boolean }>`
+  padding-top: 0;
+  overflow: hidden;
+  transition: all 300ms ease;
+  width: ${(props) =>
+    props.isExpanded
+      ? size.notesMenuDropdownWidthExpanded
+      : size.notesMenuDropdownWidth};
+`;
+
+const HeadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding-right: ${spacing._0_25};
+  margin: ${spacing._0_25} ${spacing._0_25} 0;
+`;
+
+const MaxHeight = styled.div`
+  max-height: ${size.notesMenuListMaxHeight};
+  overflow: auto;
+  margin: ${spacing._0_5} 0;
+  padding: ${spacing._0_5} 0;
+  border-top: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
+`;
+
+const TagsWrapper = styled.div`
+  padding: 0 ${spacing._0_5};
+  border-top: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
+`;
+
+function getNoteTitle(note: GetNoteDTO): string {
+  return note.title;
 }

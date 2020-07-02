@@ -35,12 +35,11 @@ export function CollapseWidthOnHover({
   const [width, setWidth] = useState(0);
   const [opacity, setOpacity] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
-  const collapsedContentRef = useRef<HTMLDivElement>();
+  const collapsedContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleWidth() {
-      const refsExist = collapsedContentRef.current;
-      if (refsExist) {
+      if (collapsedContentRef.current) {
         if (isHovering || forceShow) {
           const childElm = collapsedContentRef.current.firstChild as any;
           const width = childElm.scrollWidth;

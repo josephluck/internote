@@ -10,14 +10,17 @@ import { MakeSignedRequest } from "./api";
 
 export function notes(makeRequest: MakeSignedRequest) {
   return {
-    async list(session: Session): ApiResponse<GetNoteDTO[]> {
+    async list(session: Session): Promise<ApiResponse<GetNoteDTO[]>> {
       return makeRequest({
         path: "/notes",
         method: "GET",
         session,
       });
     },
-    async get(session: Session, noteId: string): ApiResponse<GetNoteDTO> {
+    async get(
+      session: Session,
+      noteId: string
+    ): Promise<ApiResponse<GetNoteDTO>> {
       return makeRequest({
         path: `/notes/${noteId}`,
         method: "GET",
@@ -27,7 +30,7 @@ export function notes(makeRequest: MakeSignedRequest) {
     async create(
       session: Session,
       note: Partial<CreateNoteDTO> = {}
-    ): ApiResponse<GetNoteDTO> {
+    ): Promise<ApiResponse<GetNoteDTO>> {
       return makeRequest({
         path: "/notes",
         method: "POST",
@@ -39,7 +42,7 @@ export function notes(makeRequest: MakeSignedRequest) {
       session: Session,
       noteId: string,
       note: Partial<UpdateNoteDTO>
-    ): ApiResponse<GetNoteDTO> {
+    ): Promise<ApiResponse<GetNoteDTO>> {
       return makeRequest({
         path: `/notes/${noteId}`,
         method: "PUT",
@@ -47,7 +50,7 @@ export function notes(makeRequest: MakeSignedRequest) {
         body: note,
       });
     },
-    async delete(session: Session, noteId: string): ApiResponse<void> {
+    async delete(session: Session, noteId: string): Promise<ApiResponse<void>> {
       return makeRequest({
         path: `/notes/${noteId}`,
         method: "DELETE",

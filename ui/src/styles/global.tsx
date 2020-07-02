@@ -2,7 +2,6 @@ import { Box, Flex } from "@rebass/grid";
 import React from "react";
 import styled from "styled-components";
 
-import { useTwineActions, useTwineState } from "../store";
 import { spacing } from "../theming/symbols";
 import { Button } from "./button";
 import { Modal } from "./modal";
@@ -21,16 +20,23 @@ const DarkOverlay = styled.div<{ showing?: boolean }>`
 `;
 
 export function Global() {
-  const confirmation = useTwineState(
-    (state) => state.confirmation.confirmation
-  );
-  const setConfirmation = useTwineActions(
-    (actions) => actions.confirmation.setConfirmation
-  );
+  const confirmation = {
+    onCancel: () => void null,
+    onConfirm: () => void null,
+    cancelLoading: false,
+    confirmLoading: false,
+    cancelButtonText: "",
+    confirmButtonText: "",
+    message: "",
+  };
+  const setConfirmation = (_arg: any) => void null;
 
   return (
     <>
-      <Modal open={!!confirmation} onClose={() => setConfirmation(null)}>
+      <Modal
+        open={!!confirmation && false}
+        onClose={() => setConfirmation(null)}
+      >
         <>
           <Box mb={spacing._1}>
             {confirmation && confirmation.message

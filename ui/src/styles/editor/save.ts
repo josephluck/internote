@@ -1,7 +1,7 @@
 import { InternoteEditorElement } from "@internote/lib/editor-types";
 import { useEffect, useRef } from "react";
 
-import { useTwineActions } from "../../store";
+import { updateNote } from "../../store/notes";
 import { useDebounce } from "../../utilities/hooks";
 import { extractTagsFromValue, extractTitleFromValue } from "./utils";
 
@@ -11,16 +11,13 @@ export const useLiveSave = (
 ) => {
   const isFirst = useRef(true);
 
-  const save = useTwineActions(
-    (actions) => (content: InternoteEditorElement[]) =>
-      actions.notes.updateNote({
-        content,
-        noteId,
-        tags: extractTagsFromValue(content),
-        title: extractTitleFromValue(content),
-      }),
-    [noteId]
-  );
+  const save = (content: InternoteEditorElement[]) =>
+    updateNote({
+      content,
+      noteId,
+      tags: extractTagsFromValue(content),
+      title: extractTitleFromValue(content),
+    });
 
   const debouncedValue = useDebounce(value, 1000);
 

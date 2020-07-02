@@ -41,7 +41,7 @@ export const ToolbarButton: React.FunctionComponent<{
 
   return (
     <>
-      {!!shortcut && !!name && (
+      {!!shortcut && !!name && !!onClick && (
         <Shortcut
           id={name}
           description={name}

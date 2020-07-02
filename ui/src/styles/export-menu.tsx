@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
 
-import { useTwineActions, useTwineState } from "../store";
+import { html, markdown } from "../store/export-note";
+import { useLoadingAction } from "../store/store";
 import { size } from "../theming/symbols";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 import { ExpandingIconButton } from "./expanding-icon-button";
@@ -24,16 +25,11 @@ export function ExportMenu({
   onMenuToggled,
   noteId,
 }: {
-  onMenuToggled: (menuShowing?: boolean) => void;
+  onMenuToggled: (menuShowing: boolean) => void;
   noteId: string;
 }) {
-  const exportMarkdownLoading = false;
-  const exportHtmlLoading = false;
-
-  const { exportMarkdown, exportHtml } = useTwineActions((actions) => ({
-    exportMarkdown: actions.exportNote.markdown,
-    exportHtml: actions.exportNote.html,
-  }));
+  const exportMarkdown = useLoadingAction(markdown);
+  const exportHtml = useLoadingAction(html);
 
   const [subMenuOpen, setSubMenuOpen] = React.useState<boolean>(false);
 
@@ -64,12 +60,12 @@ export function ExportMenu({
                   <DropdownMenuItem
                     icon={
                       <FontAwesomeIcon
-                        icon={exportMarkdownLoading ? faSpinner : faMarkdown}
-                        spin={exportMarkdownLoading}
+                        icon={exportMarkdown.loading ? faSpinner : faMarkdown}
+                        spin={exportMarkdown.loading}
                       />
                     }
                     onClick={async () => {
-                      await exportMarkdown({ noteId });
+                      await exportMarkdown.exec(noteId);
                       menu.toggleMenuShowing(false);
                     }}
                   >
@@ -84,12 +80,12 @@ export function ExportMenu({
                   <DropdownMenuItem
                     icon={
                       <FontAwesomeIcon
-                        icon={exportHtmlLoading ? faSpinner : faHtml5}
-                        spin={exportHtmlLoading}
+                        icon={exportHtml.loading ? faSpinner : faHtml5}
+                        spin={exportHtml.loading}
                       />
                     }
                     onClick={async () => {
-                      await exportHtml({ noteId });
+                      await exportHtml.exec(noteId);
                       menu.toggleMenuShowing(false);
                     }}
                   >
@@ -104,7 +100,7 @@ export function ExportMenu({
     >
       {(menu) => (
         <ExpandingIconButton
-          forceShow={menu.menuShowing}
+          forceShow={menu.menuShowing || false}
           text="Export note"
           onClick={() => menu.toggleMenuShowing(!menu.menuShowing)}
           icon={<FontAwesomeIcon icon={faDownload} />}
