@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
 
-import { html, markdown } from "../store/export-note";
+import { html, markdown } from "../store/export/export";
 import { useLoadingAction } from "../store/store";
 import { size } from "../theming/symbols";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";

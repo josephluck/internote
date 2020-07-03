@@ -3,16 +3,9 @@ import {
   GetSnippetDTO,
 } from "@internote/snippets-service/types";
 
-import { api } from "../api";
-import { store } from "./store";
-
-type SnippetsState = {
-  snippets: GetSnippetDTO[];
-};
-
-export const snippetsInitialState: SnippetsState = {
-  snippets: [],
-};
+import { api } from "../../api";
+import { store } from "../store";
+import { snippetsInitialState } from "./state";
 
 export const resetState = store.createMutator(
   (state) => (state.snippets = snippetsInitialState)

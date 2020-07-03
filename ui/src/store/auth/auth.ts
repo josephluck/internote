@@ -1,33 +1,20 @@
-import { api } from "../api";
-import { isNearExpiry } from "../auth/api";
+import { api } from "../../api";
+import { isNearExpiry } from "../../auth/api";
 import {
   Session,
   defaultSession,
   makeAuthStorage,
   validateSession,
-} from "../auth/storage";
-import { resetState as resetNotes } from "./notes";
-import { getPreferences, resetState as resetPreferences } from "./preferences";
-import { store } from "./store";
+} from "../../auth/storage";
+import { resetState as resetNotes } from "../notes/notes";
+import {
+  getPreferences,
+  resetState as resetPreferences,
+} from "../preferences/preferences";
+import { store } from "../store";
+import { SignInSession, authInitialState } from "./state";
 
 const authStorage = makeAuthStorage();
-
-type SignInSession = {
-  email: string;
-  session: string;
-};
-
-type AuthState = {
-  needsVerify: boolean;
-  session: Session;
-  signInSession: SignInSession;
-};
-
-export const authInitialState: AuthState = {
-  needsVerify: false,
-  session: authStorage.getSession(),
-  signInSession: { email: "", session: "" },
-};
 
 export const resetState = store.createMutator(
   (state) => (state.auth = authInitialState)

@@ -1,5 +1,5 @@
-import { api } from "../api";
-import { store } from "./store";
+import { api } from "../../api";
+import { store } from "../store";
 
 export const markdown = store.createEffect(async (state, noteId: string) => {
   const note = state.notes.notes.find((n) => n.noteId === noteId);

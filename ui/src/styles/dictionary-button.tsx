@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 
-import { lookup, setDictionaryShowing } from "../store/dictionary";
+import { lookup, setDictionaryShowing } from "../store/dictionary/dictionary";
 import {
   toolbarIconMap,
   toolbarLabelMap,

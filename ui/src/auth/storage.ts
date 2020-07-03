@@ -1,3 +1,8 @@
+import { addDays } from "date-fns";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 export const defaultSession: Session = {
   idToken: "",
   accessToken: "",
@@ -29,30 +34,32 @@ export const makeAuthStorage = () => {
     key: K,
     value: Session[K]
   ): Session[K] {
-    window.localStorage.setItem(key, value.toString());
+    cookies.set(key, value.toString(), {
+      expires: addDays(new Date(), 100),
+      path: "/",
+      sameSite: "none",
+    });
     return value;
   }
 
   function removeItem<K extends keyof Session>(key: K) {
-    window.localStorage.removeItem(key);
+    cookies.remove(key);
   }
 
   function getItem<K extends keyof Session>(key: K): Session[K] {
-    const item = window.localStorage.get(key);
+    const item = cookies.get(key);
     return typeof defaultSession[key] === "number" ? parseInt(item) : item;
   }
 
   function storeSession(session: Partial<Session>) {
-    return Object.keys(session).map((key) => {
-      // @ts-ignore
-      storeItem(key, session[key]);
-    });
+    // @ts-ignore
+    return Object.keys(session).map((key) => storeItem(key, session[key]));
   }
 
   function removeSession() {
-    return Object.keys(defaultSession).map((key) => {
-      removeItem(key as keyof Session);
-    });
+    return Object.keys(defaultSession).map((key) =>
+      removeItem(key as keyof Session)
+    );
   }
 
   function getSession(): Session {

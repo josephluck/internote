@@ -1,18 +1,11 @@
 import { navigate } from "@reach/router";
 import { AxiosError } from "axios";
 
-import { exitFullscreen, requestFullScreen } from "../utilities/fullscreen";
-import { signOut } from "./auth";
-import { createNote, fetchNotes } from "./notes";
-import { store } from "./store";
-
-type UiState = {
-  isFullscreen: boolean;
-};
-
-export const uiInitialState: UiState = {
-  isFullscreen: false,
-};
+import { exitFullscreen, requestFullScreen } from "../../utilities/fullscreen";
+import { signOut } from "../auth/auth";
+import { createNote, fetchNotes } from "../notes/notes";
+import { store } from "../store";
+import { uiInitialState } from "./state";
 
 export const resetState = store.createMutator(
   (state) => (state.ui = uiInitialState)

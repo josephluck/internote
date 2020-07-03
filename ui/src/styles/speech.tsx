@@ -4,7 +4,7 @@ import { Flex } from "@rebass/grid";
 import React, { useCallback } from "react";
 import styled from "styled-components";
 
-import { requestSpeech, setSpeechSrc } from "../store/speech";
+import { requestSpeech, setSpeechSrc } from "../store/speech/speech";
 import { useLoadingAction, useStately } from "../store/store";
 import { spacing } from "../theming/symbols";
 import { AudioPlayer, AudioRenderProps } from "./audio";

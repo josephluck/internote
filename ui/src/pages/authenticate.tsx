@@ -3,7 +3,7 @@ import { Box, Flex } from "@rebass/grid";
 import React, { useCallback } from "react";
 import styled from "styled-components";
 
-import { signUp, verify } from "../store/auth";
+import { signUp, verify } from "../store/auth/auth";
 import { useLoadingAction, useStately } from "../store/store";
 import { Button } from "../styles/button";
 import { Input, InputLabel } from "../styles/input";
@@ -35,7 +35,7 @@ export const Authenticate: React.FunctionComponent<RouteComponentProps> = () => 
       await handleVerify.exec({ code });
       navigate("/");
     },
-    [handleVerify.exec]
+    [handleVerify]
   );
 
   return (

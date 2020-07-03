@@ -1,17 +1,8 @@
 import { DictionaryResult } from "@internote/dictionary-service/types";
 
-import { api } from "../api";
-import { store } from "./store";
-
-type DictionaryState = {
-  dictionaryShowing?: boolean;
-  dictionaryResults: DictionaryResult[];
-};
-
-export const dictionaryInitialState: DictionaryState = {
-  dictionaryShowing: false,
-  dictionaryResults: [],
-};
+import { api } from "../../api";
+import { store } from "../store";
+import { dictionaryInitialState } from "./state";
 
 export const resetState = store.createMutator(
   (state) => (state.dictionary = dictionaryInitialState)

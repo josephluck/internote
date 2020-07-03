@@ -10,9 +10,9 @@ import { Flex } from "@rebass/grid";
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { createNote } from "../store/notes";
+import { createNote } from "../store/notes/notes";
 import { useLoadingAction, useStately } from "../store/store";
-import { toggleFullscreen } from "../store/ui";
+import { toggleFullscreen } from "../store/ui/ui";
 import { BlockLink } from "../styles/link";
 import { Logo } from "../styles/logo";
 import { spacing } from "../theming/symbols";

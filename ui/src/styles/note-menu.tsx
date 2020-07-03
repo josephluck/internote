@@ -6,7 +6,7 @@ import Fuse from "fuse.js";
 import React from "react";
 import styled from "styled-components";
 
-import { createNote, deleteNote } from "../store/notes";
+import { createNote, deleteNote } from "../store/notes/notes";
 import { useStately } from "../store/store";
 import { size, spacing } from "../theming/symbols";
 import { combineStrings } from "../utilities/string";

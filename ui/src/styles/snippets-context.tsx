@@ -3,7 +3,7 @@ import { GetSnippetDTO } from "@internote/snippets-service/types";
 import React, { useCallback } from "react";
 import { useState } from "react";
 
-import { createSnippet } from "../store/snippets";
+import { createSnippet } from "../store/snippets/snippets";
 
 interface Context {
   createSnippetModalOpen: boolean;

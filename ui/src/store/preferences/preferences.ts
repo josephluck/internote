@@ -1,35 +1,10 @@
 import { Preferences } from "@internote/preferences-service/models";
 import { AvailableVoice } from "@internote/speech-service/types";
 
-import { api } from "../api";
-import {
-  ColorThemeWithName,
-  FontThemeWithName,
-  colorThemes,
-  fontThemes,
-} from "../theming/themes";
-import { store } from "./store";
-
-export type PreferencesState = Omit<
-  Preferences,
-  "id" | "colorTheme" | "fontTheme" | "voice"
-> & {
-  colorTheme: ColorThemeWithName;
-  colorThemes: ColorThemeWithName[];
-  fontTheme: FontThemeWithName;
-  fontThemes: FontThemeWithName[];
-  voice: AvailableVoice;
-};
-
-export const preferencesInitialState: PreferencesState = {
-  colorTheme: colorThemes[0],
-  colorThemes,
-  fontTheme: fontThemes[0],
-  fontThemes,
-  distractionFree: false,
-  voice: "Male",
-  outlineShowing: false,
-};
+import { api } from "../../api";
+import { colorThemes, fontThemes } from "../../theming/themes";
+import { store } from "../store";
+import { PreferencesState, preferencesInitialState } from "./state";
 
 export const resetState = store.createMutator(
   (state) => (state.preferences = preferencesInitialState)
@@ -79,9 +54,9 @@ export const setOutlineShowing = setter("outlineShowing");
 
 export const getPreferences = store.createEffect(async (state) => {
   const result = await api.preferences.get(state.auth.session);
-  result.map((preferences) => {
-    setPreferences(deserializePreferences(preferences));
-  });
+  result.map((preferences) =>
+    setPreferences(deserializePreferences(preferences))
+  );
 });
 
 function deserializePreferences(preferences: Preferences): PreferencesState {

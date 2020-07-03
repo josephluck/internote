@@ -2,14 +2,14 @@ import stately from "@josephluck/stately";
 import makeUseStately from "@josephluck/stately/src/hooks";
 import { useState } from "react";
 
-import { authInitialState } from "./auth";
-import { dictionaryInitialState } from "./dictionary";
-import { notesInitialState } from "./notes";
-import { preferencesInitialState } from "./preferences";
-import { snippetsInitialState } from "./snippets";
-import { speechInitialState } from "./speech";
-import { tagsInitialState } from "./tags";
-import { uiInitialState } from "./ui";
+import { authInitialState } from "./auth/state";
+import { dictionaryInitialState } from "./dictionary/state";
+import { notesInitialState } from "./notes/state";
+import { preferencesInitialState } from "./preferences/state";
+import { snippetsInitialState } from "./snippets/state";
+import { speechInitialState } from "./speech/state";
+import { tagsInitialState } from "./tags/state";
+import { uiInitialState } from "./ui/state";
 
 const initialState = {
   auth: authInitialState,

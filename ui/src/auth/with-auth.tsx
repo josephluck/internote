@@ -1,7 +1,7 @@
 import { Redirect } from "@reach/router";
 import * as React from "react";
 
-import { initialize } from "../store/auth";
+import { initialize } from "../store/auth/auth";
 import { useStately } from "../store/store";
 
 interface Options {

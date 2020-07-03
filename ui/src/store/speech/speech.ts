@@ -1,13 +1,6 @@
-import { api } from "../api";
-import { store } from "./store";
-
-type SpeechState = {
-  speechSrc: string | null;
-};
-
-export const speechInitialState: SpeechState = {
-  speechSrc: null,
-};
+import { api } from "../../api";
+import { store } from "../store";
+import { speechInitialState } from "./state";
 
 export const resetState = store.createMutator(
   (state) => (state.speech = speechInitialState)

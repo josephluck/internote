@@ -5,7 +5,7 @@ import { Err, Ok } from "space-lift";
 
 import { isNearExpiry } from "../auth/api";
 import { Session } from "../auth/storage";
-import { refreshToken } from "../store/auth";
+import { refreshToken } from "../store/auth/auth";
 import { store } from "../store/store";
 import { dictionary } from "./dictionary";
 import { exportNote } from "./export";

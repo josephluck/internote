@@ -4,17 +4,10 @@ import { GetNoteDTO } from "@internote/notes-service/types";
 import { navigate } from "@reach/router";
 import { Option } from "space-lift";
 
-import { api } from "../api";
-import { store } from "./store";
-import { fetchTags } from "./tags";
-
-type NotesState = {
-  notes: GetNoteDTO[];
-};
-
-export const notesInitialState: NotesState = {
-  notes: [],
-};
+import { api } from "../../api";
+import { store } from "../store";
+import { fetchTags } from "../tags/tags";
+import { notesInitialState } from "./state";
 
 export const resetState = store.createMutator(
   (state) => (state.notes = notesInitialState)
@@ -42,7 +35,7 @@ export const createNote = store.createEffect(async (state) => {
   });
   result.map((note) => {
     setNotes([note, ...state.notes.notes]);
-    navigate(`/?id=${note.noteId}`);
+    return navigate(`/?id=${note.noteId}`);
   });
 });
 

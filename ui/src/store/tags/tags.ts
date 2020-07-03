@@ -1,14 +1,7 @@
-import { api } from "../api";
-import { UpdateNotePayload, updateNote } from "./notes";
-import { store } from "./store";
-
-type TagsState = {
-  tags: string[];
-};
-
-export const tagsInitialState: TagsState = {
-  tags: [],
-};
+import { api } from "../../api";
+import { UpdateNotePayload, updateNote } from "../notes/notes";
+import { store } from "../store";
+import { tagsInitialState } from "./state";
 
 export const resetState = store.createMutator(
   (state) => (state.tags = tagsInitialState)

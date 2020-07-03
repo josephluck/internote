@@ -1,7 +1,7 @@
 import { InternoteEditorElement } from "@internote/lib/editor-types";
 import { useEffect, useRef } from "react";
 
-import { updateNote } from "../../store/notes";
+import { updateNote } from "../../store/notes/notes";
 import { useDebounce } from "../../utilities/hooks";
 import { extractTagsFromValue, extractTitleFromValue } from "./utils";
 

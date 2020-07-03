@@ -14,14 +14,14 @@ import { availableVoices } from "@internote/speech-service/available-voices";
 import React from "react";
 import styled from "styled-components";
 
-import { deleteAccount, signOut } from "../store/auth";
+import { deleteAccount, signOut } from "../store/auth/auth";
 import {
   setColorTheme,
   setDistractionFree,
   setFontTheme,
   setOutlineShowing,
   setVoice,
-} from "../store/preferences";
+} from "../store/preferences/preferences";
 import { useStately } from "../store/store";
 import { size } from "../theming/symbols";
 import { shortcutPriorities } from "../utilities/shortcuts";
