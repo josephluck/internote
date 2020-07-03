@@ -1,3 +1,5 @@
+import { navigate } from "@reach/router";
+
 import { api } from "../../api";
 import { isNearExpiry } from "../../auth/api";
 import {
@@ -6,7 +8,7 @@ import {
   makeAuthStorage,
   validateSession,
 } from "../../auth/storage";
-import { resetState as resetNotes } from "../notes/notes";
+import { fetchNotes, resetState as resetNotes } from "../notes/notes";
 import {
   getPreferences,
   resetState as resetPreferences,
@@ -69,6 +71,7 @@ export const initialize = store.createEffect(
 
       if (hasSession) {
         await getPreferences();
+        await fetchNotes();
       } else if (restricted) {
         signOut();
       }
@@ -171,6 +174,7 @@ export const refreshToken = store.createEffect(
 );
 
 export const signOut = store.createEffect(() => {
+  navigate("/authenticate");
   authStorage.removeSession();
   resetPreferences();
   resetState();

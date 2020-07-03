@@ -3,7 +3,6 @@ import { RouteComponentProps } from "@reach/router";
 import React from "react";
 import styled from "styled-components";
 
-import { useAuthRedirect } from "../auth/with-auth";
 import { useStately } from "../store/store";
 import { navigateToFirstNote } from "../store/ui/ui";
 import { InternoteEditor } from "../styles/editor/internote-editor";
@@ -19,7 +18,6 @@ const PageWrapper = styled.div`
 export const Note: React.FunctionComponent<RouteComponentProps<{
   noteId: string;
 }>> = ({ noteId }) => {
-  useAuthRedirect(true);
   const note = useStately(
     (state) =>
       noteId ? state.notes.notes.find((n) => n.noteId === noteId) : undefined,

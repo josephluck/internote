@@ -1,25 +1,52 @@
 import { Router } from "@reach/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import GoogleFontLoader from "react-google-font-loader";
 import { createGlobalStyle } from "styled-components";
 
+import { validateSession } from "./auth/storage";
 import { Authenticate } from "./pages/authenticate";
 import { Home } from "./pages/home";
 import { Note } from "./pages/note";
+import { initialize } from "./store/auth/auth";
+import { fetchNotes } from "./store/notes/notes";
 import { useStately } from "./store/store";
 import { InternoteThemes } from "./styles/theme-provider";
 import { font } from "./theming/symbols";
 import { googleFontsWeights, sansSerif } from "./theming/themes";
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
   const fontTheme = useStately((state) => state.preferences.fontTheme);
+  const isAuthenticated = useStately((state) =>
+    validateSession(state.auth.session)
+  );
+
+  useEffect(() => {
+    const bootstrap = async () => {
+      try {
+        setLoading(true);
+        if (!isAuthenticated) {
+          await initialize(true);
+        } else {
+          await fetchNotes();
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    bootstrap();
+  }, [isAuthenticated, setLoading]);
+
   return (
     <InternoteThemes>
-      <Router>
-        <Authenticate path="/authenticate" />
-        <Note path="/:noteId" />
-        <Home path="/" />
-      </Router>
+      {!loading && (
+        <Router>
+          <Authenticate path="/authenticate" />
+          <Note path="/:noteId" />
+          <Home path="/" />
+        </Router>
+      )}
       <GlobalStyles />
       <GoogleFontLoader
         fonts={[
