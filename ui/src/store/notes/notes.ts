@@ -35,7 +35,7 @@ export const createNote = store.createEffect(async (state) => {
   });
   result.map((note) => {
     setNotes([note, ...state.notes.notes]);
-    return navigate(`/?id=${note.noteId}`);
+    return navigate(`/${note.noteId}`);
   });
 });
 

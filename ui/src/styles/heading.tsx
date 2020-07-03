@@ -57,7 +57,7 @@ const ButtonSpacer = styled.div`
   margin-right: ${spacing._0_25};
 `;
 
-export function Heading({ note }: { note: GetNoteDTO | null }) {
+export function Heading({ note }: { note?: GetNoteDTO }) {
   const distractionFree = useStately(
     (state) => state.preferences.distractionFree
   );

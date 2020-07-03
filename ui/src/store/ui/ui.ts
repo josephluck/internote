@@ -20,7 +20,7 @@ export const navigateToFirstNote = store.createEffect(async () => {
   if (notes.length === 0) {
     createNote();
   } else if (notes[0]) {
-    navigate(`/?id=${notes[0].noteId}`);
+    navigate(`/${notes[0].noteId}`);
   }
 });
 

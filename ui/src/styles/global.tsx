@@ -77,7 +77,7 @@ export function Global() {
           </Flex>
         </>
       </Modal>
-      <DarkOverlay showing={!!confirmation} />
+      <DarkOverlay showing={!!confirmation && false} />
     </>
   );
 }

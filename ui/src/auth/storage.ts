@@ -37,7 +37,7 @@ export const makeAuthStorage = () => {
     cookies.set(key, value.toString(), {
       expires: addDays(new Date(), 100),
       path: "/",
-      sameSite: "none",
+      sameSite: "strict",
     });
     return value;
   }

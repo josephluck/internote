@@ -41,7 +41,7 @@ const setter = <K extends keyof PreferencesState>(key: K) =>
   store.createMutator((state, value: PreferencesState[K]) => {
     state.preferences[key] = value;
     const saveValue = getValueFromPreferences(key, state.preferences);
-    if (saveValue) {
+    if (typeof saveValue !== "undefined" && saveValue !== null) {
       api.preferences.update(state.auth.session, { [key]: saveValue });
     }
   });

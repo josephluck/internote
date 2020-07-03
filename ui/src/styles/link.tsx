@@ -9,27 +9,19 @@ interface Props {
 }
 
 export function TextLink({ href, children }: Props) {
-  return (
-    <Link to={href}>
-      <TextAnchor>{children}</TextAnchor>
-    </Link>
-  );
+  return <TextAnchor to={href}>{children}</TextAnchor>;
 }
 
 export function BlockLink({ href, children }: Props) {
-  return (
-    <Link to={href}>
-      <BlockAnchor>{children}</BlockAnchor>
-    </Link>
-  );
+  return <BlockAnchor to={href}>{children}</BlockAnchor>;
 }
 
-const TextAnchor = styled.a`
+const TextAnchor = styled(Link)`
   color: ${(props) => props.theme.textLinkText};
   cursor: pointer;
 `;
 
-const BlockAnchor = styled.a`
+const BlockAnchor = styled(Link)`
   color: inherit;
   cursor: pointer;
 `;

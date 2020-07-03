@@ -27,7 +27,7 @@ export function NoteMenu({
   currentNote,
   onMenuToggled,
 }: {
-  currentNote: GetNoteDTO | null;
+  currentNote?: GetNoteDTO;
   onMenuToggled: (showing: boolean) => any;
 }) {
   const allNotes = useStately((state) => state.notes.notes);
@@ -139,7 +139,7 @@ export function NoteMenu({
                   content={note.title}
                   onSelect={() => {
                     setNoteLoading(note.noteId);
-                    navigate(`/?id=${note.noteId}`);
+                    navigate(`/${note.noteId}`);
                   }}
                   onDelete={() => {
                     menu.toggleMenuShowing(false);

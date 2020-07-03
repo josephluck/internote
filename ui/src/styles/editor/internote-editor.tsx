@@ -71,9 +71,7 @@ export const InternoteEditor: React.FunctionComponent<{
     setValue(valueRef.current);
   }, [noteId]);
 
-  if (!COLLABORATION_ENABLED) {
-    useLiveSave(value, noteId);
-  }
+  useLiveSave(value, noteId);
 
   const [connected, setConnected] = useState(true);
 

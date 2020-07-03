@@ -184,22 +184,25 @@ export const colorThemes: ColorThemeWithName[] = [
 
 export interface FontTheme {
   fontFamily: string;
+  googleFontName: string;
 }
 
-export const googleFontsFamilies = ["Work+Sans", "Caladea", "IBM+Plex+Mono"];
-export const googleFontsWeights = [400, 500, 700, 800];
-
 export const sansSerif: FontTheme = {
+  googleFontName: "Work Sans",
   fontFamily: "'Work Sans', Helvetica, Arial, sans-serif",
 };
 
 export const serif: FontTheme = {
+  googleFontName: "Caladea",
   fontFamily: "'Caladea', serif",
 };
 
 export const monospace: FontTheme = {
+  googleFontName: "IBM Plex Mono",
   fontFamily: "'IBM Plex Mono', monospace",
 };
+
+export const googleFontsWeights = [400, 500, 700, 800];
 
 export const fontThemes: FontThemeWithName[] = [
   {
