@@ -25,6 +25,7 @@ import {
 import { useStately } from "../store/store";
 import { size } from "../theming/symbols";
 import { shortcutPriorities } from "../utilities/shortcuts";
+import { useConfirm } from "./confirmation";
 import { DropdownMenu, DropdownMenuItem } from "./dropdown-menu";
 import { ExpandingIconButton } from "./expanding-icon-button";
 import { ListMenuControl } from "./list-menu-control";
@@ -44,6 +45,7 @@ export function SettingsMenu({
 }: {
   onMenuToggled: (menuShowing: boolean) => void;
 }) {
+  const confirm = useConfirm();
   const colorThemes = useStately((state) => state.preferences.colorThemes);
   const colorTheme = useStately((state) => state.preferences.colorTheme);
   const fontThemes = useStately((state) => state.preferences.fontThemes);
@@ -323,9 +325,17 @@ export function SettingsMenu({
                 item: () => (
                   <DropdownMenuItem
                     icon={<FontAwesomeIcon icon={faTrash} />}
-                    onClick={() => {
-                      deleteAccount(); // TODO: confirmation
+                    onClick={async () => {
                       menu.toggleMenuShowing(false);
+                      const result = await confirm({
+                        message:
+                          "Are you sure you wish to delete your account?",
+                      });
+                      if (result.hasConfirmed) {
+                        result.setConfirmLoading(true);
+                        await deleteAccount();
+                        result.hideConfirmation();
+                      }
                     }}
                   >
                     Delete account

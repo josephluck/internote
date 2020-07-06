@@ -10,6 +10,7 @@ import { createNote, deleteNote } from "../store/notes/notes";
 import { useStately } from "../store/store";
 import { size, spacing } from "../theming/symbols";
 import { combineStrings } from "../utilities/string";
+import { useConfirm } from "./confirmation";
 import {
   DropdownChevron,
   DropdownMenu,
@@ -32,6 +33,7 @@ export function NoteMenu({
 }) {
   const allNotes = useStately((state) => state.notes.notes);
   const tags = useStately((state) => state.tags.tags);
+  const confirm = useConfirm();
 
   const [searchFocused, setSearchFocused] = React.useState(false);
   const [searchText, setSearchText] = React.useState("");
@@ -141,9 +143,16 @@ export function NoteMenu({
                     setNoteLoading(note.noteId);
                     navigate(`/${note.noteId}`);
                   }}
-                  onDelete={() => {
+                  onDelete={async () => {
                     menu.toggleMenuShowing(false);
-                    deleteNote(note.noteId); // TODO: confirmation
+                    const result = await confirm({
+                      message: "Are you sure you wish to delete this note?",
+                    });
+                    if (result.hasConfirmed) {
+                      result.setConfirmLoading(true);
+                      await deleteNote(note.noteId);
+                      result.hideConfirmation();
+                    }
                   }}
                   searchText={isTagSearch ? "" : searchText}
                 />
