@@ -2,6 +2,7 @@ import path from "path";
 
 import * as acm from "@aws-cdk/aws-certificatemanager";
 import * as cloudfront from "@aws-cdk/aws-cloudfront";
+import * as iam from "@aws-cdk/aws-iam";
 import * as route53 from "@aws-cdk/aws-route53";
 import * as route53targets from "@aws-cdk/aws-route53-targets";
 import * as s3 from "@aws-cdk/aws-s3";
@@ -40,12 +41,19 @@ export class InternoteUiStack extends InternoteStack {
       publicReadAccess: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       websiteIndexDocument: "index.html",
+      websiteErrorDocument: "index.html",
+      cors: [
+        {
+          allowedOrigins: ["*"],
+          allowedMethods: [s3.HttpMethods.GET],
+        },
+      ],
     });
 
-    new s3deployment.BucketDeployment(this, `${id}-bucket-deployment`, {
-      sources: [s3deployment.Source.asset(path.resolve(__dirname, "build"))],
-      destinationBucket: bucket,
-    });
+    const originAccessIdentity = new cloudfront.OriginAccessIdentity(
+      this,
+      `${id}-oai`
+    );
 
     const cf = new cloudfront.CloudFrontWebDistribution(
       this,
@@ -55,8 +63,16 @@ export class InternoteUiStack extends InternoteStack {
           {
             s3OriginSource: {
               s3BucketSource: bucket,
+              originAccessIdentity,
             },
             behaviors: [{ isDefaultBehavior: true }],
+          },
+        ],
+        errorConfigurations: [
+          {
+            errorCode: 404,
+            responsePagePath: "/index.html",
+            responseCode: 200,
           },
         ],
         viewerCertificate: {
@@ -68,6 +84,24 @@ export class InternoteUiStack extends InternoteStack {
         },
       }
     );
+
+    const cloudfrontS3Access = new iam.PolicyStatement();
+    cloudfrontS3Access.addActions("s3:GetBucket*");
+    cloudfrontS3Access.addActions("s3:GetObject*");
+    cloudfrontS3Access.addActions("s3:List*");
+    cloudfrontS3Access.addResources(bucket.bucketArn);
+    cloudfrontS3Access.addResources(`${bucket.bucketArn}/*`);
+    cloudfrontS3Access.addCanonicalUserPrincipal(
+      originAccessIdentity.cloudFrontOriginAccessIdentityS3CanonicalUserId
+    );
+
+    new s3deployment.BucketDeployment(this, `${id}-bucket-deployment`, {
+      sources: [s3deployment.Source.asset(path.resolve(__dirname, "build"))],
+      destinationBucket: bucket,
+      // Invalidate the cache on deploy
+      distribution: cf,
+      distributionPaths: ["/", "/index.html"],
+    });
 
     const aRecordProps: route53.ARecordProps = {
       recordName: cloudfrontDomainName,
