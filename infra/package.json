@@ -8,18 +8,18 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@aws-cdk/aws-cloudfront": "1.47.0",
-    "@aws-cdk/aws-s3-deployment": "1.47.0",
-    "@aws-cdk/aws-s3": "1.47.0",
     "@aws-cdk/aws-apigateway": "1.47.0",
+    "@aws-cdk/aws-cloudfront": "1.47.0",
     "@aws-cdk/aws-lambda": "1.47.0",
+    "@aws-cdk/aws-s3": "1.47.0",
+    "@aws-cdk/aws-s3-deployment": "1.47.0",
     "@aws-cdk/aws-ssm": "1.47.0",
     "@aws-cdk/core": "1.47.0",
     "@internote/attachments-service": "*",
-    "@internote/gateway-service": "*",
     "@internote/collaborate-service": "*",
     "@internote/dictionary-service": "*",
     "@internote/export-service": "*",
+    "@internote/gateway-service": "*",
     "@internote/notes-service": "*",
     "@internote/preferences-service": "*",
     "@internote/snippets-service": "*",
@@ -30,12 +30,14 @@
     "builtin-modules": "^3.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.4",
+    "execa": "^4.0.2",
     "rimraf": "^3.0.2",
     "source-map-support": "^0.5.13",
     "ts-loader": "^7.0.5",
     "ts-node": "^8.10.2",
     "typescript": "^3.6.4",
-    "webpack": "4.42.0"
+    "webpack": "4.42.0",
+    "yargs": "^15.4.0"
   },
   "dependencies": {}
 }

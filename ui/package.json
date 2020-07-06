@@ -22,6 +22,7 @@
     "@internote/collaborate-service": "*",
     "@internote/dictionary-service": "*",
     "@internote/export-service": "*",
+    "@internote/infra": "*",
     "@internote/gateway-service": "*",
     "@internote/lib": "*",
     "@internote/notes-service": "*",

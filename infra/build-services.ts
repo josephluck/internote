@@ -3,8 +3,17 @@ import path from "path";
 
 import nodeBuiltIns from "builtin-modules";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import execa from "execa";
 import rimraf from "rimraf";
 import webpack from "webpack";
+
+const { argv } = require("yargs");
+
+if (!argv.stage) {
+  throw new Error("Please specify a --stage");
+}
+
+console.log(`Building stage ${argv.stage}`);
 
 const services = [
   // "attachments",
@@ -16,12 +25,29 @@ const services = [
   "preferences",
   "snippets",
   "speech",
+  "ui",
 ];
 
 export const buildServices = async () =>
   await Promise.all(services.map(buildService));
 
 const buildService = async (service: string) => {
+  if (service === "ui") {
+    const opts: execa.Options<string> = {
+      cwd: path.resolve(process.cwd(), "../"),
+    };
+    console.log("Preparing UI environment");
+    await execa(
+      "yarn",
+      ["workspace", "@internote/ui", `env:${argv.stage}`],
+      opts
+    );
+    console.log("Building UI");
+    await execa("yarn", ["workspace", "@internote/ui", "build"], opts);
+    console.log("Built UI");
+    return;
+  }
+
   console.log(`Building the ${service} service`);
 
   return new Promise(async (resolve, reject) => {
