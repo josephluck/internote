@@ -2,7 +2,7 @@ export class Preferences {
   /**
    * Cognito identity id
    */
-  id: string;
+  id: string = "";
   colorTheme?: string;
   fontTheme?: string;
   distractionFree?: boolean;

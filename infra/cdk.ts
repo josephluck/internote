@@ -7,6 +7,7 @@ import { InternoteNotesStack } from "@internote/notes-service/cdk";
 import { InternotePreferencesStack } from "@internote/preferences-service/cdk";
 import { InternoteSnippetsStack } from "@internote/snippets-service/cdk";
 import { InternoteSpeechStack } from "@internote/speech-service/cdk";
+import { InternoteUiStack } from "@internote/ui/cdk";
 
 import { InternoteProps } from "./constructs/internote-stack";
 import { Stage } from "./env";
@@ -32,11 +33,16 @@ class InternoteApp extends cdk.Stack {
       region: this.region,
     };
 
-    const { api, authenticatedRole } = new InternoteGatewayStack(
+    const { api, authenticatedRole, hostedZone } = new InternoteGatewayStack(
       this,
       `${id}-gateway`,
       props
     );
+
+    const uiStack = new InternoteUiStack(this, `${id}-ui`, {
+      ...props,
+      hostedZone,
+    });
 
     const speechStack = new InternoteSpeechStack(this, `${id}-speech-service`, {
       ...props,
@@ -87,6 +93,7 @@ class InternoteApp extends cdk.Stack {
     });
 
     console.log({
+      uiStack: uiStack.toString(),
       speechStack: speechStack.toString(),
       preferencesStack: preferencesStack.toString(),
       notesStack: notesStack.toString(),

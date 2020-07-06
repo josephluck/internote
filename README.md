@@ -209,14 +209,14 @@ You'll then need to add environment configuration to SSM for environment variabl
 
 Deployment of the entire stack is managed via the `infra` workspace. There are three parts that must be run in this order:
 
-- `yarn build`: Transpiles services code from TypeScript to JavaScript ready for deployment.
+- `yarn build --stage=[stage]`: Transpiles services code from TypeScript to JavaScript ready for deployment.
 - `cdk --profile=internote synth internote-[stage]`: Synthesises the CDK stack to CloudFormation ready for deployment. Replace `[stage]` with the stage you wish to synthesise.
 - `cdk --profile=internote deploy internote-[stage]`: Deploys the CDK stack to AWS using the synthesised CloudFormation template.
 
 #### Example
 
 ```bash
-yarn build:services
+yarn build
 cdk synth internote-dev
 cdk deploy internote-dev
 ```
@@ -263,9 +263,11 @@ AWS SSM is used to store environment variables and secrets that are used across 
 
 Some services require environment variables that aren't created by CDK, for example the dictionary service requires API keys for the Oxford Dictionary API. These environment variables are configured and managed by AWS SSM directly and are imported in to the CDK definition of the service using AWS SSM imports.
 
+The front-end requires some environment configuration. To facilitate this, some CDK generated environment variables are exported as "public" which results in two SSM key values, one for the original key and another prefixed with `REACT_APP_`.
+
 **Front end**
 
-The front-end hydrates the `process.env` by pulling from both AWS SSM and from local config files at build time using [aws-env](https://github.com/Droplr/aws-env) (you will have to `chmod +x aws-env` once it has installed).
+The front-end hydrates the `process.env` by pulling from both AWS SSM and from local config files time using aws-sdk in a custom node script.
 
 # Logging
 

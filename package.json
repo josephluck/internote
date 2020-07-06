@@ -23,10 +23,6 @@
       "snippets",
       "speech",
       "ui"
-    ],
-    "nohoist": [
-      "**/serverless",
-      "**/serverless/**"
     ]
   },
   "importSort": {

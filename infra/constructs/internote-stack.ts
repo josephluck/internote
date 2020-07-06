@@ -1,7 +1,13 @@
 import * as ssm from "@aws-cdk/aws-ssm";
 import * as cdk from "@aws-cdk/core";
 
-import { Env, Stage } from "../env";
+import {
+  GeneratedEnv,
+  GeneratedEnvKeys,
+  ManualEnv,
+  ManualEnvKeys,
+  Stage,
+} from "../env";
 
 export type InternoteProps = cdk.StackProps & {
   stage: Stage;
@@ -23,7 +29,7 @@ export class InternoteStack extends cdk.Construct {
 
   // TODO: constrain this type to only env variables that are generated through
   // CDK
-  exportToSSM<K extends keyof Env>(key: K, value: Env[K]) {
+  exportToSSM<K extends GeneratedEnvKeys>(key: K, value: GeneratedEnv[K]) {
     new ssm.StringParameter(this, `${this.rootId}-${key}`, {
       simpleName: false,
       parameterName: `/internote/${this.stage}/${key}`,
@@ -34,10 +40,10 @@ export class InternoteStack extends cdk.Construct {
 
   // TODO: constrain this type to env variables that aren't generated through
   // CDK
-  importFromSSM<K extends keyof Env>(key: K): Env[K] {
+  importFromSSM<K extends ManualEnvKeys>(key: K): ManualEnv[K] {
     return ssm.StringParameter.valueForStringParameter(
       this,
       `/internote/${this.stage}/${key}`
-    ) as Env[K];
+    ) as ManualEnv[K];
   }
 }

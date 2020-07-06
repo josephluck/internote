@@ -4,17 +4,17 @@ export class Snippet {
   /**
    * Snippet id
    */
-  snippetId: string;
+  snippetId: string = "";
   /**
    * Cognito identity ID for the user
    */
-  userId: string;
+  userId: string = "";
   /**
    * The title of the snippet.
    */
-  title: string;
+  title: string = "";
   /**
    * The content of snippet
    */
-  content: InternoteEditorValue;
+  content: InternoteEditorValue = [];
 }
