@@ -9,7 +9,6 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
-    "postinstall": "wget https://github.com/Droplr/aws-env/raw/master/bin/aws-env-linux-amd64 -O aws-env && chmod +x aws-env",
     "test:types": "tsc --noEmit"
   },
   "dependencies": {

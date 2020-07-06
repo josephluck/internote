@@ -267,7 +267,7 @@ The front-end requires some environment configuration. To facilitate this, some 
 
 **Front end**
 
-The front-end hydrates the `process.env` by pulling from both AWS SSM and from local config files at build time using [aws-env](https://github.com/Droplr/aws-env) which is installed automatically for you.
+The front-end hydrates the `process.env` by pulling from both AWS SSM and from local config files time using aws-sdk in a custom node script.
 
 # Logging
 

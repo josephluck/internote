@@ -22,12 +22,7 @@
       "preferences",
       "snippets",
       "speech",
-      "ui",
-      "ui-old"
-    ],
-    "nohoist": [
-      "**/serverless",
-      "**/serverless/**"
+      "ui"
     ]
   },
   "importSort": {

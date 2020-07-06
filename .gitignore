@@ -7,10 +7,8 @@ node_modules
 .build
 .webpack
 env.json
-.serverless_nextjs
 .awcache
 storybook-static
-aws-env
 *.zip
 ui/next.config.original.*
 cdk.out/
