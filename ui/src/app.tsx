@@ -10,6 +10,7 @@ import { Note } from "./pages/note";
 import { initialize } from "./store/auth/auth";
 import { fetchNotes } from "./store/notes/notes";
 import { useStately } from "./store/store";
+import { ConfirmationModal, ConfirmationProvider } from "./styles/confirmation";
 import { InternoteThemes } from "./styles/theme-provider";
 import { font } from "./theming/symbols";
 import { googleFontsWeights, sansSerif } from "./theming/themes";
@@ -40,22 +41,25 @@ const App = () => {
 
   return (
     <InternoteThemes>
-      {!loading && (
-        <Router>
-          <Authenticate path="/authenticate" />
-          <Note path="/:noteId" />
-          <Home path="/" />
-        </Router>
-      )}
-      <GlobalStyles />
-      <GoogleFontLoader
-        fonts={[
-          {
-            font: fontTheme.theme.googleFontName,
-            weights: googleFontsWeights,
-          },
-        ]}
-      />
+      <ConfirmationProvider>
+        {!loading && (
+          <Router>
+            <Authenticate path="/authenticate" />
+            <Note path="/:noteId" />
+            <Home path="/" />
+          </Router>
+        )}
+        <GlobalStyles />
+        <GoogleFontLoader
+          fonts={[
+            {
+              font: fontTheme.theme.googleFontName,
+              weights: googleFontsWeights,
+            },
+          ]}
+        />
+        <ConfirmationModal />
+      </ConfirmationProvider>
     </InternoteThemes>
   );
 };

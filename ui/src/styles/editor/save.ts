@@ -2,6 +2,7 @@ import { InternoteEditorElement } from "@internote/lib/editor-types";
 import { useEffect, useRef } from "react";
 
 import { updateNote } from "../../store/notes/notes";
+import { useLoadingAction } from "../../store/store";
 import { useDebounce } from "../../utilities/hooks";
 import { extractTagsFromValue, extractTitleFromValue } from "./utils";
 
@@ -11,13 +12,18 @@ export const useLiveSave = (
 ) => {
   const isFirst = useRef(true);
 
-  const save = (content: InternoteEditorElement[]) =>
-    updateNote({
-      content,
-      noteId,
-      tags: extractTagsFromValue(content),
-      title: extractTitleFromValue(content),
-    });
+  const { exec, loading } = useLoadingAction(
+    (content: InternoteEditorElement[]) =>
+      updateNote({
+        content,
+        noteId,
+        tags: extractTagsFromValue(content),
+        title: extractTitleFromValue(content),
+      })
+  );
+
+  const save = useRef(exec);
+  save.current = exec;
 
   const debouncedValue = useDebounce(value, 1000);
 
@@ -27,6 +33,8 @@ export const useLiveSave = (
       return;
     }
 
-    save(debouncedValue);
+    save.current(debouncedValue);
   }, [debouncedValue]);
+
+  return loading;
 };

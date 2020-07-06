@@ -17,6 +17,7 @@ const ModalOuter = styled.div<{ open: boolean; withBackground: boolean }>`
   align-items: center;
   pointer-events: ${(props) => (props.open ? "normal" : "none")};
   opacity: ${(props) => (props.open ? "1" : "0")};
+  transition: all 300ms ease;
   background: ${(props) =>
     props.withBackground ? props.theme.modalBackdropBackground : "transparent"};
 `;

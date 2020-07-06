@@ -71,7 +71,7 @@ export const InternoteEditor: React.FunctionComponent<{
     setValue(valueRef.current);
   }, [noteId]);
 
-  useLiveSave(value, noteId);
+  const saving = useLiveSave(value, noteId);
 
   const [connected, setConnected] = useState(true);
 
@@ -90,7 +90,7 @@ export const InternoteEditor: React.FunctionComponent<{
     <Slate editor={editor} value={value} onChange={setValue as any}>
       <InternoteEditorProvider>
         <InternoteEditorEditor />
-        <Toolbar noteId={noteId} />
+        <Toolbar noteId={noteId} saving={saving} />
       </InternoteEditorProvider>
       {COLLABORATION_ENABLED && (
         <button

@@ -15,6 +15,7 @@ import { Emoji } from "../../utilities/emojis";
 import { Dictionary } from "../dictionary";
 import { DictionaryButton } from "../dictionary-button";
 import { EmojiList } from "../emoji-list";
+import { Saving } from "../saving";
 import { Shortcut } from "../shortcuts";
 import { SnippetsContext } from "../snippets-context";
 import { SnippetsButton } from "../snippets-menu";
@@ -24,7 +25,6 @@ import { ButtonSpacer, ToolbarButton } from "../toolbar-button";
 import { Wrapper } from "../wrapper";
 import { DeleteNoteButton } from "./delete";
 import { useInternoteEditor } from "./hooks";
-import { NoteSavingIndicator } from "./saving";
 import { getHighlightedWord, getNodesFromEditorSelection } from "./selection";
 import {
   marks,
@@ -35,9 +35,10 @@ import {
 } from "./types";
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 
-export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
-  noteId,
-}) => {
+export const Toolbar: React.FunctionComponent<{
+  noteId: string;
+  saving: boolean;
+}> = ({ noteId, saving }) => {
   const {
     editor,
     emojiSearchText,
@@ -200,7 +201,7 @@ export const Toolbar: React.FunctionComponent<{ noteId: string }> = ({
           <ButtonSpacer>
             <DeleteNoteButton noteId={noteId} />
           </ButtonSpacer>
-          <NoteSavingIndicator />
+          <Saving saving={saving} />
         </Flex>
       </ToolbarInner>
       <Collapse isOpened={toolbarIsExpanded}>

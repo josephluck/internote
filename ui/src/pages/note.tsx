@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { useStately } from "../store/store";
 import { navigateToFirstNote } from "../store/ui/ui";
 import { InternoteEditor } from "../styles/editor/internote-editor";
-import { Global } from "../styles/global";
 import { Heading } from "../styles/heading";
 import { OnMount } from "../styles/on-mount";
 
@@ -39,7 +38,6 @@ export const Note: React.FunctionComponent<RouteComponentProps<{
           <OnMount cb={navigateToFirstNote} />
         )}
       </PageWrapper>
-      <Global />
     </>
   );
 };
