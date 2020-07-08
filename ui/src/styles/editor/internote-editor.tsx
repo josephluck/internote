@@ -15,6 +15,7 @@ import { borderRadius, font, size, spacing } from "../../theming/symbols";
 import { CreateSnippetModal } from "../create-snippet-modal";
 import { Outline } from "../outline";
 import { ShortcutsContext } from "../shortcuts";
+import { SnippetsProvider } from "../snippets-context";
 import { Tag } from "../tag";
 import { wrapperStyles } from "../wrapper";
 import {
@@ -90,8 +91,10 @@ export const InternoteEditor: React.FunctionComponent<{
   return (
     <Slate editor={editor} value={value} onChange={setValue as any}>
       <InternoteEditorProvider>
-        <InternoteEditorEditor />
-        <Toolbar noteId={noteId} saving={saving} />
+        <SnippetsProvider>
+          <InternoteEditorEditor />
+          <Toolbar noteId={noteId} saving={saving} />
+        </SnippetsProvider>
       </InternoteEditorProvider>
       {COLLABORATION_ENABLED && (
         <button
