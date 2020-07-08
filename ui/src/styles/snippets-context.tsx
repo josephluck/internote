@@ -58,15 +58,17 @@ export function SnippetsProvider({ children }: { children: React.ReactNode }) {
   const [createSnippetTitle, setCreateSnippetTitle] = useState("");
 
   const clearCreateSnippet = useCallback(() => {
-    // TODO move stuff from the modal to here
+    setCreateSnippetModalOpen(false);
+    setCreateSnippetTitle("");
+    setSnippetsMenuShowing(true);
   }, []);
 
-  const finaliseCreateSnippet = useCallback(() => {
-    createSnippet({
+  const finaliseCreateSnippet = useCallback(async () => {
+    await createSnippet({
       title: createSnippetTitle,
       content: snippetSelection as any,
     });
-  }, [createSnippetTitle, snippetSelection]);
+  }, [createSnippetTitle, snippetSelection, clearCreateSnippet]);
 
   const ctx: Context = {
     snippetToInsert,

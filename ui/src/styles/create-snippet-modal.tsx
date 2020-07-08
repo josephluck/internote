@@ -1,5 +1,5 @@
 import { Flex } from "@rebass/grid";
-import React, { useCallback, useContext } from "react";
+import React, { useContext } from "react";
 
 import { spacing } from "../theming/symbols";
 import { Button } from "./button";
@@ -11,18 +11,10 @@ export function CreateSnippetModal() {
   const {
     createSnippetModalOpen,
     setCreateSnippetModalOpen,
-    setSnippetsMenuShowing,
-    finaliseCreateSnippet,
     createSnippetTitle,
+    finaliseCreateSnippet,
     setCreateSnippetTitle,
   } = useContext(SnippetsContext);
-
-  const handleCreateSnippet = useCallback(async () => {
-    await finaliseCreateSnippet();
-    setCreateSnippetModalOpen(false);
-    setCreateSnippetTitle("");
-    setSnippetsMenuShowing(true);
-  }, [createSnippetTitle]);
 
   const createSnippetLoading = false;
 
@@ -48,7 +40,7 @@ export function CreateSnippetModal() {
         ) : null}
       </Flex>
       <Button
-        onClick={handleCreateSnippet}
+        onClick={finaliseCreateSnippet}
         fullWidth
         disabled={createSnippetTitle.length === 0}
         loading={createSnippetLoading}
