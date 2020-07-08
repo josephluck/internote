@@ -38,6 +38,7 @@ export class InternoteUiStack extends InternoteStack {
     );
 
     const bucket = new s3.Bucket(this, `${id}-bucket`, {
+      bucketName: `${id}-bucket`,
       publicReadAccess: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       websiteIndexDocument: "index.html",
