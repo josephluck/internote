@@ -36,7 +36,7 @@ import {
 import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
 
 export const Toolbar: React.FunctionComponent<{
-  noteId: string;
+  noteId?: string;
   saving: boolean;
 }> = ({ noteId, saving }) => {
   const {
@@ -164,44 +164,54 @@ export const Toolbar: React.FunctionComponent<{
               shortcut={toolbarShortcutMap.emoji}
             />
           </ButtonSpacer>
-          <ButtonSpacer small>
-            <ToolbarButton
-              onClick={toggleTagButtonPressed}
-              icon={toolbarIconMap.tag}
-              label={toolbarLabelMap.tag}
-              name={toolbarLabelMap.tag}
-              shortcut={toolbarShortcutMap.tag}
-            />
-          </ButtonSpacer>
-          <ButtonSpacer small>
-            <SnippetsButton
-              hasHighlighted={pipe(selectedText, O.isSome)}
-              onSnippetSelected={handleInsertSnippet}
-              onCreateSnippet={handleCreateSnippet}
-            />
-          </ButtonSpacer>
+          {!!noteId && (
+            <ButtonSpacer small>
+              <ToolbarButton
+                onClick={toggleTagButtonPressed}
+                icon={toolbarIconMap.tag}
+                label={toolbarLabelMap.tag}
+                name={toolbarLabelMap.tag}
+                shortcut={toolbarShortcutMap.tag}
+              />
+            </ButtonSpacer>
+          )}
+          {!!noteId && (
+            <ButtonSpacer small>
+              <SnippetsButton
+                hasHighlighted={pipe(selectedText, O.isSome)}
+                onSnippetSelected={handleInsertSnippet}
+                onCreateSnippet={handleCreateSnippet}
+              />
+            </ButtonSpacer>
+          )}
         </Flex>
         <Flex alignItems="center">
-          <ButtonSpacer small>
-            <DictionaryButton
-              isLoading={isDictionaryLoading}
-              isShowing={isDictionaryShowing}
-              selectedWord={selectedWord}
-            />
-          </ButtonSpacer>
-          <ButtonSpacer small>
-            <Speech
-              selectedText={pipe(
-                speechText,
-                O.getOrElse(() => "")
-              )}
-              noteId={noteId}
-            />
-          </ButtonSpacer>
-          <ButtonSpacer>
-            <DeleteNoteButton noteId={noteId} />
-          </ButtonSpacer>
-          <Saving saving={saving} />
+          {!!noteId && (
+            <ButtonSpacer small>
+              <DictionaryButton
+                isLoading={isDictionaryLoading}
+                isShowing={isDictionaryShowing}
+                selectedWord={selectedWord}
+              />
+            </ButtonSpacer>
+          )}
+          {!!noteId && (
+            <ButtonSpacer small>
+              <Speech
+                selectedText={pipe(
+                  speechText,
+                  O.getOrElse(() => "")
+                )}
+                noteId={noteId}
+              />
+            </ButtonSpacer>
+          )}
+          {!!noteId && (
+            <ButtonSpacer>
+              <DeleteNoteButton noteId={noteId} />
+            </ButtonSpacer>
+          )}
+          {!!noteId && <Saving saving={saving} />}
         </Flex>
       </ToolbarInner>
       <Collapse isOpened={toolbarIsExpanded}>

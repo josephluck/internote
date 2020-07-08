@@ -8,13 +8,14 @@ import { navigateToFirstNote } from "../store/ui/ui";
 import { InternoteEditor } from "../styles/editor/internote-editor";
 import { Heading } from "../styles/heading";
 import { OnMount } from "../styles/on-mount";
+import { withAuthProtection } from "./with-auth-protection";
 
 const PageWrapper = styled.div`
   min-height: 100%;
   height: 100%;
 `;
 
-export const Note: React.FunctionComponent<RouteComponentProps<{
+const Page: React.FunctionComponent<RouteComponentProps<{
   noteId: string;
 }>> = ({ noteId }) => {
   const note = useStately(
@@ -41,3 +42,5 @@ export const Note: React.FunctionComponent<RouteComponentProps<{
     </>
   );
 };
+
+export const Note = withAuthProtection(Page);

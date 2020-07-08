@@ -40,7 +40,7 @@ import {
 
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: InternoteEditorElement[];
-  noteId: string;
+  noteId?: string;
 }> = ({ initialValue, noteId }) => {
   const valueRef = useRef(initialValue);
   valueRef.current = initialValue;
