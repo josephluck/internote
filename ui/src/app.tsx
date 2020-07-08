@@ -43,7 +43,7 @@ const App = () => {
     <InternoteThemes>
       <ConfirmationProvider>
         {!loading && (
-          <Router>
+          <Router component={({ children }) => <>{children}</>}>
             <Authenticate path="/authenticate" />
             <Note path="/:noteId" />
             <Home path="/" />

@@ -34,6 +34,7 @@ import { Toolbar } from "./toolbar";
 import {
   InternoteEditorRenderElementProps,
   InternoteEditorRenderLeafProps,
+  listNodeTypes,
   voids,
 } from "./types";
 
@@ -168,7 +169,10 @@ const EditorElement: React.FunctionComponent<InternoteEditorRenderElementProps> 
 }) => {
   const attrs = {
     ...attributes,
-    className: voids.includes(element.type) ? "" : SLATE_BLOCK_CLASS_NAME,
+    className:
+      listNodeTypes.includes(element.type) || voids.includes(element.type)
+        ? ""
+        : SLATE_BLOCK_CLASS_NAME,
   };
 
   switch (element.type) {

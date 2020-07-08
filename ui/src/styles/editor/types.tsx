@@ -90,6 +90,11 @@ export const voids: InternoteEditorNodeType[] = ["tag"];
 
 export const inlines: InternoteEditorNodeType[] = ["tag"];
 
+export const listNodeTypes: InternoteEditorNodeType[] = [
+  "bulleted-list",
+  "numbered-list",
+];
+
 export const toolbarLabelMap: Record<
   InternoteEditorNodeType | ToolbarFunctions,
   string
