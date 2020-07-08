@@ -8,18 +8,22 @@ import { extractTagsFromValue, extractTitleFromValue } from "./utils";
 
 export const useLiveSave = (
   value: InternoteEditorElement[],
-  noteId: string
+  noteId?: string
 ) => {
   const isFirst = useRef(true);
 
   const { exec, loading } = useLoadingAction(
-    (content: InternoteEditorElement[]) =>
-      updateNote({
-        content,
-        noteId,
-        tags: extractTagsFromValue(content),
-        title: extractTitleFromValue(content),
-      })
+    (content: InternoteEditorElement[]) => {
+      if (noteId) {
+        return updateNote({
+          content,
+          noteId,
+          tags: extractTagsFromValue(content),
+          title: extractTitleFromValue(content),
+        });
+      }
+      return Promise.resolve();
+    }
   );
 
   const save = useRef(exec);

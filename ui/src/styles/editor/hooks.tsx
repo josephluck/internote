@@ -51,16 +51,13 @@ const withCollaboration = (noteId: string) => <T extends Editor>(
     : editor;
 
 // TODO: use function application
-export const useCreateInternoteEditor = (noteId: string) =>
-  useMemo(
-    () =>
-      withCollaboration(noteId)(
-        withHistory(
-          withInlines(withVoids(withShortcuts(withReact(createEditor()))))
-        )
-      ),
-    []
-  );
+export const useCreateInternoteEditor = (noteId?: string) =>
+  useMemo(() => {
+    const editor = withHistory(
+      withInlines(withVoids(withShortcuts(withReact(createEditor()))))
+    );
+    return noteId ? withCollaboration(noteId)(editor) : editor;
+  }, []);
 
 interface InternoteEditorContext {
   /** The raw editor (with plugins attached) */
