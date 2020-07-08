@@ -12,7 +12,9 @@ import styled, { css } from "styled-components";
 
 import { useStately } from "../../store/store";
 import { borderRadius, font, size, spacing } from "../../theming/symbols";
+import { CreateLinkModal } from "../create-link-modal";
 import { CreateSnippetModal } from "../create-snippet-modal";
+import { LinksProvider } from "../links-context";
 import { Outline } from "../outline";
 import { ShortcutsContext } from "../shortcuts";
 import { SnippetsProvider } from "../snippets-context";
@@ -92,8 +94,10 @@ export const InternoteEditor: React.FunctionComponent<{
     <Slate editor={editor} value={value} onChange={setValue as any}>
       <InternoteEditorProvider>
         <SnippetsProvider>
-          <InternoteEditorEditor />
-          <Toolbar noteId={noteId} saving={saving} />
+          <LinksProvider>
+            <InternoteEditorEditor />
+            <Toolbar noteId={noteId} saving={saving} />
+          </LinksProvider>
         </SnippetsProvider>
       </InternoteEditorProvider>
       {COLLABORATION_ENABLED && (
@@ -161,6 +165,7 @@ const InternoteEditorEditor = () => {
       </InnerPadding>
       <Outline value={editor.children as any} />
       <CreateSnippetModal />
+      <CreateLinkModal />
     </FullHeight>
   );
 };
@@ -197,6 +202,22 @@ const EditorElement: React.FunctionComponent<InternoteEditorRenderElementProps> 
           {element.tag}
           {children}
         </Tag>
+      );
+    }
+    case "link": {
+      return (
+        <a
+          href={element.href}
+          onMouseDown={(e) => {
+            if (e.ctrlKey) {
+              e.preventDefault();
+              e.stopPropagation();
+              window.open(element.href, "_blank");
+            }
+          }}
+        >
+          {children}
+        </a>
       );
     }
     default:

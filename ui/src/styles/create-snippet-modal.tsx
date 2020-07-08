@@ -16,7 +16,7 @@ export function CreateSnippetModal() {
     setCreateSnippetTitle,
   } = useContext(SnippetsContext);
 
-  const createSnippetLoading = false;
+  const createSnippetLoading = false; // TODO: loading
 
   return (
     <Modal
@@ -31,13 +31,11 @@ export function CreateSnippetModal() {
         To finish creating your snippet, give it a title:
       </Flex>
       <Flex mb={spacing._1}>
-        {createSnippetModalOpen ? (
-          <Input
-            value={createSnippetTitle}
-            onChange={(e) => setCreateSnippetTitle(e.target.value)}
-            autoFocus
-          />
-        ) : null}
+        <Input
+          value={createSnippetTitle}
+          onChange={(e) => setCreateSnippetTitle(e.target.value)}
+          autoFocus
+        />
       </Flex>
       <Button
         onClick={finaliseCreateSnippet}

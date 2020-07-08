@@ -28,11 +28,9 @@ export const SnippetsButton: React.FunctionComponent<{
   hasHighlighted: boolean;
   onCreateSnippet: () => void;
 }> = ({ onSnippetSelected, hasHighlighted, onCreateSnippet }) => {
-  const {
-    snippetsMenuShowing,
-    setSnippetToInsert,
-    setSnippetsMenuShowing,
-  } = useContext(SnippetsContext);
+  const { snippetsMenuShowing, setSnippetsMenuShowing } = useContext(
+    SnippetsContext
+  );
 
   const snippets = useStately((state) => state.snippets.snippets);
 
@@ -148,11 +146,7 @@ export const SnippetsButton: React.FunctionComponent<{
                     <span>Create a new snippet</span>
                   </DropdownMenuItem>
 
-                  <MaxHeight
-                    onMouseOut={() => {
-                      setSnippetToInsert(null);
-                    }}
-                  >
+                  <MaxHeight>
                     {filteredSnippets.length === 0 ? (
                       <NoResults emojis="🔎 🙄" message="No snippets found" />
                     ) : (
@@ -160,12 +154,8 @@ export const SnippetsButton: React.FunctionComponent<{
                         <SearchMenuItem
                           key={snippet.snippetId}
                           content={snippet.title}
-                          onMouseIn={() => {
-                            setSnippetToInsert(snippet);
-                          }}
                           onSelect={() => {
                             menu.toggleMenuShowing(false);
-                            setSnippetToInsert(null);
                             onSnippetSelected(snippet);
                           }}
                           onDelete={() => {

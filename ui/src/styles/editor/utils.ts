@@ -67,7 +67,7 @@ export const isMarkActive = (
 };
 
 export const extractTextFromNodes = (nodes: InternoteEditorElement[]) =>
-  nodes
+  flattenEditorElements(nodes)
     .map((node) => node.text)
     .filter(Boolean)
     .join("");

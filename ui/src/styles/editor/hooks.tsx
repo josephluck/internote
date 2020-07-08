@@ -11,7 +11,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { Editor, Transforms, createEditor } from "slate";
+import { Editor, Range as SlateRange, Transforms, createEditor } from "slate";
 import { withHistory } from "slate-history";
 import { useSlate, withReact } from "slate-react";
 
@@ -76,6 +76,10 @@ interface InternoteEditorContext {
   replaceSmartSearchText: (
     replacement: string | InternoteEditorElement
   ) => void;
+  replaceSelection: (
+    replacement: InternoteEditorElement[],
+    selection?: SlateRange
+  ) => void;
 }
 
 export const InternoteEditorCtx = createContext<InternoteEditorContext>({
@@ -87,6 +91,7 @@ export const InternoteEditorCtx = createContext<InternoteEditorContext>({
   hasSmartSearch: false,
   handlePreventKeydown: () => void null,
   replaceSmartSearchText: () => void null,
+  replaceSelection: () => void null,
 });
 
 export const InternoteEditorProvider: React.FunctionComponent = ({
@@ -135,6 +140,18 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
     [editor, hasSmartSearch, emojiSearchText, hashtagSearchText]
   );
 
+  const replaceSelection = useCallback(
+    (replacement: InternoteEditorElement[], selection?: SlateRange) => {
+      if (selection) {
+        Transforms.removeNodes(editor, { at: selection });
+      }
+      console.log("Inserting", { replacement });
+      Transforms.insertNodes(editor, replacement);
+      Transforms.move(editor); // NB: this refocuses after the insertion
+    },
+    [editor]
+  );
+
   const ctx: InternoteEditorContext = {
     editor,
     emojiSearchText,
@@ -144,6 +161,7 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
     hasSmartSearch,
     handlePreventKeydown,
     replaceSmartSearchText,
+    replaceSelection,
   };
 
   return (

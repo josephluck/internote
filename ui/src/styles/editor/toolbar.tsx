@@ -15,6 +15,7 @@ import { Emoji } from "../../utilities/emojis";
 import { Dictionary } from "../dictionary";
 import { DictionaryButton } from "../dictionary-button";
 import { EmojiList } from "../emoji-list";
+import { LinksContext } from "../links-context";
 import { Saving } from "../saving";
 import { Shortcut } from "../shortcuts";
 import { SnippetsContext } from "../snippets-context";
@@ -33,7 +34,13 @@ import {
   toolbarLabelMap,
   toolbarShortcutMap,
 } from "./types";
-import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
+import {
+  extractTextFromNodes,
+  isBlockActive,
+  isMarkActive,
+  toggleBlock,
+  toggleMark,
+} from "./utils";
 
 export const Toolbar: React.FunctionComponent<{
   noteId?: string;
@@ -53,6 +60,10 @@ export const Toolbar: React.FunctionComponent<{
     setCreateSnippetModalOpen,
     setSnippetSelection,
   } = React.useContext(SnippetsContext);
+
+  const { setLinkLabel, setCreateLinkModalOpen } = React.useContext(
+    LinksContext
+  );
 
   const distractionFree = useStately(
     (state) => state.preferences.distractionFree
@@ -127,6 +138,20 @@ export const Toolbar: React.FunctionComponent<{
     );
   }, [editor]);
 
+  const handleCreateLink = useCallback(() => {
+    pipe(
+      getNodesFromEditorSelection(editor),
+      O.map((nodes) => {
+        console.log("Showing link modal", {
+          nodes,
+          text: extractTextFromNodes(nodes),
+        });
+        setLinkLabel(extractTextFromNodes(nodes));
+        setCreateLinkModalOpen(true);
+      })
+    );
+  }, [editor]);
+
   const handleEscape = useCallback(() => {
     setIsEmojiButtonPressed(false);
     setIsTagButtonPressed(false);
@@ -175,6 +200,15 @@ export const Toolbar: React.FunctionComponent<{
               />
             </ButtonSpacer>
           )}
+          <ButtonSpacer small>
+            <ToolbarButton
+              onClick={handleCreateLink}
+              icon={toolbarIconMap.link}
+              label={toolbarLabelMap.link}
+              name={toolbarLabelMap.link}
+              shortcut={toolbarShortcutMap.link}
+            />
+          </ButtonSpacer>
           {!!noteId && (
             <ButtonSpacer small>
               <SnippetsButton
