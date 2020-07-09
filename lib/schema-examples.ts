@@ -173,6 +173,26 @@ export const FULL_SCHEMA_EXAMPLE: InternoteEditorElement[] = [
           },
         ],
       },
+      {
+        type: "list-item",
+        children: [
+          {
+            text: "Nested ",
+          },
+          {
+            type: "link",
+            href: "https://github.com/josephluck/internote",
+            children: [
+              {
+                text: "links",
+              },
+            ],
+          },
+          {
+            text: ".",
+          },
+        ],
+      },
     ],
   },
   {
