@@ -2333,6 +2333,13 @@
   dependencies:
     immer "^5.0.0"
 
+"@josephluck/valley@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@josephluck/valley/-/valley-0.0.1.tgz#0ad8b841c0a52d24d2a10a5599e36a16adb4d247"
+  integrity sha512-Eeas67iFqcKsUO7GHFSb+8FaKGiKhZd50bxXGv6wEIfbZUu/3QpVDylTBzasnm3YLYo7AM0kH3EriozGwBskIw==
+  dependencies:
+    fp-ts "^2.5.4"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -8129,6 +8136,11 @@ forwarded@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
   integrity sha1-mMI9qxF1ZXuMBXPozszZGw/xjIQ=
+
+fp-ts@^2.5.4:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.7.0.tgz#41de65a846715ca4df6889b91c6b3aa953165198"
+  integrity sha512-J7EIg4MEVuOm1vZspQDVYRD/CTsQECQk01cP5VEBvQ5LnSSjp6sckun1m1eUPSuvtMIlGgm9NqqOxE0+QyntWQ==
 
 fp-ts@^2.6.5:
   version "2.6.7"

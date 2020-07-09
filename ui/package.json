@@ -29,6 +29,7 @@
     "@internote/snippets-service": "*",
     "@internote/speech-service": "*",
     "@josephluck/stately": "^1.1.9",
+    "@josephluck/valley": "^0.0.1",
     "@reach/router": "^1.3.4",
     "@rebass/grid": "^6.1.0",
     "@sentry/browser": "^5.17.0",
