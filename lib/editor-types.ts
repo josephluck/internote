@@ -16,6 +16,8 @@ export type TagElement = VoidElement<{ type: "tag"; tag: string }>;
 export type LinkElement = BaseElement<{
   type: "link";
   href: string;
+  /** when truthy will open without needing ctrl pressed */
+  openImmediately?: boolean;
 }>;
 
 export type InternoteEditorElement =

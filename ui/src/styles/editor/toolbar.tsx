@@ -152,6 +152,8 @@ export const Toolbar: React.FunctionComponent<{
     pipe(
       O.fromNullable(editor.selection),
       O.filterMap((range) => {
+        // TODO: smart expansion of selection to include current anchor if
+        // selection includes an anchor (both sides of selection)
         setSelectedRange(range);
         return getNodesFromSlateRange(editor, range);
       }),
@@ -217,6 +219,7 @@ export const Toolbar: React.FunctionComponent<{
           )}
           <ButtonSpacer small>
             <ToolbarButton
+              isActive={linkIsActive}
               onClick={handleLinkButtonPressed}
               icon={toolbarIconMap.link}
               name={toolbarLabelMap.link}

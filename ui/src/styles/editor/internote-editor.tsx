@@ -208,11 +208,15 @@ const EditorElement: React.FunctionComponent<InternoteEditorRenderElementProps> 
       return (
         <a
           href={element.href}
+          style={{ cursor: element.openImmediately ? "pointer" : "inherit" }}
           onMouseDown={(e) => {
-            if (e.ctrlKey) {
+            if (e.ctrlKey || element.openImmediately) {
               e.preventDefault();
               e.stopPropagation();
-              window.open(element.href, "_blank");
+              window.open(
+                element.href,
+                element.openImmediately ? "_self" : "_blank"
+              );
             }
           }}
         >
@@ -337,6 +341,10 @@ export const Editor = styled(Editable).withConfig({
     margin-left: 0;
     font-size: ${font._18.size};
     line-height: ${font._18.lineHeight};
+  }
+  a {
+    color: ${(props) => props.theme.anchorText};
+    text-decoration: underline;
   }
   .${SLATE_BLOCK_CLASS_NAME} {
     opacity: ${(props) =>

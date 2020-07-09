@@ -11,7 +11,7 @@ export const EMPTY_SCHEMA: InternoteEditorElement[] = [
   },
 ];
 
-export const FULL_SCHEMA_EXAMPLE: InternoteEditorElement[] = [
+export const FULL_SCHEMA_WELCOME_MESSAGE: InternoteEditorElement[] = [
   {
     type: "heading-one",
     children: [
@@ -25,7 +25,46 @@ export const FULL_SCHEMA_EXAMPLE: InternoteEditorElement[] = [
     children: [
       {
         text:
-          "Internote is a rich text editor designed for effortless content creation.",
+          "Internote is a rich text editor designed for effortless content creation. ",
+      },
+    ],
+  },
+  {
+    type: "paragraph",
+    children: [
+      {
+        text:
+          "It's super easy to get started, try editing this page to get a feel for things or ",
+      },
+      {
+        type: "link",
+        href: "/authenticate",
+        openImmediately: true,
+        children: [
+          {
+            text: "sign in",
+          },
+        ],
+      },
+      {
+        text: " to save your notes and access Internote's rich features.",
+      },
+    ],
+  },
+  {
+    type: "block-quote",
+    children: [
+      {
+        text: "⚠ Internote is currently in ",
+      },
+      {
+        text: "beta.",
+        bold: true,
+        underline: true,
+      },
+      {
+        text:
+          " Any content you write here may be removed at any time. You've been warned! However, whilst Internote is in beta, all features will remain free.",
       },
     ],
   },
@@ -48,12 +87,12 @@ export const FULL_SCHEMA_EXAMPLE: InternoteEditorElement[] = [
             bold: true,
           },
           {
-            text: "italic, ",
-            italic: true,
+            text: "underline,",
+            underline: true,
           },
           {
-            text: "underline",
-            underline: true,
+            text: " italic",
+            italic: true,
           },
           {
             text: " and ",
@@ -61,11 +100,8 @@ export const FULL_SCHEMA_EXAMPLE: InternoteEditorElement[] = [
           {
             text: "combinations",
             bold: true,
-            underline: true,
             italic: true,
-          },
-          {
-            text: ". ",
+            underline: true,
           },
         ],
       },
@@ -89,7 +125,7 @@ export const FULL_SCHEMA_EXAMPLE: InternoteEditorElement[] = [
         type: "list-item",
         children: [
           {
-            text: "Emojis, ",
+            text: "Emojis 😍 ",
           },
           {
             type: "tag",
@@ -137,15 +173,7 @@ export const FULL_SCHEMA_EXAMPLE: InternoteEditorElement[] = [
         type: "list-item",
         children: [
           {
-            text: "Passwordless login",
-          },
-        ],
-      },
-      {
-        type: "list-item",
-        children: [
-          {
-            text: "Fullscreen mode",
+            text: "Full-screen mode",
           },
         ],
       },
@@ -161,14 +189,6 @@ export const FULL_SCHEMA_EXAMPLE: InternoteEditorElement[] = [
         type: "list-item",
         children: [
           {
-            text: "Automatic save",
-          },
-        ],
-      },
-      {
-        type: "list-item",
-        children: [
-          {
             text: "Outline navigation",
           },
         ],
@@ -177,66 +197,38 @@ export const FULL_SCHEMA_EXAMPLE: InternoteEditorElement[] = [
         type: "list-item",
         children: [
           {
-            text: "Nested ",
+            text: "Reusable snippets",
           },
+        ],
+      },
+      {
+        type: "list-item",
+        children: [
           {
-            type: "link",
-            href: "https://github.com/josephluck/internote",
-            children: [
-              {
-                text: "links",
-              },
-            ],
+            text: "List items",
           },
+        ],
+      },
+      {
+        type: "list-item",
+        children: [
           {
-            text: ".",
+            text: "Block quotes",
           },
         ],
       },
     ],
   },
   {
-    type: "block-quote",
-    children: [
-      {
-        text: "blockquotes",
-      },
-    ],
-  },
-  {
-    type: "numbered-list",
+    type: "bulleted-list",
     children: [
       {
         type: "list-item",
         children: [
           {
-            text: "Numbered lists",
+            text: "And many more",
           },
         ],
-      },
-    ],
-  },
-  {
-    type: "heading-two",
-    children: [
-      {
-        text: "Premium ",
-      },
-    ],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text: "Internote is currently in ",
-      },
-      {
-        text: "beta",
-        bold: true,
-      },
-      {
-        text:
-          ". Any content you write here may be removed at any time. You've been warned! However, whilst Internote is in beta, all features will remain free.",
       },
     ],
   },
@@ -245,6 +237,32 @@ export const FULL_SCHEMA_EXAMPLE: InternoteEditorElement[] = [
     children: [
       {
         text: "",
+      },
+      {
+        type: "link",
+        href: "/authenticate",
+        openImmediately: true,
+        children: [
+          {
+            text: "Sign up",
+          },
+        ],
+      },
+      {
+        text: " or ",
+      },
+      {
+        type: "link",
+        href: "/authenticate",
+        openImmediately: true,
+        children: [
+          {
+            text: "sign in",
+          },
+        ],
+      },
+      {
+        text: " to get started.",
       },
     ],
   },
