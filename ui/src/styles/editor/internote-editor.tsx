@@ -45,7 +45,8 @@ export const InternoteEditor: React.FunctionComponent<{
   initialValue: InternoteEditorElement[];
   noteId?: string;
   autoFocus?: boolean;
-}> = ({ initialValue, noteId, autoFocus = true }) => {
+  topPadding?: boolean;
+}> = ({ initialValue, noteId, autoFocus = true, topPadding = true }) => {
   const valueRef = useRef(initialValue);
   valueRef.current = initialValue;
 
@@ -96,7 +97,10 @@ export const InternoteEditor: React.FunctionComponent<{
       <InternoteEditorProvider>
         <SnippetsProvider>
           <LinksProvider>
-            <InternoteEditorEditor autoFocus={autoFocus} />
+            <InternoteEditorEditor
+              autoFocus={autoFocus}
+              topPadding={topPadding}
+            />
             <Toolbar noteId={noteId} saving={saving} />
           </LinksProvider>
         </SnippetsProvider>
@@ -115,7 +119,8 @@ export const InternoteEditor: React.FunctionComponent<{
 
 const InternoteEditorEditor: React.FunctionComponent<{
   autoFocus: boolean;
-}> = ({ autoFocus }) => {
+  topPadding: boolean;
+}> = ({ autoFocus, topPadding }) => {
   const { editor, handlePreventKeydown } = useInternoteEditor();
 
   const { handleShortcuts } = useContext(ShortcutsContext);
@@ -164,6 +169,7 @@ const InternoteEditorEditor: React.FunctionComponent<{
           spellCheck
           autoFocus={autoFocus}
           onKeyDown={handleKeyDown}
+          topPadding={topPadding}
         />
       </InnerPadding>
       <Outline value={editor.children as any} />
@@ -285,10 +291,11 @@ export const Editor = styled(Editable).withConfig({
 })<{
   distractionFree: boolean;
   userScrolled: boolean;
+  topPadding: boolean;
 }>`
   min-height: 100%;
   ${wrapperStyles};
-  padding-top: 50vh;
+  padding-top: ${(props) => (props.topPadding ? "50vh" : spacing._3)};
   padding-bottom: 50vh;
   font-family: ${(props) => props.theme.fontFamily};
   strong {
