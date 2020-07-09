@@ -35,6 +35,7 @@ import {
   toolbarShortcutMap,
 } from "./types";
 import {
+  extractFirstLinkFromNodes,
   extractTextFromNodes,
   isBlockActive,
   isMarkActive,
@@ -61,9 +62,11 @@ export const Toolbar: React.FunctionComponent<{
     setSnippetSelection,
   } = React.useContext(SnippetsContext);
 
-  const { setLinkLabel, setCreateLinkModalOpen } = React.useContext(
-    LinksContext
-  );
+  const {
+    setLinkLabel,
+    setLinkHref,
+    setCreateLinkModalOpen,
+  } = React.useContext(LinksContext);
 
   const distractionFree = useStately(
     (state) => state.preferences.distractionFree
@@ -140,15 +143,20 @@ export const Toolbar: React.FunctionComponent<{
     );
   }, [editor]);
 
-  const handleCreateLink = useCallback(() => {
+  const handleLinkButtonPressed = useCallback(() => {
     pipe(
       getNodesFromEditorSelection(editor),
       O.map((nodes) => {
+        pipe(
+          extractFirstLinkFromNodes(nodes),
+          O.map((link) => link.href),
+          O.map(setLinkHref)
+        );
         setLinkLabel(extractTextFromNodes(nodes));
         setCreateLinkModalOpen(true);
       })
     );
-  }, [editor]);
+  }, [editor, linkIsActive]);
 
   const handleEscape = useCallback(() => {
     setIsEmojiButtonPressed(false);
@@ -200,7 +208,7 @@ export const Toolbar: React.FunctionComponent<{
           )}
           <ButtonSpacer small>
             <ToolbarButton
-              onClick={handleCreateLink}
+              onClick={handleLinkButtonPressed}
               icon={toolbarIconMap.link}
               name={toolbarLabelMap.link}
               label={

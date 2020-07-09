@@ -4,8 +4,10 @@ import {
   InternoteEditorElement,
   InternoteEditorElementTypes,
   InternoteEditorNodeType,
+  LinkElement,
   TagElement,
 } from "@internote/lib/editor-types";
+import * as O from "fp-ts/lib/Option";
 import { Editor, Node, Transforms } from "slate";
 
 import { OutlineElement } from "./types";
@@ -140,6 +142,17 @@ export const extractOutlineFromValue = (
       type: heading.type,
     }))
     .filter((heading) => heading.text.length > 0);
+
+const first = <T>(arr: T[]): O.Option<T> => O.fromNullable(arr[0]);
+
+export const extractFirstLinkFromNodes = (
+  value: InternoteEditorElement[]
+): O.Option<LinkElement> =>
+  first(
+    filterElementsOfType(["link"])(
+      flattenEditorElements(value)
+    ) as LinkElement[]
+  );
 
 /**
  * NB: expects a flattened list of editor elements. If your structure is nested,
