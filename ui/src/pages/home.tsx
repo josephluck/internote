@@ -1,4 +1,4 @@
-import { InternoteEditorElement } from "@internote/lib/editor-types";
+import { FULL_SCHEMA_WELCOME_MESSAGE } from "@internote/lib/schema-examples";
 import { RouteComponentProps } from "@reach/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
@@ -24,7 +24,10 @@ export const Home: React.FunctionComponent<RouteComponentProps> = () => {
 
   return (
     <Wrapper>
-      <InternoteEditor initialValue={welcomeValue}></InternoteEditor>
+      <InternoteEditor
+        initialValue={FULL_SCHEMA_WELCOME_MESSAGE}
+        autoFocus={false}
+      />
     </Wrapper>
   );
 };
@@ -33,23 +36,3 @@ const Wrapper = styled.div`
   height: 100%;
   min-height: 100%;
 `;
-
-const welcomeValue: InternoteEditorElement[] = [
-  {
-    type: "heading-one",
-    children: [
-      {
-        text: "👋 Welcome to Internote",
-      },
-    ],
-  },
-  {
-    type: "paragraph",
-    children: [
-      {
-        text:
-          "Internote is a note editor with a focus on distraction-free content creation. It's free to use and super easy to get started. Give it a go, this page is editable.",
-      },
-    ],
-  },
-];

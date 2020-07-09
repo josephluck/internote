@@ -1,5 +1,5 @@
 import { Flex } from "@rebass/grid";
-import React, { useCallback, useContext } from "react";
+import React, { useContext } from "react";
 
 import { spacing } from "../theming/symbols";
 import { Button } from "./button";
@@ -11,20 +11,12 @@ export function CreateSnippetModal() {
   const {
     createSnippetModalOpen,
     setCreateSnippetModalOpen,
-    setSnippetsMenuShowing,
-    finaliseCreateSnippet,
     createSnippetTitle,
+    finaliseCreateSnippet,
     setCreateSnippetTitle,
   } = useContext(SnippetsContext);
 
-  const handleCreateSnippet = useCallback(async () => {
-    await finaliseCreateSnippet();
-    setCreateSnippetModalOpen(false);
-    setCreateSnippetTitle("");
-    setSnippetsMenuShowing(true);
-  }, [createSnippetTitle]);
-
-  const createSnippetLoading = false;
+  const createSnippetLoading = false; // TODO: loading
 
   return (
     <Modal
@@ -39,16 +31,14 @@ export function CreateSnippetModal() {
         To finish creating your snippet, give it a title:
       </Flex>
       <Flex mb={spacing._1}>
-        {createSnippetModalOpen ? (
-          <Input
-            value={createSnippetTitle}
-            onChange={(e) => setCreateSnippetTitle(e.target.value)}
-            autoFocus
-          />
-        ) : null}
+        <Input
+          value={createSnippetTitle}
+          onChange={(e) => setCreateSnippetTitle(e.target.value)}
+          autoFocus
+        />
       </Flex>
       <Button
-        onClick={handleCreateSnippet}
+        onClick={finaliseCreateSnippet}
         fullWidth
         disabled={createSnippetTitle.length === 0}
         loading={createSnippetLoading}

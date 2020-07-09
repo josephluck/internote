@@ -15,6 +15,7 @@ import { Emoji } from "../../utilities/emojis";
 import { Dictionary } from "../dictionary";
 import { DictionaryButton } from "../dictionary-button";
 import { EmojiList } from "../emoji-list";
+import { LinksContext } from "../links-context";
 import { Saving } from "../saving";
 import { Shortcut } from "../shortcuts";
 import { SnippetsContext } from "../snippets-context";
@@ -25,7 +26,11 @@ import { ButtonSpacer, ToolbarButton } from "../toolbar-button";
 import { Wrapper } from "../wrapper";
 import { DeleteNoteButton } from "./delete";
 import { useInternoteEditor } from "./hooks";
-import { getHighlightedWord, getNodesFromEditorSelection } from "./selection";
+import {
+  getHighlightedWord,
+  getNodesFromEditorSelection,
+  getNodesFromSlateRange,
+} from "./selection";
 import {
   marks,
   toolbarBlocks,
@@ -33,7 +38,14 @@ import {
   toolbarLabelMap,
   toolbarShortcutMap,
 } from "./types";
-import { isBlockActive, isMarkActive, toggleBlock, toggleMark } from "./utils";
+import {
+  extractFirstLinkFromNodes,
+  extractTextFromNodes,
+  isBlockActive,
+  isMarkActive,
+  toggleBlock,
+  toggleMark,
+} from "./utils";
 
 export const Toolbar: React.FunctionComponent<{
   noteId?: string;
@@ -53,6 +65,13 @@ export const Toolbar: React.FunctionComponent<{
     setCreateSnippetModalOpen,
     setSnippetSelection,
   } = React.useContext(SnippetsContext);
+
+  const {
+    setLinkLabel,
+    setLinkHref,
+    setSelectedRange,
+    setCreateLinkModalOpen,
+  } = React.useContext(LinksContext);
 
   const distractionFree = useStately(
     (state) => state.preferences.distractionFree
@@ -79,6 +98,8 @@ export const Toolbar: React.FunctionComponent<{
 
   const isToolbarVisible =
     toolbarIsExpanded || O.isSome(selectedText) || snippetsMenuShowing;
+
+  const linkIsActive = isBlockActive(editor, "link");
 
   const selectedWord = pipe(
     getHighlightedWord(editor),
@@ -126,6 +147,27 @@ export const Toolbar: React.FunctionComponent<{
       })
     );
   }, [editor]);
+
+  const handleLinkButtonPressed = useCallback(() => {
+    pipe(
+      O.fromNullable(editor.selection),
+      O.filterMap((range) => {
+        // TODO: smart expansion of selection to include current anchor if
+        // selection includes an anchor (both sides of selection)
+        setSelectedRange(range);
+        return getNodesFromSlateRange(editor, range);
+      }),
+      O.map((nodes) => {
+        pipe(
+          extractFirstLinkFromNodes(nodes),
+          O.map((link) => link.href),
+          O.map(setLinkHref)
+        );
+        setLinkLabel(extractTextFromNodes(nodes));
+        setCreateLinkModalOpen(true);
+      })
+    );
+  }, [editor, linkIsActive]);
 
   const handleEscape = useCallback(() => {
     setIsEmojiButtonPressed(false);
@@ -175,6 +217,20 @@ export const Toolbar: React.FunctionComponent<{
               />
             </ButtonSpacer>
           )}
+          <ButtonSpacer small>
+            <ToolbarButton
+              isActive={linkIsActive}
+              onClick={handleLinkButtonPressed}
+              icon={toolbarIconMap.link}
+              name={toolbarLabelMap.link}
+              label={
+                linkIsActive
+                  ? toolbarLabelMap["link-edit"]
+                  : toolbarLabelMap.link
+              }
+              shortcut={toolbarShortcutMap.link}
+            />
+          </ButtonSpacer>
           {!!noteId && (
             <ButtonSpacer small>
               <SnippetsButton

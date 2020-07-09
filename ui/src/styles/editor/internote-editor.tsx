@@ -12,9 +12,12 @@ import styled, { css } from "styled-components";
 
 import { useStately } from "../../store/store";
 import { borderRadius, font, size, spacing } from "../../theming/symbols";
+import { CreateLinkModal } from "../create-link-modal";
 import { CreateSnippetModal } from "../create-snippet-modal";
+import { LinksProvider } from "../links-context";
 import { Outline } from "../outline";
 import { ShortcutsContext } from "../shortcuts";
+import { SnippetsProvider } from "../snippets-context";
 import { Tag } from "../tag";
 import { wrapperStyles } from "../wrapper";
 import {
@@ -41,7 +44,8 @@ import {
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: InternoteEditorElement[];
   noteId?: string;
-}> = ({ initialValue, noteId }) => {
+  autoFocus?: boolean;
+}> = ({ initialValue, noteId, autoFocus = true }) => {
   const valueRef = useRef(initialValue);
   valueRef.current = initialValue;
 
@@ -90,8 +94,12 @@ export const InternoteEditor: React.FunctionComponent<{
   return (
     <Slate editor={editor} value={value} onChange={setValue as any}>
       <InternoteEditorProvider>
-        <InternoteEditorEditor />
-        <Toolbar noteId={noteId} saving={saving} />
+        <SnippetsProvider>
+          <LinksProvider>
+            <InternoteEditorEditor autoFocus={autoFocus} />
+            <Toolbar noteId={noteId} saving={saving} />
+          </LinksProvider>
+        </SnippetsProvider>
       </InternoteEditorProvider>
       {COLLABORATION_ENABLED && (
         <button
@@ -105,7 +113,9 @@ export const InternoteEditor: React.FunctionComponent<{
   );
 };
 
-const InternoteEditorEditor = () => {
+const InternoteEditorEditor: React.FunctionComponent<{
+  autoFocus: boolean;
+}> = ({ autoFocus }) => {
   const { editor, handlePreventKeydown } = useInternoteEditor();
 
   const { handleShortcuts } = useContext(ShortcutsContext);
@@ -152,12 +162,13 @@ const InternoteEditorEditor = () => {
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           spellCheck
-          autoFocus
+          autoFocus={autoFocus}
           onKeyDown={handleKeyDown}
         />
       </InnerPadding>
       <Outline value={editor.children as any} />
       <CreateSnippetModal />
+      <CreateLinkModal />
     </FullHeight>
   );
 };
@@ -194,6 +205,26 @@ const EditorElement: React.FunctionComponent<InternoteEditorRenderElementProps> 
           {element.tag}
           {children}
         </Tag>
+      );
+    }
+    case "link": {
+      return (
+        <a
+          href={element.href}
+          style={{ cursor: element.openImmediately ? "pointer" : "inherit" }}
+          onMouseDown={(e) => {
+            if (e.ctrlKey || element.openImmediately) {
+              e.preventDefault();
+              e.stopPropagation();
+              window.open(
+                element.href,
+                element.openImmediately ? "_self" : "_blank"
+              );
+            }
+          }}
+        >
+          {children}
+        </a>
       );
     }
     default:
@@ -313,6 +344,10 @@ export const Editor = styled(Editable).withConfig({
     margin-left: 0;
     font-size: ${font._18.size};
     line-height: ${font._18.lineHeight};
+  }
+  a {
+    color: ${(props) => props.theme.anchorText};
+    text-decoration: underline;
   }
   .${SLATE_BLOCK_CLASS_NAME} {
     opacity: ${(props) =>

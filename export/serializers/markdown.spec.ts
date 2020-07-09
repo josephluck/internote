@@ -1,14 +1,14 @@
 import * as fs from "fs";
 import * as path from "path";
 
-import { FULL_SCHEMA_EXAMPLE } from "@internote/lib/schema-examples";
+import { FULL_SCHEMA_WELCOME_MESSAGE } from "@internote/lib/schema-examples";
 
 import { serializeMarkdown } from "./markdown";
 
 describe("Serializers / markdown", () => {
   it("Serializes a complex schema to markdown", async () => {
     const expected = await getFile("./markdown-example.md");
-    const result = serializeMarkdown(FULL_SCHEMA_EXAMPLE);
+    const result = serializeMarkdown(FULL_SCHEMA_WELCOME_MESSAGE);
     await writeFile(result, "./markdown-export.md");
     expect(result).toEqual(expected);
   });

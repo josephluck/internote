@@ -5,6 +5,7 @@ export interface Theme {
   audioTimelineInactive: string;
   blockQuoteBorder: string;
   blockQuoteText: string;
+  anchorText: string;
   codeBlockBackground: string;
   dictionaryDescriptionText: string;
   dropdownMenuBackground: string;
@@ -58,6 +59,7 @@ export const dark: Theme = {
   audioTimelineInactive: "#504D5D",
   blockQuoteBorder: "#504D5D",
   blockQuoteText: "#999999",
+  anchorText: "#095efd",
   codeBlockBackground: "#211F28",
   dictionaryDescriptionText: "#999999",
   dropdownMenuBackground: "#000000",
@@ -111,6 +113,7 @@ export const light: Theme = {
   audioTimelineInactive: "#504D5D",
   blockQuoteBorder: "#A79FAC",
   blockQuoteText: "#555555",
+  anchorText: "#095efd",
   codeBlockBackground: "#F0F0F0",
   dictionaryDescriptionText: "#555555",
   dropdownMenuBackground: "#F0F0F0",

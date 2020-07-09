@@ -59,7 +59,7 @@ export const Authenticate: React.FunctionComponent<RouteComponentProps> = () => 
             </Box>
             <Flex mb={spacing._1} flexDirection="column">
               <InputLabel>Verification code</InputLabel>
-              <Input id="verify" />
+              <Input autoFocus id="verify" />
             </Flex>
             <Box mb={spacing._1}>
               <Button
@@ -83,7 +83,7 @@ export const Authenticate: React.FunctionComponent<RouteComponentProps> = () => 
           >
             <Flex mb={spacing._1} flexDirection="column">
               <InputLabel>Email</InputLabel>
-              <Input type="email" id="email" />
+              <Input autoFocus type="email" id="email" />
             </Flex>
             <Box mb={spacing._1}>
               <Button

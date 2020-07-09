@@ -40,6 +40,8 @@ const serialize = (node: InternoteEditorElement): string => {
       return `> ${children}\n`;
     case "paragraph":
       return `${children}\n`;
+    case "link":
+      return `[${children}](${node.href})`;
     default:
       return `${children}\n`;
   }

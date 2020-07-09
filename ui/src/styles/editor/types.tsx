@@ -5,6 +5,7 @@ import {
   faEye,
   faHeading,
   faItalic,
+  faLink,
   faList,
   faListOl,
   faListUl,
@@ -73,7 +74,8 @@ export type ToolbarFunctions =
   | "speech"
   | "dictionary"
   | "delete"
-  | "emoji";
+  | "emoji"
+  | "link-edit";
 
 export type ToolbarFunctionStates =
   | "speech-loading"
@@ -88,7 +90,7 @@ export type ToolbarIconType =
 
 export const voids: InternoteEditorNodeType[] = ["tag"];
 
-export const inlines: InternoteEditorNodeType[] = ["tag"];
+export const inlines: InternoteEditorNodeType[] = ["tag", "link"];
 
 export const listNodeTypes: InternoteEditorNodeType[] = [
   "bulleted-list",
@@ -116,6 +118,8 @@ export const toolbarLabelMap: Record<
   dictionary: "Dictionary",
   delete: "Delete",
   emoji: "Emoji",
+  link: "Link",
+  "link-edit": "Edit link",
 };
 
 // TODO: chromebook can't use mod?
@@ -123,23 +127,25 @@ export const toolbarShortcutMap: Record<
   InternoteEditorNodeType | ToolbarFunctions,
   string | string[]
 > = {
-  paragraph: "ctrl+p",
-  "heading-one": "ctrl+h",
-  "heading-two": "ctrl+j",
-  code: "ctrl+`",
-  bold: "ctrl+b",
-  italic: "ctrl+i",
-  underline: "ctrl+u",
-  "numbered-list": "ctrl+shift+l",
-  "bulleted-list": "ctrl+l",
-  "block-quote": "ctrl+>",
+  paragraph: "mod+p",
+  "heading-one": "mod+h",
+  "heading-two": "mod+j",
+  code: "mod+`",
+  bold: "mod+b",
+  italic: "mod+i",
+  underline: "mod+u",
+  "numbered-list": "mod+shift+l",
+  "bulleted-list": "mod+l",
+  "block-quote": "mod+>",
   "list-item": [],
-  tag: "ctrl+#",
-  outline: "ctrl+shift+o",
-  speech: "ctrl+s",
-  dictionary: "ctrl+d",
-  delete: "ctrl+shift+d",
-  emoji: "ctrl+e",
+  tag: "mod+#",
+  outline: "mod+shift+o",
+  speech: "mod+s",
+  dictionary: "mod+d",
+  delete: "mod+shift+d",
+  emoji: "mod+e",
+  link: "mod+shift+e",
+  "link-edit": "mod+shift+e",
 };
 
 export const toolbarIconMap: Record<ToolbarIconType, React.ReactNode> = {
@@ -164,4 +170,6 @@ export const toolbarIconMap: Record<ToolbarIconType, React.ReactNode> = {
   "list-item": <FontAwesomeIcon icon={faList} />,
   delete: <FontAwesomeIcon icon={faTrash} />,
   emoji: <FontAwesomeIcon icon={faSmile} />,
+  link: <FontAwesomeIcon icon={faLink} />,
+  "link-edit": <FontAwesomeIcon icon={faLink} />,
 };
