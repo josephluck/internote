@@ -78,7 +78,7 @@ interface InternoteEditorContext {
   ) => void;
   replaceSelection: (
     replacement: InternoteEditorElement[],
-    selection?: SlateRange
+    selection?: SlateRange | null
   ) => void;
 }
 
@@ -141,12 +141,12 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
   );
 
   const replaceSelection = useCallback(
-    (replacement: InternoteEditorElement[], selection?: SlateRange) => {
+    (replacement: InternoteEditorElement[], selection?: SlateRange | null) => {
       if (selection) {
-        Transforms.removeNodes(editor, { at: selection });
+        Transforms.insertNodes(editor, replacement, { at: selection });
+      } else {
+        Transforms.insertNodes(editor, replacement);
       }
-      console.log("Inserting", { replacement });
-      Transforms.insertNodes(editor, replacement);
       Transforms.move(editor); // NB: this refocuses after the insertion
     },
     [editor]

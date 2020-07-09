@@ -26,7 +26,11 @@ import { ButtonSpacer, ToolbarButton } from "../toolbar-button";
 import { Wrapper } from "../wrapper";
 import { DeleteNoteButton } from "./delete";
 import { useInternoteEditor } from "./hooks";
-import { getHighlightedWord, getNodesFromEditorSelection } from "./selection";
+import {
+  getHighlightedWord,
+  getNodesFromEditorSelection,
+  getNodesFromSlateRange,
+} from "./selection";
 import {
   marks,
   toolbarBlocks,
@@ -65,6 +69,7 @@ export const Toolbar: React.FunctionComponent<{
   const {
     setLinkLabel,
     setLinkHref,
+    setSelectedRange,
     setCreateLinkModalOpen,
   } = React.useContext(LinksContext);
 
@@ -145,7 +150,11 @@ export const Toolbar: React.FunctionComponent<{
 
   const handleLinkButtonPressed = useCallback(() => {
     pipe(
-      getNodesFromEditorSelection(editor),
+      O.fromNullable(editor.selection),
+      O.filterMap((range) => {
+        setSelectedRange(range);
+        return getNodesFromSlateRange(editor, range);
+      }),
       O.map((nodes) => {
         pipe(
           extractFirstLinkFromNodes(nodes),

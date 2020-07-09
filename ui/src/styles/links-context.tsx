@@ -1,15 +1,17 @@
 import { LinkElement } from "@internote/lib/editor-types";
-import React, { useCallback } from "react";
-import { useState } from "react";
+import React, { useCallback, useState } from "react";
+import { Range as SlateRange } from "slate";
 
 import { useInternoteEditor } from "./editor/hooks";
 
 interface Context {
+  selectedRange: SlateRange | null;
   createLinkModalOpen: boolean;
   linkHref: string;
   linkLabel: string;
   setLinkLabel: (label: string) => void;
   setLinkHref: (href: string) => void;
+  setSelectedRange: (range: SlateRange | null) => void;
   clearCreateLink: () => void;
   setCreateLinkModalOpen: (showing: boolean) => void;
   finaliseCreateLink: () => void;
@@ -19,11 +21,13 @@ interface Context {
  * Default context
  */
 export const LinksContext = React.createContext<Context>({
+  selectedRange: null,
   createLinkModalOpen: false,
   linkHref: "",
   linkLabel: "",
   setLinkLabel: () => void null,
   setLinkHref: () => void null,
+  setSelectedRange: () => void null,
   clearCreateLink: () => void null,
   setCreateLinkModalOpen: () => void null,
   finaliseCreateLink: () => void null,
@@ -35,7 +39,10 @@ export const LinksContext = React.createContext<Context>({
  */
 export function LinksProvider({ children }: { children: React.ReactNode }) {
   const { replaceSelection } = useInternoteEditor();
+
   const [linkHref, setLinkHref] = useState("");
+
+  const [selectedRange, setSelectedRange] = useState<SlateRange | null>(null);
 
   const [createLinkModalOpen, setCreateLinkModalOpen] = useState(false);
 
@@ -53,9 +60,9 @@ export function LinksProvider({ children }: { children: React.ReactNode }) {
       href: linkHref,
       children: [{ text: linkLabel }],
     };
-    replaceSelection([link]);
+    replaceSelection([link], selectedRange);
     clearCreateLink();
-  }, [linkLabel, linkHref, clearCreateLink, replaceSelection]);
+  }, [linkLabel, linkHref, clearCreateLink, replaceSelection, selectedRange]);
 
   const ctx: Context = {
     createLinkModalOpen,
@@ -66,6 +73,8 @@ export function LinksProvider({ children }: { children: React.ReactNode }) {
     finaliseCreateLink,
     setLinkLabel,
     linkLabel,
+    selectedRange,
+    setSelectedRange,
   };
 
   return <LinksContext.Provider value={ctx}>{children}</LinksContext.Provider>;
