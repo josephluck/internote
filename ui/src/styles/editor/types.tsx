@@ -74,7 +74,8 @@ export type ToolbarFunctions =
   | "speech"
   | "dictionary"
   | "delete"
-  | "emoji";
+  | "emoji"
+  | "link-edit";
 
 export type ToolbarFunctionStates =
   | "speech-loading"
@@ -89,7 +90,7 @@ export type ToolbarIconType =
 
 export const voids: InternoteEditorNodeType[] = ["tag"];
 
-export const inlines: InternoteEditorNodeType[] = ["tag"];
+export const inlines: InternoteEditorNodeType[] = ["tag", "link"];
 
 export const listNodeTypes: InternoteEditorNodeType[] = [
   "bulleted-list",
@@ -118,6 +119,7 @@ export const toolbarLabelMap: Record<
   delete: "Delete",
   emoji: "Emoji",
   link: "Link",
+  "link-edit": "Edit link",
 };
 
 // TODO: chromebook can't use mod?
@@ -143,6 +145,7 @@ export const toolbarShortcutMap: Record<
   delete: "mod+shift+d",
   emoji: "mod+e",
   link: "mod+shift+e",
+  "link-edit": "mod+shift+e",
 };
 
 export const toolbarIconMap: Record<ToolbarIconType, React.ReactNode> = {
@@ -168,4 +171,5 @@ export const toolbarIconMap: Record<ToolbarIconType, React.ReactNode> = {
   delete: <FontAwesomeIcon icon={faTrash} />,
   emoji: <FontAwesomeIcon icon={faSmile} />,
   link: <FontAwesomeIcon icon={faLink} />,
+  "link-edit": <FontAwesomeIcon icon={faLink} />,
 };

@@ -91,6 +91,8 @@ export const Toolbar: React.FunctionComponent<{
   const isToolbarVisible =
     toolbarIsExpanded || O.isSome(selectedText) || snippetsMenuShowing;
 
+  const linkIsActive = isBlockActive(editor, "link");
+
   const selectedWord = pipe(
     getHighlightedWord(editor),
     O.getOrElse(() => "")
@@ -142,10 +144,6 @@ export const Toolbar: React.FunctionComponent<{
     pipe(
       getNodesFromEditorSelection(editor),
       O.map((nodes) => {
-        console.log("Showing link modal", {
-          nodes,
-          text: extractTextFromNodes(nodes),
-        });
         setLinkLabel(extractTextFromNodes(nodes));
         setCreateLinkModalOpen(true);
       })
@@ -204,8 +202,12 @@ export const Toolbar: React.FunctionComponent<{
             <ToolbarButton
               onClick={handleCreateLink}
               icon={toolbarIconMap.link}
-              label={toolbarLabelMap.link}
               name={toolbarLabelMap.link}
+              label={
+                linkIsActive
+                  ? toolbarLabelMap["link-edit"]
+                  : toolbarLabelMap.link
+              }
               shortcut={toolbarShortcutMap.link}
             />
           </ButtonSpacer>
