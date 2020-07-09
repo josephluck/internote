@@ -44,7 +44,8 @@ import {
 export const InternoteEditor: React.FunctionComponent<{
   initialValue: InternoteEditorElement[];
   noteId?: string;
-}> = ({ initialValue, noteId }) => {
+  autoFocus?: boolean;
+}> = ({ initialValue, noteId, autoFocus = true }) => {
   const valueRef = useRef(initialValue);
   valueRef.current = initialValue;
 
@@ -95,7 +96,7 @@ export const InternoteEditor: React.FunctionComponent<{
       <InternoteEditorProvider>
         <SnippetsProvider>
           <LinksProvider>
-            <InternoteEditorEditor />
+            <InternoteEditorEditor autoFocus={autoFocus} />
             <Toolbar noteId={noteId} saving={saving} />
           </LinksProvider>
         </SnippetsProvider>
@@ -112,7 +113,9 @@ export const InternoteEditor: React.FunctionComponent<{
   );
 };
 
-const InternoteEditorEditor = () => {
+const InternoteEditorEditor: React.FunctionComponent<{
+  autoFocus: boolean;
+}> = ({ autoFocus }) => {
   const { editor, handlePreventKeydown } = useInternoteEditor();
 
   const { handleShortcuts } = useContext(ShortcutsContext);
@@ -159,7 +162,7 @@ const InternoteEditorEditor = () => {
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           spellCheck
-          autoFocus
+          autoFocus={autoFocus}
           onKeyDown={handleKeyDown}
         />
       </InnerPadding>

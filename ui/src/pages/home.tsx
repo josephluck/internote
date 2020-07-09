@@ -26,7 +26,8 @@ export const Home: React.FunctionComponent<RouteComponentProps> = () => {
     <Wrapper>
       <InternoteEditor
         initialValue={FULL_SCHEMA_WELCOME_MESSAGE}
-      ></InternoteEditor>
+        autoFocus={false}
+      />
     </Wrapper>
   );
 };
