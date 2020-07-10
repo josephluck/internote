@@ -159,17 +159,19 @@ export function NoteMenu({
               ))
             )}
           </MaxHeight>
-          <TagsWrapper>
-            {tags.map((tag) => (
-              <Tag
-                key={tag}
-                isFocused={false}
-                onClick={() => onTagClicked(tag)}
-              >
-                {tag}
-              </Tag>
-            ))}
-          </TagsWrapper>
+          {tags.length > 0 && (
+            <TagsWrapper>
+              {tags.map((tag) => (
+                <Tag
+                  key={tag}
+                  isFocused={false}
+                  onClick={() => onTagClicked(tag)}
+                >
+                  {tag}
+                </Tag>
+              ))}
+            </TagsWrapper>
+          )}
         </NotesMenu>
       )}
     >
@@ -204,8 +206,8 @@ const HeadingWrapper = styled.div`
 const MaxHeight = styled.div`
   max-height: ${size.notesMenuListMaxHeight};
   overflow: auto;
-  margin: ${spacing._0_5} 0;
-  padding: ${spacing._0_5} 0;
+  margin-top: ${spacing._0_5};
+  padding-top: ${spacing._0_5};
   border-top: solid 1px ${(props) => props.theme.dropdownMenuSpacerBorder};
 `;
 

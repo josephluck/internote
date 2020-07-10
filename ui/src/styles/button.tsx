@@ -80,29 +80,3 @@ export function Button(
     </ButtonWrap>
   );
 }
-
-export const RoundButton = styled.button<{ isActive?: boolean }>`
-  background: ${(props) =>
-    props.isActive
-      ? props.theme.formatButtonActiveBackground
-      : props.theme.formatButtonInactiveBackground};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: ${borderRadius._6};
-  outline: none;
-  border: 0;
-  padding: 0;
-  color: ${(props) =>
-    props.isActive
-      ? props.theme.formatButtonActiveText
-      : props.theme.formatButtonInactiveText};
-  font-weight: ${(props) => (props.isActive ? "bold" : "normal")};
-  font-size: ${font._12.size};
-  line-height: ${font._12.lineHeight};
-  padding: ${spacing._0_25};
-  overflow: hidden;
-  transition: all 300ms ease;
-  font-weight: bold;
-  cursor: pointer;
-`;

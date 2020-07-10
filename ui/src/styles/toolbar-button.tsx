@@ -3,7 +3,6 @@ import React, { useCallback } from "react";
 import styled from "styled-components";
 
 import { borderRadius, font, spacing } from "../theming/symbols";
-import { RoundButton } from "./button";
 import { CollapseWidthOnHover } from "./collapse-width-on-hover";
 import { Shortcut } from "./shortcuts";
 
@@ -78,11 +77,16 @@ export const ToolbarButton: React.FunctionComponent<{
   );
 };
 
-export const ToolbarExpandingButton = styled(RoundButton)<{
+export const ToolbarExpandingButton = styled.button<{
   forceShow?: boolean;
   isActive?: boolean;
   shortcutShowing?: boolean;
 }>`
+  justify-content: center;
+  outline: none;
+  border: 0;
+  transition: all 300ms ease;
+  cursor: pointer;
   display: inline-flex;
   overflow: hidden;
   align-items: center;
@@ -100,23 +104,23 @@ export const ToolbarExpandingButton = styled(RoundButton)<{
     props.isActive
       ? props.theme.toolbarButtonActiveText
       : props.forceShow
-      ? props.theme.expandingIconButtonActiveText
-      : props.theme.expandingIconButtonInactiveText};
+      ? props.theme.toolbarButtonHoverText
+      : props.theme.toolbarButtonInactiveText};
   background: ${(props) =>
     props.isActive
       ? props.theme.toolbarButtonActiveBackground
       : props.forceShow
-      ? props.theme.expandingIconButtonBackground
-      : "transparent"};
+      ? props.theme.toolbarButtonHoverBackground
+      : props.theme.toolbarButtonInactiveBackground};
   &:hover {
     color: ${(props) =>
       props.isActive
         ? props.theme.toolbarButtonActiveText
-        : props.theme.expandingIconButtonActiveText};
+        : props.theme.toolbarButtonActiveText};
     background: ${(props) =>
       props.isActive
         ? props.theme.toolbarButtonActiveBackground
-        : props.theme.expandingIconButtonBackground};
+        : props.theme.toolbarButtonHoverBackground};
   }
 `;
 
