@@ -17,7 +17,11 @@ import { useSlate, withReact } from "slate-react";
 
 import { isNavigationShortcut } from "./hotkeys";
 import { withInlines } from "./inlines";
-import { getSelectedBlockText, getSelectedText } from "./selection";
+import {
+  getExpandedRangeToFullWord,
+  getSelectedBlockText,
+  getSelectedText,
+} from "./selection";
 import {
   getEmojiSearchShortcut,
   getHashtagSearchShortcut,
@@ -80,6 +84,7 @@ interface InternoteEditorContext {
     replacement: InternoteEditorElement[],
     selection?: SlateRange | null
   ) => void;
+  replaceCurrentWord: (replacement: string) => void;
 }
 
 export const InternoteEditorCtx = createContext<InternoteEditorContext>({
@@ -92,6 +97,7 @@ export const InternoteEditorCtx = createContext<InternoteEditorContext>({
   handlePreventKeydown: () => void null,
   replaceSmartSearchText: () => void null,
   replaceSelection: () => void null,
+  replaceCurrentWord: () => void null,
 });
 
 export const InternoteEditorProvider: React.FunctionComponent = ({
@@ -128,7 +134,7 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
       const searchText = emojiSearchText || hashtagSearchText;
       if (hasSmartSearch && searchText) {
         Editor.deleteBackward(editor, { unit: "word" });
-        Editor.deleteBackward(editor, { unit: "character" });
+        Editor.deleteBackward(editor, { unit: "character" }); // Deletes the :
         if (typeof replacement === "string") {
           Transforms.insertText(editor, replacement);
         } else {
@@ -152,6 +158,21 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
     [editor]
   );
 
+  const replaceCurrentWord = useCallback(
+    (word: string) => {
+      pipe(
+        O.fromNullable(editor.selection),
+        O.filterMap((selection) =>
+          getExpandedRangeToFullWord(editor, selection, false)
+        ),
+        O.map((range) => {
+          Transforms.insertText(editor, word, { at: range });
+        })
+      );
+    },
+    [editor]
+  );
+
   const ctx: InternoteEditorContext = {
     editor,
     emojiSearchText,
@@ -162,6 +183,7 @@ export const InternoteEditorProvider: React.FunctionComponent = ({
     handlePreventKeydown,
     replaceSmartSearchText,
     replaceSelection,
+    replaceCurrentWord,
   };
 
   return (
