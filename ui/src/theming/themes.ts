@@ -202,6 +202,11 @@ export interface FontTheme {
   googleFontName: string;
 }
 
+export const inter: FontTheme = {
+  googleFontName: "Inter",
+  fontFamily: "'Inter', Helvetica, Arial, sans-serif",
+};
+
 export const sansSerif: FontTheme = {
   googleFontName: "Work Sans",
   fontFamily: "'Work Sans', Helvetica, Arial, sans-serif",

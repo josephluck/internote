@@ -10,7 +10,7 @@ import { useStately } from "./store/store";
 import { ConfirmationModal, ConfirmationProvider } from "./styles/confirmation";
 import { InternoteThemes } from "./styles/theme-provider";
 import { font } from "./theming/symbols";
-import { googleFontsWeights, sansSerif } from "./theming/themes";
+import { googleFontsWeights, inter } from "./theming/themes";
 
 const App = () => {
   const fontTheme = useStately((state) => state.preferences.fontTheme);
@@ -26,6 +26,10 @@ const App = () => {
         <GlobalStyles />
         <GoogleFontLoader
           fonts={[
+            {
+              font: inter.googleFontName,
+              weights: googleFontsWeights,
+            },
             {
               font: fontTheme.theme.googleFontName,
               weights: googleFontsWeights,
@@ -47,7 +51,7 @@ export const GlobalStyles = createGlobalStyle`
 body, html, #root {
   color: ${(props) => props.theme.appText};
   background-color: ${(props) => props.theme.appBackground};
-  font-family: ${sansSerif.fontFamily};
+  font-family: ${inter.fontFamily};
   font-size: ${font._24.size};
   line-height: ${font._24.lineHeight};
   height: 100%;
