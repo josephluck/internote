@@ -22,6 +22,7 @@ export interface Theme {
   inputBackground: string;
   inputLabelText: string;
   inputLabelTextFocused: string;
+  inputErrorText: string;
   inputText: string;
   modalBackdropBackground: string;
   modalBackground: string;
@@ -76,6 +77,7 @@ export const dark: Theme = {
   inputBackground: "#19181B",
   inputLabelText: "#737278",
   inputLabelTextFocused: "#999999",
+  inputErrorText: "#fe0046",
   inputText: "#FFFFFF",
   modalBackdropBackground: "rgba(34,26,36,0.9)",
   modalBackground: "#000000",
@@ -130,6 +132,7 @@ export const light: Theme = {
   inputBackground: "#dedbe3",
   inputLabelText: "#737278",
   inputLabelTextFocused: "#555555",
+  inputErrorText: "#fe0046",
   inputText: "#000000",
   modalBackdropBackground: "rgba(34,26,36,0.9)",
   modalBackground: "#FFFFFF",
