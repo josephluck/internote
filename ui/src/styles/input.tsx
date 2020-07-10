@@ -53,14 +53,14 @@ const Label = styled.label<{ isFocused?: boolean }>`
   font-size: ${font._12.size};
   line-height: ${font._12.lineHeight};
   margin-bottom: ${spacing._0_25};
-  letter-spacing: 1px;
   transition: color 100ms ease;
   display: block;
-  font-weight: bold;
 `;
 
 export const InputLabel = styled(Label)`
   text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
   color: ${(props) =>
     props.isFocused
       ? props.theme.inputLabelTextFocused

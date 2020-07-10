@@ -9,7 +9,7 @@ import { constraints, useForm } from "../hooks/use-form";
 import { signUp, verify } from "../store/auth/auth";
 import { useLoadingAction, useStately } from "../store/store";
 import { Button } from "../styles/button";
-import { Input, InputLabel } from "../styles/input";
+import { InputWithLabel } from "../styles/input";
 import { Logo } from "../styles/logo";
 import { Modal } from "../styles/modal";
 import { font, spacing } from "../theming/symbols";
@@ -47,7 +47,7 @@ const EmailForm: React.FunctionComponent = () => {
       email: "",
     },
     {
-      email: [constraints.isRequired],
+      email: [constraints.isRequired, constraints.isEmail],
     }
   );
 
@@ -59,8 +59,12 @@ const EmailForm: React.FunctionComponent = () => {
   return (
     <form onSubmit={handleSubmit}>
       <Flex mb={spacing._1} flexDirection="column">
-        <InputLabel>Email</InputLabel>
-        <Input autoFocus type="email" {...registerTextInput("email")} />
+        <InputWithLabel
+          label="Email"
+          autoFocus
+          type="email"
+          {...registerTextInput("email")}
+        />
       </Flex>
       <Box mb={spacing._1}>
         <Button
@@ -84,7 +88,7 @@ const VerifyForm: React.FunctionComponent = () => {
       code: "",
     },
     {
-      code: [constraints.isRequired],
+      code: [constraints.isRequired, constraints.isLengthAtLeast(6)],
     }
   );
 
@@ -108,8 +112,11 @@ const VerifyForm: React.FunctionComponent = () => {
         </Instructions>
       </Box>
       <Flex mb={spacing._1} flexDirection="column">
-        <InputLabel>Verification code</InputLabel>
-        <Input autoFocus {...registerTextInput("code")} />
+        <InputWithLabel
+          label="Verification code"
+          autoFocus
+          {...registerTextInput("code")}
+        />
       </Flex>
       <Box mb={spacing._1}>
         <Button type="submit" primary fullWidth loading={handleVerify.loading}>

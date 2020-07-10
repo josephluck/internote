@@ -172,6 +172,13 @@ const isLengthAtLeast = (length: number) => (
     ? E.right(value)
     : E.left(`Must be at least ${length} characters long`);
 
+const isEmail = (value: string): E.Either<string, string> =>
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    value
+  )
+    ? E.right(value)
+    : E.left("Please enter a valid e-mail");
+
 export const constraints = {
   isRequired,
   isOfType,
@@ -179,6 +186,7 @@ export const constraints = {
   isNumber,
   isEqualTo,
   isLengthAtLeast,
+  isEmail,
 };
 
 const numberify = (val: string): number | undefined => {
