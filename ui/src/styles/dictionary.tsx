@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import { useStately } from "../store/store";
 import { font, spacing } from "../theming/symbols";
+import { useInternoteEditor } from "./editor/hooks";
 import { NoResults } from "./no-results";
 import { Tag } from "./tag";
 import { BaseGhostElement, GhostHeadingTwo, HeadingTwo } from "./typography";
@@ -12,6 +13,7 @@ export const Dictionary: React.FunctionComponent<{
   selectedWord: string;
   isLoading: boolean;
 }> = ({ selectedWord, isLoading }) => {
+  const { replaceCurrentWord } = useInternoteEditor();
   const results = useStately((state) => state.dictionary.results);
 
   return isLoading ? (
@@ -36,7 +38,11 @@ export const Dictionary: React.FunctionComponent<{
     <div style={{ width: "100%" }}>
       {results.length > 0 ? (
         results.map((result) => (
-          <DictionaryEntry result={result} key={result.word} />
+          <DictionaryEntry
+            result={result}
+            key={result.word}
+            onSynonymPress={replaceCurrentWord}
+          />
         ))
       ) : (
         <NoResults
@@ -50,7 +56,8 @@ export const Dictionary: React.FunctionComponent<{
 
 const DictionaryEntry: React.FunctionComponent<{
   result: DictionaryResult;
-}> = ({ result }) => (
+  onSynonymPress: (synonym: string) => void;
+}> = ({ result, onSynonymPress }) => (
   <DictionaryEntryWrapper>
     <DictionaryHeadingWrapper>
       <DictionaryWordHeading>{result.word}</DictionaryWordHeading>
@@ -60,7 +67,15 @@ const DictionaryEntry: React.FunctionComponent<{
     {result.synonyms.length ? (
       <ThesaurusWrapper>
         {result.synonyms.map((synonym) => (
-          <Tag key={synonym} isFocused>
+          <Tag
+            key={synonym}
+            isFocused
+            onMouseDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onSynonymPress(synonym);
+            }}
+          >
             {synonym}
           </Tag>
         ))}
