@@ -8,19 +8,27 @@ export const resetState = store.createMutator(
   (state) => (state.dictionary = dictionaryInitialState)
 );
 
+export const setDictionaryLoading = store.createMutator(
+  (state, loading: boolean) => (state.dictionary.loading = loading)
+);
+
 export const setDictionaryResults = store.createMutator(
-  (state, results: DictionaryResult[]) =>
-    (state.dictionary.dictionaryResults = results)
+  (state, results: DictionaryResult[]) => (state.dictionary.results = results)
 );
 
 export const setDictionaryShowing = store.createMutator(
-  (state, showing?: boolean) => (state.dictionary.dictionaryShowing = showing)
+  (state, showing: boolean) => (state.dictionary.showing = showing)
 );
 
 export const lookup = store.createEffect(async (state, word: string) => {
-  setDictionaryShowing(true);
-  const response = await api.dictionary.lookup(state.auth.session, {
-    word,
-  });
-  response.map(({ results }) => setDictionaryResults(results));
+  try {
+    setDictionaryLoading(true);
+    setDictionaryShowing(true);
+    const response = await api.dictionary.lookup(state.auth.session, {
+      word,
+    });
+    response.map(({ results }) => setDictionaryResults(results));
+  } finally {
+    setDictionaryLoading(false);
+  }
 });

@@ -12,7 +12,7 @@ export const Dictionary: React.FunctionComponent<{
   selectedWord: string;
   isLoading: boolean;
 }> = ({ selectedWord, isLoading }) => {
-  const results = useStately((state) => state.dictionary.dictionaryResults);
+  const results = useStately((state) => state.dictionary.results);
 
   return isLoading ? (
     <div style={{ width: "100%" }}>

@@ -144,10 +144,10 @@ function convertOxfordEntriesResponse(
 // TODO: consider refactoring this and breaking out
 // new functions for each individual responsibility
 function mapEntriesToSynonyms(
-  dictionaryResults: DictionaryResultWithThesaurusSenseIds[],
+  results: DictionaryResultWithThesaurusSenseIds[],
   response: Oxford.thesaurusResponse
 ): DictionaryResult[] {
-  return dictionaryResults.map(({ thesaurusSenseIds, ...definition }) => {
+  return results.map(({ thesaurusSenseIds, ...definition }) => {
     let synonyms: string[] = [];
     (response.results || []).forEach(({ lexicalEntries }) => {
       (lexicalEntries || []).forEach(({ entries }) => {

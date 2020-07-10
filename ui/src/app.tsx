@@ -77,4 +77,7 @@ select:-webkit-autofill:focus {
 a {
   text-decoration: none;
 }
+.ReactCollapse--collapse {
+  transition: height 300ms ease;
+}
 `;

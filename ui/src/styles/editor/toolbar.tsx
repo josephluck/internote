@@ -1,5 +1,6 @@
 import { InternoteEditorNodeType } from "@internote/lib/editor-types";
 import { GetSnippetDTO } from "@internote/snippets-service/types";
+import { Link } from "@reach/router";
 import { Flex } from "@rebass/grid";
 import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
@@ -79,11 +80,9 @@ export const Toolbar: React.FunctionComponent<{
 
   const tags = useStately((state) => state.tags.tags);
 
-  const isDictionaryShowing = useStately(
-    (state) => state.dictionary.dictionaryShowing
-  );
+  const isDictionaryShowing = useStately((state) => state.dictionary.showing);
 
-  const isDictionaryLoading = false;
+  const isDictionaryLoading = useStately((state) => state.dictionary.loading);
 
   const [isEmojiButtonPressed, setIsEmojiButtonPressed] = React.useState(false);
 
@@ -268,9 +267,16 @@ export const Toolbar: React.FunctionComponent<{
             </ButtonSpacer>
           )}
           {!!noteId && <Saving saving={saving} />}
+          {!noteId && <Link to="/authenticate" />}
         </Flex>
       </ToolbarInner>
-      <Collapse isOpened={toolbarIsExpanded}>
+      <Collapse
+        theme={{
+          collapse: "ReactCollapse--collapse full-width",
+          content: "full-width",
+        }}
+        isOpened={toolbarIsExpanded}
+      >
         <ToolbarExpandedWrapper>
           <ToolbarExpandedInner>
             <ToolbarInner>
@@ -382,6 +388,9 @@ export const ToolbarWrapper = styled.div<{
     transform: translateY(0px);
     transition: all 200ms ease;
   }
+  .full-width {
+    width: 100%;
+  }
 `;
 
 export const ToolbarInner = styled(Wrapper)`
@@ -402,4 +411,5 @@ export const ToolbarExpandedInner = styled.div`
   padding-top: ${spacing._0_25};
   overflow: auto;
   max-height: ${size.toolbarExpandedMaxHeight};
+  width: 100%;
 `;

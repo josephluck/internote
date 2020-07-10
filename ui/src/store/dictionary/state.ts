@@ -1,11 +1,13 @@
 import { DictionaryResult } from "@internote/dictionary-service/types";
 
 export type DictionaryState = {
-  dictionaryShowing?: boolean;
-  dictionaryResults: DictionaryResult[];
+  showing: boolean;
+  loading: boolean;
+  results: DictionaryResult[];
 };
 
 export const dictionaryInitialState: DictionaryState = {
-  dictionaryShowing: false,
-  dictionaryResults: [],
+  showing: false,
+  loading: false,
+  results: [],
 };
