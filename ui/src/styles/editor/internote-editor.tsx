@@ -30,7 +30,11 @@ import {
   useCreateInternoteEditor,
   useInternoteEditor,
 } from "./hooks";
-import { sequenceKeyboardEventHandlers, useResetListBlocks } from "./hotkeys";
+import {
+  sequenceKeyboardEventHandlers,
+  useResetHeadingOnKeydown,
+  useResetListBlocks,
+} from "./hotkeys";
 import { useLiveSave } from "./save";
 import { useDistractionFreeUx } from "./scroll";
 import { Toolbar } from "./toolbar";
@@ -135,7 +139,9 @@ const InternoteEditorEditor: React.FunctionComponent<{
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const handleResetListBlockOnPress = useResetListBlocks(editor);
+  const handleResetListBlockOnKeydown = useResetListBlocks(editor);
+
+  const handleResetHeadingOnKeydown = useResetHeadingOnKeydown(editor);
 
   const { userHasScrolledOutOfDistractionMode } = useDistractionFreeUx(
     scrollRef
@@ -146,9 +152,9 @@ const InternoteEditorEditor: React.FunctionComponent<{
       sequenceKeyboardEventHandlers(
         handleShortcuts,
         handlePreventKeydown,
-        handleResetListBlockOnPress
+        handleResetListBlockOnKeydown
       ),
-    [handlePreventKeydown, handleShortcuts, handleResetListBlockOnPress]
+    [handlePreventKeydown, handleShortcuts, handleResetListBlockOnKeydown]
   );
 
   const renderElement = useCallback(
@@ -169,6 +175,7 @@ const InternoteEditorEditor: React.FunctionComponent<{
           spellCheck
           autoFocus={autoFocus}
           onKeyDown={handleKeyDown}
+          onKeyUp={handleResetHeadingOnKeydown}
           topPadding={topPadding}
         />
       </InnerPadding>

@@ -3,7 +3,7 @@ import { pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
 import isHotkey from "is-hotkey";
 import { KeyboardEvent, useCallback } from "react";
-import { Editor } from "slate";
+import { Editor, Transforms } from "slate";
 
 import { getCurrentFocusedLeafAndPath } from "./focus";
 import { InternoteSlateEditor } from "./types";
@@ -46,6 +46,42 @@ export const useResetListBlocks = (editor: InternoteSlateEditor) =>
 
       event.preventDefault(); // NB: prevent the newline
       toggleBlock(editor, "list-item"); // NB: existing list-item ~> paragraph
+    },
+    [editor]
+  );
+
+export const useResetHeadingOnKeydown = (editor: InternoteSlateEditor) =>
+  useCallback(
+    (event: KeyboardEvent) => {
+      const isValidResetKey = ["enter", "shift+tab"].some((key) =>
+        // @ts-ignore hotkey doesn't like keyboard events!? Maybe a mismatch with React types
+        isHotkey(key, event)
+      );
+
+      if (!isValidResetKey) return;
+
+      const leafAndPath = getCurrentFocusedLeafAndPath(editor);
+
+      const headingNodeTypes: InternoteEditorNodeType[] = [
+        "heading-one",
+        "heading-two",
+      ];
+      const previousWasHeading = pipe(
+        leafAndPath,
+        O.filterMap(([_node, path]) =>
+          O.fromNullable(Editor.above(editor, { at: path }))
+        ),
+        O.filter(([previousNode]) =>
+          headingNodeTypes.includes(previousNode.type as any)
+        ),
+        O.isSome
+      );
+
+      if (!previousWasHeading) return;
+
+      Transforms.setNodes(editor, {
+        type: "paragraph",
+      });
     },
     [editor]
   );
