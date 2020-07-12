@@ -8,6 +8,8 @@
     "env:dev": "ts-node -P ./tsconfig.json -O \"{\\\"module\\\": \\\"commonjs\\\"}\" prepare-env.ts --stage=dev && prettier --write \"./src/env.ts\"",
     "start:cdk-test": "yarn env:cdk-test && craco start",
     "env:cdk-test": "ts-node -P ./tsconfig.json -O \"{\\\"module\\\": \\\"commonjs\\\"}\" prepare-env.ts --stage=cdk-test && prettier --write \"./src/env.ts\"",
+    "start:prod": "yarn env:prod && craco start",
+    "env:prod": "ts-node -P ./tsconfig.json -O \"{\\\"module\\\": \\\"commonjs\\\"}\" prepare-env.ts --stage=prod && prettier --write \"./src/env.ts\"",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
