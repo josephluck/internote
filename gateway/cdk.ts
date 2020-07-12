@@ -35,8 +35,12 @@ export class InternoteGatewayStack extends InternoteStack {
   constructor(scope: cdk.Construct, id: string, props: Props) {
     super(scope, id, props);
 
-    const domainName = "internote.app";
-    const servicesGatewayDomainName = `${this.stage}-services.${domainName}`;
+    const hostedZoneDomainName = "internote.app";
+
+    const servicesGatewayDomainName =
+      this.stage === "prod"
+        ? `services.${hostedZoneDomainName}`
+        : `${this.stage}-services.${hostedZoneDomainName}`;
 
     /**
      * Lookup the existing hosted zone to avoid CDK managing it (and destroying
@@ -46,7 +50,7 @@ export class InternoteGatewayStack extends InternoteStack {
       this,
       `${id}-hosted-zone`,
       {
-        domainName,
+        domainName: hostedZoneDomainName,
       }
     );
 
@@ -80,6 +84,12 @@ export class InternoteGatewayStack extends InternoteStack {
         domainName: servicesGatewayDomainName,
         certificate: servicesDnsCertificate,
       },
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowHeaders: apigateway.Cors.DEFAULT_HEADERS,
+        allowMethods: apigateway.Cors.ALL_METHODS,
+        allowCredentials: true,
+      },
       deployOptions: {
         // TODO: somehow provide a log group name - the random one isn't easy to find in CloudWatch
         loggingLevel: apigateway.MethodLoggingLevel.INFO,
@@ -105,7 +115,7 @@ export class InternoteGatewayStack extends InternoteStack {
     new route53.AaaaRecord(this, `${id}-aaaa-record`, aRecordProps);
 
     const env: AuthEnvironment = {
-      SES_FROM_ADDRESS: `no-reply@${domainName}`, // TODO: from context?
+      SES_FROM_ADDRESS: `no-reply@${hostedZoneDomainName}`, // TODO: from context?
     };
 
     const preSignUpLambda = new InternoteLambda(

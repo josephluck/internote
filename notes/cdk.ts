@@ -2,7 +2,6 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as dynamo from "@aws-cdk/aws-dynamodb";
 import * as iam from "@aws-cdk/aws-iam";
 import * as cdk from "@aws-cdk/core";
-import { addCorsOptions } from "@internote/infra/constructs/cors";
 import {
   InternoteProps,
   InternoteStack,
@@ -27,9 +26,6 @@ export class InternoteNotesStack extends InternoteStack {
     this.rootResource = props.api.root.addResource("notes");
     this.singleResource = this.rootResource.addResource("{noteId}");
     this.rootResourceTags = props.api.root.addResource("tags");
-    [this.rootResource, this.singleResource, this.rootResourceTags].forEach(
-      addCorsOptions
-    );
 
     const NOTES_TABLE_PARTITION_KEY = "noteId";
     const NOTES_TABLE_SORT_KEY = "userId";
@@ -64,7 +60,6 @@ export class InternoteNotesStack extends InternoteStack {
 
     const environment: NotesEnv = {
       SERVICES_REGION: "eu-west-1", // TODO: from context?
-      DYNAMO_ENDPOINT: "https://dynamodb.eu-west-1.amazonaws.com", // TODO: from context?
       NOTES_TABLE_NAME: table.tableName,
       NOTES_TABLE_PARTITION_KEY,
       NOTES_TABLE_SORT_KEY,

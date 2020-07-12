@@ -5,7 +5,6 @@ export const env = getEnv(
     "PREFERENCES_TABLE_NAME",
     "PREFERENCES_TABLE_PARTITION_KEY",
     "SERVICES_REGION",
-    "DYNAMO_ENDPOINT",
   ],
   process.env
 );

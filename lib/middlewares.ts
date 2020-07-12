@@ -1,12 +1,12 @@
 import { Constraints, validate } from "@internote/lib/validator";
+import middy from "@middy/core";
 import HttpError from "http-errors";
-import { MiddlewareObject } from "middy";
 
 import { HttpResponseError, mapStatusCodeToErrorType } from "./errors";
 
 export const validateRequestBody = <M extends Record<string, any>>(
   constraints: Constraints<M>
-): MiddlewareObject<any, any> => ({
+): middy.MiddlewareObject<any, any> => ({
   before: (handler, next) => {
     return validate(constraints, handler.event.body).fold(
       (err) => {

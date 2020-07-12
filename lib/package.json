@@ -11,9 +11,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@middy/core": "^1.0.0",
+    "@middy/http-cors": "^1.0.0",
+    "@middy/http-error-handler": "^1.0.0",
+    "@middy/http-json-body-parser": "^1.0.0",
     "escape-html": "^1.0.3",
     "http-errors": "^1.7.3",
-    "middy": "^0.29.0",
     "slate": "^0.58.3",
     "space-lift": "^0.8.7"
   },

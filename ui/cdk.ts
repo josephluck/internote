@@ -12,17 +12,28 @@ import {
   InternoteProps,
   InternoteStack,
 } from "@internote/infra/constructs/internote-stack";
+import { Stage, allStages } from "@internote/infra/env";
 
-type Props = InternoteProps & {
-  hostedZone: route53.IHostedZone;
-};
+type Props = InternoteProps;
 
-export class InternoteUiStack extends InternoteStack {
+class InternoteUiStack extends InternoteStack {
   constructor(scope: cdk.Construct, id: string, props: Props) {
     super(scope, id, props);
 
-    const domainName = "internote.app";
-    const cloudfrontDomainName = `${this.stage}.${domainName}`;
+    const hostedZoneDomainName = "internote.app";
+
+    const cloudfrontDomainName =
+      this.stage === "prod"
+        ? hostedZoneDomainName
+        : `${this.stage}.${hostedZoneDomainName}`;
+
+    const hostedZone = route53.PublicHostedZone.fromLookup(
+      this,
+      `${id}-hosted-zone`,
+      {
+        domainName: hostedZoneDomainName,
+      }
+    );
 
     /**
      * It's safe to create a new DNS certificate managed by CDK
@@ -32,7 +43,7 @@ export class InternoteUiStack extends InternoteStack {
       `${id}-dns-certificate`,
       {
         domainName: cloudfrontDomainName,
-        hostedZone: props.hostedZone,
+        hostedZone,
         region: "us-east-1", // NB: this must be in us-east-1 to work with CloudFront.
       }
     );
@@ -109,7 +120,7 @@ export class InternoteUiStack extends InternoteStack {
       target: route53.RecordTarget.fromAlias(
         new route53targets.CloudFrontTarget(cf)
       ),
-      zone: props.hostedZone,
+      zone: hostedZone,
     };
 
     new route53.ARecord(this, `${id}-a-record`, aRecordProps);
@@ -117,3 +128,33 @@ export class InternoteUiStack extends InternoteStack {
     new route53.AaaaRecord(this, `${id}-aaaa-record`, aRecordProps);
   }
 }
+
+type AppProps = cdk.StackProps & { stage: Stage };
+
+class InternoteApp extends cdk.Stack {
+  constructor(scope: cdk.Construct, id: string, stackProps: AppProps) {
+    super(scope, id, stackProps);
+
+    const props: InternoteProps = {
+      ...stackProps,
+      account: this.account,
+      region: this.region,
+    };
+
+    new InternoteUiStack(this, id, props);
+  }
+}
+
+const app = new cdk.App();
+
+allStages.forEach((stage) => {
+  new InternoteApp(app, `internote-${stage}-ui`, {
+    stage,
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: process.env.CDK_DEFAULT_REGION,
+    },
+  });
+});
+
+app.synth();

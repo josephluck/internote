@@ -7,16 +7,13 @@ import { InternoteNotesStack } from "@internote/notes-service/cdk";
 import { InternotePreferencesStack } from "@internote/preferences-service/cdk";
 import { InternoteSnippetsStack } from "@internote/snippets-service/cdk";
 import { InternoteSpeechStack } from "@internote/speech-service/cdk";
-import { InternoteUiStack } from "@internote/ui/cdk";
 
 import { InternoteProps } from "./constructs/internote-stack";
-import { Stage } from "./env";
+import { Stage, allStages } from "./env";
 
 type AppProps = cdk.StackProps & { stage: Stage };
 
 class InternoteApp extends cdk.Stack {
-  public stage: Stage;
-
   constructor(scope: cdk.Construct, id: string, stackProps: AppProps) {
     super(scope, id, stackProps);
 
@@ -33,83 +30,54 @@ class InternoteApp extends cdk.Stack {
       region: this.region,
     };
 
-    const { api, authenticatedRole, hostedZone } = new InternoteGatewayStack(
+    const { api, authenticatedRole } = new InternoteGatewayStack(
       this,
       `${id}-gateway`,
       props
     );
 
-    const uiStack = new InternoteUiStack(this, `${id}-ui`, {
-      ...props,
-      hostedZone,
-    });
-
-    const speechStack = new InternoteSpeechStack(this, `${id}-speech-service`, {
+    new InternoteSpeechStack(this, `${id}-speech-service`, {
       ...props,
       api,
       authenticatedRole,
     });
 
-    const preferencesStack = new InternotePreferencesStack(
-      this,
-      `${id}-preferences-service`,
-      {
-        ...props,
-        api,
-        authenticatedRole,
-      }
-    );
-
-    const notesStack = new InternoteNotesStack(this, `${id}-notes-service`, {
+    new InternotePreferencesStack(this, `${id}-preferences-service`, {
       ...props,
       api,
       authenticatedRole,
     });
 
-    const snippetsStack = new InternoteSnippetsStack(
-      this,
-      `${id}-snippets-service`,
-      {
-        ...props,
-        api,
-        authenticatedRole,
-      }
-    );
-
-    const dictionaryStack = new InternoteDictionaryStack(
-      this,
-      `${id}-dictionary-service`,
-      {
-        ...props,
-        api,
-        authenticatedRole,
-      }
-    );
-
-    const exportStack = new InternoteExportStack(this, `${id}-export-service`, {
+    new InternoteNotesStack(this, `${id}-notes-service`, {
       ...props,
       api,
       authenticatedRole,
     });
 
-    console.log({
-      uiStack: uiStack.toString(),
-      speechStack: speechStack.toString(),
-      preferencesStack: preferencesStack.toString(),
-      notesStack: notesStack.toString(),
-      snippetsStack: snippetsStack.toString(),
-      dictionaryStack: dictionaryStack.toString(),
-      exportStack: exportStack.toString(),
+    new InternoteSnippetsStack(this, `${id}-snippets-service`, {
+      ...props,
+      api,
+      authenticatedRole,
+    });
+
+    new InternoteDictionaryStack(this, `${id}-dictionary-service`, {
+      ...props,
+      api,
+      authenticatedRole,
+    });
+
+    new InternoteExportStack(this, `${id}-export-service`, {
+      ...props,
+      api,
+      authenticatedRole,
     });
   }
 }
 
 const app = new cdk.App();
 
-const stages: Stage[] = ["cdk-test", "dev", "prod"];
-
-stages.forEach((stage) => {
-  new InternoteApp(app, `internote-${stage}`, {
+allStages.forEach((stage) => {
+  new InternoteApp(app, `internote-${stage}-be`, {
     stage,
     env: {
       account: process.env.CDK_DEFAULT_ACCOUNT,

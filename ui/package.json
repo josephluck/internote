@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "BROWSER=none yarn start:cdk-test",
+    "start": "BROWSER=none yarn start:dev",
+    "start:dev": "yarn env:dev && craco start",
+    "env:dev": "ts-node -P ./tsconfig.json -O \"{\\\"module\\\": \\\"commonjs\\\"}\" prepare-env.ts --stage=dev && prettier --write \"./src/env.ts\"",
     "start:cdk-test": "yarn env:cdk-test && craco start",
     "env:cdk-test": "ts-node -P ./tsconfig.json -O \"{\\\"module\\\": \\\"commonjs\\\"}\" prepare-env.ts --stage=cdk-test && prettier --write \"./src/env.ts\"",
     "build": "craco build",

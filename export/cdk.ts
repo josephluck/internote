@@ -2,7 +2,6 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as iam from "@aws-cdk/aws-iam";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
-import { addCorsOptions } from "@internote/infra/constructs/cors";
 import {
   InternoteProps,
   InternoteStack,
@@ -27,10 +26,6 @@ export class InternoteExportStack extends InternoteStack {
     this.rootResource = props.api.root.addResource("export");
     this.htmlResource = this.rootResource.addResource("html");
     this.markdownResource = this.rootResource.addResource("markdown");
-
-    [this.rootResource, this.htmlResource, this.markdownResource].forEach(
-      addCorsOptions
-    );
 
     const bucket = new s3.Bucket(this, `${id}-export-files-bucket`, {
       bucketName: `${id}-export-files-bucket`,

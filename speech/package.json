@@ -16,18 +16,21 @@
     "test": "jest"
   },
   "dependencies": {
-    "@internote/lib": "*",
     "@internote/infra": "*",
+    "@internote/lib": "*",
+    "@middy/core": "^1.0.0",
+    "@middy/http-cors": "^1.0.0",
+    "@middy/http-error-handler": "^1.0.0",
+    "@middy/http-json-body-parser": "^1.0.0",
     "aws-sdk": "^2.520.0",
     "http-errors": "^1.7.3",
-    "md5": "^2.2.1",
-    "middy": "^0.29.0"
+    "md5": "^2.2.1"
   },
   "devDependencies": {
-    "@aws-cdk/core": "1.47.0",
     "@aws-cdk/aws-apigateway": "1.47.0",
-    "@aws-cdk/aws-s3": "1.47.0",
     "@aws-cdk/aws-iam": "1.47.0",
+    "@aws-cdk/aws-s3": "1.47.0",
+    "@aws-cdk/core": "1.47.0",
     "@types/jest": "^24.0.18",
     "@types/md5": "^2.1.33",
     "jest": "^24.9.0",

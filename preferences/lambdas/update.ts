@@ -6,9 +6,11 @@ import {
 } from "@internote/lib/middlewares";
 import { exception, notFound, success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
+import middy from "@middy/core";
+import cors from "@middy/http-cors";
+import httpErrorHandler from "@middy/http-error-handler";
+import jsonBodyParser from "@middy/http-json-body-parser";
 import HttpError from "http-errors";
-import middy from "middy";
-import { cors, jsonBodyParser } from "middy/middlewares";
 
 import { updatePreferencesById } from "../db";
 import { Preferences } from "../models";
@@ -41,4 +43,5 @@ export const handler = middy(update)
   .use(validator)
   .use(encodeResponse())
   .use(jsonErrorHandler())
+  .use(httpErrorHandler())
   .use(cors());

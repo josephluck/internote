@@ -7,8 +7,10 @@ import {
 import { success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { isArray, isString, required } from "@internote/lib/validator";
-import middy from "middy";
-import { cors, jsonBodyParser } from "middy/middlewares";
+import middy from "@middy/core";
+import cors from "@middy/http-cors";
+import httpErrorHandler from "@middy/http-error-handler";
+import jsonBodyParser from "@middy/http-json-body-parser";
 
 import { updateNoteById } from "../db";
 import { UpdateNoteDTO } from "../types";
@@ -38,4 +40,5 @@ export const handler = middy(update)
   .use(validator)
   .use(encodeResponse())
   .use(jsonErrorHandler())
+  .use(httpErrorHandler())
   .use(cors());

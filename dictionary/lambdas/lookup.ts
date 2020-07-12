@@ -6,10 +6,12 @@ import {
 } from "@internote/lib/middlewares";
 import { success } from "@internote/lib/responses";
 import { isSingleWord, isString, required } from "@internote/lib/validator";
+import middy from "@middy/core";
+import cors from "@middy/http-cors";
+import httpErrorHandler from "@middy/http-error-handler";
+import jsonBodyParser from "@middy/http-json-body-parser";
 import Axios from "axios";
 import HttpError from "http-errors";
-import middy from "middy";
-import { cors, jsonBodyParser } from "middy/middlewares";
 import { None, Option, Some } from "space-lift";
 
 import { env } from "../env";
@@ -99,6 +101,7 @@ export const handler = middy(lookup)
   .use(validator)
   .use(encodeResponse())
   .use(jsonErrorHandler())
+  .use(httpErrorHandler())
   .use(cors());
 
 interface DictionaryResultWithThesaurusSenseIds extends DictionaryResult {
