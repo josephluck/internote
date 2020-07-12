@@ -1,4 +1,6 @@
-export type Stage = "prod" | "dev" | "cdk-experiment" | "cdk-test";
+export type Stage = "prod" | "dev" | "cdk-test";
+
+export const allStages: Stage[] = ["prod", "dev", "cdk-test"];
 
 export type NodeEnvironment = "development" | "production";
 
@@ -72,14 +74,6 @@ export type EnvConfig = {
    */
   SERVICES_REGION: {
     public: true;
-    generated: false;
-    type: string;
-  };
-  /**
-   * The dynamodb endpoint
-   */
-  DYNAMO_ENDPOINT: {
-    public: false;
     generated: false;
     type: string;
   };
@@ -290,6 +284,15 @@ export type GeneratedEnvKeys = PickNonNeverKeys<GeneratedEnv>;
  */
 export type ManualEnv = PickEnvGenerated<false>;
 export type ManualEnvKeys = PickNonNeverKeys<ManualEnv>;
+export const manualEnvKeys: ManualEnvKeys[] = [
+  "OXFORD_API_ID",
+  "OXFORD_API_KEY",
+  "SENTRY_AUTH_TOKEN",
+  "SENTRY_DSN",
+  "SENTRY_ORG",
+  "SENTRY_PROJECT",
+  "SERVICES_REGION",
+];
 
 type ExcludeRecordNevers<T> = {
   [K in keyof T]: T[K] extends never ? never : K;

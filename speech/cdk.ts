@@ -2,7 +2,6 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as iam from "@aws-cdk/aws-iam";
 import * as s3 from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
-import { addCorsOptions } from "@internote/infra/constructs/cors";
 import {
   InternoteProps,
   InternoteStack,
@@ -23,7 +22,6 @@ export class InternoteSpeechStack extends InternoteStack {
     super(scope, id, props);
 
     this.rootResource = props.api.root.addResource("speech");
-    addCorsOptions(this.rootResource);
 
     const bucket = new s3.Bucket(this, `${id}-audio-files-bucket`, {
       bucketName: `${id}-audio-files-bucket`,

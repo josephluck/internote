@@ -7,10 +7,12 @@ import {
 import { exception, success } from "@internote/lib/responses";
 import { getUserIdentityId } from "@internote/lib/user";
 import { inArray, isString, required } from "@internote/lib/validator";
+import middy from "@middy/core";
+import cors from "@middy/http-cors";
+import httpErrorHandler from "@middy/http-error-handler";
+import jsonBodyParser from "@middy/http-json-body-parser";
 import AWS from "aws-sdk";
 import md5 from "md5";
-import middy from "middy";
-import { cors, jsonBodyParser } from "middy/middlewares";
 
 import { availableVoices } from "../available-voices";
 import { env } from "../env";
@@ -78,4 +80,5 @@ export const handler = middy(speech)
   .use(validator)
   .use(encodeResponse())
   .use(jsonErrorHandler())
+  .use(httpErrorHandler())
   .use(cors());

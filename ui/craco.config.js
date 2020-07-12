@@ -31,13 +31,10 @@ module.exports = {
         loaderByName("babel-loader")
       );
 
-      console.log({ isFound });
-
       if (isFound) {
         const include = Array.isArray(match.loader.include)
           ? match.loader.include
           : [match.loader.include];
-        console.log({ include, packagePaths });
         match.loader.include = include.concat(packagePaths);
       }
 

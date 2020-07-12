@@ -20,15 +20,13 @@ export class InternoteStack extends cdk.Construct {
   public stage: Stage;
   public region: string = "eu-west-1";
 
-  constructor(scope: cdk.Construct, id: string, options: InternoteProps) {
+  constructor(scope: cdk.Construct, id: string, props: InternoteProps) {
     super(scope, id);
 
     this.rootId = id;
-    this.stage = options.stage;
+    this.stage = props.stage;
   }
 
-  // TODO: constrain this type to only env variables that are generated through
-  // CDK
   exportToSSM<K extends GeneratedEnvKeys>(key: K, value: GeneratedEnv[K]) {
     new ssm.StringParameter(this, `${this.rootId}-${key}`, {
       simpleName: false,
@@ -38,8 +36,6 @@ export class InternoteStack extends cdk.Construct {
     });
   }
 
-  // TODO: constrain this type to env variables that aren't generated through
-  // CDK
   importFromSSM<K extends ManualEnvKeys>(key: K): ManualEnv[K] {
     return ssm.StringParameter.valueForStringParameter(
       this,

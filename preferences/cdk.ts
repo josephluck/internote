@@ -2,7 +2,6 @@ import * as apigateway from "@aws-cdk/aws-apigateway";
 import * as dynamo from "@aws-cdk/aws-dynamodb";
 import * as iam from "@aws-cdk/aws-iam";
 import * as cdk from "@aws-cdk/core";
-import { addCorsOptions } from "@internote/infra/constructs/cors";
 import {
   InternoteProps,
   InternoteStack,
@@ -23,7 +22,6 @@ export class InternotePreferencesStack extends InternoteStack {
     super(scope, id, props);
 
     this.rootResource = props.api.root.addResource("preferences");
-    addCorsOptions(this.rootResource);
 
     const PREFERENCES_TABLE_PARTITION_KEY = "id";
 
@@ -40,7 +38,6 @@ export class InternotePreferencesStack extends InternoteStack {
 
     const environment: PreferencesEnv = {
       SERVICES_REGION: "eu-west-1", // TODO: from context?
-      DYNAMO_ENDPOINT: "https://dynamodb.eu-west-1.amazonaws.com", // TODO: from context?
       PREFERENCES_TABLE_NAME: table.tableName,
       PREFERENCES_TABLE_PARTITION_KEY,
     };

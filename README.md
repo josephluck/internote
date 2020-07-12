@@ -78,7 +78,7 @@ Internote's front-end and back-end services are written in Typescript and the pr
 
 ## Local development
 
-Since Internote runs on a serverless stack, it isn't possible (without significant set-up) to run the whole stack locally. Instead, it is advised to rely on unit / integration testing to develop individual services (mocking out any dependent services where necessary). Alternatively, the `dev` stage can be deployed to during development, providing that the risk of data corruption is kept to a minimum.
+Since Internote runs on a serverless stack, it isn't possible (without significant set-up) to run the whole stack locally. Instead, it is advised to rely on unit / integration testing to develop individual services (mocking out any dependent services where necessary). Alternatively, the `dev` stage can be deployed during development, providing that the risk of data corruption is kept to a minimum.
 
 The front-end application can be run locally and is set up to run against the `dev` stage back-end services. Bear in mind that running locally is not the same as a built version of the front-end so it's advised to deploy and test against the `dev` stage before promoting the build to production.
 
@@ -86,28 +86,27 @@ The front-end application can be run locally and is set up to run against the `d
 
 - TypeScript
 - React
-- Next.js
-- Twine
+- Stately
+- Valley
 - Styled Components
 - Storybook
 - Slate
-- AWS API Gateway
-- AWS Lambda
 - AWS S3
 - AWS CloudWatch
 - AWS CloudFront
 - AWS Route53
+- Sentry
 
 ## Back-end stack
 
+- AWS CDK
 - Middy
 - DynamoDB
-- Type Dynamo
 - AWS Lambda
 - AWS S3
 - AWS Cognito User Pools
 - AWS Cognito Federated Identities
-- API Gateway
+- AWS API Gateway
 - AWS CloudWatch
 - AWS CloudFront
 - AWS Polly
@@ -162,7 +161,7 @@ CDK is setup with the concept of a "stage" which is an isolated deployment of th
 
 **API Gateway**
 
-An API Gateway is created by the Serverless framework to route traffic from the internet through to the lambdas that power the back-end services. Each service references this API Gateway in it's CDK set up.
+An API Gateway is used to route traffic from the internet through to the lambdas that power the back-end services. Each service references this API Gateway in it's CDK set up.
 
 Since the Internote services are designed to be called by a 3rd party client application (such as the front-end that powers the Internote editor), CORS is enabled for every lambda integration to the API gateway.
 
@@ -205,20 +204,48 @@ Add the stage name to the type `Stage` in `infra/env`, then add it as a stack ou
 
 You'll then need to add environment configuration to SSM for environment variables that are _not_ generated via AWS CDK during deployment. See `infra/env` for the list. Note that SSM keys are populated using the convention `internote/[stage]/[key]` where `[stage]` is the stage of the deployment (i.e. `dev`) and `[key]` is the name of the key of the variable (i.e. `OXFORD_API_KEY`).
 
+There's a shortcut for bootstrapping a new stage in SSM from an existing one. From the `infra` workspace:
+
+```bash
+yarn env:bootstrap --from=dev --destination=dev
+```
+
 ## Deploying
 
-Deployment of the entire stack is managed via the `infra` workspace. There are three parts that must be run in this order:
+The deployment of Internote is split between the front-end and the back-end.
 
-- `yarn build --stage=[stage]`: Transpiles services code from TypeScript to JavaScript ready for deployment.
-- `cdk --profile=internote synth internote-[stage]`: Synthesises the CDK stack to CloudFormation ready for deployment. Replace `[stage]` with the stage you wish to synthesise.
-- `cdk --profile=internote deploy internote-[stage]`: Deploys the CDK stack to AWS using the synthesised CloudFormation template.
+### Deploying the back-end
+
+Deployment of the entire back-end stack is managed via the `infra` workspace. There are three parts that must be run in this order:
+
+- `yarn build`: Transpiles services code from TypeScript to JavaScript ready for deployment.
+- `cdk --profile=internote synth internote-[stage]-be`: Synthesises the CDK stack to CloudFormation ready for deployment. Replace `[stage]` with the stage you wish to synthesise.
+- `cdk --profile=internote deploy internote-[stage]-be`: Deploys the CDK stack to AWS using the synthesised CloudFormation template.
 
 #### Example
 
 ```bash
-yarn build --stage=cdk-test &&
-cdk synth internote-cdk-test &&
-cdk deploy internote-cdk-test
+yarn build &&
+cdk synth internote-dev-be &&
+cdk deploy internote-dev-be
+```
+
+### Deploying the front-end
+
+The front-end must be deployed after the back-end in order for AWS SSM state to be correct following a back-end deployment. From the UI workspace:
+
+- `yarn env:[stage]` - prepares the environment from AWS SSM.
+- `yarn build` - builds the app ready for deployment.
+- `cdk --profile=internote synth internote-[stage]-ui`: Synthesises the CDK stack to CloudFormation ready for deployment. Replace `[stage]` with the stage you wish to synthesise.
+- `cdk --profile=internote deploy internote-[stage]-ui`: Deploys the CDK stack to AWS using the synthesised CloudFormation template.
+
+#### Example
+
+```bash
+yarn env:dev &&
+yarn build &&
+cdk synth internote-dev-ui &&
+cdk deploy internote-dev-ui
 ```
 
 #### Removing services
@@ -235,11 +262,11 @@ The entire application is constructed of a CDK App which is made up (loosely) of
 
 The Internote infrastructure identifiers follows a naming convention whereby identifiers are extended as such:
 
-- The top-level CDK App defines the root identifier. This is how environments are supported, aka `internote-dev`
+- The top-level CDK App defines the root identifier. This is how environments are supported, aka `internote-ui-dev` or `internote-be-dev`
 - Each CDK Stack assumes that a namespace has already been given aka `new InternoteSomethingStack(this,`\${id}-something`)`
 - Within each CDK Stack, Constructs are extended similarly aka `new lambda.Function(this,`\${id}-awesome-lambda`)`
 - Construct identifiers are suffixed with the type of Construct aka `-lambda`, `-bucket`
-- Constructs that accept a "name" option, such as Lambda functions or S3 buckets take the identifier without the Construct suffix, aka `{ functionName:`\${id}-awesome`}`.
+- Constructs that accept a "name" option, such as Lambda functions or S3 buckets take the identifier without the Construct's type suffix, aka `{ functionName:`\${id}-awesome`}`.
 
 #### Custom CDK constructs
 

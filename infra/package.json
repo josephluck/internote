@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "ts-node ./build-services.ts"
+    "build": "ts-node ./build-services.ts",
+    "env:bootstrap": "ts-node ./copy-env.ts"
   },
   "license": "MIT",
   "devDependencies": {
