@@ -25,7 +25,7 @@
 
 # 🚨 Fair warning!
 
-Internote is currently in **beta** status. This means that it's not ready for production use and your content may be erased at any time. You've been warned!
+Internote is currently in **beta**. This means that it's not ready for production use and your content may be erased at any time. You've been warned!
 
 # What does it look like?
 
